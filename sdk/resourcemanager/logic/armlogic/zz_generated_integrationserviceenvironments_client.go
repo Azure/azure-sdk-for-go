@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armlogic
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,46 +26,59 @@ import (
 // IntegrationServiceEnvironmentsClient contains the methods for the IntegrationServiceEnvironments group.
 // Don't use this type directly, use NewIntegrationServiceEnvironmentsClient() instead.
 type IntegrationServiceEnvironmentsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIntegrationServiceEnvironmentsClient creates a new instance of IntegrationServiceEnvironmentsClient with the specified values.
-func NewIntegrationServiceEnvironmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationServiceEnvironmentsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewIntegrationServiceEnvironmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IntegrationServiceEnvironmentsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &IntegrationServiceEnvironmentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &IntegrationServiceEnvironmentsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates an integration service environment.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationServiceEnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsBeginCreateOrUpdateOptions) (IntegrationServiceEnvironmentsCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment, options)
-	if err != nil {
-		return IntegrationServiceEnvironmentsCreateOrUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
+// resourceGroup - The resource group.
+// integrationServiceEnvironmentName - The integration service environment name.
+// integrationServiceEnvironment - The integration service environment.
+// options - IntegrationServiceEnvironmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.BeginCreateOrUpdate
+// method.
+func (client *IntegrationServiceEnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[IntegrationServiceEnvironmentsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[IntegrationServiceEnvironmentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[IntegrationServiceEnvironmentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := IntegrationServiceEnvironmentsCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("IntegrationServiceEnvironmentsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return IntegrationServiceEnvironmentsCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &IntegrationServiceEnvironmentsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an integration service environment.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationServiceEnvironmentsClient) createOrUpdate(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
+func (client *IntegrationServiceEnvironmentsClient) createOrUpdate(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +88,13 @@ func (client *IntegrationServiceEnvironmentsClient) createOrUpdate(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *IntegrationServiceEnvironmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *IntegrationServiceEnvironmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -95,49 +108,41 @@ func (client *IntegrationServiceEnvironmentsClient) createOrUpdateCreateRequest(
 		return nil, errors.New("parameter integrationServiceEnvironmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationServiceEnvironmentName}", url.PathEscape(integrationServiceEnvironmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, integrationServiceEnvironment)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *IntegrationServiceEnvironmentsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes an integration service environment.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationServiceEnvironmentsClient) Delete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentsDeleteOptions) (IntegrationServiceEnvironmentsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
+// resourceGroup - The resource group.
+// integrationServiceEnvironmentName - The integration service environment name.
+// options - IntegrationServiceEnvironmentsClientDeleteOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.Delete
+// method.
+func (client *IntegrationServiceEnvironmentsClient) Delete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentsClientDeleteOptions) (IntegrationServiceEnvironmentsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroup, integrationServiceEnvironmentName, options)
 	if err != nil {
-		return IntegrationServiceEnvironmentsDeleteResponse{}, err
+		return IntegrationServiceEnvironmentsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationServiceEnvironmentsDeleteResponse{}, err
+		return IntegrationServiceEnvironmentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return IntegrationServiceEnvironmentsDeleteResponse{}, client.deleteHandleError(resp)
+		return IntegrationServiceEnvironmentsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return IntegrationServiceEnvironmentsDeleteResponse{RawResponse: resp}, nil
+	return IntegrationServiceEnvironmentsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IntegrationServiceEnvironmentsClient) deleteCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentsDeleteOptions) (*policy.Request, error) {
+func (client *IntegrationServiceEnvironmentsClient) deleteCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -151,49 +156,41 @@ func (client *IntegrationServiceEnvironmentsClient) deleteCreateRequest(ctx cont
 		return nil, errors.New("parameter integrationServiceEnvironmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationServiceEnvironmentName}", url.PathEscape(integrationServiceEnvironmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *IntegrationServiceEnvironmentsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets an integration service environment.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationServiceEnvironmentsClient) Get(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentsGetOptions) (IntegrationServiceEnvironmentsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
+// resourceGroup - The resource group.
+// integrationServiceEnvironmentName - The integration service environment name.
+// options - IntegrationServiceEnvironmentsClientGetOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.Get
+// method.
+func (client *IntegrationServiceEnvironmentsClient) Get(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentsClientGetOptions) (IntegrationServiceEnvironmentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroup, integrationServiceEnvironmentName, options)
 	if err != nil {
-		return IntegrationServiceEnvironmentsGetResponse{}, err
+		return IntegrationServiceEnvironmentsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationServiceEnvironmentsGetResponse{}, err
+		return IntegrationServiceEnvironmentsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationServiceEnvironmentsGetResponse{}, client.getHandleError(resp)
+		return IntegrationServiceEnvironmentsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IntegrationServiceEnvironmentsClient) getCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentsGetOptions) (*policy.Request, error) {
+func (client *IntegrationServiceEnvironmentsClient) getCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -207,55 +204,62 @@ func (client *IntegrationServiceEnvironmentsClient) getCreateRequest(ctx context
 		return nil, errors.New("parameter integrationServiceEnvironmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationServiceEnvironmentName}", url.PathEscape(integrationServiceEnvironmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *IntegrationServiceEnvironmentsClient) getHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentsGetResponse, error) {
-	result := IntegrationServiceEnvironmentsGetResponse{RawResponse: resp}
+func (client *IntegrationServiceEnvironmentsClient) getHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentsClientGetResponse, error) {
+	result := IntegrationServiceEnvironmentsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationServiceEnvironment); err != nil {
-		return IntegrationServiceEnvironmentsGetResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationServiceEnvironmentsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *IntegrationServiceEnvironmentsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByResourceGroup - Gets a list of integration service environments by resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationServiceEnvironmentsClient) ListByResourceGroup(resourceGroup string, options *IntegrationServiceEnvironmentsListByResourceGroupOptions) *IntegrationServiceEnvironmentsListByResourceGroupPager {
-	return &IntegrationServiceEnvironmentsListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroup, options)
+// NewListByResourceGroupPager - Gets a list of integration service environments by resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
+// resourceGroup - The resource group.
+// options - IntegrationServiceEnvironmentsClientListByResourceGroupOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.ListByResourceGroup
+// method.
+func (client *IntegrationServiceEnvironmentsClient) NewListByResourceGroupPager(resourceGroup string, options *IntegrationServiceEnvironmentsClientListByResourceGroupOptions) *runtime.Pager[IntegrationServiceEnvironmentsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[IntegrationServiceEnvironmentsClientListByResourceGroupResponse]{
+		More: func(page IntegrationServiceEnvironmentsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp IntegrationServiceEnvironmentsListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.IntegrationServiceEnvironmentListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *IntegrationServiceEnvironmentsClientListByResourceGroupResponse) (IntegrationServiceEnvironmentsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroup, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return IntegrationServiceEnvironmentsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return IntegrationServiceEnvironmentsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return IntegrationServiceEnvironmentsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *IntegrationServiceEnvironmentsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroup string, options *IntegrationServiceEnvironmentsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *IntegrationServiceEnvironmentsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroup string, options *IntegrationServiceEnvironmentsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -265,7 +269,7 @@ func (client *IntegrationServiceEnvironmentsClient) listByResourceGroupCreateReq
 		return nil, errors.New("parameter resourceGroup cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroup}", url.PathEscape(resourceGroup))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -275,54 +279,60 @@ func (client *IntegrationServiceEnvironmentsClient) listByResourceGroupCreateReq
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *IntegrationServiceEnvironmentsClient) listByResourceGroupHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentsListByResourceGroupResponse, error) {
-	result := IntegrationServiceEnvironmentsListByResourceGroupResponse{RawResponse: resp}
+func (client *IntegrationServiceEnvironmentsClient) listByResourceGroupHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentsClientListByResourceGroupResponse, error) {
+	result := IntegrationServiceEnvironmentsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationServiceEnvironmentListResult); err != nil {
-		return IntegrationServiceEnvironmentsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationServiceEnvironmentsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *IntegrationServiceEnvironmentsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListBySubscription - Gets a list of integration service environments by subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationServiceEnvironmentsClient) ListBySubscription(options *IntegrationServiceEnvironmentsListBySubscriptionOptions) *IntegrationServiceEnvironmentsListBySubscriptionPager {
-	return &IntegrationServiceEnvironmentsListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+// NewListBySubscriptionPager - Gets a list of integration service environments by subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
+// options - IntegrationServiceEnvironmentsClientListBySubscriptionOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.ListBySubscription
+// method.
+func (client *IntegrationServiceEnvironmentsClient) NewListBySubscriptionPager(options *IntegrationServiceEnvironmentsClientListBySubscriptionOptions) *runtime.Pager[IntegrationServiceEnvironmentsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[IntegrationServiceEnvironmentsClientListBySubscriptionResponse]{
+		More: func(page IntegrationServiceEnvironmentsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp IntegrationServiceEnvironmentsListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.IntegrationServiceEnvironmentListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *IntegrationServiceEnvironmentsClientListBySubscriptionResponse) (IntegrationServiceEnvironmentsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return IntegrationServiceEnvironmentsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return IntegrationServiceEnvironmentsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return IntegrationServiceEnvironmentsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *IntegrationServiceEnvironmentsClient) listBySubscriptionCreateRequest(ctx context.Context, options *IntegrationServiceEnvironmentsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *IntegrationServiceEnvironmentsClient) listBySubscriptionCreateRequest(ctx context.Context, options *IntegrationServiceEnvironmentsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Logic/integrationServiceEnvironments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -332,51 +342,43 @@ func (client *IntegrationServiceEnvironmentsClient) listBySubscriptionCreateRequ
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *IntegrationServiceEnvironmentsClient) listBySubscriptionHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentsListBySubscriptionResponse, error) {
-	result := IntegrationServiceEnvironmentsListBySubscriptionResponse{RawResponse: resp}
+func (client *IntegrationServiceEnvironmentsClient) listBySubscriptionHandleResponse(resp *http.Response) (IntegrationServiceEnvironmentsClientListBySubscriptionResponse, error) {
+	result := IntegrationServiceEnvironmentsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationServiceEnvironmentListResult); err != nil {
-		return IntegrationServiceEnvironmentsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationServiceEnvironmentsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *IntegrationServiceEnvironmentsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Restart - Restarts an integration service environment.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationServiceEnvironmentsClient) Restart(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentsRestartOptions) (IntegrationServiceEnvironmentsRestartResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
+// resourceGroup - The resource group.
+// integrationServiceEnvironmentName - The integration service environment name.
+// options - IntegrationServiceEnvironmentsClientRestartOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.Restart
+// method.
+func (client *IntegrationServiceEnvironmentsClient) Restart(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentsClientRestartOptions) (IntegrationServiceEnvironmentsClientRestartResponse, error) {
 	req, err := client.restartCreateRequest(ctx, resourceGroup, integrationServiceEnvironmentName, options)
 	if err != nil {
-		return IntegrationServiceEnvironmentsRestartResponse{}, err
+		return IntegrationServiceEnvironmentsClientRestartResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationServiceEnvironmentsRestartResponse{}, err
+		return IntegrationServiceEnvironmentsClientRestartResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationServiceEnvironmentsRestartResponse{}, client.restartHandleError(resp)
+		return IntegrationServiceEnvironmentsClientRestartResponse{}, runtime.NewResponseError(resp)
 	}
-	return IntegrationServiceEnvironmentsRestartResponse{RawResponse: resp}, nil
+	return IntegrationServiceEnvironmentsClientRestartResponse{}, nil
 }
 
 // restartCreateRequest creates the Restart request.
-func (client *IntegrationServiceEnvironmentsClient) restartCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentsRestartOptions) (*policy.Request, error) {
+func (client *IntegrationServiceEnvironmentsClient) restartCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentsClientRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}/restart"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -390,53 +392,41 @@ func (client *IntegrationServiceEnvironmentsClient) restartCreateRequest(ctx con
 		return nil, errors.New("parameter integrationServiceEnvironmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationServiceEnvironmentName}", url.PathEscape(integrationServiceEnvironmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// restartHandleError handles the Restart error response.
-func (client *IntegrationServiceEnvironmentsClient) restartHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Updates an integration service environment.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationServiceEnvironmentsClient) BeginUpdate(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsBeginUpdateOptions) (IntegrationServiceEnvironmentsUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment, options)
-	if err != nil {
-		return IntegrationServiceEnvironmentsUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
+// resourceGroup - The resource group.
+// integrationServiceEnvironmentName - The integration service environment name.
+// integrationServiceEnvironment - The integration service environment.
+// options - IntegrationServiceEnvironmentsClientBeginUpdateOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.BeginUpdate
+// method.
+func (client *IntegrationServiceEnvironmentsClient) BeginUpdate(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsClientBeginUpdateOptions) (*runtime.Poller[IntegrationServiceEnvironmentsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[IntegrationServiceEnvironmentsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[IntegrationServiceEnvironmentsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := IntegrationServiceEnvironmentsUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("IntegrationServiceEnvironmentsClient.Update", "", resp, client.pl, client.updateHandleError)
-	if err != nil {
-		return IntegrationServiceEnvironmentsUpdatePollerResponse{}, err
-	}
-	result.Poller = &IntegrationServiceEnvironmentsUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates an integration service environment.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationServiceEnvironmentsClient) update(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
+func (client *IntegrationServiceEnvironmentsClient) update(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroup, integrationServiceEnvironmentName, integrationServiceEnvironment, options)
 	if err != nil {
 		return nil, err
@@ -446,13 +436,13 @@ func (client *IntegrationServiceEnvironmentsClient) update(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *IntegrationServiceEnvironmentsClient) updateCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsBeginUpdateOptions) (*policy.Request, error) {
+func (client *IntegrationServiceEnvironmentsClient) updateCreateRequest(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, integrationServiceEnvironment IntegrationServiceEnvironment, options *IntegrationServiceEnvironmentsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -466,26 +456,13 @@ func (client *IntegrationServiceEnvironmentsClient) updateCreateRequest(ctx cont
 		return nil, errors.New("parameter integrationServiceEnvironmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationServiceEnvironmentName}", url.PathEscape(integrationServiceEnvironmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, integrationServiceEnvironment)
-}
-
-// updateHandleError handles the Update error response.
-func (client *IntegrationServiceEnvironmentsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

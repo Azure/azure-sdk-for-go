@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,42 +26,61 @@ import (
 // CacheClient contains the methods for the Cache group.
 // Don't use this type directly, use NewCacheClient() instead.
 type CacheClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCacheClient creates a new instance of CacheClient with the specified values.
-func NewCacheClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CacheClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewCacheClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CacheClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &CacheClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &CacheClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates an External Cache to be used in Api Management instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CacheClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, parameters CacheContract, options *CacheCreateOrUpdateOptions) (CacheCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// cacheID - Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region identifier).
+// parameters - Create or Update parameters.
+// options - CacheClientCreateOrUpdateOptions contains the optional parameters for the CacheClient.CreateOrUpdate method.
+func (client *CacheClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, parameters CacheContract, options *CacheClientCreateOrUpdateOptions) (CacheClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, cacheID, parameters, options)
 	if err != nil {
-		return CacheCreateOrUpdateResponse{}, err
+		return CacheClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CacheCreateOrUpdateResponse{}, err
+		return CacheClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return CacheCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return CacheClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CacheClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, parameters CacheContract, options *CacheCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *CacheClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, parameters CacheContract, options *CacheClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/caches/{cacheId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -79,7 +98,7 @@ func (client *CacheClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -87,56 +106,50 @@ func (client *CacheClient) createOrUpdateCreateRequest(ctx context.Context, reso
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *CacheClient) createOrUpdateHandleResponse(resp *http.Response) (CacheCreateOrUpdateResponse, error) {
-	result := CacheCreateOrUpdateResponse{RawResponse: resp}
+func (client *CacheClient) createOrUpdateHandleResponse(resp *http.Response) (CacheClientCreateOrUpdateResponse, error) {
+	result := CacheClientCreateOrUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CacheContract); err != nil {
-		return CacheCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return CacheClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *CacheClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes specific Cache.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CacheClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, ifMatch string, options *CacheDeleteOptions) (CacheDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// cacheID - Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region identifier).
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// options - CacheClientDeleteOptions contains the optional parameters for the CacheClient.Delete method.
+func (client *CacheClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, ifMatch string, options *CacheClientDeleteOptions) (CacheClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, cacheID, ifMatch, options)
 	if err != nil {
-		return CacheDeleteResponse{}, err
+		return CacheClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CacheDeleteResponse{}, err
+		return CacheClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return CacheDeleteResponse{}, client.deleteHandleError(resp)
+		return CacheClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return CacheDeleteResponse{RawResponse: resp}, nil
+	return CacheClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CacheClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, ifMatch string, options *CacheDeleteOptions) (*policy.Request, error) {
+func (client *CacheClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, ifMatch string, options *CacheClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/caches/{cacheId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -154,50 +167,42 @@ func (client *CacheClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *CacheClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the details of the Cache specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CacheClient) Get(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, options *CacheGetOptions) (CacheGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// cacheID - Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region identifier).
+// options - CacheClientGetOptions contains the optional parameters for the CacheClient.Get method.
+func (client *CacheClient) Get(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, options *CacheClientGetOptions) (CacheClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, cacheID, options)
 	if err != nil {
-		return CacheGetResponse{}, err
+		return CacheClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CacheGetResponse{}, err
+		return CacheClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CacheGetResponse{}, client.getHandleError(resp)
+		return CacheClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CacheClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, options *CacheGetOptions) (*policy.Request, error) {
+func (client *CacheClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, options *CacheClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/caches/{cacheId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -215,58 +220,52 @@ func (client *CacheClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *CacheClient) getHandleResponse(resp *http.Response) (CacheGetResponse, error) {
-	result := CacheGetResponse{RawResponse: resp}
+func (client *CacheClient) getHandleResponse(resp *http.Response) (CacheClientGetResponse, error) {
+	result := CacheClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CacheContract); err != nil {
-		return CacheGetResponse{}, runtime.NewResponseError(err, resp)
+		return CacheClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *CacheClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetEntityTag - Gets the entity state (Etag) version of the Cache specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CacheClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, options *CacheGetEntityTagOptions) (CacheGetEntityTagResponse, error) {
+// Generated from API version 2021-08-01
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// cacheID - Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region identifier).
+// options - CacheClientGetEntityTagOptions contains the optional parameters for the CacheClient.GetEntityTag method.
+func (client *CacheClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, options *CacheClientGetEntityTagOptions) (CacheClientGetEntityTagResponse, error) {
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, cacheID, options)
 	if err != nil {
-		return CacheGetEntityTagResponse{}, err
+		return CacheClientGetEntityTagResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CacheGetEntityTagResponse{}, err
+		return CacheClientGetEntityTagResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return CacheClientGetEntityTagResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *CacheClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, options *CacheGetEntityTagOptions) (*policy.Request, error) {
+func (client *CacheClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, options *CacheClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/caches/{cacheId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -284,45 +283,63 @@ func (client *CacheClient) getEntityTagCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *CacheClient) getEntityTagHandleResponse(resp *http.Response) (CacheGetEntityTagResponse, error) {
-	result := CacheGetEntityTagResponse{RawResponse: resp}
+func (client *CacheClient) getEntityTagHandleResponse(resp *http.Response) (CacheClientGetEntityTagResponse, error) {
+	result := CacheClientGetEntityTagResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
-	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
-// ListByService - Lists a collection of all external Caches in the specified service instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CacheClient) ListByService(resourceGroupName string, serviceName string, options *CacheListByServiceOptions) *CacheListByServicePager {
-	return &CacheListByServicePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+// NewListByServicePager - Lists a collection of all external Caches in the specified service instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// options - CacheClientListByServiceOptions contains the optional parameters for the CacheClient.ListByService method.
+func (client *CacheClient) NewListByServicePager(resourceGroupName string, serviceName string, options *CacheClientListByServiceOptions) *runtime.Pager[CacheClientListByServiceResponse] {
+	return runtime.NewPager(runtime.PagingHandler[CacheClientListByServiceResponse]{
+		More: func(page CacheClientListByServiceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CacheListByServiceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CacheCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *CacheClientListByServiceResponse) (CacheClientListByServiceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CacheClientListByServiceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CacheClientListByServiceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CacheClientListByServiceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServiceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *CacheClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *CacheListByServiceOptions) (*policy.Request, error) {
+func (client *CacheClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *CacheClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/caches"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -336,7 +353,7 @@ func (client *CacheClient) listByServiceCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -349,51 +366,46 @@ func (client *CacheClient) listByServiceCreateRequest(ctx context.Context, resou
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *CacheClient) listByServiceHandleResponse(resp *http.Response) (CacheListByServiceResponse, error) {
-	result := CacheListByServiceResponse{RawResponse: resp}
+func (client *CacheClient) listByServiceHandleResponse(resp *http.Response) (CacheClientListByServiceResponse, error) {
+	result := CacheClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CacheCollection); err != nil {
-		return CacheListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return CacheClientListByServiceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByServiceHandleError handles the ListByService error response.
-func (client *CacheClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates the details of the cache specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CacheClient) Update(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, ifMatch string, parameters CacheUpdateParameters, options *CacheUpdateOptions) (CacheUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// cacheID - Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region identifier).
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// parameters - Update parameters.
+// options - CacheClientUpdateOptions contains the optional parameters for the CacheClient.Update method.
+func (client *CacheClient) Update(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, ifMatch string, parameters CacheUpdateParameters, options *CacheClientUpdateOptions) (CacheClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, cacheID, ifMatch, parameters, options)
 	if err != nil {
-		return CacheUpdateResponse{}, err
+		return CacheClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CacheUpdateResponse{}, err
+		return CacheClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CacheUpdateResponse{}, client.updateHandleError(resp)
+		return CacheClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *CacheClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, ifMatch string, parameters CacheUpdateParameters, options *CacheUpdateOptions) (*policy.Request, error) {
+func (client *CacheClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, ifMatch string, parameters CacheUpdateParameters, options *CacheClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/caches/{cacheId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -411,39 +423,26 @@ func (client *CacheClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *CacheClient) updateHandleResponse(resp *http.Response) (CacheUpdateResponse, error) {
-	result := CacheUpdateResponse{RawResponse: resp}
+func (client *CacheClient) updateHandleResponse(resp *http.Response) (CacheClientUpdateResponse, error) {
+	result := CacheClientUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CacheContract); err != nil {
-		return CacheUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return CacheClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *CacheClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

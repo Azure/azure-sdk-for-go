@@ -12,11 +12,18 @@ package web
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/web/mgmt/2021-02-01/web"
+	original "github.com/Azure/azure-sdk-for-go/services/web/mgmt/2021-03-01/web"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ActiveRevisionsMode = original.ActiveRevisionsMode
+
+const (
+	ActiveRevisionsModeMultiple ActiveRevisionsMode = original.ActiveRevisionsModeMultiple
+	ActiveRevisionsModeSingle   ActiveRevisionsMode = original.ActiveRevisionsModeSingle
 )
 
 type AppServicePlanRestrictions = original.AppServicePlanRestrictions
@@ -225,6 +232,15 @@ const (
 	ConnectionStringTypeSQLServer       ConnectionStringType = original.ConnectionStringTypeSQLServer
 )
 
+type ContainerAppProvisioningState = original.ContainerAppProvisioningState
+
+const (
+	ContainerAppProvisioningStateCanceled   ContainerAppProvisioningState = original.ContainerAppProvisioningStateCanceled
+	ContainerAppProvisioningStateFailed     ContainerAppProvisioningState = original.ContainerAppProvisioningStateFailed
+	ContainerAppProvisioningStateInProgress ContainerAppProvisioningState = original.ContainerAppProvisioningStateInProgress
+	ContainerAppProvisioningStateSucceeded  ContainerAppProvisioningState = original.ContainerAppProvisioningStateSucceeded
+)
+
 type ContinuousWebJobStatus = original.ContinuousWebJobStatus
 
 const (
@@ -325,6 +341,15 @@ const (
 	DomainTypeSoftDeleted DomainType = original.DomainTypeSoftDeleted
 )
 
+type EnterpriseGradeCdnStatus = original.EnterpriseGradeCdnStatus
+
+const (
+	EnterpriseGradeCdnStatusDisabled  EnterpriseGradeCdnStatus = original.EnterpriseGradeCdnStatusDisabled
+	EnterpriseGradeCdnStatusDisabling EnterpriseGradeCdnStatus = original.EnterpriseGradeCdnStatusDisabling
+	EnterpriseGradeCdnStatusEnabled   EnterpriseGradeCdnStatus = original.EnterpriseGradeCdnStatusEnabled
+	EnterpriseGradeCdnStatusEnabling  EnterpriseGradeCdnStatus = original.EnterpriseGradeCdnStatusEnabling
+)
+
 type ForwardProxyConvention = original.ForwardProxyConvention
 
 const (
@@ -391,6 +416,14 @@ type InAvailabilityReasonType = original.InAvailabilityReasonType
 const (
 	InAvailabilityReasonTypeAlreadyExists InAvailabilityReasonType = original.InAvailabilityReasonTypeAlreadyExists
 	InAvailabilityReasonTypeInvalid       InAvailabilityReasonType = original.InAvailabilityReasonTypeInvalid
+)
+
+type IngressTransportMethod = original.IngressTransportMethod
+
+const (
+	IngressTransportMethodAuto  IngressTransportMethod = original.IngressTransportMethodAuto
+	IngressTransportMethodHTTP  IngressTransportMethod = original.IngressTransportMethodHTTP
+	IngressTransportMethodHTTP2 IngressTransportMethod = original.IngressTransportMethodHTTP2
 )
 
 type InsightStatus = original.InsightStatus
@@ -623,6 +656,24 @@ const (
 	ResourceScopeTypeWebSite      ResourceScopeType = original.ResourceScopeTypeWebSite
 )
 
+type RevisionHealthState = original.RevisionHealthState
+
+const (
+	RevisionHealthStateHealthy   RevisionHealthState = original.RevisionHealthStateHealthy
+	RevisionHealthStateNone      RevisionHealthState = original.RevisionHealthStateNone
+	RevisionHealthStateUnhealthy RevisionHealthState = original.RevisionHealthStateUnhealthy
+)
+
+type RevisionProvisioningState = original.RevisionProvisioningState
+
+const (
+	RevisionProvisioningStateDeprovisioned  RevisionProvisioningState = original.RevisionProvisioningStateDeprovisioned
+	RevisionProvisioningStateDeprovisioning RevisionProvisioningState = original.RevisionProvisioningStateDeprovisioning
+	RevisionProvisioningStateFailed         RevisionProvisioningState = original.RevisionProvisioningStateFailed
+	RevisionProvisioningStateProvisioned    RevisionProvisioningState = original.RevisionProvisioningStateProvisioned
+	RevisionProvisioningStateProvisioning   RevisionProvisioningState = original.RevisionProvisioningStateProvisioning
+)
+
 type RouteType = original.RouteType
 
 const (
@@ -831,7 +882,6 @@ type AddressResponse = original.AddressResponse
 type AddressResponseProperties = original.AddressResponseProperties
 type AllowedAudiencesValidation = original.AllowedAudiencesValidation
 type AllowedPrincipals = original.AllowedPrincipals
-type AllowedPrincipalsProperties = original.AllowedPrincipalsProperties
 type AnalysisData = original.AnalysisData
 type AnalysisDefinition = original.AnalysisDefinition
 type AnalysisDefinitionProperties = original.AnalysisDefinitionProperties
@@ -846,7 +896,6 @@ type AppLogsConfiguration = original.AppLogsConfiguration
 type AppMajorVersion = original.AppMajorVersion
 type AppMinorVersion = original.AppMinorVersion
 type AppRegistration = original.AppRegistration
-type AppRegistrationProperties = original.AppRegistrationProperties
 type AppRuntimeSettings = original.AppRuntimeSettings
 type AppRuntimes = original.AppRuntimes
 type AppServiceCertificate = original.AppServiceCertificate
@@ -899,7 +948,6 @@ type AppStackCollectionIterator = original.AppStackCollectionIterator
 type AppStackCollectionPage = original.AppStackCollectionPage
 type AppStackProperties = original.AppStackProperties
 type Apple = original.Apple
-type AppleProperties = original.AppleProperties
 type AppleRegistration = original.AppleRegistration
 type ApplicationLogsConfig = original.ApplicationLogsConfig
 type ApplicationStack = original.ApplicationStack
@@ -956,15 +1004,11 @@ type AutoHealRules = original.AutoHealRules
 type AutoHealTriggers = original.AutoHealTriggers
 type AzureActiveDirectory = original.AzureActiveDirectory
 type AzureActiveDirectoryLogin = original.AzureActiveDirectoryLogin
-type AzureActiveDirectoryLoginProperties = original.AzureActiveDirectoryLoginProperties
 type AzureActiveDirectoryRegistration = original.AzureActiveDirectoryRegistration
-type AzureActiveDirectoryRegistrationProperties = original.AzureActiveDirectoryRegistrationProperties
 type AzureActiveDirectoryValidation = original.AzureActiveDirectoryValidation
-type AzureActiveDirectoryValidationProperties = original.AzureActiveDirectoryValidationProperties
 type AzureBlobStorageApplicationLogsConfig = original.AzureBlobStorageApplicationLogsConfig
 type AzureBlobStorageHTTPLogsConfig = original.AzureBlobStorageHTTPLogsConfig
 type AzureStaticWebApps = original.AzureStaticWebApps
-type AzureStaticWebAppsProperties = original.AzureStaticWebAppsProperties
 type AzureStaticWebAppsRegistration = original.AzureStaticWebAppsRegistration
 type AzureStorageInfoValue = original.AzureStorageInfoValue
 type AzureStoragePropertyDictionaryResource = original.AzureStoragePropertyDictionaryResource
@@ -984,7 +1028,6 @@ type BillingMeterCollectionIterator = original.BillingMeterCollectionIterator
 type BillingMeterCollectionPage = original.BillingMeterCollectionPage
 type BillingMeterProperties = original.BillingMeterProperties
 type BlobStorageTokenStore = original.BlobStorageTokenStore
-type BlobStorageTokenStoreProperties = original.BlobStorageTokenStoreProperties
 type Capability = original.Capability
 type Certificate = original.Certificate
 type CertificateCollection = original.CertificateCollection
@@ -1004,15 +1047,29 @@ type CertificateRegistrationProviderClient = original.CertificateRegistrationPro
 type CertificatesClient = original.CertificatesClient
 type ClientRegistration = original.ClientRegistration
 type CloningInfo = original.CloningInfo
+type Configuration = original.Configuration
 type ConnStringInfo = original.ConnStringInfo
 type ConnStringValueTypePair = original.ConnStringValueTypePair
 type ConnectionStringDictionary = original.ConnectionStringDictionary
 type Contact = original.Contact
+type Container = original.Container
+type ContainerApp = original.ContainerApp
+type ContainerAppCollection = original.ContainerAppCollection
+type ContainerAppCollectionIterator = original.ContainerAppCollectionIterator
+type ContainerAppCollectionPage = original.ContainerAppCollectionPage
+type ContainerAppProperties = original.ContainerAppProperties
+type ContainerAppSecret = original.ContainerAppSecret
+type ContainerAppsClient = original.ContainerAppsClient
+type ContainerAppsConfiguration = original.ContainerAppsConfiguration
+type ContainerAppsCreateOrUpdateFuture = original.ContainerAppsCreateOrUpdateFuture
+type ContainerAppsDeleteFuture = original.ContainerAppsDeleteFuture
+type ContainerAppsRevisionsClient = original.ContainerAppsRevisionsClient
 type ContainerCPUStatistics = original.ContainerCPUStatistics
 type ContainerCPUUsage = original.ContainerCPUUsage
 type ContainerInfo = original.ContainerInfo
 type ContainerMemoryStatistics = original.ContainerMemoryStatistics
 type ContainerNetworkInterfaceStatistics = original.ContainerNetworkInterfaceStatistics
+type ContainerResources = original.ContainerResources
 type ContainerThrottlingData = original.ContainerThrottlingData
 type ContinuousWebJob = original.ContinuousWebJob
 type ContinuousWebJobCollection = original.ContinuousWebJobCollection
@@ -1038,8 +1095,16 @@ type CsmUsageQuotaCollectionIterator = original.CsmUsageQuotaCollectionIterator
 type CsmUsageQuotaCollectionPage = original.CsmUsageQuotaCollectionPage
 type CustomHostnameAnalysisResult = original.CustomHostnameAnalysisResult
 type CustomHostnameAnalysisResultProperties = original.CustomHostnameAnalysisResultProperties
+type CustomHostnameSites = original.CustomHostnameSites
+type CustomHostnameSitesCollection = original.CustomHostnameSitesCollection
+type CustomHostnameSitesCollectionIterator = original.CustomHostnameSitesCollectionIterator
+type CustomHostnameSitesCollectionPage = original.CustomHostnameSitesCollectionPage
+type CustomHostnameSitesProperties = original.CustomHostnameSitesProperties
 type CustomOpenIDConnectProvider = original.CustomOpenIDConnectProvider
-type CustomOpenIDConnectProviderProperties = original.CustomOpenIDConnectProviderProperties
+type CustomScaleRule = original.CustomScaleRule
+type Dapr = original.Dapr
+type DaprComponent = original.DaprComponent
+type DaprMetadata = original.DaprMetadata
 type DataProviderMetadata = original.DataProviderMetadata
 type DataSource = original.DataSource
 type DataTableResponseColumn = original.DataTableResponseColumn
@@ -1114,6 +1179,7 @@ type DomainsCreateOrUpdateFuture = original.DomainsCreateOrUpdateFuture
 type EnabledConfig = original.EnabledConfig
 type EndpointDependency = original.EndpointDependency
 type EndpointDetail = original.EndpointDetail
+type EnvironmentVar = original.EnvironmentVar
 type ErrorEntity = original.ErrorEntity
 type Experiments = original.Experiments
 type ExtendedLocation = original.ExtendedLocation
@@ -1148,13 +1214,12 @@ type GitHubActionCodeConfiguration = original.GitHubActionCodeConfiguration
 type GitHubActionConfiguration = original.GitHubActionConfiguration
 type GitHubActionContainerConfiguration = original.GitHubActionContainerConfiguration
 type GitHubActionWebAppStackSettings = original.GitHubActionWebAppStackSettings
-type GitHubProperties = original.GitHubProperties
 type GlobalClient = original.GlobalClient
 type GlobalCsmSkuDescription = original.GlobalCsmSkuDescription
 type GlobalValidation = original.GlobalValidation
 type Google = original.Google
-type GoogleProperties = original.GoogleProperties
 type HTTPLogsConfig = original.HTTPLogsConfig
+type HTTPScaleRule = original.HTTPScaleRule
 type HTTPSettings = original.HTTPSettings
 type HTTPSettingsRoutes = original.HTTPSettingsRoutes
 type HandlerMapping = original.HandlerMapping
@@ -1189,6 +1254,7 @@ type InboundEnvironmentEndpoint = original.InboundEnvironmentEndpoint
 type InboundEnvironmentEndpointCollection = original.InboundEnvironmentEndpointCollection
 type InboundEnvironmentEndpointCollectionIterator = original.InboundEnvironmentEndpointCollectionIterator
 type InboundEnvironmentEndpointCollectionPage = original.InboundEnvironmentEndpointCollectionPage
+type Ingress = original.Ingress
 type Job = original.Job
 type JobCollection = original.JobCollection
 type JobCollectionIterator = original.JobCollectionIterator
@@ -1209,7 +1275,6 @@ type KubeEnvironmentsClient = original.KubeEnvironmentsClient
 type KubeEnvironmentsCreateOrUpdateFuture = original.KubeEnvironmentsCreateOrUpdateFuture
 type KubeEnvironmentsDeleteFuture = original.KubeEnvironmentsDeleteFuture
 type LegacyMicrosoftAccount = original.LegacyMicrosoftAccount
-type LegacyMicrosoftAccountProperties = original.LegacyMicrosoftAccountProperties
 type LinuxJavaContainerSettings = original.LinuxJavaContainerSettings
 type ListCapability = original.ListCapability
 type ListCertificateEmail = original.ListCertificateEmail
@@ -1315,6 +1380,7 @@ type PushSettings = original.PushSettings
 type PushSettingsProperties = original.PushSettingsProperties
 type QueryUtterancesResult = original.QueryUtterancesResult
 type QueryUtterancesResults = original.QueryUtterancesResults
+type QueueScaleRule = original.QueueScaleRule
 type RampUpRule = original.RampUpRule
 type ReadCloser = original.ReadCloser
 type Recommendation = original.Recommendation
@@ -1325,6 +1391,7 @@ type RecommendationProperties = original.RecommendationProperties
 type RecommendationRule = original.RecommendationRule
 type RecommendationRuleProperties = original.RecommendationRuleProperties
 type RecommendationsClient = original.RecommendationsClient
+type RegistryCredentials = original.RegistryCredentials
 type ReissueCertificateOrderRequest = original.ReissueCertificateOrderRequest
 type ReissueCertificateOrderRequestProperties = original.ReissueCertificateOrderRequestProperties
 type RelayServiceConnectionEntity = original.RelayServiceConnectionEntity
@@ -1359,7 +1426,17 @@ type ResponseMessageEnvelopeRemotePrivateEndpointConnection = original.ResponseM
 type ResponseMetaData = original.ResponseMetaData
 type RestoreRequest = original.RestoreRequest
 type RestoreRequestProperties = original.RestoreRequestProperties
+type Revision = original.Revision
+type RevisionCollection = original.RevisionCollection
+type RevisionCollectionIterator = original.RevisionCollectionIterator
+type RevisionCollectionPage = original.RevisionCollectionPage
+type RevisionProperties = original.RevisionProperties
 type SampleUtterance = original.SampleUtterance
+type Scale = original.Scale
+type ScaleRule = original.ScaleRule
+type ScaleRuleAuth = original.ScaleRuleAuth
+type Secret = original.Secret
+type SecretsCollection = original.SecretsCollection
 type ServiceSpecification = original.ServiceSpecification
 type SetObject = original.SetObject
 type Site = original.Site
@@ -1512,6 +1589,7 @@ type StringList = original.StringList
 type SupportTopic = original.SupportTopic
 type SwiftVirtualNetwork = original.SwiftVirtualNetwork
 type SwiftVirtualNetworkProperties = original.SwiftVirtualNetworkProperties
+type Template = original.Template
 type TldLegalAgreement = original.TldLegalAgreement
 type TldLegalAgreementCollection = original.TldLegalAgreementCollection
 type TldLegalAgreementCollectionIterator = original.TldLegalAgreementCollectionIterator
@@ -1524,6 +1602,7 @@ type TopLevelDomainCollectionIterator = original.TopLevelDomainCollectionIterato
 type TopLevelDomainCollectionPage = original.TopLevelDomainCollectionPage
 type TopLevelDomainProperties = original.TopLevelDomainProperties
 type TopLevelDomainsClient = original.TopLevelDomainsClient
+type TrafficWeight = original.TrafficWeight
 type TriggeredJobHistory = original.TriggeredJobHistory
 type TriggeredJobHistoryCollection = original.TriggeredJobHistoryCollection
 type TriggeredJobHistoryCollectionIterator = original.TriggeredJobHistoryCollectionIterator
@@ -1536,7 +1615,6 @@ type TriggeredWebJobCollectionIterator = original.TriggeredWebJobCollectionItera
 type TriggeredWebJobCollectionPage = original.TriggeredWebJobCollectionPage
 type TriggeredWebJobProperties = original.TriggeredWebJobProperties
 type Twitter = original.Twitter
-type TwitterProperties = original.TwitterProperties
 type TwitterRegistration = original.TwitterRegistration
 type Usage = original.Usage
 type UsageCollection = original.UsageCollection
@@ -1690,6 +1768,24 @@ func NewCertificatesClient(subscriptionID string) CertificatesClient {
 func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
 	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewContainerAppCollectionIterator(page ContainerAppCollectionPage) ContainerAppCollectionIterator {
+	return original.NewContainerAppCollectionIterator(page)
+}
+func NewContainerAppCollectionPage(cur ContainerAppCollection, getNextPage func(context.Context, ContainerAppCollection) (ContainerAppCollection, error)) ContainerAppCollectionPage {
+	return original.NewContainerAppCollectionPage(cur, getNextPage)
+}
+func NewContainerAppsClient(subscriptionID string) ContainerAppsClient {
+	return original.NewContainerAppsClient(subscriptionID)
+}
+func NewContainerAppsClientWithBaseURI(baseURI string, subscriptionID string) ContainerAppsClient {
+	return original.NewContainerAppsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewContainerAppsRevisionsClient(subscriptionID string) ContainerAppsRevisionsClient {
+	return original.NewContainerAppsRevisionsClient(subscriptionID)
+}
+func NewContainerAppsRevisionsClientWithBaseURI(baseURI string, subscriptionID string) ContainerAppsRevisionsClient {
+	return original.NewContainerAppsRevisionsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewContinuousWebJobCollectionIterator(page ContinuousWebJobCollectionPage) ContinuousWebJobCollectionIterator {
 	return original.NewContinuousWebJobCollectionIterator(page)
 }
@@ -1707,6 +1803,12 @@ func NewCsmUsageQuotaCollectionIterator(page CsmUsageQuotaCollectionPage) CsmUsa
 }
 func NewCsmUsageQuotaCollectionPage(cur CsmUsageQuotaCollection, getNextPage func(context.Context, CsmUsageQuotaCollection) (CsmUsageQuotaCollection, error)) CsmUsageQuotaCollectionPage {
 	return original.NewCsmUsageQuotaCollectionPage(cur, getNextPage)
+}
+func NewCustomHostnameSitesCollectionIterator(page CustomHostnameSitesCollectionPage) CustomHostnameSitesCollectionIterator {
+	return original.NewCustomHostnameSitesCollectionIterator(page)
+}
+func NewCustomHostnameSitesCollectionPage(cur CustomHostnameSitesCollection, getNextPage func(context.Context, CustomHostnameSitesCollection) (CustomHostnameSitesCollection, error)) CustomHostnameSitesCollectionPage {
+	return original.NewCustomHostnameSitesCollectionPage(cur, getNextPage)
 }
 func NewDeletedWebAppCollectionIterator(page DeletedWebAppCollectionPage) DeletedWebAppCollectionIterator {
 	return original.NewDeletedWebAppCollectionIterator(page)
@@ -1948,6 +2050,12 @@ func NewResourceMetricDefinitionCollectionIterator(page ResourceMetricDefinition
 func NewResourceMetricDefinitionCollectionPage(cur ResourceMetricDefinitionCollection, getNextPage func(context.Context, ResourceMetricDefinitionCollection) (ResourceMetricDefinitionCollection, error)) ResourceMetricDefinitionCollectionPage {
 	return original.NewResourceMetricDefinitionCollectionPage(cur, getNextPage)
 }
+func NewRevisionCollectionIterator(page RevisionCollectionPage) RevisionCollectionIterator {
+	return original.NewRevisionCollectionIterator(page)
+}
+func NewRevisionCollectionPage(cur RevisionCollection, getNextPage func(context.Context, RevisionCollection) (RevisionCollection, error)) RevisionCollectionPage {
+	return original.NewRevisionCollectionPage(cur, getNextPage)
+}
 func NewSiteConfigResourceCollectionIterator(page SiteConfigResourceCollectionPage) SiteConfigResourceCollectionIterator {
 	return original.NewSiteConfigResourceCollectionIterator(page)
 }
@@ -2083,6 +2191,9 @@ func NewWorkerPoolCollectionIterator(page WorkerPoolCollectionPage) WorkerPoolCo
 func NewWorkerPoolCollectionPage(cur WorkerPoolCollection, getNextPage func(context.Context, WorkerPoolCollection) (WorkerPoolCollection, error)) WorkerPoolCollectionPage {
 	return original.NewWorkerPoolCollectionPage(cur, getNextPage)
 }
+func PossibleActiveRevisionsModeValues() []ActiveRevisionsMode {
+	return original.PossibleActiveRevisionsModeValues()
+}
 func PossibleAppServicePlanRestrictionsValues() []AppServicePlanRestrictions {
 	return original.PossibleAppServicePlanRestrictionsValues()
 }
@@ -2143,6 +2254,9 @@ func PossibleConfigReferenceSourceValues() []ConfigReferenceSource {
 func PossibleConnectionStringTypeValues() []ConnectionStringType {
 	return original.PossibleConnectionStringTypeValues()
 }
+func PossibleContainerAppProvisioningStateValues() []ContainerAppProvisioningState {
+	return original.PossibleContainerAppProvisioningStateValues()
+}
 func PossibleContinuousWebJobStatusValues() []ContinuousWebJobStatus {
 	return original.PossibleContinuousWebJobStatusValues()
 }
@@ -2173,6 +2287,9 @@ func PossibleDomainStatusValues() []DomainStatus {
 func PossibleDomainTypeValues() []DomainType {
 	return original.PossibleDomainTypeValues()
 }
+func PossibleEnterpriseGradeCdnStatusValues() []EnterpriseGradeCdnStatus {
+	return original.PossibleEnterpriseGradeCdnStatusValues()
+}
 func PossibleForwardProxyConventionValues() []ForwardProxyConvention {
 	return original.PossibleForwardProxyConventionValues()
 }
@@ -2199,6 +2316,9 @@ func PossibleIPFilterTagValues() []IPFilterTag {
 }
 func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
 	return original.PossibleInAvailabilityReasonTypeValues()
+}
+func PossibleIngressTransportMethodValues() []IngressTransportMethod {
+	return original.PossibleIngressTransportMethodValues()
 }
 func PossibleInsightStatusValues() []InsightStatus {
 	return original.PossibleInsightStatusValues()
@@ -2262,6 +2382,12 @@ func PossibleResolveStatusValues() []ResolveStatus {
 }
 func PossibleResourceScopeTypeValues() []ResourceScopeType {
 	return original.PossibleResourceScopeTypeValues()
+}
+func PossibleRevisionHealthStateValues() []RevisionHealthState {
+	return original.PossibleRevisionHealthStateValues()
+}
+func PossibleRevisionProvisioningStateValues() []RevisionProvisioningState {
+	return original.PossibleRevisionProvisioningStateValues()
 }
 func PossibleRouteTypeValues() []RouteType {
 	return original.PossibleRouteTypeValues()

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -16,78 +16,98 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync"
 )
 
-// x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/SyncGroups_ListByStorageSyncService.json
-func ExampleSyncGroupsClient_ListByStorageSyncService() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/SyncGroups_ListByStorageSyncService.json
+func ExampleSyncGroupsClient_NewListByStorageSyncServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armstoragesync.NewSyncGroupsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByStorageSyncService(ctx,
-		"<resource-group-name>",
-		"<storage-sync-service-name>",
-		nil)
+	client, err := armstoragesync.NewSyncGroupsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByStorageSyncServicePager("SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
 }
 
-// x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/SyncGroups_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/SyncGroups_Create.json
 func ExampleSyncGroupsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armstoragesync.NewSyncGroupsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewSyncGroupsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<storage-sync-service-name>",
-		"<sync-group-name>",
+		"SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
+		"SampleSyncGroup_1",
 		armstoragesync.SyncGroupCreateParameters{
 			Properties: map[string]interface{}{},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("SyncGroup.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/SyncGroups_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/SyncGroups_Get.json
 func ExampleSyncGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armstoragesync.NewSyncGroupsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewSyncGroupsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<storage-sync-service-name>",
-		"<sync-group-name>",
+		"SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
+		"SampleSyncGroup_1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("SyncGroup.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/SyncGroups_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/SyncGroups_Delete.json
 func ExampleSyncGroupsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armstoragesync.NewSyncGroupsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewSyncGroupsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<storage-sync-service-name>",
-		"<sync-group-name>",
+		"SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
+		"SampleSyncGroup_1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }

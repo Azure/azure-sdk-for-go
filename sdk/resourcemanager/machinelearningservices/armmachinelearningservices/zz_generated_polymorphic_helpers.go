@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -46,44 +46,6 @@ func unmarshalComputeClassification(rawMsg json.RawMessage) (ComputeClassificati
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalComputeClassificationArray(rawMsg json.RawMessage) ([]ComputeClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]ComputeClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalComputeClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalComputeClassificationMap(rawMsg json.RawMessage) (map[string]ComputeClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]ComputeClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalComputeClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
 func unmarshalComputeSecretsClassification(rawMsg json.RawMessage) (ComputeSecretsClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -104,42 +66,4 @@ func unmarshalComputeSecretsClassification(rawMsg json.RawMessage) (ComputeSecre
 		b = &ComputeSecrets{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalComputeSecretsClassificationArray(rawMsg json.RawMessage) ([]ComputeSecretsClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]ComputeSecretsClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalComputeSecretsClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalComputeSecretsClassificationMap(rawMsg json.RawMessage) (map[string]ComputeSecretsClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]ComputeSecretsClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalComputeSecretsClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

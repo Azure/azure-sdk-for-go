@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,46 +25,61 @@ import (
 // InstanceFailoverGroupsClient contains the methods for the InstanceFailoverGroups group.
 // Don't use this type directly, use NewInstanceFailoverGroupsClient() instead.
 type InstanceFailoverGroupsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewInstanceFailoverGroupsClient creates a new instance of InstanceFailoverGroupsClient with the specified values.
-func NewInstanceFailoverGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *InstanceFailoverGroupsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewInstanceFailoverGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InstanceFailoverGroupsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &InstanceFailoverGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &InstanceFailoverGroupsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a failover group.
-// If the operation fails it returns a generic error.
-func (client *InstanceFailoverGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, parameters InstanceFailoverGroup, options *InstanceFailoverGroupsBeginCreateOrUpdateOptions) (InstanceFailoverGroupsCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, locationName, failoverGroupName, parameters, options)
-	if err != nil {
-		return InstanceFailoverGroupsCreateOrUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// locationName - The name of the region where the resource is located.
+// failoverGroupName - The name of the failover group.
+// parameters - The failover group parameters.
+// options - InstanceFailoverGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the InstanceFailoverGroupsClient.BeginCreateOrUpdate
+// method.
+func (client *InstanceFailoverGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, parameters InstanceFailoverGroup, options *InstanceFailoverGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[InstanceFailoverGroupsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, locationName, failoverGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[InstanceFailoverGroupsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[InstanceFailoverGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := InstanceFailoverGroupsCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("InstanceFailoverGroupsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return InstanceFailoverGroupsCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &InstanceFailoverGroupsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a failover group.
-// If the operation fails it returns a generic error.
-func (client *InstanceFailoverGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, parameters InstanceFailoverGroup, options *InstanceFailoverGroupsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+func (client *InstanceFailoverGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, parameters InstanceFailoverGroup, options *InstanceFailoverGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, locationName, failoverGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +89,13 @@ func (client *InstanceFailoverGroupsClient) createOrUpdate(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *InstanceFailoverGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, parameters InstanceFailoverGroup, options *InstanceFailoverGroupsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *InstanceFailoverGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, parameters InstanceFailoverGroup, options *InstanceFailoverGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -97,52 +113,42 @@ func (client *InstanceFailoverGroupsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *InstanceFailoverGroupsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Deletes a failover group.
-// If the operation fails it returns a generic error.
-func (client *InstanceFailoverGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsBeginDeleteOptions) (InstanceFailoverGroupsDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, locationName, failoverGroupName, options)
-	if err != nil {
-		return InstanceFailoverGroupsDeletePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// locationName - The name of the region where the resource is located.
+// failoverGroupName - The name of the failover group.
+// options - InstanceFailoverGroupsClientBeginDeleteOptions contains the optional parameters for the InstanceFailoverGroupsClient.BeginDelete
+// method.
+func (client *InstanceFailoverGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginDeleteOptions) (*runtime.Poller[InstanceFailoverGroupsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, locationName, failoverGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[InstanceFailoverGroupsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[InstanceFailoverGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := InstanceFailoverGroupsDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("InstanceFailoverGroupsClient.Delete", "", resp, client.pl, client.deleteHandleError)
-	if err != nil {
-		return InstanceFailoverGroupsDeletePollerResponse{}, err
-	}
-	result.Poller = &InstanceFailoverGroupsDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a failover group.
-// If the operation fails it returns a generic error.
-func (client *InstanceFailoverGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+func (client *InstanceFailoverGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, locationName, failoverGroupName, options)
 	if err != nil {
 		return nil, err
@@ -152,13 +158,13 @@ func (client *InstanceFailoverGroupsClient) deleteOperation(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *InstanceFailoverGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsBeginDeleteOptions) (*policy.Request, error) {
+func (client *InstanceFailoverGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -176,7 +182,7 @@ func (client *InstanceFailoverGroupsClient) deleteCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -186,41 +192,31 @@ func (client *InstanceFailoverGroupsClient) deleteCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *InstanceFailoverGroupsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginFailover - Fails over from the current primary managed instance to this managed instance.
-// If the operation fails it returns a generic error.
-func (client *InstanceFailoverGroupsClient) BeginFailover(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsBeginFailoverOptions) (InstanceFailoverGroupsFailoverPollerResponse, error) {
-	resp, err := client.failover(ctx, resourceGroupName, locationName, failoverGroupName, options)
-	if err != nil {
-		return InstanceFailoverGroupsFailoverPollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// locationName - The name of the region where the resource is located.
+// failoverGroupName - The name of the failover group.
+// options - InstanceFailoverGroupsClientBeginFailoverOptions contains the optional parameters for the InstanceFailoverGroupsClient.BeginFailover
+// method.
+func (client *InstanceFailoverGroupsClient) BeginFailover(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginFailoverOptions) (*runtime.Poller[InstanceFailoverGroupsClientFailoverResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.failover(ctx, resourceGroupName, locationName, failoverGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[InstanceFailoverGroupsClientFailoverResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[InstanceFailoverGroupsClientFailoverResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := InstanceFailoverGroupsFailoverPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("InstanceFailoverGroupsClient.Failover", "", resp, client.pl, client.failoverHandleError)
-	if err != nil {
-		return InstanceFailoverGroupsFailoverPollerResponse{}, err
-	}
-	result.Poller = &InstanceFailoverGroupsFailoverPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Failover - Fails over from the current primary managed instance to this managed instance.
-// If the operation fails it returns a generic error.
-func (client *InstanceFailoverGroupsClient) failover(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsBeginFailoverOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+func (client *InstanceFailoverGroupsClient) failover(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginFailoverOptions) (*http.Response, error) {
 	req, err := client.failoverCreateRequest(ctx, resourceGroupName, locationName, failoverGroupName, options)
 	if err != nil {
 		return nil, err
@@ -230,13 +226,13 @@ func (client *InstanceFailoverGroupsClient) failover(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.failoverHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // failoverCreateRequest creates the Failover request.
-func (client *InstanceFailoverGroupsClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsBeginFailoverOptions) (*policy.Request, error) {
+func (client *InstanceFailoverGroupsClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}/failover"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -254,53 +250,44 @@ func (client *InstanceFailoverGroupsClient) failoverCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// failoverHandleError handles the Failover error response.
-func (client *InstanceFailoverGroupsClient) failoverHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
+// BeginForceFailoverAllowDataLoss - Fails over from the current primary managed instance to this managed instance. This operation
+// might result in data loss.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// locationName - The name of the region where the resource is located.
+// failoverGroupName - The name of the failover group.
+// options - InstanceFailoverGroupsClientBeginForceFailoverAllowDataLossOptions contains the optional parameters for the InstanceFailoverGroupsClient.BeginForceFailoverAllowDataLoss
+// method.
+func (client *InstanceFailoverGroupsClient) BeginForceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginForceFailoverAllowDataLossOptions) (*runtime.Poller[InstanceFailoverGroupsClientForceFailoverAllowDataLossResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.forceFailoverAllowDataLoss(ctx, resourceGroupName, locationName, failoverGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[InstanceFailoverGroupsClientForceFailoverAllowDataLossResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[InstanceFailoverGroupsClientForceFailoverAllowDataLossResponse](options.ResumeToken, client.pl, nil)
 	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
-// BeginForceFailoverAllowDataLoss - Fails over from the current primary managed instance to this managed instance. This operation might result in data
-// loss.
-// If the operation fails it returns a generic error.
-func (client *InstanceFailoverGroupsClient) BeginForceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsBeginForceFailoverAllowDataLossOptions) (InstanceFailoverGroupsForceFailoverAllowDataLossPollerResponse, error) {
-	resp, err := client.forceFailoverAllowDataLoss(ctx, resourceGroupName, locationName, failoverGroupName, options)
-	if err != nil {
-		return InstanceFailoverGroupsForceFailoverAllowDataLossPollerResponse{}, err
-	}
-	result := InstanceFailoverGroupsForceFailoverAllowDataLossPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("InstanceFailoverGroupsClient.ForceFailoverAllowDataLoss", "", resp, client.pl, client.forceFailoverAllowDataLossHandleError)
-	if err != nil {
-		return InstanceFailoverGroupsForceFailoverAllowDataLossPollerResponse{}, err
-	}
-	result.Poller = &InstanceFailoverGroupsForceFailoverAllowDataLossPoller{
-		pt: pt,
-	}
-	return result, nil
-}
-
-// ForceFailoverAllowDataLoss - Fails over from the current primary managed instance to this managed instance. This operation might result in data loss.
-// If the operation fails it returns a generic error.
-func (client *InstanceFailoverGroupsClient) forceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsBeginForceFailoverAllowDataLossOptions) (*http.Response, error) {
+// ForceFailoverAllowDataLoss - Fails over from the current primary managed instance to this managed instance. This operation
+// might result in data loss.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+func (client *InstanceFailoverGroupsClient) forceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginForceFailoverAllowDataLossOptions) (*http.Response, error) {
 	req, err := client.forceFailoverAllowDataLossCreateRequest(ctx, resourceGroupName, locationName, failoverGroupName, options)
 	if err != nil {
 		return nil, err
@@ -310,13 +297,13 @@ func (client *InstanceFailoverGroupsClient) forceFailoverAllowDataLoss(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.forceFailoverAllowDataLossHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // forceFailoverAllowDataLossCreateRequest creates the ForceFailoverAllowDataLoss request.
-func (client *InstanceFailoverGroupsClient) forceFailoverAllowDataLossCreateRequest(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsBeginForceFailoverAllowDataLossOptions) (*policy.Request, error) {
+func (client *InstanceFailoverGroupsClient) forceFailoverAllowDataLossCreateRequest(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginForceFailoverAllowDataLossOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}/forceFailoverAllowDataLoss"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -334,48 +321,43 @@ func (client *InstanceFailoverGroupsClient) forceFailoverAllowDataLossCreateRequ
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// forceFailoverAllowDataLossHandleError handles the ForceFailoverAllowDataLoss error response.
-func (client *InstanceFailoverGroupsClient) forceFailoverAllowDataLossHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a failover group.
-// If the operation fails it returns a generic error.
-func (client *InstanceFailoverGroupsClient) Get(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsGetOptions) (InstanceFailoverGroupsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// locationName - The name of the region where the resource is located.
+// failoverGroupName - The name of the failover group.
+// options - InstanceFailoverGroupsClientGetOptions contains the optional parameters for the InstanceFailoverGroupsClient.Get
+// method.
+func (client *InstanceFailoverGroupsClient) Get(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientGetOptions) (InstanceFailoverGroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, locationName, failoverGroupName, options)
 	if err != nil {
-		return InstanceFailoverGroupsGetResponse{}, err
+		return InstanceFailoverGroupsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return InstanceFailoverGroupsGetResponse{}, err
+		return InstanceFailoverGroupsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return InstanceFailoverGroupsGetResponse{}, client.getHandleError(resp)
+		return InstanceFailoverGroupsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *InstanceFailoverGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsGetOptions) (*policy.Request, error) {
+func (client *InstanceFailoverGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -393,54 +375,64 @@ func (client *InstanceFailoverGroupsClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *InstanceFailoverGroupsClient) getHandleResponse(resp *http.Response) (InstanceFailoverGroupsGetResponse, error) {
-	result := InstanceFailoverGroupsGetResponse{RawResponse: resp}
+func (client *InstanceFailoverGroupsClient) getHandleResponse(resp *http.Response) (InstanceFailoverGroupsClientGetResponse, error) {
+	result := InstanceFailoverGroupsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InstanceFailoverGroup); err != nil {
-		return InstanceFailoverGroupsGetResponse{}, runtime.NewResponseError(err, resp)
+		return InstanceFailoverGroupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *InstanceFailoverGroupsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListByLocation - Lists the failover groups in a location.
-// If the operation fails it returns a generic error.
-func (client *InstanceFailoverGroupsClient) ListByLocation(resourceGroupName string, locationName string, options *InstanceFailoverGroupsListByLocationOptions) *InstanceFailoverGroupsListByLocationPager {
-	return &InstanceFailoverGroupsListByLocationPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByLocationCreateRequest(ctx, resourceGroupName, locationName, options)
+// NewListByLocationPager - Lists the failover groups in a location.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// locationName - The name of the region where the resource is located.
+// options - InstanceFailoverGroupsClientListByLocationOptions contains the optional parameters for the InstanceFailoverGroupsClient.ListByLocation
+// method.
+func (client *InstanceFailoverGroupsClient) NewListByLocationPager(resourceGroupName string, locationName string, options *InstanceFailoverGroupsClientListByLocationOptions) *runtime.Pager[InstanceFailoverGroupsClientListByLocationResponse] {
+	return runtime.NewPager(runtime.PagingHandler[InstanceFailoverGroupsClientListByLocationResponse]{
+		More: func(page InstanceFailoverGroupsClientListByLocationResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp InstanceFailoverGroupsListByLocationResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.InstanceFailoverGroupListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *InstanceFailoverGroupsClientListByLocationResponse) (InstanceFailoverGroupsClientListByLocationResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByLocationCreateRequest(ctx, resourceGroupName, locationName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return InstanceFailoverGroupsClientListByLocationResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return InstanceFailoverGroupsClientListByLocationResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return InstanceFailoverGroupsClientListByLocationResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByLocationHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *InstanceFailoverGroupsClient) listByLocationCreateRequest(ctx context.Context, resourceGroupName string, locationName string, options *InstanceFailoverGroupsListByLocationOptions) (*policy.Request, error) {
+func (client *InstanceFailoverGroupsClient) listByLocationCreateRequest(ctx context.Context, resourceGroupName string, locationName string, options *InstanceFailoverGroupsClientListByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -454,34 +446,22 @@ func (client *InstanceFailoverGroupsClient) listByLocationCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *InstanceFailoverGroupsClient) listByLocationHandleResponse(resp *http.Response) (InstanceFailoverGroupsListByLocationResponse, error) {
-	result := InstanceFailoverGroupsListByLocationResponse{RawResponse: resp}
+func (client *InstanceFailoverGroupsClient) listByLocationHandleResponse(resp *http.Response) (InstanceFailoverGroupsClientListByLocationResponse, error) {
+	result := InstanceFailoverGroupsClientListByLocationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InstanceFailoverGroupListResult); err != nil {
-		return InstanceFailoverGroupsListByLocationResponse{}, runtime.NewResponseError(err, resp)
+		return InstanceFailoverGroupsClientListByLocationResponse{}, err
 	}
 	return result, nil
-}
-
-// listByLocationHandleError handles the ListByLocation error response.
-func (client *InstanceFailoverGroupsClient) listByLocationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -4,52 +4,127 @@
 package azservicebus
 
 import (
-	"context"
-	"errors"
 	"fmt"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/go-amqp"
-	"github.com/devigned/tab"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 )
 
 // ReceivedMessage is a received message from a Client.NewReceiver().
 type ReceivedMessage struct {
-	MessageID string
-
-	ContentType      *string
-	CorrelationID    *string
-	SessionID        *string
-	Subject          *string
-	ReplyTo          *string
-	ReplyToSessionID *string
-	To               *string
-
-	TimeToLive *time.Duration
-
-	PartitionKey            *string
-	TransactionPartitionKey *string
-	ScheduledEnqueueTime    *time.Time
-
+	// ApplicationProperties can be used to store custom metadata for a message.
 	ApplicationProperties map[string]interface{}
 
-	LockToken              [16]byte
-	DeliveryCount          uint32
-	LockedUntil            *time.Time
-	SequenceNumber         *int64
-	EnqueuedSequenceNumber *int64
-	EnqueuedTime           *time.Time
-	ExpiresAt              *time.Time
+	// Body is the payload for a message.
+	Body []byte
 
+	// ContentType describes the payload of the message, with a descriptor following
+	// the format of Content-Type, specified by RFC2045 (ex: "application/json").
+	ContentType *string
+
+	// CorrelationID allows an application to specify a context for the message for the purposes of
+	// correlation, for example reflecting the MessageID of a message that is being
+	// replied to.
+	CorrelationID *string
+
+	// DeadLetterErrorDescription is the description set when the message was dead-lettered.
 	DeadLetterErrorDescription *string
-	DeadLetterReason           *string
-	DeadLetterSource           *string
 
-	// available in the raw AMQP message, but not exported by default
-	// GroupSequence  *uint32
+	// DeadLetterReason is the reason set when the message was dead-lettered.
+	DeadLetterReason *string
 
-	rawAMQPMessage *amqp.Message
+	// DeadLetterSource is the name of the queue or subscription this message was enqueued on
+	// before it was dead-lettered.
+	DeadLetterSource *string
+
+	// DeliveryCount is number of times this message has been delivered.
+	// This number is incremented when a message lock expires or if the message is explicitly abandoned
+	// with Receiver.AbandonMessage.
+	DeliveryCount uint32
+
+	// EnqueuedSequenceNumber is the original sequence number assigned to a message, before it
+	// was auto-forwarded.
+	EnqueuedSequenceNumber *int64
+
+	// EnqueuedTime is the UTC time when the message was accepted and stored by Service Bus.
+	EnqueuedTime *time.Time
+
+	// ExpiresAt is the time when this message will expire.
+	//
+	// This time is calculated by adding the TimeToLive property, set in the message that was sent, along  with the
+	// EnqueuedTime of the message.
+	ExpiresAt *time.Time
+
+	// LockedUntil is the time when the lock expires for this message.
+	// This can be extended by using Receiver.RenewMessageLock.
+	LockedUntil *time.Time
+
+	// LockToken is the lock token for a message received from a Receiver created with a receive mode of ReceiveModePeekLock.
+	LockToken [16]byte
+
+	// MessageID is an application-defined value that uniquely identifies
+	// the message and its payload. The identifier is a free-form string.
+	//
+	// If enabled, the duplicate detection feature identifies and removes further submissions
+	// of messages with the same MessageId.
+	MessageID string
+
+	// PartitionKey is used with a partitioned entity and enables assigning related messages
+	// to the same internal partition. This ensures that the submission sequence order is correctly
+	// recorded. The partition is chosen by a hash function in Service Bus and cannot be chosen
+	// directly.
+	//
+	// For session-aware entities, the ReceivedMessage.SessionID overrides this value.
+	PartitionKey *string
+
+	// ReplyTo is an application-defined value specify a reply path to the receiver of the message. When
+	// a sender expects a reply, it sets the value to the absolute or relative path of the queue or topic
+	// it expects the reply to be sent to.
+	ReplyTo *string
+
+	// ReplyToSessionID augments the ReplyTo information and specifies which SessionId should
+	// be set for the reply when sent to the reply entity.
+	ReplyToSessionID *string
+
+	// ScheduledEnqueueTime specifies a time when a message will be enqueued. The message is transferred
+	// to the broker but will not available until the scheduled time.
+	ScheduledEnqueueTime *time.Time
+
+	// SequenceNumber is a unique number assigned to a message by Service Bus.
+	SequenceNumber *int64
+
+	// SessionID is used with session-aware entities and associates a message with an application-defined
+	// session ID. Note that an empty string is a valid session identifier.
+	// Messages with the same session identifier are subject to summary locking and enable
+	// exact in-order processing and demultiplexing. For session-unaware entities, this value is ignored.
+	SessionID *string
+
+	// State represents the current state of the message (Active, Scheduled, Deferred).
+	State MessageState
+
+	// Subject enables an application to indicate the purpose of the message, similar to an email subject line.
+	Subject *string
+
+	// TimeToLive is the duration after which the message expires, starting from the instant the
+	// message has been accepted and stored by the broker, found in the ReceivedMessage.EnqueuedTime
+	// property.
+	//
+	// When not set explicitly, the assumed value is the DefaultTimeToLive for the queue or topic.
+	// A message's TimeToLive cannot be longer than the entity's DefaultTimeToLive, and is silently
+	// adjusted if it is.
+	TimeToLive *time.Duration
+
+	// To is reserved for future use in routing scenarios but is not currently used by Service Bus.
+	// Applications can use this value to indicate the logical destination of the message.
+	To *string
+
+	// RawAMQPMessage is the AMQP message, as received by the client. This can be useful to get access
+	// to properties that are not exposed by ReceivedMessage such as payloads encoded into the
+	// Value or Sequence section, payloads sent as multiple Data sections, as well as Footer
+	// and Header fields.
+	RawAMQPMessage *AMQPAnnotatedMessage
 
 	// deferred indicates we received it using ReceiveDeferredMessages. These messages
 	// will still go through the normal Receiver.Settle functions but internally will
@@ -57,37 +132,85 @@ type ReceivedMessage struct {
 	deferred bool
 }
 
-// Body returns the body for this received message.
-// If the body not compatible with ReceivedMessage this function will return an error.
-func (rm *ReceivedMessage) Body() ([]byte, error) {
-	// TODO: does this come back as a zero length array if the body is empty (which is allowed)
-	if rm.rawAMQPMessage.Data == nil || len(rm.rawAMQPMessage.Data) != 1 {
-		return nil, errors.New("AMQP message Data section is improperly encoded for ReceivedMessage")
-	}
+// MessageState represents the current state of a message (Active, Scheduled, Deferred).
+type MessageState int32
 
-	return rm.rawAMQPMessage.Data[0], nil
-}
+const (
+	// MessageStateActive indicates the message is active.
+	MessageStateActive MessageState = 0
+	// MessageStateDeferred indicates the message is deferred.
+	MessageStateDeferred MessageState = 1
+	// MessageStateScheduled indicates the message is scheduled.
+	MessageStateScheduled MessageState = 2
+)
 
 // Message is a message with a body and commonly used properties.
+// Properties that are pointers are optional.
 type Message struct {
+	// ApplicationProperties can be used to store custom metadata for a message.
+	ApplicationProperties map[string]interface{}
+
+	// Body corresponds to the first []byte array in the Data section of an AMQP message.
+	Body []byte
+
+	// ContentType describes the payload of the message, with a descriptor following
+	// the format of Content-Type, specified by RFC2045 (ex: "application/json").
+	ContentType *string
+
+	// CorrelationID allows an application to specify a context for the message for the purposes of
+	// correlation, for example reflecting the MessageID of a message that is being
+	// replied to.
+	CorrelationID *string
+
+	// MessageID is an application-defined value that uniquely identifies
+	// the message and its payload. The identifier is a free-form string.
+	//
+	// If enabled, the duplicate detection feature identifies and removes further submissions
+	// of messages with the same MessageId.
 	MessageID *string
 
-	ContentType   *string
-	CorrelationID *string
-	// Body corresponds to the first []byte array in the Data section of an AMQP message.
-	Body             []byte
-	SessionID        *string
-	Subject          *string
-	ReplyTo          *string
+	// PartitionKey is used with a partitioned entity and enables assigning related messages
+	// to the same internal partition. This ensures that the submission sequence order is correctly
+	// recorded. The partition is chosen by a hash function in Service Bus and cannot be chosen
+	// directly.
+	//
+	// For session-aware entities, the ReceivedMessage.SessionID overrides this value.
+	PartitionKey *string
+
+	// ReplyTo is an application-defined value specify a reply path to the receiver of the message. When
+	// a sender expects a reply, it sets the value to the absolute or relative path of the queue or topic
+	// it expects the reply to be sent to.
+	ReplyTo *string
+
+	// ReplyToSessionID augments the ReplyTo information and specifies which SessionId should
+	// be set for the reply when sent to the reply entity.
 	ReplyToSessionID *string
-	To               *string
-	TimeToLive       *time.Duration
 
-	PartitionKey            *string
-	TransactionPartitionKey *string
-	ScheduledEnqueueTime    *time.Time
+	// ScheduledEnqueueTime specifies a time when a message will be enqueued. The message is transferred
+	// to the broker but will not available until the scheduled time.
+	ScheduledEnqueueTime *time.Time
 
-	ApplicationProperties map[string]interface{}
+	// SessionID is used with session-aware entities and associates a message with an application-defined
+	// session ID. Note that an empty string is a valid session identifier.
+	// Messages with the same session identifier are subject to summary locking and enable
+	// exact in-order processing and demultiplexing. For session-unaware entities, this value is ignored.
+	SessionID *string
+
+	// Subject enables an application to indicate the purpose of the message, similar to an email subject line.
+	Subject *string
+
+	// TimeToLive is the duration after which the message expires, starting from the instant the
+	// message has been accepted and stored by the broker, found in the ReceivedMessage.EnqueuedTime
+	// property.
+	//
+	// When not set explicitly, the assumed value is the DefaultTimeToLive for the queue or topic.
+	// A message's TimeToLive cannot be longer than the entity's DefaultTimeToLive is silently
+	// adjusted if it does.
+	TimeToLive *time.Duration
+
+	// To is reserved for future use in routing scenarios but is not currently used by Service Bus.
+	// Applications can use this value to indicate the logical destination of the message.
+	To *string
 }
 
 // Service Bus custom properties
@@ -97,13 +220,13 @@ const (
 
 	// Annotation properties
 	partitionKeyAnnotation           = "x-opt-partition-key"
-	viaPartitionKeyAnnotation        = "x-opt-via-partition-key"
 	scheduledEnqueuedTimeAnnotation  = "x-opt-scheduled-enqueue-time"
 	lockedUntilAnnotation            = "x-opt-locked-until"
 	sequenceNumberAnnotation         = "x-opt-sequence-number"
 	enqueuedTimeAnnotation           = "x-opt-enqueued-time"
 	deadLetterSourceAnnotation       = "x-opt-deadletter-source"
 	enqueuedSequenceNumberAnnotation = "x-opt-enqueue-sequence-number"
+	messageStateAnnotation           = "x-opt-message-state"
 )
 
 func (m *Message) toAMQPMessage() *amqp.Message {
@@ -157,10 +280,6 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 		amqpMsg.Annotations[partitionKeyAnnotation] = *m.PartitionKey
 	}
 
-	if m.TransactionPartitionKey != nil {
-		amqpMsg.Annotations[viaPartitionKeyAnnotation] = *m.TransactionPartitionKey
-	}
-
 	if m.ScheduledEnqueueTime != nil {
 		amqpMsg.Annotations[scheduledEnqueuedTimeAnnotation] = *m.ScheduledEnqueueTime
 	}
@@ -193,9 +312,14 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 // newReceivedMessage creates a received message from an AMQP message.
 // NOTE: this converter assumes that the Body of this message will be the first
 // serialized byte array in the Data section of the messsage.
-func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *ReceivedMessage {
+func newReceivedMessage(amqpMsg *amqp.Message) *ReceivedMessage {
 	msg := &ReceivedMessage{
-		rawAMQPMessage: amqpMsg,
+		RawAMQPMessage: newAMQPAnnotatedMessage(amqpMsg),
+		State:          MessageStateActive,
+	}
+
+	if len(msg.RawAMQPMessage.Body.Data) == 1 {
+		msg.Body = msg.RawAMQPMessage.Body.Data[0]
 	}
 
 	if amqpMsg.Properties != nil {
@@ -226,11 +350,11 @@ func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *R
 		}
 
 		if deadLetterErrorDescription, ok := amqpMsg.ApplicationProperties["DeadLetterErrorDescription"]; ok {
-			msg.DeadLetterErrorDescription = to.StringPtr(deadLetterErrorDescription.(string))
+			msg.DeadLetterErrorDescription = to.Ptr(deadLetterErrorDescription.(string))
 		}
 
 		if deadLetterReason, ok := amqpMsg.ApplicationProperties["DeadLetterReason"]; ok {
-			msg.DeadLetterReason = to.StringPtr(deadLetterReason.(string))
+			msg.DeadLetterReason = to.Ptr(deadLetterReason.(string))
 		}
 	}
 
@@ -241,11 +365,11 @@ func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *R
 		}
 
 		if sequenceNumber, ok := amqpMsg.Annotations[sequenceNumberAnnotation]; ok {
-			msg.SequenceNumber = to.Int64Ptr(sequenceNumber.(int64))
+			msg.SequenceNumber = to.Ptr(sequenceNumber.(int64))
 		}
 
 		if partitionKey, ok := amqpMsg.Annotations[partitionKeyAnnotation]; ok {
-			msg.PartitionKey = to.StringPtr(partitionKey.(string))
+			msg.PartitionKey = to.Ptr(partitionKey.(string))
 		}
 
 		if enqueuedTime, ok := amqpMsg.Annotations[enqueuedTimeAnnotation]; ok {
@@ -254,7 +378,7 @@ func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *R
 		}
 
 		if deadLetterSource, ok := amqpMsg.Annotations[deadLetterSourceAnnotation]; ok {
-			msg.DeadLetterSource = to.StringPtr(deadLetterSource.(string))
+			msg.DeadLetterSource = to.Ptr(deadLetterSource.(string))
 		}
 
 		if scheduledEnqueueTime, ok := amqpMsg.Annotations[scheduledEnqueuedTimeAnnotation]; ok {
@@ -263,11 +387,16 @@ func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *R
 		}
 
 		if enqueuedSequenceNumber, ok := amqpMsg.Annotations[enqueuedSequenceNumberAnnotation]; ok {
-			msg.EnqueuedSequenceNumber = to.Int64Ptr(enqueuedSequenceNumber.(int64))
+			msg.EnqueuedSequenceNumber = to.Ptr(enqueuedSequenceNumber.(int64))
 		}
 
-		if viaPartitionKey, ok := amqpMsg.Annotations[viaPartitionKeyAnnotation]; ok {
-			msg.TransactionPartitionKey = to.StringPtr(viaPartitionKey.(string))
+		switch asInt64(amqpMsg.Annotations[messageStateAnnotation], 0) {
+		case 1:
+			msg.State = MessageStateDeferred
+		case 2:
+			msg.State = MessageStateScheduled
+		default:
+			msg.State = MessageStateActive
 		}
 
 		// TODO: annotation propagation is a thing. Currently these are only stored inside
@@ -302,7 +431,7 @@ func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *R
 		if err == nil {
 			msg.LockToken = *(*amqp.UUID)(lockToken)
 		} else {
-			tab.For(ctxForLogging).Info(fmt.Sprintf("msg.DeliveryTag could not be converted into a UUID: %s", err.Error()))
+			log.Writef(EventReceiver, "msg.DeliveryTag could not be converted into a UUID: %s", err.Error())
 		}
 	}
 
@@ -346,4 +475,17 @@ func uuidFromLockTokenBytes(bytes []byte) (*amqp.UUID, error) {
 	amqpUUID := amqp.UUID(lockTokenBytes)
 
 	return &amqpUUID, nil
+}
+
+func asInt64(v interface{}, defVal int64) int64 {
+	switch v2 := v.(type) {
+	case int32:
+		return int64(v2)
+	case int64:
+		return int64(v2)
+	case int:
+		return int64(v2)
+	default:
+		return defVal
+	}
 }

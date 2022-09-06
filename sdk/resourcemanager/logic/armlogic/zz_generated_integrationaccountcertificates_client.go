@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armlogic
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,42 +26,61 @@ import (
 // IntegrationAccountCertificatesClient contains the methods for the IntegrationAccountCertificates group.
 // Don't use this type directly, use NewIntegrationAccountCertificatesClient() instead.
 type IntegrationAccountCertificatesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIntegrationAccountCertificatesClient creates a new instance of IntegrationAccountCertificatesClient with the specified values.
-func NewIntegrationAccountCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationAccountCertificatesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewIntegrationAccountCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IntegrationAccountCertificatesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &IntegrationAccountCertificatesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &IntegrationAccountCertificatesClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates an integration account certificate.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountCertificatesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, certificateName string, certificate IntegrationAccountCertificate, options *IntegrationAccountCertificatesCreateOrUpdateOptions) (IntegrationAccountCertificatesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// certificateName - The integration account certificate name.
+// certificate - The integration account certificate.
+// options - IntegrationAccountCertificatesClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountCertificatesClient.CreateOrUpdate
+// method.
+func (client *IntegrationAccountCertificatesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, certificateName string, certificate IntegrationAccountCertificate, options *IntegrationAccountCertificatesClientCreateOrUpdateOptions) (IntegrationAccountCertificatesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, integrationAccountName, certificateName, certificate, options)
 	if err != nil {
-		return IntegrationAccountCertificatesCreateOrUpdateResponse{}, err
+		return IntegrationAccountCertificatesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationAccountCertificatesCreateOrUpdateResponse{}, err
+		return IntegrationAccountCertificatesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return IntegrationAccountCertificatesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return IntegrationAccountCertificatesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *IntegrationAccountCertificatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, certificateName string, certificate IntegrationAccountCertificate, options *IntegrationAccountCertificatesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *IntegrationAccountCertificatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, certificateName string, certificate IntegrationAccountCertificate, options *IntegrationAccountCertificatesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,58 +98,51 @@ func (client *IntegrationAccountCertificatesClient) createOrUpdateCreateRequest(
 		return nil, errors.New("parameter certificateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, certificate)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *IntegrationAccountCertificatesClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountCertificatesCreateOrUpdateResponse, error) {
-	result := IntegrationAccountCertificatesCreateOrUpdateResponse{RawResponse: resp}
+func (client *IntegrationAccountCertificatesClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountCertificatesClientCreateOrUpdateResponse, error) {
+	result := IntegrationAccountCertificatesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountCertificate); err != nil {
-		return IntegrationAccountCertificatesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationAccountCertificatesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *IntegrationAccountCertificatesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes an integration account certificate.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountCertificatesClient) Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, certificateName string, options *IntegrationAccountCertificatesDeleteOptions) (IntegrationAccountCertificatesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// certificateName - The integration account certificate name.
+// options - IntegrationAccountCertificatesClientDeleteOptions contains the optional parameters for the IntegrationAccountCertificatesClient.Delete
+// method.
+func (client *IntegrationAccountCertificatesClient) Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, certificateName string, options *IntegrationAccountCertificatesClientDeleteOptions) (IntegrationAccountCertificatesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, integrationAccountName, certificateName, options)
 	if err != nil {
-		return IntegrationAccountCertificatesDeleteResponse{}, err
+		return IntegrationAccountCertificatesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationAccountCertificatesDeleteResponse{}, err
+		return IntegrationAccountCertificatesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return IntegrationAccountCertificatesDeleteResponse{}, client.deleteHandleError(resp)
+		return IntegrationAccountCertificatesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return IntegrationAccountCertificatesDeleteResponse{RawResponse: resp}, nil
+	return IntegrationAccountCertificatesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IntegrationAccountCertificatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, certificateName string, options *IntegrationAccountCertificatesDeleteOptions) (*policy.Request, error) {
+func (client *IntegrationAccountCertificatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, certificateName string, options *IntegrationAccountCertificatesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -148,49 +160,42 @@ func (client *IntegrationAccountCertificatesClient) deleteCreateRequest(ctx cont
 		return nil, errors.New("parameter certificateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *IntegrationAccountCertificatesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets an integration account certificate.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountCertificatesClient) Get(ctx context.Context, resourceGroupName string, integrationAccountName string, certificateName string, options *IntegrationAccountCertificatesGetOptions) (IntegrationAccountCertificatesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// certificateName - The integration account certificate name.
+// options - IntegrationAccountCertificatesClientGetOptions contains the optional parameters for the IntegrationAccountCertificatesClient.Get
+// method.
+func (client *IntegrationAccountCertificatesClient) Get(ctx context.Context, resourceGroupName string, integrationAccountName string, certificateName string, options *IntegrationAccountCertificatesClientGetOptions) (IntegrationAccountCertificatesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, integrationAccountName, certificateName, options)
 	if err != nil {
-		return IntegrationAccountCertificatesGetResponse{}, err
+		return IntegrationAccountCertificatesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationAccountCertificatesGetResponse{}, err
+		return IntegrationAccountCertificatesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationAccountCertificatesGetResponse{}, client.getHandleError(resp)
+		return IntegrationAccountCertificatesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IntegrationAccountCertificatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, certificateName string, options *IntegrationAccountCertificatesGetOptions) (*policy.Request, error) {
+func (client *IntegrationAccountCertificatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, certificateName string, options *IntegrationAccountCertificatesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -208,55 +213,63 @@ func (client *IntegrationAccountCertificatesClient) getCreateRequest(ctx context
 		return nil, errors.New("parameter certificateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *IntegrationAccountCertificatesClient) getHandleResponse(resp *http.Response) (IntegrationAccountCertificatesGetResponse, error) {
-	result := IntegrationAccountCertificatesGetResponse{RawResponse: resp}
+func (client *IntegrationAccountCertificatesClient) getHandleResponse(resp *http.Response) (IntegrationAccountCertificatesClientGetResponse, error) {
+	result := IntegrationAccountCertificatesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountCertificate); err != nil {
-		return IntegrationAccountCertificatesGetResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationAccountCertificatesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *IntegrationAccountCertificatesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Gets a list of integration account certificates.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountCertificatesClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountCertificatesListOptions) *IntegrationAccountCertificatesListPager {
-	return &IntegrationAccountCertificatesListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, integrationAccountName, options)
+// NewListPager - Gets a list of integration account certificates.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// options - IntegrationAccountCertificatesClientListOptions contains the optional parameters for the IntegrationAccountCertificatesClient.List
+// method.
+func (client *IntegrationAccountCertificatesClient) NewListPager(resourceGroupName string, integrationAccountName string, options *IntegrationAccountCertificatesClientListOptions) *runtime.Pager[IntegrationAccountCertificatesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[IntegrationAccountCertificatesClientListResponse]{
+		More: func(page IntegrationAccountCertificatesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp IntegrationAccountCertificatesListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.IntegrationAccountCertificateListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *IntegrationAccountCertificatesClientListResponse) (IntegrationAccountCertificatesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, integrationAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return IntegrationAccountCertificatesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return IntegrationAccountCertificatesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return IntegrationAccountCertificatesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *IntegrationAccountCertificatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, options *IntegrationAccountCertificatesListOptions) (*policy.Request, error) {
+func (client *IntegrationAccountCertificatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, options *IntegrationAccountCertificatesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/certificates"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -270,7 +283,7 @@ func (client *IntegrationAccountCertificatesClient) listCreateRequest(ctx contex
 		return nil, errors.New("parameter integrationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationAccountName}", url.PathEscape(integrationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -280,28 +293,15 @@ func (client *IntegrationAccountCertificatesClient) listCreateRequest(ctx contex
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *IntegrationAccountCertificatesClient) listHandleResponse(resp *http.Response) (IntegrationAccountCertificatesListResponse, error) {
-	result := IntegrationAccountCertificatesListResponse{RawResponse: resp}
+func (client *IntegrationAccountCertificatesClient) listHandleResponse(resp *http.Response) (IntegrationAccountCertificatesClientListResponse, error) {
+	result := IntegrationAccountCertificatesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountCertificateListResult); err != nil {
-		return IntegrationAccountCertificatesListResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationAccountCertificatesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *IntegrationAccountCertificatesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

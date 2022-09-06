@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package armdesktopvirtualization
 
 const (
-	module  = "armdesktopvirtualization"
-	version = "v0.1.0"
+	moduleName    = "armdesktopvirtualization"
+	moduleVersion = "v2.0.0-beta.1"
 )
 
 // ApplicationGroupType - Resource Type of ApplicationGroup.
@@ -29,11 +29,6 @@ func PossibleApplicationGroupTypeValues() []ApplicationGroupType {
 	}
 }
 
-// ToPtr returns a *ApplicationGroupType pointing to the current value.
-func (c ApplicationGroupType) ToPtr() *ApplicationGroupType {
-	return &c
-}
-
 // ApplicationType - Application type of application.
 type ApplicationType string
 
@@ -50,13 +45,8 @@ func PossibleApplicationTypeValues() []ApplicationType {
 	}
 }
 
-// ToPtr returns a *ApplicationType pointing to the current value.
-func (c ApplicationType) ToPtr() *ApplicationType {
-	return &c
-}
-
-// CommandLineSetting - Specifies whether this published application can be launched with command line arguments provided by the client, command line arguments
-// specified at publish time, or no command line arguments at all.
+// CommandLineSetting - Specifies whether this published application can be launched with command line arguments provided
+// by the client, command line arguments specified at publish time, or no command line arguments at all.
 type CommandLineSetting string
 
 const (
@@ -72,11 +62,6 @@ func PossibleCommandLineSettingValues() []CommandLineSetting {
 		CommandLineSettingDoNotAllow,
 		CommandLineSettingRequire,
 	}
-}
-
-// ToPtr returns a *CommandLineSetting pointing to the current value.
-func (c CommandLineSetting) ToPtr() *CommandLineSetting {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -99,54 +84,79 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
+// DayOfWeek - The day of the week (Monday-Sunday).
+type DayOfWeek string
+
+const (
+	DayOfWeekMonday    DayOfWeek = "Monday"
+	DayOfWeekTuesday   DayOfWeek = "Tuesday"
+	DayOfWeekWednesday DayOfWeek = "Wednesday"
+	DayOfWeekThursday  DayOfWeek = "Thursday"
+	DayOfWeekFriday    DayOfWeek = "Friday"
+	DayOfWeekSaturday  DayOfWeek = "Saturday"
+	DayOfWeekSunday    DayOfWeek = "Sunday"
+)
+
+// PossibleDayOfWeekValues returns the possible values for the DayOfWeek const type.
+func PossibleDayOfWeekValues() []DayOfWeek {
+	return []DayOfWeek{
+		DayOfWeekMonday,
+		DayOfWeekTuesday,
+		DayOfWeekWednesday,
+		DayOfWeekThursday,
+		DayOfWeekFriday,
+		DayOfWeekSaturday,
+		DayOfWeekSunday,
+	}
 }
 
 // HealthCheckName - Represents the name of the health check operation performed.
 type HealthCheckName string
 
 const (
-	// HealthCheckNameAppAttachHealthCheck - Verifies that the AppAttachService is healthy (there were no issues during package staging). The AppAttachService
-	// is used to enable the staging/registration (and eventual deregistration/destaging) of MSIX apps that have been set up by the tenant admin. This checks
-	// whether the component had any failures during package staging. Failures in staging will prevent some MSIX apps from working properly for the end user.
-	// If this check fails, it is non fatal and the machine still can service connections, main issue may be certain apps will not work for end-users.
+	// HealthCheckNameAppAttachHealthCheck - Verifies that the AppAttachService is healthy (there were no issues during package
+	// staging). The AppAttachService is used to enable the staging/registration (and eventual deregistration/destaging) of MSIX
+	// apps that have been set up by the tenant admin. This checks whether the component had any failures during package staging.
+	// Failures in staging will prevent some MSIX apps from working properly for the end user. If this check fails, it is non
+	// fatal and the machine still can service connections, main issue may be certain apps will not work for end-users.
 	HealthCheckNameAppAttachHealthCheck HealthCheckName = "AppAttachHealthCheck"
-	// HealthCheckNameDomainJoinedCheck - Verifies the SessionHost is joined to a domain. If this check fails is classified as fatal as no connection can succeed
-	// if the SessionHost is not joined to the domain.
+	// HealthCheckNameDomainJoinedCheck - Verifies the SessionHost is joined to a domain. If this check fails is classified as
+	// fatal as no connection can succeed if the SessionHost is not joined to the domain.
 	HealthCheckNameDomainJoinedCheck HealthCheckName = "DomainJoinedCheck"
-	// HealthCheckNameDomainReachable - Verifies the domain the SessionHost is joined to is still reachable. If this check fails is classified as fatal as no
-	// connection can succeed if the domain the SessionHost is joined is not reachable at the time of connection.
+	// HealthCheckNameDomainReachable - Verifies the domain the SessionHost is joined to is still reachable. If this check fails
+	// is classified as fatal as no connection can succeed if the domain the SessionHost is joined is not reachable at the time
+	// of connection.
 	HealthCheckNameDomainReachable HealthCheckName = "DomainReachable"
-	// HealthCheckNameDomainTrustCheck - Verifies the SessionHost is not experiencing domain trust issues that will prevent authentication on SessionHost at
-	// connection time when session is created. If this check fails is classified as fatal as no connection can succeed if we cannot reach the domain for authentication
-	// on the SessionHost.
+	// HealthCheckNameDomainTrustCheck - Verifies the SessionHost is not experiencing domain trust issues that will prevent authentication
+	// on SessionHost at connection time when session is created. If this check fails is classified as fatal as no connection
+	// can succeed if we cannot reach the domain for authentication on the SessionHost.
 	HealthCheckNameDomainTrustCheck HealthCheckName = "DomainTrustCheck"
-	// HealthCheckNameFSLogixHealthCheck - Verifies the FSLogix service is up and running to make sure users' profiles are loaded in the session. If this check
-	// fails is classified as fatal as even if the connection can succeed, user experience is bad as the user profile cannot be loaded and user will get a temporary
-	// profile in the session.
+	// HealthCheckNameFSLogixHealthCheck - Verifies the FSLogix service is up and running to make sure users' profiles are loaded
+	// in the session. If this check fails is classified as fatal as even if the connection can succeed, user experience is bad
+	// as the user profile cannot be loaded and user will get a temporary profile in the session.
 	HealthCheckNameFSLogixHealthCheck HealthCheckName = "FSLogixHealthCheck"
 	// HealthCheckNameMetaDataServiceCheck - Verifies the metadata service is accessible and return compute properties.
 	HealthCheckNameMetaDataServiceCheck HealthCheckName = "MetaDataServiceCheck"
-	// HealthCheckNameMonitoringAgentCheck - Verifies that the required Geneva agent is running. If this check fails, it is non fatal and the machine still
-	// can service connections, main issue may be that monitoring agent is missing or running (possibly) older version.
+	// HealthCheckNameMonitoringAgentCheck - Verifies that the required Geneva agent is running. If this check fails, it is non
+	// fatal and the machine still can service connections, main issue may be that monitoring agent is missing or running (possibly)
+	// older version.
 	HealthCheckNameMonitoringAgentCheck HealthCheckName = "MonitoringAgentCheck"
-	// HealthCheckNameSupportedEncryptionCheck - Verifies the value of SecurityLayer registration key. If the value is 0 (SecurityLayer.RDP) this check fails
-	// with Error code = NativeMethodErrorCode.E_FAIL and is fatal. If the value is 1 (SecurityLayer.Negotiate) this check fails with Error code = NativeMethodErrorCode.ERROR_SUCCESS
-	// and is non fatal.
+	// HealthCheckNameSupportedEncryptionCheck - Verifies the value of SecurityLayer registration key. If the value is 0 (SecurityLayer.RDP)
+	// this check fails with Error code = NativeMethodErrorCode.E_FAIL and is fatal. If the value is 1 (SecurityLayer.Negotiate)
+	// this check fails with Error code = NativeMethodErrorCode.ERROR_SUCCESS and is non fatal.
 	HealthCheckNameSupportedEncryptionCheck HealthCheckName = "SupportedEncryptionCheck"
-	// HealthCheckNameSxSStackListenerCheck - Verifies that the SxS stack is up and running so connections can succeed. If this check fails is classified as
-	// fatal as no connection can succeed if the SxS stack is not ready.
+	// HealthCheckNameSxSStackListenerCheck - Verifies that the SxS stack is up and running so connections can succeed. If this
+	// check fails is classified as fatal as no connection can succeed if the SxS stack is not ready.
 	HealthCheckNameSxSStackListenerCheck HealthCheckName = "SxSStackListenerCheck"
-	// HealthCheckNameUrlsAccessibleCheck - Verifies that the required WVD service and Geneva URLs are reachable from the SessionHost. These URLs are: RdTokenUri,
-	// RdBrokerURI, RdDiagnosticsUri and storage blob URLs for agent monitoring (geneva). If this check fails, it is non fatal and the machine still can service
-	// connections, main issue may be that monitoring agent is unable to store warm path data (logs, operations ...).
+	// HealthCheckNameUrlsAccessibleCheck - Verifies that the required WVD service and Geneva URLs are reachable from the SessionHost.
+	// These URLs are: RdTokenUri, RdBrokerURI, RdDiagnosticsUri and storage blob URLs for agent monitoring (geneva). If this
+	// check fails, it is non fatal and the machine still can service connections, main issue may be that monitoring agent is
+	// unable to store warm path data (logs, operations ...).
 	HealthCheckNameUrlsAccessibleCheck HealthCheckName = "UrlsAccessibleCheck"
-	// HealthCheckNameWebRTCRedirectorCheck - Verifies whether the WebRTCRedirector component is healthy. The WebRTCRedirector component is used to optimize
-	// video and audio performance in Microsoft Teams. This checks whether the component is still running, and whether there is a higher version available.
-	// If this check fails, it is non fatal and the machine still can service connections, main issue may be the WebRTCRedirector component has to be restarted
-	// or updated.
+	// HealthCheckNameWebRTCRedirectorCheck - Verifies whether the WebRTCRedirector component is healthy. The WebRTCRedirector
+	// component is used to optimize video and audio performance in Microsoft Teams. This checks whether the component is still
+	// running, and whether there is a higher version available. If this check fails, it is non fatal and the machine still can
+	// service connections, main issue may be the WebRTCRedirector component has to be restarted or updated.
 	HealthCheckNameWebRTCRedirectorCheck HealthCheckName = "WebRTCRedirectorCheck"
 )
 
@@ -165,11 +175,6 @@ func PossibleHealthCheckNameValues() []HealthCheckName {
 		HealthCheckNameUrlsAccessibleCheck,
 		HealthCheckNameWebRTCRedirectorCheck,
 	}
-}
-
-// ToPtr returns a *HealthCheckName pointing to the current value.
-func (c HealthCheckName) ToPtr() *HealthCheckName {
-	return &c
 }
 
 // HealthCheckResult - Represents the Health state of the health check we performed.
@@ -196,19 +201,16 @@ func PossibleHealthCheckResultValues() []HealthCheckResult {
 	}
 }
 
-// ToPtr returns a *HealthCheckResult pointing to the current value.
-func (c HealthCheckResult) ToPtr() *HealthCheckResult {
-	return &c
-}
-
 // HostPoolType - HostPool type for desktop.
 type HostPoolType string
 
 const (
-	// HostPoolTypeBYODesktop - Users assign their own machines, load balancing logic remains the same as Personal. PersonalDesktopAssignmentType must be Direct.
+	// HostPoolTypeBYODesktop - Users assign their own machines, load balancing logic remains the same as Personal. PersonalDesktopAssignmentType
+	// must be Direct.
 	HostPoolTypeBYODesktop HostPoolType = "BYODesktop"
-	// HostPoolTypePersonal - Users will be assigned a SessionHost either by administrators (PersonalDesktopAssignmentType = Direct) or upon connecting to the
-	// pool (PersonalDesktopAssignmentType = Automatic). They will always be redirected to their assigned SessionHost.
+	// HostPoolTypePersonal - Users will be assigned a SessionHost either by administrators (PersonalDesktopAssignmentType = Direct)
+	// or upon connecting to the pool (PersonalDesktopAssignmentType = Automatic). They will always be redirected to their assigned
+	// SessionHost.
 	HostPoolTypePersonal HostPoolType = "Personal"
 	// HostPoolTypePooled - Users get a new (random) SessionHost every time it connects to the HostPool.
 	HostPoolTypePooled HostPoolType = "Pooled"
@@ -223,9 +225,25 @@ func PossibleHostPoolTypeValues() []HostPoolType {
 	}
 }
 
-// ToPtr returns a *HostPoolType pointing to the current value.
-func (c HostPoolType) ToPtr() *HostPoolType {
-	return &c
+// HostpoolPublicNetworkAccess - Enabled allows this resource to be accessed from both public and private networks, Disabled
+// allows this resource to only be accessed via private endpoints
+type HostpoolPublicNetworkAccess string
+
+const (
+	HostpoolPublicNetworkAccessDisabled                   HostpoolPublicNetworkAccess = "Disabled"
+	HostpoolPublicNetworkAccessEnabled                    HostpoolPublicNetworkAccess = "Enabled"
+	HostpoolPublicNetworkAccessEnabledForClientsOnly      HostpoolPublicNetworkAccess = "EnabledForClientsOnly"
+	HostpoolPublicNetworkAccessEnabledForSessionHostsOnly HostpoolPublicNetworkAccess = "EnabledForSessionHostsOnly"
+)
+
+// PossibleHostpoolPublicNetworkAccessValues returns the possible values for the HostpoolPublicNetworkAccess const type.
+func PossibleHostpoolPublicNetworkAccessValues() []HostpoolPublicNetworkAccess {
+	return []HostpoolPublicNetworkAccess{
+		HostpoolPublicNetworkAccessDisabled,
+		HostpoolPublicNetworkAccessEnabled,
+		HostpoolPublicNetworkAccessEnabledForClientsOnly,
+		HostpoolPublicNetworkAccessEnabledForSessionHostsOnly,
+	}
 }
 
 // LoadBalancerType - The type of the load balancer.
@@ -244,11 +262,6 @@ func PossibleLoadBalancerTypeValues() []LoadBalancerType {
 		LoadBalancerTypeDepthFirst,
 		LoadBalancerTypePersistent,
 	}
-}
-
-// ToPtr returns a *LoadBalancerType pointing to the current value.
-func (c LoadBalancerType) ToPtr() *LoadBalancerType {
-	return &c
 }
 
 // Operation - The type of operation for migration.
@@ -278,11 +291,6 @@ func PossibleOperationValues() []Operation {
 	}
 }
 
-// ToPtr returns a *Operation pointing to the current value.
-func (c Operation) ToPtr() *Operation {
-	return &c
-}
-
 // PersonalDesktopAssignmentType - PersonalDesktopAssignment type for HostPool.
 type PersonalDesktopAssignmentType string
 
@@ -297,11 +305,6 @@ func PossiblePersonalDesktopAssignmentTypeValues() []PersonalDesktopAssignmentTy
 		PersonalDesktopAssignmentTypeAutomatic,
 		PersonalDesktopAssignmentTypeDirect,
 	}
-}
-
-// ToPtr returns a *PersonalDesktopAssignmentType pointing to the current value.
-func (c PersonalDesktopAssignmentType) ToPtr() *PersonalDesktopAssignmentType {
-	return &c
 }
 
 // PreferredAppGroupType - The type of preferred application group type, default to Desktop Application Group
@@ -320,11 +323,6 @@ func PossiblePreferredAppGroupTypeValues() []PreferredAppGroupType {
 		PreferredAppGroupTypeNone,
 		PreferredAppGroupTypeRailApplications,
 	}
-}
-
-// ToPtr returns a *PreferredAppGroupType pointing to the current value.
-func (c PreferredAppGroupType) ToPtr() *PreferredAppGroupType {
-	return &c
 }
 
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
@@ -347,11 +345,6 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 	}
 }
 
-// ToPtr returns a *PrivateEndpointConnectionProvisioningState pointing to the current value.
-func (c PrivateEndpointConnectionProvisioningState) ToPtr() *PrivateEndpointConnectionProvisioningState {
-	return &c
-}
-
 // PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
 type PrivateEndpointServiceConnectionStatus string
 
@@ -370,13 +363,8 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 	}
 }
 
-// ToPtr returns a *PrivateEndpointServiceConnectionStatus pointing to the current value.
-func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceConnectionStatus {
-	return &c
-}
-
-// PublicNetworkAccess - Enabled allows this resource to be accessed from both public and private networks, Disabled allows this resource to only be accessed
-// via private endpoints
+// PublicNetworkAccess - Enabled allows this resource to be accessed from both public and private networks, Disabled allows
+// this resource to only be accessed via private endpoints
 type PublicNetworkAccess string
 
 const (
@@ -390,11 +378,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 	}
-}
-
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
 }
 
 // RegistrationTokenOperation - The type of resetting the token.
@@ -415,11 +398,6 @@ func PossibleRegistrationTokenOperationValues() []RegistrationTokenOperation {
 	}
 }
 
-// ToPtr returns a *RegistrationTokenOperation pointing to the current value.
-func (c RegistrationTokenOperation) ToPtr() *RegistrationTokenOperation {
-	return &c
-}
-
 // RemoteApplicationType - Resource Type of Application.
 type RemoteApplicationType string
 
@@ -436,12 +414,8 @@ func PossibleRemoteApplicationTypeValues() []RemoteApplicationType {
 	}
 }
 
-// ToPtr returns a *RemoteApplicationType pointing to the current value.
-func (c RemoteApplicationType) ToPtr() *RemoteApplicationType {
-	return &c
-}
-
-// SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT.
+// SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but
+// is not required on a PUT.
 type SKUTier string
 
 const (
@@ -459,11 +433,6 @@ func PossibleSKUTierValues() []SKUTier {
 		SKUTierStandard,
 		SKUTierPremium,
 	}
-}
-
-// ToPtr returns a *SKUTier pointing to the current value.
-func (c SKUTier) ToPtr() *SKUTier {
-	return &c
 }
 
 // SSOSecretType - The type of single sign on Secret Type.
@@ -486,11 +455,6 @@ func PossibleSSOSecretTypeValues() []SSOSecretType {
 	}
 }
 
-// ToPtr returns a *SSOSecretType pointing to the current value.
-func (c SSOSecretType) ToPtr() *SSOSecretType {
-	return &c
-}
-
 // ScalingHostPoolType - HostPool type for desktop.
 type ScalingHostPoolType string
 
@@ -504,11 +468,6 @@ func PossibleScalingHostPoolTypeValues() []ScalingHostPoolType {
 	return []ScalingHostPoolType{
 		ScalingHostPoolTypePooled,
 	}
-}
-
-// ToPtr returns a *ScalingHostPoolType pointing to the current value.
-func (c ScalingHostPoolType) ToPtr() *ScalingHostPoolType {
-	return &c
 }
 
 type ScalingScheduleDaysOfWeekItem string
@@ -536,9 +495,25 @@ func PossibleScalingScheduleDaysOfWeekItemValues() []ScalingScheduleDaysOfWeekIt
 	}
 }
 
-// ToPtr returns a *ScalingScheduleDaysOfWeekItem pointing to the current value.
-func (c ScalingScheduleDaysOfWeekItem) ToPtr() *ScalingScheduleDaysOfWeekItem {
-	return &c
+// SessionHostComponentUpdateType - The preferred mechanism for updating the agent components. This is either Scheduled or
+// Default.
+type SessionHostComponentUpdateType string
+
+const (
+	// SessionHostComponentUpdateTypeDefault - The agent components are updated according to the AVD infrastructure flighting.
+	// For more information, see https://aka.ms/avdagent.
+	SessionHostComponentUpdateTypeDefault SessionHostComponentUpdateType = "Default"
+	// SessionHostComponentUpdateTypeScheduled - This enables the Scheduled Agent Updates feature which allows the agent components
+	// to get updated according to the schedule that the admin define. For more information, see https://aka.ms/avdsau.
+	SessionHostComponentUpdateTypeScheduled SessionHostComponentUpdateType = "Scheduled"
+)
+
+// PossibleSessionHostComponentUpdateTypeValues returns the possible values for the SessionHostComponentUpdateType const type.
+func PossibleSessionHostComponentUpdateTypeValues() []SessionHostComponentUpdateType {
+	return []SessionHostComponentUpdateType{
+		SessionHostComponentUpdateTypeDefault,
+		SessionHostComponentUpdateTypeScheduled,
+	}
 }
 
 // SessionHostLoadBalancingAlgorithm - Load balancing algorithm for ramp up period.
@@ -555,11 +530,6 @@ func PossibleSessionHostLoadBalancingAlgorithmValues() []SessionHostLoadBalancin
 		SessionHostLoadBalancingAlgorithmBreadthFirst,
 		SessionHostLoadBalancingAlgorithmDepthFirst,
 	}
-}
-
-// ToPtr returns a *SessionHostLoadBalancingAlgorithm pointing to the current value.
-func (c SessionHostLoadBalancingAlgorithm) ToPtr() *SessionHostLoadBalancingAlgorithm {
-	return &c
 }
 
 // SessionState - State of user session.
@@ -586,11 +556,6 @@ func PossibleSessionStateValues() []SessionState {
 	}
 }
 
-// ToPtr returns a *SessionState pointing to the current value.
-func (c SessionState) ToPtr() *SessionState {
-	return &c
-}
-
 // Status - Status for a SessionHost.
 type Status string
 
@@ -603,8 +568,8 @@ const (
 	StatusDomainTrustRelationshipLost Status = "DomainTrustRelationshipLost"
 	// StatusFSLogixNotHealthy - FSLogix is in an unhealthy state on the session host.
 	StatusFSLogixNotHealthy Status = "FSLogixNotHealthy"
-	// StatusNeedsAssistance - New status to inform admins that the health on their endpoint needs to be fixed. The connections might not fail, as these issues
-	// are not fatal.
+	// StatusNeedsAssistance - New status to inform admins that the health on their endpoint needs to be fixed. The connections
+	// might not fail, as these issues are not fatal.
 	StatusNeedsAssistance Status = "NeedsAssistance"
 	// StatusNoHeartbeat - The Session Host is not heart beating.
 	StatusNoHeartbeat Status = "NoHeartbeat"
@@ -614,13 +579,14 @@ const (
 	StatusShutdown Status = "Shutdown"
 	// StatusSxSStackListenerNotReady - SxS stack installed on the SessionHost is not ready to receive connections.
 	StatusSxSStackListenerNotReady Status = "SxSStackListenerNotReady"
-	// StatusUnavailable - Session Host is either turned off or has failed critical health checks which is causing service not to be able to route connections
-	// to this session host. Note this replaces previous 'NoHeartBeat' status.
+	// StatusUnavailable - Session Host is either turned off or has failed critical health checks which is causing service not
+	// to be able to route connections to this session host. Note this replaces previous 'NoHeartBeat' status.
 	StatusUnavailable Status = "Unavailable"
-	// StatusUpgradeFailed - Session Host is unavailable because the critical component upgrade (agent, side-by-side stack, etc.) failed.
+	// StatusUpgradeFailed - Session Host is unavailable because the critical component upgrade (agent, side-by-side stack, etc.)
+	// failed.
 	StatusUpgradeFailed Status = "UpgradeFailed"
-	// StatusUpgrading - Session Host is unavailable because currently an upgrade of RDAgent/side-by-side stack is in progress. Note: this state will be removed
-	// once the upgrade completes and the host is able to accept connections.
+	// StatusUpgrading - Session Host is unavailable because currently an upgrade of RDAgent/side-by-side stack is in progress.
+	// Note: this state will be removed once the upgrade completes and the host is able to accept connections.
 	StatusUpgrading Status = "Upgrading"
 )
 
@@ -642,11 +608,6 @@ func PossibleStatusValues() []Status {
 	}
 }
 
-// ToPtr returns a *Status pointing to the current value.
-func (c Status) ToPtr() *Status {
-	return &c
-}
-
 // StopHostsWhen - Specifies when to stop hosts during ramp down period.
 type StopHostsWhen string
 
@@ -661,11 +622,6 @@ func PossibleStopHostsWhenValues() []StopHostsWhen {
 		StopHostsWhenZeroActiveSessions,
 		StopHostsWhenZeroSessions,
 	}
-}
-
-// ToPtr returns a *StopHostsWhen pointing to the current value.
-func (c StopHostsWhen) ToPtr() *StopHostsWhen {
-	return &c
 }
 
 // UpdateState - Update state of a SessionHost.
@@ -688,9 +644,4 @@ func PossibleUpdateStateValues() []UpdateState {
 		UpdateStateStarted,
 		UpdateStateSucceeded,
 	}
-}
-
-// ToPtr returns a *UpdateState pointing to the current value.
-func (c UpdateState) ToPtr() *UpdateState {
-	return &c
 }

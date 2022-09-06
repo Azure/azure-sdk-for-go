@@ -15,6 +15,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
@@ -53,7 +54,7 @@ func (c *SharedKeyCredential) SetAccountKey(accountKey string) error {
 }
 
 // computeHMACSHA256 generates a hash signature for an HTTP request or for a SAS.
-func (c *SharedKeyCredential) ComputeHMACSHA256(message string) (string, error) {
+func (c *SharedKeyCredential) computeHMACSHA256(message string) (string, error) {
 	h := hmac.New(sha256.New, c.accountKey.Load().([]byte))
 	_, err := h.Write([]byte(message))
 	return base64.StdEncoding.EncodeToString(h.Sum(nil)), err
@@ -123,7 +124,7 @@ func (s *sharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	signature, err := s.cred.ComputeHMACSHA256(stringToSign)
+	signature, err := s.cred.computeHMACSHA256(stringToSign)
 	if err != nil {
 		return nil, err
 	}
@@ -133,7 +134,7 @@ func (s *sharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
 	response, err := req.Next()
 	if err != nil && response != nil && response.StatusCode == http.StatusForbidden {
 		// Service failed to authenticate request, log it
-		log.Write(log.EventResponse, "===== HTTP Forbidden status, String-to-Sign:\n"+stringToSign+"\n===============================\n")
+		log.Write(azlog.EventResponse, "===== HTTP Forbidden status, String-to-Sign:\n"+stringToSign+"\n===============================\n")
 	}
 	return response, err
 }

@@ -41,7 +41,7 @@ func MustGenerateMessages(sc *StressContext, sender *azservicebus.Sender, messag
 			ApplicationProperties: map[string]interface{}{
 				"Number": i,
 			},
-		})
+		}, nil)
 		sc.PanicOnError("failed add/sending a batch", err)
 	}
 
@@ -50,19 +50,28 @@ func MustGenerateMessages(sc *StressContext, sender *azservicebus.Sender, messag
 }
 
 // MustCreateAutoDeletingQueue creates a queue that will auto-delete 10 minutes after activity has ceased.
-func MustCreateAutoDeletingQueue(sc *StressContext, queueName string) {
+func MustCreateAutoDeletingQueue(sc *StressContext, queueName string, qp *admin.QueueProperties) *admin.Client {
 	adminClient, err := admin.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create adminClient", err)
 
-	autoDeleteOnIdle := 10 * time.Minute
+	var newQP admin.QueueProperties
 
-	_, err = adminClient.CreateQueue(context.Background(), queueName, &admin.QueueProperties{
-		AutoDeleteOnIdle: &autoDeleteOnIdle,
+	if qp != nil {
+		newQP = *qp
+	}
 
-		// mostly useful for tracking backwards in case something goes wrong.
-		UserMetadata: &sc.TestRunID,
-	}, nil)
+	autoDeleteOnIdle := "PT10M"
+	newQP.AutoDeleteOnIdle = &autoDeleteOnIdle
+
+	// mostly useful for tracking backwards in case something goes wrong.
+	newQP.UserMetadata = &sc.TestRunID
+
+	_, err = adminClient.CreateQueue(context.Background(), queueName, &admin.CreateQueueOptions{
+		Properties: &newQP,
+	})
 	sc.PanicOnError("failed to create queue", err)
+
+	return adminClient
 }
 
 func MustCreateSubscriptions(sc *StressContext, topicName string, subscriptionNames []string) func() {
@@ -72,11 +81,11 @@ func MustCreateSubscriptions(sc *StressContext, topicName string, subscriptionNa
 	ac, err := admin.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("Failed to create a topic manager", err)
 
-	_, err = ac.CreateTopic(context.Background(), topicName, nil, nil)
+	_, err = ac.CreateTopic(context.Background(), topicName, nil)
 	sc.PanicOnError("Failed to create topic", err)
 
 	for _, name := range subscriptionNames {
-		_, err := ac.CreateSubscription(context.Background(), topicName, name, nil, nil)
+		_, err := ac.CreateSubscription(context.Background(), topicName, name, nil)
 		sc.PanicOnError("Failed to create subscription manager", err)
 	}
 
@@ -93,23 +102,31 @@ func ConstantlyUpdateQueue(ctx context.Context, adminClient *admin.Client, queue
 	ticker := time.NewTicker(updateInterval)
 
 	for range ticker.C {
-		resp, err := adminClient.GetQueue(ctx, queue, nil)
-
-		if err != nil {
+		if err := ForceQueueDetach(ctx, adminClient, queue); err != nil {
 			return err
 		}
+	}
 
-		if *resp.MaxDeliveryCount == 10 {
-			*resp.MaxDeliveryCount = 11
-		} else {
-			*resp.MaxDeliveryCount = 10
-		}
+	return nil
+}
 
-		_, err = adminClient.UpdateQueue(ctx, queue, resp.QueueProperties, nil)
+func ForceQueueDetach(ctx context.Context, adminClient *admin.Client, queue string) error {
+	resp, err := adminClient.GetQueue(ctx, queue, nil)
 
-		if err != nil {
-			return err
-		}
+	if err != nil {
+		return err
+	}
+
+	if *resp.MaxDeliveryCount == 10 {
+		*resp.MaxDeliveryCount = 11
+	} else {
+		*resp.MaxDeliveryCount = 10
+	}
+
+	_, err = adminClient.UpdateQueue(ctx, queue, resp.QueueProperties, nil)
+
+	if err != nil {
+		return err
 	}
 
 	return nil

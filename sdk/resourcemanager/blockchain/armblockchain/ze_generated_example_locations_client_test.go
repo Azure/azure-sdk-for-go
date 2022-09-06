@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,38 +17,48 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain"
 )
 
-// x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/Locations_CheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/Locations_CheckNameAvailability.json
 func ExampleLocationsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblockchain.NewLocationsClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
-		"<location-name>",
-		&armblockchain.LocationsCheckNameAvailabilityOptions{NameAvailabilityRequest: &armblockchain.NameAvailabilityRequest{
-			Name: to.StringPtr("<name>"),
-			Type: to.StringPtr("<type>"),
+	client, err := armblockchain.NewLocationsClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.CheckNameAvailability(ctx,
+		"southeastasia",
+		&armblockchain.LocationsClientCheckNameAvailabilityOptions{NameAvailabilityRequest: &armblockchain.NameAvailabilityRequest{
+			Name: to.Ptr("contosemember1"),
+			Type: to.Ptr("Microsoft.Blockchain/blockchainMembers"),
 		},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/Locations_ListConsortiums.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/Locations_ListConsortiums.json
 func ExampleLocationsClient_ListConsortiums() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblockchain.NewLocationsClient("<subscription-id>", cred, nil)
-	_, err = client.ListConsortiums(ctx,
-		"<location-name>",
+	client, err := armblockchain.NewLocationsClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.ListConsortiums(ctx,
+		"southeastasia",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }

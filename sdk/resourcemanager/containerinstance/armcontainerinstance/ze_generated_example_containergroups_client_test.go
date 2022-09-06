@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,87 +12,100 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance"
 )
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsList.json
-func ExampleContainerGroupsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsList.json
+func ExampleContainerGroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcontainerinstance.NewContainerGroupsClient("<subscription-id>", cred, nil)
-	pager := client.List(nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armcontainerinstance.NewContainerGroupsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager(nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ContainerGroup.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsListByResourceGroup.json
-func ExampleContainerGroupsClient_ListByResourceGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsListByResourceGroup.json
+func ExampleContainerGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcontainerinstance.NewContainerGroupsClient("<subscription-id>", cred, nil)
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	client, err := armcontainerinstance.NewContainerGroupsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByResourceGroupPager("demo",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ContainerGroup.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsGet_Failed.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsGet_Failed.json
 func ExampleContainerGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcontainerinstance.NewContainerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerinstance.NewContainerGroupsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<container-group-name>",
+		"demo",
+		"demo1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("ContainerGroup.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsCreateOrUpdate.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcontainerinstance.NewContainerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerinstance.NewContainerGroupsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<container-group-name>",
+		"demo",
+		"demo1",
 		armcontainerinstance.ContainerGroup{
-			Resource: armcontainerinstance.Resource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.Ptr("west us"),
 			Identity: &armcontainerinstance.ContainerGroupIdentity{
-				Type: armcontainerinstance.ResourceIdentityTypeSystemAssignedUserAssigned.ToPtr(),
+				Type: to.Ptr(armcontainerinstance.ResourceIdentityTypeSystemAssignedUserAssigned),
 				UserAssignedIdentities: map[string]*armcontainerinstance.Components10Wh5UdSchemasContainergroupidentityPropertiesUserassignedidentitiesAdditionalproperties{
 					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name": {},
 				},
@@ -100,204 +113,228 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate() {
 			Properties: &armcontainerinstance.ContainerGroupProperties{
 				Containers: []*armcontainerinstance.Container{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("demo1"),
 						Properties: &armcontainerinstance.ContainerProperties{
 							Command:              []*string{},
 							EnvironmentVariables: []*armcontainerinstance.EnvironmentVariable{},
-							Image:                to.StringPtr("<image>"),
+							Image:                to.Ptr("nginx"),
 							Ports: []*armcontainerinstance.ContainerPort{
 								{
-									Port: to.Int32Ptr(80),
+									Port: to.Ptr[int32](80),
 								}},
 							Resources: &armcontainerinstance.ResourceRequirements{
 								Requests: &armcontainerinstance.ResourceRequests{
-									CPU: to.Float64Ptr(1),
+									CPU: to.Ptr[float64](1),
 									Gpu: &armcontainerinstance.GpuResource{
-										Count: to.Int32Ptr(1),
-										SKU:   armcontainerinstance.GpuSKUK80.ToPtr(),
+										Count: to.Ptr[int32](1),
+										SKU:   to.Ptr(armcontainerinstance.GpuSKUK80),
 									},
-									MemoryInGB: to.Float64Ptr(1.5),
+									MemoryInGB: to.Ptr[float64](1.5),
 								},
 							},
 							VolumeMounts: []*armcontainerinstance.VolumeMount{
 								{
-									Name:      to.StringPtr("<name>"),
-									MountPath: to.StringPtr("<mount-path>"),
-									ReadOnly:  to.BoolPtr(false),
+									Name:      to.Ptr("volume1"),
+									MountPath: to.Ptr("/mnt/volume1"),
+									ReadOnly:  to.Ptr(false),
 								},
 								{
-									Name:      to.StringPtr("<name>"),
-									MountPath: to.StringPtr("<mount-path>"),
-									ReadOnly:  to.BoolPtr(false),
+									Name:      to.Ptr("volume2"),
+									MountPath: to.Ptr("/mnt/volume2"),
+									ReadOnly:  to.Ptr(false),
 								},
 								{
-									Name:      to.StringPtr("<name>"),
-									MountPath: to.StringPtr("<mount-path>"),
-									ReadOnly:  to.BoolPtr(true),
+									Name:      to.Ptr("volume3"),
+									MountPath: to.Ptr("/mnt/volume3"),
+									ReadOnly:  to.Ptr(true),
 								}},
 						},
 					}},
 				Diagnostics: &armcontainerinstance.ContainerGroupDiagnostics{
 					LogAnalytics: &armcontainerinstance.LogAnalytics{
-						LogType: armcontainerinstance.LogAnalyticsLogTypeContainerInsights.ToPtr(),
+						LogType: to.Ptr(armcontainerinstance.LogAnalyticsLogTypeContainerInsights),
 						Metadata: map[string]*string{
-							"test-key": to.StringPtr("test-metadata-value"),
+							"test-key": to.Ptr("test-metadata-value"),
 						},
-						WorkspaceID:         to.StringPtr("<workspace-id>"),
-						WorkspaceKey:        to.StringPtr("<workspace-key>"),
-						WorkspaceResourceID: to.StringPtr("<workspace-resource-id>"),
+						WorkspaceID:         to.Ptr("workspaceid"),
+						WorkspaceKey:        to.Ptr("workspaceKey"),
+						WorkspaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg/providers/microsoft.operationalinsights/workspaces/workspace"),
 					},
 				},
 				DNSConfig: &armcontainerinstance.DNSConfiguration{
 					NameServers: []*string{
-						to.StringPtr("1.1.1.1")},
-					Options:       to.StringPtr("<options>"),
-					SearchDomains: to.StringPtr("<search-domains>"),
+						to.Ptr("1.1.1.1")},
+					Options:       to.Ptr("ndots:2"),
+					SearchDomains: to.Ptr("cluster.local svc.cluster.local"),
 				},
 				ImageRegistryCredentials: []*armcontainerinstance.ImageRegistryCredential{},
 				IPAddress: &armcontainerinstance.IPAddress{
-					Type:         armcontainerinstance.ContainerGroupIPAddressTypePublic.ToPtr(),
-					DNSNameLabel: to.StringPtr("<dnsname-label>"),
+					Type:                    to.Ptr(armcontainerinstance.ContainerGroupIPAddressTypePublic),
+					DNSNameLabel:            to.Ptr("dnsnamelabel1"),
+					DNSNameLabelReusePolicy: to.Ptr(armcontainerinstance.AutoGeneratedDomainNameLabelScopeUnsecure),
 					Ports: []*armcontainerinstance.Port{
 						{
-							Port:     to.Int32Ptr(80),
-							Protocol: armcontainerinstance.ContainerGroupNetworkProtocolTCP.ToPtr(),
+							Port:     to.Ptr[int32](80),
+							Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
 						}},
 				},
-				OSType: armcontainerinstance.OperatingSystemTypesLinux.ToPtr(),
+				OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
 				SubnetIDs: []*armcontainerinstance.ContainerGroupSubnetID{
 					{
-						ID: to.StringPtr("<id>"),
+						ID: to.Ptr("[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"),
 					}},
 				Volumes: []*armcontainerinstance.Volume{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("volume1"),
 						AzureFile: &armcontainerinstance.AzureFileVolume{
-							ShareName:          to.StringPtr("<share-name>"),
-							StorageAccountKey:  to.StringPtr("<storage-account-key>"),
-							StorageAccountName: to.StringPtr("<storage-account-name>"),
+							ShareName:          to.Ptr("shareName"),
+							StorageAccountKey:  to.Ptr("accountKey"),
+							StorageAccountName: to.Ptr("accountName"),
 						},
 					},
 					{
-						Name:     to.StringPtr("<name>"),
+						Name:     to.Ptr("volume2"),
 						EmptyDir: map[string]interface{}{},
 					},
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("volume3"),
 						Secret: map[string]*string{
-							"secretKey1": to.StringPtr("SecretValue1InBase64"),
-							"secretKey2": to.StringPtr("SecretValue2InBase64"),
+							"secretKey1": to.Ptr("SecretValue1InBase64"),
+							"secretKey2": to.Ptr("SecretValue2InBase64"),
 						},
 					}},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("ContainerGroup.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsUpdate.json
 func ExampleContainerGroupsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcontainerinstance.NewContainerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerinstance.NewContainerGroupsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<container-group-name>",
-		armcontainerinstance.Resource{},
+		"demoResource",
+		"demo1",
+		armcontainerinstance.Resource{
+			Tags: map[string]*string{
+				"tag1key": to.Ptr("tag1Value"),
+				"tag2key": to.Ptr("tag2Value"),
+			},
+		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("ContainerGroup.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsDelete.json
 func ExampleContainerGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcontainerinstance.NewContainerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerinstance.NewContainerGroupsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<container-group-name>",
+		"demo",
+		"demo1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("ContainerGroup.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsRestart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsRestart.json
 func ExampleContainerGroupsClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcontainerinstance.NewContainerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerinstance.NewContainerGroupsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginRestart(ctx,
-		"<resource-group-name>",
-		"<container-group-name>",
+		"demo",
+		"demo1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsStop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsStop.json
 func ExampleContainerGroupsClient_Stop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcontainerinstance.NewContainerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerinstance.NewContainerGroupsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Stop(ctx,
-		"<resource-group-name>",
-		"<container-group-name>",
+		"demo",
+		"demo1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsStart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsStart.json
 func ExampleContainerGroupsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcontainerinstance.NewContainerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerinstance.NewContainerGroupsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<container-group-name>",
+		"demo",
+		"demo1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }

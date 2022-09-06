@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,17 +8,10 @@
 
 package armadvisor
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // ARMErrorResponseBody - ARM error response body.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ARMErrorResponseBody struct {
-	raw string
 	// Gets or sets the string that can be used to programmatically identify the error.
 	Code *string `json:"code,omitempty"`
 
@@ -26,30 +19,24 @@ type ARMErrorResponseBody struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// Error implements the error interface for type ARMErrorResponseBody.
-// The contents of the error text are not contractual and subject to change.
-func (e ARMErrorResponseBody) Error() string {
-	return e.raw
-}
-
-// Implements the error and azcore.HTTPResponse interfaces.
 type ArmErrorResponse struct {
-	raw string
 	// ARM error response body.
-	InnerError *ARMErrorResponseBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ArmErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ArmErrorResponse) Error() string {
-	return e.raw
+	Error *ARMErrorResponseBody `json:"error,omitempty"`
 }
 
 // ConfigData - The Advisor configuration data structure.
 type ConfigData struct {
-	Resource
 	// The Advisor configuration data structure.
 	Properties *ConfigDataProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ConfigDataProperties - Configuration data properties
@@ -60,17 +47,9 @@ type ConfigDataProperties struct {
 	// Exclude the resource from Advisor evaluations. Valid values: False (default) or True.
 	Exclude *bool `json:"exclude,omitempty"`
 
-	// Minimum percentage threshold for Advisor low CPU utilization evaluation. Valid only for subscriptions. Valid values: 5 (default), 10, 15 or 20.
+	// Minimum percentage threshold for Advisor low CPU utilization evaluation. Valid only for subscriptions. Valid values: 5
+	// (default), 10, 15 or 20.
 	LowCPUThreshold *CPUThreshold `json:"lowCpuThreshold,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ConfigDataProperties.
-func (c ConfigDataProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "digests", c.Digests)
-	populate(objectMap, "exclude", c.Exclude)
-	populate(objectMap, "lowCpuThreshold", c.LowCPUThreshold)
-	return json.Marshal(objectMap)
 }
 
 // ConfigurationListResult - The list of Advisor configurations.
@@ -82,31 +61,27 @@ type ConfigurationListResult struct {
 	Value []*ConfigData `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConfigurationListResult.
-func (c ConfigurationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
-// ConfigurationsCreateInResourceGroupOptions contains the optional parameters for the Configurations.CreateInResourceGroup method.
-type ConfigurationsCreateInResourceGroupOptions struct {
+// ConfigurationsClientCreateInResourceGroupOptions contains the optional parameters for the ConfigurationsClient.CreateInResourceGroup
+// method.
+type ConfigurationsClientCreateInResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationsCreateInSubscriptionOptions contains the optional parameters for the Configurations.CreateInSubscription method.
-type ConfigurationsCreateInSubscriptionOptions struct {
+// ConfigurationsClientCreateInSubscriptionOptions contains the optional parameters for the ConfigurationsClient.CreateInSubscription
+// method.
+type ConfigurationsClientCreateInSubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationsListByResourceGroupOptions contains the optional parameters for the Configurations.ListByResourceGroup method.
-type ConfigurationsListByResourceGroupOptions struct {
+// ConfigurationsClientListByResourceGroupOptions contains the optional parameters for the ConfigurationsClient.ListByResourceGroup
+// method.
+type ConfigurationsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationsListBySubscriptionOptions contains the optional parameters for the Configurations.ListBySubscription method.
-type ConfigurationsListBySubscriptionOptions struct {
+// ConfigurationsClientListBySubscriptionOptions contains the optional parameters for the ConfigurationsClient.ListBySubscription
+// method.
+type ConfigurationsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -121,8 +96,8 @@ type DigestConfig struct {
 	// Frequency that digest will be triggered, in days. Value must be between 7 and 30 days inclusive.
 	Frequency *int32 `json:"frequency,omitempty"`
 
-	// Language for digest content body. Value must be ISO 639-1 code for one of Azure portal supported languages. Otherwise, it will be converted into one.
-	// Default value is English (en).
+	// Language for digest content body. Value must be ISO 639-1 code for one of Azure portal supported languages. Otherwise,
+	// it will be converted into one. Default value is English (en).
 	Language *string `json:"language,omitempty"`
 
 	// Name of digest configuration. Value is case-insensitive and must be unique within a subscription.
@@ -130,18 +105,6 @@ type DigestConfig struct {
 
 	// State of digest configuration.
 	State *DigestConfigState `json:"state,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DigestConfig.
-func (d DigestConfig) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "actionGroupResourceId", d.ActionGroupResourceID)
-	populate(objectMap, "categories", d.Categories)
-	populate(objectMap, "frequency", d.Frequency)
-	populate(objectMap, "language", d.Language)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "state", d.State)
-	return json.Marshal(objectMap)
 }
 
 // MetadataEntity - The metadata entity contract.
@@ -168,14 +131,6 @@ type MetadataEntityListResult struct {
 	Value []*MetadataEntity `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MetadataEntityListResult.
-func (m MetadataEntityListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
-}
-
 // MetadataEntityProperties - The metadata entity properties
 type MetadataEntityProperties struct {
 	// The list of scenarios applicable to this metadata entity.
@@ -189,16 +144,6 @@ type MetadataEntityProperties struct {
 
 	// The list of supported values.
 	SupportedValues []*MetadataSupportedValueDetail `json:"supportedValues,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MetadataEntityProperties.
-func (m MetadataEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "applicableScenarios", m.ApplicableScenarios)
-	populate(objectMap, "dependsOn", m.DependsOn)
-	populate(objectMap, "displayName", m.DisplayName)
-	populate(objectMap, "supportedValues", m.SupportedValues)
-	return json.Marshal(objectMap)
 }
 
 // MetadataSupportedValueDetail - The metadata supported value detail.
@@ -243,33 +188,25 @@ type OperationEntityListResult struct {
 	Value []*OperationEntity `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationEntityListResult.
-func (o OperationEntityListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecommendationMetadataGetOptions contains the optional parameters for the RecommendationMetadata.Get method.
-type RecommendationMetadataGetOptions struct {
+// RecommendationMetadataClientGetOptions contains the optional parameters for the RecommendationMetadataClient.Get method.
+type RecommendationMetadataClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecommendationMetadataListOptions contains the optional parameters for the RecommendationMetadata.List method.
-type RecommendationMetadataListOptions struct {
+// RecommendationMetadataClientListOptions contains the optional parameters for the RecommendationMetadataClient.List method.
+type RecommendationMetadataClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // RecommendationProperties - The properties of the recommendation.
 type RecommendationProperties struct {
 	// The list of recommended actions to implement recommendation.
-	Actions []map[string]map[string]interface{} `json:"actions,omitempty"`
+	Actions []map[string]interface{} `json:"actions,omitempty"`
 
 	// The category of the recommendation.
 	Category *Category `json:"category,omitempty"`
@@ -278,7 +215,7 @@ type RecommendationProperties struct {
 	Description *string `json:"description,omitempty"`
 
 	// The recommendation metadata properties exposed to customer to provide additional information.
-	ExposedMetadataProperties map[string]map[string]interface{} `json:"exposedMetadataProperties,omitempty"`
+	ExposedMetadataProperties map[string]interface{} `json:"exposedMetadataProperties,omitempty"`
 
 	// Extended properties
 	ExtendedProperties map[string]*string `json:"extendedProperties,omitempty"`
@@ -302,7 +239,7 @@ type RecommendationProperties struct {
 	LearnMoreLink *string `json:"learnMoreLink,omitempty"`
 
 	// The recommendation metadata.
-	Metadata map[string]map[string]interface{} `json:"metadata,omitempty"`
+	Metadata map[string]interface{} `json:"metadata,omitempty"`
 
 	// The potential benefit of implementing recommendation.
 	PotentialBenefits *string `json:"potentialBenefits,omitempty"`
@@ -311,7 +248,7 @@ type RecommendationProperties struct {
 	RecommendationTypeID *string `json:"recommendationTypeId,omitempty"`
 
 	// The automated way to apply recommendation.
-	Remediation map[string]map[string]interface{} `json:"remediation,omitempty"`
+	Remediation map[string]interface{} `json:"remediation,omitempty"`
 
 	// Metadata of resource that was assessed
 	ResourceMetadata *ResourceMetadata `json:"resourceMetadata,omitempty"`
@@ -326,124 +263,29 @@ type RecommendationProperties struct {
 	SuppressionIDs []*string `json:"suppressionIds,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RecommendationProperties.
-func (r RecommendationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "actions", r.Actions)
-	populate(objectMap, "category", r.Category)
-	populate(objectMap, "description", r.Description)
-	populate(objectMap, "exposedMetadataProperties", r.ExposedMetadataProperties)
-	populate(objectMap, "extendedProperties", r.ExtendedProperties)
-	populate(objectMap, "impact", r.Impact)
-	populate(objectMap, "impactedField", r.ImpactedField)
-	populate(objectMap, "impactedValue", r.ImpactedValue)
-	populate(objectMap, "label", r.Label)
-	populateTimeRFC3339(objectMap, "lastUpdated", r.LastUpdated)
-	populate(objectMap, "learnMoreLink", r.LearnMoreLink)
-	populate(objectMap, "metadata", r.Metadata)
-	populate(objectMap, "potentialBenefits", r.PotentialBenefits)
-	populate(objectMap, "recommendationTypeId", r.RecommendationTypeID)
-	populate(objectMap, "remediation", r.Remediation)
-	populate(objectMap, "resourceMetadata", r.ResourceMetadata)
-	populate(objectMap, "risk", r.Risk)
-	populate(objectMap, "shortDescription", r.ShortDescription)
-	populate(objectMap, "suppressionIds", r.SuppressionIDs)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecommendationProperties.
-func (r *RecommendationProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "actions":
-			err = unpopulate(val, &r.Actions)
-			delete(rawMsg, key)
-		case "category":
-			err = unpopulate(val, &r.Category)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &r.Description)
-			delete(rawMsg, key)
-		case "exposedMetadataProperties":
-			err = unpopulate(val, &r.ExposedMetadataProperties)
-			delete(rawMsg, key)
-		case "extendedProperties":
-			err = unpopulate(val, &r.ExtendedProperties)
-			delete(rawMsg, key)
-		case "impact":
-			err = unpopulate(val, &r.Impact)
-			delete(rawMsg, key)
-		case "impactedField":
-			err = unpopulate(val, &r.ImpactedField)
-			delete(rawMsg, key)
-		case "impactedValue":
-			err = unpopulate(val, &r.ImpactedValue)
-			delete(rawMsg, key)
-		case "label":
-			err = unpopulate(val, &r.Label)
-			delete(rawMsg, key)
-		case "lastUpdated":
-			err = unpopulateTimeRFC3339(val, &r.LastUpdated)
-			delete(rawMsg, key)
-		case "learnMoreLink":
-			err = unpopulate(val, &r.LearnMoreLink)
-			delete(rawMsg, key)
-		case "metadata":
-			err = unpopulate(val, &r.Metadata)
-			delete(rawMsg, key)
-		case "potentialBenefits":
-			err = unpopulate(val, &r.PotentialBenefits)
-			delete(rawMsg, key)
-		case "recommendationTypeId":
-			err = unpopulate(val, &r.RecommendationTypeID)
-			delete(rawMsg, key)
-		case "remediation":
-			err = unpopulate(val, &r.Remediation)
-			delete(rawMsg, key)
-		case "resourceMetadata":
-			err = unpopulate(val, &r.ResourceMetadata)
-			delete(rawMsg, key)
-		case "risk":
-			err = unpopulate(val, &r.Risk)
-			delete(rawMsg, key)
-		case "shortDescription":
-			err = unpopulate(val, &r.ShortDescription)
-			delete(rawMsg, key)
-		case "suppressionIds":
-			err = unpopulate(val, &r.SuppressionIDs)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// RecommendationsGenerateOptions contains the optional parameters for the Recommendations.Generate method.
-type RecommendationsGenerateOptions struct {
+// RecommendationsClientGenerateOptions contains the optional parameters for the RecommendationsClient.Generate method.
+type RecommendationsClientGenerateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecommendationsGetGenerateStatusOptions contains the optional parameters for the Recommendations.GetGenerateStatus method.
-type RecommendationsGetGenerateStatusOptions struct {
+// RecommendationsClientGetGenerateStatusOptions contains the optional parameters for the RecommendationsClient.GetGenerateStatus
+// method.
+type RecommendationsClientGetGenerateStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecommendationsGetOptions contains the optional parameters for the Recommendations.Get method.
-type RecommendationsGetOptions struct {
+// RecommendationsClientGetOptions contains the optional parameters for the RecommendationsClient.Get method.
+type RecommendationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecommendationsListOptions contains the optional parameters for the Recommendations.List method.
-type RecommendationsListOptions struct {
-	// The filter to apply to the recommendations.<br>Filter can be applied to properties ['ResourceId', 'ResourceGroup', 'RecommendationTypeGuid', '[Category](#category)']
-	// with operators ['eq', 'and', 'or'].<br>Example:<br>- $filter=Category eq 'Cost' and ResourceGroup eq 'MyResourceGroup'
+// RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.List method.
+type RecommendationsClientListOptions struct {
+	// The filter to apply to the recommendations.
+	// Filter can be applied to properties ['ResourceId', 'ResourceGroup', 'RecommendationTypeGuid', 'Category'] with operators
+	// ['eq', 'and', 'or'].
+	// Example:
+	// - $filter=Category eq 'Cost' and ResourceGroup eq 'MyResourceGroup'
 	Filter *string
 	// The page-continuation token to use with a paged version of this API.
 	SkipToken *string
@@ -466,7 +308,7 @@ type Resource struct {
 // ResourceMetadata - Recommendation resource metadata
 type ResourceMetadata struct {
 	// The action to view resource.
-	Action map[string]map[string]interface{} `json:"action,omitempty"`
+	Action map[string]interface{} `json:"action,omitempty"`
 
 	// The plural user friendly name of resource type. eg: virtual machines
 	Plural *string `json:"plural,omitempty"`
@@ -481,22 +323,19 @@ type ResourceMetadata struct {
 	Source *string `json:"source,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceMetadata.
-func (r ResourceMetadata) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "action", r.Action)
-	populate(objectMap, "plural", r.Plural)
-	populate(objectMap, "resourceId", r.ResourceID)
-	populate(objectMap, "singular", r.Singular)
-	populate(objectMap, "source", r.Source)
-	return json.Marshal(objectMap)
-}
-
 // ResourceRecommendationBase - Advisor Recommendation.
 type ResourceRecommendationBase struct {
-	Resource
 	// The properties of the recommendation.
 	Properties *RecommendationProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ResourceRecommendationBaseListResult - The list of Advisor recommendations.
@@ -508,14 +347,6 @@ type ResourceRecommendationBaseListResult struct {
 	Value []*ResourceRecommendationBase `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceRecommendationBaseListResult.
-func (r ResourceRecommendationBaseListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
 // ShortDescription - A summary of the recommendation.
 type ShortDescription struct {
 	// The issue or opportunity identified by the recommendation.
@@ -525,11 +356,20 @@ type ShortDescription struct {
 	Solution *string `json:"solution,omitempty"`
 }
 
-// SuppressionContract - The details of the snoozed or dismissed rule; for example, the duration, name, and GUID associated with the rule.
+// SuppressionContract - The details of the snoozed or dismissed rule; for example, the duration, name, and GUID associated
+// with the rule.
 type SuppressionContract struct {
-	Resource
 	// The properties of the suppression.
 	Properties *SuppressionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SuppressionContractListResult - The list of Advisor suppressions.
@@ -539,14 +379,6 @@ type SuppressionContractListResult struct {
 
 	// The list of suppressions.
 	Value []*SuppressionContract `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SuppressionContractListResult.
-func (s SuppressionContractListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // SuppressionProperties - The properties of the suppression.
@@ -561,77 +393,25 @@ type SuppressionProperties struct {
 	ExpirationTimeStamp *time.Time `json:"expirationTimeStamp,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SuppressionProperties.
-func (s SuppressionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "expirationTimeStamp", s.ExpirationTimeStamp)
-	populate(objectMap, "suppressionId", s.SuppressionID)
-	populate(objectMap, "ttl", s.TTL)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SuppressionProperties.
-func (s *SuppressionProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "expirationTimeStamp":
-			err = unpopulateTimeRFC3339(val, &s.ExpirationTimeStamp)
-			delete(rawMsg, key)
-		case "suppressionId":
-			err = unpopulate(val, &s.SuppressionID)
-			delete(rawMsg, key)
-		case "ttl":
-			err = unpopulate(val, &s.TTL)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// SuppressionsCreateOptions contains the optional parameters for the Suppressions.Create method.
-type SuppressionsCreateOptions struct {
+// SuppressionsClientCreateOptions contains the optional parameters for the SuppressionsClient.Create method.
+type SuppressionsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SuppressionsDeleteOptions contains the optional parameters for the Suppressions.Delete method.
-type SuppressionsDeleteOptions struct {
+// SuppressionsClientDeleteOptions contains the optional parameters for the SuppressionsClient.Delete method.
+type SuppressionsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SuppressionsGetOptions contains the optional parameters for the Suppressions.Get method.
-type SuppressionsGetOptions struct {
+// SuppressionsClientGetOptions contains the optional parameters for the SuppressionsClient.Get method.
+type SuppressionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SuppressionsListOptions contains the optional parameters for the Suppressions.List method.
-type SuppressionsListOptions struct {
+// SuppressionsClientListOptions contains the optional parameters for the SuppressionsClient.List method.
+type SuppressionsClientListOptions struct {
 	// The page-continuation token to use with a paged version of this API.
 	SkipToken *string
 	// The number of suppressions per page if a paged version of this API is being used.
 	Top *int32
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,153 +19,147 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection"
 )
 
-// x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/PolicyCRUD/ListBackupPolicy.json
-func ExampleBackupPoliciesClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/PolicyCRUD/ListBackupPolicy.json
+func ExampleBackupPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdataprotection.NewBackupPoliciesClient("<subscription-id>", cred, nil)
-	pager := client.List("<vault-name>",
-		"<resource-group-name>",
+	client, err := armdataprotection.NewBackupPoliciesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("000pikumar",
+		"PrivatePreviewVault",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("BaseBackupPolicyResource.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/PolicyCRUD/GetBackupPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/PolicyCRUD/GetBackupPolicy.json
 func ExampleBackupPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdataprotection.NewBackupPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupPoliciesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<vault-name>",
-		"<resource-group-name>",
-		"<backup-policy-name>",
+		"000pikumar",
+		"PrivatePreviewVault",
+		"OSSDBPolicy",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("BaseBackupPolicyResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/PolicyCRUD/CreateOrUpdateBackupPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/PolicyCRUD/CreateOrUpdateBackupPolicy.json
 func ExampleBackupPoliciesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdataprotection.NewBackupPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupPoliciesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<vault-name>",
-		"<resource-group-name>",
-		"<backup-policy-name>",
+		"000pikumar",
+		"PrivatePreviewVault",
+		"OSSDBPolicy",
 		armdataprotection.BaseBackupPolicyResource{
 			Properties: &armdataprotection.BackupPolicy{
-				BaseBackupPolicy: armdataprotection.BaseBackupPolicy{
-					DatasourceTypes: []*string{
-						to.StringPtr("OssDB")},
-					ObjectType: to.StringPtr("<object-type>"),
-				},
+				DatasourceTypes: []*string{
+					to.Ptr("OssDB")},
+				ObjectType: to.Ptr("BackupPolicy"),
 				PolicyRules: []armdataprotection.BasePolicyRuleClassification{
 					&armdataprotection.AzureBackupRule{
-						BasePolicyRule: armdataprotection.BasePolicyRule{
-							Name:       to.StringPtr("<name>"),
-							ObjectType: to.StringPtr("<object-type>"),
-						},
+						Name:       to.Ptr("BackupWeekly"),
+						ObjectType: to.Ptr("AzureBackupRule"),
 						BackupParameters: &armdataprotection.AzureBackupParams{
-							BackupParameters: armdataprotection.BackupParameters{
-								ObjectType: to.StringPtr("<object-type>"),
-							},
-							BackupType: to.StringPtr("<backup-type>"),
+							ObjectType: to.Ptr("AzureBackupParams"),
+							BackupType: to.Ptr("Full"),
 						},
 						DataStore: &armdataprotection.DataStoreInfoBase{
-							DataStoreType: armdataprotection.DataStoreTypesVaultStore.ToPtr(),
-							ObjectType:    to.StringPtr("<object-type>"),
+							DataStoreType: to.Ptr(armdataprotection.DataStoreTypesVaultStore),
+							ObjectType:    to.Ptr("DataStoreInfoBase"),
 						},
 						Trigger: &armdataprotection.ScheduleBasedTriggerContext{
-							TriggerContext: armdataprotection.TriggerContext{
-								ObjectType: to.StringPtr("<object-type>"),
-							},
+							ObjectType: to.Ptr("ScheduleBasedTriggerContext"),
 							Schedule: &armdataprotection.BackupSchedule{
 								RepeatingTimeIntervals: []*string{
-									to.StringPtr("R/2019-11-20T08:00:00-08:00/P1W")},
+									to.Ptr("R/2019-11-20T08:00:00-08:00/P1W")},
 							},
 							TaggingCriteria: []*armdataprotection.TaggingCriteria{
 								{
-									IsDefault: to.BoolPtr(true),
+									IsDefault: to.Ptr(true),
 									TagInfo: &armdataprotection.RetentionTag{
-										TagName: to.StringPtr("<tag-name>"),
+										TagName: to.Ptr("Default"),
 									},
-									TaggingPriority: to.Int64Ptr(99),
+									TaggingPriority: to.Ptr[int64](99),
 								},
 								{
 									Criteria: []armdataprotection.BackupCriteriaClassification{
 										&armdataprotection.ScheduleBasedBackupCriteria{
-											BackupCriteria: armdataprotection.BackupCriteria{
-												ObjectType: to.StringPtr("<object-type>"),
-											},
+											ObjectType: to.Ptr("ScheduleBasedBackupCriteria"),
 											DaysOfTheWeek: []*armdataprotection.DayOfWeek{
-												armdataprotection.DayOfWeekSunday.ToPtr()},
+												to.Ptr(armdataprotection.DayOfWeekSunday)},
 											ScheduleTimes: []*time.Time{
-												to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t }())},
+												to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t }())},
 										}},
-									IsDefault: to.BoolPtr(false),
+									IsDefault: to.Ptr(false),
 									TagInfo: &armdataprotection.RetentionTag{
-										TagName: to.StringPtr("<tag-name>"),
+										TagName: to.Ptr("Weekly"),
 									},
-									TaggingPriority: to.Int64Ptr(20),
+									TaggingPriority: to.Ptr[int64](20),
 								}},
 						},
 					},
 					&armdataprotection.AzureRetentionRule{
-						BasePolicyRule: armdataprotection.BasePolicyRule{
-							Name:       to.StringPtr("<name>"),
-							ObjectType: to.StringPtr("<object-type>"),
-						},
-						IsDefault: to.BoolPtr(true),
+						Name:       to.Ptr("Default"),
+						ObjectType: to.Ptr("AzureRetentionRule"),
+						IsDefault:  to.Ptr(true),
 						Lifecycles: []*armdataprotection.SourceLifeCycle{
 							{
 								DeleteAfter: &armdataprotection.AbsoluteDeleteOption{
-									DeleteOption: armdataprotection.DeleteOption{
-										Duration:   to.StringPtr("<duration>"),
-										ObjectType: to.StringPtr("<object-type>"),
-									},
+									Duration:   to.Ptr("P1W"),
+									ObjectType: to.Ptr("AbsoluteDeleteOption"),
 								},
 								SourceDataStore: &armdataprotection.DataStoreInfoBase{
-									DataStoreType: armdataprotection.DataStoreTypesVaultStore.ToPtr(),
-									ObjectType:    to.StringPtr("<object-type>"),
+									DataStoreType: to.Ptr(armdataprotection.DataStoreTypesVaultStore),
+									ObjectType:    to.Ptr("DataStoreInfoBase"),
 								},
 							}},
 					},
 					&armdataprotection.AzureRetentionRule{
-						BasePolicyRule: armdataprotection.BasePolicyRule{
-							Name:       to.StringPtr("<name>"),
-							ObjectType: to.StringPtr("<object-type>"),
-						},
-						IsDefault: to.BoolPtr(false),
+						Name:       to.Ptr("Weekly"),
+						ObjectType: to.Ptr("AzureRetentionRule"),
+						IsDefault:  to.Ptr(false),
 						Lifecycles: []*armdataprotection.SourceLifeCycle{
 							{
 								DeleteAfter: &armdataprotection.AbsoluteDeleteOption{
-									DeleteOption: armdataprotection.DeleteOption{
-										Duration:   to.StringPtr("<duration>"),
-										ObjectType: to.StringPtr("<object-type>"),
-									},
+									Duration:   to.Ptr("P12W"),
+									ObjectType: to.Ptr("AbsoluteDeleteOption"),
 								},
 								SourceDataStore: &armdataprotection.DataStoreInfoBase{
-									DataStoreType: armdataprotection.DataStoreTypesVaultStore.ToPtr(),
-									ObjectType:    to.StringPtr("<object-type>"),
+									DataStoreType: to.Ptr(armdataprotection.DataStoreTypesVaultStore),
+									ObjectType:    to.Ptr("DataStoreInfoBase"),
 								},
 							}},
 					}},
@@ -173,25 +167,29 @@ func ExampleBackupPoliciesClient_CreateOrUpdate() {
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("BaseBackupPolicyResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/PolicyCRUD/DeleteBackupPolicy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/PolicyCRUD/DeleteBackupPolicy.json
 func ExampleBackupPoliciesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdataprotection.NewBackupPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupPoliciesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<vault-name>",
-		"<resource-group-name>",
-		"<backup-policy-name>",
+		"000pikumar",
+		"PrivatePreviewVault",
+		"OSSDBPolicy",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }

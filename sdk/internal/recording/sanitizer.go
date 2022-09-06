@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -10,7 +10,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 
@@ -101,12 +101,23 @@ func handleProxyResponse(resp *http.Response, err error) error {
 		return nil
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	if err != nil {
 		return err
 	}
 	return fmt.Errorf("there was an error communicating with the test proxy: %s", body)
+}
+
+// handleTestLevelSanitizer sets the "x-recording-id" header if options.TestInstance is not nil
+func handleTestLevelSanitizer(req *http.Request, options *RecordingOptions) {
+	if options == nil || options.TestInstance == nil {
+		return
+	}
+
+	if recordingID := GetRecordingId(options.TestInstance); recordingID != "" {
+		req.Header.Set(IDHeader, recordingID)
+	}
 }
 
 // AddBodyKeySanitizer adds a sanitizer for JSON Bodies. jsonPath is the path to the key, value
@@ -125,6 +136,7 @@ func AddBodyKeySanitizer(jsonPath, value, regex string, options *RecordingOption
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "BodyKeySanitizer")
+	handleTestLevelSanitizer(req, options)
 
 	marshalled, err := json.MarshalIndent(struct {
 		JSONPath        string `json:"jsonPath"`
@@ -141,7 +153,7 @@ func AddBodyKeySanitizer(jsonPath, value, regex string, options *RecordingOption
 		return err
 	}
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
 }
@@ -162,6 +174,7 @@ func AddBodyRegexSanitizer(value, regex string, options *RecordingOptions) error
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "BodyRegexSanitizer")
+	handleTestLevelSanitizer(req, options)
 
 	marshalled, err := json.MarshalIndent(struct {
 		Value           string `json:"value"`
@@ -176,7 +189,7 @@ func AddBodyRegexSanitizer(value, regex string, options *RecordingOptions) error
 		return err
 	}
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
 }
@@ -198,6 +211,7 @@ func AddContinuationSanitizer(key, method string, resetAfterFirst bool, options 
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "ContinuationSanitizer")
+	handleTestLevelSanitizer(req, options)
 
 	marshalled, err := json.MarshalIndent(struct {
 		Key             string `json:"key"`
@@ -212,7 +226,7 @@ func AddContinuationSanitizer(key, method string, resetAfterFirst bool, options 
 		return err
 	}
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
 }
@@ -233,6 +247,7 @@ func AddGeneralRegexSanitizer(value, regex string, options *RecordingOptions) er
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "GeneralRegexSanitizer")
+	handleTestLevelSanitizer(req, options)
 
 	marshalled, err := json.MarshalIndent(struct {
 		Value           string `json:"value"`
@@ -247,7 +262,7 @@ func AddGeneralRegexSanitizer(value, regex string, options *RecordingOptions) er
 		return err
 	}
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
 }
@@ -271,6 +286,7 @@ func AddHeaderRegexSanitizer(key, value, regex string, options *RecordingOptions
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "HeaderRegexSanitizer")
+	handleTestLevelSanitizer(req, options)
 
 	marshalled, err := json.MarshalIndent(struct {
 		Key             string `json:"key"`
@@ -287,7 +303,7 @@ func AddHeaderRegexSanitizer(key, value, regex string, options *RecordingOptions
 		return err
 	}
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
 }
@@ -306,6 +322,8 @@ func AddOAuthResponseSanitizer(options *RecordingOptions) error {
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "OAuthResponseSanitizer")
+	handleTestLevelSanitizer(req, options)
+
 	return handleProxyResponse(client.Do(req))
 }
 
@@ -323,6 +341,15 @@ func AddRemoveHeaderSanitizer(headersForRemoval []string, options *RecordingOpti
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "RemoveHeaderSanitizer")
+	handleTestLevelSanitizer(req, options)
+
+	if options.TestInstance != nil {
+		recordingID := GetRecordingId(options.TestInstance)
+		if recordingID == "" {
+			return fmt.Errorf("did not find a recording ID for test with name '%s'. Did you make sure to call Start?", options.TestInstance.Name())
+		}
+		req.Header.Set(IDHeader, recordingID)
+	}
 
 	marshalled, err := json.MarshalIndent(struct {
 		HeadersForRemoval string `json:"headersForRemoval"`
@@ -333,7 +360,7 @@ func AddRemoveHeaderSanitizer(headersForRemoval []string, options *RecordingOpti
 		return err
 	}
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
 }
@@ -353,6 +380,7 @@ func AddURISanitizer(value, regex string, options *RecordingOptions) error {
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "UriRegexSanitizer")
+	handleTestLevelSanitizer(req, options)
 
 	marshalled, err := json.MarshalIndent(struct {
 		Value string `json:"value"`
@@ -365,7 +393,7 @@ func AddURISanitizer(value, regex string, options *RecordingOptions) error {
 		return err
 	}
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
 }
@@ -385,6 +413,7 @@ func AddURISubscriptionIDSanitizer(value string, options *RecordingOptions) erro
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "UriSubscriptionIdSanitizer")
+	handleTestLevelSanitizer(req, options)
 
 	if value != "" {
 		marshalled, err := json.MarshalIndent(struct {
@@ -396,7 +425,7 @@ func AddURISubscriptionIDSanitizer(value string, options *RecordingOptions) erro
 			return err
 		}
 
-		req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+		req.Body = io.NopCloser(bytes.NewReader(marshalled))
 		req.ContentLength = int64(len(marshalled))
 	}
 	return handleProxyResponse(client.Do(req))
@@ -410,8 +439,18 @@ func ResetProxy(options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
+
 	url := fmt.Sprintf("%v/Admin/Reset", options.baseURL())
 	req, err := http.NewRequest("POST", url, nil)
+
+	if options.TestInstance != nil {
+		recordingID := GetRecordingId(options.TestInstance)
+		if recordingID == "" {
+			return fmt.Errorf("did not find a recording ID for test with name '%s'. Did you make sure to call Start?", options.TestInstance.Name())
+		}
+		req.Header.Set(IDHeader, recordingID)
+	}
+
 	if err != nil {
 		return err
 	}

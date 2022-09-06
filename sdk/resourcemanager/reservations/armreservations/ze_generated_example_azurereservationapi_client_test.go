@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,37 +17,49 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations"
 )
 
-// x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/GetCatalog.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/GetCatalog.json
 func ExampleAzureReservationAPIClient_GetCatalog() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armreservations.NewAzureReservationAPIClient(cred, nil)
-	_, err = client.GetCatalog(ctx,
-		"<subscription-id>",
-		&armreservations.AzureReservationAPIGetCatalogOptions{ReservedResourceType: to.StringPtr("<reserved-resource-type>"),
-			Location: to.StringPtr("<location>"),
+	client, err := armreservations.NewAzureReservationAPIClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.GetCatalog(ctx,
+		"23bc208b-083f-4901-ae85-4f98c0c3b4b6",
+		&armreservations.AzureReservationAPIClientGetCatalogOptions{ReservedResourceType: to.Ptr("VirtualMachines"),
+			Location:    to.Ptr("eastus"),
+			PublisherID: nil,
+			OfferID:     nil,
+			PlanID:      nil,
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/GetAppliedReservations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/GetAppliedReservations.json
 func ExampleAzureReservationAPIClient_GetAppliedReservationList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armreservations.NewAzureReservationAPIClient(cred, nil)
+	client, err := armreservations.NewAzureReservationAPIClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.GetAppliedReservationList(ctx,
-		"<subscription-id>",
+		"23bc208b-083f-4901-ae85-4f98c0c3b4b6",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("AppliedReservations.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }

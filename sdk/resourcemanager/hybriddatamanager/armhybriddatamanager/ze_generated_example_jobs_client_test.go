@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,143 +12,166 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager"
 )
 
-// x-ms-original-file: specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/Jobs_ListByJobDefinition-GET-example-91.json
-func ExampleJobsClient_ListByJobDefinition() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/Jobs_ListByJobDefinition-GET-example-91.json
+func ExampleJobsClient_NewListByJobDefinitionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhybriddatamanager.NewJobsClient("<subscription-id>", cred, nil)
-	pager := client.ListByJobDefinition("<data-service-name>",
-		"<job-definition-name>",
-		"<resource-group-name>",
-		"<data-manager-name>",
-		&armhybriddatamanager.JobsListByJobDefinitionOptions{Filter: nil})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armhybriddatamanager.NewJobsClient("6e0219f5-327a-4365-904f-05eed4227ad7", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByJobDefinitionPager("DataTransformation",
+		"jobdeffromtestcode1",
+		"ResourceGroupForSDKTest",
+		"TestAzureSDKOperations",
+		&armhybriddatamanager.JobsClientListByJobDefinitionOptions{Filter: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Job.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/Jobs_Get-GET-example-101.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/Jobs_Get-GET-example-101.json
 func ExampleJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhybriddatamanager.NewJobsClient("<subscription-id>", cred, nil)
-	res, err := client.Get(ctx,
-		"<data-service-name>",
-		"<job-definition-name>",
-		"<job-id>",
-		"<resource-group-name>",
-		"<data-manager-name>",
-		&armhybriddatamanager.JobsGetOptions{Expand: nil})
+	client, err := armhybriddatamanager.NewJobsClient("6e0219f5-327a-4365-904f-05eed4227ad7", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
 	}
-	log.Printf("Job.ID: %s\n", *res.ID)
+	res, err := client.Get(ctx,
+		"DataTransformation",
+		"jobdeffromtestcode1",
+		"99ef93fe-36be-43e4-bebf-de6746730601",
+		"ResourceGroupForSDKTest",
+		"TestAzureSDKOperations",
+		&armhybriddatamanager.JobsClientGetOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/Jobs_Cancel-POST-example-111.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/Jobs_Cancel-POST-example-111.json
 func ExampleJobsClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhybriddatamanager.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armhybriddatamanager.NewJobsClient("6e0219f5-327a-4365-904f-05eed4227ad7", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCancel(ctx,
-		"<data-service-name>",
-		"<job-definition-name>",
-		"<job-id>",
-		"<resource-group-name>",
-		"<data-manager-name>",
+		"DataTransformation",
+		"jobdeffromtestcode1",
+		"6eca9b3d-5ffe-4b44-9607-1ba838371ff7",
+		"ResourceGroupForSDKTest",
+		"TestAzureSDKOperations",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/Jobs_Resume-POST-example-121.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/Jobs_Resume-POST-example-121.json
 func ExampleJobsClient_BeginResume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhybriddatamanager.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armhybriddatamanager.NewJobsClient("6e0219f5-327a-4365-904f-05eed4227ad7", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginResume(ctx,
-		"<data-service-name>",
-		"<job-definition-name>",
-		"<job-id>",
-		"<resource-group-name>",
-		"<data-manager-name>",
+		"DataTransformation",
+		"jobdeffromtestcode1",
+		"99ef93fe-36be-43e4-bebf-de6746730601",
+		"ResourceGroupForSDKTest",
+		"TestAzureSDKOperations",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/Jobs_ListByDataService-GET-example-141.json
-func ExampleJobsClient_ListByDataService() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/Jobs_ListByDataService-GET-example-141.json
+func ExampleJobsClient_NewListByDataServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhybriddatamanager.NewJobsClient("<subscription-id>", cred, nil)
-	pager := client.ListByDataService("<data-service-name>",
-		"<resource-group-name>",
-		"<data-manager-name>",
-		&armhybriddatamanager.JobsListByDataServiceOptions{Filter: nil})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armhybriddatamanager.NewJobsClient("6e0219f5-327a-4365-904f-05eed4227ad7", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByDataServicePager("DataTransformation",
+		"ResourceGroupForSDKTest",
+		"TestAzureSDKOperations",
+		&armhybriddatamanager.JobsClientListByDataServiceOptions{Filter: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Job.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/Jobs_ListByDataManager-GET-example-201.json
-func ExampleJobsClient_ListByDataManager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybriddatamanager/resource-manager/Microsoft.HybridData/stable/2019-06-01/examples/Jobs_ListByDataManager-GET-example-201.json
+func ExampleJobsClient_NewListByDataManagerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhybriddatamanager.NewJobsClient("<subscription-id>", cred, nil)
-	pager := client.ListByDataManager("<resource-group-name>",
-		"<data-manager-name>",
-		&armhybriddatamanager.JobsListByDataManagerOptions{Filter: nil})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armhybriddatamanager.NewJobsClient("6e0219f5-327a-4365-904f-05eed4227ad7", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByDataManagerPager("ResourceGroupForSDKTest",
+		"TestAzureSDKOperations",
+		&armhybriddatamanager.JobsClientListByDataManagerOptions{Filter: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Job.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

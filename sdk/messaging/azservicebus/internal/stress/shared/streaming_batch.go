@@ -18,7 +18,7 @@ type internalBatchSender interface {
 }
 
 type internalBatch interface {
-	AddMessage(m *azservicebus.Message) error
+	AddMessage(m *azservicebus.Message, options *azservicebus.AddMessageOptions) error
 	NumMessages() int32
 }
 
@@ -27,7 +27,7 @@ type senderWrapper struct {
 }
 
 func (sw *senderWrapper) SendMessageBatch(ctx context.Context, batch internalBatch) error {
-	return sw.inner.SendMessageBatch(ctx, batch.(*azservicebus.MessageBatch))
+	return sw.inner.SendMessageBatch(ctx, batch.(*azservicebus.MessageBatch), nil)
 }
 
 func (sw *senderWrapper) NewMessageBatch(ctx context.Context, options *azservicebus.MessageBatchOptions) (internalBatch, error) {
@@ -55,11 +55,10 @@ type StreamingMessageBatch struct {
 }
 
 // Add appends to the current batch. If it's full it'll send it, allocate a new one.
-func (sb *StreamingMessageBatch) Add(ctx context.Context, msg *azservicebus.Message) error {
-	err := sb.currentBatch.AddMessage(msg)
+func (sb *StreamingMessageBatch) Add(ctx context.Context, msg *azservicebus.Message, options *azservicebus.AddMessageOptions) error {
+	err := sb.currentBatch.AddMessage(msg, options)
 
 	if err == nil {
-		// sent, we're done
 		return nil
 	}
 
@@ -68,12 +67,14 @@ func (sb *StreamingMessageBatch) Add(ctx context.Context, msg *azservicebus.Mess
 		return err
 	}
 
-	log.Printf("Sending message batch")
+	log.Printf("Sending message batch (%d messages)", sb.currentBatch.NumMessages())
 	if err := sb.sender.SendMessageBatch(ctx, sb.currentBatch); err != nil {
 		return err
 	}
 
-	sb.stats.AddSent(sb.currentBatch.NumMessages())
+	if sb.stats != nil {
+		sb.stats.AddSent(sb.currentBatch.NumMessages())
+	}
 
 	// throttle a teeny bit.
 	time.Sleep(time.Second)
@@ -84,7 +85,7 @@ func (sb *StreamingMessageBatch) Add(ctx context.Context, msg *azservicebus.Mess
 		return err
 	}
 
-	if err := batch.AddMessage(msg); err != nil {
+	if err := batch.AddMessage(msg, nil); err != nil {
 		// if we can't add this message here (ie, by itself) into the batch then
 		// we'll just error out.
 		return err
@@ -105,6 +106,8 @@ func (sb *StreamingMessageBatch) Close(ctx context.Context) error {
 		return err
 	}
 
-	sb.stats.AddSent(sb.currentBatch.NumMessages())
+	if sb.stats != nil {
+		sb.stats.AddSent(sb.currentBatch.NumMessages())
+	}
 	return nil
 }

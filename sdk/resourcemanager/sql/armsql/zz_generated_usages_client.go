@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,39 +26,73 @@ import (
 // UsagesClient contains the methods for the Usages group.
 // Don't use this type directly, use NewUsagesClient() instead.
 type UsagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewUsagesClient creates a new instance of UsagesClient with the specified values.
-func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UsagesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UsagesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &UsagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &UsagesClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
-// ListByInstancePool - Gets all instance pool usage metrics
-// If the operation fails it returns a generic error.
-func (client *UsagesClient) ListByInstancePool(resourceGroupName string, instancePoolName string, options *UsagesListByInstancePoolOptions) *UsagesListByInstancePoolPager {
-	return &UsagesListByInstancePoolPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByInstancePoolCreateRequest(ctx, resourceGroupName, instancePoolName, options)
+// NewListByInstancePoolPager - Gets all instance pool usage metrics
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// instancePoolName - The name of the instance pool to be retrieved.
+// options - UsagesClientListByInstancePoolOptions contains the optional parameters for the UsagesClient.ListByInstancePool
+// method.
+func (client *UsagesClient) NewListByInstancePoolPager(resourceGroupName string, instancePoolName string, options *UsagesClientListByInstancePoolOptions) *runtime.Pager[UsagesClientListByInstancePoolResponse] {
+	return runtime.NewPager(runtime.PagingHandler[UsagesClientListByInstancePoolResponse]{
+		More: func(page UsagesClientListByInstancePoolResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp UsagesListByInstancePoolResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.UsageListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *UsagesClientListByInstancePoolResponse) (UsagesClientListByInstancePoolResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByInstancePoolCreateRequest(ctx, resourceGroupName, instancePoolName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return UsagesClientListByInstancePoolResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return UsagesClientListByInstancePoolResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return UsagesClientListByInstancePoolResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByInstancePoolHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByInstancePoolCreateRequest creates the ListByInstancePool request.
-func (client *UsagesClient) listByInstancePoolCreateRequest(ctx context.Context, resourceGroupName string, instancePoolName string, options *UsagesListByInstancePoolOptions) (*policy.Request, error) {
+func (client *UsagesClient) listByInstancePoolCreateRequest(ctx context.Context, resourceGroupName string, instancePoolName string, options *UsagesClientListByInstancePoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools/{instancePoolName}/usages"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -71,7 +106,7 @@ func (client *UsagesClient) listByInstancePoolCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -81,27 +116,15 @@ func (client *UsagesClient) listByInstancePoolCreateRequest(ctx context.Context,
 	}
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByInstancePoolHandleResponse handles the ListByInstancePool response.
-func (client *UsagesClient) listByInstancePoolHandleResponse(resp *http.Response) (UsagesListByInstancePoolResponse, error) {
-	result := UsagesListByInstancePoolResponse{RawResponse: resp}
+func (client *UsagesClient) listByInstancePoolHandleResponse(resp *http.Response) (UsagesClientListByInstancePoolResponse, error) {
+	result := UsagesClientListByInstancePoolResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsageListResult); err != nil {
-		return UsagesListByInstancePoolResponse{}, runtime.NewResponseError(err, resp)
+		return UsagesClientListByInstancePoolResponse{}, err
 	}
 	return result, nil
-}
-
-// listByInstancePoolHandleError handles the ListByInstancePool error response.
-func (client *UsagesClient) listByInstancePoolHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,64 +8,27 @@
 
 package armbaremetalinfrastructure
 
-import "net/http"
-
-// AzureBareMetalInstancesGetResponse contains the response from method AzureBareMetalInstances.Get.
-type AzureBareMetalInstancesGetResponse struct {
-	AzureBareMetalInstancesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AzureBareMetalInstancesGetResult contains the result from method AzureBareMetalInstances.Get.
-type AzureBareMetalInstancesGetResult struct {
+// AzureBareMetalInstancesClientGetResponse contains the response from method AzureBareMetalInstancesClient.Get.
+type AzureBareMetalInstancesClientGetResponse struct {
 	AzureBareMetalInstance
 }
 
-// AzureBareMetalInstancesListByResourceGroupResponse contains the response from method AzureBareMetalInstances.ListByResourceGroup.
-type AzureBareMetalInstancesListByResourceGroupResponse struct {
-	AzureBareMetalInstancesListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AzureBareMetalInstancesListByResourceGroupResult contains the result from method AzureBareMetalInstances.ListByResourceGroup.
-type AzureBareMetalInstancesListByResourceGroupResult struct {
+// AzureBareMetalInstancesClientListByResourceGroupResponse contains the response from method AzureBareMetalInstancesClient.ListByResourceGroup.
+type AzureBareMetalInstancesClientListByResourceGroupResponse struct {
 	AzureBareMetalInstancesListResult
 }
 
-// AzureBareMetalInstancesListBySubscriptionResponse contains the response from method AzureBareMetalInstances.ListBySubscription.
-type AzureBareMetalInstancesListBySubscriptionResponse struct {
-	AzureBareMetalInstancesListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AzureBareMetalInstancesListBySubscriptionResult contains the result from method AzureBareMetalInstances.ListBySubscription.
-type AzureBareMetalInstancesListBySubscriptionResult struct {
+// AzureBareMetalInstancesClientListBySubscriptionResponse contains the response from method AzureBareMetalInstancesClient.ListBySubscription.
+type AzureBareMetalInstancesClientListBySubscriptionResponse struct {
 	AzureBareMetalInstancesListResult
 }
 
-// AzureBareMetalInstancesUpdateResponse contains the response from method AzureBareMetalInstances.Update.
-type AzureBareMetalInstancesUpdateResponse struct {
-	AzureBareMetalInstancesUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AzureBareMetalInstancesUpdateResult contains the result from method AzureBareMetalInstances.Update.
-type AzureBareMetalInstancesUpdateResult struct {
+// AzureBareMetalInstancesClientUpdateResponse contains the response from method AzureBareMetalInstancesClient.Update.
+type AzureBareMetalInstancesClientUpdateResponse struct {
 	AzureBareMetalInstance
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
 	OperationList
 }

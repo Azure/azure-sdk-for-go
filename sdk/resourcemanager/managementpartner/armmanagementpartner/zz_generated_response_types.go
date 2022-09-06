@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,70 +8,32 @@
 
 package armmanagementpartner
 
-import "net/http"
-
-// OperationListResponse contains the response from method Operation.List.
-type OperationListResponse struct {
-	OperationListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationListResult contains the result from method Operation.List.
-type OperationListResult struct {
+// OperationClientListResponse contains the response from method OperationClient.List.
+type OperationClientListResponse struct {
 	OperationList
 }
 
-// PartnerCreateResponse contains the response from method Partner.Create.
-type PartnerCreateResponse struct {
-	PartnerCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PartnerCreateResult contains the result from method Partner.Create.
-type PartnerCreateResult struct {
+// PartnerClientCreateResponse contains the response from method PartnerClient.Create.
+type PartnerClientCreateResponse struct {
 	PartnerResponse
 }
 
-// PartnerDeleteResponse contains the response from method Partner.Delete.
-type PartnerDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PartnerClientDeleteResponse contains the response from method PartnerClient.Delete.
+type PartnerClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PartnerGetResponse contains the response from method Partner.Get.
-type PartnerGetResponse struct {
-	PartnerGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PartnerGetResult contains the result from method Partner.Get.
-type PartnerGetResult struct {
+// PartnerClientGetResponse contains the response from method PartnerClient.Get.
+type PartnerClientGetResponse struct {
 	PartnerResponse
 }
 
-// PartnerUpdateResponse contains the response from method Partner.Update.
-type PartnerUpdateResponse struct {
-	PartnerUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PartnerUpdateResult contains the result from method Partner.Update.
-type PartnerUpdateResult struct {
+// PartnerClientUpdateResponse contains the response from method PartnerClient.Update.
+type PartnerClientUpdateResponse struct {
 	PartnerResponse
 }
 
-// PartnersGetResponse contains the response from method Partners.Get.
-type PartnersGetResponse struct {
-	PartnersGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PartnersGetResult contains the result from method Partners.Get.
-type PartnersGetResult struct {
+// PartnersClientGetResponse contains the response from method PartnersClient.Get.
+type PartnersClientGetResponse struct {
 	PartnerResponse
 }

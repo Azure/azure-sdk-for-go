@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,25 +8,28 @@
 
 package armdatacatalog
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-)
-
 // ADCCatalog - Azure Data Catalog.
 type ADCCatalog struct {
-	Resource
+	// Resource etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
 	// Azure Data Catalog properties.
 	Properties *ADCCatalogProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ADCCatalog.
-func (a ADCCatalog) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ADCCatalogProperties - Properties of the data catalog.
@@ -50,30 +53,30 @@ type ADCCatalogProperties struct {
 	Users []*Principals `json:"users,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ADCCatalogProperties.
-func (a ADCCatalogProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "admins", a.Admins)
-	populate(objectMap, "enableAutomaticUnitAdjustment", a.EnableAutomaticUnitAdjustment)
-	populate(objectMap, "sku", a.SKU)
-	populate(objectMap, "successfullyProvisioned", a.SuccessfullyProvisioned)
-	populate(objectMap, "units", a.Units)
-	populate(objectMap, "users", a.Users)
-	return json.Marshal(objectMap)
+// ADCCatalogsClientBeginDeleteOptions contains the optional parameters for the ADCCatalogsClient.BeginDelete method.
+type ADCCatalogsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// ADCCatalogsBeginDeleteOptions contains the optional parameters for the ADCCatalogs.BeginDelete method.
-type ADCCatalogsBeginDeleteOptions struct {
+// ADCCatalogsClientCreateOrUpdateOptions contains the optional parameters for the ADCCatalogsClient.CreateOrUpdate method.
+type ADCCatalogsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ADCCatalogsCreateOrUpdateOptions contains the optional parameters for the ADCCatalogs.CreateOrUpdate method.
-type ADCCatalogsCreateOrUpdateOptions struct {
+// ADCCatalogsClientGetOptions contains the optional parameters for the ADCCatalogsClient.Get method.
+type ADCCatalogsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ADCCatalogsGetOptions contains the optional parameters for the ADCCatalogs.Get method.
-type ADCCatalogsGetOptions struct {
+// ADCCatalogsClientListtByResourceGroupOptions contains the optional parameters for the ADCCatalogsClient.ListtByResourceGroup
+// method.
+type ADCCatalogsClientListtByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ADCCatalogsClientUpdateOptions contains the optional parameters for the ADCCatalogsClient.Update method.
+type ADCCatalogsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -83,25 +86,8 @@ type ADCCatalogsListResult struct {
 	Value []*ADCCatalog `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ADCCatalogsListResult.
-func (a ADCCatalogsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// ADCCatalogsListtByResourceGroupOptions contains the optional parameters for the ADCCatalogs.ListtByResourceGroup method.
-type ADCCatalogsListtByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ADCCatalogsUpdateOptions contains the optional parameters for the ADCCatalogs.Update method.
-type ADCCatalogsUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ADCOperationsListOptions contains the optional parameters for the ADCOperations.List method.
-type ADCOperationsListOptions struct {
+// ADCOperationsClientListOptions contains the optional parameters for the ADCOperationsClient.List method.
+type ADCOperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -135,13 +121,6 @@ type OperationEntityListResult struct {
 	Value []*OperationEntity `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationEntityListResult.
-func (o OperationEntityListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // Principals - User principals.
 type Principals struct {
 	// Object Id for the user
@@ -170,30 +149,4 @@ type Resource struct {
 
 	// READ-ONLY; Resource type
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "etag", r.Etag)
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
 }

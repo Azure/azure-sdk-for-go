@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -15,15 +15,19 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+)
+
+const (
+	defaultMaxRetries = 3
 )
 
 func setDefaults(o *policy.RetryOptions) {
 	if o.MaxRetries == 0 {
-		o.MaxRetries = shared.DefaultMaxRetries
+		o.MaxRetries = defaultMaxRetries
 	} else if o.MaxRetries < 0 {
 		o.MaxRetries = 0
 	}
@@ -34,11 +38,12 @@ func setDefaults(o *policy.RetryOptions) {
 		o.MaxRetryDelay = math.MaxInt64
 	}
 	if o.RetryDelay == 0 {
-		o.RetryDelay = 4 * time.Second
+		o.RetryDelay = 800 * time.Millisecond
 	} else if o.RetryDelay < 0 {
 		o.RetryDelay = 0
 	}
 	if o.StatusCodes == nil {
+		// NOTE: if you change this list, you MUST update the docs in policy/policy.go
 		o.StatusCodes = []int{
 			http.StatusRequestTimeout,      // 408
 			http.StatusTooManyRequests,     // 429
@@ -123,7 +128,15 @@ func (p *retryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 			tryCtx, tryCancel := context.WithTimeout(req.Raw().Context(), options.TryTimeout)
 			clone := req.Clone(tryCtx)
 			resp, err = clone.Next() // Make the request
-			tryCancel()
+			// if the body was already downloaded or there was an error it's safe to cancel the context now
+			if err != nil {
+				tryCancel()
+			} else if _, ok := resp.Body.(*shared.NopClosingBytesReader); ok {
+				tryCancel()
+			} else {
+				// must cancel the context after the body has been read and closed
+				resp.Body = &contextCancelReadCloser{cf: tryCancel, body: resp.Body}
+			}
 		}
 		if err == nil {
 			log.Writef(log.EventRetryPolicy, "response %d", resp.StatusCode)
@@ -175,6 +188,12 @@ func (p *retryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 	}
 }
 
+// WithRetryOptions adds the specified RetryOptions to the parent context.
+// Use this to specify custom RetryOptions at the API-call level.
+func WithRetryOptions(parent context.Context, options policy.RetryOptions) context.Context {
+	return context.WithValue(parent, shared.CtxWithRetryOptionsKey{}, options)
+}
+
 // ********** The following type/methods implement the retryableRequestBody (a ReadSeekCloser)
 
 // This struct is used when sending a body to the network
@@ -202,4 +221,23 @@ func (b *retryableRequestBody) realClose() error {
 		return c.Close()
 	}
 	return nil
+}
+
+// ********** The following type/methods implement the contextCancelReadCloser
+
+// contextCancelReadCloser combines an io.ReadCloser with a cancel func.
+// it ensures the cancel func is invoked once the body has been read and closed.
+type contextCancelReadCloser struct {
+	cf   context.CancelFunc
+	body io.ReadCloser
+}
+
+func (rc *contextCancelReadCloser) Read(p []byte) (n int, err error) {
+	return rc.body.Read(p)
+}
+
+func (rc *contextCancelReadCloser) Close() error {
+	err := rc.body.Close()
+	rc.cf()
+	return err
 }

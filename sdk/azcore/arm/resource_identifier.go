@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -19,14 +19,12 @@ const (
 	builtInResourceNamespace = "Microsoft.Resources"
 )
 
-var (
-	// RootResourceID defines the tenant as the root parent of all other ResourceID.
-	RootResourceID = &ResourceID{
-		Parent:       nil,
-		ResourceType: TenantResourceType,
-		Name:         "",
-	}
-)
+// RootResourceID defines the tenant as the root parent of all other ResourceID.
+var RootResourceID = &ResourceID{
+	Parent:       nil,
+	ResourceType: TenantResourceType,
+	Name:         "",
+}
 
 // ResourceID represents a resource ID such as `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg`.
 // Don't create this type directly, use ParseResourceID instead.
@@ -85,6 +83,7 @@ func ParseResourceID(id string) (*ResourceID, error) {
 	return appendNext(RootResourceID, parts, id)
 }
 
+// String returns the string of the ResourceID
 func (id *ResourceID) String() string {
 	if len(id.stringValue) > 0 {
 		return id.stringValue

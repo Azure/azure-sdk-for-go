@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,11 +9,11 @@
 package armsignalr
 
 const (
-	module  = "armsignalr"
-	version = "v0.1.0"
+	moduleName    = "armsignalr"
+	moduleVersion = "v1.0.0"
 )
 
-// ACLAction - Default action when no other rule matches
+// ACLAction - Azure Networking ACL Action.
 type ACLAction string
 
 const (
@@ -27,11 +27,6 @@ func PossibleACLActionValues() []ACLAction {
 		ACLActionAllow,
 		ACLActionDeny,
 	}
-}
-
-// ToPtr returns a *ACLAction pointing to the current value.
-func (c ACLAction) ToPtr() *ACLAction {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -54,21 +49,16 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // FeatureFlags - FeatureFlags is the supported features of Azure SignalR service.
-// * ServiceMode: Flag for backend server for SignalR service. Values allowed: "Default": have your own backend server; "Serverless": your application doesn't
-// have a backend server; "Classic": for
+// * ServiceMode: Flag for backend server for SignalR service. Values allowed: "Default": have your own backend server; "Serverless":
+// your application doesn't have a backend server; "Classic": for
 // backward compatibility. Support both Default and Serverless mode but not recommended; "PredefinedOnly": for future use.
 // * EnableConnectivityLogs: "true"/"false", to enable/disable the connectivity log category respectively.
 // * EnableMessagingLogs: "true"/"false", to enable/disable the connectivity log category respectively.
-// * EnableLiveTrace: Live Trace allows you to know what's happening inside Azure SignalR service, it will give you live traces in real time, it will be
-// helpful when you developing your own Azure
-// SignalR based web application or self-troubleshooting some issues. Please note that live traces are counted as outbound messages that will be charged.
-// Values allowed: "true"/"false", to
+// * EnableLiveTrace: Live Trace allows you to know what's happening inside Azure SignalR service, it will give you live traces
+// in real time, it will be helpful when you developing your own Azure
+// SignalR based web application or self-troubleshooting some issues. Please note that live traces are counted as outbound
+// messages that will be charged. Values allowed: "true"/"false", to
 // enable/disable live trace feature.
 type FeatureFlags string
 
@@ -89,12 +79,7 @@ func PossibleFeatureFlagsValues() []FeatureFlags {
 	}
 }
 
-// ToPtr returns a *FeatureFlags pointing to the current value.
-func (c FeatureFlags) ToPtr() *FeatureFlags {
-	return &c
-}
-
-// KeyType - The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive).
+// KeyType - The type of access key.
 type KeyType string
 
 const (
@@ -112,12 +97,7 @@ func PossibleKeyTypeValues() []KeyType {
 	}
 }
 
-// ToPtr returns a *KeyType pointing to the current value.
-func (c KeyType) ToPtr() *KeyType {
-	return &c
-}
-
-// ManagedIdentityType - Represent the identity type: systemAssigned, userAssigned, None
+// ManagedIdentityType - Represents the identity type: systemAssigned, userAssigned, None
 type ManagedIdentityType string
 
 const (
@@ -135,12 +115,8 @@ func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
 	}
 }
 
-// ToPtr returns a *ManagedIdentityType pointing to the current value.
-func (c ManagedIdentityType) ToPtr() *ManagedIdentityType {
-	return &c
-}
-
-// PrivateLinkServiceConnectionStatus - Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
+// PrivateLinkServiceConnectionStatus - Indicates whether the connection has been Approved/Rejected/Removed by the owner of
+// the service.
 type PrivateLinkServiceConnectionStatus string
 
 const (
@@ -158,11 +134,6 @@ func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConn
 		PrivateLinkServiceConnectionStatusPending,
 		PrivateLinkServiceConnectionStatusRejected,
 	}
-}
-
-// ToPtr returns a *PrivateLinkServiceConnectionStatus pointing to the current value.
-func (c PrivateLinkServiceConnectionStatus) ToPtr() *PrivateLinkServiceConnectionStatus {
-	return &c
 }
 
 // ProvisioningState - Provisioning state of the resource.
@@ -195,11 +166,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // ScaleType - The scale type applicable to the sku.
 type ScaleType string
 
@@ -218,12 +184,7 @@ func PossibleScaleTypeValues() []ScaleType {
 	}
 }
 
-// ToPtr returns a *ScaleType pointing to the current value.
-func (c ScaleType) ToPtr() *ScaleType {
-	return &c
-}
-
-// ServiceKind - The kind of the service - e.g. "SignalR" for "Microsoft.SignalRService/SignalR"
+// ServiceKind - The kind of the service, it can be SignalR or RawWebSockets
 type ServiceKind string
 
 const (
@@ -237,11 +198,6 @@ func PossibleServiceKindValues() []ServiceKind {
 		ServiceKindRawWebSockets,
 		ServiceKindSignalR,
 	}
-}
-
-// ToPtr returns a *ServiceKind pointing to the current value.
-func (c ServiceKind) ToPtr() *ServiceKind {
-	return &c
 }
 
 // SharedPrivateLinkResourceStatus - Status of the shared private link resource
@@ -266,12 +222,7 @@ func PossibleSharedPrivateLinkResourceStatusValues() []SharedPrivateLinkResource
 	}
 }
 
-// ToPtr returns a *SharedPrivateLinkResourceStatus pointing to the current value.
-func (c SharedPrivateLinkResourceStatus) ToPtr() *SharedPrivateLinkResourceStatus {
-	return &c
-}
-
-// SignalRRequestType - Allowed request types. The value can be one or more of: ClientConnection, ServerConnection, RESTAPI.
+// SignalRRequestType - The incoming request type to the service
 type SignalRRequestType string
 
 const (
@@ -289,11 +240,6 @@ func PossibleSignalRRequestTypeValues() []SignalRRequestType {
 		SignalRRequestTypeServerConnection,
 		SignalRRequestTypeTrace,
 	}
-}
-
-// ToPtr returns a *SignalRRequestType pointing to the current value.
-func (c SignalRRequestType) ToPtr() *SignalRRequestType {
-	return &c
 }
 
 // SignalRSKUTier - Optional tier of this particular SKU. 'Standard' or 'Free'.
@@ -317,12 +263,7 @@ func PossibleSignalRSKUTierValues() []SignalRSKUTier {
 	}
 }
 
-// ToPtr returns a *SignalRSKUTier pointing to the current value.
-func (c SignalRSKUTier) ToPtr() *SignalRSKUTier {
-	return &c
-}
-
-// UpstreamAuthType - Gets or sets the type of auth. None or ManagedIdentity is supported now.
+// UpstreamAuthType - Upstream auth type enum.
 type UpstreamAuthType string
 
 const (
@@ -336,9 +277,4 @@ func PossibleUpstreamAuthTypeValues() []UpstreamAuthType {
 		UpstreamAuthTypeManagedIdentity,
 		UpstreamAuthTypeNone,
 	}
-}
-
-// ToPtr returns a *UpstreamAuthType pointing to the current value.
-func (c UpstreamAuthType) ToPtr() *UpstreamAuthType {
-	return &c
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,127 +25,135 @@ import (
 // ComplianceResultsClient contains the methods for the ComplianceResults group.
 // Don't use this type directly, use NewComplianceResultsClient() instead.
 type ComplianceResultsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewComplianceResultsClient creates a new instance of ComplianceResultsClient with the specified values.
-func NewComplianceResultsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ComplianceResultsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewComplianceResultsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ComplianceResultsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &ComplianceResultsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &ComplianceResultsClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
 // Get - Security Compliance Result
-// If the operation fails it returns the *CloudError error type.
-func (client *ComplianceResultsClient) Get(ctx context.Context, resourceID string, complianceResultName string, options *ComplianceResultsGetOptions) (ComplianceResultsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01
+// resourceID - The identifier of the resource.
+// complianceResultName - name of the desired assessment compliance result
+// options - ComplianceResultsClientGetOptions contains the optional parameters for the ComplianceResultsClient.Get method.
+func (client *ComplianceResultsClient) Get(ctx context.Context, resourceID string, complianceResultName string, options *ComplianceResultsClientGetOptions) (ComplianceResultsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceID, complianceResultName, options)
 	if err != nil {
-		return ComplianceResultsGetResponse{}, err
+		return ComplianceResultsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ComplianceResultsGetResponse{}, err
+		return ComplianceResultsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ComplianceResultsGetResponse{}, client.getHandleError(resp)
+		return ComplianceResultsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ComplianceResultsClient) getCreateRequest(ctx context.Context, resourceID string, complianceResultName string, options *ComplianceResultsGetOptions) (*policy.Request, error) {
+func (client *ComplianceResultsClient) getCreateRequest(ctx context.Context, resourceID string, complianceResultName string, options *ComplianceResultsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/complianceResults/{complianceResultName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if complianceResultName == "" {
 		return nil, errors.New("parameter complianceResultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{complianceResultName}", url.PathEscape(complianceResultName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ComplianceResultsClient) getHandleResponse(resp *http.Response) (ComplianceResultsGetResponse, error) {
-	result := ComplianceResultsGetResponse{RawResponse: resp}
+func (client *ComplianceResultsClient) getHandleResponse(resp *http.Response) (ComplianceResultsClientGetResponse, error) {
+	result := ComplianceResultsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComplianceResult); err != nil {
-		return ComplianceResultsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ComplianceResultsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ComplianceResultsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Security compliance results in the subscription
-// If the operation fails it returns the *CloudError error type.
-func (client *ComplianceResultsClient) List(scope string, options *ComplianceResultsListOptions) *ComplianceResultsListPager {
-	return &ComplianceResultsListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, scope, options)
+// NewListPager - Security compliance results in the subscription
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01
+// scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
+// (/providers/Microsoft.Management/managementGroups/mgName).
+// options - ComplianceResultsClientListOptions contains the optional parameters for the ComplianceResultsClient.List method.
+func (client *ComplianceResultsClient) NewListPager(scope string, options *ComplianceResultsClientListOptions) *runtime.Pager[ComplianceResultsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ComplianceResultsClientListResponse]{
+		More: func(page ComplianceResultsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ComplianceResultsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ComplianceResultList.NextLink)
+		Fetcher: func(ctx context.Context, page *ComplianceResultsClientListResponse) (ComplianceResultsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, scope, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ComplianceResultsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ComplianceResultsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ComplianceResultsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ComplianceResultsClient) listCreateRequest(ctx context.Context, scope string, options *ComplianceResultsListOptions) (*policy.Request, error) {
+func (client *ComplianceResultsClient) listCreateRequest(ctx context.Context, scope string, options *ComplianceResultsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/complianceResults"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ComplianceResultsClient) listHandleResponse(resp *http.Response) (ComplianceResultsListResponse, error) {
-	result := ComplianceResultsListResponse{RawResponse: resp}
+func (client *ComplianceResultsClient) listHandleResponse(resp *http.Response) (ComplianceResultsClientListResponse, error) {
+	result := ComplianceResultsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComplianceResultList); err != nil {
-		return ComplianceResultsListResponse{}, runtime.NewResponseError(err, resp)
+		return ComplianceResultsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ComplianceResultsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armfeatures
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,59 @@ import (
 // SubscriptionFeatureRegistrationsClient contains the methods for the SubscriptionFeatureRegistrations group.
 // Don't use this type directly, use NewSubscriptionFeatureRegistrationsClient() instead.
 type SubscriptionFeatureRegistrationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSubscriptionFeatureRegistrationsClient creates a new instance of SubscriptionFeatureRegistrationsClient with the specified values.
-func NewSubscriptionFeatureRegistrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SubscriptionFeatureRegistrationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewSubscriptionFeatureRegistrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SubscriptionFeatureRegistrationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &SubscriptionFeatureRegistrationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &SubscriptionFeatureRegistrationsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update a feature registration.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubscriptionFeatureRegistrationsClient) CreateOrUpdate(ctx context.Context, providerNamespace string, featureName string, options *SubscriptionFeatureRegistrationsCreateOrUpdateOptions) (SubscriptionFeatureRegistrationsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
+// providerNamespace - The provider namespace.
+// featureName - The feature name.
+// options - SubscriptionFeatureRegistrationsClientCreateOrUpdateOptions contains the optional parameters for the SubscriptionFeatureRegistrationsClient.CreateOrUpdate
+// method.
+func (client *SubscriptionFeatureRegistrationsClient) CreateOrUpdate(ctx context.Context, providerNamespace string, featureName string, options *SubscriptionFeatureRegistrationsClientCreateOrUpdateOptions) (SubscriptionFeatureRegistrationsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, providerNamespace, featureName, options)
 	if err != nil {
-		return SubscriptionFeatureRegistrationsCreateOrUpdateResponse{}, err
+		return SubscriptionFeatureRegistrationsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubscriptionFeatureRegistrationsCreateOrUpdateResponse{}, err
+		return SubscriptionFeatureRegistrationsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SubscriptionFeatureRegistrationsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return SubscriptionFeatureRegistrationsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SubscriptionFeatureRegistrationsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, featureName string, options *SubscriptionFeatureRegistrationsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SubscriptionFeatureRegistrationsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, featureName string, options *SubscriptionFeatureRegistrationsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Features/featureProviders/{providerNamespace}/subscriptionFeatureRegistrations/{featureName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,14 +91,14 @@ func (client *SubscriptionFeatureRegistrationsClient) createOrUpdateCreateReques
 		return nil, errors.New("parameter featureName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{featureName}", url.PathEscape(featureName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.SubscriptionFeatureRegistrationType != nil {
 		return req, runtime.MarshalAsJSON(req, *options.SubscriptionFeatureRegistrationType)
 	}
@@ -89,46 +106,38 @@ func (client *SubscriptionFeatureRegistrationsClient) createOrUpdateCreateReques
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SubscriptionFeatureRegistrationsClient) createOrUpdateHandleResponse(resp *http.Response) (SubscriptionFeatureRegistrationsCreateOrUpdateResponse, error) {
-	result := SubscriptionFeatureRegistrationsCreateOrUpdateResponse{RawResponse: resp}
+func (client *SubscriptionFeatureRegistrationsClient) createOrUpdateHandleResponse(resp *http.Response) (SubscriptionFeatureRegistrationsClientCreateOrUpdateResponse, error) {
+	result := SubscriptionFeatureRegistrationsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionFeatureRegistration); err != nil {
-		return SubscriptionFeatureRegistrationsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SubscriptionFeatureRegistrationsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SubscriptionFeatureRegistrationsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a feature registration
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubscriptionFeatureRegistrationsClient) Delete(ctx context.Context, providerNamespace string, featureName string, options *SubscriptionFeatureRegistrationsDeleteOptions) (SubscriptionFeatureRegistrationsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
+// providerNamespace - The provider namespace.
+// featureName - The feature name.
+// options - SubscriptionFeatureRegistrationsClientDeleteOptions contains the optional parameters for the SubscriptionFeatureRegistrationsClient.Delete
+// method.
+func (client *SubscriptionFeatureRegistrationsClient) Delete(ctx context.Context, providerNamespace string, featureName string, options *SubscriptionFeatureRegistrationsClientDeleteOptions) (SubscriptionFeatureRegistrationsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, providerNamespace, featureName, options)
 	if err != nil {
-		return SubscriptionFeatureRegistrationsDeleteResponse{}, err
+		return SubscriptionFeatureRegistrationsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubscriptionFeatureRegistrationsDeleteResponse{}, err
+		return SubscriptionFeatureRegistrationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return SubscriptionFeatureRegistrationsDeleteResponse{}, client.deleteHandleError(resp)
+		return SubscriptionFeatureRegistrationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SubscriptionFeatureRegistrationsDeleteResponse{RawResponse: resp}, nil
+	return SubscriptionFeatureRegistrationsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SubscriptionFeatureRegistrationsClient) deleteCreateRequest(ctx context.Context, providerNamespace string, featureName string, options *SubscriptionFeatureRegistrationsDeleteOptions) (*policy.Request, error) {
+func (client *SubscriptionFeatureRegistrationsClient) deleteCreateRequest(ctx context.Context, providerNamespace string, featureName string, options *SubscriptionFeatureRegistrationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Features/featureProviders/{providerNamespace}/subscriptionFeatureRegistrations/{featureName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -142,49 +151,41 @@ func (client *SubscriptionFeatureRegistrationsClient) deleteCreateRequest(ctx co
 		return nil, errors.New("parameter featureName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{featureName}", url.PathEscape(featureName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SubscriptionFeatureRegistrationsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Returns a feature registration
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubscriptionFeatureRegistrationsClient) Get(ctx context.Context, providerNamespace string, featureName string, options *SubscriptionFeatureRegistrationsGetOptions) (SubscriptionFeatureRegistrationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
+// providerNamespace - The provider namespace.
+// featureName - The feature name.
+// options - SubscriptionFeatureRegistrationsClientGetOptions contains the optional parameters for the SubscriptionFeatureRegistrationsClient.Get
+// method.
+func (client *SubscriptionFeatureRegistrationsClient) Get(ctx context.Context, providerNamespace string, featureName string, options *SubscriptionFeatureRegistrationsClientGetOptions) (SubscriptionFeatureRegistrationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, providerNamespace, featureName, options)
 	if err != nil {
-		return SubscriptionFeatureRegistrationsGetResponse{}, err
+		return SubscriptionFeatureRegistrationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SubscriptionFeatureRegistrationsGetResponse{}, err
+		return SubscriptionFeatureRegistrationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SubscriptionFeatureRegistrationsGetResponse{}, client.getHandleError(resp)
+		return SubscriptionFeatureRegistrationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SubscriptionFeatureRegistrationsClient) getCreateRequest(ctx context.Context, providerNamespace string, featureName string, options *SubscriptionFeatureRegistrationsGetOptions) (*policy.Request, error) {
+func (client *SubscriptionFeatureRegistrationsClient) getCreateRequest(ctx context.Context, providerNamespace string, featureName string, options *SubscriptionFeatureRegistrationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Features/featureProviders/{providerNamespace}/subscriptionFeatureRegistrations/{featureName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -198,109 +199,122 @@ func (client *SubscriptionFeatureRegistrationsClient) getCreateRequest(ctx conte
 		return nil, errors.New("parameter featureName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{featureName}", url.PathEscape(featureName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SubscriptionFeatureRegistrationsClient) getHandleResponse(resp *http.Response) (SubscriptionFeatureRegistrationsGetResponse, error) {
-	result := SubscriptionFeatureRegistrationsGetResponse{RawResponse: resp}
+func (client *SubscriptionFeatureRegistrationsClient) getHandleResponse(resp *http.Response) (SubscriptionFeatureRegistrationsClientGetResponse, error) {
+	result := SubscriptionFeatureRegistrationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionFeatureRegistration); err != nil {
-		return SubscriptionFeatureRegistrationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SubscriptionFeatureRegistrationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SubscriptionFeatureRegistrationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListAllBySubscription - Returns subscription feature registrations for given subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubscriptionFeatureRegistrationsClient) ListAllBySubscription(options *SubscriptionFeatureRegistrationsListAllBySubscriptionOptions) *SubscriptionFeatureRegistrationsListAllBySubscriptionPager {
-	return &SubscriptionFeatureRegistrationsListAllBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAllBySubscriptionCreateRequest(ctx, options)
+// NewListAllBySubscriptionPager - Returns subscription feature registrations for given subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
+// options - SubscriptionFeatureRegistrationsClientListAllBySubscriptionOptions contains the optional parameters for the SubscriptionFeatureRegistrationsClient.ListAllBySubscription
+// method.
+func (client *SubscriptionFeatureRegistrationsClient) NewListAllBySubscriptionPager(options *SubscriptionFeatureRegistrationsClientListAllBySubscriptionOptions) *runtime.Pager[SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse]{
+		More: func(page SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SubscriptionFeatureRegistrationsListAllBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SubscriptionFeatureRegistrationList.NextLink)
+		Fetcher: func(ctx context.Context, page *SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse) (SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAllBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAllBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAllBySubscriptionCreateRequest creates the ListAllBySubscription request.
-func (client *SubscriptionFeatureRegistrationsClient) listAllBySubscriptionCreateRequest(ctx context.Context, options *SubscriptionFeatureRegistrationsListAllBySubscriptionOptions) (*policy.Request, error) {
+func (client *SubscriptionFeatureRegistrationsClient) listAllBySubscriptionCreateRequest(ctx context.Context, options *SubscriptionFeatureRegistrationsClientListAllBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Features/subscriptionFeatureRegistrations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listAllBySubscriptionHandleResponse handles the ListAllBySubscription response.
-func (client *SubscriptionFeatureRegistrationsClient) listAllBySubscriptionHandleResponse(resp *http.Response) (SubscriptionFeatureRegistrationsListAllBySubscriptionResponse, error) {
-	result := SubscriptionFeatureRegistrationsListAllBySubscriptionResponse{RawResponse: resp}
+func (client *SubscriptionFeatureRegistrationsClient) listAllBySubscriptionHandleResponse(resp *http.Response) (SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse, error) {
+	result := SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionFeatureRegistrationList); err != nil {
-		return SubscriptionFeatureRegistrationsListAllBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listAllBySubscriptionHandleError handles the ListAllBySubscription error response.
-func (client *SubscriptionFeatureRegistrationsClient) listAllBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListBySubscription - Returns subscription feature registrations for given subscription and provider namespace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SubscriptionFeatureRegistrationsClient) ListBySubscription(providerNamespace string, options *SubscriptionFeatureRegistrationsListBySubscriptionOptions) *SubscriptionFeatureRegistrationsListBySubscriptionPager {
-	return &SubscriptionFeatureRegistrationsListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, providerNamespace, options)
+// NewListBySubscriptionPager - Returns subscription feature registrations for given subscription and provider namespace.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
+// providerNamespace - The provider namespace.
+// options - SubscriptionFeatureRegistrationsClientListBySubscriptionOptions contains the optional parameters for the SubscriptionFeatureRegistrationsClient.ListBySubscription
+// method.
+func (client *SubscriptionFeatureRegistrationsClient) NewListBySubscriptionPager(providerNamespace string, options *SubscriptionFeatureRegistrationsClientListBySubscriptionOptions) *runtime.Pager[SubscriptionFeatureRegistrationsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SubscriptionFeatureRegistrationsClientListBySubscriptionResponse]{
+		More: func(page SubscriptionFeatureRegistrationsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SubscriptionFeatureRegistrationsListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SubscriptionFeatureRegistrationList.NextLink)
+		Fetcher: func(ctx context.Context, page *SubscriptionFeatureRegistrationsClientListBySubscriptionResponse) (SubscriptionFeatureRegistrationsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, providerNamespace, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SubscriptionFeatureRegistrationsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SubscriptionFeatureRegistrationsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SubscriptionFeatureRegistrationsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *SubscriptionFeatureRegistrationsClient) listBySubscriptionCreateRequest(ctx context.Context, providerNamespace string, options *SubscriptionFeatureRegistrationsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *SubscriptionFeatureRegistrationsClient) listBySubscriptionCreateRequest(ctx context.Context, providerNamespace string, options *SubscriptionFeatureRegistrationsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Features/featureProviders/{providerNamespace}/subscriptionFeatureRegistrations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -310,35 +324,22 @@ func (client *SubscriptionFeatureRegistrationsClient) listBySubscriptionCreateRe
 		return nil, errors.New("parameter providerNamespace cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *SubscriptionFeatureRegistrationsClient) listBySubscriptionHandleResponse(resp *http.Response) (SubscriptionFeatureRegistrationsListBySubscriptionResponse, error) {
-	result := SubscriptionFeatureRegistrationsListBySubscriptionResponse{RawResponse: resp}
+func (client *SubscriptionFeatureRegistrationsClient) listBySubscriptionHandleResponse(resp *http.Response) (SubscriptionFeatureRegistrationsClientListBySubscriptionResponse, error) {
+	result := SubscriptionFeatureRegistrationsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionFeatureRegistrationList); err != nil {
-		return SubscriptionFeatureRegistrationsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return SubscriptionFeatureRegistrationsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *SubscriptionFeatureRegistrationsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

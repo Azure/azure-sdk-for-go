@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -7,11 +10,13 @@ import (
 	"context"
 	"crypto"
 	"crypto/x509"
-	"errors"
 	"log"
 	"os"
+	"reflect"
+	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -34,8 +39,29 @@ func newCertTest(name, certPath string, password string) certTest {
 var allCertTests = []certTest{
 	newCertTest("pem", "testdata/certificate.pem", ""),
 	newCertTest("pemB", "testdata/certificate_formatB.pem", ""),
+	newCertTest("pemChain", "testdata/certificate-with-chain.pem", ""),
 	newCertTest("pkcs12", "testdata/certificate.pfx", ""),
 	newCertTest("pkcs12Encrypted", "testdata/certificate_encrypted_key.pfx", "password"),
+}
+
+func TestParseCertificates_Error(t *testing.T) {
+	for _, path := range []string{
+		"testdata/certificate_empty.pem",         // malformed file (no cert block)
+		"testdata/certificate_encrypted_key.pfx", // requires a password we won't provide
+		"testdata/certificate_nokey.pem",
+		"testdata/certificate-two-keys.pem",
+	} {
+		t.Run(path, func(t *testing.T) {
+			data, err := os.ReadFile(path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			_, _, err = ParseCertificates(data, nil)
+			if err == nil {
+				t.Fatal("expected an error")
+			}
+		})
+	}
 }
 
 func TestClientCertificateCredential_InvalidTenantID(t *testing.T) {
@@ -82,6 +108,32 @@ func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain(t *tes
 	}
 }
 
+func TestClientCertificateCredential_SendCertificateChain(t *testing.T) {
+	for _, test := range allCertTests {
+		t.Run(test.name, func(t *testing.T) {
+			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+			defer close()
+			srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
+			srv.AppendResponse(mock.WithBody([]byte(tenantDiscoveryResponse)))
+			srv.AppendResponse(mock.WithPredicate(validateX5C(t, test.certs)), mock.WithBody([]byte(accessTokenRespSuccess)))
+			srv.AppendResponse()
+
+			options := ClientCertificateCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}, SendCertificateChain: true}
+			cred, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, test.key, &options)
+			if err != nil {
+				t.Fatal(err)
+			}
+			tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+			if err != nil {
+				t.Fatal(err)
+			}
+			if tk.Token != tokenValue {
+				t.Fatalf("unexpected token: %s", tk.Token)
+			}
+		})
+	}
+}
+
 func TestClientCertificateCredential_GetTokenCheckPrivateKeyBlocks(t *testing.T) {
 	test := allCertTests[0]
 	cred, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, test.key, nil)
@@ -117,12 +169,27 @@ func TestClientCertificateCredential_NoPrivateKey(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = AuthorityHost(srv.URL())
+	options.Cloud.ActiveDirectoryAuthorityHost = srv.URL()
 	options.Transport = srv
 	var key crypto.PrivateKey
 	_, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, key, &options)
 	if err == nil {
 		t.Fatalf("Expected an error but received nil")
+	}
+}
+
+func TestClientCertificateCredential_WrongKey(t *testing.T) {
+	data, err := os.ReadFile("testdata/certificate-wrong-key.pem")
+	if err != nil {
+		t.Fatal(err)
+	}
+	certs, key, err := ParseCertificates(data, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = NewClientCertificateCredential("tenantID", "clientID", certs, key, nil)
+	if err == nil {
+		t.Fatal("expected an error")
 	}
 }
 
@@ -170,14 +237,39 @@ func TestClientCertificateCredential_InvalidCertLive(t *testing.T) {
 	}
 
 	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if tk != nil {
-		t.Fatal("GetToken returned a token")
+	if !reflect.ValueOf(tk).IsZero() {
+		t.Fatal("expected a zero value AccessToken")
 	}
-	var e AuthenticationFailedError
-	if !errors.As(err, &e) {
-		t.Fatal("expected AuthenticationFailedError")
+	if e, ok := err.(*AuthenticationFailedError); ok {
+		if e.RawResponse == nil {
+			t.Fatal("expected a non-nil RawResponse")
+		}
+	} else {
+		t.Fatalf("expected AuthenticationFailedError, received %T", err)
 	}
-	if e.RawResponse() == nil {
-		t.Fatal("expected RawResponse() to return a non-nil *http.Response")
+	if !strings.HasPrefix(err.Error(), credNameCert) {
+		t.Fatal("missing credential type prefix")
 	}
+}
+
+func TestClientCertificateCredential_Regional(t *testing.T) {
+	t.Setenv(azureRegionalAuthorityName, "westus2")
+	opts, stop := initRecording(t)
+	defer stop()
+
+	f, err := os.ReadFile(liveSP.sniPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	cert, key, err := ParseCertificates(f, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	cred, err := NewClientCertificateCredential(
+		liveSP.tenantID, liveSP.clientID, cert, key, &ClientCertificateCredentialOptions{SendCertificateChain: true, ClientOptions: opts},
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	testGetTokenSuccess(t, cred)
 }

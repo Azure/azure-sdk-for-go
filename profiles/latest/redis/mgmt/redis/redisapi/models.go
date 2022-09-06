@@ -9,8 +9,9 @@
 
 package redisapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-12-01/redis/redisapi"
+import original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2021-06-01/redis/redisapi"
 
+type AsyncOperationStatusClientAPI = original.AsyncOperationStatusClientAPI
 type ClientAPI = original.ClientAPI
 type FirewallRulesClientAPI = original.FirewallRulesClientAPI
 type LinkedServerClientAPI = original.LinkedServerClientAPI

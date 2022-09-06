@@ -11,8 +11,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/conn"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/conn"
 	"github.com/stretchr/testify/require"
 )
 
@@ -24,7 +24,7 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 	forwardToQueueName := fmt.Sprintf("queue-fwd-%X", time.Now().UnixNano())
 
-	_, err = adminClient.CreateQueue(context.Background(), forwardToQueueName, nil, nil)
+	_, err = adminClient.CreateQueue(context.Background(), forwardToQueueName, nil)
 	require.NoError(t, err)
 
 	defer func() {
@@ -37,10 +37,12 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 
 	formatted := fmt.Sprintf("%s%s", fmt.Sprintf("https://%s/", parsed.Namespace), forwardToQueueName)
 
-	createResp, err := adminClient.CreateQueue(context.Background(), queueName, &admin.QueueProperties{
-		ForwardTo:                     &formatted,
-		ForwardDeadLetteredMessagesTo: &formatted,
-	}, nil)
+	createResp, err := adminClient.CreateQueue(context.Background(), queueName, &admin.CreateQueueOptions{
+		Properties: &admin.QueueProperties{
+			ForwardTo:                     &formatted,
+			ForwardDeadLetteredMessagesTo: &formatted,
+		},
+	})
 
 	require.NoError(t, err)
 	defer func() {
@@ -64,18 +66,16 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 
 	err = sender.SendMessage(context.Background(), &Message{
 		Body: []byte("this message will be auto-forwarded"),
-	})
+	}, nil)
 	require.NoError(t, err)
 
 	receiver, err := client.NewReceiverForQueue(forwardToQueueName, nil)
 	require.NoError(t, err)
 
-	forwardedMessage, err := receiver.receiveMessage(context.Background(), nil)
+	forwardedMessages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
 
-	body, err := forwardedMessage.Body()
-	require.NoError(t, err)
-	require.EqualValues(t, "this message will be auto-forwarded", string(body))
+	require.EqualValues(t, "this message will be auto-forwarded", string(forwardedMessages[0].Body))
 }
 
 func TestAdminClient_GetQueueRuntimeProperties(t *testing.T) {
@@ -87,7 +87,7 @@ func TestAdminClient_GetQueueRuntimeProperties(t *testing.T) {
 	defer client.Close(context.Background())
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
-	_, err = adminClient.CreateQueue(context.Background(), queueName, nil, nil)
+	_, err = adminClient.CreateQueue(context.Background(), queueName, nil)
 	require.NoError(t, err)
 
 	defer deleteQueue(t, adminClient, queueName)
@@ -98,13 +98,13 @@ func TestAdminClient_GetQueueRuntimeProperties(t *testing.T) {
 	for i := 0; i < 3; i++ {
 		err = sender.SendMessage(context.Background(), &Message{
 			Body: []byte("hello"),
-		})
+		}, nil)
 		require.NoError(t, err)
 	}
 
 	sequenceNumbers, err := sender.ScheduleMessages(context.Background(), []*Message{
 		{Body: []byte("hello")},
-	}, time.Now().Add(2*time.Hour))
+	}, time.Now().Add(2*time.Hour), nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, sequenceNumbers)
 
@@ -144,10 +144,10 @@ func TestAdminClient_TopicAndSubscriptionRuntimeProperties(t *testing.T) {
 	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
 	subscriptionName := fmt.Sprintf("sub-%X", time.Now().UnixNano())
 
-	_, err = adminClient.CreateTopic(context.Background(), topicName, nil, nil)
+	_, err = adminClient.CreateTopic(context.Background(), topicName, nil)
 	require.NoError(t, err)
 
-	addSubResp, err := adminClient.CreateSubscription(context.Background(), topicName, subscriptionName, nil, nil)
+	addSubResp, err := adminClient.CreateSubscription(context.Background(), topicName, subscriptionName, nil)
 	require.NoError(t, err)
 	require.NotNil(t, addSubResp)
 	require.EqualValues(t, 10, *addSubResp.MaxDeliveryCount)
@@ -162,7 +162,7 @@ func TestAdminClient_TopicAndSubscriptionRuntimeProperties(t *testing.T) {
 	//  Scheduled messages are accounted for in the topic stats.
 	_, err = sender.ScheduleMessages(context.Background(), []*Message{
 		{Body: []byte("hello")},
-	}, time.Now().Add(2*time.Hour))
+	}, time.Now().Add(2*time.Hour), nil)
 	require.NoError(t, err)
 
 	// validate the topic runtime properties

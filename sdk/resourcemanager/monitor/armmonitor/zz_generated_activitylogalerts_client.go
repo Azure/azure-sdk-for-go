@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armmonitor
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,43 +25,61 @@ import (
 // ActivityLogAlertsClient contains the methods for the ActivityLogAlerts group.
 // Don't use this type directly, use NewActivityLogAlertsClient() instead.
 type ActivityLogAlertsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewActivityLogAlertsClient creates a new instance of ActivityLogAlertsClient with the specified values.
-func NewActivityLogAlertsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ActivityLogAlertsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewActivityLogAlertsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActivityLogAlertsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &ActivityLogAlertsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &ActivityLogAlertsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
-// CreateOrUpdate - Create a new activity log alert or update an existing one.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ActivityLogAlertsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlert ActivityLogAlertResource, options *ActivityLogAlertsCreateOrUpdateOptions) (ActivityLogAlertsCreateOrUpdateResponse, error) {
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, activityLogAlertName, activityLogAlert, options)
+// CreateOrUpdate - Create a new Activity Log Alert rule or update an existing one.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// activityLogAlertName - The name of the Activity Log Alert rule.
+// activityLogAlertRule - The Activity Log Alert rule to create or use for the update.
+// options - ActivityLogAlertsClientCreateOrUpdateOptions contains the optional parameters for the ActivityLogAlertsClient.CreateOrUpdate
+// method.
+func (client *ActivityLogAlertsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlertRule ActivityLogAlertResource, options *ActivityLogAlertsClientCreateOrUpdateOptions) (ActivityLogAlertsClientCreateOrUpdateResponse, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, activityLogAlertName, activityLogAlertRule, options)
 	if err != nil {
-		return ActivityLogAlertsCreateOrUpdateResponse{}, err
+		return ActivityLogAlertsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ActivityLogAlertsCreateOrUpdateResponse{}, err
+		return ActivityLogAlertsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ActivityLogAlertsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ActivityLogAlertsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ActivityLogAlertsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlert ActivityLogAlertResource, options *ActivityLogAlertsCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/activityLogAlerts/{activityLogAlertName}"
+func (client *ActivityLogAlertsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlertRule ActivityLogAlertResource, options *ActivityLogAlertsClientCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/activityLogAlerts/{activityLogAlertName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -74,59 +92,51 @@ func (client *ActivityLogAlertsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter activityLogAlertName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{activityLogAlertName}", url.PathEscape(activityLogAlertName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
-	return req, runtime.MarshalAsJSON(req, activityLogAlert)
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, activityLogAlertRule)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ActivityLogAlertsClient) createOrUpdateHandleResponse(resp *http.Response) (ActivityLogAlertsCreateOrUpdateResponse, error) {
-	result := ActivityLogAlertsCreateOrUpdateResponse{RawResponse: resp}
+func (client *ActivityLogAlertsClient) createOrUpdateHandleResponse(resp *http.Response) (ActivityLogAlertsClientCreateOrUpdateResponse, error) {
+	result := ActivityLogAlertsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityLogAlertResource); err != nil {
-		return ActivityLogAlertsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ActivityLogAlertsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ActivityLogAlertsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Delete - Delete an activity log alert.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ActivityLogAlertsClient) Delete(ctx context.Context, resourceGroupName string, activityLogAlertName string, options *ActivityLogAlertsDeleteOptions) (ActivityLogAlertsDeleteResponse, error) {
+// Delete - Delete an Activity Log Alert rule.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// activityLogAlertName - The name of the Activity Log Alert rule.
+// options - ActivityLogAlertsClientDeleteOptions contains the optional parameters for the ActivityLogAlertsClient.Delete
+// method.
+func (client *ActivityLogAlertsClient) Delete(ctx context.Context, resourceGroupName string, activityLogAlertName string, options *ActivityLogAlertsClientDeleteOptions) (ActivityLogAlertsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, activityLogAlertName, options)
 	if err != nil {
-		return ActivityLogAlertsDeleteResponse{}, err
+		return ActivityLogAlertsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ActivityLogAlertsDeleteResponse{}, err
+		return ActivityLogAlertsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ActivityLogAlertsDeleteResponse{}, client.deleteHandleError(resp)
+		return ActivityLogAlertsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ActivityLogAlertsDeleteResponse{RawResponse: resp}, nil
+	return ActivityLogAlertsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ActivityLogAlertsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string, options *ActivityLogAlertsDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/activityLogAlerts/{activityLogAlertName}"
+func (client *ActivityLogAlertsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string, options *ActivityLogAlertsClientDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/activityLogAlerts/{activityLogAlertName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -139,50 +149,41 @@ func (client *ActivityLogAlertsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter activityLogAlertName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{activityLogAlertName}", url.PathEscape(activityLogAlertName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ActivityLogAlertsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Get - Get an activity log alert.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ActivityLogAlertsClient) Get(ctx context.Context, resourceGroupName string, activityLogAlertName string, options *ActivityLogAlertsGetOptions) (ActivityLogAlertsGetResponse, error) {
+// Get - Get an Activity Log Alert rule.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// activityLogAlertName - The name of the Activity Log Alert rule.
+// options - ActivityLogAlertsClientGetOptions contains the optional parameters for the ActivityLogAlertsClient.Get method.
+func (client *ActivityLogAlertsClient) Get(ctx context.Context, resourceGroupName string, activityLogAlertName string, options *ActivityLogAlertsClientGetOptions) (ActivityLogAlertsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, activityLogAlertName, options)
 	if err != nil {
-		return ActivityLogAlertsGetResponse{}, err
+		return ActivityLogAlertsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ActivityLogAlertsGetResponse{}, err
+		return ActivityLogAlertsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ActivityLogAlertsGetResponse{}, client.getHandleError(resp)
+		return ActivityLogAlertsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ActivityLogAlertsClient) getCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string, options *ActivityLogAlertsGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/activityLogAlerts/{activityLogAlertName}"
+func (client *ActivityLogAlertsClient) getCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string, options *ActivityLogAlertsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/activityLogAlerts/{activityLogAlertName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -195,59 +196,63 @@ func (client *ActivityLogAlertsClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter activityLogAlertName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{activityLogAlertName}", url.PathEscape(activityLogAlertName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ActivityLogAlertsClient) getHandleResponse(resp *http.Response) (ActivityLogAlertsGetResponse, error) {
-	result := ActivityLogAlertsGetResponse{RawResponse: resp}
+func (client *ActivityLogAlertsClient) getHandleResponse(resp *http.Response) (ActivityLogAlertsClientGetResponse, error) {
+	result := ActivityLogAlertsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityLogAlertResource); err != nil {
-		return ActivityLogAlertsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ActivityLogAlertsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ActivityLogAlertsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByResourceGroup - Get a list of all activity log alerts in a resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ActivityLogAlertsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *ActivityLogAlertsListByResourceGroupOptions) (ActivityLogAlertsListByResourceGroupResponse, error) {
-	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-	if err != nil {
-		return ActivityLogAlertsListByResourceGroupResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ActivityLogAlertsListByResourceGroupResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ActivityLogAlertsListByResourceGroupResponse{}, client.listByResourceGroupHandleError(resp)
-	}
-	return client.listByResourceGroupHandleResponse(resp)
+// NewListByResourceGroupPager - Get a list of all Activity Log Alert rules in a resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - ActivityLogAlertsClientListByResourceGroupOptions contains the optional parameters for the ActivityLogAlertsClient.ListByResourceGroup
+// method.
+func (client *ActivityLogAlertsClient) NewListByResourceGroupPager(resourceGroupName string, options *ActivityLogAlertsClientListByResourceGroupOptions) *runtime.Pager[ActivityLogAlertsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ActivityLogAlertsClientListByResourceGroupResponse]{
+		More: func(page ActivityLogAlertsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ActivityLogAlertsClientListByResourceGroupResponse) (ActivityLogAlertsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ActivityLogAlertsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ActivityLogAlertsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ActivityLogAlertsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
+		},
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ActivityLogAlertsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ActivityLogAlertsListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/activityLogAlerts"
+func (client *ActivityLogAlertsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ActivityLogAlertsClientListByResourceGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/activityLogAlerts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -256,116 +261,114 @@ func (client *ActivityLogAlertsClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ActivityLogAlertsClient) listByResourceGroupHandleResponse(resp *http.Response) (ActivityLogAlertsListByResourceGroupResponse, error) {
-	result := ActivityLogAlertsListByResourceGroupResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityLogAlertList); err != nil {
-		return ActivityLogAlertsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+func (client *ActivityLogAlertsClient) listByResourceGroupHandleResponse(resp *http.Response) (ActivityLogAlertsClientListByResourceGroupResponse, error) {
+	result := ActivityLogAlertsClientListByResourceGroupResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleList); err != nil {
+		return ActivityLogAlertsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *ActivityLogAlertsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListBySubscriptionID - Get a list of all activity log alerts in a subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ActivityLogAlertsClient) ListBySubscriptionID(ctx context.Context, options *ActivityLogAlertsListBySubscriptionIDOptions) (ActivityLogAlertsListBySubscriptionIDResponse, error) {
-	req, err := client.listBySubscriptionIDCreateRequest(ctx, options)
-	if err != nil {
-		return ActivityLogAlertsListBySubscriptionIDResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ActivityLogAlertsListBySubscriptionIDResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ActivityLogAlertsListBySubscriptionIDResponse{}, client.listBySubscriptionIDHandleError(resp)
-	}
-	return client.listBySubscriptionIDHandleResponse(resp)
+// NewListBySubscriptionIDPager - Get a list of all Activity Log Alert rules in a subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
+// options - ActivityLogAlertsClientListBySubscriptionIDOptions contains the optional parameters for the ActivityLogAlertsClient.ListBySubscriptionID
+// method.
+func (client *ActivityLogAlertsClient) NewListBySubscriptionIDPager(options *ActivityLogAlertsClientListBySubscriptionIDOptions) *runtime.Pager[ActivityLogAlertsClientListBySubscriptionIDResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ActivityLogAlertsClientListBySubscriptionIDResponse]{
+		More: func(page ActivityLogAlertsClientListBySubscriptionIDResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ActivityLogAlertsClientListBySubscriptionIDResponse) (ActivityLogAlertsClientListBySubscriptionIDResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionIDCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ActivityLogAlertsClientListBySubscriptionIDResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ActivityLogAlertsClientListBySubscriptionIDResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ActivityLogAlertsClientListBySubscriptionIDResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionIDHandleResponse(resp)
+		},
+	})
 }
 
 // listBySubscriptionIDCreateRequest creates the ListBySubscriptionID request.
-func (client *ActivityLogAlertsClient) listBySubscriptionIDCreateRequest(ctx context.Context, options *ActivityLogAlertsListBySubscriptionIDOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/microsoft.insights/activityLogAlerts"
+func (client *ActivityLogAlertsClient) listBySubscriptionIDCreateRequest(ctx context.Context, options *ActivityLogAlertsClientListBySubscriptionIDOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/activityLogAlerts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionIDHandleResponse handles the ListBySubscriptionID response.
-func (client *ActivityLogAlertsClient) listBySubscriptionIDHandleResponse(resp *http.Response) (ActivityLogAlertsListBySubscriptionIDResponse, error) {
-	result := ActivityLogAlertsListBySubscriptionIDResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityLogAlertList); err != nil {
-		return ActivityLogAlertsListBySubscriptionIDResponse{}, runtime.NewResponseError(err, resp)
+func (client *ActivityLogAlertsClient) listBySubscriptionIDHandleResponse(resp *http.Response) (ActivityLogAlertsClientListBySubscriptionIDResponse, error) {
+	result := ActivityLogAlertsClientListBySubscriptionIDResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleList); err != nil {
+		return ActivityLogAlertsClientListBySubscriptionIDResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionIDHandleError handles the ListBySubscriptionID error response.
-func (client *ActivityLogAlertsClient) listBySubscriptionIDHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
+// Update - Updates 'tags' and 'enabled' fields in an existing Alert rule. This method is used to update the Alert rule tags,
+// and to enable or disable the Alert rule. To update other fields use CreateOrUpdate
+// operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// activityLogAlertName - The name of the Activity Log Alert rule.
+// activityLogAlertRulePatch - Parameters supplied to the operation.
+// options - ActivityLogAlertsClientUpdateOptions contains the optional parameters for the ActivityLogAlertsClient.Update
+// method.
+func (client *ActivityLogAlertsClient) Update(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlertRulePatch AlertRulePatchObject, options *ActivityLogAlertsClientUpdateOptions) (ActivityLogAlertsClientUpdateResponse, error) {
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, activityLogAlertName, activityLogAlertRulePatch, options)
 	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Update - Updates an existing ActivityLogAlertResource's tags. To update other fields use the CreateOrUpdate method.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ActivityLogAlertsClient) Update(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlertPatch ActivityLogAlertPatchBody, options *ActivityLogAlertsUpdateOptions) (ActivityLogAlertsUpdateResponse, error) {
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, activityLogAlertName, activityLogAlertPatch, options)
-	if err != nil {
-		return ActivityLogAlertsUpdateResponse{}, err
+		return ActivityLogAlertsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ActivityLogAlertsUpdateResponse{}, err
+		return ActivityLogAlertsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ActivityLogAlertsUpdateResponse{}, client.updateHandleError(resp)
+		return ActivityLogAlertsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ActivityLogAlertsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlertPatch ActivityLogAlertPatchBody, options *ActivityLogAlertsUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/activityLogAlerts/{activityLogAlertName}"
+func (client *ActivityLogAlertsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlertRulePatch AlertRulePatchObject, options *ActivityLogAlertsClientUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/activityLogAlerts/{activityLogAlertName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -378,35 +381,22 @@ func (client *ActivityLogAlertsClient) updateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter activityLogAlertName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{activityLogAlertName}", url.PathEscape(activityLogAlertName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
-	return req, runtime.MarshalAsJSON(req, activityLogAlertPatch)
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, activityLogAlertRulePatch)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ActivityLogAlertsClient) updateHandleResponse(resp *http.Response) (ActivityLogAlertsUpdateResponse, error) {
-	result := ActivityLogAlertsUpdateResponse{RawResponse: resp}
+func (client *ActivityLogAlertsClient) updateHandleResponse(resp *http.Response) (ActivityLogAlertsClientUpdateResponse, error) {
+	result := ActivityLogAlertsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityLogAlertResource); err != nil {
-		return ActivityLogAlertsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ActivityLogAlertsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ActivityLogAlertsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

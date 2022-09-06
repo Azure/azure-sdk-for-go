@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,130 +12,146 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos"
 )
 
-// x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/ListExperimentsInASubscription.json
-func ExampleExperimentsClient_ListAll() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/ListExperimentsInASubscription.json
+func ExampleExperimentsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armchaos.NewExperimentsClient("<subscription-id>", cred, nil)
-	pager := client.ListAll(&armchaos.ExperimentsListAllOptions{Running: nil,
-		ContinuationToken: to.StringPtr("<continuation-token>"),
+	client, err := armchaos.NewExperimentsClient("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListAllPager(&armchaos.ExperimentsClientListAllOptions{Running: nil,
+		ContinuationToken: nil,
 	})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Experiment.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/ListExperimentsInAResourceGroup.json
-func ExampleExperimentsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/ListExperimentsInAResourceGroup.json
+func ExampleExperimentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armchaos.NewExperimentsClient("<subscription-id>", cred, nil)
-	pager := client.List("<resource-group-name>",
-		&armchaos.ExperimentsListOptions{Running: nil,
-			ContinuationToken: to.StringPtr("<continuation-token>"),
+	client, err := armchaos.NewExperimentsClient("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("exampleRG",
+		&armchaos.ExperimentsClientListOptions{Running: nil,
+			ContinuationToken: nil,
 		})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Experiment.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/DeleteAExperiment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/DeleteAExperiment.json
 func ExampleExperimentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armchaos.NewExperimentsClient("<subscription-id>", cred, nil)
+	client, err := armchaos.NewExperimentsClient("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<experiment-name>",
+		"exampleRG",
+		"exampleExperiment",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/GetAExperiment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/GetAExperiment.json
 func ExampleExperimentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armchaos.NewExperimentsClient("<subscription-id>", cred, nil)
+	client, err := armchaos.NewExperimentsClient("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<experiment-name>",
+		"exampleRG",
+		"exampleExperiment",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Experiment.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/CreateOrUpdateAExperiment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/CreateOrUpdateAExperiment.json
 func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armchaos.NewExperimentsClient("<subscription-id>", cred, nil)
+	client, err := armchaos.NewExperimentsClient("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<experiment-name>",
+		"exampleRG",
+		"exampleExperiment",
 		armchaos.Experiment{
-			TrackedResource: armchaos.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.Ptr("centraluseuap"),
 			Identity: &armchaos.ResourceIdentity{
-				Type: armchaos.ResourceIdentityTypeSystemAssigned.ToPtr(),
+				Type: to.Ptr(armchaos.ResourceIdentityTypeSystemAssigned),
 			},
 			Properties: &armchaos.ExperimentProperties{
 				Selectors: []*armchaos.Selector{
 					{
-						Type: armchaos.SelectorTypeList.ToPtr(),
-						ID:   to.StringPtr("<id>"),
+						Type: to.Ptr(armchaos.SelectorTypeList),
+						ID:   to.Ptr("selector1"),
 						Targets: []*armchaos.TargetReference{
 							{
-								Type: to.StringPtr("<type>"),
-								ID:   to.StringPtr("<id>"),
+								Type: to.Ptr("ChaosTarget"),
+								ID:   to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine"),
 							}},
 					}},
 				Steps: []*armchaos.Step{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("step1"),
 						Branches: []*armchaos.Branch{
 							{
-								Name: to.StringPtr("<name>"),
+								Name: to.Ptr("branch1"),
 								Actions: []armchaos.ActionClassification{
 									&armchaos.Action{
-										Name: to.StringPtr("<name>"),
-										Type: to.StringPtr("<type>"),
+										Name: to.Ptr("urn:csci:provider:providername:Shutdown/1.0"),
+										Type: to.Ptr("Continuous"),
 									}},
 							}},
 					}},
@@ -143,129 +159,154 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("Experiment.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/CancelAExperiment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/CancelAExperiment.json
 func ExampleExperimentsClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armchaos.NewExperimentsClient("<subscription-id>", cred, nil)
+	client, err := armchaos.NewExperimentsClient("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCancel(ctx,
-		"<resource-group-name>",
-		"<experiment-name>",
+		"exampleRG",
+		"exampleExperiment",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/StartAExperiment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/StartAExperiment.json
 func ExampleExperimentsClient_Start() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armchaos.NewExperimentsClient("<subscription-id>", cred, nil)
+	client, err := armchaos.NewExperimentsClient("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Start(ctx,
-		"<resource-group-name>",
-		"<experiment-name>",
+		"exampleRG",
+		"exampleExperiment",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/ListExperimentStatuses.json
-func ExampleExperimentsClient_ListAllStatuses() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/ListExperimentStatuses.json
+func ExampleExperimentsClient_NewListAllStatusesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armchaos.NewExperimentsClient("<subscription-id>", cred, nil)
-	pager := client.ListAllStatuses("<resource-group-name>",
-		"<experiment-name>",
+	client, err := armchaos.NewExperimentsClient("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListAllStatusesPager("exampleRG",
+		"exampleExperiment",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ExperimentStatus.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/GetAExperimentStatus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/GetAExperimentStatus.json
 func ExampleExperimentsClient_GetStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armchaos.NewExperimentsClient("<subscription-id>", cred, nil)
+	client, err := armchaos.NewExperimentsClient("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.GetStatus(ctx,
-		"<resource-group-name>",
-		"<experiment-name>",
-		"<status-id>",
+		"exampleRG",
+		"exampleExperiment",
+		"50734542-2e64-4e08-814c-cc0e7475f7e4",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("ExperimentStatus.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/ListExperimentExecutionsDetails.json
-func ExampleExperimentsClient_ListExecutionDetails() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/ListExperimentExecutionsDetails.json
+func ExampleExperimentsClient_NewListExecutionDetailsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armchaos.NewExperimentsClient("<subscription-id>", cred, nil)
-	pager := client.ListExecutionDetails("<resource-group-name>",
-		"<experiment-name>",
+	client, err := armchaos.NewExperimentsClient("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListExecutionDetailsPager("exampleRG",
+		"exampleExperiment",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ExperimentExecutionDetails.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/GetAExperimentExecutionDetails.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager/Microsoft.Chaos/preview/2021-09-15-preview/examples/GetAExperimentExecutionDetails.json
 func ExampleExperimentsClient_GetExecutionDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armchaos.NewExperimentsClient("<subscription-id>", cred, nil)
+	client, err := armchaos.NewExperimentsClient("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.GetExecutionDetails(ctx,
-		"<resource-group-name>",
-		"<experiment-name>",
-		"<execution-details-id>",
+		"exampleRG",
+		"exampleExperiment",
+		"f24500ad-744e-4a26-864b-b76199eac333",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("ExperimentExecutionDetails.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }

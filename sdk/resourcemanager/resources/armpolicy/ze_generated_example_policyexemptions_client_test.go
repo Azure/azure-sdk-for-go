@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,151 +17,182 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy"
 )
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/deletePolicyExemption.json
-func ExamplePolicyExemptionsClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/deletePolicyExemption.json
+func ExampleExemptionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyExemptionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewExemptionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<scope>",
-		"<policy-exemption-name>",
+		"subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster",
+		"DemoExpensiveVM",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/createOrUpdatePolicyExemption.json
-func ExamplePolicyExemptionsClient_CreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/createOrUpdatePolicyExemption.json
+func ExampleExemptionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyExemptionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewExemptionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<scope>",
-		"<policy-exemption-name>",
-		armpolicy.PolicyExemption{
-			Properties: &armpolicy.PolicyExemptionProperties{
-				Description:       to.StringPtr("<description>"),
-				DisplayName:       to.StringPtr("<display-name>"),
-				ExemptionCategory: armpolicy.ExemptionCategoryWaiver.ToPtr(),
+		"subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster",
+		"DemoExpensiveVM",
+		armpolicy.Exemption{
+			Properties: &armpolicy.ExemptionProperties{
+				Description:       to.Ptr("Exempt demo cluster from limit sku"),
+				DisplayName:       to.Ptr("Exempt demo cluster"),
+				ExemptionCategory: to.Ptr(armpolicy.ExemptionCategoryWaiver),
 				Metadata: map[string]interface{}{
 					"reason": "Temporary exemption for a expensive VM demo",
 				},
-				PolicyAssignmentID: to.StringPtr("<policy-assignment-id>"),
+				PolicyAssignmentID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement"),
 				PolicyDefinitionReferenceIDs: []*string{
-					to.StringPtr("Limit_Skus")},
+					to.Ptr("Limit_Skus")},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("PolicyExemption.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/getPolicyExemption.json
-func ExamplePolicyExemptionsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/getPolicyExemption.json
+func ExampleExemptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyExemptionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewExemptionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<scope>",
-		"<policy-exemption-name>",
+		"subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster",
+		"DemoExpensiveVM",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("PolicyExemption.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/listPolicyExemptionsForSubscription.json
-func ExamplePolicyExemptionsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/listPolicyExemptionsForSubscription.json
+func ExampleExemptionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyExemptionsClient("<subscription-id>", cred, nil)
-	pager := client.List(&armpolicy.PolicyExemptionsListOptions{Filter: to.StringPtr("<filter>")})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armpolicy.NewExemptionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager(&armpolicy.ExemptionsClientListOptions{Filter: to.Ptr("atScope()")})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("PolicyExemption.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/listPolicyExemptionsForResourceGroup.json
-func ExamplePolicyExemptionsClient_ListForResourceGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/listPolicyExemptionsForResourceGroup.json
+func ExampleExemptionsClient_NewListForResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyExemptionsClient("<subscription-id>", cred, nil)
-	pager := client.ListForResourceGroup("<resource-group-name>",
-		&armpolicy.PolicyExemptionsListForResourceGroupOptions{Filter: to.StringPtr("<filter>")})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armpolicy.NewExemptionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListForResourceGroupPager("TestResourceGroup",
+		&armpolicy.ExemptionsClientListForResourceGroupOptions{Filter: to.Ptr("atScope()")})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("PolicyExemption.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/listPolicyExemptionsForResource.json
-func ExamplePolicyExemptionsClient_ListForResource() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/listPolicyExemptionsForResource.json
+func ExampleExemptionsClient_NewListForResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyExemptionsClient("<subscription-id>", cred, nil)
-	pager := client.ListForResource("<resource-group-name>",
-		"<resource-provider-namespace>",
-		"<parent-resource-path>",
-		"<resource-type>",
-		"<resource-name>",
-		&armpolicy.PolicyExemptionsListForResourceOptions{Filter: nil})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armpolicy.NewExemptionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListForResourcePager("TestResourceGroup",
+		"Microsoft.Compute",
+		"virtualMachines/MyTestVm",
+		"domainNames",
+		"MyTestComputer.cloudapp.net",
+		&armpolicy.ExemptionsClientListForResourceOptions{Filter: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("PolicyExemption.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/listPolicyExemptionsForManagementGroup.json
-func ExamplePolicyExemptionsClient_ListForManagementGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/listPolicyExemptionsForManagementGroup.json
+func ExampleExemptionsClient_NewListForManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyExemptionsClient("<subscription-id>", cred, nil)
-	pager := client.ListForManagementGroup("<management-group-id>",
-		&armpolicy.PolicyExemptionsListForManagementGroupOptions{Filter: to.StringPtr("<filter>")})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armpolicy.NewExemptionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListForManagementGroupPager("DevOrg",
+		&armpolicy.ExemptionsClientListForManagementGroupOptions{Filter: to.Ptr("atScope()")})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("PolicyExemption.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

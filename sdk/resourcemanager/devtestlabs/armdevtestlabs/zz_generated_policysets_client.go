@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armdevtestlabs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,61 @@ import (
 // PolicySetsClient contains the methods for the PolicySets group.
 // Don't use this type directly, use NewPolicySetsClient() instead.
 type PolicySetsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPolicySetsClient creates a new instance of PolicySetsClient with the specified values.
-func NewPolicySetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PolicySetsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewPolicySetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicySetsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &PolicySetsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &PolicySetsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // EvaluatePolicies - Evaluates lab policy.
-// If the operation fails it returns the *CloudError error type.
-func (client *PolicySetsClient) EvaluatePolicies(ctx context.Context, resourceGroupName string, labName string, name string, evaluatePoliciesRequest EvaluatePoliciesRequest, options *PolicySetsEvaluatePoliciesOptions) (PolicySetsEvaluatePoliciesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the policy set.
+// evaluatePoliciesRequest - Request body for evaluating a policy set.
+// options - PolicySetsClientEvaluatePoliciesOptions contains the optional parameters for the PolicySetsClient.EvaluatePolicies
+// method.
+func (client *PolicySetsClient) EvaluatePolicies(ctx context.Context, resourceGroupName string, labName string, name string, evaluatePoliciesRequest EvaluatePoliciesRequest, options *PolicySetsClientEvaluatePoliciesOptions) (PolicySetsClientEvaluatePoliciesResponse, error) {
 	req, err := client.evaluatePoliciesCreateRequest(ctx, resourceGroupName, labName, name, evaluatePoliciesRequest, options)
 	if err != nil {
-		return PolicySetsEvaluatePoliciesResponse{}, err
+		return PolicySetsClientEvaluatePoliciesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PolicySetsEvaluatePoliciesResponse{}, err
+		return PolicySetsClientEvaluatePoliciesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PolicySetsEvaluatePoliciesResponse{}, client.evaluatePoliciesHandleError(resp)
+		return PolicySetsClientEvaluatePoliciesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.evaluatePoliciesHandleResponse(resp)
 }
 
 // evaluatePoliciesCreateRequest creates the EvaluatePolicies request.
-func (client *PolicySetsClient) evaluatePoliciesCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, evaluatePoliciesRequest EvaluatePoliciesRequest, options *PolicySetsEvaluatePoliciesOptions) (*policy.Request, error) {
+func (client *PolicySetsClient) evaluatePoliciesCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, evaluatePoliciesRequest EvaluatePoliciesRequest, options *PolicySetsClientEvaluatePoliciesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{name}/evaluatePolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,35 +97,22 @@ func (client *PolicySetsClient) evaluatePoliciesCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, evaluatePoliciesRequest)
 }
 
 // evaluatePoliciesHandleResponse handles the EvaluatePolicies response.
-func (client *PolicySetsClient) evaluatePoliciesHandleResponse(resp *http.Response) (PolicySetsEvaluatePoliciesResponse, error) {
-	result := PolicySetsEvaluatePoliciesResponse{RawResponse: resp}
+func (client *PolicySetsClient) evaluatePoliciesHandleResponse(resp *http.Response) (PolicySetsClientEvaluatePoliciesResponse, error) {
+	result := PolicySetsClientEvaluatePoliciesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EvaluatePoliciesResponse); err != nil {
-		return PolicySetsEvaluatePoliciesResponse{}, runtime.NewResponseError(err, resp)
+		return PolicySetsClientEvaluatePoliciesResponse{}, err
 	}
 	return result, nil
-}
-
-// evaluatePoliciesHandleError handles the EvaluatePolicies error response.
-func (client *PolicySetsClient) evaluatePoliciesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

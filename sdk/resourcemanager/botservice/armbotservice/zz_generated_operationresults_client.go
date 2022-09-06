@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armbotservice
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,46 +25,57 @@ import (
 // OperationResultsClient contains the methods for the OperationResults group.
 // Don't use this type directly, use NewOperationResultsClient() instead.
 type OperationResultsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewOperationResultsClient creates a new instance of OperationResultsClient with the specified values.
-func NewOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OperationResultsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Azure Subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationResultsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &OperationResultsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &OperationResultsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // BeginGet - Get the operation result for a long running operation.
-// If the operation fails it returns the *Error error type.
-func (client *OperationResultsClient) BeginGet(ctx context.Context, operationResultID string, options *OperationResultsBeginGetOptions) (OperationResultsGetPollerResponse, error) {
-	resp, err := client.get(ctx, operationResultID, options)
-	if err != nil {
-		return OperationResultsGetPollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
+// operationResultID - The ID of the operation result to get.
+// options - OperationResultsClientBeginGetOptions contains the optional parameters for the OperationResultsClient.BeginGet
+// method.
+func (client *OperationResultsClient) BeginGet(ctx context.Context, operationResultID string, options *OperationResultsClientBeginGetOptions) (*runtime.Poller[OperationResultsClientGetResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.get(ctx, operationResultID, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[OperationResultsClientGetResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[OperationResultsClientGetResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := OperationResultsGetPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("OperationResultsClient.Get", "", resp, client.pl, client.getHandleError)
-	if err != nil {
-		return OperationResultsGetPollerResponse{}, err
-	}
-	result.Poller = &OperationResultsGetPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Get - Get the operation result for a long running operation.
-// If the operation fails it returns the *Error error type.
-func (client *OperationResultsClient) get(ctx context.Context, operationResultID string, options *OperationResultsBeginGetOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
+func (client *OperationResultsClient) get(ctx context.Context, operationResultID string, options *OperationResultsClientBeginGetOptions) (*http.Response, error) {
 	req, err := client.getCreateRequest(ctx, operationResultID, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +85,13 @@ func (client *OperationResultsClient) get(ctx context.Context, operationResultID
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.getHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // getCreateRequest creates the Get request.
-func (client *OperationResultsClient) getCreateRequest(ctx context.Context, operationResultID string, options *OperationResultsBeginGetOptions) (*policy.Request, error) {
+func (client *OperationResultsClient) getCreateRequest(ctx context.Context, operationResultID string, options *OperationResultsClientBeginGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/operationresults/{operationResultId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -90,26 +101,13 @@ func (client *OperationResultsClient) getCreateRequest(ctx context.Context, oper
 		return nil, errors.New("parameter operationResultID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationResultId}", url.PathEscape(operationResultID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *OperationResultsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

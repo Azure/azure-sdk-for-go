@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armmixedreality
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,60 @@ import (
 // SpatialAnchorsAccountsClient contains the methods for the SpatialAnchorsAccounts group.
 // Don't use this type directly, use NewSpatialAnchorsAccountsClient() instead.
 type SpatialAnchorsAccountsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSpatialAnchorsAccountsClient creates a new instance of SpatialAnchorsAccountsClient with the specified values.
-func NewSpatialAnchorsAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SpatialAnchorsAccountsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewSpatialAnchorsAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SpatialAnchorsAccountsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &SpatialAnchorsAccountsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &SpatialAnchorsAccountsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // Create - Creating or Updating a Spatial Anchors Account.
-// If the operation fails it returns the *CloudError error type.
-func (client *SpatialAnchorsAccountsClient) Create(ctx context.Context, resourceGroupName string, accountName string, spatialAnchorsAccount SpatialAnchorsAccount, options *SpatialAnchorsAccountsCreateOptions) (SpatialAnchorsAccountsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
+// resourceGroupName - Name of an Azure resource group.
+// accountName - Name of an Mixed Reality Account.
+// spatialAnchorsAccount - Spatial Anchors Account parameter.
+// options - SpatialAnchorsAccountsClientCreateOptions contains the optional parameters for the SpatialAnchorsAccountsClient.Create
+// method.
+func (client *SpatialAnchorsAccountsClient) Create(ctx context.Context, resourceGroupName string, accountName string, spatialAnchorsAccount SpatialAnchorsAccount, options *SpatialAnchorsAccountsClientCreateOptions) (SpatialAnchorsAccountsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, spatialAnchorsAccount, options)
 	if err != nil {
-		return SpatialAnchorsAccountsCreateResponse{}, err
+		return SpatialAnchorsAccountsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SpatialAnchorsAccountsCreateResponse{}, err
+		return SpatialAnchorsAccountsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return SpatialAnchorsAccountsCreateResponse{}, client.createHandleError(resp)
+		return SpatialAnchorsAccountsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *SpatialAnchorsAccountsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, spatialAnchorsAccount SpatialAnchorsAccount, options *SpatialAnchorsAccountsCreateOptions) (*policy.Request, error) {
+func (client *SpatialAnchorsAccountsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, spatialAnchorsAccount SpatialAnchorsAccount, options *SpatialAnchorsAccountsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MixedReality/spatialAnchorsAccounts/{accountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,58 +92,50 @@ func (client *SpatialAnchorsAccountsClient) createCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, spatialAnchorsAccount)
 }
 
 // createHandleResponse handles the Create response.
-func (client *SpatialAnchorsAccountsClient) createHandleResponse(resp *http.Response) (SpatialAnchorsAccountsCreateResponse, error) {
-	result := SpatialAnchorsAccountsCreateResponse{RawResponse: resp}
+func (client *SpatialAnchorsAccountsClient) createHandleResponse(resp *http.Response) (SpatialAnchorsAccountsClientCreateResponse, error) {
+	result := SpatialAnchorsAccountsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SpatialAnchorsAccount); err != nil {
-		return SpatialAnchorsAccountsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return SpatialAnchorsAccountsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *SpatialAnchorsAccountsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a Spatial Anchors Account.
-// If the operation fails it returns the *CloudError error type.
-func (client *SpatialAnchorsAccountsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, options *SpatialAnchorsAccountsDeleteOptions) (SpatialAnchorsAccountsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
+// resourceGroupName - Name of an Azure resource group.
+// accountName - Name of an Mixed Reality Account.
+// options - SpatialAnchorsAccountsClientDeleteOptions contains the optional parameters for the SpatialAnchorsAccountsClient.Delete
+// method.
+func (client *SpatialAnchorsAccountsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, options *SpatialAnchorsAccountsClientDeleteOptions) (SpatialAnchorsAccountsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return SpatialAnchorsAccountsDeleteResponse{}, err
+		return SpatialAnchorsAccountsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SpatialAnchorsAccountsDeleteResponse{}, err
+		return SpatialAnchorsAccountsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return SpatialAnchorsAccountsDeleteResponse{}, client.deleteHandleError(resp)
+		return SpatialAnchorsAccountsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SpatialAnchorsAccountsDeleteResponse{RawResponse: resp}, nil
+	return SpatialAnchorsAccountsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SpatialAnchorsAccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *SpatialAnchorsAccountsDeleteOptions) (*policy.Request, error) {
+func (client *SpatialAnchorsAccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *SpatialAnchorsAccountsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MixedReality/spatialAnchorsAccounts/{accountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -139,49 +149,41 @@ func (client *SpatialAnchorsAccountsClient) deleteCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SpatialAnchorsAccountsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieve a Spatial Anchors Account.
-// If the operation fails it returns the *CloudError error type.
-func (client *SpatialAnchorsAccountsClient) Get(ctx context.Context, resourceGroupName string, accountName string, options *SpatialAnchorsAccountsGetOptions) (SpatialAnchorsAccountsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
+// resourceGroupName - Name of an Azure resource group.
+// accountName - Name of an Mixed Reality Account.
+// options - SpatialAnchorsAccountsClientGetOptions contains the optional parameters for the SpatialAnchorsAccountsClient.Get
+// method.
+func (client *SpatialAnchorsAccountsClient) Get(ctx context.Context, resourceGroupName string, accountName string, options *SpatialAnchorsAccountsClientGetOptions) (SpatialAnchorsAccountsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return SpatialAnchorsAccountsGetResponse{}, err
+		return SpatialAnchorsAccountsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SpatialAnchorsAccountsGetResponse{}, err
+		return SpatialAnchorsAccountsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SpatialAnchorsAccountsGetResponse{}, client.getHandleError(resp)
+		return SpatialAnchorsAccountsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SpatialAnchorsAccountsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *SpatialAnchorsAccountsGetOptions) (*policy.Request, error) {
+func (client *SpatialAnchorsAccountsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *SpatialAnchorsAccountsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MixedReality/spatialAnchorsAccounts/{accountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -195,55 +197,62 @@ func (client *SpatialAnchorsAccountsClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SpatialAnchorsAccountsClient) getHandleResponse(resp *http.Response) (SpatialAnchorsAccountsGetResponse, error) {
-	result := SpatialAnchorsAccountsGetResponse{RawResponse: resp}
+func (client *SpatialAnchorsAccountsClient) getHandleResponse(resp *http.Response) (SpatialAnchorsAccountsClientGetResponse, error) {
+	result := SpatialAnchorsAccountsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SpatialAnchorsAccount); err != nil {
-		return SpatialAnchorsAccountsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SpatialAnchorsAccountsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SpatialAnchorsAccountsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByResourceGroup - List Resources by Resource Group
-// If the operation fails it returns the *CloudError error type.
-func (client *SpatialAnchorsAccountsClient) ListByResourceGroup(resourceGroupName string, options *SpatialAnchorsAccountsListByResourceGroupOptions) *SpatialAnchorsAccountsListByResourceGroupPager {
-	return &SpatialAnchorsAccountsListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+// NewListByResourceGroupPager - List Resources by Resource Group
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
+// resourceGroupName - Name of an Azure resource group.
+// options - SpatialAnchorsAccountsClientListByResourceGroupOptions contains the optional parameters for the SpatialAnchorsAccountsClient.ListByResourceGroup
+// method.
+func (client *SpatialAnchorsAccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *SpatialAnchorsAccountsClientListByResourceGroupOptions) *runtime.Pager[SpatialAnchorsAccountsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SpatialAnchorsAccountsClientListByResourceGroupResponse]{
+		More: func(page SpatialAnchorsAccountsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SpatialAnchorsAccountsListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SpatialAnchorsAccountPage.NextLink)
+		Fetcher: func(ctx context.Context, page *SpatialAnchorsAccountsClientListByResourceGroupResponse) (SpatialAnchorsAccountsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SpatialAnchorsAccountsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SpatialAnchorsAccountsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SpatialAnchorsAccountsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *SpatialAnchorsAccountsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *SpatialAnchorsAccountsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *SpatialAnchorsAccountsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *SpatialAnchorsAccountsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MixedReality/spatialAnchorsAccounts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -253,112 +262,110 @@ func (client *SpatialAnchorsAccountsClient) listByResourceGroupCreateRequest(ctx
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *SpatialAnchorsAccountsClient) listByResourceGroupHandleResponse(resp *http.Response) (SpatialAnchorsAccountsListByResourceGroupResponse, error) {
-	result := SpatialAnchorsAccountsListByResourceGroupResponse{RawResponse: resp}
+func (client *SpatialAnchorsAccountsClient) listByResourceGroupHandleResponse(resp *http.Response) (SpatialAnchorsAccountsClientListByResourceGroupResponse, error) {
+	result := SpatialAnchorsAccountsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SpatialAnchorsAccountPage); err != nil {
-		return SpatialAnchorsAccountsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return SpatialAnchorsAccountsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *SpatialAnchorsAccountsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListBySubscription - List Spatial Anchors Accounts by Subscription
-// If the operation fails it returns the *CloudError error type.
-func (client *SpatialAnchorsAccountsClient) ListBySubscription(options *SpatialAnchorsAccountsListBySubscriptionOptions) *SpatialAnchorsAccountsListBySubscriptionPager {
-	return &SpatialAnchorsAccountsListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+// NewListBySubscriptionPager - List Spatial Anchors Accounts by Subscription
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
+// options - SpatialAnchorsAccountsClientListBySubscriptionOptions contains the optional parameters for the SpatialAnchorsAccountsClient.ListBySubscription
+// method.
+func (client *SpatialAnchorsAccountsClient) NewListBySubscriptionPager(options *SpatialAnchorsAccountsClientListBySubscriptionOptions) *runtime.Pager[SpatialAnchorsAccountsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SpatialAnchorsAccountsClientListBySubscriptionResponse]{
+		More: func(page SpatialAnchorsAccountsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SpatialAnchorsAccountsListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SpatialAnchorsAccountPage.NextLink)
+		Fetcher: func(ctx context.Context, page *SpatialAnchorsAccountsClientListBySubscriptionResponse) (SpatialAnchorsAccountsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SpatialAnchorsAccountsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SpatialAnchorsAccountsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SpatialAnchorsAccountsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *SpatialAnchorsAccountsClient) listBySubscriptionCreateRequest(ctx context.Context, options *SpatialAnchorsAccountsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *SpatialAnchorsAccountsClient) listBySubscriptionCreateRequest(ctx context.Context, options *SpatialAnchorsAccountsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MixedReality/spatialAnchorsAccounts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *SpatialAnchorsAccountsClient) listBySubscriptionHandleResponse(resp *http.Response) (SpatialAnchorsAccountsListBySubscriptionResponse, error) {
-	result := SpatialAnchorsAccountsListBySubscriptionResponse{RawResponse: resp}
+func (client *SpatialAnchorsAccountsClient) listBySubscriptionHandleResponse(resp *http.Response) (SpatialAnchorsAccountsClientListBySubscriptionResponse, error) {
+	result := SpatialAnchorsAccountsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SpatialAnchorsAccountPage); err != nil {
-		return SpatialAnchorsAccountsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return SpatialAnchorsAccountsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *SpatialAnchorsAccountsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListKeys - List Both of the 2 Keys of a Spatial Anchors Account
-// If the operation fails it returns the *CloudError error type.
-func (client *SpatialAnchorsAccountsClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string, options *SpatialAnchorsAccountsListKeysOptions) (SpatialAnchorsAccountsListKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
+// resourceGroupName - Name of an Azure resource group.
+// accountName - Name of an Mixed Reality Account.
+// options - SpatialAnchorsAccountsClientListKeysOptions contains the optional parameters for the SpatialAnchorsAccountsClient.ListKeys
+// method.
+func (client *SpatialAnchorsAccountsClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string, options *SpatialAnchorsAccountsClientListKeysOptions) (SpatialAnchorsAccountsClientListKeysResponse, error) {
 	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
-		return SpatialAnchorsAccountsListKeysResponse{}, err
+		return SpatialAnchorsAccountsClientListKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SpatialAnchorsAccountsListKeysResponse{}, err
+		return SpatialAnchorsAccountsClientListKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SpatialAnchorsAccountsListKeysResponse{}, client.listKeysHandleError(resp)
+		return SpatialAnchorsAccountsClientListKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listKeysHandleResponse(resp)
 }
 
 // listKeysCreateRequest creates the ListKeys request.
-func (client *SpatialAnchorsAccountsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *SpatialAnchorsAccountsListKeysOptions) (*policy.Request, error) {
+func (client *SpatialAnchorsAccountsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *SpatialAnchorsAccountsClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MixedReality/spatialAnchorsAccounts/{accountName}/listKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -372,58 +379,51 @@ func (client *SpatialAnchorsAccountsClient) listKeysCreateRequest(ctx context.Co
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *SpatialAnchorsAccountsClient) listKeysHandleResponse(resp *http.Response) (SpatialAnchorsAccountsListKeysResponse, error) {
-	result := SpatialAnchorsAccountsListKeysResponse{RawResponse: resp}
+func (client *SpatialAnchorsAccountsClient) listKeysHandleResponse(resp *http.Response) (SpatialAnchorsAccountsClientListKeysResponse, error) {
+	result := SpatialAnchorsAccountsClientListKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountKeys); err != nil {
-		return SpatialAnchorsAccountsListKeysResponse{}, runtime.NewResponseError(err, resp)
+		return SpatialAnchorsAccountsClientListKeysResponse{}, err
 	}
 	return result, nil
 }
 
-// listKeysHandleError handles the ListKeys error response.
-func (client *SpatialAnchorsAccountsClient) listKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // RegenerateKeys - Regenerate specified Key of a Spatial Anchors Account
-// If the operation fails it returns the *CloudError error type.
-func (client *SpatialAnchorsAccountsClient) RegenerateKeys(ctx context.Context, resourceGroupName string, accountName string, regenerate AccountKeyRegenerateRequest, options *SpatialAnchorsAccountsRegenerateKeysOptions) (SpatialAnchorsAccountsRegenerateKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
+// resourceGroupName - Name of an Azure resource group.
+// accountName - Name of an Mixed Reality Account.
+// regenerate - Required information for key regeneration.
+// options - SpatialAnchorsAccountsClientRegenerateKeysOptions contains the optional parameters for the SpatialAnchorsAccountsClient.RegenerateKeys
+// method.
+func (client *SpatialAnchorsAccountsClient) RegenerateKeys(ctx context.Context, resourceGroupName string, accountName string, regenerate AccountKeyRegenerateRequest, options *SpatialAnchorsAccountsClientRegenerateKeysOptions) (SpatialAnchorsAccountsClientRegenerateKeysResponse, error) {
 	req, err := client.regenerateKeysCreateRequest(ctx, resourceGroupName, accountName, regenerate, options)
 	if err != nil {
-		return SpatialAnchorsAccountsRegenerateKeysResponse{}, err
+		return SpatialAnchorsAccountsClientRegenerateKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SpatialAnchorsAccountsRegenerateKeysResponse{}, err
+		return SpatialAnchorsAccountsClientRegenerateKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SpatialAnchorsAccountsRegenerateKeysResponse{}, client.regenerateKeysHandleError(resp)
+		return SpatialAnchorsAccountsClientRegenerateKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.regenerateKeysHandleResponse(resp)
 }
 
 // regenerateKeysCreateRequest creates the RegenerateKeys request.
-func (client *SpatialAnchorsAccountsClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, regenerate AccountKeyRegenerateRequest, options *SpatialAnchorsAccountsRegenerateKeysOptions) (*policy.Request, error) {
+func (client *SpatialAnchorsAccountsClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, regenerate AccountKeyRegenerateRequest, options *SpatialAnchorsAccountsClientRegenerateKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MixedReality/spatialAnchorsAccounts/{accountName}/regenerateKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -437,58 +437,51 @@ func (client *SpatialAnchorsAccountsClient) regenerateKeysCreateRequest(ctx cont
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, regenerate)
 }
 
 // regenerateKeysHandleResponse handles the RegenerateKeys response.
-func (client *SpatialAnchorsAccountsClient) regenerateKeysHandleResponse(resp *http.Response) (SpatialAnchorsAccountsRegenerateKeysResponse, error) {
-	result := SpatialAnchorsAccountsRegenerateKeysResponse{RawResponse: resp}
+func (client *SpatialAnchorsAccountsClient) regenerateKeysHandleResponse(resp *http.Response) (SpatialAnchorsAccountsClientRegenerateKeysResponse, error) {
+	result := SpatialAnchorsAccountsClientRegenerateKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountKeys); err != nil {
-		return SpatialAnchorsAccountsRegenerateKeysResponse{}, runtime.NewResponseError(err, resp)
+		return SpatialAnchorsAccountsClientRegenerateKeysResponse{}, err
 	}
 	return result, nil
 }
 
-// regenerateKeysHandleError handles the RegenerateKeys error response.
-func (client *SpatialAnchorsAccountsClient) regenerateKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updating a Spatial Anchors Account
-// If the operation fails it returns the *CloudError error type.
-func (client *SpatialAnchorsAccountsClient) Update(ctx context.Context, resourceGroupName string, accountName string, spatialAnchorsAccount SpatialAnchorsAccount, options *SpatialAnchorsAccountsUpdateOptions) (SpatialAnchorsAccountsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
+// resourceGroupName - Name of an Azure resource group.
+// accountName - Name of an Mixed Reality Account.
+// spatialAnchorsAccount - Spatial Anchors Account parameter.
+// options - SpatialAnchorsAccountsClientUpdateOptions contains the optional parameters for the SpatialAnchorsAccountsClient.Update
+// method.
+func (client *SpatialAnchorsAccountsClient) Update(ctx context.Context, resourceGroupName string, accountName string, spatialAnchorsAccount SpatialAnchorsAccount, options *SpatialAnchorsAccountsClientUpdateOptions) (SpatialAnchorsAccountsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, spatialAnchorsAccount, options)
 	if err != nil {
-		return SpatialAnchorsAccountsUpdateResponse{}, err
+		return SpatialAnchorsAccountsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SpatialAnchorsAccountsUpdateResponse{}, err
+		return SpatialAnchorsAccountsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SpatialAnchorsAccountsUpdateResponse{}, client.updateHandleError(resp)
+		return SpatialAnchorsAccountsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SpatialAnchorsAccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, spatialAnchorsAccount SpatialAnchorsAccount, options *SpatialAnchorsAccountsUpdateOptions) (*policy.Request, error) {
+func (client *SpatialAnchorsAccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, spatialAnchorsAccount SpatialAnchorsAccount, options *SpatialAnchorsAccountsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MixedReality/spatialAnchorsAccounts/{accountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -502,35 +495,22 @@ func (client *SpatialAnchorsAccountsClient) updateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, spatialAnchorsAccount)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *SpatialAnchorsAccountsClient) updateHandleResponse(resp *http.Response) (SpatialAnchorsAccountsUpdateResponse, error) {
-	result := SpatialAnchorsAccountsUpdateResponse{RawResponse: resp}
+func (client *SpatialAnchorsAccountsClient) updateHandleResponse(resp *http.Response) (SpatialAnchorsAccountsClientUpdateResponse, error) {
+	result := SpatialAnchorsAccountsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SpatialAnchorsAccount); err != nil {
-		return SpatialAnchorsAccountsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SpatialAnchorsAccountsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *SpatialAnchorsAccountsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

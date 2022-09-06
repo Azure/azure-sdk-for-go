@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,76 +8,37 @@
 
 package armcustomerlockbox
 
-import "net/http"
-
-// GetTenantOptedInResponse contains the response from method Get.TenantOptedIn.
-type GetTenantOptedInResponse struct {
-	GetTenantOptedInResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// GetTenantOptedInResult contains the result from method Get.TenantOptedIn.
-type GetTenantOptedInResult struct {
+// GetClientTenantOptedInResponse contains the response from method GetClient.TenantOptedIn.
+type GetClientTenantOptedInResponse struct {
 	TenantOptInResponse
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PostDisableLockboxResponse contains the response from method Post.DisableLockbox.
-type PostDisableLockboxResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PostClientDisableLockboxResponse contains the response from method PostClient.DisableLockbox.
+type PostClientDisableLockboxResponse struct {
+	// placeholder for future response values
 }
 
-// PostEnableLockboxResponse contains the response from method Post.EnableLockbox.
-type PostEnableLockboxResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PostClientEnableLockboxResponse contains the response from method PostClient.EnableLockbox.
+type PostClientEnableLockboxResponse struct {
+	// placeholder for future response values
 }
 
-// RequestsGetResponse contains the response from method Requests.Get.
-type RequestsGetResponse struct {
-	RequestsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RequestsGetResult contains the result from method Requests.Get.
-type RequestsGetResult struct {
+// RequestsClientGetResponse contains the response from method RequestsClient.Get.
+type RequestsClientGetResponse struct {
 	LockboxRequestResponse
 }
 
-// RequestsListResponse contains the response from method Requests.List.
-type RequestsListResponse struct {
-	RequestsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RequestsListResult contains the result from method Requests.List.
-type RequestsListResult struct {
+// RequestsClientListResponse contains the response from method RequestsClient.List.
+type RequestsClientListResponse struct {
 	RequestListResult
 }
 
-// RequestsUpdateStatusResponse contains the response from method Requests.UpdateStatus.
-type RequestsUpdateStatusResponse struct {
-	RequestsUpdateStatusResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RequestsUpdateStatusResult contains the result from method Requests.UpdateStatus.
-type RequestsUpdateStatusResult struct {
+// RequestsClientUpdateStatusResponse contains the response from method RequestsClient.UpdateStatus.
+type RequestsClientUpdateStatusResponse struct {
 	Approval
 }

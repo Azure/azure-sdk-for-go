@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,283 +17,247 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox"
 )
 
-// x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/AvailableSkusPost.json
-func ExampleServiceClient_ListAvailableSKUsByResourceGroup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armdatabox.NewServiceClient("<subscription-id>", cred, nil)
-	pager := client.ListAvailableSKUsByResourceGroup("<resource-group-name>",
-		"<location>",
-		armdatabox.AvailableSKURequest{
-			Country:      to.StringPtr("<country>"),
-			Location:     to.StringPtr("<location>"),
-			TransferType: armdatabox.TransferTypeImportToAzure.ToPtr(),
-		},
-		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-	}
-}
-
-// x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/ValidateAddressPost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/ValidateAddressPost.json
 func ExampleServiceClient_ValidateAddress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatabox.NewServiceClient("<subscription-id>", cred, nil)
-	_, err = client.ValidateAddress(ctx,
-		"<location>",
+	client, err := armdatabox.NewServiceClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.ValidateAddress(ctx,
+		"westus",
 		armdatabox.ValidateAddress{
-			ValidationInputRequest: armdatabox.ValidationInputRequest{
-				ValidationType: armdatabox.ValidationInputDiscriminatorValidateAddress.ToPtr(),
-			},
-			DeviceType: armdatabox.SKUNameDataBox.ToPtr(),
+			ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateAddress),
+			DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
 			ShippingAddress: &armdatabox.ShippingAddress{
-				AddressType:     armdatabox.AddressTypeCommercial.ToPtr(),
-				City:            to.StringPtr("<city>"),
-				CompanyName:     to.StringPtr("<company-name>"),
-				Country:         to.StringPtr("<country>"),
-				PostalCode:      to.StringPtr("<postal-code>"),
-				StateOrProvince: to.StringPtr("<state-or-province>"),
-				StreetAddress1:  to.StringPtr("<street-address1>"),
-				StreetAddress2:  to.StringPtr("<street-address2>"),
+				AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
+				City:            to.Ptr("San Francisco"),
+				CompanyName:     to.Ptr("Microsoft"),
+				Country:         to.Ptr("US"),
+				PostalCode:      to.Ptr("94107"),
+				StateOrProvince: to.Ptr("CA"),
+				StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
+				StreetAddress2:  to.Ptr("Unit 1"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/ValidateInputsByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/ValidateInputsByResourceGroup.json
 func ExampleServiceClient_ValidateInputsByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatabox.NewServiceClient("<subscription-id>", cred, nil)
-	_, err = client.ValidateInputsByResourceGroup(ctx,
-		"<resource-group-name>",
-		"<location>",
+	client, err := armdatabox.NewServiceClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.ValidateInputsByResourceGroup(ctx,
+		"SdkRg6861",
+		"westus",
 		&armdatabox.CreateJobValidations{
-			ValidationRequest: armdatabox.ValidationRequest{
-				IndividualRequestDetails: []armdatabox.ValidationInputRequestClassification{
-					&armdatabox.DataTransferDetailsValidationRequest{
-						ValidationInputRequest: armdatabox.ValidationInputRequest{
-							ValidationType: armdatabox.ValidationInputDiscriminatorValidateDataTransferDetails.ToPtr(),
-						},
-						DataImportDetails: []*armdatabox.DataImportDetails{
-							{
-								AccountDetails: &armdatabox.StorageAccountDetails{
-									DataAccountDetails: armdatabox.DataAccountDetails{
-										DataAccountType: armdatabox.DataAccountTypeStorageAccount.ToPtr(),
-									},
-									StorageAccountID: to.StringPtr("<storage-account-id>"),
-								},
-							}},
-						DeviceType:   armdatabox.SKUNameDataBox.ToPtr(),
-						TransferType: armdatabox.TransferTypeImportToAzure.ToPtr(),
-					},
-					&armdatabox.ValidateAddress{
-						ValidationInputRequest: armdatabox.ValidationInputRequest{
-							ValidationType: armdatabox.ValidationInputDiscriminatorValidateAddress.ToPtr(),
-						},
-						DeviceType: armdatabox.SKUNameDataBox.ToPtr(),
-						ShippingAddress: &armdatabox.ShippingAddress{
-							AddressType:     armdatabox.AddressTypeCommercial.ToPtr(),
-							City:            to.StringPtr("<city>"),
-							CompanyName:     to.StringPtr("<company-name>"),
-							Country:         to.StringPtr("<country>"),
-							PostalCode:      to.StringPtr("<postal-code>"),
-							StateOrProvince: to.StringPtr("<state-or-province>"),
-							StreetAddress1:  to.StringPtr("<street-address1>"),
-							StreetAddress2:  to.StringPtr("<street-address2>"),
-						},
-						TransportPreferences: &armdatabox.TransportPreferences{
-							PreferredShipmentType: armdatabox.TransportShipmentTypesMicrosoftManaged.ToPtr(),
-						},
-					},
-					&armdatabox.SubscriptionIsAllowedToCreateJobValidationRequest{
-						ValidationInputRequest: armdatabox.ValidationInputRequest{
-							ValidationType: armdatabox.ValidationInputDiscriminatorValidateSubscriptionIsAllowedToCreateJob.ToPtr(),
-						},
-					},
-					&armdatabox.SKUAvailabilityValidationRequest{
-						ValidationInputRequest: armdatabox.ValidationInputRequest{
-							ValidationType: armdatabox.ValidationInputDiscriminatorValidateSKUAvailability.ToPtr(),
-						},
-						Country:      to.StringPtr("<country>"),
-						DeviceType:   armdatabox.SKUNameDataBox.ToPtr(),
-						Location:     to.StringPtr("<location>"),
-						TransferType: armdatabox.TransferTypeImportToAzure.ToPtr(),
-					},
-					&armdatabox.CreateOrderLimitForSubscriptionValidationRequest{
-						ValidationInputRequest: armdatabox.ValidationInputRequest{
-							ValidationType: armdatabox.ValidationInputDiscriminatorValidateCreateOrderLimit.ToPtr(),
-						},
-						DeviceType: armdatabox.SKUNameDataBox.ToPtr(),
-					},
-					&armdatabox.PreferencesValidationRequest{
-						ValidationInputRequest: armdatabox.ValidationInputRequest{
-							ValidationType: armdatabox.ValidationInputDiscriminatorValidatePreferences.ToPtr(),
-						},
-						DeviceType: armdatabox.SKUNameDataBox.ToPtr(),
-						Preference: &armdatabox.Preferences{
-							TransportPreferences: &armdatabox.TransportPreferences{
-								PreferredShipmentType: armdatabox.TransportShipmentTypesMicrosoftManaged.ToPtr(),
+			IndividualRequestDetails: []armdatabox.ValidationInputRequestClassification{
+				&armdatabox.DataTransferDetailsValidationRequest{
+					ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateDataTransferDetails),
+					DataImportDetails: []*armdatabox.DataImportDetails{
+						{
+							AccountDetails: &armdatabox.StorageAccountDetails{
+								DataAccountType:  to.Ptr(armdatabox.DataAccountTypeStorageAccount),
+								StorageAccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount"),
 							},
+						}},
+					DeviceType:   to.Ptr(armdatabox.SKUNameDataBox),
+					TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
+				},
+				&armdatabox.ValidateAddress{
+					ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateAddress),
+					DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
+					ShippingAddress: &armdatabox.ShippingAddress{
+						AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
+						City:            to.Ptr("San Francisco"),
+						CompanyName:     to.Ptr("Microsoft"),
+						Country:         to.Ptr("US"),
+						PostalCode:      to.Ptr("94107"),
+						StateOrProvince: to.Ptr("CA"),
+						StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
+						StreetAddress2:  to.Ptr("Unit 1"),
+					},
+					TransportPreferences: &armdatabox.TransportPreferences{
+						PreferredShipmentType: to.Ptr(armdatabox.TransportShipmentTypesMicrosoftManaged),
+					},
+				},
+				&armdatabox.SubscriptionIsAllowedToCreateJobValidationRequest{
+					ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateSubscriptionIsAllowedToCreateJob),
+				},
+				&armdatabox.SKUAvailabilityValidationRequest{
+					ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateSKUAvailability),
+					Country:        to.Ptr("US"),
+					DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
+					Location:       to.Ptr("westus"),
+					TransferType:   to.Ptr(armdatabox.TransferTypeImportToAzure),
+				},
+				&armdatabox.CreateOrderLimitForSubscriptionValidationRequest{
+					ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateCreateOrderLimit),
+					DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
+				},
+				&armdatabox.PreferencesValidationRequest{
+					ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidatePreferences),
+					DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
+					Preference: &armdatabox.Preferences{
+						TransportPreferences: &armdatabox.TransportPreferences{
+							PreferredShipmentType: to.Ptr(armdatabox.TransportShipmentTypesMicrosoftManaged),
 						},
-					}},
-				ValidationCategory: to.StringPtr("<validation-category>"),
-			},
+					},
+				}},
+			ValidationCategory: to.Ptr("JobCreationValidation"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/ValidateInputs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/ValidateInputs.json
 func ExampleServiceClient_ValidateInputs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatabox.NewServiceClient("<subscription-id>", cred, nil)
-	_, err = client.ValidateInputs(ctx,
-		"<location>",
+	client, err := armdatabox.NewServiceClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.ValidateInputs(ctx,
+		"westus",
 		&armdatabox.CreateJobValidations{
-			ValidationRequest: armdatabox.ValidationRequest{
-				IndividualRequestDetails: []armdatabox.ValidationInputRequestClassification{
-					&armdatabox.DataTransferDetailsValidationRequest{
-						ValidationInputRequest: armdatabox.ValidationInputRequest{
-							ValidationType: armdatabox.ValidationInputDiscriminatorValidateDataTransferDetails.ToPtr(),
-						},
-						DataImportDetails: []*armdatabox.DataImportDetails{
-							{
-								AccountDetails: &armdatabox.StorageAccountDetails{
-									DataAccountDetails: armdatabox.DataAccountDetails{
-										DataAccountType: armdatabox.DataAccountTypeStorageAccount.ToPtr(),
-									},
-									StorageAccountID: to.StringPtr("<storage-account-id>"),
-								},
-							}},
-						DeviceType:   armdatabox.SKUNameDataBox.ToPtr(),
-						TransferType: armdatabox.TransferTypeImportToAzure.ToPtr(),
-					},
-					&armdatabox.ValidateAddress{
-						ValidationInputRequest: armdatabox.ValidationInputRequest{
-							ValidationType: armdatabox.ValidationInputDiscriminatorValidateAddress.ToPtr(),
-						},
-						DeviceType: armdatabox.SKUNameDataBox.ToPtr(),
-						ShippingAddress: &armdatabox.ShippingAddress{
-							AddressType:     armdatabox.AddressTypeCommercial.ToPtr(),
-							City:            to.StringPtr("<city>"),
-							CompanyName:     to.StringPtr("<company-name>"),
-							Country:         to.StringPtr("<country>"),
-							PostalCode:      to.StringPtr("<postal-code>"),
-							StateOrProvince: to.StringPtr("<state-or-province>"),
-							StreetAddress1:  to.StringPtr("<street-address1>"),
-							StreetAddress2:  to.StringPtr("<street-address2>"),
-						},
-						TransportPreferences: &armdatabox.TransportPreferences{
-							PreferredShipmentType: armdatabox.TransportShipmentTypesMicrosoftManaged.ToPtr(),
-						},
-					},
-					&armdatabox.SubscriptionIsAllowedToCreateJobValidationRequest{
-						ValidationInputRequest: armdatabox.ValidationInputRequest{
-							ValidationType: armdatabox.ValidationInputDiscriminatorValidateSubscriptionIsAllowedToCreateJob.ToPtr(),
-						},
-					},
-					&armdatabox.SKUAvailabilityValidationRequest{
-						ValidationInputRequest: armdatabox.ValidationInputRequest{
-							ValidationType: armdatabox.ValidationInputDiscriminatorValidateSKUAvailability.ToPtr(),
-						},
-						Country:      to.StringPtr("<country>"),
-						DeviceType:   armdatabox.SKUNameDataBox.ToPtr(),
-						Location:     to.StringPtr("<location>"),
-						TransferType: armdatabox.TransferTypeImportToAzure.ToPtr(),
-					},
-					&armdatabox.CreateOrderLimitForSubscriptionValidationRequest{
-						ValidationInputRequest: armdatabox.ValidationInputRequest{
-							ValidationType: armdatabox.ValidationInputDiscriminatorValidateCreateOrderLimit.ToPtr(),
-						},
-						DeviceType: armdatabox.SKUNameDataBox.ToPtr(),
-					},
-					&armdatabox.PreferencesValidationRequest{
-						ValidationInputRequest: armdatabox.ValidationInputRequest{
-							ValidationType: armdatabox.ValidationInputDiscriminatorValidatePreferences.ToPtr(),
-						},
-						DeviceType: armdatabox.SKUNameDataBox.ToPtr(),
-						Preference: &armdatabox.Preferences{
-							TransportPreferences: &armdatabox.TransportPreferences{
-								PreferredShipmentType: armdatabox.TransportShipmentTypesMicrosoftManaged.ToPtr(),
+			IndividualRequestDetails: []armdatabox.ValidationInputRequestClassification{
+				&armdatabox.DataTransferDetailsValidationRequest{
+					ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateDataTransferDetails),
+					DataImportDetails: []*armdatabox.DataImportDetails{
+						{
+							AccountDetails: &armdatabox.StorageAccountDetails{
+								DataAccountType:  to.Ptr(armdatabox.DataAccountTypeStorageAccount),
+								StorageAccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount"),
 							},
+						}},
+					DeviceType:   to.Ptr(armdatabox.SKUNameDataBox),
+					TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
+				},
+				&armdatabox.ValidateAddress{
+					ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateAddress),
+					DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
+					ShippingAddress: &armdatabox.ShippingAddress{
+						AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
+						City:            to.Ptr("San Francisco"),
+						CompanyName:     to.Ptr("Microsoft"),
+						Country:         to.Ptr("US"),
+						PostalCode:      to.Ptr("94107"),
+						StateOrProvince: to.Ptr("CA"),
+						StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
+						StreetAddress2:  to.Ptr("Unit 1"),
+					},
+					TransportPreferences: &armdatabox.TransportPreferences{
+						PreferredShipmentType: to.Ptr(armdatabox.TransportShipmentTypesMicrosoftManaged),
+					},
+				},
+				&armdatabox.SubscriptionIsAllowedToCreateJobValidationRequest{
+					ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateSubscriptionIsAllowedToCreateJob),
+				},
+				&armdatabox.SKUAvailabilityValidationRequest{
+					ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateSKUAvailability),
+					Country:        to.Ptr("US"),
+					DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
+					Location:       to.Ptr("westus"),
+					TransferType:   to.Ptr(armdatabox.TransferTypeImportToAzure),
+				},
+				&armdatabox.CreateOrderLimitForSubscriptionValidationRequest{
+					ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateCreateOrderLimit),
+					DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
+				},
+				&armdatabox.PreferencesValidationRequest{
+					ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidatePreferences),
+					DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
+					Preference: &armdatabox.Preferences{
+						TransportPreferences: &armdatabox.TransportPreferences{
+							PreferredShipmentType: to.Ptr(armdatabox.TransportShipmentTypesMicrosoftManaged),
 						},
-					}},
-				ValidationCategory: to.StringPtr("<validation-category>"),
-			},
+					},
+				}},
+			ValidationCategory: to.Ptr("JobCreationValidation"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/RegionConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/RegionConfiguration.json
 func ExampleServiceClient_RegionConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatabox.NewServiceClient("<subscription-id>", cred, nil)
-	_, err = client.RegionConfiguration(ctx,
-		"<location>",
+	client, err := armdatabox.NewServiceClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.RegionConfiguration(ctx,
+		"westus",
 		armdatabox.RegionConfigurationRequest{
-			ScheduleAvailabilityRequest: &armdatabox.DataBoxScheduleAvailabilityRequest{
-				ScheduleAvailabilityRequest: armdatabox.ScheduleAvailabilityRequest{
-					SKUName:         armdatabox.SKUNameDataBox.ToPtr(),
-					StorageLocation: to.StringPtr("<storage-location>"),
-				},
+			ScheduleAvailabilityRequest: &armdatabox.ScheduleAvailabilityRequest{
+				SKUName:         to.Ptr(armdatabox.SKUNameDataBox),
+				StorageLocation: to.Ptr("westus"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/RegionConfigurationByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/RegionConfigurationByResourceGroup.json
 func ExampleServiceClient_RegionConfigurationByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatabox.NewServiceClient("<subscription-id>", cred, nil)
-	_, err = client.RegionConfigurationByResourceGroup(ctx,
-		"<resource-group-name>",
-		"<location>",
+	client, err := armdatabox.NewServiceClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.RegionConfigurationByResourceGroup(ctx,
+		"SdkRg4981",
+		"westus",
 		armdatabox.RegionConfigurationRequest{
-			ScheduleAvailabilityRequest: &armdatabox.DataBoxScheduleAvailabilityRequest{
-				ScheduleAvailabilityRequest: armdatabox.ScheduleAvailabilityRequest{
-					SKUName:         armdatabox.SKUNameDataBox.ToPtr(),
-					StorageLocation: to.StringPtr("<storage-location>"),
-				},
+			ScheduleAvailabilityRequest: &armdatabox.ScheduleAvailabilityRequest{
+				SKUName:         to.Ptr(armdatabox.SKUNameDataBox),
+				StorageLocation: to.Ptr("westus"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }

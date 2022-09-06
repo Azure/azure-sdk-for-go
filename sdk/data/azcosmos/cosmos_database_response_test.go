@@ -46,7 +46,7 @@ func TestDatabaseResponseParsing(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	resp, _ := pl.Do(req)
 	parsedResponse, err := newDatabaseResponse(resp)
 	if err != nil {

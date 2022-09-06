@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,43 +26,61 @@ import (
 // ProductGroupClient contains the methods for the ProductGroup group.
 // Don't use this type directly, use NewProductGroupClient() instead.
 type ProductGroupClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewProductGroupClient creates a new instance of ProductGroupClient with the specified values.
-func NewProductGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProductGroupClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewProductGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProductGroupClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &ProductGroupClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &ProductGroupClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // CheckEntityExists - Checks that Group entity specified by identifier is associated with the Product entity.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductGroupClient) CheckEntityExists(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string, options *ProductGroupCheckEntityExistsOptions) (ProductGroupCheckEntityExistsResponse, error) {
+// Generated from API version 2021-08-01
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// productID - Product identifier. Must be unique in the current API Management service instance.
+// groupID - Group identifier. Must be unique in the current API Management service instance.
+// options - ProductGroupClientCheckEntityExistsOptions contains the optional parameters for the ProductGroupClient.CheckEntityExists
+// method.
+func (client *ProductGroupClient) CheckEntityExists(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string, options *ProductGroupClientCheckEntityExistsOptions) (ProductGroupClientCheckEntityExistsResponse, error) {
 	req, err := client.checkEntityExistsCreateRequest(ctx, resourceGroupName, serviceName, productID, groupID, options)
 	if err != nil {
-		return ProductGroupCheckEntityExistsResponse{}, err
+		return ProductGroupClientCheckEntityExistsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProductGroupCheckEntityExistsResponse{}, err
+		return ProductGroupClientCheckEntityExistsResponse{}, err
 	}
-	result := ProductGroupCheckEntityExistsResponse{RawResponse: resp}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
+	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
+		return ProductGroupClientCheckEntityExistsResponse{}, runtime.NewResponseError(resp)
 	}
-	return result, nil
+	return ProductGroupClientCheckEntityExistsResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}, nil
 }
 
 // checkEntityExistsCreateRequest creates the CheckEntityExists request.
-func (client *ProductGroupClient) checkEntityExistsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string, options *ProductGroupCheckEntityExistsOptions) (*policy.Request, error) {
+func (client *ProductGroupClient) checkEntityExistsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string, options *ProductGroupClientCheckEntityExistsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/groups/{groupId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -84,36 +102,43 @@ func (client *ProductGroupClient) checkEntityExistsCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // CreateOrUpdate - Adds the association between the specified developer group with the specified product.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductGroupClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string, options *ProductGroupCreateOrUpdateOptions) (ProductGroupCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// productID - Product identifier. Must be unique in the current API Management service instance.
+// groupID - Group identifier. Must be unique in the current API Management service instance.
+// options - ProductGroupClientCreateOrUpdateOptions contains the optional parameters for the ProductGroupClient.CreateOrUpdate
+// method.
+func (client *ProductGroupClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string, options *ProductGroupClientCreateOrUpdateOptions) (ProductGroupClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, productID, groupID, options)
 	if err != nil {
-		return ProductGroupCreateOrUpdateResponse{}, err
+		return ProductGroupClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProductGroupCreateOrUpdateResponse{}, err
+		return ProductGroupClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ProductGroupCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ProductGroupClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ProductGroupClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string, options *ProductGroupCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ProductGroupClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string, options *ProductGroupClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/groups/{groupId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -135,58 +160,51 @@ func (client *ProductGroupClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ProductGroupClient) createOrUpdateHandleResponse(resp *http.Response) (ProductGroupCreateOrUpdateResponse, error) {
-	result := ProductGroupCreateOrUpdateResponse{RawResponse: resp}
+func (client *ProductGroupClient) createOrUpdateHandleResponse(resp *http.Response) (ProductGroupClientCreateOrUpdateResponse, error) {
+	result := ProductGroupClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GroupContract); err != nil {
-		return ProductGroupCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ProductGroupClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ProductGroupClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the association between the specified group and product.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductGroupClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string, options *ProductGroupDeleteOptions) (ProductGroupDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// productID - Product identifier. Must be unique in the current API Management service instance.
+// groupID - Group identifier. Must be unique in the current API Management service instance.
+// options - ProductGroupClientDeleteOptions contains the optional parameters for the ProductGroupClient.Delete method.
+func (client *ProductGroupClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string, options *ProductGroupClientDeleteOptions) (ProductGroupClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, productID, groupID, options)
 	if err != nil {
-		return ProductGroupDeleteResponse{}, err
+		return ProductGroupClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProductGroupDeleteResponse{}, err
+		return ProductGroupClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ProductGroupDeleteResponse{}, client.deleteHandleError(resp)
+		return ProductGroupClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ProductGroupDeleteResponse{RawResponse: resp}, nil
+	return ProductGroupClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ProductGroupClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string, options *ProductGroupDeleteOptions) (*policy.Request, error) {
+func (client *ProductGroupClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string, options *ProductGroupClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/groups/{groupId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -208,46 +226,55 @@ func (client *ProductGroupClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ProductGroupClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByProduct - Lists the collection of developer groups associated with the specified product.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductGroupClient) ListByProduct(resourceGroupName string, serviceName string, productID string, options *ProductGroupListByProductOptions) *ProductGroupListByProductPager {
-	return &ProductGroupListByProductPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
+// NewListByProductPager - Lists the collection of developer groups associated with the specified product.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// productID - Product identifier. Must be unique in the current API Management service instance.
+// options - ProductGroupClientListByProductOptions contains the optional parameters for the ProductGroupClient.ListByProduct
+// method.
+func (client *ProductGroupClient) NewListByProductPager(resourceGroupName string, serviceName string, productID string, options *ProductGroupClientListByProductOptions) *runtime.Pager[ProductGroupClientListByProductResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ProductGroupClientListByProductResponse]{
+		More: func(page ProductGroupClientListByProductResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ProductGroupListByProductResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.GroupCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *ProductGroupClientListByProductResponse) (ProductGroupClientListByProductResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ProductGroupClientListByProductResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ProductGroupClientListByProductResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ProductGroupClientListByProductResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByProductHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByProductCreateRequest creates the ListByProduct request.
-func (client *ProductGroupClient) listByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *ProductGroupListByProductOptions) (*policy.Request, error) {
+func (client *ProductGroupClient) listByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *ProductGroupClientListByProductOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/groups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -265,7 +292,7 @@ func (client *ProductGroupClient) listByProductCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -281,28 +308,15 @@ func (client *ProductGroupClient) listByProductCreateRequest(ctx context.Context
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByProductHandleResponse handles the ListByProduct response.
-func (client *ProductGroupClient) listByProductHandleResponse(resp *http.Response) (ProductGroupListByProductResponse, error) {
-	result := ProductGroupListByProductResponse{RawResponse: resp}
+func (client *ProductGroupClient) listByProductHandleResponse(resp *http.Response) (ProductGroupClientListByProductResponse, error) {
+	result := ProductGroupClientListByProductResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GroupCollection); err != nil {
-		return ProductGroupListByProductResponse{}, runtime.NewResponseError(err, resp)
+		return ProductGroupClientListByProductResponse{}, err
 	}
 	return result, nil
-}
-
-// listByProductHandleError handles the ListByProduct error response.
-func (client *ProductGroupClient) listByProductHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

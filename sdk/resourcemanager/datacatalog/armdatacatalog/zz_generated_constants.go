@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package armdatacatalog
 
 const (
-	module  = "armdatacatalog"
-	version = "v0.1.0"
+	moduleName    = "armdatacatalog"
+	moduleVersion = "v1.0.0"
 )
 
 // SKUType - Azure data catalog SKU.
@@ -27,9 +27,4 @@ func PossibleSKUTypeValues() []SKUType {
 		SKUTypeFree,
 		SKUTypeStandard,
 	}
-}
-
-// ToPtr returns a *SKUType pointing to the current value.
-func (c SKUType) ToPtr() *SKUType {
-	return &c
 }

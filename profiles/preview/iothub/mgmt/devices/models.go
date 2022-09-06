@@ -12,7 +12,7 @@ package devices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2021-03-31/devices"
+	original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2021-07-02/devices"
 )
 
 const (
@@ -51,6 +51,15 @@ type Capabilities = original.Capabilities
 const (
 	CapabilitiesDeviceManagement Capabilities = original.CapabilitiesDeviceManagement
 	CapabilitiesNone             Capabilities = original.CapabilitiesNone
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type DefaultAction = original.DefaultAction
@@ -315,6 +324,7 @@ type SharedAccessSignatureAuthorizationRuleListResult = original.SharedAccessSig
 type SharedAccessSignatureAuthorizationRuleListResultIterator = original.SharedAccessSignatureAuthorizationRuleListResultIterator
 type SharedAccessSignatureAuthorizationRuleListResultPage = original.SharedAccessSignatureAuthorizationRuleListResultPage
 type StorageEndpointProperties = original.StorageEndpointProperties
+type SystemData = original.SystemData
 type TagsResource = original.TagsResource
 type TestAllRoutesInput = original.TestAllRoutesInput
 type TestAllRoutesResult = original.TestAllRoutesResult
@@ -428,6 +438,9 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 }
 func PossibleCapabilitiesValues() []Capabilities {
 	return original.PossibleCapabilitiesValues()
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
 func PossibleDefaultActionValues() []DefaultAction {
 	return original.PossibleDefaultActionValues()

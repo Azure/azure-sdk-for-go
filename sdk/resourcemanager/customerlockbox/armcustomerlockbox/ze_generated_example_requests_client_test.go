@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,61 +17,75 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerlockbox/armcustomerlockbox"
 )
 
-// x-ms-original-file: specification/customerlockbox/resource-manager/Microsoft.CustomerLockbox/preview/2018-02-28-preview/examples/Requests_Get_InSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/customerlockbox/resource-manager/Microsoft.CustomerLockbox/preview/2018-02-28-preview/examples/Requests_Get_InSubscription.json
 func ExampleRequestsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcustomerlockbox.NewRequestsClient(cred, nil)
+	client, err := armcustomerlockbox.NewRequestsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<request-id>",
-		"<subscription-id>",
+		"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+		"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("LockboxRequestResponse.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/customerlockbox/resource-manager/Microsoft.CustomerLockbox/preview/2018-02-28-preview/examples/Requests_UpdateStatus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/customerlockbox/resource-manager/Microsoft.CustomerLockbox/preview/2018-02-28-preview/examples/Requests_UpdateStatus.json
 func ExampleRequestsClient_UpdateStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcustomerlockbox.NewRequestsClient(cred, nil)
-	_, err = client.UpdateStatus(ctx,
-		"<subscription-id>",
-		"<request-id>",
+	client, err := armcustomerlockbox.NewRequestsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.UpdateStatus(ctx,
+		"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+		"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 		armcustomerlockbox.Approval{
-			Reason: to.StringPtr("<reason>"),
-			Status: armcustomerlockbox.StatusApprove.ToPtr(),
+			Reason: to.Ptr("Customer approve"),
+			Status: to.Ptr(armcustomerlockbox.StatusApprove),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/customerlockbox/resource-manager/Microsoft.CustomerLockbox/preview/2018-02-28-preview/examples/Requests_List_FilterByStatus.json
-func ExampleRequestsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/customerlockbox/resource-manager/Microsoft.CustomerLockbox/preview/2018-02-28-preview/examples/Requests_List_FilterByStatus.json
+func ExampleRequestsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcustomerlockbox.NewRequestsClient(cred, nil)
-	pager := client.List("<subscription-id>",
-		&armcustomerlockbox.RequestsListOptions{Filter: to.StringPtr("<filter>")})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armcustomerlockbox.NewRequestsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+		&armcustomerlockbox.RequestsClientListOptions{Filter: to.Ptr("properties/status eq 'Expired'")})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("LockboxRequestResponse.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

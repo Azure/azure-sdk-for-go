@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,60 @@ import (
 // DeletedServicesClient contains the methods for the DeletedServices group.
 // Don't use this type directly, use NewDeletedServicesClient() instead.
 type DeletedServicesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDeletedServicesClient creates a new instance of DeletedServicesClient with the specified values.
-func NewDeletedServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DeletedServicesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewDeletedServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeletedServicesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &DeletedServicesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &DeletedServicesClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // GetByName - Get soft-deleted Api Management Service by name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DeletedServicesClient) GetByName(ctx context.Context, serviceName string, location string, options *DeletedServicesGetByNameOptions) (DeletedServicesGetByNameResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
+// serviceName - The name of the API Management service.
+// location - The location of the deleted API Management service.
+// options - DeletedServicesClientGetByNameOptions contains the optional parameters for the DeletedServicesClient.GetByName
+// method.
+func (client *DeletedServicesClient) GetByName(ctx context.Context, serviceName string, location string, options *DeletedServicesClientGetByNameOptions) (DeletedServicesClientGetByNameResponse, error) {
 	req, err := client.getByNameCreateRequest(ctx, serviceName, location, options)
 	if err != nil {
-		return DeletedServicesGetByNameResponse{}, err
+		return DeletedServicesClientGetByNameResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DeletedServicesGetByNameResponse{}, err
+		return DeletedServicesClientGetByNameResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DeletedServicesGetByNameResponse{}, client.getByNameHandleError(resp)
+		return DeletedServicesClientGetByNameResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByNameHandleResponse(resp)
 }
 
 // getByNameCreateRequest creates the GetByName request.
-func (client *DeletedServicesClient) getByNameCreateRequest(ctx context.Context, serviceName string, location string, options *DeletedServicesGetByNameOptions) (*policy.Request, error) {
+func (client *DeletedServicesClient) getByNameCreateRequest(ctx context.Context, serviceName string, location string, options *DeletedServicesClientGetByNameOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/locations/{location}/deletedservices/{serviceName}"
 	if serviceName == "" {
 		return nil, errors.New("parameter serviceName cannot be empty")
@@ -74,116 +92,111 @@ func (client *DeletedServicesClient) getByNameCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getByNameHandleResponse handles the GetByName response.
-func (client *DeletedServicesClient) getByNameHandleResponse(resp *http.Response) (DeletedServicesGetByNameResponse, error) {
-	result := DeletedServicesGetByNameResponse{RawResponse: resp}
+func (client *DeletedServicesClient) getByNameHandleResponse(resp *http.Response) (DeletedServicesClientGetByNameResponse, error) {
+	result := DeletedServicesClientGetByNameResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedServiceContract); err != nil {
-		return DeletedServicesGetByNameResponse{}, runtime.NewResponseError(err, resp)
+		return DeletedServicesClientGetByNameResponse{}, err
 	}
 	return result, nil
 }
 
-// getByNameHandleError handles the GetByName error response.
-func (client *DeletedServicesClient) getByNameHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListBySubscription - Lists all soft-deleted services available for undelete for the given subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DeletedServicesClient) ListBySubscription(options *DeletedServicesListBySubscriptionOptions) *DeletedServicesListBySubscriptionPager {
-	return &DeletedServicesListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+// NewListBySubscriptionPager - Lists all soft-deleted services available for undelete for the given subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
+// options - DeletedServicesClientListBySubscriptionOptions contains the optional parameters for the DeletedServicesClient.ListBySubscription
+// method.
+func (client *DeletedServicesClient) NewListBySubscriptionPager(options *DeletedServicesClientListBySubscriptionOptions) *runtime.Pager[DeletedServicesClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DeletedServicesClientListBySubscriptionResponse]{
+		More: func(page DeletedServicesClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DeletedServicesListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeletedServicesCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *DeletedServicesClientListBySubscriptionResponse) (DeletedServicesClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DeletedServicesClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DeletedServicesClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DeletedServicesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *DeletedServicesClient) listBySubscriptionCreateRequest(ctx context.Context, options *DeletedServicesListBySubscriptionOptions) (*policy.Request, error) {
+func (client *DeletedServicesClient) listBySubscriptionCreateRequest(ctx context.Context, options *DeletedServicesClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/deletedservices"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *DeletedServicesClient) listBySubscriptionHandleResponse(resp *http.Response) (DeletedServicesListBySubscriptionResponse, error) {
-	result := DeletedServicesListBySubscriptionResponse{RawResponse: resp}
+func (client *DeletedServicesClient) listBySubscriptionHandleResponse(resp *http.Response) (DeletedServicesClientListBySubscriptionResponse, error) {
+	result := DeletedServicesClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedServicesCollection); err != nil {
-		return DeletedServicesListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return DeletedServicesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *DeletedServicesClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginPurge - Purges Api Management Service (deletes it with no option to undelete).
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DeletedServicesClient) BeginPurge(ctx context.Context, serviceName string, location string, options *DeletedServicesBeginPurgeOptions) (DeletedServicesPurgePollerResponse, error) {
-	resp, err := client.purge(ctx, serviceName, location, options)
-	if err != nil {
-		return DeletedServicesPurgePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
+// serviceName - The name of the API Management service.
+// location - The location of the deleted API Management service.
+// options - DeletedServicesClientBeginPurgeOptions contains the optional parameters for the DeletedServicesClient.BeginPurge
+// method.
+func (client *DeletedServicesClient) BeginPurge(ctx context.Context, serviceName string, location string, options *DeletedServicesClientBeginPurgeOptions) (*runtime.Poller[DeletedServicesClientPurgeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.purge(ctx, serviceName, location, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[DeletedServicesClientPurgeResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[DeletedServicesClientPurgeResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DeletedServicesPurgePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DeletedServicesClient.Purge", "location", resp, client.pl, client.purgeHandleError)
-	if err != nil {
-		return DeletedServicesPurgePollerResponse{}, err
-	}
-	result.Poller = &DeletedServicesPurgePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Purge - Purges Api Management Service (deletes it with no option to undelete).
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DeletedServicesClient) purge(ctx context.Context, serviceName string, location string, options *DeletedServicesBeginPurgeOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
+func (client *DeletedServicesClient) purge(ctx context.Context, serviceName string, location string, options *DeletedServicesClientBeginPurgeOptions) (*http.Response, error) {
 	req, err := client.purgeCreateRequest(ctx, serviceName, location, options)
 	if err != nil {
 		return nil, err
@@ -193,13 +206,13 @@ func (client *DeletedServicesClient) purge(ctx context.Context, serviceName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.purgeHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // purgeCreateRequest creates the Purge request.
-func (client *DeletedServicesClient) purgeCreateRequest(ctx context.Context, serviceName string, location string, options *DeletedServicesBeginPurgeOptions) (*policy.Request, error) {
+func (client *DeletedServicesClient) purgeCreateRequest(ctx context.Context, serviceName string, location string, options *DeletedServicesClientBeginPurgeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/locations/{location}/deletedservices/{serviceName}"
 	if serviceName == "" {
 		return nil, errors.New("parameter serviceName cannot be empty")
@@ -213,26 +226,13 @@ func (client *DeletedServicesClient) purgeCreateRequest(ctx context.Context, ser
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
-}
-
-// purgeHandleError handles the Purge error response.
-func (client *DeletedServicesClient) purgeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

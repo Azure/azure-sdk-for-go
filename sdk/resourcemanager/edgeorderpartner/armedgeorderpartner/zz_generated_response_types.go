@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,85 +8,22 @@
 
 package armedgeorderpartner
 
-import (
-	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"net/http"
-	"time"
-)
-
-// EdgeOrderPartnerAPISListOperationsPartnerResponse contains the response from method EdgeOrderPartnerAPIS.ListOperationsPartner.
-type EdgeOrderPartnerAPISListOperationsPartnerResponse struct {
-	EdgeOrderPartnerAPISListOperationsPartnerResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EdgeOrderPartnerAPISListOperationsPartnerResult contains the result from method EdgeOrderPartnerAPIS.ListOperationsPartner.
-type EdgeOrderPartnerAPISListOperationsPartnerResult struct {
+// APISClientListOperationsPartnerResponse contains the response from method APISClient.ListOperationsPartner.
+type APISClientListOperationsPartnerResponse struct {
 	OperationListResult
 }
 
-// EdgeOrderPartnerAPISManageInventoryMetadataPollerResponse contains the response from method EdgeOrderPartnerAPIS.ManageInventoryMetadata.
-type EdgeOrderPartnerAPISManageInventoryMetadataPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *EdgeOrderPartnerAPISManageInventoryMetadataPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// APISClientManageInventoryMetadataResponse contains the response from method APISClient.ManageInventoryMetadata.
+type APISClientManageInventoryMetadataResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l EdgeOrderPartnerAPISManageInventoryMetadataPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EdgeOrderPartnerAPISManageInventoryMetadataResponse, error) {
-	respType := EdgeOrderPartnerAPISManageInventoryMetadataResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
+// APISClientManageLinkResponse contains the response from method APISClient.ManageLink.
+type APISClientManageLinkResponse struct {
+	// placeholder for future response values
 }
 
-// Resume rehydrates a EdgeOrderPartnerAPISManageInventoryMetadataPollerResponse from the provided client and resume token.
-func (l *EdgeOrderPartnerAPISManageInventoryMetadataPollerResponse) Resume(ctx context.Context, client *EdgeOrderPartnerAPISClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("EdgeOrderPartnerAPISClient.ManageInventoryMetadata", token, client.pl, client.manageInventoryMetadataHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &EdgeOrderPartnerAPISManageInventoryMetadataPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// EdgeOrderPartnerAPISManageInventoryMetadataResponse contains the response from method EdgeOrderPartnerAPIS.ManageInventoryMetadata.
-type EdgeOrderPartnerAPISManageInventoryMetadataResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EdgeOrderPartnerAPISManageLinkResponse contains the response from method EdgeOrderPartnerAPIS.ManageLink.
-type EdgeOrderPartnerAPISManageLinkResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EdgeOrderPartnerAPISSearchInventoriesResponse contains the response from method EdgeOrderPartnerAPIS.SearchInventories.
-type EdgeOrderPartnerAPISSearchInventoriesResponse struct {
-	EdgeOrderPartnerAPISSearchInventoriesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EdgeOrderPartnerAPISSearchInventoriesResult contains the result from method EdgeOrderPartnerAPIS.SearchInventories.
-type EdgeOrderPartnerAPISSearchInventoriesResult struct {
+// APISClientSearchInventoriesResponse contains the response from method APISClient.SearchInventories.
+type APISClientSearchInventoriesResponse struct {
 	PartnerInventoryList
 }

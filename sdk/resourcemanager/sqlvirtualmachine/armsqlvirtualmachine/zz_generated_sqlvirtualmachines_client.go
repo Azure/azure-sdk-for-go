@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,46 +25,60 @@ import (
 // SQLVirtualMachinesClient contains the methods for the SQLVirtualMachines group.
 // Don't use this type directly, use NewSQLVirtualMachinesClient() instead.
 type SQLVirtualMachinesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSQLVirtualMachinesClient creates a new instance of SQLVirtualMachinesClient with the specified values.
-func NewSQLVirtualMachinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLVirtualMachinesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewSQLVirtualMachinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SQLVirtualMachinesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &SQLVirtualMachinesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &SQLVirtualMachinesClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a SQL virtual machine.
-// If the operation fails it returns a generic error.
-func (client *SQLVirtualMachinesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters SQLVirtualMachine, options *SQLVirtualMachinesBeginCreateOrUpdateOptions) (SQLVirtualMachinesCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, sqlVirtualMachineName, parameters, options)
-	if err != nil {
-		return SQLVirtualMachinesCreateOrUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
+// resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
+// Manager API or the portal.
+// sqlVirtualMachineName - Name of the SQL virtual machine.
+// parameters - The SQL virtual machine.
+// options - SQLVirtualMachinesClientBeginCreateOrUpdateOptions contains the optional parameters for the SQLVirtualMachinesClient.BeginCreateOrUpdate
+// method.
+func (client *SQLVirtualMachinesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters SQLVirtualMachine, options *SQLVirtualMachinesClientBeginCreateOrUpdateOptions) (*runtime.Poller[SQLVirtualMachinesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, sqlVirtualMachineName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[SQLVirtualMachinesClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[SQLVirtualMachinesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLVirtualMachinesCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLVirtualMachinesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return SQLVirtualMachinesCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &SQLVirtualMachinesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a SQL virtual machine.
-// If the operation fails it returns a generic error.
-func (client *SQLVirtualMachinesClient) createOrUpdate(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters SQLVirtualMachine, options *SQLVirtualMachinesBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
+func (client *SQLVirtualMachinesClient) createOrUpdate(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters SQLVirtualMachine, options *SQLVirtualMachinesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, sqlVirtualMachineName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +88,13 @@ func (client *SQLVirtualMachinesClient) createOrUpdate(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SQLVirtualMachinesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters SQLVirtualMachine, options *SQLVirtualMachinesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SQLVirtualMachinesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters SQLVirtualMachine, options *SQLVirtualMachinesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -93,52 +108,41 @@ func (client *SQLVirtualMachinesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-03-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SQLVirtualMachinesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Deletes a SQL virtual machine.
-// If the operation fails it returns a generic error.
-func (client *SQLVirtualMachinesClient) BeginDelete(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, options *SQLVirtualMachinesBeginDeleteOptions) (SQLVirtualMachinesDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, sqlVirtualMachineName, options)
-	if err != nil {
-		return SQLVirtualMachinesDeletePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
+// resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
+// Manager API or the portal.
+// sqlVirtualMachineName - Name of the SQL virtual machine.
+// options - SQLVirtualMachinesClientBeginDeleteOptions contains the optional parameters for the SQLVirtualMachinesClient.BeginDelete
+// method.
+func (client *SQLVirtualMachinesClient) BeginDelete(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, options *SQLVirtualMachinesClientBeginDeleteOptions) (*runtime.Poller[SQLVirtualMachinesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, sqlVirtualMachineName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[SQLVirtualMachinesClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[SQLVirtualMachinesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLVirtualMachinesDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLVirtualMachinesClient.Delete", "", resp, client.pl, client.deleteHandleError)
-	if err != nil {
-		return SQLVirtualMachinesDeletePollerResponse{}, err
-	}
-	result.Poller = &SQLVirtualMachinesDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a SQL virtual machine.
-// If the operation fails it returns a generic error.
-func (client *SQLVirtualMachinesClient) deleteOperation(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, options *SQLVirtualMachinesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
+func (client *SQLVirtualMachinesClient) deleteOperation(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, options *SQLVirtualMachinesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, sqlVirtualMachineName, options)
 	if err != nil {
 		return nil, err
@@ -148,13 +152,13 @@ func (client *SQLVirtualMachinesClient) deleteOperation(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SQLVirtualMachinesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, options *SQLVirtualMachinesBeginDeleteOptions) (*policy.Request, error) {
+func (client *SQLVirtualMachinesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, options *SQLVirtualMachinesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -168,47 +172,40 @@ func (client *SQLVirtualMachinesClient) deleteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-03-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SQLVirtualMachinesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a SQL virtual machine.
-// If the operation fails it returns a generic error.
-func (client *SQLVirtualMachinesClient) Get(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, options *SQLVirtualMachinesGetOptions) (SQLVirtualMachinesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
+// resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
+// Manager API or the portal.
+// sqlVirtualMachineName - Name of the SQL virtual machine.
+// options - SQLVirtualMachinesClientGetOptions contains the optional parameters for the SQLVirtualMachinesClient.Get method.
+func (client *SQLVirtualMachinesClient) Get(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, options *SQLVirtualMachinesClientGetOptions) (SQLVirtualMachinesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, sqlVirtualMachineName, options)
 	if err != nil {
-		return SQLVirtualMachinesGetResponse{}, err
+		return SQLVirtualMachinesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLVirtualMachinesGetResponse{}, err
+		return SQLVirtualMachinesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLVirtualMachinesGetResponse{}, client.getHandleError(resp)
+		return SQLVirtualMachinesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SQLVirtualMachinesClient) getCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, options *SQLVirtualMachinesGetOptions) (*policy.Request, error) {
+func (client *SQLVirtualMachinesClient) getCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, options *SQLVirtualMachinesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -222,7 +219,7 @@ func (client *SQLVirtualMachinesClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -230,102 +227,117 @@ func (client *SQLVirtualMachinesClient) getCreateRequest(ctx context.Context, re
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2017-03-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SQLVirtualMachinesClient) getHandleResponse(resp *http.Response) (SQLVirtualMachinesGetResponse, error) {
-	result := SQLVirtualMachinesGetResponse{RawResponse: resp}
+func (client *SQLVirtualMachinesClient) getHandleResponse(resp *http.Response) (SQLVirtualMachinesClientGetResponse, error) {
+	result := SQLVirtualMachinesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLVirtualMachine); err != nil {
-		return SQLVirtualMachinesGetResponse{}, runtime.NewResponseError(err, resp)
+		return SQLVirtualMachinesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SQLVirtualMachinesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// List - Gets all SQL virtual machines in a subscription.
-// If the operation fails it returns a generic error.
-func (client *SQLVirtualMachinesClient) List(options *SQLVirtualMachinesListOptions) *SQLVirtualMachinesListPager {
-	return &SQLVirtualMachinesListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+// NewListPager - Gets all SQL virtual machines in a subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
+// options - SQLVirtualMachinesClientListOptions contains the optional parameters for the SQLVirtualMachinesClient.List method.
+func (client *SQLVirtualMachinesClient) NewListPager(options *SQLVirtualMachinesClientListOptions) *runtime.Pager[SQLVirtualMachinesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SQLVirtualMachinesClientListResponse]{
+		More: func(page SQLVirtualMachinesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SQLVirtualMachinesListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SQLVirtualMachineListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SQLVirtualMachinesClientListResponse) (SQLVirtualMachinesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SQLVirtualMachinesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SQLVirtualMachinesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SQLVirtualMachinesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *SQLVirtualMachinesClient) listCreateRequest(ctx context.Context, options *SQLVirtualMachinesListOptions) (*policy.Request, error) {
+func (client *SQLVirtualMachinesClient) listCreateRequest(ctx context.Context, options *SQLVirtualMachinesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-03-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SQLVirtualMachinesClient) listHandleResponse(resp *http.Response) (SQLVirtualMachinesListResponse, error) {
-	result := SQLVirtualMachinesListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SQLVirtualMachineListResult); err != nil {
-		return SQLVirtualMachinesListResponse{}, runtime.NewResponseError(err, resp)
+func (client *SQLVirtualMachinesClient) listHandleResponse(resp *http.Response) (SQLVirtualMachinesClientListResponse, error) {
+	result := SQLVirtualMachinesClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
+		return SQLVirtualMachinesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *SQLVirtualMachinesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListByResourceGroup - Gets all SQL virtual machines in a resource group.
-// If the operation fails it returns a generic error.
-func (client *SQLVirtualMachinesClient) ListByResourceGroup(resourceGroupName string, options *SQLVirtualMachinesListByResourceGroupOptions) *SQLVirtualMachinesListByResourceGroupPager {
-	return &SQLVirtualMachinesListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+// NewListByResourceGroupPager - Gets all SQL virtual machines in a resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
+// resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
+// Manager API or the portal.
+// options - SQLVirtualMachinesClientListByResourceGroupOptions contains the optional parameters for the SQLVirtualMachinesClient.ListByResourceGroup
+// method.
+func (client *SQLVirtualMachinesClient) NewListByResourceGroupPager(resourceGroupName string, options *SQLVirtualMachinesClientListByResourceGroupOptions) *runtime.Pager[SQLVirtualMachinesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SQLVirtualMachinesClientListByResourceGroupResponse]{
+		More: func(page SQLVirtualMachinesClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SQLVirtualMachinesListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SQLVirtualMachineListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SQLVirtualMachinesClientListByResourceGroupResponse) (SQLVirtualMachinesClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SQLVirtualMachinesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SQLVirtualMachinesClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SQLVirtualMachinesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *SQLVirtualMachinesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *SQLVirtualMachinesListByResourceGroupOptions) (*policy.Request, error) {
+func (client *SQLVirtualMachinesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *SQLVirtualMachinesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -335,54 +347,64 @@ func (client *SQLVirtualMachinesClient) listByResourceGroupCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-03-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *SQLVirtualMachinesClient) listByResourceGroupHandleResponse(resp *http.Response) (SQLVirtualMachinesListByResourceGroupResponse, error) {
-	result := SQLVirtualMachinesListByResourceGroupResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SQLVirtualMachineListResult); err != nil {
-		return SQLVirtualMachinesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+func (client *SQLVirtualMachinesClient) listByResourceGroupHandleResponse(resp *http.Response) (SQLVirtualMachinesClientListByResourceGroupResponse, error) {
+	result := SQLVirtualMachinesClientListByResourceGroupResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
+		return SQLVirtualMachinesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *SQLVirtualMachinesClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListBySQLVMGroup - Gets the list of sql virtual machines in a SQL virtual machine group.
-// If the operation fails it returns a generic error.
-func (client *SQLVirtualMachinesClient) ListBySQLVMGroup(resourceGroupName string, sqlVirtualMachineGroupName string, options *SQLVirtualMachinesListBySQLVMGroupOptions) *SQLVirtualMachinesListBySQLVMGroupPager {
-	return &SQLVirtualMachinesListBySQLVMGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySQLVMGroupCreateRequest(ctx, resourceGroupName, sqlVirtualMachineGroupName, options)
+// NewListBySQLVMGroupPager - Gets the list of sql virtual machines in a SQL virtual machine group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
+// resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
+// Manager API or the portal.
+// sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
+// options - SQLVirtualMachinesClientListBySQLVMGroupOptions contains the optional parameters for the SQLVirtualMachinesClient.ListBySQLVMGroup
+// method.
+func (client *SQLVirtualMachinesClient) NewListBySQLVMGroupPager(resourceGroupName string, sqlVirtualMachineGroupName string, options *SQLVirtualMachinesClientListBySQLVMGroupOptions) *runtime.Pager[SQLVirtualMachinesClientListBySQLVMGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SQLVirtualMachinesClientListBySQLVMGroupResponse]{
+		More: func(page SQLVirtualMachinesClientListBySQLVMGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SQLVirtualMachinesListBySQLVMGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SQLVirtualMachineListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SQLVirtualMachinesClientListBySQLVMGroupResponse) (SQLVirtualMachinesClientListBySQLVMGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySQLVMGroupCreateRequest(ctx, resourceGroupName, sqlVirtualMachineGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SQLVirtualMachinesClientListBySQLVMGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SQLVirtualMachinesClientListBySQLVMGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SQLVirtualMachinesClientListBySQLVMGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySQLVMGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySQLVMGroupCreateRequest creates the ListBySQLVMGroup request.
-func (client *SQLVirtualMachinesClient) listBySQLVMGroupCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, options *SQLVirtualMachinesListBySQLVMGroupOptions) (*policy.Request, error) {
+func (client *SQLVirtualMachinesClient) listBySQLVMGroupCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, options *SQLVirtualMachinesClientListBySQLVMGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/sqlVirtualMachines"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -396,61 +418,177 @@ func (client *SQLVirtualMachinesClient) listBySQLVMGroupCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-03-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySQLVMGroupHandleResponse handles the ListBySQLVMGroup response.
-func (client *SQLVirtualMachinesClient) listBySQLVMGroupHandleResponse(resp *http.Response) (SQLVirtualMachinesListBySQLVMGroupResponse, error) {
-	result := SQLVirtualMachinesListBySQLVMGroupResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SQLVirtualMachineListResult); err != nil {
-		return SQLVirtualMachinesListBySQLVMGroupResponse{}, runtime.NewResponseError(err, resp)
+func (client *SQLVirtualMachinesClient) listBySQLVMGroupHandleResponse(resp *http.Response) (SQLVirtualMachinesClientListBySQLVMGroupResponse, error) {
+	result := SQLVirtualMachinesClientListBySQLVMGroupResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
+		return SQLVirtualMachinesClientListBySQLVMGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySQLVMGroupHandleError handles the ListBySQLVMGroup error response.
-func (client *SQLVirtualMachinesClient) listBySQLVMGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
+// BeginRedeploy - Uninstalls and reinstalls the SQL Iaas Extension.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
+// resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
+// Manager API or the portal.
+// sqlVirtualMachineName - Name of the SQL virtual machine.
+// options - SQLVirtualMachinesClientBeginRedeployOptions contains the optional parameters for the SQLVirtualMachinesClient.BeginRedeploy
+// method.
+func (client *SQLVirtualMachinesClient) BeginRedeploy(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, options *SQLVirtualMachinesClientBeginRedeployOptions) (*runtime.Poller[SQLVirtualMachinesClientRedeployResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.redeploy(ctx, resourceGroupName, sqlVirtualMachineName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[SQLVirtualMachinesClientRedeployResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[SQLVirtualMachinesClientRedeployResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// Redeploy - Uninstalls and reinstalls the SQL Iaas Extension.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
+func (client *SQLVirtualMachinesClient) redeploy(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, options *SQLVirtualMachinesClientBeginRedeployOptions) (*http.Response, error) {
+	req, err := client.redeployCreateRequest(ctx, resourceGroupName, sqlVirtualMachineName, options)
 	if err != nil {
-		return runtime.NewResponseError(err, resp)
+		return nil, err
 	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
 	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// redeployCreateRequest creates the Redeploy request.
+func (client *SQLVirtualMachinesClient) redeployCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, options *SQLVirtualMachinesClientBeginRedeployOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/redeploy"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlVirtualMachineName == "" {
+		return nil, errors.New("parameter sqlVirtualMachineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlVirtualMachineName}", url.PathEscape(sqlVirtualMachineName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, nil
+}
+
+// BeginStartAssessment - Starts Assessment on SQL virtual machine.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
+// resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
+// Manager API or the portal.
+// sqlVirtualMachineName - Name of the SQL virtual machine.
+// options - SQLVirtualMachinesClientBeginStartAssessmentOptions contains the optional parameters for the SQLVirtualMachinesClient.BeginStartAssessment
+// method.
+func (client *SQLVirtualMachinesClient) BeginStartAssessment(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, options *SQLVirtualMachinesClientBeginStartAssessmentOptions) (*runtime.Poller[SQLVirtualMachinesClientStartAssessmentResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.startAssessment(ctx, resourceGroupName, sqlVirtualMachineName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[SQLVirtualMachinesClientStartAssessmentResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[SQLVirtualMachinesClientStartAssessmentResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// StartAssessment - Starts Assessment on SQL virtual machine.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
+func (client *SQLVirtualMachinesClient) startAssessment(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, options *SQLVirtualMachinesClientBeginStartAssessmentOptions) (*http.Response, error) {
+	req, err := client.startAssessmentCreateRequest(ctx, resourceGroupName, sqlVirtualMachineName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// startAssessmentCreateRequest creates the StartAssessment request.
+func (client *SQLVirtualMachinesClient) startAssessmentCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, options *SQLVirtualMachinesClientBeginStartAssessmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/startAssessment"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlVirtualMachineName == "" {
+		return nil, errors.New("parameter sqlVirtualMachineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlVirtualMachineName}", url.PathEscape(sqlVirtualMachineName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, nil
 }
 
 // BeginUpdate - Updates a SQL virtual machine.
-// If the operation fails it returns a generic error.
-func (client *SQLVirtualMachinesClient) BeginUpdate(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters SQLVirtualMachineUpdate, options *SQLVirtualMachinesBeginUpdateOptions) (SQLVirtualMachinesUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, sqlVirtualMachineName, parameters, options)
-	if err != nil {
-		return SQLVirtualMachinesUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
+// resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
+// Manager API or the portal.
+// sqlVirtualMachineName - Name of the SQL virtual machine.
+// parameters - The SQL virtual machine.
+// options - SQLVirtualMachinesClientBeginUpdateOptions contains the optional parameters for the SQLVirtualMachinesClient.BeginUpdate
+// method.
+func (client *SQLVirtualMachinesClient) BeginUpdate(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters Update, options *SQLVirtualMachinesClientBeginUpdateOptions) (*runtime.Poller[SQLVirtualMachinesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, sqlVirtualMachineName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[SQLVirtualMachinesClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[SQLVirtualMachinesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SQLVirtualMachinesUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SQLVirtualMachinesClient.Update", "", resp, client.pl, client.updateHandleError)
-	if err != nil {
-		return SQLVirtualMachinesUpdatePollerResponse{}, err
-	}
-	result.Poller = &SQLVirtualMachinesUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates a SQL virtual machine.
-// If the operation fails it returns a generic error.
-func (client *SQLVirtualMachinesClient) update(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters SQLVirtualMachineUpdate, options *SQLVirtualMachinesBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
+func (client *SQLVirtualMachinesClient) update(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters Update, options *SQLVirtualMachinesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, sqlVirtualMachineName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -460,13 +598,13 @@ func (client *SQLVirtualMachinesClient) update(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SQLVirtualMachinesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters SQLVirtualMachineUpdate, options *SQLVirtualMachinesBeginUpdateOptions) (*policy.Request, error) {
+func (client *SQLVirtualMachinesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters Update, options *SQLVirtualMachinesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -480,25 +618,13 @@ func (client *SQLVirtualMachinesClient) updateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-03-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *SQLVirtualMachinesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

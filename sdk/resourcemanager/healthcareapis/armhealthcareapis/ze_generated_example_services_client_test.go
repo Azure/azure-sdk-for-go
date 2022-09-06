@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,204 +12,230 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis"
 )
 
-// x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/legacy/ServiceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/legacy/ServiceGet.json
 func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhealthcareapis.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewServicesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"rg1",
+		"service1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("ServicesDescription.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/legacy/ServiceCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/legacy/ServiceCreate.json
 func ExampleServicesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhealthcareapis.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewServicesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"rg1",
+		"service1",
 		armhealthcareapis.ServicesDescription{
-			ServicesResource: armhealthcareapis.ServicesResource{
-				Identity: &armhealthcareapis.ServicesResourceIdentity{
-					Type: armhealthcareapis.ManagedServiceIdentityTypeSystemAssigned.ToPtr(),
-				},
-				Kind:     armhealthcareapis.KindFhirR4.ToPtr(),
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
+			Identity: &armhealthcareapis.ServicesResourceIdentity{
+				Type: to.Ptr(armhealthcareapis.ManagedServiceIdentityTypeSystemAssigned),
 			},
+			Kind:     to.Ptr(armhealthcareapis.KindFhirR4),
+			Location: to.Ptr("westus2"),
+			Tags:     map[string]*string{},
 			Properties: &armhealthcareapis.ServicesProperties{
 				AccessPolicies: []*armhealthcareapis.ServiceAccessPolicyEntry{
 					{
-						ObjectID: to.StringPtr("<object-id>"),
+						ObjectID: to.Ptr("c487e7d1-3210-41a3-8ccc-e9372b78da47"),
 					},
 					{
-						ObjectID: to.StringPtr("<object-id>"),
+						ObjectID: to.Ptr("5b307da8-43d4-492b-8b66-b0294ade872f"),
 					}},
 				AuthenticationConfiguration: &armhealthcareapis.ServiceAuthenticationConfigurationInfo{
-					Audience:          to.StringPtr("<audience>"),
-					Authority:         to.StringPtr("<authority>"),
-					SmartProxyEnabled: to.BoolPtr(true),
+					Audience:          to.Ptr("https://azurehealthcareapis.com"),
+					Authority:         to.Ptr("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc"),
+					SmartProxyEnabled: to.Ptr(true),
 				},
 				CorsConfiguration: &armhealthcareapis.ServiceCorsConfigurationInfo{
-					AllowCredentials: to.BoolPtr(false),
+					AllowCredentials: to.Ptr(false),
 					Headers: []*string{
-						to.StringPtr("*")},
-					MaxAge: to.Int32Ptr(1440),
+						to.Ptr("*")},
+					MaxAge: to.Ptr[int32](1440),
 					Methods: []*string{
-						to.StringPtr("DELETE"),
-						to.StringPtr("GET"),
-						to.StringPtr("OPTIONS"),
-						to.StringPtr("PATCH"),
-						to.StringPtr("POST"),
-						to.StringPtr("PUT")},
+						to.Ptr("DELETE"),
+						to.Ptr("GET"),
+						to.Ptr("OPTIONS"),
+						to.Ptr("PATCH"),
+						to.Ptr("POST"),
+						to.Ptr("PUT")},
 					Origins: []*string{
-						to.StringPtr("*")},
+						to.Ptr("*")},
 				},
 				CosmosDbConfiguration: &armhealthcareapis.ServiceCosmosDbConfigurationInfo{
-					KeyVaultKeyURI:  to.StringPtr("<key-vault-key-uri>"),
-					OfferThroughput: to.Int32Ptr(1000),
+					KeyVaultKeyURI:  to.Ptr("https://my-vault.vault.azure.net/keys/my-key"),
+					OfferThroughput: to.Ptr[int32](1000),
 				},
 				ExportConfiguration: &armhealthcareapis.ServiceExportConfigurationInfo{
-					StorageAccountName: to.StringPtr("<storage-account-name>"),
+					StorageAccountName: to.Ptr("existingStorageAccount"),
 				},
 				PrivateEndpointConnections: []*armhealthcareapis.PrivateEndpointConnection{},
-				PublicNetworkAccess:        armhealthcareapis.PublicNetworkAccessDisabled.ToPtr(),
+				PublicNetworkAccess:        to.Ptr(armhealthcareapis.PublicNetworkAccessDisabled),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("ServicesDescription.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/legacy/ServicePatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/legacy/ServicePatch.json
 func ExampleServicesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhealthcareapis.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewServicesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"rg1",
+		"service1",
 		armhealthcareapis.ServicesPatchDescription{
 			Tags: map[string]*string{
-				"tag1": to.StringPtr("value1"),
-				"tag2": to.StringPtr("value2"),
+				"tag1": to.Ptr("value1"),
+				"tag2": to.Ptr("value2"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("ServicesDescription.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/legacy/ServiceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/legacy/ServiceDelete.json
 func ExampleServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhealthcareapis.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewServicesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"rg1",
+		"service1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/legacy/ServiceList.json
-func ExampleServicesClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/legacy/ServiceList.json
+func ExampleServicesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhealthcareapis.NewServicesClient("<subscription-id>", cred, nil)
-	pager := client.List(nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armhealthcareapis.NewServicesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager(nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ServicesDescription.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/legacy/ServiceListByResourceGroup.json
-func ExampleServicesClient_ListByResourceGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/legacy/ServiceListByResourceGroup.json
+func ExampleServicesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhealthcareapis.NewServicesClient("<subscription-id>", cred, nil)
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	client, err := armhealthcareapis.NewServicesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByResourceGroupPager("rgname",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ServicesDescription.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/CheckNameAvailabilityPost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/CheckNameAvailabilityPost.json
 func ExampleServicesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhealthcareapis.NewServicesClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
+	client, err := armhealthcareapis.NewServicesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.CheckNameAvailability(ctx,
 		armhealthcareapis.CheckNameAvailabilityParameters{
-			Name: to.StringPtr("<name>"),
-			Type: to.StringPtr("<type>"),
+			Name: to.Ptr("serviceName"),
+			Type: to.Ptr("Microsoft.HealthcareApis/services"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }

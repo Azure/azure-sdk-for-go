@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,105 +12,55 @@ import (
 	"context"
 	"log"
 
-	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
 )
 
-// x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorFrontendEndpointList.json
-func ExampleFrontendEndpointsClient_ListByFrontDoor() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorFrontendEndpointList.json
+func ExampleFrontendEndpointsClient_NewListByFrontDoorPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armfrontdoor.NewFrontendEndpointsClient("<subscription-id>", cred, nil)
-	pager := client.ListByFrontDoor("<resource-group-name>",
-		"<front-door-name>",
+	client, err := armfrontdoor.NewFrontendEndpointsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByFrontDoorPager("rg1",
+		"frontDoor1",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("FrontendEndpoint.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorFrontendEndpointGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorFrontendEndpointGet.json
 func ExampleFrontendEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armfrontdoor.NewFrontendEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armfrontdoor.NewFrontendEndpointsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<front-door-name>",
-		"<frontend-endpoint-name>",
+		"rg1",
+		"frontDoor1",
+		"frontendEndpoint1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("FrontendEndpoint.ID: %s\n", *res.ID)
-}
-
-// x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorEnableHttps.json
-func ExampleFrontendEndpointsClient_BeginEnableHTTPS() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armfrontdoor.NewFrontendEndpointsClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginEnableHTTPS(ctx,
-		"<resource-group-name>",
-		"<front-door-name>",
-		"<frontend-endpoint-name>",
-		armfrontdoor.CustomHTTPSConfiguration{
-			CertificateSource: armfrontdoor.FrontDoorCertificateSourceAzureKeyVault.ToPtr(),
-			KeyVaultCertificateSourceParameters: &armfrontdoor.KeyVaultCertificateSourceParameters{
-				SecretName:    to.StringPtr("<secret-name>"),
-				SecretVersion: to.StringPtr("<secret-version>"),
-				Vault: &armfrontdoor.KeyVaultCertificateSourceParametersVault{
-					ID: to.StringPtr("<id>"),
-				},
-			},
-			MinimumTLSVersion: armfrontdoor.MinimumTLSVersionOne0.ToPtr(),
-			ProtocolType:      armfrontdoor.FrontDoorTLSProtocolTypeServerNameIndication.ToPtr(),
-		},
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-// x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorDisableHttps.json
-func ExampleFrontendEndpointsClient_BeginDisableHTTPS() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armfrontdoor.NewFrontendEndpointsClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginDisableHTTPS(ctx,
-		"<resource-group-name>",
-		"<front-door-name>",
-		"<frontend-endpoint-name>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
+	// TODO: use response item
+	_ = res
 }

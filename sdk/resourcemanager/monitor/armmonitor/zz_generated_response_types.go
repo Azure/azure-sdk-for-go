@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,1323 +8,512 @@
 
 package armmonitor
 
-import (
-	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"net/http"
-	"time"
-)
-
-// ActionGroupsCreateOrUpdateResponse contains the response from method ActionGroups.CreateOrUpdate.
-type ActionGroupsCreateOrUpdateResponse struct {
-	ActionGroupsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ActionGroupsClientCreateNotificationsAtActionGroupResourceLevelResponse contains the response from method ActionGroupsClient.CreateNotificationsAtActionGroupResourceLevel.
+type ActionGroupsClientCreateNotificationsAtActionGroupResourceLevelResponse struct {
+	// placeholder for future response values
 }
 
-// ActionGroupsCreateOrUpdateResult contains the result from method ActionGroups.CreateOrUpdate.
-type ActionGroupsCreateOrUpdateResult struct {
+// ActionGroupsClientCreateNotificationsAtResourceGroupLevelResponse contains the response from method ActionGroupsClient.CreateNotificationsAtResourceGroupLevel.
+type ActionGroupsClientCreateNotificationsAtResourceGroupLevelResponse struct {
+	// placeholder for future response values
+}
+
+// ActionGroupsClientCreateOrUpdateResponse contains the response from method ActionGroupsClient.CreateOrUpdate.
+type ActionGroupsClientCreateOrUpdateResponse struct {
 	ActionGroupResource
 }
 
-// ActionGroupsDeleteResponse contains the response from method ActionGroups.Delete.
-type ActionGroupsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ActionGroupsClientDeleteResponse contains the response from method ActionGroupsClient.Delete.
+type ActionGroupsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// ActionGroupsEnableReceiverResponse contains the response from method ActionGroups.EnableReceiver.
-type ActionGroupsEnableReceiverResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ActionGroupsClientEnableReceiverResponse contains the response from method ActionGroupsClient.EnableReceiver.
+type ActionGroupsClientEnableReceiverResponse struct {
+	// placeholder for future response values
 }
 
-// ActionGroupsGetResponse contains the response from method ActionGroups.Get.
-type ActionGroupsGetResponse struct {
-	ActionGroupsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ActionGroupsGetResult contains the result from method ActionGroups.Get.
-type ActionGroupsGetResult struct {
+// ActionGroupsClientGetResponse contains the response from method ActionGroupsClient.Get.
+type ActionGroupsClientGetResponse struct {
 	ActionGroupResource
 }
 
-// ActionGroupsGetTestNotificationsResponse contains the response from method ActionGroups.GetTestNotifications.
-type ActionGroupsGetTestNotificationsResponse struct {
-	ActionGroupsGetTestNotificationsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ActionGroupsGetTestNotificationsResult contains the result from method ActionGroups.GetTestNotifications.
-type ActionGroupsGetTestNotificationsResult struct {
+// ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse contains the response from method ActionGroupsClient.GetTestNotificationsAtActionGroupResourceLevel.
+type ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse struct {
 	TestNotificationDetailsResponse
 }
 
-// ActionGroupsListByResourceGroupResponse contains the response from method ActionGroups.ListByResourceGroup.
-type ActionGroupsListByResourceGroupResponse struct {
-	ActionGroupsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ActionGroupsClientGetTestNotificationsAtResourceGroupLevelResponse contains the response from method ActionGroupsClient.GetTestNotificationsAtResourceGroupLevel.
+type ActionGroupsClientGetTestNotificationsAtResourceGroupLevelResponse struct {
+	TestNotificationDetailsResponse
 }
 
-// ActionGroupsListByResourceGroupResult contains the result from method ActionGroups.ListByResourceGroup.
-type ActionGroupsListByResourceGroupResult struct {
+// ActionGroupsClientGetTestNotificationsResponse contains the response from method ActionGroupsClient.GetTestNotifications.
+type ActionGroupsClientGetTestNotificationsResponse struct {
+	TestNotificationDetailsResponse
+}
+
+// ActionGroupsClientListByResourceGroupResponse contains the response from method ActionGroupsClient.ListByResourceGroup.
+type ActionGroupsClientListByResourceGroupResponse struct {
 	ActionGroupList
 }
 
-// ActionGroupsListBySubscriptionIDResponse contains the response from method ActionGroups.ListBySubscriptionID.
-type ActionGroupsListBySubscriptionIDResponse struct {
-	ActionGroupsListBySubscriptionIDResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ActionGroupsListBySubscriptionIDResult contains the result from method ActionGroups.ListBySubscriptionID.
-type ActionGroupsListBySubscriptionIDResult struct {
+// ActionGroupsClientListBySubscriptionIDResponse contains the response from method ActionGroupsClient.ListBySubscriptionID.
+type ActionGroupsClientListBySubscriptionIDResponse struct {
 	ActionGroupList
 }
 
-// ActionGroupsPostTestNotificationsPollerResponse contains the response from method ActionGroups.PostTestNotifications.
-type ActionGroupsPostTestNotificationsPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ActionGroupsPostTestNotificationsPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ActionGroupsClientPostTestNotificationsResponse contains the response from method ActionGroupsClient.PostTestNotifications.
+type ActionGroupsClientPostTestNotificationsResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ActionGroupsPostTestNotificationsPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ActionGroupsPostTestNotificationsResponse, error) {
-	respType := ActionGroupsPostTestNotificationsResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.TestNotificationResponse)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ActionGroupsPostTestNotificationsPollerResponse from the provided client and resume token.
-func (l *ActionGroupsPostTestNotificationsPollerResponse) Resume(ctx context.Context, client *ActionGroupsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ActionGroupsClient.PostTestNotifications", token, client.pl, client.postTestNotificationsHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &ActionGroupsPostTestNotificationsPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// ActionGroupsPostTestNotificationsResponse contains the response from method ActionGroups.PostTestNotifications.
-type ActionGroupsPostTestNotificationsResponse struct {
-	ActionGroupsPostTestNotificationsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ActionGroupsPostTestNotificationsResult contains the result from method ActionGroups.PostTestNotifications.
-type ActionGroupsPostTestNotificationsResult struct {
-	TestNotificationResponse
-}
-
-// ActionGroupsUpdateResponse contains the response from method ActionGroups.Update.
-type ActionGroupsUpdateResponse struct {
-	ActionGroupsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ActionGroupsUpdateResult contains the result from method ActionGroups.Update.
-type ActionGroupsUpdateResult struct {
+// ActionGroupsClientUpdateResponse contains the response from method ActionGroupsClient.Update.
+type ActionGroupsClientUpdateResponse struct {
 	ActionGroupResource
 }
 
-// ActivityLogAlertsCreateOrUpdateResponse contains the response from method ActivityLogAlerts.CreateOrUpdate.
-type ActivityLogAlertsCreateOrUpdateResponse struct {
-	ActivityLogAlertsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ActivityLogAlertsCreateOrUpdateResult contains the result from method ActivityLogAlerts.CreateOrUpdate.
-type ActivityLogAlertsCreateOrUpdateResult struct {
+// ActivityLogAlertsClientCreateOrUpdateResponse contains the response from method ActivityLogAlertsClient.CreateOrUpdate.
+type ActivityLogAlertsClientCreateOrUpdateResponse struct {
 	ActivityLogAlertResource
 }
 
-// ActivityLogAlertsDeleteResponse contains the response from method ActivityLogAlerts.Delete.
-type ActivityLogAlertsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ActivityLogAlertsClientDeleteResponse contains the response from method ActivityLogAlertsClient.Delete.
+type ActivityLogAlertsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// ActivityLogAlertsGetResponse contains the response from method ActivityLogAlerts.Get.
-type ActivityLogAlertsGetResponse struct {
-	ActivityLogAlertsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ActivityLogAlertsGetResult contains the result from method ActivityLogAlerts.Get.
-type ActivityLogAlertsGetResult struct {
+// ActivityLogAlertsClientGetResponse contains the response from method ActivityLogAlertsClient.Get.
+type ActivityLogAlertsClientGetResponse struct {
 	ActivityLogAlertResource
 }
 
-// ActivityLogAlertsListByResourceGroupResponse contains the response from method ActivityLogAlerts.ListByResourceGroup.
-type ActivityLogAlertsListByResourceGroupResponse struct {
-	ActivityLogAlertsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ActivityLogAlertsClientListByResourceGroupResponse contains the response from method ActivityLogAlertsClient.ListByResourceGroup.
+type ActivityLogAlertsClientListByResourceGroupResponse struct {
+	AlertRuleList
 }
 
-// ActivityLogAlertsListByResourceGroupResult contains the result from method ActivityLogAlerts.ListByResourceGroup.
-type ActivityLogAlertsListByResourceGroupResult struct {
-	ActivityLogAlertList
+// ActivityLogAlertsClientListBySubscriptionIDResponse contains the response from method ActivityLogAlertsClient.ListBySubscriptionID.
+type ActivityLogAlertsClientListBySubscriptionIDResponse struct {
+	AlertRuleList
 }
 
-// ActivityLogAlertsListBySubscriptionIDResponse contains the response from method ActivityLogAlerts.ListBySubscriptionID.
-type ActivityLogAlertsListBySubscriptionIDResponse struct {
-	ActivityLogAlertsListBySubscriptionIDResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ActivityLogAlertsListBySubscriptionIDResult contains the result from method ActivityLogAlerts.ListBySubscriptionID.
-type ActivityLogAlertsListBySubscriptionIDResult struct {
-	ActivityLogAlertList
-}
-
-// ActivityLogAlertsUpdateResponse contains the response from method ActivityLogAlerts.Update.
-type ActivityLogAlertsUpdateResponse struct {
-	ActivityLogAlertsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ActivityLogAlertsUpdateResult contains the result from method ActivityLogAlerts.Update.
-type ActivityLogAlertsUpdateResult struct {
+// ActivityLogAlertsClientUpdateResponse contains the response from method ActivityLogAlertsClient.Update.
+type ActivityLogAlertsClientUpdateResponse struct {
 	ActivityLogAlertResource
 }
 
-// ActivityLogsListResponse contains the response from method ActivityLogs.List.
-type ActivityLogsListResponse struct {
-	ActivityLogsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ActivityLogsListResult contains the result from method ActivityLogs.List.
-type ActivityLogsListResult struct {
+// ActivityLogsClientListResponse contains the response from method ActivityLogsClient.List.
+type ActivityLogsClientListResponse struct {
 	EventDataCollection
 }
 
-// AlertRuleIncidentsGetResponse contains the response from method AlertRuleIncidents.Get.
-type AlertRuleIncidentsGetResponse struct {
-	AlertRuleIncidentsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertRuleIncidentsGetResult contains the result from method AlertRuleIncidents.Get.
-type AlertRuleIncidentsGetResult struct {
+// AlertRuleIncidentsClientGetResponse contains the response from method AlertRuleIncidentsClient.Get.
+type AlertRuleIncidentsClientGetResponse struct {
 	Incident
 }
 
-// AlertRuleIncidentsListByAlertRuleResponse contains the response from method AlertRuleIncidents.ListByAlertRule.
-type AlertRuleIncidentsListByAlertRuleResponse struct {
-	AlertRuleIncidentsListByAlertRuleResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertRuleIncidentsListByAlertRuleResult contains the result from method AlertRuleIncidents.ListByAlertRule.
-type AlertRuleIncidentsListByAlertRuleResult struct {
+// AlertRuleIncidentsClientListByAlertRuleResponse contains the response from method AlertRuleIncidentsClient.ListByAlertRule.
+type AlertRuleIncidentsClientListByAlertRuleResponse struct {
 	IncidentListResult
 }
 
-// AlertRulesCreateOrUpdateResponse contains the response from method AlertRules.CreateOrUpdate.
-type AlertRulesCreateOrUpdateResponse struct {
-	AlertRulesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertRulesCreateOrUpdateResult contains the result from method AlertRules.CreateOrUpdate.
-type AlertRulesCreateOrUpdateResult struct {
+// AlertRulesClientCreateOrUpdateResponse contains the response from method AlertRulesClient.CreateOrUpdate.
+type AlertRulesClientCreateOrUpdateResponse struct {
 	AlertRuleResource
 }
 
-// AlertRulesDeleteResponse contains the response from method AlertRules.Delete.
-type AlertRulesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// AlertRulesClientDeleteResponse contains the response from method AlertRulesClient.Delete.
+type AlertRulesClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// AlertRulesGetResponse contains the response from method AlertRules.Get.
-type AlertRulesGetResponse struct {
-	AlertRulesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertRulesGetResult contains the result from method AlertRules.Get.
-type AlertRulesGetResult struct {
+// AlertRulesClientGetResponse contains the response from method AlertRulesClient.Get.
+type AlertRulesClientGetResponse struct {
 	AlertRuleResource
 }
 
-// AlertRulesListByResourceGroupResponse contains the response from method AlertRules.ListByResourceGroup.
-type AlertRulesListByResourceGroupResponse struct {
-	AlertRulesListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertRulesListByResourceGroupResult contains the result from method AlertRules.ListByResourceGroup.
-type AlertRulesListByResourceGroupResult struct {
+// AlertRulesClientListByResourceGroupResponse contains the response from method AlertRulesClient.ListByResourceGroup.
+type AlertRulesClientListByResourceGroupResponse struct {
 	AlertRuleResourceCollection
 }
 
-// AlertRulesListBySubscriptionResponse contains the response from method AlertRules.ListBySubscription.
-type AlertRulesListBySubscriptionResponse struct {
-	AlertRulesListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertRulesListBySubscriptionResult contains the result from method AlertRules.ListBySubscription.
-type AlertRulesListBySubscriptionResult struct {
+// AlertRulesClientListBySubscriptionResponse contains the response from method AlertRulesClient.ListBySubscription.
+type AlertRulesClientListBySubscriptionResponse struct {
 	AlertRuleResourceCollection
 }
 
-// AlertRulesUpdateResponse contains the response from method AlertRules.Update.
-type AlertRulesUpdateResponse struct {
-	AlertRulesUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertRulesUpdateResult contains the result from method AlertRules.Update.
-type AlertRulesUpdateResult struct {
+// AlertRulesClientUpdateResponse contains the response from method AlertRulesClient.Update.
+type AlertRulesClientUpdateResponse struct {
 	AlertRuleResource
 }
 
-// AutoscaleSettingsCreateOrUpdateResponse contains the response from method AutoscaleSettings.CreateOrUpdate.
-type AutoscaleSettingsCreateOrUpdateResponse struct {
-	AutoscaleSettingsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutoscaleSettingsCreateOrUpdateResult contains the result from method AutoscaleSettings.CreateOrUpdate.
-type AutoscaleSettingsCreateOrUpdateResult struct {
+// AutoscaleSettingsClientCreateOrUpdateResponse contains the response from method AutoscaleSettingsClient.CreateOrUpdate.
+type AutoscaleSettingsClientCreateOrUpdateResponse struct {
 	AutoscaleSettingResource
 }
 
-// AutoscaleSettingsDeleteResponse contains the response from method AutoscaleSettings.Delete.
-type AutoscaleSettingsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// AutoscaleSettingsClientDeleteResponse contains the response from method AutoscaleSettingsClient.Delete.
+type AutoscaleSettingsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// AutoscaleSettingsGetResponse contains the response from method AutoscaleSettings.Get.
-type AutoscaleSettingsGetResponse struct {
-	AutoscaleSettingsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutoscaleSettingsGetResult contains the result from method AutoscaleSettings.Get.
-type AutoscaleSettingsGetResult struct {
+// AutoscaleSettingsClientGetResponse contains the response from method AutoscaleSettingsClient.Get.
+type AutoscaleSettingsClientGetResponse struct {
 	AutoscaleSettingResource
 }
 
-// AutoscaleSettingsListByResourceGroupResponse contains the response from method AutoscaleSettings.ListByResourceGroup.
-type AutoscaleSettingsListByResourceGroupResponse struct {
-	AutoscaleSettingsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutoscaleSettingsListByResourceGroupResult contains the result from method AutoscaleSettings.ListByResourceGroup.
-type AutoscaleSettingsListByResourceGroupResult struct {
+// AutoscaleSettingsClientListByResourceGroupResponse contains the response from method AutoscaleSettingsClient.ListByResourceGroup.
+type AutoscaleSettingsClientListByResourceGroupResponse struct {
 	AutoscaleSettingResourceCollection
 }
 
-// AutoscaleSettingsListBySubscriptionResponse contains the response from method AutoscaleSettings.ListBySubscription.
-type AutoscaleSettingsListBySubscriptionResponse struct {
-	AutoscaleSettingsListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutoscaleSettingsListBySubscriptionResult contains the result from method AutoscaleSettings.ListBySubscription.
-type AutoscaleSettingsListBySubscriptionResult struct {
+// AutoscaleSettingsClientListBySubscriptionResponse contains the response from method AutoscaleSettingsClient.ListBySubscription.
+type AutoscaleSettingsClientListBySubscriptionResponse struct {
 	AutoscaleSettingResourceCollection
 }
 
-// AutoscaleSettingsUpdateResponse contains the response from method AutoscaleSettings.Update.
-type AutoscaleSettingsUpdateResponse struct {
-	AutoscaleSettingsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutoscaleSettingsUpdateResult contains the result from method AutoscaleSettings.Update.
-type AutoscaleSettingsUpdateResult struct {
+// AutoscaleSettingsClientUpdateResponse contains the response from method AutoscaleSettingsClient.Update.
+type AutoscaleSettingsClientUpdateResponse struct {
 	AutoscaleSettingResource
 }
 
-// BaselinesListResponse contains the response from method Baselines.List.
-type BaselinesListResponse struct {
-	BaselinesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BaselinesListResult contains the result from method Baselines.List.
-type BaselinesListResult struct {
+// BaselinesClientListResponse contains the response from method BaselinesClient.List.
+type BaselinesClientListResponse struct {
 	MetricBaselinesResponse
 }
 
-// DataCollectionEndpointsCreateResponse contains the response from method DataCollectionEndpoints.Create.
-type DataCollectionEndpointsCreateResponse struct {
-	DataCollectionEndpointsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DataCollectionEndpointsCreateResult contains the result from method DataCollectionEndpoints.Create.
-type DataCollectionEndpointsCreateResult struct {
+// DataCollectionEndpointsClientCreateResponse contains the response from method DataCollectionEndpointsClient.Create.
+type DataCollectionEndpointsClientCreateResponse struct {
 	DataCollectionEndpointResource
 }
 
-// DataCollectionEndpointsDeleteResponse contains the response from method DataCollectionEndpoints.Delete.
-type DataCollectionEndpointsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// DataCollectionEndpointsClientDeleteResponse contains the response from method DataCollectionEndpointsClient.Delete.
+type DataCollectionEndpointsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// DataCollectionEndpointsGetResponse contains the response from method DataCollectionEndpoints.Get.
-type DataCollectionEndpointsGetResponse struct {
-	DataCollectionEndpointsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DataCollectionEndpointsGetResult contains the result from method DataCollectionEndpoints.Get.
-type DataCollectionEndpointsGetResult struct {
+// DataCollectionEndpointsClientGetResponse contains the response from method DataCollectionEndpointsClient.Get.
+type DataCollectionEndpointsClientGetResponse struct {
 	DataCollectionEndpointResource
 }
 
-// DataCollectionEndpointsListByResourceGroupResponse contains the response from method DataCollectionEndpoints.ListByResourceGroup.
-type DataCollectionEndpointsListByResourceGroupResponse struct {
-	DataCollectionEndpointsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DataCollectionEndpointsListByResourceGroupResult contains the result from method DataCollectionEndpoints.ListByResourceGroup.
-type DataCollectionEndpointsListByResourceGroupResult struct {
+// DataCollectionEndpointsClientListByResourceGroupResponse contains the response from method DataCollectionEndpointsClient.ListByResourceGroup.
+type DataCollectionEndpointsClientListByResourceGroupResponse struct {
 	DataCollectionEndpointResourceListResult
 }
 
-// DataCollectionEndpointsListBySubscriptionResponse contains the response from method DataCollectionEndpoints.ListBySubscription.
-type DataCollectionEndpointsListBySubscriptionResponse struct {
-	DataCollectionEndpointsListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DataCollectionEndpointsListBySubscriptionResult contains the result from method DataCollectionEndpoints.ListBySubscription.
-type DataCollectionEndpointsListBySubscriptionResult struct {
+// DataCollectionEndpointsClientListBySubscriptionResponse contains the response from method DataCollectionEndpointsClient.ListBySubscription.
+type DataCollectionEndpointsClientListBySubscriptionResponse struct {
 	DataCollectionEndpointResourceListResult
 }
 
-// DataCollectionEndpointsUpdateResponse contains the response from method DataCollectionEndpoints.Update.
-type DataCollectionEndpointsUpdateResponse struct {
-	DataCollectionEndpointsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DataCollectionEndpointsUpdateResult contains the result from method DataCollectionEndpoints.Update.
-type DataCollectionEndpointsUpdateResult struct {
+// DataCollectionEndpointsClientUpdateResponse contains the response from method DataCollectionEndpointsClient.Update.
+type DataCollectionEndpointsClientUpdateResponse struct {
 	DataCollectionEndpointResource
 }
 
-// DataCollectionRuleAssociationsCreateResponse contains the response from method DataCollectionRuleAssociations.Create.
-type DataCollectionRuleAssociationsCreateResponse struct {
-	DataCollectionRuleAssociationsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DataCollectionRuleAssociationsCreateResult contains the result from method DataCollectionRuleAssociations.Create.
-type DataCollectionRuleAssociationsCreateResult struct {
+// DataCollectionRuleAssociationsClientCreateResponse contains the response from method DataCollectionRuleAssociationsClient.Create.
+type DataCollectionRuleAssociationsClientCreateResponse struct {
 	DataCollectionRuleAssociationProxyOnlyResource
 }
 
-// DataCollectionRuleAssociationsDeleteResponse contains the response from method DataCollectionRuleAssociations.Delete.
-type DataCollectionRuleAssociationsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// DataCollectionRuleAssociationsClientDeleteResponse contains the response from method DataCollectionRuleAssociationsClient.Delete.
+type DataCollectionRuleAssociationsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// DataCollectionRuleAssociationsGetResponse contains the response from method DataCollectionRuleAssociations.Get.
-type DataCollectionRuleAssociationsGetResponse struct {
-	DataCollectionRuleAssociationsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DataCollectionRuleAssociationsGetResult contains the result from method DataCollectionRuleAssociations.Get.
-type DataCollectionRuleAssociationsGetResult struct {
+// DataCollectionRuleAssociationsClientGetResponse contains the response from method DataCollectionRuleAssociationsClient.Get.
+type DataCollectionRuleAssociationsClientGetResponse struct {
 	DataCollectionRuleAssociationProxyOnlyResource
 }
 
-// DataCollectionRuleAssociationsListByResourceResponse contains the response from method DataCollectionRuleAssociations.ListByResource.
-type DataCollectionRuleAssociationsListByResourceResponse struct {
-	DataCollectionRuleAssociationsListByResourceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DataCollectionRuleAssociationsListByResourceResult contains the result from method DataCollectionRuleAssociations.ListByResource.
-type DataCollectionRuleAssociationsListByResourceResult struct {
+// DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse contains the response from method DataCollectionRuleAssociationsClient.ListByDataCollectionEndpoint.
+type DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse struct {
 	DataCollectionRuleAssociationProxyOnlyResourceListResult
 }
 
-// DataCollectionRuleAssociationsListByRuleResponse contains the response from method DataCollectionRuleAssociations.ListByRule.
-type DataCollectionRuleAssociationsListByRuleResponse struct {
-	DataCollectionRuleAssociationsListByRuleResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DataCollectionRuleAssociationsListByRuleResult contains the result from method DataCollectionRuleAssociations.ListByRule.
-type DataCollectionRuleAssociationsListByRuleResult struct {
+// DataCollectionRuleAssociationsClientListByResourceResponse contains the response from method DataCollectionRuleAssociationsClient.ListByResource.
+type DataCollectionRuleAssociationsClientListByResourceResponse struct {
 	DataCollectionRuleAssociationProxyOnlyResourceListResult
 }
 
-// DataCollectionRulesCreateResponse contains the response from method DataCollectionRules.Create.
-type DataCollectionRulesCreateResponse struct {
-	DataCollectionRulesCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// DataCollectionRuleAssociationsClientListByRuleResponse contains the response from method DataCollectionRuleAssociationsClient.ListByRule.
+type DataCollectionRuleAssociationsClientListByRuleResponse struct {
+	DataCollectionRuleAssociationProxyOnlyResourceListResult
 }
 
-// DataCollectionRulesCreateResult contains the result from method DataCollectionRules.Create.
-type DataCollectionRulesCreateResult struct {
+// DataCollectionRulesClientCreateResponse contains the response from method DataCollectionRulesClient.Create.
+type DataCollectionRulesClientCreateResponse struct {
 	DataCollectionRuleResource
 }
 
-// DataCollectionRulesDeleteResponse contains the response from method DataCollectionRules.Delete.
-type DataCollectionRulesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// DataCollectionRulesClientDeleteResponse contains the response from method DataCollectionRulesClient.Delete.
+type DataCollectionRulesClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// DataCollectionRulesGetResponse contains the response from method DataCollectionRules.Get.
-type DataCollectionRulesGetResponse struct {
-	DataCollectionRulesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DataCollectionRulesGetResult contains the result from method DataCollectionRules.Get.
-type DataCollectionRulesGetResult struct {
+// DataCollectionRulesClientGetResponse contains the response from method DataCollectionRulesClient.Get.
+type DataCollectionRulesClientGetResponse struct {
 	DataCollectionRuleResource
 }
 
-// DataCollectionRulesListByResourceGroupResponse contains the response from method DataCollectionRules.ListByResourceGroup.
-type DataCollectionRulesListByResourceGroupResponse struct {
-	DataCollectionRulesListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DataCollectionRulesListByResourceGroupResult contains the result from method DataCollectionRules.ListByResourceGroup.
-type DataCollectionRulesListByResourceGroupResult struct {
+// DataCollectionRulesClientListByResourceGroupResponse contains the response from method DataCollectionRulesClient.ListByResourceGroup.
+type DataCollectionRulesClientListByResourceGroupResponse struct {
 	DataCollectionRuleResourceListResult
 }
 
-// DataCollectionRulesListBySubscriptionResponse contains the response from method DataCollectionRules.ListBySubscription.
-type DataCollectionRulesListBySubscriptionResponse struct {
-	DataCollectionRulesListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DataCollectionRulesListBySubscriptionResult contains the result from method DataCollectionRules.ListBySubscription.
-type DataCollectionRulesListBySubscriptionResult struct {
+// DataCollectionRulesClientListBySubscriptionResponse contains the response from method DataCollectionRulesClient.ListBySubscription.
+type DataCollectionRulesClientListBySubscriptionResponse struct {
 	DataCollectionRuleResourceListResult
 }
 
-// DataCollectionRulesUpdateResponse contains the response from method DataCollectionRules.Update.
-type DataCollectionRulesUpdateResponse struct {
-	DataCollectionRulesUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DataCollectionRulesUpdateResult contains the result from method DataCollectionRules.Update.
-type DataCollectionRulesUpdateResult struct {
+// DataCollectionRulesClientUpdateResponse contains the response from method DataCollectionRulesClient.Update.
+type DataCollectionRulesClientUpdateResponse struct {
 	DataCollectionRuleResource
 }
 
-// DiagnosticSettingsCategoryGetResponse contains the response from method DiagnosticSettingsCategory.Get.
-type DiagnosticSettingsCategoryGetResponse struct {
-	DiagnosticSettingsCategoryGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DiagnosticSettingsCategoryGetResult contains the result from method DiagnosticSettingsCategory.Get.
-type DiagnosticSettingsCategoryGetResult struct {
+// DiagnosticSettingsCategoryClientGetResponse contains the response from method DiagnosticSettingsCategoryClient.Get.
+type DiagnosticSettingsCategoryClientGetResponse struct {
 	DiagnosticSettingsCategoryResource
 }
 
-// DiagnosticSettingsCategoryListResponse contains the response from method DiagnosticSettingsCategory.List.
-type DiagnosticSettingsCategoryListResponse struct {
-	DiagnosticSettingsCategoryListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DiagnosticSettingsCategoryListResult contains the result from method DiagnosticSettingsCategory.List.
-type DiagnosticSettingsCategoryListResult struct {
+// DiagnosticSettingsCategoryClientListResponse contains the response from method DiagnosticSettingsCategoryClient.List.
+type DiagnosticSettingsCategoryClientListResponse struct {
 	DiagnosticSettingsCategoryResourceCollection
 }
 
-// DiagnosticSettingsCreateOrUpdateResponse contains the response from method DiagnosticSettings.CreateOrUpdate.
-type DiagnosticSettingsCreateOrUpdateResponse struct {
-	DiagnosticSettingsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DiagnosticSettingsCreateOrUpdateResult contains the result from method DiagnosticSettings.CreateOrUpdate.
-type DiagnosticSettingsCreateOrUpdateResult struct {
+// DiagnosticSettingsClientCreateOrUpdateResponse contains the response from method DiagnosticSettingsClient.CreateOrUpdate.
+type DiagnosticSettingsClientCreateOrUpdateResponse struct {
 	DiagnosticSettingsResource
 }
 
-// DiagnosticSettingsDeleteResponse contains the response from method DiagnosticSettings.Delete.
-type DiagnosticSettingsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// DiagnosticSettingsClientDeleteResponse contains the response from method DiagnosticSettingsClient.Delete.
+type DiagnosticSettingsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// DiagnosticSettingsGetResponse contains the response from method DiagnosticSettings.Get.
-type DiagnosticSettingsGetResponse struct {
-	DiagnosticSettingsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DiagnosticSettingsGetResult contains the result from method DiagnosticSettings.Get.
-type DiagnosticSettingsGetResult struct {
+// DiagnosticSettingsClientGetResponse contains the response from method DiagnosticSettingsClient.Get.
+type DiagnosticSettingsClientGetResponse struct {
 	DiagnosticSettingsResource
 }
 
-// DiagnosticSettingsListResponse contains the response from method DiagnosticSettings.List.
-type DiagnosticSettingsListResponse struct {
-	DiagnosticSettingsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DiagnosticSettingsListResult contains the result from method DiagnosticSettings.List.
-type DiagnosticSettingsListResult struct {
+// DiagnosticSettingsClientListResponse contains the response from method DiagnosticSettingsClient.List.
+type DiagnosticSettingsClientListResponse struct {
 	DiagnosticSettingsResourceCollection
 }
 
-// EventCategoriesListResponse contains the response from method EventCategories.List.
-type EventCategoriesListResponse struct {
-	EventCategoriesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EventCategoriesListResult contains the result from method EventCategories.List.
-type EventCategoriesListResult struct {
+// EventCategoriesClientListResponse contains the response from method EventCategoriesClient.List.
+type EventCategoriesClientListResponse struct {
 	EventCategoryCollection
 }
 
-// LogProfilesCreateOrUpdateResponse contains the response from method LogProfiles.CreateOrUpdate.
-type LogProfilesCreateOrUpdateResponse struct {
-	LogProfilesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// LogProfilesCreateOrUpdateResult contains the result from method LogProfiles.CreateOrUpdate.
-type LogProfilesCreateOrUpdateResult struct {
+// LogProfilesClientCreateOrUpdateResponse contains the response from method LogProfilesClient.CreateOrUpdate.
+type LogProfilesClientCreateOrUpdateResponse struct {
 	LogProfileResource
 }
 
-// LogProfilesDeleteResponse contains the response from method LogProfiles.Delete.
-type LogProfilesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// LogProfilesClientDeleteResponse contains the response from method LogProfilesClient.Delete.
+type LogProfilesClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// LogProfilesGetResponse contains the response from method LogProfiles.Get.
-type LogProfilesGetResponse struct {
-	LogProfilesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// LogProfilesGetResult contains the result from method LogProfiles.Get.
-type LogProfilesGetResult struct {
+// LogProfilesClientGetResponse contains the response from method LogProfilesClient.Get.
+type LogProfilesClientGetResponse struct {
 	LogProfileResource
 }
 
-// LogProfilesListResponse contains the response from method LogProfiles.List.
-type LogProfilesListResponse struct {
-	LogProfilesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// LogProfilesListResult contains the result from method LogProfiles.List.
-type LogProfilesListResult struct {
+// LogProfilesClientListResponse contains the response from method LogProfilesClient.List.
+type LogProfilesClientListResponse struct {
 	LogProfileCollection
 }
 
-// LogProfilesUpdateResponse contains the response from method LogProfiles.Update.
-type LogProfilesUpdateResponse struct {
-	LogProfilesUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// LogProfilesUpdateResult contains the result from method LogProfiles.Update.
-type LogProfilesUpdateResult struct {
+// LogProfilesClientUpdateResponse contains the response from method LogProfilesClient.Update.
+type LogProfilesClientUpdateResponse struct {
 	LogProfileResource
 }
 
-// MetricAlertsCreateOrUpdateResponse contains the response from method MetricAlerts.CreateOrUpdate.
-type MetricAlertsCreateOrUpdateResponse struct {
-	MetricAlertsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MetricAlertsCreateOrUpdateResult contains the result from method MetricAlerts.CreateOrUpdate.
-type MetricAlertsCreateOrUpdateResult struct {
+// MetricAlertsClientCreateOrUpdateResponse contains the response from method MetricAlertsClient.CreateOrUpdate.
+type MetricAlertsClientCreateOrUpdateResponse struct {
 	MetricAlertResource
 }
 
-// MetricAlertsDeleteResponse contains the response from method MetricAlerts.Delete.
-type MetricAlertsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// MetricAlertsClientDeleteResponse contains the response from method MetricAlertsClient.Delete.
+type MetricAlertsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// MetricAlertsGetResponse contains the response from method MetricAlerts.Get.
-type MetricAlertsGetResponse struct {
-	MetricAlertsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MetricAlertsGetResult contains the result from method MetricAlerts.Get.
-type MetricAlertsGetResult struct {
+// MetricAlertsClientGetResponse contains the response from method MetricAlertsClient.Get.
+type MetricAlertsClientGetResponse struct {
 	MetricAlertResource
 }
 
-// MetricAlertsListByResourceGroupResponse contains the response from method MetricAlerts.ListByResourceGroup.
-type MetricAlertsListByResourceGroupResponse struct {
-	MetricAlertsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MetricAlertsListByResourceGroupResult contains the result from method MetricAlerts.ListByResourceGroup.
-type MetricAlertsListByResourceGroupResult struct {
+// MetricAlertsClientListByResourceGroupResponse contains the response from method MetricAlertsClient.ListByResourceGroup.
+type MetricAlertsClientListByResourceGroupResponse struct {
 	MetricAlertResourceCollection
 }
 
-// MetricAlertsListBySubscriptionResponse contains the response from method MetricAlerts.ListBySubscription.
-type MetricAlertsListBySubscriptionResponse struct {
-	MetricAlertsListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MetricAlertsListBySubscriptionResult contains the result from method MetricAlerts.ListBySubscription.
-type MetricAlertsListBySubscriptionResult struct {
+// MetricAlertsClientListBySubscriptionResponse contains the response from method MetricAlertsClient.ListBySubscription.
+type MetricAlertsClientListBySubscriptionResponse struct {
 	MetricAlertResourceCollection
 }
 
-// MetricAlertsStatusListByNameResponse contains the response from method MetricAlertsStatus.ListByName.
-type MetricAlertsStatusListByNameResponse struct {
-	MetricAlertsStatusListByNameResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MetricAlertsStatusListByNameResult contains the result from method MetricAlertsStatus.ListByName.
-type MetricAlertsStatusListByNameResult struct {
-	MetricAlertStatusCollection
-}
-
-// MetricAlertsStatusListResponse contains the response from method MetricAlertsStatus.List.
-type MetricAlertsStatusListResponse struct {
-	MetricAlertsStatusListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MetricAlertsStatusListResult contains the result from method MetricAlertsStatus.List.
-type MetricAlertsStatusListResult struct {
-	MetricAlertStatusCollection
-}
-
-// MetricAlertsUpdateResponse contains the response from method MetricAlerts.Update.
-type MetricAlertsUpdateResponse struct {
-	MetricAlertsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MetricAlertsUpdateResult contains the result from method MetricAlerts.Update.
-type MetricAlertsUpdateResult struct {
+// MetricAlertsClientUpdateResponse contains the response from method MetricAlertsClient.Update.
+type MetricAlertsClientUpdateResponse struct {
 	MetricAlertResource
 }
 
-// MetricDefinitionsListResponse contains the response from method MetricDefinitions.List.
-type MetricDefinitionsListResponse struct {
-	MetricDefinitionsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// MetricAlertsStatusClientListByNameResponse contains the response from method MetricAlertsStatusClient.ListByName.
+type MetricAlertsStatusClientListByNameResponse struct {
+	MetricAlertStatusCollection
 }
 
-// MetricDefinitionsListResult contains the result from method MetricDefinitions.List.
-type MetricDefinitionsListResult struct {
+// MetricAlertsStatusClientListResponse contains the response from method MetricAlertsStatusClient.List.
+type MetricAlertsStatusClientListResponse struct {
+	MetricAlertStatusCollection
+}
+
+// MetricDefinitionsClientListResponse contains the response from method MetricDefinitionsClient.List.
+type MetricDefinitionsClientListResponse struct {
 	MetricDefinitionCollection
 }
 
-// MetricNamespacesListResponse contains the response from method MetricNamespaces.List.
-type MetricNamespacesListResponse struct {
-	MetricNamespacesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MetricNamespacesListResult contains the result from method MetricNamespaces.List.
-type MetricNamespacesListResult struct {
+// MetricNamespacesClientListResponse contains the response from method MetricNamespacesClient.List.
+type MetricNamespacesClientListResponse struct {
 	MetricNamespaceCollection
 }
 
-// MetricsListResponse contains the response from method Metrics.List.
-type MetricsListResponse struct {
-	MetricsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MetricsListResult contains the result from method Metrics.List.
-type MetricsListResult struct {
+// MetricsClientListResponse contains the response from method MetricsClient.List.
+type MetricsClientListResponse struct {
 	Response
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PrivateEndpointConnectionsCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnections.CreateOrUpdate.
-type PrivateEndpointConnectionsCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsCreateOrUpdateResponse, error) {
-	respType := PrivateEndpointConnectionsCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a PrivateEndpointConnectionsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &PrivateEndpointConnectionsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// PrivateEndpointConnectionsCreateOrUpdateResponse contains the response from method PrivateEndpointConnections.CreateOrUpdate.
-type PrivateEndpointConnectionsCreateOrUpdateResponse struct {
-	PrivateEndpointConnectionsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsCreateOrUpdateResult contains the result from method PrivateEndpointConnections.CreateOrUpdate.
-type PrivateEndpointConnectionsCreateOrUpdateResult struct {
+// PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.CreateOrUpdate.
+type PrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsDeletePollerResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsDeleteResponse, error) {
-	respType := PrivateEndpointConnectionsDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a PrivateEndpointConnectionsDeletePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &PrivateEndpointConnectionsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// PrivateEndpointConnectionsDeleteResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsGetResponse contains the response from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResponse struct {
-	PrivateEndpointConnectionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsGetResult contains the result from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResult struct {
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsListByPrivateLinkScopeResponse contains the response from method PrivateEndpointConnections.ListByPrivateLinkScope.
-type PrivateEndpointConnectionsListByPrivateLinkScopeResponse struct {
-	PrivateEndpointConnectionsListByPrivateLinkScopeResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsListByPrivateLinkScopeResult contains the result from method PrivateEndpointConnections.ListByPrivateLinkScope.
-type PrivateEndpointConnectionsListByPrivateLinkScopeResult struct {
+// PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse contains the response from method PrivateEndpointConnectionsClient.ListByPrivateLinkScope.
+type PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse struct {
 	PrivateEndpointConnectionListResult
 }
 
-// PrivateLinkResourcesGetResponse contains the response from method PrivateLinkResources.Get.
-type PrivateLinkResourcesGetResponse struct {
-	PrivateLinkResourcesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkResourcesGetResult contains the result from method PrivateLinkResources.Get.
-type PrivateLinkResourcesGetResult struct {
+// PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResponse struct {
 	PrivateLinkResource
 }
 
-// PrivateLinkResourcesListByPrivateLinkScopeResponse contains the response from method PrivateLinkResources.ListByPrivateLinkScope.
-type PrivateLinkResourcesListByPrivateLinkScopeResponse struct {
-	PrivateLinkResourcesListByPrivateLinkScopeResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkResourcesListByPrivateLinkScopeResult contains the result from method PrivateLinkResources.ListByPrivateLinkScope.
-type PrivateLinkResourcesListByPrivateLinkScopeResult struct {
+// PrivateLinkResourcesClientListByPrivateLinkScopeResponse contains the response from method PrivateLinkResourcesClient.ListByPrivateLinkScope.
+type PrivateLinkResourcesClientListByPrivateLinkScopeResponse struct {
 	PrivateLinkResourceListResult
 }
 
-// PrivateLinkScopeOperationStatusGetResponse contains the response from method PrivateLinkScopeOperationStatus.Get.
-type PrivateLinkScopeOperationStatusGetResponse struct {
-	PrivateLinkScopeOperationStatusGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkScopeOperationStatusGetResult contains the result from method PrivateLinkScopeOperationStatus.Get.
-type PrivateLinkScopeOperationStatusGetResult struct {
+// PrivateLinkScopeOperationStatusClientGetResponse contains the response from method PrivateLinkScopeOperationStatusClient.Get.
+type PrivateLinkScopeOperationStatusClientGetResponse struct {
 	OperationStatus
 }
 
-// PrivateLinkScopedResourcesCreateOrUpdatePollerResponse contains the response from method PrivateLinkScopedResources.CreateOrUpdate.
-type PrivateLinkScopedResourcesCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *PrivateLinkScopedResourcesCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkScopedResourcesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkScopedResourcesCreateOrUpdateResponse, error) {
-	respType := PrivateLinkScopedResourcesCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ScopedResource)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a PrivateLinkScopedResourcesCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateLinkScopedResourcesCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateLinkScopedResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkScopedResourcesClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &PrivateLinkScopedResourcesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// PrivateLinkScopedResourcesCreateOrUpdateResponse contains the response from method PrivateLinkScopedResources.CreateOrUpdate.
-type PrivateLinkScopedResourcesCreateOrUpdateResponse struct {
-	PrivateLinkScopedResourcesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkScopedResourcesCreateOrUpdateResult contains the result from method PrivateLinkScopedResources.CreateOrUpdate.
-type PrivateLinkScopedResourcesCreateOrUpdateResult struct {
+// PrivateLinkScopedResourcesClientCreateOrUpdateResponse contains the response from method PrivateLinkScopedResourcesClient.CreateOrUpdate.
+type PrivateLinkScopedResourcesClientCreateOrUpdateResponse struct {
 	ScopedResource
 }
 
-// PrivateLinkScopedResourcesDeletePollerResponse contains the response from method PrivateLinkScopedResources.Delete.
-type PrivateLinkScopedResourcesDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *PrivateLinkScopedResourcesDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PrivateLinkScopedResourcesClientDeleteResponse contains the response from method PrivateLinkScopedResourcesClient.Delete.
+type PrivateLinkScopedResourcesClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkScopedResourcesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkScopedResourcesDeleteResponse, error) {
-	respType := PrivateLinkScopedResourcesDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a PrivateLinkScopedResourcesDeletePollerResponse from the provided client and resume token.
-func (l *PrivateLinkScopedResourcesDeletePollerResponse) Resume(ctx context.Context, client *PrivateLinkScopedResourcesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkScopedResourcesClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &PrivateLinkScopedResourcesDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// PrivateLinkScopedResourcesDeleteResponse contains the response from method PrivateLinkScopedResources.Delete.
-type PrivateLinkScopedResourcesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkScopedResourcesGetResponse contains the response from method PrivateLinkScopedResources.Get.
-type PrivateLinkScopedResourcesGetResponse struct {
-	PrivateLinkScopedResourcesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkScopedResourcesGetResult contains the result from method PrivateLinkScopedResources.Get.
-type PrivateLinkScopedResourcesGetResult struct {
+// PrivateLinkScopedResourcesClientGetResponse contains the response from method PrivateLinkScopedResourcesClient.Get.
+type PrivateLinkScopedResourcesClientGetResponse struct {
 	ScopedResource
 }
 
-// PrivateLinkScopedResourcesListByPrivateLinkScopeResponse contains the response from method PrivateLinkScopedResources.ListByPrivateLinkScope.
-type PrivateLinkScopedResourcesListByPrivateLinkScopeResponse struct {
-	PrivateLinkScopedResourcesListByPrivateLinkScopeResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkScopedResourcesListByPrivateLinkScopeResult contains the result from method PrivateLinkScopedResources.ListByPrivateLinkScope.
-type PrivateLinkScopedResourcesListByPrivateLinkScopeResult struct {
+// PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse contains the response from method PrivateLinkScopedResourcesClient.ListByPrivateLinkScope.
+type PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse struct {
 	ScopedResourceListResult
 }
 
-// PrivateLinkScopesCreateOrUpdateResponse contains the response from method PrivateLinkScopes.CreateOrUpdate.
-type PrivateLinkScopesCreateOrUpdateResponse struct {
-	PrivateLinkScopesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkScopesCreateOrUpdateResult contains the result from method PrivateLinkScopes.CreateOrUpdate.
-type PrivateLinkScopesCreateOrUpdateResult struct {
+// PrivateLinkScopesClientCreateOrUpdateResponse contains the response from method PrivateLinkScopesClient.CreateOrUpdate.
+type PrivateLinkScopesClientCreateOrUpdateResponse struct {
 	AzureMonitorPrivateLinkScope
 }
 
-// PrivateLinkScopesDeletePollerResponse contains the response from method PrivateLinkScopes.Delete.
-type PrivateLinkScopesDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *PrivateLinkScopesDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PrivateLinkScopesClientDeleteResponse contains the response from method PrivateLinkScopesClient.Delete.
+type PrivateLinkScopesClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkScopesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkScopesDeleteResponse, error) {
-	respType := PrivateLinkScopesDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a PrivateLinkScopesDeletePollerResponse from the provided client and resume token.
-func (l *PrivateLinkScopesDeletePollerResponse) Resume(ctx context.Context, client *PrivateLinkScopesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkScopesClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &PrivateLinkScopesDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// PrivateLinkScopesDeleteResponse contains the response from method PrivateLinkScopes.Delete.
-type PrivateLinkScopesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkScopesGetResponse contains the response from method PrivateLinkScopes.Get.
-type PrivateLinkScopesGetResponse struct {
-	PrivateLinkScopesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkScopesGetResult contains the result from method PrivateLinkScopes.Get.
-type PrivateLinkScopesGetResult struct {
+// PrivateLinkScopesClientGetResponse contains the response from method PrivateLinkScopesClient.Get.
+type PrivateLinkScopesClientGetResponse struct {
 	AzureMonitorPrivateLinkScope
 }
 
-// PrivateLinkScopesListByResourceGroupResponse contains the response from method PrivateLinkScopes.ListByResourceGroup.
-type PrivateLinkScopesListByResourceGroupResponse struct {
-	PrivateLinkScopesListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkScopesListByResourceGroupResult contains the result from method PrivateLinkScopes.ListByResourceGroup.
-type PrivateLinkScopesListByResourceGroupResult struct {
+// PrivateLinkScopesClientListByResourceGroupResponse contains the response from method PrivateLinkScopesClient.ListByResourceGroup.
+type PrivateLinkScopesClientListByResourceGroupResponse struct {
 	AzureMonitorPrivateLinkScopeListResult
 }
 
-// PrivateLinkScopesListResponse contains the response from method PrivateLinkScopes.List.
-type PrivateLinkScopesListResponse struct {
-	PrivateLinkScopesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkScopesListResult contains the result from method PrivateLinkScopes.List.
-type PrivateLinkScopesListResult struct {
+// PrivateLinkScopesClientListResponse contains the response from method PrivateLinkScopesClient.List.
+type PrivateLinkScopesClientListResponse struct {
 	AzureMonitorPrivateLinkScopeListResult
 }
 
-// PrivateLinkScopesUpdateTagsResponse contains the response from method PrivateLinkScopes.UpdateTags.
-type PrivateLinkScopesUpdateTagsResponse struct {
-	PrivateLinkScopesUpdateTagsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkScopesUpdateTagsResult contains the result from method PrivateLinkScopes.UpdateTags.
-type PrivateLinkScopesUpdateTagsResult struct {
+// PrivateLinkScopesClientUpdateTagsResponse contains the response from method PrivateLinkScopesClient.UpdateTags.
+type PrivateLinkScopesClientUpdateTagsResponse struct {
 	AzureMonitorPrivateLinkScope
 }
 
-// ScheduledQueryRulesCreateOrUpdateResponse contains the response from method ScheduledQueryRules.CreateOrUpdate.
-type ScheduledQueryRulesCreateOrUpdateResponse struct {
-	ScheduledQueryRulesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ScheduledQueryRulesCreateOrUpdateResult contains the result from method ScheduledQueryRules.CreateOrUpdate.
-type ScheduledQueryRulesCreateOrUpdateResult struct {
+// ScheduledQueryRulesClientCreateOrUpdateResponse contains the response from method ScheduledQueryRulesClient.CreateOrUpdate.
+type ScheduledQueryRulesClientCreateOrUpdateResponse struct {
 	LogSearchRuleResource
 }
 
-// ScheduledQueryRulesDeleteResponse contains the response from method ScheduledQueryRules.Delete.
-type ScheduledQueryRulesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ScheduledQueryRulesClientDeleteResponse contains the response from method ScheduledQueryRulesClient.Delete.
+type ScheduledQueryRulesClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// ScheduledQueryRulesGetResponse contains the response from method ScheduledQueryRules.Get.
-type ScheduledQueryRulesGetResponse struct {
-	ScheduledQueryRulesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ScheduledQueryRulesGetResult contains the result from method ScheduledQueryRules.Get.
-type ScheduledQueryRulesGetResult struct {
+// ScheduledQueryRulesClientGetResponse contains the response from method ScheduledQueryRulesClient.Get.
+type ScheduledQueryRulesClientGetResponse struct {
 	LogSearchRuleResource
 }
 
-// ScheduledQueryRulesListByResourceGroupResponse contains the response from method ScheduledQueryRules.ListByResourceGroup.
-type ScheduledQueryRulesListByResourceGroupResponse struct {
-	ScheduledQueryRulesListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ScheduledQueryRulesListByResourceGroupResult contains the result from method ScheduledQueryRules.ListByResourceGroup.
-type ScheduledQueryRulesListByResourceGroupResult struct {
+// ScheduledQueryRulesClientListByResourceGroupResponse contains the response from method ScheduledQueryRulesClient.ListByResourceGroup.
+type ScheduledQueryRulesClientListByResourceGroupResponse struct {
 	LogSearchRuleResourceCollection
 }
 
-// ScheduledQueryRulesListBySubscriptionResponse contains the response from method ScheduledQueryRules.ListBySubscription.
-type ScheduledQueryRulesListBySubscriptionResponse struct {
-	ScheduledQueryRulesListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ScheduledQueryRulesListBySubscriptionResult contains the result from method ScheduledQueryRules.ListBySubscription.
-type ScheduledQueryRulesListBySubscriptionResult struct {
+// ScheduledQueryRulesClientListBySubscriptionResponse contains the response from method ScheduledQueryRulesClient.ListBySubscription.
+type ScheduledQueryRulesClientListBySubscriptionResponse struct {
 	LogSearchRuleResourceCollection
 }
 
-// ScheduledQueryRulesUpdateResponse contains the response from method ScheduledQueryRules.Update.
-type ScheduledQueryRulesUpdateResponse struct {
-	ScheduledQueryRulesUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ScheduledQueryRulesUpdateResult contains the result from method ScheduledQueryRules.Update.
-type ScheduledQueryRulesUpdateResult struct {
+// ScheduledQueryRulesClientUpdateResponse contains the response from method ScheduledQueryRulesClient.Update.
+type ScheduledQueryRulesClientUpdateResponse struct {
 	LogSearchRuleResource
 }
 
-// TenantActivityLogsListResponse contains the response from method TenantActivityLogs.List.
-type TenantActivityLogsListResponse struct {
-	TenantActivityLogsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TenantActivityLogsListResult contains the result from method TenantActivityLogs.List.
-type TenantActivityLogsListResult struct {
+// TenantActivityLogsClientListResponse contains the response from method TenantActivityLogsClient.List.
+type TenantActivityLogsClientListResponse struct {
 	EventDataCollection
 }
 
-// VMInsightsGetOnboardingStatusResponse contains the response from method VMInsights.GetOnboardingStatus.
-type VMInsightsGetOnboardingStatusResponse struct {
-	VMInsightsGetOnboardingStatusResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// VMInsightsGetOnboardingStatusResult contains the result from method VMInsights.GetOnboardingStatus.
-type VMInsightsGetOnboardingStatusResult struct {
+// VMInsightsClientGetOnboardingStatusResponse contains the response from method VMInsightsClient.GetOnboardingStatus.
+type VMInsightsClientGetOnboardingStatusResponse struct {
 	VMInsightsOnboardingStatus
 }

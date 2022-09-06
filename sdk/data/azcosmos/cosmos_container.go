@@ -5,11 +5,14 @@ package azcosmos
 
 import (
 	"context"
+	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
-// A ContainerClient lets you perform read, update, change throughput, and delete container operations.
+// ContainerClient lets you perform read, update, change throughput, and delete container operations.
 // It also lets you perform read, update, change throughput, and delete item operations.
 type ContainerClient struct {
 	// The Id of the Cosmos container
@@ -173,7 +176,7 @@ func (c *ContainerClient) ReplaceThroughput(
 	return offers.ReadThroughputIfExists(ctx, rid, o)
 }
 
-// Creates an item in a Cosmos container.
+// CreateItem creates an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key for the item.
 // item - The item to create.
@@ -199,7 +202,7 @@ func (c *ContainerClient) CreateItem(
 		isWriteOperation:      true,
 		headerOptionsOverride: &h}
 
-	path, err := generatePathForNameBased(resourceTypeDocument, c.link, true)
+	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
 	if err != nil {
 		return ItemResponse{}, err
 	}
@@ -218,7 +221,7 @@ func (c *ContainerClient) CreateItem(
 	return newItemResponse(azResponse)
 }
 
-// Upserts (create or replace) an item in a Cosmos container.
+// UpsertItem creates or replaces an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key for the item.
 // item - The item to upsert.
@@ -248,7 +251,7 @@ func (c *ContainerClient) UpsertItem(
 		isWriteOperation:      true,
 		headerOptionsOverride: &h}
 
-	path, err := generatePathForNameBased(resourceTypeDocument, c.link, true)
+	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
 	if err != nil {
 		return ItemResponse{}, err
 	}
@@ -267,7 +270,7 @@ func (c *ContainerClient) UpsertItem(
 	return newItemResponse(azResponse)
 }
 
-// Replaces an item in a Cosmos container.
+// ReplaceItem replaces an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key of the item to replace.
 // itemId - The id of the item to replace.
@@ -314,7 +317,7 @@ func (c *ContainerClient) ReplaceItem(
 	return newItemResponse(azResponse)
 }
 
-// Reads an item in a Cosmos container.
+// ReadItem reads an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key for the item.
 // itemId - The id of the item to read.
@@ -355,7 +358,7 @@ func (c *ContainerClient) ReadItem(
 	return newItemResponse(azResponse)
 }
 
-// Deletes an item in a Cosmos container.
+// DeleteItem deletes an item in a Cosmos container.
 // ctx - The context for the request.
 // partitionKey - The partition key for the item.
 // itemId - The id of the item to delete.
@@ -397,6 +400,122 @@ func (c *ContainerClient) DeleteItem(
 	}
 
 	return newItemResponse(azResponse)
+}
+
+// NewQueryItemsPager executes a single partition query in a Cosmos container.
+// ctx - The context for the request.
+// query - The SQL query to execute.
+// partitionKey - The partition key to scope the query on.
+// o - Options for the operation.
+func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey PartitionKey, o *QueryOptions) *runtime.Pager[QueryItemsResponse] {
+	correlatedActivityId, _ := uuid.New()
+	h := headerOptionsOverride{
+		partitionKey:         &partitionKey,
+		correlatedActivityId: &correlatedActivityId,
+	}
+
+	queryOptions := &QueryOptions{}
+	if o != nil {
+		originalOptions := *o
+		queryOptions = &originalOptions
+	}
+
+	operationContext := pipelineRequestOptions{
+		resourceType:          resourceTypeDocument,
+		resourceAddress:       c.link,
+		headerOptionsOverride: &h,
+	}
+
+	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
+
+	return runtime.NewPager(runtime.PagingHandler[QueryItemsResponse]{
+		More: func(page QueryItemsResponse) bool {
+			return page.ContinuationToken != ""
+		},
+		Fetcher: func(ctx context.Context, page *QueryItemsResponse) (QueryItemsResponse, error) {
+			if page != nil {
+				if page.ContinuationToken != "" {
+					// Use the previous page continuation if available
+					queryOptions.ContinuationToken = page.ContinuationToken
+				}
+			}
+
+			azResponse, err := c.database.client.sendQueryRequest(
+				path,
+				ctx,
+				query,
+				queryOptions.QueryParameters,
+				operationContext,
+				queryOptions,
+				nil)
+
+			if err != nil {
+				return QueryItemsResponse{}, err
+			}
+
+			return newQueryResponse(azResponse)
+		},
+	})
+}
+
+// NewTransactionalBatch creates a batch of operations to be committed as a single unit.
+// See https://docs.microsoft.com/azure/cosmos-db/sql/transactional-batch
+func (c *ContainerClient) NewTransactionalBatch(partitionKey PartitionKey) TransactionalBatch {
+	return TransactionalBatch{partitionKey: partitionKey}
+}
+
+// ExecuteTransactionalBatch executes a transactional batch.
+// Once executed, verify the Success property of the response to determine if the batch was committed
+func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b TransactionalBatch, o *TransactionalBatchOptions) (TransactionalBatchResponse, error) {
+	if len(b.operations) == 0 {
+		return TransactionalBatchResponse{}, errors.New("no operations in batch")
+	}
+
+	h := headerOptionsOverride{
+		partitionKey: &b.partitionKey,
+	}
+
+	if o == nil {
+		o = &TransactionalBatchOptions{}
+	} else {
+		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+	}
+
+	// If contentResponseOnWrite is not enabled at the client level the
+	// service will not even send a batch response payload
+	// Instead we should automatically enforce contentResponseOnWrite for all
+	// batch requests whenever at least one of the item operations requires a content response (read operation)
+	enableContentResponseOnWriteForReadOperations := true
+	for _, op := range b.operations {
+		if op.getOperationType() == operationTypeRead {
+			h.enableContentResponseOnWrite = &enableContentResponseOnWriteForReadOperations
+			break
+		}
+	}
+
+	operationContext := pipelineRequestOptions{
+		resourceType:          resourceTypeDocument,
+		resourceAddress:       c.link,
+		isWriteOperation:      true,
+		headerOptionsOverride: &h}
+
+	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
+	if err != nil {
+		return TransactionalBatchResponse{}, err
+	}
+
+	azResponse, err := c.database.client.sendBatchRequest(
+		ctx,
+		path,
+		b.operations,
+		operationContext,
+		o,
+		nil)
+	if err != nil {
+		return TransactionalBatchResponse{}, err
+	}
+
+	return newTransactionalBatchResponse(azResponse)
 }
 
 func (c *ContainerClient) getRID(ctx context.Context) (string, error) {

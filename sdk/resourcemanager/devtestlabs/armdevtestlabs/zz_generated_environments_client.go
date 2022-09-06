@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armdevtestlabs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,46 +26,61 @@ import (
 // EnvironmentsClient contains the methods for the Environments group.
 // Don't use this type directly, use NewEnvironmentsClient() instead.
 type EnvironmentsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewEnvironmentsClient creates a new instance of EnvironmentsClient with the specified values.
-func NewEnvironmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *EnvironmentsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewEnvironmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EnvironmentsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &EnvironmentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &EnvironmentsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or replace an existing environment. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *EnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, dtlEnvironment DtlEnvironment, options *EnvironmentsBeginCreateOrUpdateOptions) (EnvironmentsCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, userName, name, dtlEnvironment, options)
-	if err != nil {
-		return EnvironmentsCreateOrUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// name - The name of the environment.
+// dtlEnvironment - An environment, which is essentially an ARM template deployment.
+// options - EnvironmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the EnvironmentsClient.BeginCreateOrUpdate
+// method.
+func (client *EnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, dtlEnvironment DtlEnvironment, options *EnvironmentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[EnvironmentsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, userName, name, dtlEnvironment, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[EnvironmentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[EnvironmentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := EnvironmentsCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("EnvironmentsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return EnvironmentsCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &EnvironmentsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or replace an existing environment. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *EnvironmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, dtlEnvironment DtlEnvironment, options *EnvironmentsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+func (client *EnvironmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, dtlEnvironment DtlEnvironment, options *EnvironmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, labName, userName, name, dtlEnvironment, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +90,13 @@ func (client *EnvironmentsClient) createOrUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *EnvironmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, dtlEnvironment DtlEnvironment, options *EnvironmentsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *EnvironmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, dtlEnvironment DtlEnvironment, options *EnvironmentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/environments/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -103,53 +118,42 @@ func (client *EnvironmentsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dtlEnvironment)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *EnvironmentsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete environment. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *EnvironmentsClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *EnvironmentsBeginDeleteOptions) (EnvironmentsDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, labName, userName, name, options)
-	if err != nil {
-		return EnvironmentsDeletePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// name - The name of the environment.
+// options - EnvironmentsClientBeginDeleteOptions contains the optional parameters for the EnvironmentsClient.BeginDelete
+// method.
+func (client *EnvironmentsClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *EnvironmentsClientBeginDeleteOptions) (*runtime.Poller[EnvironmentsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, labName, userName, name, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[EnvironmentsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[EnvironmentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := EnvironmentsDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("EnvironmentsClient.Delete", "", resp, client.pl, client.deleteHandleError)
-	if err != nil {
-		return EnvironmentsDeletePollerResponse{}, err
-	}
-	result.Poller = &EnvironmentsDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete environment. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *EnvironmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *EnvironmentsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+func (client *EnvironmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *EnvironmentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, labName, userName, name, options)
 	if err != nil {
 		return nil, err
@@ -159,13 +163,13 @@ func (client *EnvironmentsClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *EnvironmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *EnvironmentsBeginDeleteOptions) (*policy.Request, error) {
+func (client *EnvironmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *EnvironmentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/environments/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -187,49 +191,42 @@ func (client *EnvironmentsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *EnvironmentsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get environment.
-// If the operation fails it returns the *CloudError error type.
-func (client *EnvironmentsClient) Get(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *EnvironmentsGetOptions) (EnvironmentsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// name - The name of the environment.
+// options - EnvironmentsClientGetOptions contains the optional parameters for the EnvironmentsClient.Get method.
+func (client *EnvironmentsClient) Get(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *EnvironmentsClientGetOptions) (EnvironmentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, labName, userName, name, options)
 	if err != nil {
-		return EnvironmentsGetResponse{}, err
+		return EnvironmentsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return EnvironmentsGetResponse{}, err
+		return EnvironmentsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return EnvironmentsGetResponse{}, client.getHandleError(resp)
+		return EnvironmentsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *EnvironmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *EnvironmentsGetOptions) (*policy.Request, error) {
+func (client *EnvironmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, options *EnvironmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/environments/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -251,7 +248,7 @@ func (client *EnvironmentsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -261,48 +258,56 @@ func (client *EnvironmentsClient) getCreateRequest(ctx context.Context, resource
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *EnvironmentsClient) getHandleResponse(resp *http.Response) (EnvironmentsGetResponse, error) {
-	result := EnvironmentsGetResponse{RawResponse: resp}
+func (client *EnvironmentsClient) getHandleResponse(resp *http.Response) (EnvironmentsClientGetResponse, error) {
+	result := EnvironmentsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DtlEnvironment); err != nil {
-		return EnvironmentsGetResponse{}, runtime.NewResponseError(err, resp)
+		return EnvironmentsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *EnvironmentsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - List environments in a given user profile.
-// If the operation fails it returns the *CloudError error type.
-func (client *EnvironmentsClient) List(resourceGroupName string, labName string, userName string, options *EnvironmentsListOptions) *EnvironmentsListPager {
-	return &EnvironmentsListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, labName, userName, options)
+// NewListPager - List environments in a given user profile.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// options - EnvironmentsClientListOptions contains the optional parameters for the EnvironmentsClient.List method.
+func (client *EnvironmentsClient) NewListPager(resourceGroupName string, labName string, userName string, options *EnvironmentsClientListOptions) *runtime.Pager[EnvironmentsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListResponse]{
+		More: func(page EnvironmentsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EnvironmentsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DtlEnvironmentList.NextLink)
+		Fetcher: func(ctx context.Context, page *EnvironmentsClientListResponse) (EnvironmentsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, labName, userName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EnvironmentsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EnvironmentsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EnvironmentsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *EnvironmentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, options *EnvironmentsListOptions) (*policy.Request, error) {
+func (client *EnvironmentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, options *EnvironmentsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/environments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -320,7 +325,7 @@ func (client *EnvironmentsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter userName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{userName}", url.PathEscape(userName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -339,51 +344,45 @@ func (client *EnvironmentsClient) listCreateRequest(ctx context.Context, resourc
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *EnvironmentsClient) listHandleResponse(resp *http.Response) (EnvironmentsListResponse, error) {
-	result := EnvironmentsListResponse{RawResponse: resp}
+func (client *EnvironmentsClient) listHandleResponse(resp *http.Response) (EnvironmentsClientListResponse, error) {
+	result := EnvironmentsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DtlEnvironmentList); err != nil {
-		return EnvironmentsListResponse{}, runtime.NewResponseError(err, resp)
+		return EnvironmentsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *EnvironmentsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Allows modifying tags of environments. All other properties will be ignored.
-// If the operation fails it returns the *CloudError error type.
-func (client *EnvironmentsClient) Update(ctx context.Context, resourceGroupName string, labName string, userName string, name string, dtlEnvironment DtlEnvironmentFragment, options *EnvironmentsUpdateOptions) (EnvironmentsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// userName - The name of the user profile.
+// name - The name of the environment.
+// dtlEnvironment - An environment, which is essentially an ARM template deployment.
+// options - EnvironmentsClientUpdateOptions contains the optional parameters for the EnvironmentsClient.Update method.
+func (client *EnvironmentsClient) Update(ctx context.Context, resourceGroupName string, labName string, userName string, name string, dtlEnvironment DtlEnvironmentFragment, options *EnvironmentsClientUpdateOptions) (EnvironmentsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, labName, userName, name, dtlEnvironment, options)
 	if err != nil {
-		return EnvironmentsUpdateResponse{}, err
+		return EnvironmentsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return EnvironmentsUpdateResponse{}, err
+		return EnvironmentsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return EnvironmentsUpdateResponse{}, client.updateHandleError(resp)
+		return EnvironmentsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *EnvironmentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, dtlEnvironment DtlEnvironmentFragment, options *EnvironmentsUpdateOptions) (*policy.Request, error) {
+func (client *EnvironmentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labName string, userName string, name string, dtlEnvironment DtlEnvironmentFragment, options *EnvironmentsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/environments/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -405,35 +404,22 @@ func (client *EnvironmentsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dtlEnvironment)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *EnvironmentsClient) updateHandleResponse(resp *http.Response) (EnvironmentsUpdateResponse, error) {
-	result := EnvironmentsUpdateResponse{RawResponse: resp}
+func (client *EnvironmentsClient) updateHandleResponse(resp *http.Response) (EnvironmentsClientUpdateResponse, error) {
+	result := EnvironmentsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DtlEnvironment); err != nil {
-		return EnvironmentsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return EnvironmentsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *EnvironmentsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

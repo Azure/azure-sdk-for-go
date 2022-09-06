@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armmariadb
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,59 @@ import (
 // WaitStatisticsClient contains the methods for the WaitStatistics group.
 // Don't use this type directly, use NewWaitStatisticsClient() instead.
 type WaitStatisticsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWaitStatisticsClient creates a new instance of WaitStatisticsClient with the specified values.
-func NewWaitStatisticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WaitStatisticsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewWaitStatisticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WaitStatisticsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &WaitStatisticsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &WaitStatisticsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // Get - Retrieve wait statistics for specified identifier.
-// If the operation fails it returns the *CloudError error type.
-func (client *WaitStatisticsClient) Get(ctx context.Context, resourceGroupName string, serverName string, waitStatisticsID string, options *WaitStatisticsGetOptions) (WaitStatisticsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverName - The name of the server.
+// waitStatisticsID - The Wait Statistic identifier.
+// options - WaitStatisticsClientGetOptions contains the optional parameters for the WaitStatisticsClient.Get method.
+func (client *WaitStatisticsClient) Get(ctx context.Context, resourceGroupName string, serverName string, waitStatisticsID string, options *WaitStatisticsClientGetOptions) (WaitStatisticsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, waitStatisticsID, options)
 	if err != nil {
-		return WaitStatisticsGetResponse{}, err
+		return WaitStatisticsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WaitStatisticsGetResponse{}, err
+		return WaitStatisticsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WaitStatisticsGetResponse{}, client.getHandleError(resp)
+		return WaitStatisticsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *WaitStatisticsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, waitStatisticsID string, options *WaitStatisticsGetOptions) (*policy.Request, error) {
+func (client *WaitStatisticsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, waitStatisticsID string, options *WaitStatisticsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB/servers/{serverName}/waitStatistics/{waitStatisticsId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,55 +95,64 @@ func (client *WaitStatisticsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter waitStatisticsID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{waitStatisticsId}", url.PathEscape(waitStatisticsID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *WaitStatisticsClient) getHandleResponse(resp *http.Response) (WaitStatisticsGetResponse, error) {
-	result := WaitStatisticsGetResponse{RawResponse: resp}
+func (client *WaitStatisticsClient) getHandleResponse(resp *http.Response) (WaitStatisticsClientGetResponse, error) {
+	result := WaitStatisticsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WaitStatistic); err != nil {
-		return WaitStatisticsGetResponse{}, runtime.NewResponseError(err, resp)
+		return WaitStatisticsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *WaitStatisticsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByServer - Retrieve wait statistics for specified aggregation window.
-// If the operation fails it returns the *CloudError error type.
-func (client *WaitStatisticsClient) ListByServer(resourceGroupName string, serverName string, parameters WaitStatisticsInput, options *WaitStatisticsListByServerOptions) *WaitStatisticsListByServerPager {
-	return &WaitStatisticsListByServerPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, parameters, options)
+// NewListByServerPager - Retrieve wait statistics for specified aggregation window.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverName - The name of the server.
+// parameters - The required parameters for retrieving wait statistics.
+// options - WaitStatisticsClientListByServerOptions contains the optional parameters for the WaitStatisticsClient.ListByServer
+// method.
+func (client *WaitStatisticsClient) NewListByServerPager(resourceGroupName string, serverName string, parameters WaitStatisticsInput, options *WaitStatisticsClientListByServerOptions) *runtime.Pager[WaitStatisticsClientListByServerResponse] {
+	return runtime.NewPager(runtime.PagingHandler[WaitStatisticsClientListByServerResponse]{
+		More: func(page WaitStatisticsClientListByServerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WaitStatisticsListByServerResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WaitStatisticsResultList.NextLink)
+		Fetcher: func(ctx context.Context, page *WaitStatisticsClientListByServerResponse) (WaitStatisticsClientListByServerResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, parameters, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WaitStatisticsClientListByServerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WaitStatisticsClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WaitStatisticsClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *WaitStatisticsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, parameters WaitStatisticsInput, options *WaitStatisticsListByServerOptions) (*policy.Request, error) {
+func (client *WaitStatisticsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, parameters WaitStatisticsInput, options *WaitStatisticsClientListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB/servers/{serverName}/waitStatistics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,35 +166,22 @@ func (client *WaitStatisticsClient) listByServerCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *WaitStatisticsClient) listByServerHandleResponse(resp *http.Response) (WaitStatisticsListByServerResponse, error) {
-	result := WaitStatisticsListByServerResponse{RawResponse: resp}
+func (client *WaitStatisticsClient) listByServerHandleResponse(resp *http.Response) (WaitStatisticsClientListByServerResponse, error) {
+	result := WaitStatisticsClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WaitStatisticsResultList); err != nil {
-		return WaitStatisticsListByServerResponse{}, runtime.NewResponseError(err, resp)
+		return WaitStatisticsClientListByServerResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServerHandleError handles the ListByServer error response.
-func (client *WaitStatisticsClient) listByServerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

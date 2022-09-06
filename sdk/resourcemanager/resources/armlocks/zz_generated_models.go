@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,22 +8,17 @@
 
 package armlocks
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
-// AuthorizationOperationsListOptions contains the optional parameters for the AuthorizationOperations.List method.
-type AuthorizationOperationsListOptions struct {
+// AuthorizationOperationsClientListOptions contains the optional parameters for the AuthorizationOperationsClient.List method.
+type AuthorizationOperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -47,30 +42,11 @@ type ErrorDetail struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // ManagementLockListResult - The list of locks.
@@ -80,14 +56,6 @@ type ManagementLockListResult struct {
 
 	// The list of locks.
 	Value []*ManagementLockObject `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ManagementLockListResult.
-func (m ManagementLockListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
 }
 
 // ManagementLockObject - The lock information.
@@ -116,8 +84,8 @@ type ManagementLockOwner struct {
 
 // ManagementLockProperties - The lock properties.
 type ManagementLockProperties struct {
-	// REQUIRED; The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly. CanNotDelete means authorized users are able to read and
-	// modify the resources, but not delete. ReadOnly means
+	// REQUIRED; The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly. CanNotDelete means authorized
+	// users are able to read and modify the resources, but not delete. ReadOnly means
 	// authorized users can only read from a resource, but they can't modify or delete it.
 	Level *LockLevel `json:"level,omitempty"`
 
@@ -128,96 +96,100 @@ type ManagementLockProperties struct {
 	Owners []*ManagementLockOwner `json:"owners,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ManagementLockProperties.
-func (m ManagementLockProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "level", m.Level)
-	populate(objectMap, "notes", m.Notes)
-	populate(objectMap, "owners", m.Owners)
-	return json.Marshal(objectMap)
-}
-
-// ManagementLocksCreateOrUpdateAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocks.CreateOrUpdateAtResourceGroupLevel
+// ManagementLocksClientCreateOrUpdateAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocksClient.CreateOrUpdateAtResourceGroupLevel
 // method.
-type ManagementLocksCreateOrUpdateAtResourceGroupLevelOptions struct {
+type ManagementLocksClientCreateOrUpdateAtResourceGroupLevelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementLocksCreateOrUpdateAtResourceLevelOptions contains the optional parameters for the ManagementLocks.CreateOrUpdateAtResourceLevel method.
-type ManagementLocksCreateOrUpdateAtResourceLevelOptions struct {
+// ManagementLocksClientCreateOrUpdateAtResourceLevelOptions contains the optional parameters for the ManagementLocksClient.CreateOrUpdateAtResourceLevel
+// method.
+type ManagementLocksClientCreateOrUpdateAtResourceLevelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementLocksCreateOrUpdateAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocks.CreateOrUpdateAtSubscriptionLevel method.
-type ManagementLocksCreateOrUpdateAtSubscriptionLevelOptions struct {
+// ManagementLocksClientCreateOrUpdateAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocksClient.CreateOrUpdateAtSubscriptionLevel
+// method.
+type ManagementLocksClientCreateOrUpdateAtSubscriptionLevelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementLocksCreateOrUpdateByScopeOptions contains the optional parameters for the ManagementLocks.CreateOrUpdateByScope method.
-type ManagementLocksCreateOrUpdateByScopeOptions struct {
+// ManagementLocksClientCreateOrUpdateByScopeOptions contains the optional parameters for the ManagementLocksClient.CreateOrUpdateByScope
+// method.
+type ManagementLocksClientCreateOrUpdateByScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementLocksDeleteAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocks.DeleteAtResourceGroupLevel method.
-type ManagementLocksDeleteAtResourceGroupLevelOptions struct {
+// ManagementLocksClientDeleteAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocksClient.DeleteAtResourceGroupLevel
+// method.
+type ManagementLocksClientDeleteAtResourceGroupLevelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementLocksDeleteAtResourceLevelOptions contains the optional parameters for the ManagementLocks.DeleteAtResourceLevel method.
-type ManagementLocksDeleteAtResourceLevelOptions struct {
+// ManagementLocksClientDeleteAtResourceLevelOptions contains the optional parameters for the ManagementLocksClient.DeleteAtResourceLevel
+// method.
+type ManagementLocksClientDeleteAtResourceLevelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementLocksDeleteAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocks.DeleteAtSubscriptionLevel method.
-type ManagementLocksDeleteAtSubscriptionLevelOptions struct {
+// ManagementLocksClientDeleteAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocksClient.DeleteAtSubscriptionLevel
+// method.
+type ManagementLocksClientDeleteAtSubscriptionLevelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementLocksDeleteByScopeOptions contains the optional parameters for the ManagementLocks.DeleteByScope method.
-type ManagementLocksDeleteByScopeOptions struct {
+// ManagementLocksClientDeleteByScopeOptions contains the optional parameters for the ManagementLocksClient.DeleteByScope
+// method.
+type ManagementLocksClientDeleteByScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementLocksGetAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocks.GetAtResourceGroupLevel method.
-type ManagementLocksGetAtResourceGroupLevelOptions struct {
+// ManagementLocksClientGetAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocksClient.GetAtResourceGroupLevel
+// method.
+type ManagementLocksClientGetAtResourceGroupLevelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementLocksGetAtResourceLevelOptions contains the optional parameters for the ManagementLocks.GetAtResourceLevel method.
-type ManagementLocksGetAtResourceLevelOptions struct {
+// ManagementLocksClientGetAtResourceLevelOptions contains the optional parameters for the ManagementLocksClient.GetAtResourceLevel
+// method.
+type ManagementLocksClientGetAtResourceLevelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementLocksGetAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocks.GetAtSubscriptionLevel method.
-type ManagementLocksGetAtSubscriptionLevelOptions struct {
+// ManagementLocksClientGetAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocksClient.GetAtSubscriptionLevel
+// method.
+type ManagementLocksClientGetAtSubscriptionLevelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementLocksGetByScopeOptions contains the optional parameters for the ManagementLocks.GetByScope method.
-type ManagementLocksGetByScopeOptions struct {
+// ManagementLocksClientGetByScopeOptions contains the optional parameters for the ManagementLocksClient.GetByScope method.
+type ManagementLocksClientGetByScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ManagementLocksListAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocks.ListAtResourceGroupLevel method.
-type ManagementLocksListAtResourceGroupLevelOptions struct {
+// ManagementLocksClientListAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocksClient.ListAtResourceGroupLevel
+// method.
+type ManagementLocksClientListAtResourceGroupLevelOptions struct {
 	// The filter to apply on the operation.
 	Filter *string
 }
 
-// ManagementLocksListAtResourceLevelOptions contains the optional parameters for the ManagementLocks.ListAtResourceLevel method.
-type ManagementLocksListAtResourceLevelOptions struct {
+// ManagementLocksClientListAtResourceLevelOptions contains the optional parameters for the ManagementLocksClient.ListAtResourceLevel
+// method.
+type ManagementLocksClientListAtResourceLevelOptions struct {
 	// The filter to apply on the operation.
 	Filter *string
 }
 
-// ManagementLocksListAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocks.ListAtSubscriptionLevel method.
-type ManagementLocksListAtSubscriptionLevelOptions struct {
+// ManagementLocksClientListAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocksClient.ListAtSubscriptionLevel
+// method.
+type ManagementLocksClientListAtSubscriptionLevelOptions struct {
 	// The filter to apply on the operation.
 	Filter *string
 }
 
-// ManagementLocksListByScopeOptions contains the optional parameters for the ManagementLocks.ListByScope method.
-type ManagementLocksListByScopeOptions struct {
+// ManagementLocksClientListByScopeOptions contains the optional parameters for the ManagementLocksClient.ListByScope method.
+type ManagementLocksClientListByScopeOptions struct {
 	// The filter to apply on the operation.
 	Filter *string
 }
@@ -243,22 +215,14 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationListResult - Result of the request to list Microsoft.Authorization operations. It contains a list of operations and a URL link to get the next
-// set of results.
+// OperationListResult - Result of the request to list Microsoft.Authorization operations. It contains a list of operations
+// and a URL link to get the next set of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// List of Microsoft.Authorization operations.
 	Value []*Operation `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -280,68 +244,4 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

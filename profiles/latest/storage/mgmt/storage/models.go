@@ -12,7 +12,7 @@ package storage
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-04-01/storage"
+	original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-09-01/storage"
 )
 
 const (
@@ -22,8 +22,9 @@ const (
 type AccessTier = original.AccessTier
 
 const (
-	AccessTierCool AccessTier = original.AccessTierCool
-	AccessTierHot  AccessTier = original.AccessTierHot
+	AccessTierCool    AccessTier = original.AccessTierCool
+	AccessTierHot     AccessTier = original.AccessTierHot
+	AccessTierPremium AccessTier = original.AccessTierPremium
 )
 
 type AccountExpand = original.AccountExpand
@@ -33,11 +34,26 @@ const (
 	AccountExpandGeoReplicationStats AccountExpand = original.AccountExpandGeoReplicationStats
 )
 
+type AccountImmutabilityPolicyState = original.AccountImmutabilityPolicyState
+
+const (
+	AccountImmutabilityPolicyStateDisabled AccountImmutabilityPolicyState = original.AccountImmutabilityPolicyStateDisabled
+	AccountImmutabilityPolicyStateLocked   AccountImmutabilityPolicyState = original.AccountImmutabilityPolicyStateLocked
+	AccountImmutabilityPolicyStateUnlocked AccountImmutabilityPolicyState = original.AccountImmutabilityPolicyStateUnlocked
+)
+
 type AccountStatus = original.AccountStatus
 
 const (
 	AccountStatusAvailable   AccountStatus = original.AccountStatusAvailable
 	AccountStatusUnavailable AccountStatus = original.AccountStatusUnavailable
+)
+
+type AccountType = original.AccountType
+
+const (
+	AccountTypeComputer AccountType = original.AccountTypeComputer
+	AccountTypeUser     AccountType = original.AccountTypeUser
 )
 
 type Action = original.Action
@@ -54,6 +70,13 @@ const (
 	Action1Change  Action1 = original.Action1Change
 	Action1Release Action1 = original.Action1Release
 	Action1Renew   Action1 = original.Action1Renew
+)
+
+type AllowedCopyScope = original.AllowedCopyScope
+
+const (
+	AllowedCopyScopeAAD         AllowedCopyScope = original.AllowedCopyScopeAAD
+	AllowedCopyScopePrivateLink AllowedCopyScope = original.AllowedCopyScopePrivateLink
 )
 
 type BlobRestoreProgressStatus = original.BlobRestoreProgressStatus
@@ -82,6 +105,13 @@ const (
 	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
+type DNSEndpointType = original.DNSEndpointType
+
+const (
+	DNSEndpointTypeAzureDNSZone DNSEndpointType = original.DNSEndpointTypeAzureDNSZone
+	DNSEndpointTypeStandard     DNSEndpointType = original.DNSEndpointTypeStandard
+)
+
 type DefaultAction = original.DefaultAction
 
 const (
@@ -95,7 +125,6 @@ const (
 	DefaultSharePermissionNone                                       DefaultSharePermission = original.DefaultSharePermissionNone
 	DefaultSharePermissionStorageFileDataSmbShareContributor         DefaultSharePermission = original.DefaultSharePermissionStorageFileDataSmbShareContributor
 	DefaultSharePermissionStorageFileDataSmbShareElevatedContributor DefaultSharePermission = original.DefaultSharePermissionStorageFileDataSmbShareElevatedContributor
-	DefaultSharePermissionStorageFileDataSmbShareOwner               DefaultSharePermission = original.DefaultSharePermissionStorageFileDataSmbShareOwner
 	DefaultSharePermissionStorageFileDataSmbShareReader              DefaultSharePermission = original.DefaultSharePermissionStorageFileDataSmbShareReader
 )
 
@@ -338,6 +367,13 @@ const (
 	PublicAccessNone      PublicAccess = original.PublicAccessNone
 )
 
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
+	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
+)
+
 type Reason = original.Reason
 
 const (
@@ -409,6 +445,14 @@ const (
 	SignedResourceTypesS SignedResourceTypes = original.SignedResourceTypesS
 )
 
+type SkuConversionStatus = original.SkuConversionStatus
+
+const (
+	SkuConversionStatusFailed     SkuConversionStatus = original.SkuConversionStatusFailed
+	SkuConversionStatusInProgress SkuConversionStatus = original.SkuConversionStatusInProgress
+	SkuConversionStatusSucceeded  SkuConversionStatus = original.SkuConversionStatusSucceeded
+)
+
 type SkuName = original.SkuName
 
 const (
@@ -454,6 +498,7 @@ type AccessPolicy = original.AccessPolicy
 type Account = original.Account
 type AccountCheckNameAvailabilityParameters = original.AccountCheckNameAvailabilityParameters
 type AccountCreateParameters = original.AccountCreateParameters
+type AccountImmutabilityPolicyProperties = original.AccountImmutabilityPolicyProperties
 type AccountInternetEndpoints = original.AccountInternetEndpoints
 type AccountKey = original.AccountKey
 type AccountListKeysResult = original.AccountListKeysResult
@@ -466,10 +511,13 @@ type AccountPropertiesCreateParameters = original.AccountPropertiesCreateParamet
 type AccountPropertiesUpdateParameters = original.AccountPropertiesUpdateParameters
 type AccountRegenerateKeyParameters = original.AccountRegenerateKeyParameters
 type AccountSasParameters = original.AccountSasParameters
+type AccountSkuConversionStatus = original.AccountSkuConversionStatus
 type AccountUpdateParameters = original.AccountUpdateParameters
+type AccountsAbortHierarchicalNamespaceMigrationFuture = original.AccountsAbortHierarchicalNamespaceMigrationFuture
 type AccountsClient = original.AccountsClient
 type AccountsCreateFuture = original.AccountsCreateFuture
 type AccountsFailoverFuture = original.AccountsFailoverFuture
+type AccountsHierarchicalNamespaceMigrationFuture = original.AccountsHierarchicalNamespaceMigrationFuture
 type AccountsRestoreBlobRangesFuture = original.AccountsRestoreBlobRangesFuture
 type ActiveDirectoryProperties = original.ActiveDirectoryProperties
 type AzureEntityResource = original.AzureEntityResource
@@ -543,6 +591,7 @@ type Identity = original.Identity
 type ImmutabilityPolicy = original.ImmutabilityPolicy
 type ImmutabilityPolicyProperties = original.ImmutabilityPolicyProperties
 type ImmutabilityPolicyProperty = original.ImmutabilityPolicyProperty
+type ImmutableStorageAccount = original.ImmutableStorageAccount
 type ImmutableStorageWithVersioning = original.ImmutableStorageWithVersioning
 type KeyCreationTime = original.KeyCreationTime
 type KeyPolicy = original.KeyPolicy
@@ -571,6 +620,12 @@ type ListTableResource = original.ListTableResource
 type ListTableResourceIterator = original.ListTableResourceIterator
 type ListTableResourcePage = original.ListTableResourcePage
 type ListTableServices = original.ListTableServices
+type LocalUser = original.LocalUser
+type LocalUserKeys = original.LocalUserKeys
+type LocalUserProperties = original.LocalUserProperties
+type LocalUserRegeneratePasswordResult = original.LocalUserRegeneratePasswordResult
+type LocalUsers = original.LocalUsers
+type LocalUsersClient = original.LocalUsersClient
 type ManagementPoliciesClient = original.ManagementPoliciesClient
 type ManagementPolicy = original.ManagementPolicy
 type ManagementPolicyAction = original.ManagementPolicyAction
@@ -596,6 +651,7 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationProperties = original.OperationProperties
 type OperationsClient = original.OperationsClient
+type PermissionScope = original.PermissionScope
 type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointConnection = original.PrivateEndpointConnection
 type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
@@ -606,6 +662,7 @@ type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
 type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
 type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
+type ProtectedAppendWritesHistory = original.ProtectedAppendWritesHistory
 type ProtocolSettings = original.ProtocolSettings
 type ProxyResource = original.ProxyResource
 type Queue = original.Queue
@@ -620,6 +677,7 @@ type RestorePolicyProperties = original.RestorePolicyProperties
 type Restriction = original.Restriction
 type RoutingPreference = original.RoutingPreference
 type SKUCapability = original.SKUCapability
+type SSHPublicKey = original.SSHPublicKey
 type SasPolicy = original.SasPolicy
 type ServiceSasParameters = original.ServiceSasParameters
 type ServiceSpecification = original.ServiceSpecification
@@ -631,11 +689,13 @@ type SkusClient = original.SkusClient
 type SmbSetting = original.SmbSetting
 type SystemData = original.SystemData
 type Table = original.Table
+type TableAccessPolicy = original.TableAccessPolicy
 type TableClient = original.TableClient
 type TableProperties = original.TableProperties
 type TableServiceProperties = original.TableServiceProperties
 type TableServicePropertiesProperties = original.TableServicePropertiesProperties
 type TableServicesClient = original.TableServicesClient
+type TableSignedIdentifier = original.TableSignedIdentifier
 type TagFilter = original.TagFilter
 type TagProperty = original.TagProperty
 type TrackedResource = original.TrackedResource
@@ -740,6 +800,12 @@ func NewListTableResourceIterator(page ListTableResourcePage) ListTableResourceI
 func NewListTableResourcePage(cur ListTableResource, getNextPage func(context.Context, ListTableResource) (ListTableResource, error)) ListTableResourcePage {
 	return original.NewListTableResourcePage(cur, getNextPage)
 }
+func NewLocalUsersClient(subscriptionID string) LocalUsersClient {
+	return original.NewLocalUsersClient(subscriptionID)
+}
+func NewLocalUsersClientWithBaseURI(baseURI string, subscriptionID string) LocalUsersClient {
+	return original.NewLocalUsersClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewManagementPoliciesClient(subscriptionID string) ManagementPoliciesClient {
 	return original.NewManagementPoliciesClient(subscriptionID)
 }
@@ -815,14 +881,23 @@ func PossibleAccessTierValues() []AccessTier {
 func PossibleAccountExpandValues() []AccountExpand {
 	return original.PossibleAccountExpandValues()
 }
+func PossibleAccountImmutabilityPolicyStateValues() []AccountImmutabilityPolicyState {
+	return original.PossibleAccountImmutabilityPolicyStateValues()
+}
 func PossibleAccountStatusValues() []AccountStatus {
 	return original.PossibleAccountStatusValues()
+}
+func PossibleAccountTypeValues() []AccountType {
+	return original.PossibleAccountTypeValues()
 }
 func PossibleAction1Values() []Action1 {
 	return original.PossibleAction1Values()
 }
 func PossibleActionValues() []Action {
 	return original.PossibleActionValues()
+}
+func PossibleAllowedCopyScopeValues() []AllowedCopyScope {
+	return original.PossibleAllowedCopyScopeValues()
 }
 func PossibleBlobRestoreProgressStatusValues() []BlobRestoreProgressStatus {
 	return original.PossibleBlobRestoreProgressStatusValues()
@@ -832,6 +907,9 @@ func PossibleBypassValues() []Bypass {
 }
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()
+}
+func PossibleDNSEndpointTypeValues() []DNSEndpointType {
+	return original.PossibleDNSEndpointTypeValues()
 }
 func PossibleDefaultActionValues() []DefaultAction {
 	return original.PossibleDefaultActionValues()
@@ -932,6 +1010,9 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 func PossiblePublicAccessValues() []PublicAccess {
 	return original.PossiblePublicAccessValues()
 }
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
+}
 func PossibleReasonCodeValues() []ReasonCode {
 	return original.PossibleReasonCodeValues()
 }
@@ -958,6 +1039,9 @@ func PossibleSignedResourceTypesValues() []SignedResourceTypes {
 }
 func PossibleSignedResourceValues() []SignedResource {
 	return original.PossibleSignedResourceValues()
+}
+func PossibleSkuConversionStatusValues() []SkuConversionStatus {
+	return original.PossibleSkuConversionStatusValues()
 }
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()

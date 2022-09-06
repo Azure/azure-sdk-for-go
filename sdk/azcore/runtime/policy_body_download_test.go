@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -307,7 +307,7 @@ func TestReadBodyAfterSeek(t *testing.T) {
 	if string(payload) != message {
 		t.Fatal("incorrect payload")
 	}
-	nb, ok := resp.Body.(*nopClosingBytesReader)
+	nb, ok := resp.Body.(io.ReadSeekCloser)
 	if !ok {
 		t.Fatalf("unexpected body type: %t", resp.Body)
 	}

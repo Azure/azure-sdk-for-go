@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armresourcehealth
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,50 +25,71 @@ import (
 // AvailabilityStatusesClient contains the methods for the AvailabilityStatuses group.
 // Don't use this type directly, use NewAvailabilityStatusesClient() instead.
 type AvailabilityStatusesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAvailabilityStatusesClient creates a new instance of AvailabilityStatusesClient with the specified values.
-func NewAvailabilityStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AvailabilityStatusesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewAvailabilityStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailabilityStatusesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &AvailabilityStatusesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &AvailabilityStatusesClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // GetByResource - Gets current availability status for a single resource
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AvailabilityStatusesClient) GetByResource(ctx context.Context, resourceURI string, options *AvailabilityStatusesGetByResourceOptions) (AvailabilityStatusesGetByResourceResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
+// resourceURI - The fully qualified ID of the resource, including the resource name and resource type. Currently the API
+// support not nested and one nesting level resource types :
+// /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+// and
+// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}
+// options - AvailabilityStatusesClientGetByResourceOptions contains the optional parameters for the AvailabilityStatusesClient.GetByResource
+// method.
+func (client *AvailabilityStatusesClient) GetByResource(ctx context.Context, resourceURI string, options *AvailabilityStatusesClientGetByResourceOptions) (AvailabilityStatusesClientGetByResourceResponse, error) {
 	req, err := client.getByResourceCreateRequest(ctx, resourceURI, options)
 	if err != nil {
-		return AvailabilityStatusesGetByResourceResponse{}, err
+		return AvailabilityStatusesClientGetByResourceResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AvailabilityStatusesGetByResourceResponse{}, err
+		return AvailabilityStatusesClientGetByResourceResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AvailabilityStatusesGetByResourceResponse{}, client.getByResourceHandleError(resp)
+		return AvailabilityStatusesClientGetByResourceResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByResourceHandleResponse(resp)
 }
 
 // getByResourceCreateRequest creates the GetByResource request.
-func (client *AvailabilityStatusesClient) getByResourceCreateRequest(ctx context.Context, resourceURI string, options *AvailabilityStatusesGetByResourceOptions) (*policy.Request, error) {
+func (client *AvailabilityStatusesClient) getByResourceCreateRequest(ctx context.Context, resourceURI string, options *AvailabilityStatusesClientGetByResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ResourceHealth/availabilityStatuses/current"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-07-01")
+	reqQP.Set("api-version", "2020-05-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -76,57 +97,67 @@ func (client *AvailabilityStatusesClient) getByResourceCreateRequest(ctx context
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getByResourceHandleResponse handles the GetByResource response.
-func (client *AvailabilityStatusesClient) getByResourceHandleResponse(resp *http.Response) (AvailabilityStatusesGetByResourceResponse, error) {
-	result := AvailabilityStatusesGetByResourceResponse{RawResponse: resp}
+func (client *AvailabilityStatusesClient) getByResourceHandleResponse(resp *http.Response) (AvailabilityStatusesClientGetByResourceResponse, error) {
+	result := AvailabilityStatusesClientGetByResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityStatus); err != nil {
-		return AvailabilityStatusesGetByResourceResponse{}, runtime.NewResponseError(err, resp)
+		return AvailabilityStatusesClientGetByResourceResponse{}, err
 	}
 	return result, nil
 }
 
-// getByResourceHandleError handles the GetByResource error response.
-func (client *AvailabilityStatusesClient) getByResourceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Lists all historical availability transitions and impacting events for a single resource. Use the nextLink property in the response to get the
-// next page of availability status
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AvailabilityStatusesClient) List(resourceURI string, options *AvailabilityStatusesListOptions) *AvailabilityStatusesListPager {
-	return &AvailabilityStatusesListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceURI, options)
+// NewListPager - Lists all historical availability transitions and impacting events for a single resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
+// resourceURI - The fully qualified ID of the resource, including the resource name and resource type. Currently the API
+// support not nested and one nesting level resource types :
+// /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+// and
+// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}
+// options - AvailabilityStatusesClientListOptions contains the optional parameters for the AvailabilityStatusesClient.List
+// method.
+func (client *AvailabilityStatusesClient) NewListPager(resourceURI string, options *AvailabilityStatusesClientListOptions) *runtime.Pager[AvailabilityStatusesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AvailabilityStatusesClientListResponse]{
+		More: func(page AvailabilityStatusesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AvailabilityStatusesListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AvailabilityStatusListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AvailabilityStatusesClientListResponse) (AvailabilityStatusesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceURI, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AvailabilityStatusesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AvailabilityStatusesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AvailabilityStatusesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AvailabilityStatusesClient) listCreateRequest(ctx context.Context, resourceURI string, options *AvailabilityStatusesListOptions) (*policy.Request, error) {
+func (client *AvailabilityStatusesClient) listCreateRequest(ctx context.Context, resourceURI string, options *AvailabilityStatusesClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ResourceHealth/availabilityStatuses"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-07-01")
+	reqQP.Set("api-version", "2020-05-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -134,49 +165,55 @@ func (client *AvailabilityStatusesClient) listCreateRequest(ctx context.Context,
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AvailabilityStatusesClient) listHandleResponse(resp *http.Response) (AvailabilityStatusesListResponse, error) {
-	result := AvailabilityStatusesListResponse{RawResponse: resp}
+func (client *AvailabilityStatusesClient) listHandleResponse(resp *http.Response) (AvailabilityStatusesClientListResponse, error) {
+	result := AvailabilityStatusesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityStatusListResult); err != nil {
-		return AvailabilityStatusesListResponse{}, runtime.NewResponseError(err, resp)
+		return AvailabilityStatusesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *AvailabilityStatusesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByResourceGroup - Lists the current availability status for all the resources in the resource group. Use the nextLink property in the response to
-// get the next page of availability statuses.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AvailabilityStatusesClient) ListByResourceGroup(resourceGroupName string, options *AvailabilityStatusesListByResourceGroupOptions) *AvailabilityStatusesListByResourceGroupPager {
-	return &AvailabilityStatusesListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+// NewListByResourceGroupPager - Lists the current availability status for all the resources in the resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
+// resourceGroupName - The name of the resource group.
+// options - AvailabilityStatusesClientListByResourceGroupOptions contains the optional parameters for the AvailabilityStatusesClient.ListByResourceGroup
+// method.
+func (client *AvailabilityStatusesClient) NewListByResourceGroupPager(resourceGroupName string, options *AvailabilityStatusesClientListByResourceGroupOptions) *runtime.Pager[AvailabilityStatusesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AvailabilityStatusesClientListByResourceGroupResponse]{
+		More: func(page AvailabilityStatusesClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AvailabilityStatusesListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AvailabilityStatusListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AvailabilityStatusesClientListByResourceGroupResponse) (AvailabilityStatusesClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AvailabilityStatusesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AvailabilityStatusesClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AvailabilityStatusesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AvailabilityStatusesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AvailabilityStatusesListByResourceGroupOptions) (*policy.Request, error) {
+func (client *AvailabilityStatusesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AvailabilityStatusesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ResourceHealth/availabilityStatuses"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -186,12 +223,12 @@ func (client *AvailabilityStatusesClient) listByResourceGroupCreateRequest(ctx c
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-07-01")
+	reqQP.Set("api-version", "2020-05-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -199,60 +236,65 @@ func (client *AvailabilityStatusesClient) listByResourceGroupCreateRequest(ctx c
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AvailabilityStatusesClient) listByResourceGroupHandleResponse(resp *http.Response) (AvailabilityStatusesListByResourceGroupResponse, error) {
-	result := AvailabilityStatusesListByResourceGroupResponse{RawResponse: resp}
+func (client *AvailabilityStatusesClient) listByResourceGroupHandleResponse(resp *http.Response) (AvailabilityStatusesClientListByResourceGroupResponse, error) {
+	result := AvailabilityStatusesClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityStatusListResult); err != nil {
-		return AvailabilityStatusesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return AvailabilityStatusesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *AvailabilityStatusesClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListBySubscriptionID - Lists the current availability status for all the resources in the subscription. Use the nextLink property in the response to
-// get the next page of availability statuses.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *AvailabilityStatusesClient) ListBySubscriptionID(options *AvailabilityStatusesListBySubscriptionIDOptions) *AvailabilityStatusesListBySubscriptionIDPager {
-	return &AvailabilityStatusesListBySubscriptionIDPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionIDCreateRequest(ctx, options)
+// NewListBySubscriptionIDPager - Lists the current availability status for all the resources in the subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
+// options - AvailabilityStatusesClientListBySubscriptionIDOptions contains the optional parameters for the AvailabilityStatusesClient.ListBySubscriptionID
+// method.
+func (client *AvailabilityStatusesClient) NewListBySubscriptionIDPager(options *AvailabilityStatusesClientListBySubscriptionIDOptions) *runtime.Pager[AvailabilityStatusesClientListBySubscriptionIDResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AvailabilityStatusesClientListBySubscriptionIDResponse]{
+		More: func(page AvailabilityStatusesClientListBySubscriptionIDResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AvailabilityStatusesListBySubscriptionIDResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AvailabilityStatusListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AvailabilityStatusesClientListBySubscriptionIDResponse) (AvailabilityStatusesClientListBySubscriptionIDResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionIDCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AvailabilityStatusesClientListBySubscriptionIDResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AvailabilityStatusesClientListBySubscriptionIDResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AvailabilityStatusesClientListBySubscriptionIDResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionIDHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionIDCreateRequest creates the ListBySubscriptionID request.
-func (client *AvailabilityStatusesClient) listBySubscriptionIDCreateRequest(ctx context.Context, options *AvailabilityStatusesListBySubscriptionIDOptions) (*policy.Request, error) {
+func (client *AvailabilityStatusesClient) listBySubscriptionIDCreateRequest(ctx context.Context, options *AvailabilityStatusesClientListBySubscriptionIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/availabilityStatuses"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-07-01")
+	reqQP.Set("api-version", "2020-05-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -260,28 +302,15 @@ func (client *AvailabilityStatusesClient) listBySubscriptionIDCreateRequest(ctx 
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionIDHandleResponse handles the ListBySubscriptionID response.
-func (client *AvailabilityStatusesClient) listBySubscriptionIDHandleResponse(resp *http.Response) (AvailabilityStatusesListBySubscriptionIDResponse, error) {
-	result := AvailabilityStatusesListBySubscriptionIDResponse{RawResponse: resp}
+func (client *AvailabilityStatusesClient) listBySubscriptionIDHandleResponse(resp *http.Response) (AvailabilityStatusesClientListBySubscriptionIDResponse, error) {
+	result := AvailabilityStatusesClientListBySubscriptionIDResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityStatusListResult); err != nil {
-		return AvailabilityStatusesListBySubscriptionIDResponse{}, runtime.NewResponseError(err, resp)
+		return AvailabilityStatusesClientListBySubscriptionIDResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySubscriptionIDHandleError handles the ListBySubscriptionID error response.
-func (client *AvailabilityStatusesClient) listBySubscriptionIDHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

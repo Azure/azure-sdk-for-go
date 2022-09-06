@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,10 +10,10 @@ package armreservations
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -22,45 +22,55 @@ import (
 // ExchangeClient contains the methods for the Exchange group.
 // Don't use this type directly, use NewExchangeClient() instead.
 type ExchangeClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewExchangeClient creates a new instance of ExchangeClient with the specified values.
-func NewExchangeClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ExchangeClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewExchangeClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ExchangeClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &ExchangeClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &ExchangeClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
 // BeginPost - Returns one or more Reservations in exchange for one or more Reservation purchases.
-// If the operation fails it returns the *Error error type.
-func (client *ExchangeClient) BeginPost(ctx context.Context, body ExchangeRequest, options *ExchangeBeginPostOptions) (ExchangePostPollerResponse, error) {
-	resp, err := client.post(ctx, body, options)
-	if err != nil {
-		return ExchangePostPollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
+// body - Request containing the refunds and purchases that need to be executed.
+// options - ExchangeClientBeginPostOptions contains the optional parameters for the ExchangeClient.BeginPost method.
+func (client *ExchangeClient) BeginPost(ctx context.Context, body ExchangeRequest, options *ExchangeClientBeginPostOptions) (*runtime.Poller[ExchangeClientPostResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.post(ctx, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ExchangeClientPostResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[ExchangeClientPostResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ExchangePostPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ExchangeClient.Post", "azure-async-operation", resp, client.pl, client.postHandleError)
-	if err != nil {
-		return ExchangePostPollerResponse{}, err
-	}
-	result.Poller = &ExchangePostPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Post - Returns one or more Reservations in exchange for one or more Reservation purchases.
-// If the operation fails it returns the *Error error type.
-func (client *ExchangeClient) post(ctx context.Context, body ExchangeRequest, options *ExchangeBeginPostOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
+func (client *ExchangeClient) post(ctx context.Context, body ExchangeRequest, options *ExchangeClientBeginPostOptions) (*http.Response, error) {
 	req, err := client.postCreateRequest(ctx, body, options)
 	if err != nil {
 		return nil, err
@@ -70,34 +80,21 @@ func (client *ExchangeClient) post(ctx context.Context, body ExchangeRequest, op
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.postHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // postCreateRequest creates the Post request.
-func (client *ExchangeClient) postCreateRequest(ctx context.Context, body ExchangeRequest, options *ExchangeBeginPostOptions) (*policy.Request, error) {
+func (client *ExchangeClient) postCreateRequest(ctx context.Context, body ExchangeRequest, options *ExchangeClientBeginPostOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/exchange"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
-}
-
-// postHandleError handles the Post error response.
-func (client *ExchangeClient) postHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

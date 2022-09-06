@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -16,38 +16,47 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/m365securityandcompliance/armm365securityandcompliance"
 )
 
-// x-ms-original-file: specification/m365securityandcompliance/resource-manager/Microsoft.M365SecurityAndCompliance/preview/2021-03-25-preview/examples/SCCPowershellPrivateLinkResourcesListByService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/m365securityandcompliance/resource-manager/Microsoft.M365SecurityAndCompliance/preview/2021-03-25-preview/examples/SCCPowershellPrivateLinkResourcesListByService.json
 func ExamplePrivateLinkResourcesForSCCPowershellClient_ListByService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armm365securityandcompliance.NewPrivateLinkResourcesForSCCPowershellClient("<subscription-id>", cred, nil)
-	_, err = client.ListByService(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+	client, err := armm365securityandcompliance.NewPrivateLinkResourcesForSCCPowershellClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.ListByService(ctx,
+		"rgname",
+		"service1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/m365securityandcompliance/resource-manager/Microsoft.M365SecurityAndCompliance/preview/2021-03-25-preview/examples/SCCPowershellPrivateLinkResourceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/m365securityandcompliance/resource-manager/Microsoft.M365SecurityAndCompliance/preview/2021-03-25-preview/examples/SCCPowershellPrivateLinkResourceGet.json
 func ExamplePrivateLinkResourcesForSCCPowershellClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armm365securityandcompliance.NewPrivateLinkResourcesForSCCPowershellClient("<subscription-id>", cred, nil)
+	client, err := armm365securityandcompliance.NewPrivateLinkResourcesForSCCPowershellClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<group-name>",
+		"rgname",
+		"service1",
+		"fhir",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("PrivateLinkResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }

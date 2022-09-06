@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armpolicy
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,101 +25,121 @@ import (
 // DataPolicyManifestsClient contains the methods for the DataPolicyManifests group.
 // Don't use this type directly, use NewDataPolicyManifestsClient() instead.
 type DataPolicyManifestsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewDataPolicyManifestsClient creates a new instance of DataPolicyManifestsClient with the specified values.
-func NewDataPolicyManifestsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *DataPolicyManifestsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewDataPolicyManifestsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DataPolicyManifestsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &DataPolicyManifestsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &DataPolicyManifestsClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
 // GetByPolicyMode - This operation retrieves the data policy manifest with the given policy mode.
-// If the operation fails it returns the *CloudError error type.
-func (client *DataPolicyManifestsClient) GetByPolicyMode(ctx context.Context, policyMode string, options *DataPolicyManifestsGetByPolicyModeOptions) (DataPolicyManifestsGetByPolicyModeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+// policyMode - The policy mode of the data policy manifest to get.
+// options - DataPolicyManifestsClientGetByPolicyModeOptions contains the optional parameters for the DataPolicyManifestsClient.GetByPolicyMode
+// method.
+func (client *DataPolicyManifestsClient) GetByPolicyMode(ctx context.Context, policyMode string, options *DataPolicyManifestsClientGetByPolicyModeOptions) (DataPolicyManifestsClientGetByPolicyModeResponse, error) {
 	req, err := client.getByPolicyModeCreateRequest(ctx, policyMode, options)
 	if err != nil {
-		return DataPolicyManifestsGetByPolicyModeResponse{}, err
+		return DataPolicyManifestsClientGetByPolicyModeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataPolicyManifestsGetByPolicyModeResponse{}, err
+		return DataPolicyManifestsClientGetByPolicyModeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataPolicyManifestsGetByPolicyModeResponse{}, client.getByPolicyModeHandleError(resp)
+		return DataPolicyManifestsClientGetByPolicyModeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByPolicyModeHandleResponse(resp)
 }
 
 // getByPolicyModeCreateRequest creates the GetByPolicyMode request.
-func (client *DataPolicyManifestsClient) getByPolicyModeCreateRequest(ctx context.Context, policyMode string, options *DataPolicyManifestsGetByPolicyModeOptions) (*policy.Request, error) {
+func (client *DataPolicyManifestsClient) getByPolicyModeCreateRequest(ctx context.Context, policyMode string, options *DataPolicyManifestsClientGetByPolicyModeOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/dataPolicyManifests/{policyMode}"
 	if policyMode == "" {
 		return nil, errors.New("parameter policyMode cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyMode}", url.PathEscape(policyMode))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getByPolicyModeHandleResponse handles the GetByPolicyMode response.
-func (client *DataPolicyManifestsClient) getByPolicyModeHandleResponse(resp *http.Response) (DataPolicyManifestsGetByPolicyModeResponse, error) {
-	result := DataPolicyManifestsGetByPolicyModeResponse{RawResponse: resp}
+func (client *DataPolicyManifestsClient) getByPolicyModeHandleResponse(resp *http.Response) (DataPolicyManifestsClientGetByPolicyModeResponse, error) {
+	result := DataPolicyManifestsClientGetByPolicyModeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataPolicyManifest); err != nil {
-		return DataPolicyManifestsGetByPolicyModeResponse{}, runtime.NewResponseError(err, resp)
+		return DataPolicyManifestsClientGetByPolicyModeResponse{}, err
 	}
 	return result, nil
 }
 
-// getByPolicyModeHandleError handles the GetByPolicyMode error response.
-func (client *DataPolicyManifestsClient) getByPolicyModeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - This operation retrieves a list of all the data policy manifests that match the optional given $filter. Valid values for $filter are: "$filter=namespace
-// eq '{0}'". If $filter is not provided, the
-// unfiltered list includes all data policy manifests for data resource types. If $filter=namespace is provided, the returned list only includes all data
-// policy manifests that have a namespace matching
+// NewListPager - This operation retrieves a list of all the data policy manifests that match the optional given $filter.
+// Valid values for $filter are: "$filter=namespace eq '{0}'". If $filter is not provided, the
+// unfiltered list includes all data policy manifests for data resource types. If $filter=namespace is provided, the returned
+// list only includes all data policy manifests that have a namespace matching
 // the provided value.
-// If the operation fails it returns the *CloudError error type.
-func (client *DataPolicyManifestsClient) List(options *DataPolicyManifestsListOptions) *DataPolicyManifestsListPager {
-	return &DataPolicyManifestsListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+// options - DataPolicyManifestsClientListOptions contains the optional parameters for the DataPolicyManifestsClient.List
+// method.
+func (client *DataPolicyManifestsClient) NewListPager(options *DataPolicyManifestsClientListOptions) *runtime.Pager[DataPolicyManifestsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DataPolicyManifestsClientListResponse]{
+		More: func(page DataPolicyManifestsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DataPolicyManifestsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataPolicyManifestListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DataPolicyManifestsClientListResponse) (DataPolicyManifestsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DataPolicyManifestsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DataPolicyManifestsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DataPolicyManifestsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *DataPolicyManifestsClient) listCreateRequest(ctx context.Context, options *DataPolicyManifestsListOptions) (*policy.Request, error) {
+func (client *DataPolicyManifestsClient) listCreateRequest(ctx context.Context, options *DataPolicyManifestsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/dataPolicyManifests"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -131,28 +151,15 @@ func (client *DataPolicyManifestsClient) listCreateRequest(ctx context.Context, 
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DataPolicyManifestsClient) listHandleResponse(resp *http.Response) (DataPolicyManifestsListResponse, error) {
-	result := DataPolicyManifestsListResponse{RawResponse: resp}
+func (client *DataPolicyManifestsClient) listHandleResponse(resp *http.Response) (DataPolicyManifestsClientListResponse, error) {
+	result := DataPolicyManifestsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataPolicyManifestListResult); err != nil {
-		return DataPolicyManifestsListResponse{}, runtime.NewResponseError(err, resp)
+		return DataPolicyManifestsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *DataPolicyManifestsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

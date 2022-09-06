@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,159 +12,177 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armkubernetesconfiguration"
 )
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/CreateExtension.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/CreateExtension.json
 func ExampleExtensionsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armkubernetesconfiguration.NewExtensionsClient("subId1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
-		"<cluster-name>",
-		"<extension-name>",
+		"rg1",
+		"Microsoft.Kubernetes",
+		"connectedClusters",
+		"clusterName1",
+		"ClusterMonitor",
 		armkubernetesconfiguration.Extension{
 			Properties: &armkubernetesconfiguration.ExtensionProperties{
-				AutoUpgradeMinorVersion: to.BoolPtr(true),
+				AutoUpgradeMinorVersion: to.Ptr(true),
 				ConfigurationProtectedSettings: map[string]*string{
-					"omsagent.secret.key": to.StringPtr("secretKeyValue01"),
+					"omsagent.secret.key": to.Ptr("secretKeyValue01"),
 				},
 				ConfigurationSettings: map[string]*string{
-					"omsagent.env.clusterName": to.StringPtr("clusterName1"),
-					"omsagent.secret.wsid":     to.StringPtr("a38cef99-5a89-52ed-b6db-22095c23664b"),
+					"omsagent.env.clusterName": to.Ptr("clusterName1"),
+					"omsagent.secret.wsid":     to.Ptr("a38cef99-5a89-52ed-b6db-22095c23664b"),
 				},
-				ExtensionType: to.StringPtr("<extension-type>"),
-				ReleaseTrain:  to.StringPtr("<release-train>"),
+				ExtensionType: to.Ptr("azuremonitor-containers"),
+				ReleaseTrain:  to.Ptr("Preview"),
 				Scope: &armkubernetesconfiguration.Scope{
 					Cluster: &armkubernetesconfiguration.ScopeCluster{
-						ReleaseNamespace: to.StringPtr("<release-namespace>"),
+						ReleaseNamespace: to.Ptr("kube-system"),
 					},
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("Extension.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/GetExtension.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/GetExtension.json
 func ExampleExtensionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armkubernetesconfiguration.NewExtensionsClient("subId1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
-		"<cluster-name>",
-		"<extension-name>",
+		"rg1",
+		"Microsoft.Kubernetes",
+		"connectedClusters",
+		"clusterName1",
+		"ClusterMonitor",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Extension.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/DeleteExtension.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/DeleteExtension.json
 func ExampleExtensionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
-		"<cluster-name>",
-		"<extension-name>",
-		&armkubernetesconfiguration.ExtensionsBeginDeleteOptions{ForceDelete: nil})
+	client, err := armkubernetesconfiguration.NewExtensionsClient("subId1", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	poller, err := client.BeginDelete(ctx,
+		"rg1",
+		"Microsoft.Kubernetes",
+		"connectedClusters",
+		"clusterName1",
+		"ClusterMonitor",
+		&armkubernetesconfiguration.ExtensionsClientBeginDeleteOptions{ForceDelete: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/PatchExtension.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/PatchExtension.json
 func ExampleExtensionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armkubernetesconfiguration.NewExtensionsClient("subId1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
-		"<cluster-name>",
-		"<extension-name>",
+		"rg1",
+		"Microsoft.Kubernetes",
+		"connectedClusters",
+		"clusterName1",
+		"ClusterMonitor",
 		armkubernetesconfiguration.PatchExtension{
 			Properties: &armkubernetesconfiguration.PatchExtensionProperties{
-				AutoUpgradeMinorVersion: to.BoolPtr(true),
+				AutoUpgradeMinorVersion: to.Ptr(true),
 				ConfigurationProtectedSettings: map[string]*string{
-					"omsagent.secret.key": to.StringPtr("secretKeyValue01"),
+					"omsagent.secret.key": to.Ptr("secretKeyValue01"),
 				},
 				ConfigurationSettings: map[string]*string{
-					"omsagent.env.clusterName": to.StringPtr("clusterName1"),
-					"omsagent.secret.wsid":     to.StringPtr("a38cef99-5a89-52ed-b6db-22095c23664b"),
+					"omsagent.env.clusterName": to.Ptr("clusterName1"),
+					"omsagent.secret.wsid":     to.Ptr("a38cef99-5a89-52ed-b6db-22095c23664b"),
 				},
-				ReleaseTrain: to.StringPtr("<release-train>"),
+				ReleaseTrain: to.Ptr("Preview"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("Extension.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/ListExtensions.json
-func ExampleExtensionsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/ListExtensions.json
+func ExampleExtensionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
-	pager := client.List("<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
-		"<cluster-name>",
+	client, err := armkubernetesconfiguration.NewExtensionsClient("subId1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("rg1",
+		"Microsoft.Kubernetes",
+		"connectedClusters",
+		"clusterName1",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Extension.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

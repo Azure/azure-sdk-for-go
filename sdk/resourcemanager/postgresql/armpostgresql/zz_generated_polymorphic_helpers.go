@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -32,42 +32,4 @@ func unmarshalServerPropertiesForCreateClassification(rawMsg json.RawMessage) (S
 		b = &ServerPropertiesForCreate{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalServerPropertiesForCreateClassificationArray(rawMsg json.RawMessage) ([]ServerPropertiesForCreateClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]ServerPropertiesForCreateClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalServerPropertiesForCreateClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalServerPropertiesForCreateClassificationMap(rawMsg json.RawMessage) (map[string]ServerPropertiesForCreateClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]ServerPropertiesForCreateClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalServerPropertiesForCreateClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

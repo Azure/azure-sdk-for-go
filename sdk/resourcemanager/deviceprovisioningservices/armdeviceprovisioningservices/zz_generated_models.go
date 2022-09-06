@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,18 +8,12 @@
 
 package armdeviceprovisioningservices
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AsyncOperationResult - Result of a long running operation.
 type AsyncOperationResult struct {
 	// Error message containing code, description and details
-	Error *ErrorMesssage `json:"error,omitempty"`
+	Error *ErrorMessage `json:"error,omitempty"`
 
 	// current status of a long running operation.
 	Status *string `json:"status,omitempty"`
@@ -40,26 +34,19 @@ type CertificateListDescription struct {
 	Value []*CertificateResponse `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CertificateListDescription.
-func (c CertificateListDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
 // CertificateProperties - The description of an X509 CA Certificate.
 type CertificateProperties struct {
-	// READ-ONLY; base-64 representation of X509 certificate .cer file or just .pem file content.
-	Certificate []byte `json:"certificate,omitempty" azure:"ro"`
+	// base-64 representation of X509 certificate .cer file or just .pem file content.
+	Certificate []byte `json:"certificate,omitempty"`
+
+	// Determines whether certificate has been verified.
+	IsVerified *bool `json:"isVerified,omitempty"`
 
 	// READ-ONLY; The certificate's creation date and time.
 	Created *time.Time `json:"created,omitempty" azure:"ro"`
 
 	// READ-ONLY; The certificate's expiration date and time.
 	Expiry *time.Time `json:"expiry,omitempty" azure:"ro"`
-
-	// READ-ONLY; Determines whether certificate has been verified.
-	IsVerified *bool `json:"isVerified,omitempty" azure:"ro"`
 
 	// READ-ONLY; The certificate's subject name.
 	Subject *string `json:"subject,omitempty" azure:"ro"`
@@ -69,57 +56,6 @@ type CertificateProperties struct {
 
 	// READ-ONLY; The certificate's last update date and time.
 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CertificateProperties.
-func (c CertificateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateByteArray(objectMap, "certificate", c.Certificate, runtime.Base64StdFormat)
-	populateTimeRFC1123(objectMap, "created", c.Created)
-	populateTimeRFC1123(objectMap, "expiry", c.Expiry)
-	populate(objectMap, "isVerified", c.IsVerified)
-	populate(objectMap, "subject", c.Subject)
-	populate(objectMap, "thumbprint", c.Thumbprint)
-	populateTimeRFC1123(objectMap, "updated", c.Updated)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CertificateProperties.
-func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "certificate":
-			err = runtime.DecodeByteArray(string(val), &c.Certificate, runtime.Base64StdFormat)
-			delete(rawMsg, key)
-		case "created":
-			err = unpopulateTimeRFC1123(val, &c.Created)
-			delete(rawMsg, key)
-		case "expiry":
-			err = unpopulateTimeRFC1123(val, &c.Expiry)
-			delete(rawMsg, key)
-		case "isVerified":
-			err = unpopulate(val, &c.IsVerified)
-			delete(rawMsg, key)
-		case "subject":
-			err = unpopulate(val, &c.Subject)
-			delete(rawMsg, key)
-		case "thumbprint":
-			err = unpopulate(val, &c.Thumbprint)
-			delete(rawMsg, key)
-		case "updated":
-			err = unpopulateTimeRFC1123(val, &c.Updated)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // CertificateResponse - The X509 Certificate.
@@ -136,18 +72,22 @@ type CertificateResponse struct {
 	// READ-ONLY; The name of the certificate.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// DpsCertificateCreateOrUpdateOptions contains the optional parameters for the DpsCertificate.CreateOrUpdate method.
-type DpsCertificateCreateOrUpdateOptions struct {
+// DpsCertificateClientCreateOrUpdateOptions contains the optional parameters for the DpsCertificateClient.CreateOrUpdate
+// method.
+type DpsCertificateClientCreateOrUpdateOptions struct {
 	// ETag of the certificate. This is required to update an existing certificate, and ignored while creating a brand new certificate.
 	IfMatch *string
 }
 
-// DpsCertificateDeleteOptions contains the optional parameters for the DpsCertificate.Delete method.
-type DpsCertificateDeleteOptions struct {
+// DpsCertificateClientDeleteOptions contains the optional parameters for the DpsCertificateClient.Delete method.
+type DpsCertificateClientDeleteOptions struct {
 	// Time the certificate is created.
 	CertificateCreated *time.Time
 	// Indicates if the certificate contains a private key.
@@ -166,8 +106,9 @@ type DpsCertificateDeleteOptions struct {
 	CertificateRawBytes []byte
 }
 
-// DpsCertificateGenerateVerificationCodeOptions contains the optional parameters for the DpsCertificate.GenerateVerificationCode method.
-type DpsCertificateGenerateVerificationCodeOptions struct {
+// DpsCertificateClientGenerateVerificationCodeOptions contains the optional parameters for the DpsCertificateClient.GenerateVerificationCode
+// method.
+type DpsCertificateClientGenerateVerificationCodeOptions struct {
 	// Certificate creation time.
 	CertificateCreated *time.Time
 	// Indicates if the certificate contains private key.
@@ -186,19 +127,20 @@ type DpsCertificateGenerateVerificationCodeOptions struct {
 	CertificateRawBytes []byte
 }
 
-// DpsCertificateGetOptions contains the optional parameters for the DpsCertificate.Get method.
-type DpsCertificateGetOptions struct {
+// DpsCertificateClientGetOptions contains the optional parameters for the DpsCertificateClient.Get method.
+type DpsCertificateClientGetOptions struct {
 	// ETag of the certificate.
 	IfMatch *string
 }
 
-// DpsCertificateListOptions contains the optional parameters for the DpsCertificate.List method.
-type DpsCertificateListOptions struct {
+// DpsCertificateClientListOptions contains the optional parameters for the DpsCertificateClient.List method.
+type DpsCertificateClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DpsCertificateVerifyCertificateOptions contains the optional parameters for the DpsCertificate.VerifyCertificate method.
-type DpsCertificateVerifyCertificateOptions struct {
+// DpsCertificateClientVerifyCertificateOptions contains the optional parameters for the DpsCertificateClient.VerifyCertificate
+// method.
+type DpsCertificateClientVerifyCertificateOptions struct {
 	// Certificate creation time.
 	CertificateCreated *time.Time
 	// Indicates if the certificate contains private key.
@@ -218,9 +160,7 @@ type DpsCertificateVerifyCertificateOptions struct {
 }
 
 // ErrorDetails - Error details.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorDetails struct {
-	raw string
 	// READ-ONLY; The error code.
 	Code *string `json:"code,omitempty" azure:"ro"`
 
@@ -234,14 +174,8 @@ type ErrorDetails struct {
 	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
-// Error implements the error interface for type ErrorDetails.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorDetails) Error() string {
-	return e.raw
-}
-
-// ErrorMesssage - Error response containing message and code.
-type ErrorMesssage struct {
+// ErrorMessage - Error response containing message and code.
+type ErrorMessage struct {
 	// standard error code
 	Code *string `json:"code,omitempty"`
 
@@ -279,15 +213,6 @@ type GroupIDInformationProperties struct {
 	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GroupIDInformationProperties.
-func (g GroupIDInformationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupId", g.GroupID)
-	populate(objectMap, "requiredMembers", g.RequiredMembers)
-	populate(objectMap, "requiredZoneNames", g.RequiredZoneNames)
-	return json.Marshal(objectMap)
-}
-
 // IPFilterRule - The IP filter rules for a provisioning Service.
 type IPFilterRule struct {
 	// REQUIRED; The desired action for requests captured by this rule.
@@ -303,14 +228,17 @@ type IPFilterRule struct {
 	Target *IPFilterTargetType `json:"target,omitempty"`
 }
 
-// IotDpsPropertiesDescription - the service specific properties of a provisioning service, including keys, linked iot hubs, current state, and system generated
-// properties such as hostname and idScope
+// IotDpsPropertiesDescription - the service specific properties of a provisioning service, including keys, linked iot hubs,
+// current state, and system generated properties such as hostname and idScope
 type IotDpsPropertiesDescription struct {
 	// Allocation policy to be used by this provisioning service.
 	AllocationPolicy *AllocationPolicy `json:"allocationPolicy,omitempty"`
 
 	// List of authorization keys for a provisioning service.
 	AuthorizationPolicies []*SharedAccessSignatureAuthorizationRuleAccessRightsDescription `json:"authorizationPolicies,omitempty"`
+
+	// Optional. Indicates if the DPS instance has Data Residency enabled, removing the cross geo-pair disaster recovery.
+	EnableDataResidency *bool `json:"enableDataResidency,omitempty"`
 
 	// The IP filter rules.
 	IPFilterRules []*IPFilterRule `json:"ipFilterRules,omitempty"`
@@ -340,108 +268,105 @@ type IotDpsPropertiesDescription struct {
 	ServiceOperationsHostName *string `json:"serviceOperationsHostName,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IotDpsPropertiesDescription.
-func (i IotDpsPropertiesDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allocationPolicy", i.AllocationPolicy)
-	populate(objectMap, "authorizationPolicies", i.AuthorizationPolicies)
-	populate(objectMap, "deviceProvisioningHostName", i.DeviceProvisioningHostName)
-	populate(objectMap, "idScope", i.IDScope)
-	populate(objectMap, "ipFilterRules", i.IPFilterRules)
-	populate(objectMap, "iotHubs", i.IotHubs)
-	populate(objectMap, "privateEndpointConnections", i.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", i.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", i.PublicNetworkAccess)
-	populate(objectMap, "serviceOperationsHostName", i.ServiceOperationsHostName)
-	populate(objectMap, "state", i.State)
-	return json.Marshal(objectMap)
-}
-
-// IotDpsResourceBeginCreateOrUpdateOptions contains the optional parameters for the IotDpsResource.BeginCreateOrUpdate method.
-type IotDpsResourceBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotDpsResourceBeginCreateOrUpdatePrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResource.BeginCreateOrUpdatePrivateEndpointConnection
+// IotDpsResourceClientBeginCreateOrUpdateOptions contains the optional parameters for the IotDpsResourceClient.BeginCreateOrUpdate
 // method.
-type IotDpsResourceBeginCreateOrUpdatePrivateEndpointConnectionOptions struct {
-	// placeholder for future optional parameters
+type IotDpsResourceClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// IotDpsResourceBeginDeleteOptions contains the optional parameters for the IotDpsResource.BeginDelete method.
-type IotDpsResourceBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotDpsResourceBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResource.BeginDeletePrivateEndpointConnection
+// IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResourceClient.BeginCreateOrUpdatePrivateEndpointConnection
 // method.
-type IotDpsResourceBeginDeletePrivateEndpointConnectionOptions struct {
-	// placeholder for future optional parameters
+type IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// IotDpsResourceBeginUpdateOptions contains the optional parameters for the IotDpsResource.BeginUpdate method.
-type IotDpsResourceBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+// IotDpsResourceClientBeginDeleteOptions contains the optional parameters for the IotDpsResourceClient.BeginDelete method.
+type IotDpsResourceClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// IotDpsResourceCheckProvisioningServiceNameAvailabilityOptions contains the optional parameters for the IotDpsResource.CheckProvisioningServiceNameAvailability
+// IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResourceClient.BeginDeletePrivateEndpointConnection
 // method.
-type IotDpsResourceCheckProvisioningServiceNameAvailabilityOptions struct {
+type IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// IotDpsResourceClientBeginUpdateOptions contains the optional parameters for the IotDpsResourceClient.BeginUpdate method.
+type IotDpsResourceClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// IotDpsResourceClientCheckProvisioningServiceNameAvailabilityOptions contains the optional parameters for the IotDpsResourceClient.CheckProvisioningServiceNameAvailability
+// method.
+type IotDpsResourceClientCheckProvisioningServiceNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceGetOperationResultOptions contains the optional parameters for the IotDpsResource.GetOperationResult method.
-type IotDpsResourceGetOperationResultOptions struct {
+// IotDpsResourceClientGetOperationResultOptions contains the optional parameters for the IotDpsResourceClient.GetOperationResult
+// method.
+type IotDpsResourceClientGetOperationResultOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceGetOptions contains the optional parameters for the IotDpsResource.Get method.
-type IotDpsResourceGetOptions struct {
+// IotDpsResourceClientGetOptions contains the optional parameters for the IotDpsResourceClient.Get method.
+type IotDpsResourceClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceGetPrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResource.GetPrivateEndpointConnection method.
-type IotDpsResourceGetPrivateEndpointConnectionOptions struct {
+// IotDpsResourceClientGetPrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResourceClient.GetPrivateEndpointConnection
+// method.
+type IotDpsResourceClientGetPrivateEndpointConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceGetPrivateLinkResourcesOptions contains the optional parameters for the IotDpsResource.GetPrivateLinkResources method.
-type IotDpsResourceGetPrivateLinkResourcesOptions struct {
+// IotDpsResourceClientGetPrivateLinkResourcesOptions contains the optional parameters for the IotDpsResourceClient.GetPrivateLinkResources
+// method.
+type IotDpsResourceClientGetPrivateLinkResourcesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceListByResourceGroupOptions contains the optional parameters for the IotDpsResource.ListByResourceGroup method.
-type IotDpsResourceListByResourceGroupOptions struct {
+// IotDpsResourceClientListByResourceGroupOptions contains the optional parameters for the IotDpsResourceClient.ListByResourceGroup
+// method.
+type IotDpsResourceClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceListBySubscriptionOptions contains the optional parameters for the IotDpsResource.ListBySubscription method.
-type IotDpsResourceListBySubscriptionOptions struct {
+// IotDpsResourceClientListBySubscriptionOptions contains the optional parameters for the IotDpsResourceClient.ListBySubscription
+// method.
+type IotDpsResourceClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceListKeysForKeyNameOptions contains the optional parameters for the IotDpsResource.ListKeysForKeyName method.
-type IotDpsResourceListKeysForKeyNameOptions struct {
+// IotDpsResourceClientListKeysForKeyNameOptions contains the optional parameters for the IotDpsResourceClient.ListKeysForKeyName
+// method.
+type IotDpsResourceClientListKeysForKeyNameOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceListKeysOptions contains the optional parameters for the IotDpsResource.ListKeys method.
-type IotDpsResourceListKeysOptions struct {
+// IotDpsResourceClientListKeysOptions contains the optional parameters for the IotDpsResourceClient.ListKeys method.
+type IotDpsResourceClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceListPrivateEndpointConnectionsOptions contains the optional parameters for the IotDpsResource.ListPrivateEndpointConnections method.
-type IotDpsResourceListPrivateEndpointConnectionsOptions struct {
+// IotDpsResourceClientListPrivateEndpointConnectionsOptions contains the optional parameters for the IotDpsResourceClient.ListPrivateEndpointConnections
+// method.
+type IotDpsResourceClientListPrivateEndpointConnectionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceListPrivateLinkResourcesOptions contains the optional parameters for the IotDpsResource.ListPrivateLinkResources method.
-type IotDpsResourceListPrivateLinkResourcesOptions struct {
+// IotDpsResourceClientListPrivateLinkResourcesOptions contains the optional parameters for the IotDpsResourceClient.ListPrivateLinkResources
+// method.
+type IotDpsResourceClientListPrivateLinkResourcesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IotDpsResourceListValidSKUsOptions contains the optional parameters for the IotDpsResource.ListValidSKUs method.
-type IotDpsResourceListValidSKUsOptions struct {
+// IotDpsResourceClientListValidSKUsOptions contains the optional parameters for the IotDpsResourceClient.ListValidSKUs method.
+type IotDpsResourceClientListValidSKUsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -458,14 +383,6 @@ type IotDpsSKUDefinitionListResult struct {
 
 	// READ-ONLY; The next link.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IotDpsSKUDefinitionListResult.
-func (i IotDpsSKUDefinitionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
 }
 
 // IotDpsSKUInfo - List of possible provisioning service SKUs.
@@ -537,8 +454,8 @@ type OperationInputs struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// OperationListResult - Result of the request to list provisioning service operations. It contains a list of operations and a URL link to get the next
-// set of results.
+// OperationListResult - Result of the request to list provisioning service operations. It contains a list of operations and
+// a URL link to get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -547,16 +464,8 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -577,6 +486,9 @@ type PrivateEndpointConnection struct {
 	// READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -596,13 +508,6 @@ type PrivateLinkResources struct {
 	Value []*GroupIDInformation `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResources.
-func (p PrivateLinkResources) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateLinkServiceConnectionState - The current state of a private endpoint connection
 type PrivateLinkServiceConnectionState struct {
 	// REQUIRED; The description for the current state of a private endpoint connection
@@ -617,25 +522,33 @@ type PrivateLinkServiceConnectionState struct {
 
 // ProvisioningServiceDescription - The description of the provisioning service.
 type ProvisioningServiceDescription struct {
-	Resource
+	// REQUIRED; The resource location.
+	Location *string `json:"location,omitempty"`
+
 	// REQUIRED; Service specific properties for a provisioning service
 	Properties *IotDpsPropertiesDescription `json:"properties,omitempty"`
 
 	// REQUIRED; Sku info for a provisioning Service.
 	SKU *IotDpsSKUInfo `json:"sku,omitempty"`
 
-	// The Etag field is not required. If it is provided in the response body, it must also be provided as a header per the normal ETag convention.
+	// The Etag field is not required. If it is provided in the response body, it must also be provided as a header per the normal
+	// ETag convention.
 	Etag *string `json:"etag,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ProvisioningServiceDescription.
-func (p ProvisioningServiceDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "etag", p.Etag)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "sku", p.SKU)
-	return json.Marshal(objectMap)
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ProvisioningServiceDescriptionListResult - List of provisioning service descriptions.
@@ -645,14 +558,6 @@ type ProvisioningServiceDescriptionListResult struct {
 
 	// READ-ONLY; the next link
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ProvisioningServiceDescriptionListResult.
-func (p ProvisioningServiceDescriptionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // Resource - The common properties of an Azure resource.
@@ -671,21 +576,6 @@ type Resource struct {
 
 	// READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
 }
 
 // SharedAccessSignatureAuthorizationRuleAccessRightsDescription - Description of the shared access key.
@@ -712,25 +602,32 @@ type SharedAccessSignatureAuthorizationRuleListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SharedAccessSignatureAuthorizationRuleListResult.
-func (s SharedAccessSignatureAuthorizationRuleListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// TagsResource - A container holding only the Tags for a resource, allowing the user to update the tags on a Provisioning Service instance.
+// TagsResource - A container holding only the Tags for a resource, allowing the user to update the tags on a Provisioning
+// Service instance.
 type TagsResource struct {
 	// Resource tags
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TagsResource.
-func (t TagsResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", t.Tags)
-	return json.Marshal(objectMap)
 }
 
 // VerificationCodeRequest - The JSON-serialized leaf certificate
@@ -780,86 +677,4 @@ type VerificationCodeResponseProperties struct {
 
 	// Verification code.
 	VerificationCode *string `json:"verificationCode,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VerificationCodeResponseProperties.
-func (v VerificationCodeResponseProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateByteArray(objectMap, "certificate", v.Certificate, runtime.Base64StdFormat)
-	populate(objectMap, "created", v.Created)
-	populate(objectMap, "expiry", v.Expiry)
-	populate(objectMap, "isVerified", v.IsVerified)
-	populate(objectMap, "subject", v.Subject)
-	populate(objectMap, "thumbprint", v.Thumbprint)
-	populate(objectMap, "updated", v.Updated)
-	populate(objectMap, "verificationCode", v.VerificationCode)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VerificationCodeResponseProperties.
-func (v *VerificationCodeResponseProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "certificate":
-			err = runtime.DecodeByteArray(string(val), &v.Certificate, runtime.Base64StdFormat)
-			delete(rawMsg, key)
-		case "created":
-			err = unpopulate(val, &v.Created)
-			delete(rawMsg, key)
-		case "expiry":
-			err = unpopulate(val, &v.Expiry)
-			delete(rawMsg, key)
-		case "isVerified":
-			err = unpopulate(val, &v.IsVerified)
-			delete(rawMsg, key)
-		case "subject":
-			err = unpopulate(val, &v.Subject)
-			delete(rawMsg, key)
-		case "thumbprint":
-			err = unpopulate(val, &v.Thumbprint)
-			delete(rawMsg, key)
-		case "updated":
-			err = unpopulate(val, &v.Updated)
-			delete(rawMsg, key)
-		case "verificationCode":
-			err = unpopulate(val, &v.VerificationCode)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func populateByteArray(m map[string]interface{}, k string, b []byte, f runtime.Base64Encoding) {
-	if azcore.IsNullValue(b) {
-		m[k] = nil
-	} else if len(b) == 0 {
-		return
-	} else {
-		m[k] = runtime.EncodeByteArray(b, f)
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,459 +12,534 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeorder/armedgeorder"
 )
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOperations.json
-func ExampleEdgeOrderManagementClient_ListOperations() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOperations.json
+func ExampleManagementClient_NewListOperationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
-	pager := client.ListOperations(nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListOperationsPager(nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListAddressesAtSubscriptionLevel.json
-func ExampleEdgeOrderManagementClient_ListAddressesAtSubscriptionLevel() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListAddressesAtSubscriptionLevel.json
+func ExampleManagementClient_NewListAddressesAtSubscriptionLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
-	pager := client.ListAddressesAtSubscriptionLevel(&armedgeorder.EdgeOrderManagementClientListAddressesAtSubscriptionLevelOptions{Filter: nil,
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListAddressesAtSubscriptionLevelPager(&armedgeorder.ManagementClientListAddressesAtSubscriptionLevelOptions{Filter: nil,
 		SkipToken: nil,
 	})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("AddressResource.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListProductFamilies.json
-func ExampleEdgeOrderManagementClient_ListProductFamilies() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListProductFamilies.json
+func ExampleManagementClient_NewListProductFamiliesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
-	pager := client.ListProductFamilies(armedgeorder.ProductFamiliesRequest{
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListProductFamiliesPager(armedgeorder.ProductFamiliesRequest{
 		FilterableProperties: map[string][]*armedgeorder.FilterableProperty{
 			"azurestackedge": {
 				{
-					Type: armedgeorder.SupportedFilterTypesShipToCountries.ToPtr(),
+					Type: to.Ptr(armedgeorder.SupportedFilterTypesShipToCountries),
 					SupportedValues: []*string{
-						to.StringPtr("US")},
+						to.Ptr("US")},
 				}},
 		},
 	},
-		&armedgeorder.EdgeOrderManagementClientListProductFamiliesOptions{Expand: nil,
+		&armedgeorder.ManagementClientListProductFamiliesOptions{Expand: to.Ptr("configurations"),
 			SkipToken: nil,
 		})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListConfigurations.json
-func ExampleEdgeOrderManagementClient_ListConfigurations() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListConfigurations.json
+func ExampleManagementClient_NewListConfigurationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
-	pager := client.ListConfigurations(armedgeorder.ConfigurationsRequest{
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListConfigurationsPager(armedgeorder.ConfigurationsRequest{
 		ConfigurationFilters: []*armedgeorder.ConfigurationFilters{
 			{
 				FilterableProperty: []*armedgeorder.FilterableProperty{
 					{
-						Type: armedgeorder.SupportedFilterTypesShipToCountries.ToPtr(),
+						Type: to.Ptr(armedgeorder.SupportedFilterTypesShipToCountries),
 						SupportedValues: []*string{
-							to.StringPtr("US")},
+							to.Ptr("US")},
 					}},
 				HierarchyInformation: &armedgeorder.HierarchyInformation{
-					ProductFamilyName: to.StringPtr("<product-family-name>"),
-					ProductLineName:   to.StringPtr("<product-line-name>"),
-					ProductName:       to.StringPtr("<product-name>"),
+					ProductFamilyName: to.Ptr("azurestackedge"),
+					ProductLineName:   to.Ptr("azurestackedge"),
+					ProductName:       to.Ptr("azurestackedgegpu"),
 				},
 			}},
 	},
-		&armedgeorder.EdgeOrderManagementClientListConfigurationsOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+		&armedgeorder.ManagementClientListConfigurationsOptions{SkipToken: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListProductFamiliesMetadata.json
-func ExampleEdgeOrderManagementClient_ListProductFamiliesMetadata() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListProductFamiliesMetadata.json
+func ExampleManagementClient_NewListProductFamiliesMetadataPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
-	pager := client.ListProductFamiliesMetadata(&armedgeorder.EdgeOrderManagementClientListProductFamiliesMetadataOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListProductFamiliesMetadataPager(&armedgeorder.ManagementClientListProductFamiliesMetadataOptions{SkipToken: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOrderAtSubscriptionLevel.json
-func ExampleEdgeOrderManagementClient_ListOrderAtSubscriptionLevel() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOrderAtSubscriptionLevel.json
+func ExampleManagementClient_NewListOrderAtSubscriptionLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
-	pager := client.ListOrderAtSubscriptionLevel(&armedgeorder.EdgeOrderManagementClientListOrderAtSubscriptionLevelOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListOrderAtSubscriptionLevelPager(&armedgeorder.ManagementClientListOrderAtSubscriptionLevelOptions{SkipToken: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("OrderResource.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOrderItemsAtSubscriptionLevel.json
-func ExampleEdgeOrderManagementClient_ListOrderItemsAtSubscriptionLevel() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOrderItemsAtSubscriptionLevel.json
+func ExampleManagementClient_NewListOrderItemsAtSubscriptionLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
-	pager := client.ListOrderItemsAtSubscriptionLevel(&armedgeorder.EdgeOrderManagementClientListOrderItemsAtSubscriptionLevelOptions{Filter: nil,
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListOrderItemsAtSubscriptionLevelPager(&armedgeorder.ManagementClientListOrderItemsAtSubscriptionLevelOptions{Filter: nil,
 		Expand:    nil,
 		SkipToken: nil,
 	})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("OrderItemResource.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListAddressesAtResourceGroupLevel.json
-func ExampleEdgeOrderManagementClient_ListAddressesAtResourceGroupLevel() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListAddressesAtResourceGroupLevel.json
+func ExampleManagementClient_NewListAddressesAtResourceGroupLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
-	pager := client.ListAddressesAtResourceGroupLevel("<resource-group-name>",
-		&armedgeorder.EdgeOrderManagementClientListAddressesAtResourceGroupLevelOptions{Filter: nil,
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListAddressesAtResourceGroupLevelPager("YourResourceGroupName",
+		&armedgeorder.ManagementClientListAddressesAtResourceGroupLevelOptions{Filter: nil,
 			SkipToken: nil,
 		})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("AddressResource.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/GetAddressByName.json
-func ExampleEdgeOrderManagementClient_GetAddressByName() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/GetAddressByName.json
+func ExampleManagementClient_GetAddressByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.GetAddressByName(ctx,
-		"<address-name>",
-		"<resource-group-name>",
+		"TestAddressName1",
+		"YourResourceGroupName",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("AddressResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/CreateAddress.json
-func ExampleEdgeOrderManagementClient_BeginCreateAddress() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/CreateAddress.json
+func ExampleManagementClient_BeginCreateAddress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreateAddress(ctx,
-		"<address-name>",
-		"<resource-group-name>",
+		"TestAddressName2",
+		"YourResourceGroupName",
 		armedgeorder.AddressResource{
-			TrackedResource: armedgeorder.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
+			Location: to.Ptr("eastus"),
 			Properties: &armedgeorder.AddressProperties{
 				ContactDetails: &armedgeorder.ContactDetails{
-					ContactName: to.StringPtr("<contact-name>"),
+					ContactName: to.Ptr("XXXX XXXX"),
 					EmailList: []*string{
-						to.StringPtr("testemail@microsoft.com")},
-					Phone:          to.StringPtr("<phone>"),
-					PhoneExtension: to.StringPtr("<phone-extension>"),
+						to.Ptr("xxxx@xxxx.xxx")},
+					Phone:          to.Ptr("0000000000"),
+					PhoneExtension: to.Ptr(""),
 				},
 				ShippingAddress: &armedgeorder.ShippingAddress{
-					AddressType:     armedgeorder.AddressTypeNone.ToPtr(),
-					City:            to.StringPtr("<city>"),
-					CompanyName:     to.StringPtr("<company-name>"),
-					Country:         to.StringPtr("<country>"),
-					PostalCode:      to.StringPtr("<postal-code>"),
-					StateOrProvince: to.StringPtr("<state-or-province>"),
-					StreetAddress1:  to.StringPtr("<street-address1>"),
-					StreetAddress2:  to.StringPtr("<street-address2>"),
+					AddressType:     to.Ptr(armedgeorder.AddressTypeNone),
+					City:            to.Ptr("San Francisco"),
+					CompanyName:     to.Ptr("Microsoft"),
+					Country:         to.Ptr("US"),
+					PostalCode:      to.Ptr("94107"),
+					StateOrProvince: to.Ptr("CA"),
+					StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
+					StreetAddress2:  to.Ptr("UNIT 1"),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("AddressResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/DeleteAddressByName.json
-func ExampleEdgeOrderManagementClient_BeginDeleteAddressByName() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/DeleteAddressByName.json
+func ExampleManagementClient_BeginDeleteAddressByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginDeleteAddressByName(ctx,
-		"<address-name>",
-		"<resource-group-name>",
+		"TestAddressName1",
+		"YourResourceGroupName",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/UpdateAddress.json
-func ExampleEdgeOrderManagementClient_BeginUpdateAddress() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/UpdateAddress.json
+func ExampleManagementClient_BeginUpdateAddress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginUpdateAddress(ctx,
-		"<address-name>",
-		"<resource-group-name>",
+		"TestAddressName2",
+		"YourResourceGroupName",
 		armedgeorder.AddressUpdateParameter{
 			Properties: &armedgeorder.AddressUpdateProperties{
 				ContactDetails: &armedgeorder.ContactDetails{
-					ContactName: to.StringPtr("<contact-name>"),
+					ContactName: to.Ptr("YYYY YYYY"),
 					EmailList: []*string{
-						to.StringPtr("ssemcr@microsoft.com")},
-					Phone:          to.StringPtr("<phone>"),
-					PhoneExtension: to.StringPtr("<phone-extension>"),
+						to.Ptr("xxxx@xxxx.xxx")},
+					Phone:          to.Ptr("0000000000"),
+					PhoneExtension: to.Ptr(""),
 				},
 				ShippingAddress: &armedgeorder.ShippingAddress{
-					AddressType:     armedgeorder.AddressTypeNone.ToPtr(),
-					City:            to.StringPtr("<city>"),
-					CompanyName:     to.StringPtr("<company-name>"),
-					Country:         to.StringPtr("<country>"),
-					PostalCode:      to.StringPtr("<postal-code>"),
-					StateOrProvince: to.StringPtr("<state-or-province>"),
-					StreetAddress1:  to.StringPtr("<street-address1>"),
-					StreetAddress2:  to.StringPtr("<street-address2>"),
+					AddressType:     to.Ptr(armedgeorder.AddressTypeNone),
+					City:            to.Ptr("San Francisco"),
+					CompanyName:     to.Ptr("Microsoft"),
+					Country:         to.Ptr("US"),
+					PostalCode:      to.Ptr("94107"),
+					StateOrProvince: to.Ptr("CA"),
+					StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
+					StreetAddress2:  to.Ptr("UNIT 1"),
 				},
 			},
 			Tags: map[string]*string{
-				"Hobby":    to.StringPtr("Web Series Added"),
-				"Name":     to.StringPtr("Smile-Updated"),
-				"WhatElse": to.StringPtr("Web Series Added"),
-				"Work":     to.StringPtr("Engineering"),
+				"tag1": to.Ptr("value1"),
+				"tag2": to.Ptr("value2"),
 			},
 		},
-		&armedgeorder.EdgeOrderManagementClientBeginUpdateAddressOptions{IfMatch: nil})
+		&armedgeorder.ManagementClientBeginUpdateAddressOptions{IfMatch: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("AddressResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOrderAtResourceGroupLevel.json
-func ExampleEdgeOrderManagementClient_ListOrderAtResourceGroupLevel() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOrderAtResourceGroupLevel.json
+func ExampleManagementClient_NewListOrderAtResourceGroupLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
-	pager := client.ListOrderAtResourceGroupLevel("<resource-group-name>",
-		&armedgeorder.EdgeOrderManagementClientListOrderAtResourceGroupLevelOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListOrderAtResourceGroupLevelPager("YourResourceGroupName",
+		&armedgeorder.ManagementClientListOrderAtResourceGroupLevelOptions{SkipToken: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("OrderResource.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/GetOrderByName.json
-func ExampleEdgeOrderManagementClient_GetOrderByName() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/GetOrderByName.json
+func ExampleManagementClient_GetOrderByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.GetOrderByName(ctx,
-		"<order-name>",
-		"<resource-group-name>",
-		"<location>",
+		"TestOrderName3",
+		"YourResourceGroupName",
+		"eastus",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("OrderResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOrderItemsAtResourceGroupLevel.json
-func ExampleEdgeOrderManagementClient_ListOrderItemsAtResourceGroupLevel() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ListOrderItemsAtResourceGroupLevel.json
+func ExampleManagementClient_NewListOrderItemsAtResourceGroupLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
-	pager := client.ListOrderItemsAtResourceGroupLevel("<resource-group-name>",
-		&armedgeorder.EdgeOrderManagementClientListOrderItemsAtResourceGroupLevelOptions{Filter: nil,
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListOrderItemsAtResourceGroupLevelPager("YourResourceGroupName",
+		&armedgeorder.ManagementClientListOrderItemsAtResourceGroupLevelOptions{Filter: nil,
 			Expand:    nil,
 			SkipToken: nil,
 		})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("OrderItemResource.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/GetOrderItemByName.json
-func ExampleEdgeOrderManagementClient_GetOrderItemByName() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/GetOrderItemByName.json
+func ExampleManagementClient_GetOrderItemByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
-	res, err := client.GetOrderItemByName(ctx,
-		"<order-item-name>",
-		"<resource-group-name>",
-		&armedgeorder.EdgeOrderManagementClientGetOrderItemByNameOptions{Expand: nil})
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
 	}
-	log.Printf("OrderItemResource.ID: %s\n", *res.ID)
+	res, err := client.GetOrderItemByName(ctx,
+		"TestOrderItemName1",
+		"YourResourceGroupName",
+		&armedgeorder.ManagementClientGetOrderItemByNameOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/CreateOrderItem.json
-func ExampleEdgeOrderManagementClient_BeginCreateOrderItem() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/CreateOrderItem.json
+func ExampleManagementClient_BeginCreateOrderItem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreateOrderItem(ctx,
-		"<order-item-name>",
-		"<resource-group-name>",
+		"TestOrderItemName2",
+		"YourResourceGroupName",
 		armedgeorder.OrderItemResource{
-			TrackedResource: armedgeorder.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"carrot": to.StringPtr("vegetable"),
-					"mango":  to.StringPtr("fruit"),
-				},
-			},
+			Location: to.Ptr("eastus"),
 			Properties: &armedgeorder.OrderItemProperties{
 				AddressDetails: &armedgeorder.AddressDetails{
 					ForwardAddress: &armedgeorder.AddressProperties{
 						ContactDetails: &armedgeorder.ContactDetails{
-							ContactName: to.StringPtr("<contact-name>"),
+							ContactName: to.Ptr("XXXX XXXX"),
 							EmailList: []*string{
-								to.StringPtr("ssemmail@microsoft.com"),
-								to.StringPtr("vishwamdir@microsoft.com")},
-							Phone: to.StringPtr("<phone>"),
+								to.Ptr("xxxx@xxxx.xxx")},
+							Phone:          to.Ptr("0000000000"),
+							PhoneExtension: to.Ptr(""),
 						},
 						ShippingAddress: &armedgeorder.ShippingAddress{
-							AddressType:     armedgeorder.AddressTypeResidential.ToPtr(),
-							City:            to.StringPtr("<city>"),
-							CompanyName:     to.StringPtr("<company-name>"),
-							Country:         to.StringPtr("<country>"),
-							PostalCode:      to.StringPtr("<postal-code>"),
-							StateOrProvince: to.StringPtr("<state-or-province>"),
-							StreetAddress1:  to.StringPtr("<street-address1>"),
-							StreetAddress2:  to.StringPtr("<street-address2>"),
-							ZipExtendedCode: to.StringPtr("<zip-extended-code>"),
+							AddressType:     to.Ptr(armedgeorder.AddressTypeNone),
+							City:            to.Ptr("San Francisco"),
+							CompanyName:     to.Ptr("Microsoft"),
+							Country:         to.Ptr("US"),
+							PostalCode:      to.Ptr("94107"),
+							StateOrProvince: to.Ptr("CA"),
+							StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
+							StreetAddress2:  to.Ptr("UNIT 1"),
 						},
 					},
 				},
-				OrderID: to.StringPtr("<order-id>"),
+				OrderID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/locations/eastus/orders/TestOrderName2"),
 				OrderItemDetails: &armedgeorder.OrderItemDetails{
-					OrderItemType: armedgeorder.OrderItemTypePurchase.ToPtr(),
+					OrderItemType: to.Ptr(armedgeorder.OrderItemTypePurchase),
 					Preferences: &armedgeorder.Preferences{
 						TransportPreferences: &armedgeorder.TransportPreferences{
-							PreferredShipmentType: armedgeorder.TransportShipmentTypesMicrosoftManaged.ToPtr(),
+							PreferredShipmentType: to.Ptr(armedgeorder.TransportShipmentTypesMicrosoftManaged),
 						},
 					},
 					ProductDetails: &armedgeorder.ProductDetails{
 						HierarchyInformation: &armedgeorder.HierarchyInformation{
-							ConfigurationName: to.StringPtr("<configuration-name>"),
-							ProductFamilyName: to.StringPtr("<product-family-name>"),
-							ProductLineName:   to.StringPtr("<product-line-name>"),
-							ProductName:       to.StringPtr("<product-name>"),
+							ConfigurationName: to.Ptr("edgep_base"),
+							ProductFamilyName: to.Ptr("azurestackedge"),
+							ProductLineName:   to.Ptr("azurestackedge"),
+							ProductName:       to.Ptr("azurestackedgegpu"),
 						},
 					},
 				},
@@ -472,120 +547,121 @@ func ExampleEdgeOrderManagementClient_BeginCreateOrderItem() {
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("OrderItemResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/DeleteOrderItemByName.json
-func ExampleEdgeOrderManagementClient_BeginDeleteOrderItemByName() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/DeleteOrderItemByName.json
+func ExampleManagementClient_BeginDeleteOrderItemByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginDeleteOrderItemByName(ctx,
-		"<order-item-name>",
-		"<resource-group-name>",
+		"TestOrderItemName3",
+		"YourResourceGroupName",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/UpdateOrderItem.json
-func ExampleEdgeOrderManagementClient_BeginUpdateOrderItem() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/UpdateOrderItem.json
+func ExampleManagementClient_BeginUpdateOrderItem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginUpdateOrderItem(ctx,
-		"<order-item-name>",
-		"<resource-group-name>",
+		"TestOrderItemName3",
+		"YourResourceGroupName",
 		armedgeorder.OrderItemUpdateParameter{
 			Properties: &armedgeorder.OrderItemUpdateProperties{
-				ForwardAddress: &armedgeorder.AddressProperties{
-					ContactDetails: &armedgeorder.ContactDetails{
-						ContactName: to.StringPtr("<contact-name>"),
-						EmailList: []*string{
-							to.StringPtr("testemail@microsoft.com")},
-						Phone: to.StringPtr("<phone>"),
-					},
-				},
 				Preferences: &armedgeorder.Preferences{
 					TransportPreferences: &armedgeorder.TransportPreferences{
-						PreferredShipmentType: armedgeorder.TransportShipmentTypesCustomerManaged.ToPtr(),
+						PreferredShipmentType: to.Ptr(armedgeorder.TransportShipmentTypesCustomerManaged),
 					},
 				},
 			},
-			Tags: map[string]*string{
-				"ant":    to.StringPtr("insect"),
-				"pigeon": to.StringPtr("bird"),
-				"tiger":  to.StringPtr("animal"),
-			},
 		},
-		&armedgeorder.EdgeOrderManagementClientBeginUpdateOrderItemOptions{IfMatch: nil})
+		&armedgeorder.ManagementClientBeginUpdateOrderItemOptions{IfMatch: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("OrderItemResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/CancelOrderItem.json
-func ExampleEdgeOrderManagementClient_CancelOrderItem() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/CancelOrderItem.json
+func ExampleManagementClient_CancelOrderItem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.CancelOrderItem(ctx,
-		"<order-item-name>",
-		"<resource-group-name>",
+		"TestOrderItemName3",
+		"YourResourceGroupName",
 		armedgeorder.CancellationReason{
-			Reason: to.StringPtr("<reason>"),
+			Reason: to.Ptr("Order cancelled"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ReturnOrderItem.json
-func ExampleEdgeOrderManagementClient_BeginReturnOrderItem() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/ReturnOrderItem.json
+func ExampleManagementClient_BeginReturnOrderItem() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armedgeorder.NewEdgeOrderManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginReturnOrderItem(ctx,
-		"<order-item-name>",
-		"<resource-group-name>",
+		"TestOrderName4",
+		"YourResourceGroupName",
 		armedgeorder.ReturnOrderItemDetails{
-			ReturnReason: to.StringPtr("<return-reason>"),
+			ReturnReason: to.Ptr("Order returned"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }

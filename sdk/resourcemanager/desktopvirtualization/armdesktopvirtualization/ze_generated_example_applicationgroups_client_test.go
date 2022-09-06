@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,144 +14,167 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization/v2"
 )
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ApplicationGroup_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ApplicationGroup_Get.json
 func ExampleApplicationGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewApplicationGroupsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewApplicationGroupsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<application-group-name>",
+		"resourceGroup1",
+		"applicationGroup1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("ApplicationGroup.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ApplicationGroup_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ApplicationGroup_Create.json
 func ExampleApplicationGroupsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewApplicationGroupsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewApplicationGroupsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<application-group-name>",
+		"resourceGroup1",
+		"applicationGroup1",
 		armdesktopvirtualization.ApplicationGroup{
-			ResourceModelWithAllowedPropertySet: armdesktopvirtualization.ResourceModelWithAllowedPropertySet{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"tag1": to.StringPtr("value1"),
-					"tag2": to.StringPtr("value2"),
-				},
+			Location: to.Ptr("centralus"),
+			Tags: map[string]*string{
+				"tag1": to.Ptr("value1"),
+				"tag2": to.Ptr("value2"),
 			},
 			Properties: &armdesktopvirtualization.ApplicationGroupProperties{
-				Description:          to.StringPtr("<description>"),
-				ApplicationGroupType: armdesktopvirtualization.ApplicationGroupTypeRemoteApp.ToPtr(),
-				FriendlyName:         to.StringPtr("<friendly-name>"),
-				HostPoolArmPath:      to.StringPtr("<host-pool-arm-path>"),
+				Description:          to.Ptr("des1"),
+				ApplicationGroupType: to.Ptr(armdesktopvirtualization.ApplicationGroupTypeRemoteApp),
+				FriendlyName:         to.Ptr("friendly"),
+				HostPoolArmPath:      to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostPools/hostPool1"),
 				MigrationRequest: &armdesktopvirtualization.MigrationRequestProperties{
-					MigrationPath: to.StringPtr("<migration-path>"),
-					Operation:     armdesktopvirtualization.OperationStart.ToPtr(),
+					MigrationPath: to.Ptr("TenantGroups/{defaultV1TenantGroup.Name}/Tenants/{defaultV1Tenant.Name}/HostPools/{sessionHostPool.Name}"),
+					Operation:     to.Ptr(armdesktopvirtualization.OperationStart),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("ApplicationGroup.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ApplicationGroup_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ApplicationGroup_Delete.json
 func ExampleApplicationGroupsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewApplicationGroupsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewApplicationGroupsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<application-group-name>",
+		"resourceGroup1",
+		"applicationGroup1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ApplicationGroup_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ApplicationGroup_Update.json
 func ExampleApplicationGroupsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewApplicationGroupsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewApplicationGroupsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<application-group-name>",
-		&armdesktopvirtualization.ApplicationGroupsUpdateOptions{ApplicationGroup: &armdesktopvirtualization.ApplicationGroupPatch{
+		"resourceGroup1",
+		"applicationGroup1",
+		&armdesktopvirtualization.ApplicationGroupsClientUpdateOptions{ApplicationGroup: &armdesktopvirtualization.ApplicationGroupPatch{
 			Properties: &armdesktopvirtualization.ApplicationGroupPatchProperties{
-				Description:  to.StringPtr("<description>"),
-				FriendlyName: to.StringPtr("<friendly-name>"),
+				Description:  to.Ptr("des1"),
+				FriendlyName: to.Ptr("friendly"),
 			},
 			Tags: map[string]*string{
-				"tag1": to.StringPtr("value1"),
-				"tag2": to.StringPtr("value2"),
+				"tag1": to.Ptr("value1"),
+				"tag2": to.Ptr("value2"),
 			},
 		},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("ApplicationGroup.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ApplicationGroup_ListByResourceGroup.json
-func ExampleApplicationGroupsClient_ListByResourceGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ApplicationGroup_ListByResourceGroup.json
+func ExampleApplicationGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewApplicationGroupsClient("<subscription-id>", cred, nil)
-	pager := client.ListByResourceGroup("<resource-group-name>",
-		&armdesktopvirtualization.ApplicationGroupsListByResourceGroupOptions{Filter: to.StringPtr("<filter>")})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armdesktopvirtualization.NewApplicationGroupsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByResourceGroupPager("resourceGroup1",
+		&armdesktopvirtualization.ApplicationGroupsClientListByResourceGroupOptions{Filter: to.Ptr("applicationGroupType eq 'RailApplication'")})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ApplicationGroup.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ApplicationGroup_ListBySubscription.json
-func ExampleApplicationGroupsClient_ListBySubscription() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ApplicationGroup_ListBySubscription.json
+func ExampleApplicationGroupsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewApplicationGroupsClient("<subscription-id>", cred, nil)
-	pager := client.ListBySubscription(&armdesktopvirtualization.ApplicationGroupsListBySubscriptionOptions{Filter: to.StringPtr("<filter>")})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armdesktopvirtualization.NewApplicationGroupsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListBySubscriptionPager(&armdesktopvirtualization.ApplicationGroupsClientListBySubscriptionOptions{Filter: to.Ptr("applicationGroupType eq 'RailApplication'")})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ApplicationGroup.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

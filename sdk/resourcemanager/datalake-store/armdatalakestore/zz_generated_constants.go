@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,11 +9,12 @@
 package armdatalakestore
 
 const (
-	module  = "armdatalakestore"
-	version = "v0.2.1"
+	moduleName    = "armdatalakestore"
+	moduleVersion = "v1.0.0"
 )
 
-// CheckNameAvailabilityParametersType - The resource type. Note: This should not be set by the user, as the constant value is Microsoft.DataLakeStore/accounts
+// CheckNameAvailabilityParametersType - The resource type. Note: This should not be set by the user, as the constant value
+// is Microsoft.DataLakeStore/accounts
 type CheckNameAvailabilityParametersType string
 
 const (
@@ -25,11 +26,6 @@ func PossibleCheckNameAvailabilityParametersTypeValues() []CheckNameAvailability
 	return []CheckNameAvailabilityParametersType{
 		CheckNameAvailabilityParametersTypeMicrosoftDataLakeStoreAccounts,
 	}
-}
-
-// ToPtr returns a *CheckNameAvailabilityParametersType pointing to the current value.
-func (c CheckNameAvailabilityParametersType) ToPtr() *CheckNameAvailabilityParametersType {
-	return &c
 }
 
 // DataLakeStoreAccountState - The state of the Data Lake Store account.
@@ -46,11 +42,6 @@ func PossibleDataLakeStoreAccountStateValues() []DataLakeStoreAccountState {
 		DataLakeStoreAccountStateActive,
 		DataLakeStoreAccountStateSuspended,
 	}
-}
-
-// ToPtr returns a *DataLakeStoreAccountState pointing to the current value.
-func (c DataLakeStoreAccountState) ToPtr() *DataLakeStoreAccountState {
-	return &c
 }
 
 // DataLakeStoreAccountStatus - The provisioning status of the Data Lake Store account.
@@ -87,12 +78,8 @@ func PossibleDataLakeStoreAccountStatusValues() []DataLakeStoreAccountStatus {
 	}
 }
 
-// ToPtr returns a *DataLakeStoreAccountStatus pointing to the current value.
-func (c DataLakeStoreAccountStatus) ToPtr() *DataLakeStoreAccountStatus {
-	return &c
-}
-
-// EncryptionConfigType - The type of encryption configuration being used. Currently the only supported types are 'UserManaged' and 'ServiceManaged'.
+// EncryptionConfigType - The type of encryption configuration being used. Currently the only supported types are 'UserManaged'
+// and 'ServiceManaged'.
 type EncryptionConfigType string
 
 const (
@@ -106,11 +93,6 @@ func PossibleEncryptionConfigTypeValues() []EncryptionConfigType {
 		EncryptionConfigTypeUserManaged,
 		EncryptionConfigTypeServiceManaged,
 	}
-}
-
-// ToPtr returns a *EncryptionConfigType pointing to the current value.
-func (c EncryptionConfigType) ToPtr() *EncryptionConfigType {
-	return &c
 }
 
 // EncryptionProvisioningState - The current state of encryption provisioning for this Data Lake Store account.
@@ -129,11 +111,6 @@ func PossibleEncryptionProvisioningStateValues() []EncryptionProvisioningState {
 	}
 }
 
-// ToPtr returns a *EncryptionProvisioningState pointing to the current value.
-func (c EncryptionProvisioningState) ToPtr() *EncryptionProvisioningState {
-	return &c
-}
-
 // EncryptionState - The current state of encryption for this Data Lake Store account.
 type EncryptionState string
 
@@ -150,13 +127,8 @@ func PossibleEncryptionStateValues() []EncryptionState {
 	}
 }
 
-// ToPtr returns a *EncryptionState pointing to the current value.
-func (c EncryptionState) ToPtr() *EncryptionState {
-	return &c
-}
-
-// FirewallAllowAzureIPsState - The current state of allowing or disallowing IPs originating within Azure through the firewall. If the firewall is disabled,
-// this is not enforced.
+// FirewallAllowAzureIPsState - The current state of allowing or disallowing IPs originating within Azure through the firewall.
+// If the firewall is disabled, this is not enforced.
 type FirewallAllowAzureIPsState string
 
 const (
@@ -170,11 +142,6 @@ func PossibleFirewallAllowAzureIPsStateValues() []FirewallAllowAzureIPsState {
 		FirewallAllowAzureIPsStateEnabled,
 		FirewallAllowAzureIPsStateDisabled,
 	}
-}
-
-// ToPtr returns a *FirewallAllowAzureIPsState pointing to the current value.
-func (c FirewallAllowAzureIPsState) ToPtr() *FirewallAllowAzureIPsState {
-	return &c
 }
 
 // FirewallState - The current state of the IP address firewall for this Data Lake Store account.
@@ -193,11 +160,6 @@ func PossibleFirewallStateValues() []FirewallState {
 	}
 }
 
-// ToPtr returns a *FirewallState pointing to the current value.
-func (c FirewallState) ToPtr() *FirewallState {
-	return &c
-}
-
 // OperationOrigin - The intended executor of the operation.
 type OperationOrigin string
 
@@ -214,11 +176,6 @@ func PossibleOperationOriginValues() []OperationOrigin {
 		OperationOriginUser,
 		OperationOriginUserSystem,
 	}
-}
-
-// ToPtr returns a *OperationOrigin pointing to the current value.
-func (c OperationOrigin) ToPtr() *OperationOrigin {
-	return &c
 }
 
 // SubscriptionState - The subscription state.
@@ -241,11 +198,6 @@ func PossibleSubscriptionStateValues() []SubscriptionState {
 		SubscriptionStateUnregistered,
 		SubscriptionStateWarned,
 	}
-}
-
-// ToPtr returns a *SubscriptionState pointing to the current value.
-func (c SubscriptionState) ToPtr() *SubscriptionState {
-	return &c
 }
 
 // TierType - The commitment tier to use for next month.
@@ -274,11 +226,6 @@ func PossibleTierTypeValues() []TierType {
 	}
 }
 
-// ToPtr returns a *TierType pointing to the current value.
-func (c TierType) ToPtr() *TierType {
-	return &c
-}
-
 // TrustedIDProviderState - The current state of the trusted identity provider feature for this Data Lake Store account.
 type TrustedIDProviderState string
 
@@ -293,11 +240,6 @@ func PossibleTrustedIDProviderStateValues() []TrustedIDProviderState {
 		TrustedIDProviderStateEnabled,
 		TrustedIDProviderStateDisabled,
 	}
-}
-
-// ToPtr returns a *TrustedIDProviderState pointing to the current value.
-func (c TrustedIDProviderState) ToPtr() *TrustedIDProviderState {
-	return &c
 }
 
 // UsageUnit - Gets the unit of measurement.
@@ -322,9 +264,4 @@ func PossibleUsageUnitValues() []UsageUnit {
 		UsageUnitCountsPerSecond,
 		UsageUnitBytesPerSecond,
 	}
-}
-
-// ToPtr returns a *UsageUnit pointing to the current value.
-func (c UsageUnit) ToPtr() *UsageUnit {
-	return &c
 }

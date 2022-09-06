@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,12 +9,12 @@
 package armguestconfiguration
 
 const (
-	module  = "armguestconfiguration"
-	version = "v0.1.0"
+	moduleName    = "armguestconfiguration"
+	moduleVersion = "v1.0.0"
 )
 
-// ActionAfterReboot - Specifies what happens after a reboot during the application of a configuration. The possible values are ContinueConfiguration and
-// StopConfiguration
+// ActionAfterReboot - Specifies what happens after a reboot during the application of a configuration. The possible values
+// are ContinueConfiguration and StopConfiguration
 type ActionAfterReboot string
 
 const (
@@ -30,13 +30,8 @@ func PossibleActionAfterRebootValues() []ActionAfterReboot {
 	}
 }
 
-// ToPtr returns a *ActionAfterReboot pointing to the current value.
-func (c ActionAfterReboot) ToPtr() *ActionAfterReboot {
-	return &c
-}
-
-// AssignmentType - Specifies the assignment type and execution of the configuration. Possible values are Audit, DeployAndAutoCorrect, ApplyAndAutoCorrect
-// and ApplyAndMonitor.
+// AssignmentType - Specifies the assignment type and execution of the configuration. Possible values are Audit, DeployAndAutoCorrect,
+// ApplyAndAutoCorrect and ApplyAndMonitor.
 type AssignmentType string
 
 const (
@@ -54,11 +49,6 @@ func PossibleAssignmentTypeValues() []AssignmentType {
 		AssignmentTypeAudit,
 		AssignmentTypeDeployAndAutoCorrect,
 	}
-}
-
-// ToPtr returns a *AssignmentType pointing to the current value.
-func (c AssignmentType) ToPtr() *AssignmentType {
-	return &c
 }
 
 // ComplianceStatus - A value indicating compliance status of the machine for the assigned guest configuration.
@@ -79,13 +69,8 @@ func PossibleComplianceStatusValues() []ComplianceStatus {
 	}
 }
 
-// ToPtr returns a *ComplianceStatus pointing to the current value.
-func (c ComplianceStatus) ToPtr() *ComplianceStatus {
-	return &c
-}
-
-// ConfigurationMode - Specifies how the LCM(Local Configuration Manager) actually applies the configuration to the target nodes. Possible values are ApplyOnly,
-// ApplyAndMonitor, and ApplyAndAutoCorrect.
+// ConfigurationMode - Specifies how the LCM(Local Configuration Manager) actually applies the configuration to the target
+// nodes. Possible values are ApplyOnly, ApplyAndMonitor, and ApplyAndAutoCorrect.
 type ConfigurationMode string
 
 const (
@@ -103,9 +88,24 @@ func PossibleConfigurationModeValues() []ConfigurationMode {
 	}
 }
 
-// ToPtr returns a *ConfigurationMode pointing to the current value.
-func (c ConfigurationMode) ToPtr() *ConfigurationMode {
-	return &c
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
 }
 
 // Kind - Kind of the guest configuration. For example:DSC
@@ -120,11 +120,6 @@ func PossibleKindValues() []Kind {
 	return []Kind{
 		KindDSC,
 	}
-}
-
-// ToPtr returns a *Kind pointing to the current value.
-func (c Kind) ToPtr() *Kind {
-	return &c
 }
 
 // ProvisioningState - The provisioning state, which only appears in the response.
@@ -147,11 +142,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // Type - Type of report, Consistency or Initial
 type Type string
 
@@ -166,9 +156,4 @@ func PossibleTypeValues() []Type {
 		TypeConsistency,
 		TypeInitial,
 	}
-}
-
-// ToPtr returns a *Type pointing to the current value.
-func (c Type) ToPtr() *Type {
-	return &c
 }

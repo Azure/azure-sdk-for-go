@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,96 +19,112 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare"
 )
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/SynchronizationSettings_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/SynchronizationSettings_Get.json
 func ExampleSynchronizationSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewSynchronizationSettingsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewSynchronizationSettingsClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
-		"<synchronization-setting-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"Share1",
+		"SynchronizationSetting1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("SynchronizationSettingClassification.GetSynchronizationSetting().ID: %s\n", *res.GetSynchronizationSetting().ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/SynchronizationSettings_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/SynchronizationSettings_Create.json
 func ExampleSynchronizationSettingsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewSynchronizationSettingsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewSynchronizationSettingsClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
-		"<synchronization-setting-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"Share1",
+		"Dataset1",
 		&armdatashare.ScheduledSynchronizationSetting{
-			SynchronizationSetting: armdatashare.SynchronizationSetting{
-				Kind: armdatashare.SynchronizationSettingKindScheduleBased.ToPtr(),
-			},
+			Kind: to.Ptr(armdatashare.SynchronizationSettingKindScheduleBased),
 			Properties: &armdatashare.ScheduledSynchronizationSettingProperties{
-				RecurrenceInterval:  armdatashare.RecurrenceIntervalDay.ToPtr(),
-				SynchronizationTime: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.9614956Z"); return t }()),
+				RecurrenceInterval:  to.Ptr(armdatashare.RecurrenceIntervalDay),
+				SynchronizationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.9614956Z"); return t }()),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("SynchronizationSettingClassification.GetSynchronizationSetting().ID: %s\n", *res.GetSynchronizationSetting().ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/SynchronizationSettings_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/SynchronizationSettings_Delete.json
 func ExampleSynchronizationSettingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewSynchronizationSettingsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewSynchronizationSettingsClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
-		"<synchronization-setting-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"Share1",
+		"SynchronizationSetting1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/SynchronizationSettings_ListByShare.json
-func ExampleSynchronizationSettingsClient_ListByShare() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/SynchronizationSettings_ListByShare.json
+func ExampleSynchronizationSettingsClient_NewListBySharePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewSynchronizationSettingsClient("<subscription-id>", cred, nil)
-	pager := client.ListByShare("<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
-		&armdatashare.SynchronizationSettingsListByShareOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armdatashare.NewSynchronizationSettingsClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListBySharePager("SampleResourceGroup",
+		"Account1",
+		"Share1",
+		&armdatashare.SynchronizationSettingsClientListByShareOptions{SkipToken: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("SynchronizationSettingClassification.GetSynchronizationSetting().ID: %s\n", *v.GetSynchronizationSetting().ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

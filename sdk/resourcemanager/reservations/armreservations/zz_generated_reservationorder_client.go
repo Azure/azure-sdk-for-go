@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armreservations
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,265 +25,255 @@ import (
 // ReservationOrderClient contains the methods for the ReservationOrder group.
 // Don't use this type directly, use NewReservationOrderClient() instead.
 type ReservationOrderClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewReservationOrderClient creates a new instance of ReservationOrderClient with the specified values.
-func NewReservationOrderClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ReservationOrderClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewReservationOrderClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ReservationOrderClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &ReservationOrderClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &ReservationOrderClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
 // Calculate - Calculate price for placing a ReservationOrder.
-// If the operation fails it returns the *Error error type.
-func (client *ReservationOrderClient) Calculate(ctx context.Context, body PurchaseRequest, options *ReservationOrderCalculateOptions) (ReservationOrderCalculateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
+// body - Information needed for calculate or purchase reservation
+// options - ReservationOrderClientCalculateOptions contains the optional parameters for the ReservationOrderClient.Calculate
+// method.
+func (client *ReservationOrderClient) Calculate(ctx context.Context, body PurchaseRequest, options *ReservationOrderClientCalculateOptions) (ReservationOrderClientCalculateResponse, error) {
 	req, err := client.calculateCreateRequest(ctx, body, options)
 	if err != nil {
-		return ReservationOrderCalculateResponse{}, err
+		return ReservationOrderClientCalculateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReservationOrderCalculateResponse{}, err
+		return ReservationOrderClientCalculateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReservationOrderCalculateResponse{}, client.calculateHandleError(resp)
+		return ReservationOrderClientCalculateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.calculateHandleResponse(resp)
 }
 
 // calculateCreateRequest creates the Calculate request.
-func (client *ReservationOrderClient) calculateCreateRequest(ctx context.Context, body PurchaseRequest, options *ReservationOrderCalculateOptions) (*policy.Request, error) {
+func (client *ReservationOrderClient) calculateCreateRequest(ctx context.Context, body PurchaseRequest, options *ReservationOrderClientCalculateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/calculatePrice"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // calculateHandleResponse handles the Calculate response.
-func (client *ReservationOrderClient) calculateHandleResponse(resp *http.Response) (ReservationOrderCalculateResponse, error) {
-	result := ReservationOrderCalculateResponse{RawResponse: resp}
+func (client *ReservationOrderClient) calculateHandleResponse(resp *http.Response) (ReservationOrderClientCalculateResponse, error) {
+	result := ReservationOrderClientCalculateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CalculatePriceResponse); err != nil {
-		return ReservationOrderCalculateResponse{}, runtime.NewResponseError(err, resp)
+		return ReservationOrderClientCalculateResponse{}, err
 	}
 	return result, nil
 }
 
-// calculateHandleError handles the Calculate error response.
-func (client *ReservationOrderClient) calculateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ChangeDirectory - Change directory (tenant) of ReservationOrder and all Reservation under it to specified tenant id
-// If the operation fails it returns the *Error error type.
-func (client *ReservationOrderClient) ChangeDirectory(ctx context.Context, reservationOrderID string, body ChangeDirectoryRequest, options *ReservationOrderChangeDirectoryOptions) (ReservationOrderChangeDirectoryResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
+// reservationOrderID - Order Id of the reservation
+// body - Information needed to change directory of reservation order
+// options - ReservationOrderClientChangeDirectoryOptions contains the optional parameters for the ReservationOrderClient.ChangeDirectory
+// method.
+func (client *ReservationOrderClient) ChangeDirectory(ctx context.Context, reservationOrderID string, body ChangeDirectoryRequest, options *ReservationOrderClientChangeDirectoryOptions) (ReservationOrderClientChangeDirectoryResponse, error) {
 	req, err := client.changeDirectoryCreateRequest(ctx, reservationOrderID, body, options)
 	if err != nil {
-		return ReservationOrderChangeDirectoryResponse{}, err
+		return ReservationOrderClientChangeDirectoryResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReservationOrderChangeDirectoryResponse{}, err
+		return ReservationOrderClientChangeDirectoryResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReservationOrderChangeDirectoryResponse{}, client.changeDirectoryHandleError(resp)
+		return ReservationOrderClientChangeDirectoryResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.changeDirectoryHandleResponse(resp)
 }
 
 // changeDirectoryCreateRequest creates the ChangeDirectory request.
-func (client *ReservationOrderClient) changeDirectoryCreateRequest(ctx context.Context, reservationOrderID string, body ChangeDirectoryRequest, options *ReservationOrderChangeDirectoryOptions) (*policy.Request, error) {
+func (client *ReservationOrderClient) changeDirectoryCreateRequest(ctx context.Context, reservationOrderID string, body ChangeDirectoryRequest, options *ReservationOrderClientChangeDirectoryOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/changeDirectory"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // changeDirectoryHandleResponse handles the ChangeDirectory response.
-func (client *ReservationOrderClient) changeDirectoryHandleResponse(resp *http.Response) (ReservationOrderChangeDirectoryResponse, error) {
-	result := ReservationOrderChangeDirectoryResponse{RawResponse: resp}
+func (client *ReservationOrderClient) changeDirectoryHandleResponse(resp *http.Response) (ReservationOrderClientChangeDirectoryResponse, error) {
+	result := ReservationOrderClientChangeDirectoryResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ChangeDirectoryResponse); err != nil {
-		return ReservationOrderChangeDirectoryResponse{}, runtime.NewResponseError(err, resp)
+		return ReservationOrderClientChangeDirectoryResponse{}, err
 	}
 	return result, nil
 }
 
-// changeDirectoryHandleError handles the ChangeDirectory error response.
-func (client *ReservationOrderClient) changeDirectoryHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get the details of the ReservationOrder.
-// If the operation fails it returns the *Error error type.
-func (client *ReservationOrderClient) Get(ctx context.Context, reservationOrderID string, options *ReservationOrderGetOptions) (ReservationOrderGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
+// reservationOrderID - Order Id of the reservation
+// options - ReservationOrderClientGetOptions contains the optional parameters for the ReservationOrderClient.Get method.
+func (client *ReservationOrderClient) Get(ctx context.Context, reservationOrderID string, options *ReservationOrderClientGetOptions) (ReservationOrderClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, reservationOrderID, options)
 	if err != nil {
-		return ReservationOrderGetResponse{}, err
+		return ReservationOrderClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReservationOrderGetResponse{}, err
+		return ReservationOrderClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReservationOrderGetResponse{}, client.getHandleError(resp)
+		return ReservationOrderClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReservationOrderClient) getCreateRequest(ctx context.Context, reservationOrderID string, options *ReservationOrderGetOptions) (*policy.Request, error) {
+func (client *ReservationOrderClient) getCreateRequest(ctx context.Context, reservationOrderID string, options *ReservationOrderClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-03-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReservationOrderClient) getHandleResponse(resp *http.Response) (ReservationOrderGetResponse, error) {
-	result := ReservationOrderGetResponse{RawResponse: resp}
+func (client *ReservationOrderClient) getHandleResponse(resp *http.Response) (ReservationOrderClientGetResponse, error) {
+	result := ReservationOrderClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationOrderResponse); err != nil {
-		return ReservationOrderGetResponse{}, runtime.NewResponseError(err, resp)
+		return ReservationOrderClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ReservationOrderClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - List of all the ReservationOrders that the user has access to in the current tenant.
-// If the operation fails it returns the *Error error type.
-func (client *ReservationOrderClient) List(options *ReservationOrderListOptions) *ReservationOrderListPager {
-	return &ReservationOrderListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+// NewListPager - List of all the ReservationOrders that the user has access to in the current tenant.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
+// options - ReservationOrderClientListOptions contains the optional parameters for the ReservationOrderClient.List method.
+func (client *ReservationOrderClient) NewListPager(options *ReservationOrderClientListOptions) *runtime.Pager[ReservationOrderClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ReservationOrderClientListResponse]{
+		More: func(page ReservationOrderClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReservationOrderListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReservationOrderList.NextLink)
+		Fetcher: func(ctx context.Context, page *ReservationOrderClientListResponse) (ReservationOrderClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReservationOrderClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReservationOrderClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReservationOrderClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ReservationOrderClient) listCreateRequest(ctx context.Context, options *ReservationOrderListOptions) (*policy.Request, error) {
+func (client *ReservationOrderClient) listCreateRequest(ctx context.Context, options *ReservationOrderClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ReservationOrderClient) listHandleResponse(resp *http.Response) (ReservationOrderListResponse, error) {
-	result := ReservationOrderListResponse{RawResponse: resp}
+func (client *ReservationOrderClient) listHandleResponse(resp *http.Response) (ReservationOrderClientListResponse, error) {
+	result := ReservationOrderClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationOrderList); err != nil {
-		return ReservationOrderListResponse{}, runtime.NewResponseError(err, resp)
+		return ReservationOrderClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ReservationOrderClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginPurchase - Purchase ReservationOrder and create resource under the specified URI.
-// If the operation fails it returns the *Error error type.
-func (client *ReservationOrderClient) BeginPurchase(ctx context.Context, reservationOrderID string, body PurchaseRequest, options *ReservationOrderBeginPurchaseOptions) (ReservationOrderPurchasePollerResponse, error) {
-	resp, err := client.purchase(ctx, reservationOrderID, body, options)
-	if err != nil {
-		return ReservationOrderPurchasePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
+// reservationOrderID - Order Id of the reservation
+// body - Information needed for calculate or purchase reservation
+// options - ReservationOrderClientBeginPurchaseOptions contains the optional parameters for the ReservationOrderClient.BeginPurchase
+// method.
+func (client *ReservationOrderClient) BeginPurchase(ctx context.Context, reservationOrderID string, body PurchaseRequest, options *ReservationOrderClientBeginPurchaseOptions) (*runtime.Poller[ReservationOrderClientPurchaseResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.purchase(ctx, reservationOrderID, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ReservationOrderClientPurchaseResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[ReservationOrderClientPurchaseResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ReservationOrderPurchasePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ReservationOrderClient.Purchase", "location", resp, client.pl, client.purchaseHandleError)
-	if err != nil {
-		return ReservationOrderPurchasePollerResponse{}, err
-	}
-	result.Poller = &ReservationOrderPurchasePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Purchase - Purchase ReservationOrder and create resource under the specified URI.
-// If the operation fails it returns the *Error error type.
-func (client *ReservationOrderClient) purchase(ctx context.Context, reservationOrderID string, body PurchaseRequest, options *ReservationOrderBeginPurchaseOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
+func (client *ReservationOrderClient) purchase(ctx context.Context, reservationOrderID string, body PurchaseRequest, options *ReservationOrderClientBeginPurchaseOptions) (*http.Response, error) {
 	req, err := client.purchaseCreateRequest(ctx, reservationOrderID, body, options)
 	if err != nil {
 		return nil, err
@@ -293,38 +283,25 @@ func (client *ReservationOrderClient) purchase(ctx context.Context, reservationO
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.purchaseHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // purchaseCreateRequest creates the Purchase request.
-func (client *ReservationOrderClient) purchaseCreateRequest(ctx context.Context, reservationOrderID string, body PurchaseRequest, options *ReservationOrderBeginPurchaseOptions) (*policy.Request, error) {
+func (client *ReservationOrderClient) purchaseCreateRequest(ctx context.Context, reservationOrderID string, body PurchaseRequest, options *ReservationOrderClientBeginPurchaseOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
-}
-
-// purchaseHandleError handles the Purchase error response.
-func (client *ReservationOrderClient) purchaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

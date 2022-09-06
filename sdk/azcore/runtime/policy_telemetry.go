@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -44,9 +44,6 @@ func NewTelemetryPolicy(mod, ver string, o *policy.TelemetryOptions) policy.Poli
 		b.WriteRune(' ')
 	}
 	b.WriteString(formatTelemetry(mod, ver))
-	b.WriteRune(' ')
-	// inject azcore info
-	b.WriteString(formatTelemetry(shared.Module, shared.Version))
 	b.WriteRune(' ')
 	b.WriteString(platformInfo)
 	tp.telemetryValue = b.String()

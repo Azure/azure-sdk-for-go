@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armquantum
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,59 @@ import (
 // WorkspaceClient contains the methods for the Workspace group.
 // Don't use this type directly, use NewWorkspaceClient() instead.
 type WorkspaceClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkspaceClient creates a new instance of WorkspaceClient with the specified values.
-func NewWorkspaceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspaceClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The Azure subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewWorkspaceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &WorkspaceClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &WorkspaceClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // CheckNameAvailability - Check the availability of the resource name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WorkspaceClient) CheckNameAvailability(ctx context.Context, locationName string, checkNameAvailabilityParameters CheckNameAvailabilityParameters, options *WorkspaceCheckNameAvailabilityOptions) (WorkspaceCheckNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-10-preview
+// locationName - Location.
+// checkNameAvailabilityParameters - The name and type of the resource.
+// options - WorkspaceClientCheckNameAvailabilityOptions contains the optional parameters for the WorkspaceClient.CheckNameAvailability
+// method.
+func (client *WorkspaceClient) CheckNameAvailability(ctx context.Context, locationName string, checkNameAvailabilityParameters CheckNameAvailabilityParameters, options *WorkspaceClientCheckNameAvailabilityOptions) (WorkspaceClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, locationName, checkNameAvailabilityParameters, options)
 	if err != nil {
-		return WorkspaceCheckNameAvailabilityResponse{}, err
+		return WorkspaceClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WorkspaceCheckNameAvailabilityResponse{}, err
+		return WorkspaceClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WorkspaceCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return WorkspaceClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *WorkspaceClient) checkNameAvailabilityCreateRequest(ctx context.Context, locationName string, checkNameAvailabilityParameters CheckNameAvailabilityParameters, options *WorkspaceCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *WorkspaceClient) checkNameAvailabilityCreateRequest(ctx context.Context, locationName string, checkNameAvailabilityParameters CheckNameAvailabilityParameters, options *WorkspaceClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Quantum/locations/{locationName}/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,35 +87,22 @@ func (client *WorkspaceClient) checkNameAvailabilityCreateRequest(ctx context.Co
 		return nil, errors.New("parameter locationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-11-04-preview")
+	reqQP.Set("api-version", "2022-01-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, checkNameAvailabilityParameters)
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *WorkspaceClient) checkNameAvailabilityHandleResponse(resp *http.Response) (WorkspaceCheckNameAvailabilityResponse, error) {
-	result := WorkspaceCheckNameAvailabilityResponse{RawResponse: resp}
+func (client *WorkspaceClient) checkNameAvailabilityHandleResponse(resp *http.Response) (WorkspaceClientCheckNameAvailabilityResponse, error) {
+	result := WorkspaceClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
-		return WorkspaceCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return WorkspaceClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
-}
-
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *WorkspaceClient) checkNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,676 +8,312 @@
 
 package armdesktopvirtualization
 
-import "net/http"
-
-// ApplicationGroupsCreateOrUpdateResponse contains the response from method ApplicationGroups.CreateOrUpdate.
-type ApplicationGroupsCreateOrUpdateResponse struct {
-	ApplicationGroupsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationGroupsCreateOrUpdateResult contains the result from method ApplicationGroups.CreateOrUpdate.
-type ApplicationGroupsCreateOrUpdateResult struct {
+// ApplicationGroupsClientCreateOrUpdateResponse contains the response from method ApplicationGroupsClient.CreateOrUpdate.
+type ApplicationGroupsClientCreateOrUpdateResponse struct {
 	ApplicationGroup
 }
 
-// ApplicationGroupsDeleteResponse contains the response from method ApplicationGroups.Delete.
-type ApplicationGroupsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ApplicationGroupsClientDeleteResponse contains the response from method ApplicationGroupsClient.Delete.
+type ApplicationGroupsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// ApplicationGroupsGetResponse contains the response from method ApplicationGroups.Get.
-type ApplicationGroupsGetResponse struct {
-	ApplicationGroupsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationGroupsGetResult contains the result from method ApplicationGroups.Get.
-type ApplicationGroupsGetResult struct {
+// ApplicationGroupsClientGetResponse contains the response from method ApplicationGroupsClient.Get.
+type ApplicationGroupsClientGetResponse struct {
 	ApplicationGroup
 }
 
-// ApplicationGroupsListByResourceGroupResponse contains the response from method ApplicationGroups.ListByResourceGroup.
-type ApplicationGroupsListByResourceGroupResponse struct {
-	ApplicationGroupsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationGroupsListByResourceGroupResult contains the result from method ApplicationGroups.ListByResourceGroup.
-type ApplicationGroupsListByResourceGroupResult struct {
+// ApplicationGroupsClientListByResourceGroupResponse contains the response from method ApplicationGroupsClient.ListByResourceGroup.
+type ApplicationGroupsClientListByResourceGroupResponse struct {
 	ApplicationGroupList
 }
 
-// ApplicationGroupsListBySubscriptionResponse contains the response from method ApplicationGroups.ListBySubscription.
-type ApplicationGroupsListBySubscriptionResponse struct {
-	ApplicationGroupsListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationGroupsListBySubscriptionResult contains the result from method ApplicationGroups.ListBySubscription.
-type ApplicationGroupsListBySubscriptionResult struct {
+// ApplicationGroupsClientListBySubscriptionResponse contains the response from method ApplicationGroupsClient.ListBySubscription.
+type ApplicationGroupsClientListBySubscriptionResponse struct {
 	ApplicationGroupList
 }
 
-// ApplicationGroupsUpdateResponse contains the response from method ApplicationGroups.Update.
-type ApplicationGroupsUpdateResponse struct {
-	ApplicationGroupsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationGroupsUpdateResult contains the result from method ApplicationGroups.Update.
-type ApplicationGroupsUpdateResult struct {
+// ApplicationGroupsClientUpdateResponse contains the response from method ApplicationGroupsClient.Update.
+type ApplicationGroupsClientUpdateResponse struct {
 	ApplicationGroup
 }
 
-// ApplicationsCreateOrUpdateResponse contains the response from method Applications.CreateOrUpdate.
-type ApplicationsCreateOrUpdateResponse struct {
-	ApplicationsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationsCreateOrUpdateResult contains the result from method Applications.CreateOrUpdate.
-type ApplicationsCreateOrUpdateResult struct {
+// ApplicationsClientCreateOrUpdateResponse contains the response from method ApplicationsClient.CreateOrUpdate.
+type ApplicationsClientCreateOrUpdateResponse struct {
 	Application
 }
 
-// ApplicationsDeleteResponse contains the response from method Applications.Delete.
-type ApplicationsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ApplicationsClientDeleteResponse contains the response from method ApplicationsClient.Delete.
+type ApplicationsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// ApplicationsGetResponse contains the response from method Applications.Get.
-type ApplicationsGetResponse struct {
-	ApplicationsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationsGetResult contains the result from method Applications.Get.
-type ApplicationsGetResult struct {
+// ApplicationsClientGetResponse contains the response from method ApplicationsClient.Get.
+type ApplicationsClientGetResponse struct {
 	Application
 }
 
-// ApplicationsListResponse contains the response from method Applications.List.
-type ApplicationsListResponse struct {
-	ApplicationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationsListResult contains the result from method Applications.List.
-type ApplicationsListResult struct {
+// ApplicationsClientListResponse contains the response from method ApplicationsClient.List.
+type ApplicationsClientListResponse struct {
 	ApplicationList
 }
 
-// ApplicationsUpdateResponse contains the response from method Applications.Update.
-type ApplicationsUpdateResponse struct {
-	ApplicationsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplicationsUpdateResult contains the result from method Applications.Update.
-type ApplicationsUpdateResult struct {
+// ApplicationsClientUpdateResponse contains the response from method ApplicationsClient.Update.
+type ApplicationsClientUpdateResponse struct {
 	Application
 }
 
-// DesktopsGetResponse contains the response from method Desktops.Get.
-type DesktopsGetResponse struct {
-	DesktopsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DesktopsGetResult contains the result from method Desktops.Get.
-type DesktopsGetResult struct {
+// DesktopsClientGetResponse contains the response from method DesktopsClient.Get.
+type DesktopsClientGetResponse struct {
 	Desktop
 }
 
-// DesktopsListResponse contains the response from method Desktops.List.
-type DesktopsListResponse struct {
-	DesktopsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DesktopsListResult contains the result from method Desktops.List.
-type DesktopsListResult struct {
+// DesktopsClientListResponse contains the response from method DesktopsClient.List.
+type DesktopsClientListResponse struct {
 	DesktopList
 }
 
-// DesktopsUpdateResponse contains the response from method Desktops.Update.
-type DesktopsUpdateResponse struct {
-	DesktopsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DesktopsUpdateResult contains the result from method Desktops.Update.
-type DesktopsUpdateResult struct {
+// DesktopsClientUpdateResponse contains the response from method DesktopsClient.Update.
+type DesktopsClientUpdateResponse struct {
 	Desktop
 }
 
-// HostPoolsCreateOrUpdateResponse contains the response from method HostPools.CreateOrUpdate.
-type HostPoolsCreateOrUpdateResponse struct {
-	HostPoolsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// HostPoolsCreateOrUpdateResult contains the result from method HostPools.CreateOrUpdate.
-type HostPoolsCreateOrUpdateResult struct {
+// HostPoolsClientCreateOrUpdateResponse contains the response from method HostPoolsClient.CreateOrUpdate.
+type HostPoolsClientCreateOrUpdateResponse struct {
 	HostPool
 }
 
-// HostPoolsDeleteResponse contains the response from method HostPools.Delete.
-type HostPoolsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// HostPoolsClientDeleteResponse contains the response from method HostPoolsClient.Delete.
+type HostPoolsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// HostPoolsGetResponse contains the response from method HostPools.Get.
-type HostPoolsGetResponse struct {
-	HostPoolsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// HostPoolsGetResult contains the result from method HostPools.Get.
-type HostPoolsGetResult struct {
+// HostPoolsClientGetResponse contains the response from method HostPoolsClient.Get.
+type HostPoolsClientGetResponse struct {
 	HostPool
 }
 
-// HostPoolsListByResourceGroupResponse contains the response from method HostPools.ListByResourceGroup.
-type HostPoolsListByResourceGroupResponse struct {
-	HostPoolsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// HostPoolsListByResourceGroupResult contains the result from method HostPools.ListByResourceGroup.
-type HostPoolsListByResourceGroupResult struct {
+// HostPoolsClientListByResourceGroupResponse contains the response from method HostPoolsClient.ListByResourceGroup.
+type HostPoolsClientListByResourceGroupResponse struct {
 	HostPoolList
 }
 
-// HostPoolsListResponse contains the response from method HostPools.List.
-type HostPoolsListResponse struct {
-	HostPoolsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// HostPoolsListResult contains the result from method HostPools.List.
-type HostPoolsListResult struct {
+// HostPoolsClientListResponse contains the response from method HostPoolsClient.List.
+type HostPoolsClientListResponse struct {
 	HostPoolList
 }
 
-// HostPoolsRetrieveRegistrationTokenResponse contains the response from method HostPools.RetrieveRegistrationToken.
-type HostPoolsRetrieveRegistrationTokenResponse struct {
-	HostPoolsRetrieveRegistrationTokenResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// HostPoolsRetrieveRegistrationTokenResult contains the result from method HostPools.RetrieveRegistrationToken.
-type HostPoolsRetrieveRegistrationTokenResult struct {
+// HostPoolsClientRetrieveRegistrationTokenResponse contains the response from method HostPoolsClient.RetrieveRegistrationToken.
+type HostPoolsClientRetrieveRegistrationTokenResponse struct {
 	RegistrationInfo
 }
 
-// HostPoolsUpdateResponse contains the response from method HostPools.Update.
-type HostPoolsUpdateResponse struct {
-	HostPoolsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// HostPoolsUpdateResult contains the result from method HostPools.Update.
-type HostPoolsUpdateResult struct {
+// HostPoolsClientUpdateResponse contains the response from method HostPoolsClient.Update.
+type HostPoolsClientUpdateResponse struct {
 	HostPool
 }
 
-// MSIXPackagesCreateOrUpdateResponse contains the response from method MSIXPackages.CreateOrUpdate.
-type MSIXPackagesCreateOrUpdateResponse struct {
-	MSIXPackagesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MSIXPackagesCreateOrUpdateResult contains the result from method MSIXPackages.CreateOrUpdate.
-type MSIXPackagesCreateOrUpdateResult struct {
+// MSIXPackagesClientCreateOrUpdateResponse contains the response from method MSIXPackagesClient.CreateOrUpdate.
+type MSIXPackagesClientCreateOrUpdateResponse struct {
 	MSIXPackage
 }
 
-// MSIXPackagesDeleteResponse contains the response from method MSIXPackages.Delete.
-type MSIXPackagesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// MSIXPackagesClientDeleteResponse contains the response from method MSIXPackagesClient.Delete.
+type MSIXPackagesClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// MSIXPackagesGetResponse contains the response from method MSIXPackages.Get.
-type MSIXPackagesGetResponse struct {
-	MSIXPackagesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MSIXPackagesGetResult contains the result from method MSIXPackages.Get.
-type MSIXPackagesGetResult struct {
+// MSIXPackagesClientGetResponse contains the response from method MSIXPackagesClient.Get.
+type MSIXPackagesClientGetResponse struct {
 	MSIXPackage
 }
 
-// MSIXPackagesListResponse contains the response from method MSIXPackages.List.
-type MSIXPackagesListResponse struct {
-	MSIXPackagesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MSIXPackagesListResult contains the result from method MSIXPackages.List.
-type MSIXPackagesListResult struct {
+// MSIXPackagesClientListResponse contains the response from method MSIXPackagesClient.List.
+type MSIXPackagesClientListResponse struct {
 	MSIXPackageList
 }
 
-// MSIXPackagesUpdateResponse contains the response from method MSIXPackages.Update.
-type MSIXPackagesUpdateResponse struct {
-	MSIXPackagesUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MSIXPackagesUpdateResult contains the result from method MSIXPackages.Update.
-type MSIXPackagesUpdateResult struct {
+// MSIXPackagesClientUpdateResponse contains the response from method MSIXPackagesClient.Update.
+type MSIXPackagesClientUpdateResponse struct {
 	MSIXPackage
 }
 
-// MsixImagesExpandResponse contains the response from method MsixImages.Expand.
-type MsixImagesExpandResponse struct {
-	MsixImagesExpandResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MsixImagesExpandResult contains the result from method MsixImages.Expand.
-type MsixImagesExpandResult struct {
+// MsixImagesClientExpandResponse contains the response from method MsixImagesClient.Expand.
+type MsixImagesClientExpandResponse struct {
 	ExpandMsixImageList
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
 	ResourceProviderOperationList
 }
 
-// PrivateEndpointConnectionsDeleteByHostPoolResponse contains the response from method PrivateEndpointConnections.DeleteByHostPool.
-type PrivateEndpointConnectionsDeleteByHostPoolResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PrivateEndpointConnectionsClientDeleteByHostPoolResponse contains the response from method PrivateEndpointConnectionsClient.DeleteByHostPool.
+type PrivateEndpointConnectionsClientDeleteByHostPoolResponse struct {
+	// placeholder for future response values
 }
 
-// PrivateEndpointConnectionsDeleteByWorkspaceResponse contains the response from method PrivateEndpointConnections.DeleteByWorkspace.
-type PrivateEndpointConnectionsDeleteByWorkspaceResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PrivateEndpointConnectionsClientDeleteByWorkspaceResponse contains the response from method PrivateEndpointConnectionsClient.DeleteByWorkspace.
+type PrivateEndpointConnectionsClientDeleteByWorkspaceResponse struct {
+	// placeholder for future response values
 }
 
-// PrivateEndpointConnectionsGetByHostPoolResponse contains the response from method PrivateEndpointConnections.GetByHostPool.
-type PrivateEndpointConnectionsGetByHostPoolResponse struct {
-	PrivateEndpointConnectionsGetByHostPoolResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsGetByHostPoolResult contains the result from method PrivateEndpointConnections.GetByHostPool.
-type PrivateEndpointConnectionsGetByHostPoolResult struct {
+// PrivateEndpointConnectionsClientGetByHostPoolResponse contains the response from method PrivateEndpointConnectionsClient.GetByHostPool.
+type PrivateEndpointConnectionsClientGetByHostPoolResponse struct {
 	PrivateEndpointConnectionWithSystemData
 }
 
-// PrivateEndpointConnectionsGetByWorkspaceResponse contains the response from method PrivateEndpointConnections.GetByWorkspace.
-type PrivateEndpointConnectionsGetByWorkspaceResponse struct {
-	PrivateEndpointConnectionsGetByWorkspaceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsGetByWorkspaceResult contains the result from method PrivateEndpointConnections.GetByWorkspace.
-type PrivateEndpointConnectionsGetByWorkspaceResult struct {
+// PrivateEndpointConnectionsClientGetByWorkspaceResponse contains the response from method PrivateEndpointConnectionsClient.GetByWorkspace.
+type PrivateEndpointConnectionsClientGetByWorkspaceResponse struct {
 	PrivateEndpointConnectionWithSystemData
 }
 
-// PrivateEndpointConnectionsListByHostPoolResponse contains the response from method PrivateEndpointConnections.ListByHostPool.
-type PrivateEndpointConnectionsListByHostPoolResponse struct {
-	PrivateEndpointConnectionsListByHostPoolResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsListByHostPoolResult contains the result from method PrivateEndpointConnections.ListByHostPool.
-type PrivateEndpointConnectionsListByHostPoolResult struct {
+// PrivateEndpointConnectionsClientListByHostPoolResponse contains the response from method PrivateEndpointConnectionsClient.ListByHostPool.
+type PrivateEndpointConnectionsClientListByHostPoolResponse struct {
 	PrivateEndpointConnectionListResultWithSystemData
 }
 
-// PrivateEndpointConnectionsListByWorkspaceResponse contains the response from method PrivateEndpointConnections.ListByWorkspace.
-type PrivateEndpointConnectionsListByWorkspaceResponse struct {
-	PrivateEndpointConnectionsListByWorkspaceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsListByWorkspaceResult contains the result from method PrivateEndpointConnections.ListByWorkspace.
-type PrivateEndpointConnectionsListByWorkspaceResult struct {
+// PrivateEndpointConnectionsClientListByWorkspaceResponse contains the response from method PrivateEndpointConnectionsClient.ListByWorkspace.
+type PrivateEndpointConnectionsClientListByWorkspaceResponse struct {
 	PrivateEndpointConnectionListResultWithSystemData
 }
 
-// PrivateEndpointConnectionsUpdateByHostPoolResponse contains the response from method PrivateEndpointConnections.UpdateByHostPool.
-type PrivateEndpointConnectionsUpdateByHostPoolResponse struct {
-	PrivateEndpointConnectionsUpdateByHostPoolResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsUpdateByHostPoolResult contains the result from method PrivateEndpointConnections.UpdateByHostPool.
-type PrivateEndpointConnectionsUpdateByHostPoolResult struct {
+// PrivateEndpointConnectionsClientUpdateByHostPoolResponse contains the response from method PrivateEndpointConnectionsClient.UpdateByHostPool.
+type PrivateEndpointConnectionsClientUpdateByHostPoolResponse struct {
 	PrivateEndpointConnectionWithSystemData
 }
 
-// PrivateEndpointConnectionsUpdateByWorkspaceResponse contains the response from method PrivateEndpointConnections.UpdateByWorkspace.
-type PrivateEndpointConnectionsUpdateByWorkspaceResponse struct {
-	PrivateEndpointConnectionsUpdateByWorkspaceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsUpdateByWorkspaceResult contains the result from method PrivateEndpointConnections.UpdateByWorkspace.
-type PrivateEndpointConnectionsUpdateByWorkspaceResult struct {
+// PrivateEndpointConnectionsClientUpdateByWorkspaceResponse contains the response from method PrivateEndpointConnectionsClient.UpdateByWorkspace.
+type PrivateEndpointConnectionsClientUpdateByWorkspaceResponse struct {
 	PrivateEndpointConnectionWithSystemData
 }
 
-// PrivateLinkResourcesListByHostPoolResponse contains the response from method PrivateLinkResources.ListByHostPool.
-type PrivateLinkResourcesListByHostPoolResponse struct {
-	PrivateLinkResourcesListByHostPoolResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkResourcesListByHostPoolResult contains the result from method PrivateLinkResources.ListByHostPool.
-type PrivateLinkResourcesListByHostPoolResult struct {
+// PrivateLinkResourcesClientListByHostPoolResponse contains the response from method PrivateLinkResourcesClient.ListByHostPool.
+type PrivateLinkResourcesClientListByHostPoolResponse struct {
 	PrivateLinkResourceListResult
 }
 
-// PrivateLinkResourcesListByWorkspaceResponse contains the response from method PrivateLinkResources.ListByWorkspace.
-type PrivateLinkResourcesListByWorkspaceResponse struct {
-	PrivateLinkResourcesListByWorkspaceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkResourcesListByWorkspaceResult contains the result from method PrivateLinkResources.ListByWorkspace.
-type PrivateLinkResourcesListByWorkspaceResult struct {
+// PrivateLinkResourcesClientListByWorkspaceResponse contains the response from method PrivateLinkResourcesClient.ListByWorkspace.
+type PrivateLinkResourcesClientListByWorkspaceResponse struct {
 	PrivateLinkResourceListResult
 }
 
-// ScalingPlansCreateResponse contains the response from method ScalingPlans.Create.
-type ScalingPlansCreateResponse struct {
-	ScalingPlansCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ScalingPlansCreateResult contains the result from method ScalingPlans.Create.
-type ScalingPlansCreateResult struct {
+// ScalingPlansClientCreateResponse contains the response from method ScalingPlansClient.Create.
+type ScalingPlansClientCreateResponse struct {
 	ScalingPlan
 }
 
-// ScalingPlansDeleteResponse contains the response from method ScalingPlans.Delete.
-type ScalingPlansDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ScalingPlansClientDeleteResponse contains the response from method ScalingPlansClient.Delete.
+type ScalingPlansClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// ScalingPlansGetResponse contains the response from method ScalingPlans.Get.
-type ScalingPlansGetResponse struct {
-	ScalingPlansGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ScalingPlansGetResult contains the result from method ScalingPlans.Get.
-type ScalingPlansGetResult struct {
+// ScalingPlansClientGetResponse contains the response from method ScalingPlansClient.Get.
+type ScalingPlansClientGetResponse struct {
 	ScalingPlan
 }
 
-// ScalingPlansListByHostPoolResponse contains the response from method ScalingPlans.ListByHostPool.
-type ScalingPlansListByHostPoolResponse struct {
-	ScalingPlansListByHostPoolResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ScalingPlansListByHostPoolResult contains the result from method ScalingPlans.ListByHostPool.
-type ScalingPlansListByHostPoolResult struct {
+// ScalingPlansClientListByHostPoolResponse contains the response from method ScalingPlansClient.ListByHostPool.
+type ScalingPlansClientListByHostPoolResponse struct {
 	ScalingPlanList
 }
 
-// ScalingPlansListByResourceGroupResponse contains the response from method ScalingPlans.ListByResourceGroup.
-type ScalingPlansListByResourceGroupResponse struct {
-	ScalingPlansListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ScalingPlansListByResourceGroupResult contains the result from method ScalingPlans.ListByResourceGroup.
-type ScalingPlansListByResourceGroupResult struct {
+// ScalingPlansClientListByResourceGroupResponse contains the response from method ScalingPlansClient.ListByResourceGroup.
+type ScalingPlansClientListByResourceGroupResponse struct {
 	ScalingPlanList
 }
 
-// ScalingPlansListBySubscriptionResponse contains the response from method ScalingPlans.ListBySubscription.
-type ScalingPlansListBySubscriptionResponse struct {
-	ScalingPlansListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ScalingPlansListBySubscriptionResult contains the result from method ScalingPlans.ListBySubscription.
-type ScalingPlansListBySubscriptionResult struct {
+// ScalingPlansClientListBySubscriptionResponse contains the response from method ScalingPlansClient.ListBySubscription.
+type ScalingPlansClientListBySubscriptionResponse struct {
 	ScalingPlanList
 }
 
-// ScalingPlansUpdateResponse contains the response from method ScalingPlans.Update.
-type ScalingPlansUpdateResponse struct {
-	ScalingPlansUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ScalingPlansUpdateResult contains the result from method ScalingPlans.Update.
-type ScalingPlansUpdateResult struct {
+// ScalingPlansClientUpdateResponse contains the response from method ScalingPlansClient.Update.
+type ScalingPlansClientUpdateResponse struct {
 	ScalingPlan
 }
 
-// SessionHostsDeleteResponse contains the response from method SessionHosts.Delete.
-type SessionHostsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// SessionHostsClientDeleteResponse contains the response from method SessionHostsClient.Delete.
+type SessionHostsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// SessionHostsGetResponse contains the response from method SessionHosts.Get.
-type SessionHostsGetResponse struct {
-	SessionHostsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SessionHostsGetResult contains the result from method SessionHosts.Get.
-type SessionHostsGetResult struct {
+// SessionHostsClientGetResponse contains the response from method SessionHostsClient.Get.
+type SessionHostsClientGetResponse struct {
 	SessionHost
 }
 
-// SessionHostsListResponse contains the response from method SessionHosts.List.
-type SessionHostsListResponse struct {
-	SessionHostsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SessionHostsListResult contains the result from method SessionHosts.List.
-type SessionHostsListResult struct {
+// SessionHostsClientListResponse contains the response from method SessionHostsClient.List.
+type SessionHostsClientListResponse struct {
 	SessionHostList
 }
 
-// SessionHostsUpdateResponse contains the response from method SessionHosts.Update.
-type SessionHostsUpdateResponse struct {
-	SessionHostsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SessionHostsUpdateResult contains the result from method SessionHosts.Update.
-type SessionHostsUpdateResult struct {
+// SessionHostsClientUpdateResponse contains the response from method SessionHostsClient.Update.
+type SessionHostsClientUpdateResponse struct {
 	SessionHost
 }
 
-// StartMenuItemsListResponse contains the response from method StartMenuItems.List.
-type StartMenuItemsListResponse struct {
-	StartMenuItemsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// StartMenuItemsListResult contains the result from method StartMenuItems.List.
-type StartMenuItemsListResult struct {
+// StartMenuItemsClientListResponse contains the response from method StartMenuItemsClient.List.
+type StartMenuItemsClientListResponse struct {
 	StartMenuItemList
 }
 
-// UserSessionsDeleteResponse contains the response from method UserSessions.Delete.
-type UserSessionsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// UserSessionsClientDeleteResponse contains the response from method UserSessionsClient.Delete.
+type UserSessionsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// UserSessionsDisconnectResponse contains the response from method UserSessions.Disconnect.
-type UserSessionsDisconnectResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// UserSessionsClientDisconnectResponse contains the response from method UserSessionsClient.Disconnect.
+type UserSessionsClientDisconnectResponse struct {
+	// placeholder for future response values
 }
 
-// UserSessionsGetResponse contains the response from method UserSessions.Get.
-type UserSessionsGetResponse struct {
-	UserSessionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// UserSessionsGetResult contains the result from method UserSessions.Get.
-type UserSessionsGetResult struct {
+// UserSessionsClientGetResponse contains the response from method UserSessionsClient.Get.
+type UserSessionsClientGetResponse struct {
 	UserSession
 }
 
-// UserSessionsListByHostPoolResponse contains the response from method UserSessions.ListByHostPool.
-type UserSessionsListByHostPoolResponse struct {
-	UserSessionsListByHostPoolResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// UserSessionsListByHostPoolResult contains the result from method UserSessions.ListByHostPool.
-type UserSessionsListByHostPoolResult struct {
+// UserSessionsClientListByHostPoolResponse contains the response from method UserSessionsClient.ListByHostPool.
+type UserSessionsClientListByHostPoolResponse struct {
 	UserSessionList
 }
 
-// UserSessionsListResponse contains the response from method UserSessions.List.
-type UserSessionsListResponse struct {
-	UserSessionsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// UserSessionsListResult contains the result from method UserSessions.List.
-type UserSessionsListResult struct {
+// UserSessionsClientListResponse contains the response from method UserSessionsClient.List.
+type UserSessionsClientListResponse struct {
 	UserSessionList
 }
 
-// UserSessionsSendMessageResponse contains the response from method UserSessions.SendMessage.
-type UserSessionsSendMessageResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// UserSessionsClientSendMessageResponse contains the response from method UserSessionsClient.SendMessage.
+type UserSessionsClientSendMessageResponse struct {
+	// placeholder for future response values
 }
 
-// WorkspacesCreateOrUpdateResponse contains the response from method Workspaces.CreateOrUpdate.
-type WorkspacesCreateOrUpdateResponse struct {
-	WorkspacesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkspacesCreateOrUpdateResult contains the result from method Workspaces.CreateOrUpdate.
-type WorkspacesCreateOrUpdateResult struct {
+// WorkspacesClientCreateOrUpdateResponse contains the response from method WorkspacesClient.CreateOrUpdate.
+type WorkspacesClientCreateOrUpdateResponse struct {
 	Workspace
 }
 
-// WorkspacesDeleteResponse contains the response from method Workspaces.Delete.
-type WorkspacesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// WorkspacesClientDeleteResponse contains the response from method WorkspacesClient.Delete.
+type WorkspacesClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// WorkspacesGetResponse contains the response from method Workspaces.Get.
-type WorkspacesGetResponse struct {
-	WorkspacesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkspacesGetResult contains the result from method Workspaces.Get.
-type WorkspacesGetResult struct {
+// WorkspacesClientGetResponse contains the response from method WorkspacesClient.Get.
+type WorkspacesClientGetResponse struct {
 	Workspace
 }
 
-// WorkspacesListByResourceGroupResponse contains the response from method Workspaces.ListByResourceGroup.
-type WorkspacesListByResourceGroupResponse struct {
-	WorkspacesListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkspacesListByResourceGroupResult contains the result from method Workspaces.ListByResourceGroup.
-type WorkspacesListByResourceGroupResult struct {
+// WorkspacesClientListByResourceGroupResponse contains the response from method WorkspacesClient.ListByResourceGroup.
+type WorkspacesClientListByResourceGroupResponse struct {
 	WorkspaceList
 }
 
-// WorkspacesListBySubscriptionResponse contains the response from method Workspaces.ListBySubscription.
-type WorkspacesListBySubscriptionResponse struct {
-	WorkspacesListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkspacesListBySubscriptionResult contains the result from method Workspaces.ListBySubscription.
-type WorkspacesListBySubscriptionResult struct {
+// WorkspacesClientListBySubscriptionResponse contains the response from method WorkspacesClient.ListBySubscription.
+type WorkspacesClientListBySubscriptionResponse struct {
 	WorkspaceList
 }
 
-// WorkspacesUpdateResponse contains the response from method Workspaces.Update.
-type WorkspacesUpdateResponse struct {
-	WorkspacesUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkspacesUpdateResult contains the result from method Workspaces.Update.
-type WorkspacesUpdateResult struct {
+// WorkspacesClientUpdateResponse contains the response from method WorkspacesClient.Update.
+type WorkspacesClientUpdateResponse struct {
 	Workspace
 }

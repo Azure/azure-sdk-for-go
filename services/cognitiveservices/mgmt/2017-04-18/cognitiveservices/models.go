@@ -72,6 +72,10 @@ func (a Account) MarshalJSON() ([]byte, error) {
 type AccountAPIProperties struct {
 	// QnaRuntimeEndpoint - (QnAMaker Only) The runtime endpoint of QnAMaker.
 	QnaRuntimeEndpoint *string `json:"qnaRuntimeEndpoint,omitempty"`
+	// QnaAzureSearchEndpointKey - (QnAMaker Only) The Azure Search endpoint key of QnAMaker.
+	QnaAzureSearchEndpointKey *string `json:"qnaAzureSearchEndpointKey,omitempty"`
+	// QnaAzureSearchEndpointID - (QnAMaker Only) The Azure Search endpoint id of QnAMaker.
+	QnaAzureSearchEndpointID *string `json:"qnaAzureSearchEndpointId,omitempty"`
 	// StatisticsEnabled - (Bing Search Only) The flag to enable statistics of Bing Search.
 	StatisticsEnabled *bool `json:"statisticsEnabled,omitempty"`
 	// EventHubConnectionString - (Personalization Only) The flag to enable statistics of Bing Search.
@@ -280,7 +284,7 @@ func NewAccountListResultPage(cur AccountListResult, getNextPage func(context.Co
 
 // AccountProperties properties of Cognitive Services account.
 type AccountProperties struct {
-	// ProvisioningState - READ-ONLY; Gets the status of the cognitive services account at the time the operation was called. Possible values include: 'Creating', 'ResolvingDNS', 'Moving', 'Deleting', 'Succeeded', 'Failed'
+	// ProvisioningState - READ-ONLY; Gets the status of the cognitive services account at the time the operation was called. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateResolvingDNS', 'ProvisioningStateMoving', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Endpoint - READ-ONLY; Endpoint of the created account.
 	Endpoint *string `json:"endpoint,omitempty"`
@@ -288,6 +292,10 @@ type AccountProperties struct {
 	InternalID *string `json:"internalId,omitempty"`
 	// Capabilities - READ-ONLY; Gets the capabilities of the cognitive services account. Each item indicates the capability of a specific feature. The values are read-only and for reference only.
 	Capabilities *[]SkuCapability `json:"capabilities,omitempty"`
+	// IsMigrated - READ-ONLY; If the resource is migrated from an existing key.
+	IsMigrated *bool `json:"isMigrated,omitempty"`
+	// SkuChangeInfo - READ-ONLY; Sku change info of account.
+	SkuChangeInfo *AccountSkuChangeInfo `json:"skuChangeInfo,omitempty"`
 	// CustomSubDomainName - Optional subdomain name used for token-based authentication.
 	CustomSubDomainName *string `json:"customSubDomainName,omitempty"`
 	// NetworkAcls - A collection of rules governing the accessibility from specific network locations.
@@ -298,7 +306,7 @@ type AccountProperties struct {
 	UserOwnedStorage *[]UserOwnedStorage `json:"userOwnedStorage,omitempty"`
 	// PrivateEndpointConnections - The private endpoint connection associated with the Cognitive Services account.
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
-	// PublicNetworkAccess - Whether or not public endpoint access is allowed for this account. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'Enabled', 'Disabled'
+	// PublicNetworkAccess - Whether or not public endpoint access is allowed for this account. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'PublicNetworkAccessEnabled', 'PublicNetworkAccessDisabled'
 	PublicNetworkAccess PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 	// APIProperties - The api properties for special APIs.
 	APIProperties *AccountAPIProperties `json:"apiProperties,omitempty"`
@@ -330,6 +338,22 @@ func (ap AccountProperties) MarshalJSON() ([]byte, error) {
 	if ap.APIProperties != nil {
 		objectMap["apiProperties"] = ap.APIProperties
 	}
+	return json.Marshal(objectMap)
+}
+
+// AccountSkuChangeInfo sku change info of account.
+type AccountSkuChangeInfo struct {
+	// CountOfDowngrades - READ-ONLY; Gets the count of downgrades.
+	CountOfDowngrades *float64 `json:"countOfDowngrades,omitempty"`
+	// CountOfUpgradesAfterDowngrades - READ-ONLY; Gets the count of upgrades after downgrades.
+	CountOfUpgradesAfterDowngrades *float64 `json:"countOfUpgradesAfterDowngrades,omitempty"`
+	// LastChangeDate - READ-ONLY; Gets the last change date.
+	LastChangeDate *string `json:"lastChangeDate,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountSkuChangeInfo.
+func (asci AccountSkuChangeInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }
 
@@ -409,7 +433,7 @@ type CheckSkuAvailabilityResultList struct {
 type Encryption struct {
 	// KeyVaultProperties - Properties of KeyVault
 	KeyVaultProperties *KeyVaultProperties `json:"keyVaultProperties,omitempty"`
-	// KeySource - Enumerates the possible value of keySource for Encryption. Possible values include: 'MicrosoftCognitiveServices', 'MicrosoftKeyVault'
+	// KeySource - Enumerates the possible value of keySource for Encryption. Possible values include: 'KeySourceMicrosoftCognitiveServices', 'KeySourceMicrosoftKeyVault'
 	KeySource KeySource `json:"keySource,omitempty"`
 }
 
@@ -429,7 +453,7 @@ type ErrorBody struct {
 
 // Identity managed service identity.
 type Identity struct {
-	// Type - Type of managed service identity. Possible values include: 'None', 'SystemAssigned', 'UserAssigned'
+	// Type - Type of managed service identity. Possible values include: 'IdentityTypeNone', 'IdentityTypeSystemAssigned', 'IdentityTypeUserAssigned'
 	Type IdentityType `json:"type,omitempty"`
 	// TenantID - READ-ONLY; Tenant of managed service identity.
 	TenantID *string `json:"tenantId,omitempty"`
@@ -483,7 +507,7 @@ func (mn MetricName) MarshalJSON() ([]byte, error) {
 
 // NetworkRuleSet a set of rules governing the network accessibility.
 type NetworkRuleSet struct {
-	// DefaultAction - The default action when no rule from ipRules and from virtualNetworkRules match. This is only used after the bypass property has been evaluated. Possible values include: 'Allow', 'Deny'
+	// DefaultAction - The default action when no rule from ipRules and from virtualNetworkRules match. This is only used after the bypass property has been evaluated. Possible values include: 'NetworkRuleActionAllow', 'NetworkRuleActionDeny'
 	DefaultAction NetworkRuleAction `json:"defaultAction,omitempty"`
 	// IPRules - The list of IP address rules.
 	IPRules *[]IPRule `json:"ipRules,omitempty"`
@@ -691,6 +715,10 @@ type PrivateEndpointConnection struct {
 	autorest.Response `json:"-"`
 	// Properties - Resource properties.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	// Etag - READ-ONLY; Entity Tag
+	Etag *string `json:"etag,omitempty"`
+	// Location - The location of the private endpoint connection
+	Location *string `json:"location,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -704,6 +732,9 @@ func (pec PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if pec.Properties != nil {
 		objectMap["properties"] = pec.Properties
+	}
+	if pec.Location != nil {
+		objectMap["location"] = pec.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -777,12 +808,12 @@ func (plrp PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
 // PrivateLinkServiceConnectionState a collection of information about the state of the connection between
 // service consumer and provider.
 type PrivateLinkServiceConnectionState struct {
-	// Status - Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service. Possible values include: 'Pending', 'Approved', 'Rejected', 'Disconnected'
+	// Status - Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service. Possible values include: 'PrivateEndpointServiceConnectionStatusPending', 'PrivateEndpointServiceConnectionStatusApproved', 'PrivateEndpointServiceConnectionStatusRejected', 'PrivateEndpointServiceConnectionStatusDisconnected'
 	Status PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
 	// Description - The reason for approval/rejection of the connection.
 	Description *string `json:"description,omitempty"`
-	// ActionRequired - A message indicating if changes on the service provider require any updates on the consumer.
-	ActionRequired *string `json:"actionRequired,omitempty"`
+	// ActionsRequired - A message indicating if changes on the service provider require any updates on the consumer.
+	ActionsRequired *string `json:"actionsRequired,omitempty"`
 }
 
 // ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
@@ -804,7 +835,7 @@ func (pr ProxyResource) MarshalJSON() ([]byte, error) {
 
 // RegenerateKeyParameters regenerate key parameters.
 type RegenerateKeyParameters struct {
-	// KeyName - key name to generate (Key1|Key2). Possible values include: 'Key1', 'Key2'
+	// KeyName - key name to generate (Key1|Key2). Possible values include: 'KeyNameKey1', 'KeyNameKey2'
 	KeyName KeyName `json:"keyName,omitempty"`
 }
 
@@ -870,13 +901,13 @@ func (rsri ResourceSkuRestrictionInfo) MarshalJSON() ([]byte, error) {
 
 // ResourceSkuRestrictions describes restrictions of a SKU.
 type ResourceSkuRestrictions struct {
-	// Type - READ-ONLY; The type of restrictions. Possible values include: 'Location', 'Zone'
+	// Type - READ-ONLY; The type of restrictions. Possible values include: 'ResourceSkuRestrictionsTypeLocation', 'ResourceSkuRestrictionsTypeZone'
 	Type ResourceSkuRestrictionsType `json:"type,omitempty"`
 	// Values - READ-ONLY; The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU is restricted.
 	Values *[]string `json:"values,omitempty"`
 	// RestrictionInfo - READ-ONLY; The information about the restriction where the SKU cannot be used.
 	RestrictionInfo *ResourceSkuRestrictionInfo `json:"restrictionInfo,omitempty"`
-	// ReasonCode - READ-ONLY; The reason for restriction. Possible values include: 'QuotaID', 'NotAvailableForSubscription'
+	// ReasonCode - READ-ONLY; The reason for restriction. Possible values include: 'ResourceSkuRestrictionsReasonCodeQuotaID', 'ResourceSkuRestrictionsReasonCodeNotAvailableForSubscription'
 	ReasonCode ResourceSkuRestrictionsReasonCode `json:"reasonCode,omitempty"`
 }
 
@@ -1049,7 +1080,7 @@ func NewResourceSkusResultPage(cur ResourceSkusResult, getNextPage func(context.
 type Sku struct {
 	// Name - Gets or sets the sku name. Required for account creation, optional for update.
 	Name *string `json:"name,omitempty"`
-	// Tier - READ-ONLY; Gets the sku tier. This is based on the SKU name. Possible values include: 'Free', 'Standard', 'Premium', 'Enterprise'
+	// Tier - READ-ONLY; Gets the sku tier. This is based on the SKU name. Possible values include: 'SkuTierFree', 'SkuTierStandard', 'SkuTierPremium', 'SkuTierEnterprise'
 	Tier SkuTier `json:"tier,omitempty"`
 }
 
@@ -1099,7 +1130,7 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 
 // Usage the usage data for a usage request.
 type Usage struct {
-	// Unit - The unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountPerSecond', 'BytesPerSecond', 'Milliseconds'
+	// Unit - The unit of the metric. Possible values include: 'UnitTypeCount', 'UnitTypeBytes', 'UnitTypeSeconds', 'UnitTypePercent', 'UnitTypeCountPerSecond', 'UnitTypeBytesPerSecond', 'UnitTypeMilliseconds'
 	Unit UnitType `json:"unit,omitempty"`
 	// Name - READ-ONLY; The name information for the metric.
 	Name *MetricName `json:"name,omitempty"`
@@ -1111,7 +1142,7 @@ type Usage struct {
 	CurrentValue *float64 `json:"currentValue,omitempty"`
 	// NextResetTime - READ-ONLY; Next reset time for current quota.
 	NextResetTime *string `json:"nextResetTime,omitempty"`
-	// Status - Cognitive Services account quota usage status. Possible values include: 'Included', 'Blocked', 'InOverage', 'Unknown'
+	// Status - Cognitive Services account quota usage status. Possible values include: 'QuotaUsageStatusIncluded', 'QuotaUsageStatusBlocked', 'QuotaUsageStatusInOverage', 'QuotaUsageStatusUnknown'
 	Status QuotaUsageStatus `json:"status,omitempty"`
 }
 

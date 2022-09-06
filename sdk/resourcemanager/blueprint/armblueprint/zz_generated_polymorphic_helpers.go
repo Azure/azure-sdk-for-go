@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -49,23 +49,4 @@ func unmarshalArtifactClassificationArray(rawMsg json.RawMessage) ([]ArtifactCla
 		fArray[index] = f
 	}
 	return fArray, nil
-}
-
-func unmarshalArtifactClassificationMap(rawMsg json.RawMessage) (map[string]ArtifactClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]ArtifactClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalArtifactClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

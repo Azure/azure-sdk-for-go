@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,32 +9,9 @@
 package armmanagementpartner
 
 const (
-	module  = "armmanagementpartner"
-	version = "v0.1.0"
+	moduleName    = "armmanagementpartner"
+	moduleVersion = "v0.5.0"
 )
-
-// ErrorResponseCode - this is the error response code that management partner operations may return
-type ErrorResponseCode string
-
-const (
-	ErrorResponseCodeBadRequest ErrorResponseCode = "BadRequest"
-	ErrorResponseCodeConflict   ErrorResponseCode = "Conflict"
-	ErrorResponseCodeNotFound   ErrorResponseCode = "NotFound"
-)
-
-// PossibleErrorResponseCodeValues returns the possible values for the ErrorResponseCode const type.
-func PossibleErrorResponseCodeValues() []ErrorResponseCode {
-	return []ErrorResponseCode{
-		ErrorResponseCodeBadRequest,
-		ErrorResponseCodeConflict,
-		ErrorResponseCodeNotFound,
-	}
-}
-
-// ToPtr returns a *ErrorResponseCode pointing to the current value.
-func (c ErrorResponseCode) ToPtr() *ErrorResponseCode {
-	return &c
-}
 
 // ManagementPartnerState - this is the management partner state: Active or Deleted
 type ManagementPartnerState string
@@ -50,9 +27,4 @@ func PossibleManagementPartnerStateValues() []ManagementPartnerState {
 		ManagementPartnerStateActive,
 		ManagementPartnerStateDeleted,
 	}
-}
-
-// ToPtr returns a *ManagementPartnerState pointing to the current value.
-func (c ManagementPartnerState) ToPtr() *ManagementPartnerState {
-	return &c
 }

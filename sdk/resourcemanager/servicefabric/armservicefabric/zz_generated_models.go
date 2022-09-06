@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,15 +8,10 @@
 
 package armservicefabric
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
-// ApplicationDeltaHealthPolicy - Defines a delta health policy used to evaluate the health of an application or one of its child entities when upgrading
-// the cluster.
+// ApplicationDeltaHealthPolicy - Defines a delta health policy used to evaluate the health of an application or one of its
+// child entities when upgrading the cluster.
 type ApplicationDeltaHealthPolicy struct {
 	// The delta health policy used by default to evaluate the health of a service type when upgrading the cluster.
 	DefaultServiceTypeDeltaHealthPolicy *ServiceTypeDeltaHealthPolicy `json:"defaultServiceTypeDeltaHealthPolicy,omitempty"`
@@ -25,15 +20,8 @@ type ApplicationDeltaHealthPolicy struct {
 	ServiceTypeDeltaHealthPolicies map[string]*ServiceTypeDeltaHealthPolicy `json:"serviceTypeDeltaHealthPolicies,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationDeltaHealthPolicy.
-func (a ApplicationDeltaHealthPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "defaultServiceTypeDeltaHealthPolicy", a.DefaultServiceTypeDeltaHealthPolicy)
-	populate(objectMap, "serviceTypeDeltaHealthPolicies", a.ServiceTypeDeltaHealthPolicies)
-	return json.Marshal(objectMap)
-}
-
-// ApplicationHealthPolicy - Defines a health policy used to evaluate the health of an application or one of its children entities.
+// ApplicationHealthPolicy - Defines a health policy used to evaluate the health of an application or one of its children
+// entities.
 type ApplicationHealthPolicy struct {
 	// The health policy used by default to evaluate the health of a service type.
 	DefaultServiceTypeHealthPolicy *ServiceTypeHealthPolicy `json:"defaultServiceTypeHealthPolicy,omitempty"`
@@ -42,86 +30,63 @@ type ApplicationHealthPolicy struct {
 	ServiceTypeHealthPolicies map[string]*ServiceTypeHealthPolicy `json:"serviceTypeHealthPolicies,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationHealthPolicy.
-func (a ApplicationHealthPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "defaultServiceTypeHealthPolicy", a.DefaultServiceTypeHealthPolicy)
-	populate(objectMap, "serviceTypeHealthPolicies", a.ServiceTypeHealthPolicies)
-	return json.Marshal(objectMap)
-}
-
-// ApplicationMetricDescription - Describes capacity information for a custom resource balancing metric. This can be used to limit the total consumption
-// of this metric by the services of this application.
+// ApplicationMetricDescription - Describes capacity information for a custom resource balancing metric. This can be used
+// to limit the total consumption of this metric by the services of this application.
 type ApplicationMetricDescription struct {
-	// The maximum node capacity for Service Fabric application. This is the maximum Load for an instance of this application on a single node. Even if the
-	// capacity of node is greater than this value,
-	// Service Fabric will limit the total load of services within the application on each node to this value. If set to zero, capacity for this metric is unlimited
-	// on each node. When creating a new
-	// application with application capacity defined, the product of MaximumNodes and this value must always be smaller than or equal to TotalApplicationCapacity.
-	// When updating existing application with
+	// The maximum node capacity for Service Fabric application. This is the maximum Load for an instance of this application
+	// on a single node. Even if the capacity of node is greater than this value,
+	// Service Fabric will limit the total load of services within the application on each node to this value. If set to zero,
+	// capacity for this metric is unlimited on each node. When creating a new
+	// application with application capacity defined, the product of MaximumNodes and this value must always be smaller than or
+	// equal to TotalApplicationCapacity. When updating existing application with
 	// application capacity, the product of MaximumNodes and this value must always be smaller than or equal to TotalApplicationCapacity.
 	MaximumCapacity *int64 `json:"maximumCapacity,omitempty"`
 
 	// The name of the metric.
 	Name *string `json:"name,omitempty"`
 
-	// The node reservation capacity for Service Fabric application. This is the amount of load which is reserved on nodes which have instances of this application.
-	// If MinimumNodes is specified, then the
-	// product of these values will be the capacity reserved in the cluster for the application. If set to zero, no capacity is reserved for this metric. When
-	// setting application capacity or when updating
+	// The node reservation capacity for Service Fabric application. This is the amount of load which is reserved on nodes which
+	// have instances of this application. If MinimumNodes is specified, then the
+	// product of these values will be the capacity reserved in the cluster for the application. If set to zero, no capacity is
+	// reserved for this metric. When setting application capacity or when updating
 	// application capacity; this value must be smaller than or equal to MaximumCapacity for each metric.
 	ReservationCapacity *int64 `json:"reservationCapacity,omitempty"`
 
-	// The total metric capacity for Service Fabric application. This is the total metric capacity for this application in the cluster. Service Fabric will
-	// try to limit the sum of loads of services within
-	// the application to this value. When creating a new application with application capacity defined, the product of MaximumNodes and MaximumCapacity must
-	// always be smaller than or equal to this value.
+	// The total metric capacity for Service Fabric application. This is the total metric capacity for this application in the
+	// cluster. Service Fabric will try to limit the sum of loads of services within
+	// the application to this value. When creating a new application with application capacity defined, the product of MaximumNodes
+	// and MaximumCapacity must always be smaller than or equal to this value.
 	TotalApplicationCapacity *int64 `json:"totalApplicationCapacity,omitempty"`
 }
 
 // ApplicationResource - The application resource.
 type ApplicationResource struct {
-	ProxyResource
 	// Describes the managed identities for an Azure resource.
 	Identity *ManagedIdentity `json:"identity,omitempty"`
 
+	// It will be deprecated in New API, resource location depends on the parent resource.
+	Location *string `json:"location,omitempty"`
+
 	// The application resource properties.
 	Properties *ApplicationResourceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationResource.
-func (a ApplicationResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "identity", a.Identity)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
+	// Azure resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ApplicationResource.
-func (a *ApplicationResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "identity":
-			err = unpopulate(val, &a.Identity)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; Azure resource etag.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ApplicationResourceList - The list of application resources.
@@ -132,69 +97,69 @@ type ApplicationResourceList struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationResourceList.
-func (a ApplicationResourceList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // ApplicationResourceProperties - The application resource properties.
 type ApplicationResourceProperties struct {
-	ApplicationResourceUpdateProperties
+	// List of user assigned identities for the application, each mapped to a friendly name.
+	ManagedIdentities []*ApplicationUserAssignedIdentity `json:"managedIdentities,omitempty"`
+
+	// The maximum number of nodes where Service Fabric will reserve capacity for this application. Note that this does not mean
+	// that the services of this application will be placed on all of those nodes. By
+	// default, the value of this property is zero and it means that the services can be placed on any node.
+	MaximumNodes *int64 `json:"maximumNodes,omitempty"`
+
+	// List of application capacity metric description.
+	Metrics []*ApplicationMetricDescription `json:"metrics,omitempty"`
+
+	// The minimum number of nodes where Service Fabric will reserve capacity for this application. Note that this does not mean
+	// that the services of this application will be placed on all of those nodes. If
+	// this property is set to zero, no capacity will be reserved. The value of this property cannot be more than the value of
+	// the MaximumNodes property.
+	MinimumNodes *int64 `json:"minimumNodes,omitempty"`
+
+	// List of application parameters with overridden values from their default values specified in the application manifest.
+	Parameters map[string]*string `json:"parameters,omitempty"`
+
+	// Remove the current application capacity settings.
+	RemoveApplicationCapacity *bool `json:"removeApplicationCapacity,omitempty"`
+
 	// The application type name as defined in the application manifest.
 	TypeName *string `json:"typeName,omitempty"`
+
+	// The version of the application type as defined in the application manifest.
+	TypeVersion *string `json:"typeVersion,omitempty"`
+
+	// Describes the policy for a monitored application upgrade.
+	UpgradePolicy *ApplicationUpgradePolicy `json:"upgradePolicy,omitempty"`
 
 	// READ-ONLY; The current deployment or provisioning state, which only appears in the response
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationResourceProperties.
-func (a ApplicationResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ApplicationResourceUpdateProperties.marshalInternal(objectMap)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "typeName", a.TypeName)
-	return json.Marshal(objectMap)
-}
-
 // ApplicationResourceUpdate - The application resource for patch operations.
 type ApplicationResourceUpdate struct {
-	ProxyResource
+	// It will be deprecated in New API, resource location depends on the parent resource.
+	Location *string `json:"location,omitempty"`
+
 	// The application resource properties for patch operations.
 	Properties *ApplicationResourceUpdateProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationResourceUpdate.
-func (a ApplicationResourceUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
+	// Azure resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ApplicationResourceUpdate.
-func (a *ApplicationResourceUpdate) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; Azure resource etag.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ApplicationResourceUpdateProperties - The application resource properties for patch operations.
@@ -202,17 +167,18 @@ type ApplicationResourceUpdateProperties struct {
 	// List of user assigned identities for the application, each mapped to a friendly name.
 	ManagedIdentities []*ApplicationUserAssignedIdentity `json:"managedIdentities,omitempty"`
 
-	// The maximum number of nodes where Service Fabric will reserve capacity for this application. Note that this does not mean that the services of this application
-	// will be placed on all of those nodes. By
+	// The maximum number of nodes where Service Fabric will reserve capacity for this application. Note that this does not mean
+	// that the services of this application will be placed on all of those nodes. By
 	// default, the value of this property is zero and it means that the services can be placed on any node.
 	MaximumNodes *int64 `json:"maximumNodes,omitempty"`
 
 	// List of application capacity metric description.
 	Metrics []*ApplicationMetricDescription `json:"metrics,omitempty"`
 
-	// The minimum number of nodes where Service Fabric will reserve capacity for this application. Note that this does not mean that the services of this application
-	// will be placed on all of those nodes. If
-	// this property is set to zero, no capacity will be reserved. The value of this property cannot be more than the value of the MaximumNodes property.
+	// The minimum number of nodes where Service Fabric will reserve capacity for this application. Note that this does not mean
+	// that the services of this application will be placed on all of those nodes. If
+	// this property is set to zero, no capacity will be reserved. The value of this property cannot be more than the value of
+	// the MaximumNodes property.
 	MinimumNodes *int64 `json:"minimumNodes,omitempty"`
 
 	// List of application parameters with overridden values from their default values specified in the application manifest.
@@ -228,60 +194,31 @@ type ApplicationResourceUpdateProperties struct {
 	UpgradePolicy *ApplicationUpgradePolicy `json:"upgradePolicy,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationResourceUpdateProperties.
-func (a ApplicationResourceUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (a ApplicationResourceUpdateProperties) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "managedIdentities", a.ManagedIdentities)
-	populate(objectMap, "maximumNodes", a.MaximumNodes)
-	populate(objectMap, "metrics", a.Metrics)
-	populate(objectMap, "minimumNodes", a.MinimumNodes)
-	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "removeApplicationCapacity", a.RemoveApplicationCapacity)
-	populate(objectMap, "typeVersion", a.TypeVersion)
-	populate(objectMap, "upgradePolicy", a.UpgradePolicy)
-}
-
 // ApplicationTypeResource - The application type name resource
 type ApplicationTypeResource struct {
-	ProxyResource
+	// It will be deprecated in New API, resource location depends on the parent resource.
+	Location *string `json:"location,omitempty"`
+
 	// The application type name properties
 	Properties *ApplicationTypeResourceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationTypeResource.
-func (a ApplicationTypeResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
+	// Azure resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ApplicationTypeResource.
-func (a *ApplicationTypeResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; Azure resource etag.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ApplicationTypeResourceList - The list of application type names.
@@ -292,14 +229,6 @@ type ApplicationTypeResourceList struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationTypeResourceList.
-func (a ApplicationTypeResourceList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // ApplicationTypeResourceProperties - The application type name properties
 type ApplicationTypeResourceProperties struct {
 	// READ-ONLY; The current deployment or provisioning state, which only appears in the response.
@@ -308,56 +237,38 @@ type ApplicationTypeResourceProperties struct {
 
 // ApplicationTypeVersionResource - An application type version resource for the specified application type name resource.
 type ApplicationTypeVersionResource struct {
-	ProxyResource
+	// It will be deprecated in New API, resource location depends on the parent resource.
+	Location *string `json:"location,omitempty"`
+
 	// The properties of the application type version resource.
 	Properties *ApplicationTypeVersionResourceProperties `json:"properties,omitempty"`
+
+	// Azure resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Azure resource etag.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationTypeVersionResource.
-func (a ApplicationTypeVersionResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ApplicationTypeVersionResource.
-func (a *ApplicationTypeVersionResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// ApplicationTypeVersionResourceList - The list of application type version resources for the specified application type name resource.
+// ApplicationTypeVersionResourceList - The list of application type version resources for the specified application type
+// name resource.
 type ApplicationTypeVersionResourceList struct {
 	Value []*ApplicationTypeVersionResource `json:"value,omitempty"`
 
 	// READ-ONLY; URL to get the next set of application type version list results if there are any.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ApplicationTypeVersionResourceList.
-func (a ApplicationTypeVersionResourceList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // ApplicationTypeVersionResourceProperties - The properties of the application type version resource.
@@ -372,57 +283,54 @@ type ApplicationTypeVersionResourceProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ApplicationTypeVersionResourceProperties.
-func (a ApplicationTypeVersionResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appPackageUrl", a.AppPackageURL)
-	populate(objectMap, "defaultParameterList", a.DefaultParameterList)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	return json.Marshal(objectMap)
-}
-
-// ApplicationTypeVersionsBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationTypeVersions.BeginCreateOrUpdate method.
-type ApplicationTypeVersionsBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ApplicationTypeVersionsBeginDeleteOptions contains the optional parameters for the ApplicationTypeVersions.BeginDelete method.
-type ApplicationTypeVersionsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
 type ApplicationTypeVersionsCleanupPolicy struct {
 	// REQUIRED; Number of unused versions per application type to keep.
 	MaxUnusedVersionsToKeep *int64 `json:"maxUnusedVersionsToKeep,omitempty"`
 }
 
-// ApplicationTypeVersionsGetOptions contains the optional parameters for the ApplicationTypeVersions.Get method.
-type ApplicationTypeVersionsGetOptions struct {
+// ApplicationTypeVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationTypeVersionsClient.BeginCreateOrUpdate
+// method.
+type ApplicationTypeVersionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ApplicationTypeVersionsClientBeginDeleteOptions contains the optional parameters for the ApplicationTypeVersionsClient.BeginDelete
+// method.
+type ApplicationTypeVersionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ApplicationTypeVersionsClientGetOptions contains the optional parameters for the ApplicationTypeVersionsClient.Get method.
+type ApplicationTypeVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationTypeVersionsListOptions contains the optional parameters for the ApplicationTypeVersions.List method.
-type ApplicationTypeVersionsListOptions struct {
+// ApplicationTypeVersionsClientListOptions contains the optional parameters for the ApplicationTypeVersionsClient.List method.
+type ApplicationTypeVersionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationTypesBeginDeleteOptions contains the optional parameters for the ApplicationTypes.BeginDelete method.
-type ApplicationTypesBeginDeleteOptions struct {
+// ApplicationTypesClientBeginDeleteOptions contains the optional parameters for the ApplicationTypesClient.BeginDelete method.
+type ApplicationTypesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ApplicationTypesClientCreateOrUpdateOptions contains the optional parameters for the ApplicationTypesClient.CreateOrUpdate
+// method.
+type ApplicationTypesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationTypesCreateOrUpdateOptions contains the optional parameters for the ApplicationTypes.CreateOrUpdate method.
-type ApplicationTypesCreateOrUpdateOptions struct {
+// ApplicationTypesClientGetOptions contains the optional parameters for the ApplicationTypesClient.Get method.
+type ApplicationTypesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationTypesGetOptions contains the optional parameters for the ApplicationTypes.Get method.
-type ApplicationTypesGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ApplicationTypesListOptions contains the optional parameters for the ApplicationTypes.List method.
-type ApplicationTypesListOptions struct {
+// ApplicationTypesClientListOptions contains the optional parameters for the ApplicationTypesClient.List method.
+type ApplicationTypesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -431,12 +339,12 @@ type ApplicationUpgradePolicy struct {
 	// Defines a health policy used to evaluate the health of an application or one of its children entities.
 	ApplicationHealthPolicy *ArmApplicationHealthPolicy `json:"applicationHealthPolicy,omitempty"`
 
-	// If true, then processes are forcefully restarted during upgrade even when the code version has not changed (the upgrade only changes configuration or
-	// data).
+	// If true, then processes are forcefully restarted during upgrade even when the code version has not changed (the upgrade
+	// only changes configuration or data).
 	ForceRestart *bool `json:"forceRestart,omitempty"`
 
-	// Determines whether the application should be recreated on update. If value=true, the rest of the upgrade policy parameters are not allowed and it will
-	// result in availability loss.
+	// Determines whether the application should be recreated on update. If value=true, the rest of the upgrade policy parameters
+	// are not allowed and it will result in availability loss.
 	RecreateApplication *bool `json:"recreateApplication,omitempty"`
 
 	// The policy used for monitoring the application upgrade
@@ -445,10 +353,10 @@ type ApplicationUpgradePolicy struct {
 	// The mode used to monitor health during a rolling upgrade. The values are UnmonitoredAuto, UnmonitoredManual, and Monitored.
 	UpgradeMode *RollingUpgradeMode `json:"upgradeMode,omitempty"`
 
-	// The maximum amount of time to block processing of an upgrade domain and prevent loss of availability when there are unexpected issues. When this timeout
-	// expires, processing of the upgrade domain will
-	// proceed regardless of availability loss issues. The timeout is reset at the start of each upgrade domain. Valid values are between 0 and 42949672925
-	// inclusive. (unsigned 32-bit integer).
+	// The maximum amount of time to block processing of an upgrade domain and prevent loss of availability when there are unexpected
+	// issues. When this timeout expires, processing of the upgrade domain will
+	// proceed regardless of availability loss issues. The timeout is reset at the start of each upgrade domain. Valid values
+	// are between 0 and 42949672925 inclusive. (unsigned 32-bit integer).
 	UpgradeReplicaSetCheckTimeout *string `json:"upgradeReplicaSetCheckTimeout,omitempty"`
 }
 
@@ -460,32 +368,37 @@ type ApplicationUserAssignedIdentity struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 }
 
-// ApplicationsBeginCreateOrUpdateOptions contains the optional parameters for the Applications.BeginCreateOrUpdate method.
-type ApplicationsBeginCreateOrUpdateOptions struct {
+// ApplicationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationsClient.BeginCreateOrUpdate
+// method.
+type ApplicationsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ApplicationsClientBeginDeleteOptions contains the optional parameters for the ApplicationsClient.BeginDelete method.
+type ApplicationsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ApplicationsClientBeginUpdateOptions contains the optional parameters for the ApplicationsClient.BeginUpdate method.
+type ApplicationsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ApplicationsClientGetOptions contains the optional parameters for the ApplicationsClient.Get method.
+type ApplicationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationsBeginDeleteOptions contains the optional parameters for the Applications.BeginDelete method.
-type ApplicationsBeginDeleteOptions struct {
+// ApplicationsClientListOptions contains the optional parameters for the ApplicationsClient.List method.
+type ApplicationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationsBeginUpdateOptions contains the optional parameters for the Applications.BeginUpdate method.
-type ApplicationsBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ApplicationsGetOptions contains the optional parameters for the Applications.Get method.
-type ApplicationsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ApplicationsListOptions contains the optional parameters for the Applications.List method.
-type ApplicationsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ArmApplicationHealthPolicy - Defines a health policy used to evaluate the health of an application or one of its children entities.
+// ArmApplicationHealthPolicy - Defines a health policy used to evaluate the health of an application or one of its children
+// entities.
 type ArmApplicationHealthPolicy struct {
 	// Indicates whether warnings are treated with the same severity as errors.
 	ConsiderWarningAsError *bool `json:"considerWarningAsError,omitempty"`
@@ -493,25 +406,16 @@ type ArmApplicationHealthPolicy struct {
 	// The health policy used by default to evaluate the health of a service type.
 	DefaultServiceTypeHealthPolicy *ArmServiceTypeHealthPolicy `json:"defaultServiceTypeHealthPolicy,omitempty"`
 
-	// The maximum allowed percentage of unhealthy deployed applications. Allowed values are Byte values from zero to 100. The percentage represents the maximum
-	// tolerated percentage of deployed applications
-	// that can be unhealthy before the application is considered in error. This is calculated by dividing the number of unhealthy deployed applications over
-	// the number of nodes where the application is
-	// currently deployed on in the cluster. The computation rounds up to tolerate one failure on small numbers of nodes. Default percentage is zero.
+	// The maximum allowed percentage of unhealthy deployed applications. Allowed values are Byte values from zero to 100. The
+	// percentage represents the maximum tolerated percentage of deployed applications
+	// that can be unhealthy before the application is considered in error. This is calculated by dividing the number of unhealthy
+	// deployed applications over the number of nodes where the application is
+	// currently deployed on in the cluster. The computation rounds up to tolerate one failure on small numbers of nodes. Default
+	// percentage is zero.
 	MaxPercentUnhealthyDeployedApplications *int32 `json:"maxPercentUnhealthyDeployedApplications,omitempty"`
 
 	// The map with service type health policy per service type name. The map is empty by default.
 	ServiceTypeHealthPolicyMap map[string]*ArmServiceTypeHealthPolicy `json:"serviceTypeHealthPolicyMap,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ArmApplicationHealthPolicy.
-func (a ArmApplicationHealthPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "considerWarningAsError", a.ConsiderWarningAsError)
-	populate(objectMap, "defaultServiceTypeHealthPolicy", a.DefaultServiceTypeHealthPolicy)
-	populate(objectMap, "maxPercentUnhealthyDeployedApplications", a.MaxPercentUnhealthyDeployedApplications)
-	populate(objectMap, "serviceTypeHealthPolicyMap", a.ServiceTypeHealthPolicyMap)
-	return json.Marshal(objectMap)
 }
 
 // ArmRollingUpgradeMonitoringPolicy - The policy used for monitoring the application upgrade
@@ -519,33 +423,34 @@ type ArmRollingUpgradeMonitoringPolicy struct {
 	// The activation Mode of the service package
 	FailureAction *ArmUpgradeFailureAction `json:"failureAction,omitempty"`
 
-	// The amount of time to retry health evaluation when the application or cluster is unhealthy before FailureAction is executed. It is first interpreted
-	// as a string representing an ISO 8601 duration. If
+	// The amount of time to retry health evaluation when the application or cluster is unhealthy before FailureAction is executed.
+	// It is first interpreted as a string representing an ISO 8601 duration. If
 	// that fails, then it is interpreted as a number representing the total number of milliseconds.
 	HealthCheckRetryTimeout *string `json:"healthCheckRetryTimeout,omitempty"`
 
-	// The amount of time that the application or cluster must remain healthy before the upgrade proceeds to the next upgrade domain. It is first interpreted
-	// as a string representing an ISO 8601 duration. If
+	// The amount of time that the application or cluster must remain healthy before the upgrade proceeds to the next upgrade
+	// domain. It is first interpreted as a string representing an ISO 8601 duration. If
 	// that fails, then it is interpreted as a number representing the total number of milliseconds.
 	HealthCheckStableDuration *string `json:"healthCheckStableDuration,omitempty"`
 
-	// The amount of time to wait after completing an upgrade domain before applying health policies. It is first interpreted as a string representing an ISO
-	// 8601 duration. If that fails, then it is
+	// The amount of time to wait after completing an upgrade domain before applying health policies. It is first interpreted
+	// as a string representing an ISO 8601 duration. If that fails, then it is
 	// interpreted as a number representing the total number of milliseconds.
 	HealthCheckWaitDuration *string `json:"healthCheckWaitDuration,omitempty"`
 
-	// The amount of time each upgrade domain has to complete before FailureAction is executed. It is first interpreted as a string representing an ISO 8601
-	// duration. If that fails, then it is interpreted as
+	// The amount of time each upgrade domain has to complete before FailureAction is executed. It is first interpreted as a string
+	// representing an ISO 8601 duration. If that fails, then it is interpreted as
 	// a number representing the total number of milliseconds.
 	UpgradeDomainTimeout *string `json:"upgradeDomainTimeout,omitempty"`
 
-	// The amount of time the overall upgrade has to complete before FailureAction is executed. It is first interpreted as a string representing an ISO 8601
-	// duration. If that fails, then it is interpreted as
+	// The amount of time the overall upgrade has to complete before FailureAction is executed. It is first interpreted as a string
+	// representing an ISO 8601 duration. If that fails, then it is interpreted as
 	// a number representing the total number of milliseconds.
 	UpgradeTimeout *string `json:"upgradeTimeout,omitempty"`
 }
 
-// ArmServiceTypeHealthPolicy - Represents the health policy used to evaluate the health of services belonging to a service type.
+// ArmServiceTypeHealthPolicy - Represents the health policy used to evaluate the health of services belonging to a service
+// type.
 type ArmServiceTypeHealthPolicy struct {
 	// The maximum percentage of partitions per service allowed to be unhealthy before your application is considered in error.
 	MaxPercentUnhealthyPartitionsPerService *int32 `json:"maxPercentUnhealthyPartitionsPerService,omitempty"`
@@ -604,7 +509,8 @@ type ClientCertificateCommonName struct {
 	// REQUIRED; The issuer thumbprint of the client certificate.
 	CertificateIssuerThumbprint *string `json:"certificateIssuerThumbprint,omitempty"`
 
-	// REQUIRED; Indicates if the client certificate has admin access to the cluster. Non admin clients can perform only read only operations on the cluster.
+	// REQUIRED; Indicates if the client certificate has admin access to the cluster. Non admin clients can perform only read
+	// only operations on the cluster.
 	IsAdmin *bool `json:"isAdmin,omitempty"`
 }
 
@@ -613,23 +519,36 @@ type ClientCertificateThumbprint struct {
 	// REQUIRED; The thumbprint of the client certificate.
 	CertificateThumbprint *string `json:"certificateThumbprint,omitempty"`
 
-	// REQUIRED; Indicates if the client certificate has admin access to the cluster. Non admin clients can perform only read only operations on the cluster.
+	// REQUIRED; Indicates if the client certificate has admin access to the cluster. Non admin clients can perform only read
+	// only operations on the cluster.
 	IsAdmin *bool `json:"isAdmin,omitempty"`
 }
 
 // Cluster - The cluster resource
 type Cluster struct {
-	Resource
+	// REQUIRED; Azure resource location.
+	Location *string `json:"location,omitempty"`
+
 	// The cluster resource properties
 	Properties *ClusterProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Cluster.
-func (c Cluster) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
+	// Azure resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Azure resource etag.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ClusterCodeVersionsListResult - The list results of the Service Fabric runtime versions.
@@ -637,14 +556,6 @@ type ClusterCodeVersionsListResult struct {
 	// The URL to use for getting the next set of results.
 	NextLink *string                      `json:"nextLink,omitempty"`
 	Value    []*ClusterCodeVersionsResult `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ClusterCodeVersionsListResult.
-func (c ClusterCodeVersionsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // ClusterCodeVersionsResult - The result of the Service Fabric runtime versions
@@ -667,35 +578,27 @@ type ClusterHealthPolicy struct {
 	// Defines the application health policy map used to evaluate the health of an application or one of its children entities.
 	ApplicationHealthPolicies map[string]*ApplicationHealthPolicy `json:"applicationHealthPolicies,omitempty"`
 
-	// The maximum allowed percentage of unhealthy applications before reporting an error. For example, to allow 10% of applications to be unhealthy, this value
-	// would be 10.
-	// The percentage represents the maximum tolerated percentage of applications that can be unhealthy before the cluster is considered in error. If the percentage
-	// is respected but there is at least one
-	// unhealthy application, the health is evaluated as Warning. This is calculated by dividing the number of unhealthy applications over the total number
-	// of application instances in the cluster, excluding
-	// applications of application types that are included in the ApplicationTypeHealthPolicyMap. The computation rounds up to tolerate one failure on small
-	// numbers of applications. Default percentage is
+	// The maximum allowed percentage of unhealthy applications before reporting an error. For example, to allow 10% of applications
+	// to be unhealthy, this value would be 10.
+	// The percentage represents the maximum tolerated percentage of applications that can be unhealthy before the cluster is
+	// considered in error. If the percentage is respected but there is at least one
+	// unhealthy application, the health is evaluated as Warning. This is calculated by dividing the number of unhealthy applications
+	// over the total number of application instances in the cluster, excluding
+	// applications of application types that are included in the ApplicationTypeHealthPolicyMap. The computation rounds up to
+	// tolerate one failure on small numbers of applications. Default percentage is
 	// zero.
 	MaxPercentUnhealthyApplications *int32 `json:"maxPercentUnhealthyApplications,omitempty"`
 
-	// The maximum allowed percentage of unhealthy nodes before reporting an error. For example, to allow 10% of nodes to be unhealthy, this value would be
-	// 10.
-	// The percentage represents the maximum tolerated percentage of nodes that can be unhealthy before the cluster is considered in error. If the percentage
-	// is respected but there is at least one unhealthy
-	// node, the health is evaluated as Warning. The percentage is calculated by dividing the number of unhealthy nodes over the total number of nodes in the
-	// cluster. The computation rounds up to tolerate
+	// The maximum allowed percentage of unhealthy nodes before reporting an error. For example, to allow 10% of nodes to be unhealthy,
+	// this value would be 10.
+	// The percentage represents the maximum tolerated percentage of nodes that can be unhealthy before the cluster is considered
+	// in error. If the percentage is respected but there is at least one unhealthy
+	// node, the health is evaluated as Warning. The percentage is calculated by dividing the number of unhealthy nodes over the
+	// total number of nodes in the cluster. The computation rounds up to tolerate
 	// one failure on small numbers of nodes. Default percentage is zero.
-	// In large clusters, some nodes will always be down or out for repairs, so this percentage should be configured to tolerate that.
+	// In large clusters, some nodes will always be down or out for repairs, so this percentage should be configured to tolerate
+	// that.
 	MaxPercentUnhealthyNodes *int32 `json:"maxPercentUnhealthyNodes,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ClusterHealthPolicy.
-func (c ClusterHealthPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "applicationHealthPolicies", c.ApplicationHealthPolicies)
-	populate(objectMap, "maxPercentUnhealthyApplications", c.MaxPercentUnhealthyApplications)
-	populate(objectMap, "maxPercentUnhealthyNodes", c.MaxPercentUnhealthyNodes)
-	return json.Marshal(objectMap)
 }
 
 // ClusterListResult - Cluster list results
@@ -703,14 +606,6 @@ type ClusterListResult struct {
 	// The URL to use for getting the next set of results.
 	NextLink *string    `json:"nextLink,omitempty"`
 	Value    []*Cluster `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ClusterListResult.
-func (c ClusterListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // ClusterProperties - Describes the cluster resource properties.
@@ -730,8 +625,8 @@ type ClusterProperties struct {
 	// The AAD authentication settings of the cluster.
 	AzureActiveDirectory *AzureActiveDirectory `json:"azureActiveDirectory,omitempty"`
 
-	// The certificate to use for securing the cluster. The certificate provided will be used for node to node security within the cluster, SSL certificate
-	// for cluster management endpoint and default admin
+	// The certificate to use for securing the cluster. The certificate provided will be used for node to node security within
+	// the cluster, SSL certificate for cluster management endpoint and default admin
 	// client.
 	Certificate *CertificateDescription `json:"certificate,omitempty"`
 
@@ -744,8 +639,8 @@ type ClusterProperties struct {
 	// The list of client certificates referenced by thumbprint that are allowed to manage the cluster.
 	ClientCertificateThumbprints []*ClientCertificateThumbprint `json:"clientCertificateThumbprints,omitempty"`
 
-	// The Service Fabric runtime version of the cluster. This property can only by set the user when upgradeMode is set to 'Manual'. To get list of available
-	// Service Fabric versions for new clusters use
+	// The Service Fabric runtime version of the cluster. This property can only by set the user when upgradeMode is set to 'Manual'.
+	// To get list of available Service Fabric versions for new clusters use
 	// ClusterVersion API [./ClusterVersion.md]. To get the list of available version for existing clusters use availableClusterVersions.
 	ClusterCodeVersion *string `json:"clusterCodeVersion,omitempty"`
 
@@ -778,8 +673,8 @@ type ClusterProperties struct {
 	// Describes a list of server certificates referenced by common name that are used to secure the cluster.
 	ReverseProxyCertificateCommonNames *ServerCertificateCommonNames `json:"reverseProxyCertificateCommonNames,omitempty"`
 
-	// This property controls the logical grouping of VMs in upgrade domains (UDs). This property can't be modified if a node type with multiple Availability
-	// Zones is already present in the cluster.
+	// This property controls the logical grouping of VMs in upgrade domains (UDs). This property can't be modified if a node
+	// type with multiple Availability Zones is already present in the cluster.
 	SfZonalUpgradeMode *SfZonalUpgradeMode `json:"sfZonalUpgradeMode,omitempty"`
 
 	// The policy to use when upgrading the cluster.
@@ -788,20 +683,23 @@ type ClusterProperties struct {
 	// The upgrade mode of the cluster when new Service Fabric runtime version is available.
 	UpgradeMode *UpgradeMode `json:"upgradeMode,omitempty"`
 
-	// Indicates the end date and time to pause automatic runtime version upgrades on the cluster for an specific period of time on the cluster (UTC).
+	// Indicates the end date and time to pause automatic runtime version upgrades on the cluster for an specific period of time
+	// on the cluster (UTC).
 	UpgradePauseEndTimestampUTC *time.Time `json:"upgradePauseEndTimestampUtc,omitempty"`
 
-	// Indicates the start date and time to pause automatic runtime version upgrades on the cluster for an specific period of time on the cluster (UTC).
+	// Indicates the start date and time to pause automatic runtime version upgrades on the cluster for an specific period of
+	// time on the cluster (UTC).
 	UpgradePauseStartTimestampUTC *time.Time `json:"upgradePauseStartTimestampUtc,omitempty"`
 
-	// Indicates when new cluster runtime version upgrades will be applied after they are released. By default is Wave0. Only applies when upgradeMode is set
-	// to 'Automatic'.
+	// Indicates when new cluster runtime version upgrades will be applied after they are released. By default is Wave0. Only
+	// applies when upgradeMode is set to 'Automatic'.
 	UpgradeWave *ClusterUpgradeCadence `json:"upgradeWave,omitempty"`
 
 	// The VM image VMSS has been configured with. Generic names such as Windows or Linux can be used.
 	VMImage *string `json:"vmImage,omitempty"`
 
-	// This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with multiple Availability Zones is added.
+	// This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with multiple
+	// Availability Zones is added.
 	VmssZonalUpgradeMode *VmssZonalUpgradeMode `json:"vmssZonalUpgradeMode,omitempty"`
 
 	// Boolean to pause automatic runtime version upgrades to the cluster.
@@ -817,176 +715,26 @@ type ClusterProperties struct {
 	ClusterID *string `json:"clusterId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The current state of the cluster.
-	// * WaitingForNodes - Indicates that the cluster resource is created and the resource provider is waiting for Service Fabric VM extension to boot up and
-	// report to it.
-	// * Deploying - Indicates that the Service Fabric runtime is being installed on the VMs. Cluster resource will be in this state until the cluster boots
-	// up and system services are up.
-	// * BaselineUpgrade - Indicates that the cluster is upgrading to establishes the cluster version. This upgrade is automatically initiated when the cluster
-	// boots up for the first time.
+	// * WaitingForNodes - Indicates that the cluster resource is created and the resource provider is waiting for Service Fabric
+	// VM extension to boot up and report to it.
+	// * Deploying - Indicates that the Service Fabric runtime is being installed on the VMs. Cluster resource will be in this
+	// state until the cluster boots up and system services are up.
+	// * BaselineUpgrade - Indicates that the cluster is upgrading to establishes the cluster version. This upgrade is automatically
+	// initiated when the cluster boots up for the first time.
 	// * UpdatingUserConfiguration - Indicates that the cluster is being upgraded with the user provided configuration.
 	// * UpdatingUserCertificate - Indicates that the cluster is being upgraded with the user provided certificate.
-	// * UpdatingInfrastructure - Indicates that the cluster is being upgraded with the latest Service Fabric runtime version. This happens only when the upgradeMode
-	// is set to 'Automatic'.
-	// * EnforcingClusterVersion - Indicates that cluster is on a different version than expected and the cluster is being upgraded to the expected version.
-	// * UpgradeServiceUnreachable - Indicates that the system service in the cluster is no longer polling the Resource Provider. Clusters in this state cannot
-	// be managed by the Resource Provider.
+	// * UpdatingInfrastructure - Indicates that the cluster is being upgraded with the latest Service Fabric runtime version.
+	// This happens only when the upgradeMode is set to 'Automatic'.
+	// * EnforcingClusterVersion - Indicates that cluster is on a different version than expected and the cluster is being upgraded
+	// to the expected version.
+	// * UpgradeServiceUnreachable - Indicates that the system service in the cluster is no longer polling the Resource Provider.
+	// Clusters in this state cannot be managed by the Resource Provider.
 	// * AutoScale - Indicates that the ReliabilityLevel of the cluster is being adjusted.
 	// * Ready - Indicates that the cluster is in a stable state.
 	ClusterState *ClusterState `json:"clusterState,omitempty" azure:"ro"`
 
 	// READ-ONLY; The provisioning state of the cluster resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ClusterProperties.
-func (c ClusterProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "addOnFeatures", c.AddOnFeatures)
-	populate(objectMap, "applicationTypeVersionsCleanupPolicy", c.ApplicationTypeVersionsCleanupPolicy)
-	populate(objectMap, "availableClusterVersions", c.AvailableClusterVersions)
-	populate(objectMap, "azureActiveDirectory", c.AzureActiveDirectory)
-	populate(objectMap, "certificate", c.Certificate)
-	populate(objectMap, "certificateCommonNames", c.CertificateCommonNames)
-	populate(objectMap, "clientCertificateCommonNames", c.ClientCertificateCommonNames)
-	populate(objectMap, "clientCertificateThumbprints", c.ClientCertificateThumbprints)
-	populate(objectMap, "clusterCodeVersion", c.ClusterCodeVersion)
-	populate(objectMap, "clusterEndpoint", c.ClusterEndpoint)
-	populate(objectMap, "clusterId", c.ClusterID)
-	populate(objectMap, "clusterState", c.ClusterState)
-	populate(objectMap, "diagnosticsStorageAccountConfig", c.DiagnosticsStorageAccountConfig)
-	populate(objectMap, "eventStoreServiceEnabled", c.EventStoreServiceEnabled)
-	populate(objectMap, "fabricSettings", c.FabricSettings)
-	populate(objectMap, "infrastructureServiceManager", c.InfrastructureServiceManager)
-	populate(objectMap, "managementEndpoint", c.ManagementEndpoint)
-	populate(objectMap, "nodeTypes", c.NodeTypes)
-	populate(objectMap, "notifications", c.Notifications)
-	populate(objectMap, "provisioningState", c.ProvisioningState)
-	populate(objectMap, "reliabilityLevel", c.ReliabilityLevel)
-	populate(objectMap, "reverseProxyCertificate", c.ReverseProxyCertificate)
-	populate(objectMap, "reverseProxyCertificateCommonNames", c.ReverseProxyCertificateCommonNames)
-	populate(objectMap, "sfZonalUpgradeMode", c.SfZonalUpgradeMode)
-	populate(objectMap, "upgradeDescription", c.UpgradeDescription)
-	populate(objectMap, "upgradeMode", c.UpgradeMode)
-	populateTimeRFC3339(objectMap, "upgradePauseEndTimestampUtc", c.UpgradePauseEndTimestampUTC)
-	populateTimeRFC3339(objectMap, "upgradePauseStartTimestampUtc", c.UpgradePauseStartTimestampUTC)
-	populate(objectMap, "upgradeWave", c.UpgradeWave)
-	populate(objectMap, "vmImage", c.VMImage)
-	populate(objectMap, "vmssZonalUpgradeMode", c.VmssZonalUpgradeMode)
-	populate(objectMap, "waveUpgradePaused", c.WaveUpgradePaused)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ClusterProperties.
-func (c *ClusterProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "addOnFeatures":
-			err = unpopulate(val, &c.AddOnFeatures)
-			delete(rawMsg, key)
-		case "applicationTypeVersionsCleanupPolicy":
-			err = unpopulate(val, &c.ApplicationTypeVersionsCleanupPolicy)
-			delete(rawMsg, key)
-		case "availableClusterVersions":
-			err = unpopulate(val, &c.AvailableClusterVersions)
-			delete(rawMsg, key)
-		case "azureActiveDirectory":
-			err = unpopulate(val, &c.AzureActiveDirectory)
-			delete(rawMsg, key)
-		case "certificate":
-			err = unpopulate(val, &c.Certificate)
-			delete(rawMsg, key)
-		case "certificateCommonNames":
-			err = unpopulate(val, &c.CertificateCommonNames)
-			delete(rawMsg, key)
-		case "clientCertificateCommonNames":
-			err = unpopulate(val, &c.ClientCertificateCommonNames)
-			delete(rawMsg, key)
-		case "clientCertificateThumbprints":
-			err = unpopulate(val, &c.ClientCertificateThumbprints)
-			delete(rawMsg, key)
-		case "clusterCodeVersion":
-			err = unpopulate(val, &c.ClusterCodeVersion)
-			delete(rawMsg, key)
-		case "clusterEndpoint":
-			err = unpopulate(val, &c.ClusterEndpoint)
-			delete(rawMsg, key)
-		case "clusterId":
-			err = unpopulate(val, &c.ClusterID)
-			delete(rawMsg, key)
-		case "clusterState":
-			err = unpopulate(val, &c.ClusterState)
-			delete(rawMsg, key)
-		case "diagnosticsStorageAccountConfig":
-			err = unpopulate(val, &c.DiagnosticsStorageAccountConfig)
-			delete(rawMsg, key)
-		case "eventStoreServiceEnabled":
-			err = unpopulate(val, &c.EventStoreServiceEnabled)
-			delete(rawMsg, key)
-		case "fabricSettings":
-			err = unpopulate(val, &c.FabricSettings)
-			delete(rawMsg, key)
-		case "infrastructureServiceManager":
-			err = unpopulate(val, &c.InfrastructureServiceManager)
-			delete(rawMsg, key)
-		case "managementEndpoint":
-			err = unpopulate(val, &c.ManagementEndpoint)
-			delete(rawMsg, key)
-		case "nodeTypes":
-			err = unpopulate(val, &c.NodeTypes)
-			delete(rawMsg, key)
-		case "notifications":
-			err = unpopulate(val, &c.Notifications)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &c.ProvisioningState)
-			delete(rawMsg, key)
-		case "reliabilityLevel":
-			err = unpopulate(val, &c.ReliabilityLevel)
-			delete(rawMsg, key)
-		case "reverseProxyCertificate":
-			err = unpopulate(val, &c.ReverseProxyCertificate)
-			delete(rawMsg, key)
-		case "reverseProxyCertificateCommonNames":
-			err = unpopulate(val, &c.ReverseProxyCertificateCommonNames)
-			delete(rawMsg, key)
-		case "sfZonalUpgradeMode":
-			err = unpopulate(val, &c.SfZonalUpgradeMode)
-			delete(rawMsg, key)
-		case "upgradeDescription":
-			err = unpopulate(val, &c.UpgradeDescription)
-			delete(rawMsg, key)
-		case "upgradeMode":
-			err = unpopulate(val, &c.UpgradeMode)
-			delete(rawMsg, key)
-		case "upgradePauseEndTimestampUtc":
-			err = unpopulateTimeRFC3339(val, &c.UpgradePauseEndTimestampUTC)
-			delete(rawMsg, key)
-		case "upgradePauseStartTimestampUtc":
-			err = unpopulateTimeRFC3339(val, &c.UpgradePauseStartTimestampUTC)
-			delete(rawMsg, key)
-		case "upgradeWave":
-			err = unpopulate(val, &c.UpgradeWave)
-			delete(rawMsg, key)
-		case "vmImage":
-			err = unpopulate(val, &c.VMImage)
-			delete(rawMsg, key)
-		case "vmssZonalUpgradeMode":
-			err = unpopulate(val, &c.VmssZonalUpgradeMode)
-			delete(rawMsg, key)
-		case "waveUpgradePaused":
-			err = unpopulate(val, &c.WaveUpgradePaused)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ClusterPropertiesUpdateParameters - Describes the cluster resource properties that can be updated during PATCH operation.
@@ -997,22 +745,24 @@ type ClusterPropertiesUpdateParameters struct {
 	// The policy used to clean up unused versions.
 	ApplicationTypeVersionsCleanupPolicy *ApplicationTypeVersionsCleanupPolicy `json:"applicationTypeVersionsCleanupPolicy,omitempty"`
 
-	// The certificate to use for securing the cluster. The certificate provided will be used for node to node security within the cluster, SSL certificate
-	// for cluster management endpoint and default admin
+	// The certificate to use for securing the cluster. The certificate provided will be used for node to node security within
+	// the cluster, SSL certificate for cluster management endpoint and default admin
 	// client.
 	Certificate *CertificateDescription `json:"certificate,omitempty"`
 
 	// Describes a list of server certificates referenced by common name that are used to secure the cluster.
 	CertificateCommonNames *ServerCertificateCommonNames `json:"certificateCommonNames,omitempty"`
 
-	// The list of client certificates referenced by common name that are allowed to manage the cluster. This will overwrite the existing list.
+	// The list of client certificates referenced by common name that are allowed to manage the cluster. This will overwrite the
+	// existing list.
 	ClientCertificateCommonNames []*ClientCertificateCommonName `json:"clientCertificateCommonNames,omitempty"`
 
-	// The list of client certificates referenced by thumbprint that are allowed to manage the cluster. This will overwrite the existing list.
+	// The list of client certificates referenced by thumbprint that are allowed to manage the cluster. This will overwrite the
+	// existing list.
 	ClientCertificateThumbprints []*ClientCertificateThumbprint `json:"clientCertificateThumbprints,omitempty"`
 
-	// The Service Fabric runtime version of the cluster. This property can only by set the user when upgradeMode is set to 'Manual'. To get list of available
-	// Service Fabric versions for new clusters use
+	// The Service Fabric runtime version of the cluster. This property can only by set the user when upgradeMode is set to 'Manual'.
+	// To get list of available Service Fabric versions for new clusters use
 	// ClusterVersion API [./ClusterVersion.md]. To get the list of available version for existing clusters use availableClusterVersions.
 	ClusterCodeVersion *string `json:"clusterCodeVersion,omitempty"`
 
@@ -1042,8 +792,8 @@ type ClusterPropertiesUpdateParameters struct {
 	// The server certificate used by reverse proxy.
 	ReverseProxyCertificate *CertificateDescription `json:"reverseProxyCertificate,omitempty"`
 
-	// This property controls the logical grouping of VMs in upgrade domains (UDs). This property can't be modified if a node type with multiple Availability
-	// Zones is already present in the cluster.
+	// This property controls the logical grouping of VMs in upgrade domains (UDs). This property can't be modified if a node
+	// type with multiple Availability Zones is already present in the cluster.
 	SfZonalUpgradeMode *SfZonalUpgradeMode `json:"sfZonalUpgradeMode,omitempty"`
 
 	// The policy to use when upgrading the cluster.
@@ -1058,126 +808,16 @@ type ClusterPropertiesUpdateParameters struct {
 	// The start timestamp to pause runtime version upgrades on the cluster (UTC).
 	UpgradePauseStartTimestampUTC *time.Time `json:"upgradePauseStartTimestampUtc,omitempty"`
 
-	// Indicates when new cluster runtime version upgrades will be applied after they are released. By default is Wave0. Only applies when upgradeMode is set
-	// to 'Automatic'.
+	// Indicates when new cluster runtime version upgrades will be applied after they are released. By default is Wave0. Only
+	// applies when upgradeMode is set to 'Automatic'.
 	UpgradeWave *ClusterUpgradeCadence `json:"upgradeWave,omitempty"`
 
-	// This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with multiple Availability Zones is added.
+	// This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with multiple
+	// Availability Zones is added.
 	VmssZonalUpgradeMode *VmssZonalUpgradeMode `json:"vmssZonalUpgradeMode,omitempty"`
 
 	// Boolean to pause automatic runtime version upgrades to the cluster.
 	WaveUpgradePaused *bool `json:"waveUpgradePaused,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ClusterPropertiesUpdateParameters.
-func (c ClusterPropertiesUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "addOnFeatures", c.AddOnFeatures)
-	populate(objectMap, "applicationTypeVersionsCleanupPolicy", c.ApplicationTypeVersionsCleanupPolicy)
-	populate(objectMap, "certificate", c.Certificate)
-	populate(objectMap, "certificateCommonNames", c.CertificateCommonNames)
-	populate(objectMap, "clientCertificateCommonNames", c.ClientCertificateCommonNames)
-	populate(objectMap, "clientCertificateThumbprints", c.ClientCertificateThumbprints)
-	populate(objectMap, "clusterCodeVersion", c.ClusterCodeVersion)
-	populate(objectMap, "eventStoreServiceEnabled", c.EventStoreServiceEnabled)
-	populate(objectMap, "fabricSettings", c.FabricSettings)
-	populate(objectMap, "infrastructureServiceManager", c.InfrastructureServiceManager)
-	populate(objectMap, "nodeTypes", c.NodeTypes)
-	populate(objectMap, "notifications", c.Notifications)
-	populate(objectMap, "reliabilityLevel", c.ReliabilityLevel)
-	populate(objectMap, "reverseProxyCertificate", c.ReverseProxyCertificate)
-	populate(objectMap, "sfZonalUpgradeMode", c.SfZonalUpgradeMode)
-	populate(objectMap, "upgradeDescription", c.UpgradeDescription)
-	populate(objectMap, "upgradeMode", c.UpgradeMode)
-	populateTimeRFC3339(objectMap, "upgradePauseEndTimestampUtc", c.UpgradePauseEndTimestampUTC)
-	populateTimeRFC3339(objectMap, "upgradePauseStartTimestampUtc", c.UpgradePauseStartTimestampUTC)
-	populate(objectMap, "upgradeWave", c.UpgradeWave)
-	populate(objectMap, "vmssZonalUpgradeMode", c.VmssZonalUpgradeMode)
-	populate(objectMap, "waveUpgradePaused", c.WaveUpgradePaused)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ClusterPropertiesUpdateParameters.
-func (c *ClusterPropertiesUpdateParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "addOnFeatures":
-			err = unpopulate(val, &c.AddOnFeatures)
-			delete(rawMsg, key)
-		case "applicationTypeVersionsCleanupPolicy":
-			err = unpopulate(val, &c.ApplicationTypeVersionsCleanupPolicy)
-			delete(rawMsg, key)
-		case "certificate":
-			err = unpopulate(val, &c.Certificate)
-			delete(rawMsg, key)
-		case "certificateCommonNames":
-			err = unpopulate(val, &c.CertificateCommonNames)
-			delete(rawMsg, key)
-		case "clientCertificateCommonNames":
-			err = unpopulate(val, &c.ClientCertificateCommonNames)
-			delete(rawMsg, key)
-		case "clientCertificateThumbprints":
-			err = unpopulate(val, &c.ClientCertificateThumbprints)
-			delete(rawMsg, key)
-		case "clusterCodeVersion":
-			err = unpopulate(val, &c.ClusterCodeVersion)
-			delete(rawMsg, key)
-		case "eventStoreServiceEnabled":
-			err = unpopulate(val, &c.EventStoreServiceEnabled)
-			delete(rawMsg, key)
-		case "fabricSettings":
-			err = unpopulate(val, &c.FabricSettings)
-			delete(rawMsg, key)
-		case "infrastructureServiceManager":
-			err = unpopulate(val, &c.InfrastructureServiceManager)
-			delete(rawMsg, key)
-		case "nodeTypes":
-			err = unpopulate(val, &c.NodeTypes)
-			delete(rawMsg, key)
-		case "notifications":
-			err = unpopulate(val, &c.Notifications)
-			delete(rawMsg, key)
-		case "reliabilityLevel":
-			err = unpopulate(val, &c.ReliabilityLevel)
-			delete(rawMsg, key)
-		case "reverseProxyCertificate":
-			err = unpopulate(val, &c.ReverseProxyCertificate)
-			delete(rawMsg, key)
-		case "sfZonalUpgradeMode":
-			err = unpopulate(val, &c.SfZonalUpgradeMode)
-			delete(rawMsg, key)
-		case "upgradeDescription":
-			err = unpopulate(val, &c.UpgradeDescription)
-			delete(rawMsg, key)
-		case "upgradeMode":
-			err = unpopulate(val, &c.UpgradeMode)
-			delete(rawMsg, key)
-		case "upgradePauseEndTimestampUtc":
-			err = unpopulateTimeRFC3339(val, &c.UpgradePauseEndTimestampUTC)
-			delete(rawMsg, key)
-		case "upgradePauseStartTimestampUtc":
-			err = unpopulateTimeRFC3339(val, &c.UpgradePauseStartTimestampUTC)
-			delete(rawMsg, key)
-		case "upgradeWave":
-			err = unpopulate(val, &c.UpgradeWave)
-			delete(rawMsg, key)
-		case "vmssZonalUpgradeMode":
-			err = unpopulate(val, &c.VmssZonalUpgradeMode)
-			delete(rawMsg, key)
-		case "waveUpgradePaused":
-			err = unpopulate(val, &c.WaveUpgradePaused)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ClusterUpdateParameters - Cluster update request
@@ -1189,86 +829,69 @@ type ClusterUpdateParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ClusterUpdateParameters.
-func (c ClusterUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "tags", c.Tags)
-	return json.Marshal(objectMap)
-}
-
 // ClusterUpgradeDeltaHealthPolicy - Describes the delta health policies for the cluster upgrade.
 type ClusterUpgradeDeltaHealthPolicy struct {
-	// REQUIRED; The maximum allowed percentage of applications health degradation allowed during cluster upgrades. The delta is measured between the state
-	// of the applications at the beginning of upgrade and the state
-	// of the applications at the time of the health evaluation. The check is performed after every upgrade domain upgrade completion to make sure the global
-	// state of the cluster is within tolerated limits.
+	// REQUIRED; The maximum allowed percentage of applications health degradation allowed during cluster upgrades. The delta
+	// is measured between the state of the applications at the beginning of upgrade and the state
+	// of the applications at the time of the health evaluation. The check is performed after every upgrade domain upgrade completion
+	// to make sure the global state of the cluster is within tolerated limits.
 	// System services are not included in this.
 	MaxPercentDeltaUnhealthyApplications *int32 `json:"maxPercentDeltaUnhealthyApplications,omitempty"`
 
-	// REQUIRED; The maximum allowed percentage of nodes health degradation allowed during cluster upgrades. The delta is measured between the state of the
-	// nodes at the beginning of upgrade and the state of the nodes
-	// at the time of the health evaluation. The check is performed after every upgrade domain upgrade completion to make sure the global state of the cluster
-	// is within tolerated limits.
+	// REQUIRED; The maximum allowed percentage of nodes health degradation allowed during cluster upgrades. The delta is measured
+	// between the state of the nodes at the beginning of upgrade and the state of the nodes
+	// at the time of the health evaluation. The check is performed after every upgrade domain upgrade completion to make sure
+	// the global state of the cluster is within tolerated limits.
 	MaxPercentDeltaUnhealthyNodes *int32 `json:"maxPercentDeltaUnhealthyNodes,omitempty"`
 
-	// REQUIRED; The maximum allowed percentage of upgrade domain nodes health degradation allowed during cluster upgrades. The delta is measured between the
-	// state of the upgrade domain nodes at the beginning of
-	// upgrade and the state of the upgrade domain nodes at the time of the health evaluation. The check is performed after every upgrade domain upgrade completion
-	// for all completed upgrade domains to make
+	// REQUIRED; The maximum allowed percentage of upgrade domain nodes health degradation allowed during cluster upgrades. The
+	// delta is measured between the state of the upgrade domain nodes at the beginning of
+	// upgrade and the state of the upgrade domain nodes at the time of the health evaluation. The check is performed after every
+	// upgrade domain upgrade completion for all completed upgrade domains to make
 	// sure the state of the upgrade domains is within tolerated limits.
 	MaxPercentUpgradeDomainDeltaUnhealthyNodes *int32 `json:"maxPercentUpgradeDomainDeltaUnhealthyNodes,omitempty"`
 
-	// Defines the application delta health policy map used to evaluate the health of an application or one of its child entities when upgrading the cluster.
+	// Defines the application delta health policy map used to evaluate the health of an application or one of its child entities
+	// when upgrading the cluster.
 	ApplicationDeltaHealthPolicies map[string]*ApplicationDeltaHealthPolicy `json:"applicationDeltaHealthPolicies,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ClusterUpgradeDeltaHealthPolicy.
-func (c ClusterUpgradeDeltaHealthPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "applicationDeltaHealthPolicies", c.ApplicationDeltaHealthPolicies)
-	populate(objectMap, "maxPercentDeltaUnhealthyApplications", c.MaxPercentDeltaUnhealthyApplications)
-	populate(objectMap, "maxPercentDeltaUnhealthyNodes", c.MaxPercentDeltaUnhealthyNodes)
-	populate(objectMap, "maxPercentUpgradeDomainDeltaUnhealthyNodes", c.MaxPercentUpgradeDomainDeltaUnhealthyNodes)
-	return json.Marshal(objectMap)
 }
 
 // ClusterUpgradePolicy - Describes the policy used when upgrading the cluster.
 type ClusterUpgradePolicy struct {
-	// REQUIRED; The amount of time to retry health evaluation when the application or cluster is unhealthy before the upgrade rolls back. The timeout can be
-	// in either hh:mm:ss or in d.hh:mm:ss.ms format.
+	// REQUIRED; The amount of time to retry health evaluation when the application or cluster is unhealthy before the upgrade
+	// rolls back. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
 	HealthCheckRetryTimeout *string `json:"healthCheckRetryTimeout,omitempty"`
 
-	// REQUIRED; The amount of time that the application or cluster must remain healthy before the upgrade proceeds to the next upgrade domain. The duration
-	// can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
+	// REQUIRED; The amount of time that the application or cluster must remain healthy before the upgrade proceeds to the next
+	// upgrade domain. The duration can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
 	HealthCheckStableDuration *string `json:"healthCheckStableDuration,omitempty"`
 
-	// REQUIRED; The length of time to wait after completing an upgrade domain before performing health checks. The duration can be in either hh:mm:ss or in
-	// d.hh:mm:ss.ms format.
+	// REQUIRED; The length of time to wait after completing an upgrade domain before performing health checks. The duration can
+	// be in either hh:mm:ss or in d.hh:mm:ss.ms format.
 	HealthCheckWaitDuration *string `json:"healthCheckWaitDuration,omitempty"`
 
 	// REQUIRED; The cluster health policy used when upgrading the cluster.
 	HealthPolicy *ClusterHealthPolicy `json:"healthPolicy,omitempty"`
 
-	// REQUIRED; The amount of time each upgrade domain has to complete before the upgrade rolls back. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms
-	// format.
+	// REQUIRED; The amount of time each upgrade domain has to complete before the upgrade rolls back. The timeout can be in either
+	// hh:mm:ss or in d.hh:mm:ss.ms format.
 	UpgradeDomainTimeout *string `json:"upgradeDomainTimeout,omitempty"`
 
-	// REQUIRED; The maximum amount of time to block processing of an upgrade domain and prevent loss of availability when there are unexpected issues. When
-	// this timeout expires, processing of the upgrade domain will
-	// proceed regardless of availability loss issues. The timeout is reset at the start of each upgrade domain. The timeout can be in either hh:mm:ss or in
-	// d.hh:mm:ss.ms format.
+	// REQUIRED; The maximum amount of time to block processing of an upgrade domain and prevent loss of availability when there
+	// are unexpected issues. When this timeout expires, processing of the upgrade domain will
+	// proceed regardless of availability loss issues. The timeout is reset at the start of each upgrade domain. The timeout can
+	// be in either hh:mm:ss or in d.hh:mm:ss.ms format.
 	UpgradeReplicaSetCheckTimeout *string `json:"upgradeReplicaSetCheckTimeout,omitempty"`
 
-	// REQUIRED; The amount of time the overall upgrade has to complete before the upgrade rolls back. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms
-	// format.
+	// REQUIRED; The amount of time the overall upgrade has to complete before the upgrade rolls back. The timeout can be in either
+	// hh:mm:ss or in d.hh:mm:ss.ms format.
 	UpgradeTimeout *string `json:"upgradeTimeout,omitempty"`
 
 	// The cluster delta health policy used when upgrading the cluster.
 	DeltaHealthPolicy *ClusterUpgradeDeltaHealthPolicy `json:"deltaHealthPolicy,omitempty"`
 
-	// If true, then processes are forcefully restarted during upgrade even when the code version has not changed (the upgrade only changes configuration or
-	// data).
+	// If true, then processes are forcefully restarted during upgrade even when the code version has not changed (the upgrade
+	// only changes configuration or data).
 	ForceRestart *bool `json:"forceRestart,omitempty"`
 }
 
@@ -1284,58 +907,63 @@ type ClusterVersionDetails struct {
 	SupportExpiryUTC *string `json:"supportExpiryUtc,omitempty"`
 }
 
-// ClusterVersionsGetByEnvironmentOptions contains the optional parameters for the ClusterVersions.GetByEnvironment method.
-type ClusterVersionsGetByEnvironmentOptions struct {
+// ClusterVersionsClientGetByEnvironmentOptions contains the optional parameters for the ClusterVersionsClient.GetByEnvironment
+// method.
+type ClusterVersionsClientGetByEnvironmentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClusterVersionsGetOptions contains the optional parameters for the ClusterVersions.Get method.
-type ClusterVersionsGetOptions struct {
+// ClusterVersionsClientGetOptions contains the optional parameters for the ClusterVersionsClient.Get method.
+type ClusterVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClusterVersionsListByEnvironmentOptions contains the optional parameters for the ClusterVersions.ListByEnvironment method.
-type ClusterVersionsListByEnvironmentOptions struct {
+// ClusterVersionsClientListByEnvironmentOptions contains the optional parameters for the ClusterVersionsClient.ListByEnvironment
+// method.
+type ClusterVersionsClientListByEnvironmentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClusterVersionsListOptions contains the optional parameters for the ClusterVersions.List method.
-type ClusterVersionsListOptions struct {
+// ClusterVersionsClientListOptions contains the optional parameters for the ClusterVersionsClient.List method.
+type ClusterVersionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersBeginCreateOrUpdateOptions contains the optional parameters for the Clusters.BeginCreateOrUpdate method.
-type ClustersBeginCreateOrUpdateOptions struct {
+// ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate method.
+type ClustersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ClustersClientBeginUpdateOptions contains the optional parameters for the ClustersClient.BeginUpdate method.
+type ClustersClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ClustersClientDeleteOptions contains the optional parameters for the ClustersClient.Delete method.
+type ClustersClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersBeginUpdateOptions contains the optional parameters for the Clusters.BeginUpdate method.
-type ClustersBeginUpdateOptions struct {
+// ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
+type ClustersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersDeleteOptions contains the optional parameters for the Clusters.Delete method.
-type ClustersDeleteOptions struct {
+// ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup method.
+type ClustersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersGetOptions contains the optional parameters for the Clusters.Get method.
-type ClustersGetOptions struct {
+// ClustersClientListOptions contains the optional parameters for the ClustersClient.List method.
+type ClustersClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersListByResourceGroupOptions contains the optional parameters for the Clusters.ListByResourceGroup method.
-type ClustersListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClustersListOptions contains the optional parameters for the Clusters.List method.
-type ClustersListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClustersListUpgradableVersionsOptions contains the optional parameters for the Clusters.ListUpgradableVersions method.
-type ClustersListUpgradableVersionsOptions struct {
+// ClustersClientListUpgradableVersionsOptions contains the optional parameters for the ClustersClient.ListUpgradableVersions
+// method.
+type ClustersClientListUpgradableVersionsOptions struct {
 	// The upgrade path description with target version.
 	VersionsDescription *UpgradableVersionsDescription
 }
@@ -1357,7 +985,8 @@ type DiagnosticsStorageAccountConfig struct {
 	// REQUIRED; The table endpoint of the azure storage account.
 	TableEndpoint *string `json:"tableEndpoint,omitempty"`
 
-	// The secondary protected diagnostics storage key name. If one of the storage account keys is rotated the cluster will fallback to using the other.
+	// The secondary protected diagnostics storage key name. If one of the storage account keys is rotated the cluster will fallback
+	// to using the other.
 	ProtectedAccountKeyName2 *string `json:"protectedAccountKeyName2,omitempty"`
 }
 
@@ -1371,17 +1000,9 @@ type EndpointRangeDescription struct {
 }
 
 // ErrorModel - The structure of the error.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorModel struct {
-	raw string
 	// The error details.
-	InnerError *ErrorModelError `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorModel.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorModel) Error() string {
-	return e.raw
+	Error *ErrorModelError `json:"error,omitempty"`
 }
 
 // ErrorModelError - The error details.
@@ -1398,7 +1019,8 @@ type ManagedIdentity struct {
 	// The type of managed identity for the resource.
 	Type *ManagedIdentityType `json:"type,omitempty"`
 
-	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form:
+	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
+	// ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
 
@@ -1409,59 +1031,23 @@ type ManagedIdentity struct {
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ManagedIdentity.
-func (m ManagedIdentity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "principalId", m.PrincipalID)
-	populate(objectMap, "tenantId", m.TenantID)
-	populate(objectMap, "type", m.Type)
-	populate(objectMap, "userAssignedIdentities", m.UserAssignedIdentities)
-	return json.Marshal(objectMap)
-}
-
 // NamedPartitionSchemeDescription - Describes the named partition scheme of the service.
 type NamedPartitionSchemeDescription struct {
-	PartitionSchemeDescription
 	// REQUIRED; The number of partitions.
 	Count *int32 `json:"count,omitempty"`
 
 	// REQUIRED; Array of size specified by the ‘count’ parameter, for the names of the partitions.
 	Names []*string `json:"names,omitempty"`
+
+	// REQUIRED; Specifies how the service is partitioned.
+	PartitionScheme *PartitionScheme `json:"partitionScheme,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NamedPartitionSchemeDescription.
-func (n NamedPartitionSchemeDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	n.PartitionSchemeDescription.marshalInternal(objectMap, PartitionSchemeNamed)
-	populate(objectMap, "count", n.Count)
-	populate(objectMap, "names", n.Names)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type NamedPartitionSchemeDescription.
-func (n *NamedPartitionSchemeDescription) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetPartitionSchemeDescription implements the PartitionSchemeDescriptionClassification interface for type NamedPartitionSchemeDescription.
+func (n *NamedPartitionSchemeDescription) GetPartitionSchemeDescription() *PartitionSchemeDescription {
+	return &PartitionSchemeDescription{
+		PartitionScheme: n.PartitionScheme,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "count":
-			err = unpopulate(val, &n.Count)
-			delete(rawMsg, key)
-		case "names":
-			err = unpopulate(val, &n.Names)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := n.PartitionSchemeDescription.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // NodeTypeDescription - Describes a node type in the cluster, each node type represents sub set of nodes in the cluster.
@@ -1472,31 +1058,32 @@ type NodeTypeDescription struct {
 	// REQUIRED; The HTTP cluster management endpoint port.
 	HTTPGatewayEndpointPort *int32 `json:"httpGatewayEndpointPort,omitempty"`
 
-	// REQUIRED; The node type on which system services will run. Only one node type should be marked as primary. Primary node type cannot be deleted or changed
-	// for existing clusters.
+	// REQUIRED; The node type on which system services will run. Only one node type should be marked as primary. Primary node
+	// type cannot be deleted or changed for existing clusters.
 	IsPrimary *bool `json:"isPrimary,omitempty"`
 
 	// REQUIRED; The name of the node type.
 	Name *string `json:"name,omitempty"`
 
-	// REQUIRED; VMInstanceCount should be 1 to n, where n indicates the number of VM instances corresponding to this nodeType. VMInstanceCount = 0 can be done
-	// only in these scenarios: NodeType is a secondary
-	// nodeType. Durability = Bronze or Durability >= Bronze and InfrastructureServiceManager = true. If VMInstanceCount = 0, implies the VMs for this nodeType
-	// will not be used for the initial cluster size
+	// REQUIRED; VMInstanceCount should be 1 to n, where n indicates the number of VM instances corresponding to this nodeType.
+	// VMInstanceCount = 0 can be done only in these scenarios: NodeType is a secondary
+	// nodeType. Durability = Bronze or Durability >= Bronze and InfrastructureServiceManager = true. If VMInstanceCount = 0,
+	// implies the VMs for this nodeType will not be used for the initial cluster size
 	// computation.
 	VMInstanceCount *int32 `json:"vmInstanceCount,omitempty"`
 
 	// The range of ports from which cluster assigned port to Service Fabric applications.
 	ApplicationPorts *EndpointRangeDescription `json:"applicationPorts,omitempty"`
 
-	// The capacity tags applied to the nodes in the node type, the cluster resource manager uses these tags to understand how much resource a node has.
+	// The capacity tags applied to the nodes in the node type, the cluster resource manager uses these tags to understand how
+	// much resource a node has.
 	Capacities map[string]*string `json:"capacities,omitempty"`
 
 	// The durability level of the node type. Learn about DurabilityLevel [https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity].
 	// * Bronze - No privileges. This is the default.
 	// * Silver - The infrastructure jobs can be paused for a duration of 10 minutes per UD.
-	// * Gold - The infrastructure jobs can be paused for a duration of 2 hours per UD. Gold durability can be enabled only on full node VM skus like D15_V2,
-	// G5 etc.
+	// * Gold - The infrastructure jobs can be paused for a duration of 2 hours per UD. Gold durability can be enabled only on
+	// full node VM skus like D15_V2, G5 etc.
 	DurabilityLevel *DurabilityLevel `json:"durabilityLevel,omitempty"`
 
 	// The range of ephemeral ports that nodes in this node type should be configured with.
@@ -1508,30 +1095,12 @@ type NodeTypeDescription struct {
 	// Indicates if the node type is enabled to support multiple zones.
 	MultipleAvailabilityZones *bool `json:"multipleAvailabilityZones,omitempty"`
 
-	// The placement tags applied to nodes in the node type, which can be used to indicate where certain services (workload) should run.
+	// The placement tags applied to nodes in the node type, which can be used to indicate where certain services (workload) should
+	// run.
 	PlacementProperties map[string]*string `json:"placementProperties,omitempty"`
 
 	// The endpoint used by reverse proxy.
 	ReverseProxyEndpointPort *int32 `json:"reverseProxyEndpointPort,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type NodeTypeDescription.
-func (n NodeTypeDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "applicationPorts", n.ApplicationPorts)
-	populate(objectMap, "capacities", n.Capacities)
-	populate(objectMap, "clientConnectionEndpointPort", n.ClientConnectionEndpointPort)
-	populate(objectMap, "durabilityLevel", n.DurabilityLevel)
-	populate(objectMap, "ephemeralPorts", n.EphemeralPorts)
-	populate(objectMap, "httpGatewayEndpointPort", n.HTTPGatewayEndpointPort)
-	populate(objectMap, "isPrimary", n.IsPrimary)
-	populate(objectMap, "isStateless", n.IsStateless)
-	populate(objectMap, "multipleAvailabilityZones", n.MultipleAvailabilityZones)
-	populate(objectMap, "name", n.Name)
-	populate(objectMap, "placementProperties", n.PlacementProperties)
-	populate(objectMap, "reverseProxyEndpointPort", n.ReverseProxyEndpointPort)
-	populate(objectMap, "vmInstanceCount", n.VMInstanceCount)
-	return json.Marshal(objectMap)
 }
 
 // Notification - Describes the notification channel for cluster events.
@@ -1549,16 +1118,6 @@ type Notification struct {
 	NotificationTargets []*NotificationTarget `json:"notificationTargets,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Notification.
-func (n Notification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "isEnabled", n.IsEnabled)
-	populate(objectMap, "notificationCategory", n.NotificationCategory)
-	populate(objectMap, "notificationLevel", n.NotificationLevel)
-	populate(objectMap, "notificationTargets", n.NotificationTargets)
-	return json.Marshal(objectMap)
-}
-
 // NotificationTarget - Describes the notification target properties.
 type NotificationTarget struct {
 	// REQUIRED; The notification channel indicates the type of receivers subscribed to the notification, either user or subscription.
@@ -1568,14 +1127,6 @@ type NotificationTarget struct {
 	Receivers []*string `json:"receivers,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NotificationTarget.
-func (n NotificationTarget) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "notificationChannel", n.NotificationChannel)
-	populate(objectMap, "receivers", n.Receivers)
-	return json.Marshal(objectMap)
-}
-
 // OperationListResult - Describes the result of the request to list Service Fabric resource provider operations.
 type OperationListResult struct {
 	// List of operations supported by the Service Fabric resource provider.
@@ -1583,14 +1134,6 @@ type OperationListResult struct {
 
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // OperationResult - Available operation list result
@@ -1611,8 +1154,8 @@ type OperationResult struct {
 	Origin *string `json:"origin,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1634,35 +1177,6 @@ type PartitionSchemeDescription struct {
 // GetPartitionSchemeDescription implements the PartitionSchemeDescriptionClassification interface for type PartitionSchemeDescription.
 func (p *PartitionSchemeDescription) GetPartitionSchemeDescription() *PartitionSchemeDescription {
 	return p
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PartitionSchemeDescription.
-func (p *PartitionSchemeDescription) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return p.unmarshalInternal(rawMsg)
-}
-
-func (p PartitionSchemeDescription) marshalInternal(objectMap map[string]interface{}, discValue PartitionScheme) {
-	p.PartitionScheme = &discValue
-	objectMap["partitionScheme"] = p.PartitionScheme
-}
-
-func (p *PartitionSchemeDescription) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "partitionScheme":
-			err = unpopulate(val, &p.PartitionScheme)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ProxyResource - The resource model definition for proxy-only resource.
@@ -1689,65 +1203,6 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ProxyResource.
-func (p ProxyResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ProxyResource.
-func (p *ProxyResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return p.unmarshalInternal(rawMsg)
-}
-
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "etag", p.Etag)
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "location", p.Location)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "systemData", p.SystemData)
-	populate(objectMap, "tags", p.Tags)
-	populate(objectMap, "type", p.Type)
-}
-
-func (p *ProxyResource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &p.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &p.ID)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &p.Location)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &p.Name)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &p.SystemData)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &p.Tags)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &p.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // Resource - The resource model definition.
 type Resource struct {
 	// REQUIRED; Azure resource location.
@@ -1772,23 +1227,6 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "etag", r.Etag)
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "systemData", r.SystemData)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-}
-
 // ServerCertificateCommonName - Describes the server certificate details using common name.
 type ServerCertificateCommonName struct {
 	// REQUIRED; The common name of the server certificate.
@@ -1798,7 +1236,8 @@ type ServerCertificateCommonName struct {
 	CertificateIssuerThumbprint *string `json:"certificateIssuerThumbprint,omitempty"`
 }
 
-// ServerCertificateCommonNames - Describes a list of server certificates referenced by common name that are used to secure the cluster.
+// ServerCertificateCommonNames - Describes a list of server certificates referenced by common name that are used to secure
+// the cluster.
 type ServerCertificateCommonNames struct {
 	// The list of server certificates referenced by common name that are used to secure the cluster.
 	CommonNames []*ServerCertificateCommonName `json:"commonNames,omitempty"`
@@ -1807,17 +1246,10 @@ type ServerCertificateCommonNames struct {
 	X509StoreName *StoreName `json:"x509StoreName,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServerCertificateCommonNames.
-func (s ServerCertificateCommonNames) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "commonNames", s.CommonNames)
-	populate(objectMap, "x509StoreName", s.X509StoreName)
-	return json.Marshal(objectMap)
-}
-
 // ServiceCorrelationDescription - Creates a particular correlation between services.
 type ServiceCorrelationDescription struct {
-	// REQUIRED; The ServiceCorrelationScheme which describes the relationship between this service and the service specified via ServiceName.
+	// REQUIRED; The ServiceCorrelationScheme which describes the relationship between this service and the service specified
+	// via ServiceName.
 	Scheme *ServiceCorrelationScheme `json:"scheme,omitempty"`
 
 	// REQUIRED; The name of the service that the correlation relationship is established with.
@@ -1826,17 +1258,19 @@ type ServiceCorrelationDescription struct {
 
 // ServiceLoadMetricDescription - Specifies a metric to load balance a service during runtime.
 type ServiceLoadMetricDescription struct {
-	// REQUIRED; The name of the metric. If the service chooses to report load during runtime, the load metric name should match the name that is specified
-	// in Name exactly. Note that metric names are case sensitive.
+	// REQUIRED; The name of the metric. If the service chooses to report load during runtime, the load metric name should match
+	// the name that is specified in Name exactly. Note that metric names are case sensitive.
 	Name *string `json:"name,omitempty"`
 
 	// Used only for Stateless services. The default amount of load, as a number, that this service creates for this metric.
 	DefaultLoad *int32 `json:"defaultLoad,omitempty"`
 
-	// Used only for Stateful services. The default amount of load, as a number, that this service creates for this metric when it is a Primary replica.
+	// Used only for Stateful services. The default amount of load, as a number, that this service creates for this metric when
+	// it is a Primary replica.
 	PrimaryDefaultLoad *int32 `json:"primaryDefaultLoad,omitempty"`
 
-	// Used only for Stateful services. The default amount of load, as a number, that this service creates for this metric when it is a Secondary replica.
+	// Used only for Stateful services. The default amount of load, as a number, that this service creates for this metric when
+	// it is a Secondary replica.
 	SecondaryDefaultLoad *int32 `json:"secondaryDefaultLoad,omitempty"`
 
 	// The service load metric relative weight, compared to other metrics configured for this service, as a number.
@@ -1858,47 +1292,37 @@ type ServicePlacementPolicyDescription struct {
 	Type *ServicePlacementPolicyType `json:"type,omitempty"`
 }
 
-// GetServicePlacementPolicyDescription implements the ServicePlacementPolicyDescriptionClassification interface for type ServicePlacementPolicyDescription.
+// GetServicePlacementPolicyDescription implements the ServicePlacementPolicyDescriptionClassification interface for type
+// ServicePlacementPolicyDescription.
 func (s *ServicePlacementPolicyDescription) GetServicePlacementPolicyDescription() *ServicePlacementPolicyDescription {
 	return s
 }
 
 // ServiceResource - The service resource.
 type ServiceResource struct {
-	ProxyResource
+	// It will be deprecated in New API, resource location depends on the parent resource.
+	Location *string `json:"location,omitempty"`
+
 	// The service resource properties.
 	Properties ServiceResourcePropertiesClassification `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ServiceResource.
-func (s ServiceResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
-}
+	// Azure resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServiceResource.
-func (s *ServiceResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			s.Properties, err = unmarshalServiceResourcePropertiesClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; Azure resource etag.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ServiceResourceList - The list of service resources.
@@ -1907,14 +1331,6 @@ type ServiceResourceList struct {
 
 	// READ-ONLY; URL to get the next set of service list results if there are any.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceResourceList.
-func (s ServiceResourceList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // ServiceResourcePropertiesClassification provides polymorphic access to related types.
@@ -1928,18 +1344,35 @@ type ServiceResourcePropertiesClassification interface {
 
 // ServiceResourceProperties - The service resource properties.
 type ServiceResourceProperties struct {
-	ServiceResourcePropertiesBase
 	// REQUIRED; The kind of service (Stateless or Stateful).
 	ServiceKind *ServiceKind `json:"serviceKind,omitempty"`
+
+	// A list that describes the correlation of the service with other services.
+	CorrelationScheme []*ServiceCorrelationDescription `json:"correlationScheme,omitempty"`
+
+	// Specifies the move cost for the service.
+	DefaultMoveCost *MoveCost `json:"defaultMoveCost,omitempty"`
 
 	// Describes how the service is partitioned.
 	PartitionDescription PartitionSchemeDescriptionClassification `json:"partitionDescription,omitempty"`
 
-	// Dns name used for the service. If this is specified, then the service can be accessed via its DNS name instead of service name.
+	// The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting
+	// a service to particular nodes based on the service requirements. For
+	// example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
+	PlacementConstraints *string `json:"placementConstraints,omitempty"`
+
+	// Dns name used for the service. If this is specified, then the service can be accessed via its DNS name instead of service
+	// name.
 	ServiceDNSName *string `json:"serviceDnsName,omitempty"`
+
+	// The service load metrics is given as an array of ServiceLoadMetricDescription objects.
+	ServiceLoadMetrics []*ServiceLoadMetricDescription `json:"serviceLoadMetrics,omitempty"`
 
 	// The activation Mode of the service package
 	ServicePackageActivationMode *ArmServicePackageActivationMode `json:"servicePackageActivationMode,omitempty"`
+
+	// A list that describes the correlation of the service with other services.
+	ServicePlacementPolicies []ServicePlacementPolicyDescriptionClassification `json:"servicePlacementPolicies,omitempty"`
 
 	// The name of the service type
 	ServiceTypeName *string `json:"serviceTypeName,omitempty"`
@@ -1953,59 +1386,6 @@ func (s *ServiceResourceProperties) GetServiceResourceProperties() *ServiceResou
 	return s
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServiceResourceProperties.
-func (s *ServiceResourceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return s.unmarshalInternal(rawMsg)
-}
-
-func (s ServiceResourceProperties) marshalInternal(objectMap map[string]interface{}, discValue ServiceKind) {
-	s.ServiceResourcePropertiesBase.marshalInternal(objectMap)
-	populate(objectMap, "partitionDescription", s.PartitionDescription)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	populate(objectMap, "serviceDnsName", s.ServiceDNSName)
-	s.ServiceKind = &discValue
-	objectMap["serviceKind"] = s.ServiceKind
-	populate(objectMap, "servicePackageActivationMode", s.ServicePackageActivationMode)
-	populate(objectMap, "serviceTypeName", s.ServiceTypeName)
-}
-
-func (s *ServiceResourceProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "partitionDescription":
-			s.PartitionDescription, err = unmarshalPartitionSchemeDescriptionClassification(val)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &s.ProvisioningState)
-			delete(rawMsg, key)
-		case "serviceDnsName":
-			err = unpopulate(val, &s.ServiceDNSName)
-			delete(rawMsg, key)
-		case "serviceKind":
-			err = unpopulate(val, &s.ServiceKind)
-			delete(rawMsg, key)
-		case "servicePackageActivationMode":
-			err = unpopulate(val, &s.ServicePackageActivationMode)
-			delete(rawMsg, key)
-		case "serviceTypeName":
-			err = unpopulate(val, &s.ServiceTypeName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.ServiceResourcePropertiesBase.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
 // ServiceResourcePropertiesBase - The common service resource properties.
 type ServiceResourcePropertiesBase struct {
 	// A list that describes the correlation of the service with other services.
@@ -2014,8 +1394,8 @@ type ServiceResourcePropertiesBase struct {
 	// Specifies the move cost for the service.
 	DefaultMoveCost *MoveCost `json:"defaultMoveCost,omitempty"`
 
-	// The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting a service to particular
-	// nodes based on the service requirements. For
+	// The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting
+	// a service to particular nodes based on the service requirements. For
 	// example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
 	PlacementConstraints *string `json:"placementConstraints,omitempty"`
 
@@ -2026,93 +1406,31 @@ type ServiceResourcePropertiesBase struct {
 	ServicePlacementPolicies []ServicePlacementPolicyDescriptionClassification `json:"servicePlacementPolicies,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServiceResourcePropertiesBase.
-func (s ServiceResourcePropertiesBase) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServiceResourcePropertiesBase.
-func (s *ServiceResourcePropertiesBase) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return s.unmarshalInternal(rawMsg)
-}
-
-func (s ServiceResourcePropertiesBase) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "correlationScheme", s.CorrelationScheme)
-	populate(objectMap, "defaultMoveCost", s.DefaultMoveCost)
-	populate(objectMap, "placementConstraints", s.PlacementConstraints)
-	populate(objectMap, "serviceLoadMetrics", s.ServiceLoadMetrics)
-	populate(objectMap, "servicePlacementPolicies", s.ServicePlacementPolicies)
-}
-
-func (s *ServiceResourcePropertiesBase) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "correlationScheme":
-			err = unpopulate(val, &s.CorrelationScheme)
-			delete(rawMsg, key)
-		case "defaultMoveCost":
-			err = unpopulate(val, &s.DefaultMoveCost)
-			delete(rawMsg, key)
-		case "placementConstraints":
-			err = unpopulate(val, &s.PlacementConstraints)
-			delete(rawMsg, key)
-		case "serviceLoadMetrics":
-			err = unpopulate(val, &s.ServiceLoadMetrics)
-			delete(rawMsg, key)
-		case "servicePlacementPolicies":
-			s.ServicePlacementPolicies, err = unmarshalServicePlacementPolicyDescriptionClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ServiceResourceUpdate - The service resource for patch operations.
 type ServiceResourceUpdate struct {
-	ProxyResource
+	// It will be deprecated in New API, resource location depends on the parent resource.
+	Location *string `json:"location,omitempty"`
+
 	// The service resource properties for patch operations.
 	Properties ServiceResourceUpdatePropertiesClassification `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ServiceResourceUpdate.
-func (s ServiceResourceUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
-}
+	// Azure resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServiceResourceUpdate.
-func (s *ServiceResourceUpdate) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			s.Properties, err = unmarshalServiceResourceUpdatePropertiesClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.ProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; Azure resource etag.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ServiceResourceUpdatePropertiesClassification provides polymorphic access to related types.
@@ -2126,9 +1444,25 @@ type ServiceResourceUpdatePropertiesClassification interface {
 
 // ServiceResourceUpdateProperties - The service resource properties for patch operations.
 type ServiceResourceUpdateProperties struct {
-	ServiceResourcePropertiesBase
 	// REQUIRED; The kind of service (Stateless or Stateful).
 	ServiceKind *ServiceKind `json:"serviceKind,omitempty"`
+
+	// A list that describes the correlation of the service with other services.
+	CorrelationScheme []*ServiceCorrelationDescription `json:"correlationScheme,omitempty"`
+
+	// Specifies the move cost for the service.
+	DefaultMoveCost *MoveCost `json:"defaultMoveCost,omitempty"`
+
+	// The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting
+	// a service to particular nodes based on the service requirements. For
+	// example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
+	PlacementConstraints *string `json:"placementConstraints,omitempty"`
+
+	// The service load metrics is given as an array of ServiceLoadMetricDescription objects.
+	ServiceLoadMetrics []*ServiceLoadMetricDescription `json:"serviceLoadMetrics,omitempty"`
+
+	// A list that describes the correlation of the service with other services.
+	ServicePlacementPolicies []ServicePlacementPolicyDescriptionClassification `json:"servicePlacementPolicies,omitempty"`
 }
 
 // GetServiceResourceUpdateProperties implements the ServiceResourceUpdatePropertiesClassification interface for type ServiceResourceUpdateProperties.
@@ -2136,46 +1470,13 @@ func (s *ServiceResourceUpdateProperties) GetServiceResourceUpdateProperties() *
 	return s
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServiceResourceUpdateProperties.
-func (s *ServiceResourceUpdateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return s.unmarshalInternal(rawMsg)
-}
-
-func (s ServiceResourceUpdateProperties) marshalInternal(objectMap map[string]interface{}, discValue ServiceKind) {
-	s.ServiceResourcePropertiesBase.marshalInternal(objectMap)
-	s.ServiceKind = &discValue
-	objectMap["serviceKind"] = s.ServiceKind
-}
-
-func (s *ServiceResourceUpdateProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "serviceKind":
-			err = unpopulate(val, &s.ServiceKind)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.ServiceResourcePropertiesBase.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// ServiceTypeDeltaHealthPolicy - Represents the delta health policy used to evaluate the health of services belonging to a service type when upgrading
-// the cluster.
+// ServiceTypeDeltaHealthPolicy - Represents the delta health policy used to evaluate the health of services belonging to
+// a service type when upgrading the cluster.
 type ServiceTypeDeltaHealthPolicy struct {
-	// The maximum allowed percentage of services health degradation allowed during cluster upgrades. The delta is measured between the state of the services
-	// at the beginning of upgrade and the state of the
-	// services at the time of the health evaluation. The check is performed after every upgrade domain upgrade completion to make sure the global state of
-	// the cluster is within tolerated limits.
+	// The maximum allowed percentage of services health degradation allowed during cluster upgrades. The delta is measured between
+	// the state of the services at the beginning of upgrade and the state of the
+	// services at the time of the health evaluation. The check is performed after every upgrade domain upgrade completion to
+	// make sure the global state of the cluster is within tolerated limits.
 	MaxPercentDeltaUnhealthyServices *int32 `json:"maxPercentDeltaUnhealthyServices,omitempty"`
 }
 
@@ -2185,28 +1486,31 @@ type ServiceTypeHealthPolicy struct {
 	MaxPercentUnhealthyServices *int32 `json:"maxPercentUnhealthyServices,omitempty"`
 }
 
-// ServicesBeginCreateOrUpdateOptions contains the optional parameters for the Services.BeginCreateOrUpdate method.
-type ServicesBeginCreateOrUpdateOptions struct {
+// ServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServicesClient.BeginCreateOrUpdate method.
+type ServicesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServicesClientBeginDeleteOptions contains the optional parameters for the ServicesClient.BeginDelete method.
+type ServicesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServicesClientBeginUpdateOptions contains the optional parameters for the ServicesClient.BeginUpdate method.
+type ServicesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServicesClientGetOptions contains the optional parameters for the ServicesClient.Get method.
+type ServicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesBeginDeleteOptions contains the optional parameters for the Services.BeginDelete method.
-type ServicesBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServicesBeginUpdateOptions contains the optional parameters for the Services.BeginUpdate method.
-type ServicesBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServicesGetOptions contains the optional parameters for the Services.Get method.
-type ServicesGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServicesListOptions contains the optional parameters for the Services.List method.
-type ServicesListOptions struct {
+// ServicesClientListOptions contains the optional parameters for the ServicesClient.List method.
+type ServicesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2228,111 +1532,124 @@ type SettingsSectionDescription struct {
 	Parameters []*SettingsParameterDescription `json:"parameters,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SettingsSectionDescription.
-func (s SettingsSectionDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "parameters", s.Parameters)
-	return json.Marshal(objectMap)
-}
-
 // SingletonPartitionSchemeDescription
 type SingletonPartitionSchemeDescription struct {
-	PartitionSchemeDescription
+	// REQUIRED; Specifies how the service is partitioned.
+	PartitionScheme *PartitionScheme `json:"partitionScheme,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SingletonPartitionSchemeDescription.
-func (s SingletonPartitionSchemeDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.PartitionSchemeDescription.marshalInternal(objectMap, PartitionSchemeSingleton)
-	return json.Marshal(objectMap)
+// GetPartitionSchemeDescription implements the PartitionSchemeDescriptionClassification interface for type SingletonPartitionSchemeDescription.
+func (s *SingletonPartitionSchemeDescription) GetPartitionSchemeDescription() *PartitionSchemeDescription {
+	return &PartitionSchemeDescription{
+		PartitionScheme: s.PartitionScheme,
+	}
 }
 
 // StatefulServiceProperties - The properties of a stateful service resource.
 type StatefulServiceProperties struct {
-	ServiceResourceProperties
-	// A flag indicating whether this is a persistent service which stores states on the local disk. If it is then the value of this property is true, if not
-	// it is false.
+	// REQUIRED; The kind of service (Stateless or Stateful).
+	ServiceKind *ServiceKind `json:"serviceKind,omitempty"`
+
+	// A list that describes the correlation of the service with other services.
+	CorrelationScheme []*ServiceCorrelationDescription `json:"correlationScheme,omitempty"`
+
+	// Specifies the move cost for the service.
+	DefaultMoveCost *MoveCost `json:"defaultMoveCost,omitempty"`
+
+	// A flag indicating whether this is a persistent service which stores states on the local disk. If it is then the value of
+	// this property is true, if not it is false.
 	HasPersistedState *bool `json:"hasPersistedState,omitempty"`
 
 	// The minimum replica set size as a number.
 	MinReplicaSetSize *int32 `json:"minReplicaSetSize,omitempty"`
 
+	// Describes how the service is partitioned.
+	PartitionDescription PartitionSchemeDescriptionClassification `json:"partitionDescription,omitempty"`
+
+	// The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting
+	// a service to particular nodes based on the service requirements. For
+	// example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
+	PlacementConstraints *string `json:"placementConstraints,omitempty"`
+
 	// The maximum duration for which a partition is allowed to be in a state of quorum loss, represented in ISO 8601 format (hh:mm:ss.s).
 	QuorumLossWaitDuration *time.Time `json:"quorumLossWaitDuration,omitempty"`
 
 	// The duration between when a replica goes down and when a new replica is created, represented in ISO 8601 format (hh:mm:ss.s).
 	ReplicaRestartWaitDuration *time.Time `json:"replicaRestartWaitDuration,omitempty"`
 
+	// Dns name used for the service. If this is specified, then the service can be accessed via its DNS name instead of service
+	// name.
+	ServiceDNSName *string `json:"serviceDnsName,omitempty"`
+
+	// The service load metrics is given as an array of ServiceLoadMetricDescription objects.
+	ServiceLoadMetrics []*ServiceLoadMetricDescription `json:"serviceLoadMetrics,omitempty"`
+
+	// The activation Mode of the service package
+	ServicePackageActivationMode *ArmServicePackageActivationMode `json:"servicePackageActivationMode,omitempty"`
+
+	// A list that describes the correlation of the service with other services.
+	ServicePlacementPolicies []ServicePlacementPolicyDescriptionClassification `json:"servicePlacementPolicies,omitempty"`
+
+	// The name of the service type
+	ServiceTypeName *string `json:"serviceTypeName,omitempty"`
+
 	// The definition on how long StandBy replicas should be maintained before being removed, represented in ISO 8601 format (hh:mm:ss.s).
 	StandByReplicaKeepDuration *time.Time `json:"standByReplicaKeepDuration,omitempty"`
 
 	// The target replica set size as a number.
 	TargetReplicaSetSize *int32 `json:"targetReplicaSetSize,omitempty"`
+
+	// READ-ONLY; The current deployment or provisioning state, which only appears in the response
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type StatefulServiceProperties.
-func (s StatefulServiceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ServiceResourceProperties.marshalInternal(objectMap, ServiceKindStateful)
-	populate(objectMap, "hasPersistedState", s.HasPersistedState)
-	populate(objectMap, "minReplicaSetSize", s.MinReplicaSetSize)
-	populateTimeRFC3339(objectMap, "quorumLossWaitDuration", s.QuorumLossWaitDuration)
-	populateTimeRFC3339(objectMap, "replicaRestartWaitDuration", s.ReplicaRestartWaitDuration)
-	populateTimeRFC3339(objectMap, "standByReplicaKeepDuration", s.StandByReplicaKeepDuration)
-	populate(objectMap, "targetReplicaSetSize", s.TargetReplicaSetSize)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type StatefulServiceProperties.
-func (s *StatefulServiceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetServiceResourceProperties implements the ServiceResourcePropertiesClassification interface for type StatefulServiceProperties.
+func (s *StatefulServiceProperties) GetServiceResourceProperties() *ServiceResourceProperties {
+	return &ServiceResourceProperties{
+		ProvisioningState:            s.ProvisioningState,
+		ServiceKind:                  s.ServiceKind,
+		ServiceTypeName:              s.ServiceTypeName,
+		PartitionDescription:         s.PartitionDescription,
+		ServicePackageActivationMode: s.ServicePackageActivationMode,
+		ServiceDNSName:               s.ServiceDNSName,
+		PlacementConstraints:         s.PlacementConstraints,
+		CorrelationScheme:            s.CorrelationScheme,
+		ServiceLoadMetrics:           s.ServiceLoadMetrics,
+		ServicePlacementPolicies:     s.ServicePlacementPolicies,
+		DefaultMoveCost:              s.DefaultMoveCost,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "hasPersistedState":
-			err = unpopulate(val, &s.HasPersistedState)
-			delete(rawMsg, key)
-		case "minReplicaSetSize":
-			err = unpopulate(val, &s.MinReplicaSetSize)
-			delete(rawMsg, key)
-		case "quorumLossWaitDuration":
-			err = unpopulateTimeRFC3339(val, &s.QuorumLossWaitDuration)
-			delete(rawMsg, key)
-		case "replicaRestartWaitDuration":
-			err = unpopulateTimeRFC3339(val, &s.ReplicaRestartWaitDuration)
-			delete(rawMsg, key)
-		case "standByReplicaKeepDuration":
-			err = unpopulateTimeRFC3339(val, &s.StandByReplicaKeepDuration)
-			delete(rawMsg, key)
-		case "targetReplicaSetSize":
-			err = unpopulate(val, &s.TargetReplicaSetSize)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.ServiceResourceProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // StatefulServiceUpdateProperties - The properties of a stateful service resource for patch operations.
 type StatefulServiceUpdateProperties struct {
-	ServiceResourceUpdateProperties
+	// REQUIRED; The kind of service (Stateless or Stateful).
+	ServiceKind *ServiceKind `json:"serviceKind,omitempty"`
+
+	// A list that describes the correlation of the service with other services.
+	CorrelationScheme []*ServiceCorrelationDescription `json:"correlationScheme,omitempty"`
+
+	// Specifies the move cost for the service.
+	DefaultMoveCost *MoveCost `json:"defaultMoveCost,omitempty"`
+
 	// The minimum replica set size as a number.
 	MinReplicaSetSize *int32 `json:"minReplicaSetSize,omitempty"`
+
+	// The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting
+	// a service to particular nodes based on the service requirements. For
+	// example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
+	PlacementConstraints *string `json:"placementConstraints,omitempty"`
 
 	// The maximum duration for which a partition is allowed to be in a state of quorum loss, represented in ISO 8601 format (hh:mm:ss.s).
 	QuorumLossWaitDuration *time.Time `json:"quorumLossWaitDuration,omitempty"`
 
 	// The duration between when a replica goes down and when a new replica is created, represented in ISO 8601 format (hh:mm:ss.s).
 	ReplicaRestartWaitDuration *time.Time `json:"replicaRestartWaitDuration,omitempty"`
+
+	// The service load metrics is given as an array of ServiceLoadMetricDescription objects.
+	ServiceLoadMetrics []*ServiceLoadMetricDescription `json:"serviceLoadMetrics,omitempty"`
+
+	// A list that describes the correlation of the service with other services.
+	ServicePlacementPolicies []ServicePlacementPolicyDescriptionClassification `json:"servicePlacementPolicies,omitempty"`
 
 	// The definition on how long StandBy replicas should be maintained before being removed, represented in ISO 8601 format (hh:mm:ss.s).
 	StandByReplicaKeepDuration *time.Time `json:"standByReplicaKeepDuration,omitempty"`
@@ -2341,151 +1658,129 @@ type StatefulServiceUpdateProperties struct {
 	TargetReplicaSetSize *int32 `json:"targetReplicaSetSize,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type StatefulServiceUpdateProperties.
-func (s StatefulServiceUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ServiceResourceUpdateProperties.marshalInternal(objectMap, ServiceKindStateful)
-	populate(objectMap, "minReplicaSetSize", s.MinReplicaSetSize)
-	populateTimeRFC3339(objectMap, "quorumLossWaitDuration", s.QuorumLossWaitDuration)
-	populateTimeRFC3339(objectMap, "replicaRestartWaitDuration", s.ReplicaRestartWaitDuration)
-	populateTimeRFC3339(objectMap, "standByReplicaKeepDuration", s.StandByReplicaKeepDuration)
-	populate(objectMap, "targetReplicaSetSize", s.TargetReplicaSetSize)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type StatefulServiceUpdateProperties.
-func (s *StatefulServiceUpdateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetServiceResourceUpdateProperties implements the ServiceResourceUpdatePropertiesClassification interface for type StatefulServiceUpdateProperties.
+func (s *StatefulServiceUpdateProperties) GetServiceResourceUpdateProperties() *ServiceResourceUpdateProperties {
+	return &ServiceResourceUpdateProperties{
+		ServiceKind:              s.ServiceKind,
+		PlacementConstraints:     s.PlacementConstraints,
+		CorrelationScheme:        s.CorrelationScheme,
+		ServiceLoadMetrics:       s.ServiceLoadMetrics,
+		ServicePlacementPolicies: s.ServicePlacementPolicies,
+		DefaultMoveCost:          s.DefaultMoveCost,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "minReplicaSetSize":
-			err = unpopulate(val, &s.MinReplicaSetSize)
-			delete(rawMsg, key)
-		case "quorumLossWaitDuration":
-			err = unpopulateTimeRFC3339(val, &s.QuorumLossWaitDuration)
-			delete(rawMsg, key)
-		case "replicaRestartWaitDuration":
-			err = unpopulateTimeRFC3339(val, &s.ReplicaRestartWaitDuration)
-			delete(rawMsg, key)
-		case "standByReplicaKeepDuration":
-			err = unpopulateTimeRFC3339(val, &s.StandByReplicaKeepDuration)
-			delete(rawMsg, key)
-		case "targetReplicaSetSize":
-			err = unpopulate(val, &s.TargetReplicaSetSize)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.ServiceResourceUpdateProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // StatelessServiceProperties - The properties of a stateless service resource.
 type StatelessServiceProperties struct {
-	ServiceResourceProperties
-	// Delay duration for RequestDrain feature to ensures that the endpoint advertised by the stateless instance is removed before the delay starts prior to
-	// closing the instance. This delay enables existing
+	// REQUIRED; The kind of service (Stateless or Stateful).
+	ServiceKind *ServiceKind `json:"serviceKind,omitempty"`
+
+	// A list that describes the correlation of the service with other services.
+	CorrelationScheme []*ServiceCorrelationDescription `json:"correlationScheme,omitempty"`
+
+	// Specifies the move cost for the service.
+	DefaultMoveCost *MoveCost `json:"defaultMoveCost,omitempty"`
+
+	// Delay duration for RequestDrain feature to ensures that the endpoint advertised by the stateless instance is removed before
+	// the delay starts prior to closing the instance. This delay enables existing
 	// requests to drain gracefully before the instance actually goes down
 	// (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-application-upgrade-advanced#avoid-connection-drops-during-stateless-service-planned-downtime-preview).
-	// It is first interpreted as
-	// a string representing an ISO 8601 duration. If that fails, then it is interpreted as a number representing the total number of milliseconds.
+	// It is represented in ISO
+	// 8601 format (hh:mm:ss.s).
 	InstanceCloseDelayDuration *string `json:"instanceCloseDelayDuration,omitempty"`
 
 	// The instance count.
 	InstanceCount *int32 `json:"instanceCount,omitempty"`
+
+	// Describes how the service is partitioned.
+	PartitionDescription PartitionSchemeDescriptionClassification `json:"partitionDescription,omitempty"`
+
+	// The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting
+	// a service to particular nodes based on the service requirements. For
+	// example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
+	PlacementConstraints *string `json:"placementConstraints,omitempty"`
+
+	// Dns name used for the service. If this is specified, then the service can be accessed via its DNS name instead of service
+	// name.
+	ServiceDNSName *string `json:"serviceDnsName,omitempty"`
+
+	// The service load metrics is given as an array of ServiceLoadMetricDescription objects.
+	ServiceLoadMetrics []*ServiceLoadMetricDescription `json:"serviceLoadMetrics,omitempty"`
+
+	// The activation Mode of the service package
+	ServicePackageActivationMode *ArmServicePackageActivationMode `json:"servicePackageActivationMode,omitempty"`
+
+	// A list that describes the correlation of the service with other services.
+	ServicePlacementPolicies []ServicePlacementPolicyDescriptionClassification `json:"servicePlacementPolicies,omitempty"`
+
+	// The name of the service type
+	ServiceTypeName *string `json:"serviceTypeName,omitempty"`
+
+	// READ-ONLY; The current deployment or provisioning state, which only appears in the response
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type StatelessServiceProperties.
-func (s StatelessServiceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ServiceResourceProperties.marshalInternal(objectMap, ServiceKindStateless)
-	populate(objectMap, "instanceCloseDelayDuration", s.InstanceCloseDelayDuration)
-	populate(objectMap, "instanceCount", s.InstanceCount)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type StatelessServiceProperties.
-func (s *StatelessServiceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetServiceResourceProperties implements the ServiceResourcePropertiesClassification interface for type StatelessServiceProperties.
+func (s *StatelessServiceProperties) GetServiceResourceProperties() *ServiceResourceProperties {
+	return &ServiceResourceProperties{
+		ProvisioningState:            s.ProvisioningState,
+		ServiceKind:                  s.ServiceKind,
+		ServiceTypeName:              s.ServiceTypeName,
+		PartitionDescription:         s.PartitionDescription,
+		ServicePackageActivationMode: s.ServicePackageActivationMode,
+		ServiceDNSName:               s.ServiceDNSName,
+		PlacementConstraints:         s.PlacementConstraints,
+		CorrelationScheme:            s.CorrelationScheme,
+		ServiceLoadMetrics:           s.ServiceLoadMetrics,
+		ServicePlacementPolicies:     s.ServicePlacementPolicies,
+		DefaultMoveCost:              s.DefaultMoveCost,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceCloseDelayDuration":
-			err = unpopulate(val, &s.InstanceCloseDelayDuration)
-			delete(rawMsg, key)
-		case "instanceCount":
-			err = unpopulate(val, &s.InstanceCount)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.ServiceResourceProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // StatelessServiceUpdateProperties - The properties of a stateless service resource for patch operations.
 type StatelessServiceUpdateProperties struct {
-	ServiceResourceUpdateProperties
-	// Delay duration for RequestDrain feature to ensures that the endpoint advertised by the stateless instance is removed before the delay starts prior to
-	// closing the instance. This delay enables existing
+	// REQUIRED; The kind of service (Stateless or Stateful).
+	ServiceKind *ServiceKind `json:"serviceKind,omitempty"`
+
+	// A list that describes the correlation of the service with other services.
+	CorrelationScheme []*ServiceCorrelationDescription `json:"correlationScheme,omitempty"`
+
+	// Specifies the move cost for the service.
+	DefaultMoveCost *MoveCost `json:"defaultMoveCost,omitempty"`
+
+	// Delay duration for RequestDrain feature to ensures that the endpoint advertised by the stateless instance is removed before
+	// the delay starts prior to closing the instance. This delay enables existing
 	// requests to drain gracefully before the instance actually goes down
 	// (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-application-upgrade-advanced#avoid-connection-drops-during-stateless-service-planned-downtime-preview).
 	// It is first interpreted as
-	// a string representing an ISO 8601 duration. If that fails, then it is interpreted as a number representing the total number of milliseconds.
+	// a string representing an ISO 8601 duration. It is represented in ISO 8601 format (hh:mm:ss.s).
 	InstanceCloseDelayDuration *string `json:"instanceCloseDelayDuration,omitempty"`
 
 	// The instance count.
 	InstanceCount *int32 `json:"instanceCount,omitempty"`
+
+	// The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting
+	// a service to particular nodes based on the service requirements. For
+	// example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
+	PlacementConstraints *string `json:"placementConstraints,omitempty"`
+
+	// The service load metrics is given as an array of ServiceLoadMetricDescription objects.
+	ServiceLoadMetrics []*ServiceLoadMetricDescription `json:"serviceLoadMetrics,omitempty"`
+
+	// A list that describes the correlation of the service with other services.
+	ServicePlacementPolicies []ServicePlacementPolicyDescriptionClassification `json:"servicePlacementPolicies,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type StatelessServiceUpdateProperties.
-func (s StatelessServiceUpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ServiceResourceUpdateProperties.marshalInternal(objectMap, ServiceKindStateless)
-	populate(objectMap, "instanceCloseDelayDuration", s.InstanceCloseDelayDuration)
-	populate(objectMap, "instanceCount", s.InstanceCount)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type StatelessServiceUpdateProperties.
-func (s *StatelessServiceUpdateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetServiceResourceUpdateProperties implements the ServiceResourceUpdatePropertiesClassification interface for type StatelessServiceUpdateProperties.
+func (s *StatelessServiceUpdateProperties) GetServiceResourceUpdateProperties() *ServiceResourceUpdateProperties {
+	return &ServiceResourceUpdateProperties{
+		ServiceKind:              s.ServiceKind,
+		PlacementConstraints:     s.PlacementConstraints,
+		CorrelationScheme:        s.CorrelationScheme,
+		ServiceLoadMetrics:       s.ServiceLoadMetrics,
+		ServicePlacementPolicies: s.ServicePlacementPolicies,
+		DefaultMoveCost:          s.DefaultMoveCost,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceCloseDelayDuration":
-			err = unpopulate(val, &s.InstanceCloseDelayDuration)
-			delete(rawMsg, key)
-		case "instanceCount":
-			err = unpopulate(val, &s.InstanceCount)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.ServiceResourceUpdateProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -2509,56 +1804,9 @@ type SystemData struct {
 	LastModifiedByType *string `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// UniformInt64RangePartitionSchemeDescription - Describes a partitioning scheme where an integer range is allocated evenly across a number of partitions.
+// UniformInt64RangePartitionSchemeDescription - Describes a partitioning scheme where an integer range is allocated evenly
+// across a number of partitions.
 type UniformInt64RangePartitionSchemeDescription struct {
-	PartitionSchemeDescription
 	// REQUIRED; The number of partitions.
 	Count *int32 `json:"count,omitempty"`
 
@@ -2567,58 +1815,22 @@ type UniformInt64RangePartitionSchemeDescription struct {
 
 	// REQUIRED; String indicating the lower bound of the partition key range that should be split between the partition ‘count’
 	LowKey *string `json:"lowKey,omitempty"`
+
+	// REQUIRED; Specifies how the service is partitioned.
+	PartitionScheme *PartitionScheme `json:"partitionScheme,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UniformInt64RangePartitionSchemeDescription.
-func (u UniformInt64RangePartitionSchemeDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	u.PartitionSchemeDescription.marshalInternal(objectMap, PartitionSchemeUniformInt64Range)
-	populate(objectMap, "count", u.Count)
-	populate(objectMap, "highKey", u.HighKey)
-	populate(objectMap, "lowKey", u.LowKey)
-	return json.Marshal(objectMap)
+// GetPartitionSchemeDescription implements the PartitionSchemeDescriptionClassification interface for type UniformInt64RangePartitionSchemeDescription.
+func (u *UniformInt64RangePartitionSchemeDescription) GetPartitionSchemeDescription() *PartitionSchemeDescription {
+	return &PartitionSchemeDescription{
+		PartitionScheme: u.PartitionScheme,
+	}
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type UniformInt64RangePartitionSchemeDescription.
-func (u *UniformInt64RangePartitionSchemeDescription) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "count":
-			err = unpopulate(val, &u.Count)
-			delete(rawMsg, key)
-		case "highKey":
-			err = unpopulate(val, &u.HighKey)
-			delete(rawMsg, key)
-		case "lowKey":
-			err = unpopulate(val, &u.LowKey)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := u.PartitionSchemeDescription.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// UpgradableVersionPathResult - The list of intermediate cluster code versions for an upgrade or downgrade. Or minimum and maximum upgradable version if
-// no target was given
+// UpgradableVersionPathResult - The list of intermediate cluster code versions for an upgrade or downgrade. Or minimum and
+// maximum upgradable version if no target was given
 type UpgradableVersionPathResult struct {
 	SupportedPath []*string `json:"supportedPath,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UpgradableVersionPathResult.
-func (u UpgradableVersionPathResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "supportedPath", u.SupportedPath)
-	return json.Marshal(objectMap)
 }
 
 type UpgradableVersionsDescription struct {
@@ -2632,21 +1844,4 @@ type UserAssignedIdentity struct {
 
 	// READ-ONLY; The principal id of user assigned identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

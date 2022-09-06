@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armauthorization
 
 import "encoding/json"
 
-func unmarshalAccessReviewDecisionTargetClassification(rawMsg json.RawMessage) (AccessReviewDecisionTargetClassification, error) {
+func unmarshalAccessReviewDecisionIdentityClassification(rawMsg json.RawMessage) (AccessReviewDecisionIdentityClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
@@ -18,57 +18,19 @@ func unmarshalAccessReviewDecisionTargetClassification(rawMsg json.RawMessage) (
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b AccessReviewDecisionTargetClassification
+	var b AccessReviewDecisionIdentityClassification
 	switch m["type"] {
 	case string(DecisionTargetTypeServicePrincipal):
-		b = &ServicePrincipalDecisionTarget{}
+		b = &AccessReviewDecisionServicePrincipalIdentity{}
 	case string(DecisionTargetTypeUser):
-		b = &UserDecisionTarget{}
+		b = &AccessReviewDecisionUserIdentity{}
 	default:
-		b = &AccessReviewDecisionTarget{}
+		b = &AccessReviewDecisionIdentity{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalAccessReviewDecisionTargetClassificationArray(rawMsg json.RawMessage) ([]AccessReviewDecisionTargetClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]AccessReviewDecisionTargetClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalAccessReviewDecisionTargetClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalAccessReviewDecisionTargetClassificationMap(rawMsg json.RawMessage) (map[string]AccessReviewDecisionTargetClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]AccessReviewDecisionTargetClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalAccessReviewDecisionTargetClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
-}
-
-func unmarshalRoleManagementPolicyRuleClassification(rawMsg json.RawMessage) (RoleManagementPolicyRuleClassification, error) {
+func unmarshalAccessReviewDecisionResourceClassification(rawMsg json.RawMessage) (AccessReviewDecisionResourceClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
@@ -76,58 +38,12 @@ func unmarshalRoleManagementPolicyRuleClassification(rawMsg json.RawMessage) (Ro
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b RoleManagementPolicyRuleClassification
-	switch m["ruleType"] {
-	case string(RoleManagementPolicyRuleTypeRoleManagementPolicyApprovalRule):
-		b = &RoleManagementPolicyApprovalRule{}
-	case string(RoleManagementPolicyRuleTypeRoleManagementPolicyAuthenticationContextRule):
-		b = &RoleManagementPolicyAuthenticationContextRule{}
-	case string(RoleManagementPolicyRuleTypeRoleManagementPolicyEnablementRule):
-		b = &RoleManagementPolicyEnablementRule{}
-	case string(RoleManagementPolicyRuleTypeRoleManagementPolicyExpirationRule):
-		b = &RoleManagementPolicyExpirationRule{}
-	case string(RoleManagementPolicyRuleTypeRoleManagementPolicyNotificationRule):
-		b = &RoleManagementPolicyNotificationRule{}
+	var b AccessReviewDecisionResourceClassification
+	switch m["type"] {
+	case string(DecisionResourceTypeAzureRole):
+		b = &AccessReviewDecisionResourceAzureRole{}
 	default:
-		b = &RoleManagementPolicyRule{}
+		b = &AccessReviewDecisionResource{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalRoleManagementPolicyRuleClassificationArray(rawMsg json.RawMessage) ([]RoleManagementPolicyRuleClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]RoleManagementPolicyRuleClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalRoleManagementPolicyRuleClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalRoleManagementPolicyRuleClassificationMap(rawMsg json.RawMessage) (map[string]RoleManagementPolicyRuleClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]RoleManagementPolicyRuleClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalRoleManagementPolicyRuleClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

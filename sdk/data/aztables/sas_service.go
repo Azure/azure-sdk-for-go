@@ -27,30 +27,30 @@ type SASSignatureValues struct {
 	EndRowKey         string
 }
 
-// NewSASQueryParameters uses an account's SharedKeyCredential to sign this signature values to produce
-// the proper SAS query parameters.
-func (v SASSignatureValues) NewSASQueryParameters(credential *SharedKeyCredential) (SASQueryParameters, error) {
+// Sign uses an account's SharedKeyCredential to sign this signature values to produce
+// the proper SAS string.
+func (v SASSignatureValues) Sign(credential *SharedKeyCredential) (string, error) {
 	resource := ""
 
 	if v.Version != "" {
 		//Make sure the permission characters are in the correct order
 		perms := &SASPermissions{}
 		if err := perms.Parse(v.Permissions); err != nil {
-			return SASQueryParameters{}, err
+			return "", err
 		}
 		v.Permissions = perms.String()
 	} else if v.TableName == "" {
 		// Make sure the permission characters are in the correct order
 		perms := &SASPermissions{}
 		if err := perms.Parse(v.Permissions); err != nil {
-			return SASQueryParameters{}, err
+			return "", err
 		}
 		v.Permissions = perms.String()
 	} else {
 		// Make sure the permission characters are in the correct order
 		perms := &SASPermissions{}
 		if err := perms.Parse(v.Permissions); err != nil {
-			return SASQueryParameters{}, err
+			return "", err
 		}
 		v.Permissions = perms.String()
 	}
@@ -98,12 +98,12 @@ func (v SASSignatureValues) NewSASQueryParameters(credential *SharedKeyCredentia
 		"\n",
 	)
 
-	signature, err := credential.ComputeHMACSHA256(stringToSign)
+	signature, err := credential.computeHMACSHA256(stringToSign)
 	p.signature = signature
-	return p, err
+	return p.Encode(), err
 }
 
-// The SASPermissions type simplifies creating the permissions string for an Azure Table.
+// SASPermissions simplifies creating the permissions string for an Azure Table.
 // Initialize an instance of this type and then call its String method to set TableSASSignatureValues's Permissions field.
 type SASPermissions struct {
 	Read              bool

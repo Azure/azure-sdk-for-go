@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armdesktopvirtualization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,60 @@ import (
 // PrivateEndpointConnectionsClient contains the methods for the PrivateEndpointConnections group.
 // Don't use this type directly, use NewPrivateEndpointConnectionsClient() instead.
 type PrivateEndpointConnectionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient with the specified values.
-func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateEndpointConnectionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &PrivateEndpointConnectionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &PrivateEndpointConnectionsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // DeleteByHostPool - Remove a connection.
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateEndpointConnectionsClient) DeleteByHostPool(ctx context.Context, resourceGroupName string, hostPoolName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsDeleteByHostPoolOptions) (PrivateEndpointConnectionsDeleteByHostPoolResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-10-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// hostPoolName - The name of the host pool within the specified resource group
+// privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
+// options - PrivateEndpointConnectionsClientDeleteByHostPoolOptions contains the optional parameters for the PrivateEndpointConnectionsClient.DeleteByHostPool
+// method.
+func (client *PrivateEndpointConnectionsClient) DeleteByHostPool(ctx context.Context, resourceGroupName string, hostPoolName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientDeleteByHostPoolOptions) (PrivateEndpointConnectionsClientDeleteByHostPoolResponse, error) {
 	req, err := client.deleteByHostPoolCreateRequest(ctx, resourceGroupName, hostPoolName, privateEndpointConnectionName, options)
 	if err != nil {
-		return PrivateEndpointConnectionsDeleteByHostPoolResponse{}, err
+		return PrivateEndpointConnectionsClientDeleteByHostPoolResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateEndpointConnectionsDeleteByHostPoolResponse{}, err
+		return PrivateEndpointConnectionsClientDeleteByHostPoolResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return PrivateEndpointConnectionsDeleteByHostPoolResponse{}, client.deleteByHostPoolHandleError(resp)
+		return PrivateEndpointConnectionsClientDeleteByHostPoolResponse{}, runtime.NewResponseError(resp)
 	}
-	return PrivateEndpointConnectionsDeleteByHostPoolResponse{RawResponse: resp}, nil
+	return PrivateEndpointConnectionsClientDeleteByHostPoolResponse{}, nil
 }
 
 // deleteByHostPoolCreateRequest creates the DeleteByHostPool request.
-func (client *PrivateEndpointConnectionsClient) deleteByHostPoolCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsDeleteByHostPoolOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) deleteByHostPoolCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientDeleteByHostPoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,49 +96,42 @@ func (client *PrivateEndpointConnectionsClient) deleteByHostPoolCreateRequest(ct
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteByHostPoolHandleError handles the DeleteByHostPool error response.
-func (client *PrivateEndpointConnectionsClient) deleteByHostPoolHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // DeleteByWorkspace - Remove a connection.
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateEndpointConnectionsClient) DeleteByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsDeleteByWorkspaceOptions) (PrivateEndpointConnectionsDeleteByWorkspaceResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-10-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace
+// privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
+// options - PrivateEndpointConnectionsClientDeleteByWorkspaceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.DeleteByWorkspace
+// method.
+func (client *PrivateEndpointConnectionsClient) DeleteByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientDeleteByWorkspaceOptions) (PrivateEndpointConnectionsClientDeleteByWorkspaceResponse, error) {
 	req, err := client.deleteByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, privateEndpointConnectionName, options)
 	if err != nil {
-		return PrivateEndpointConnectionsDeleteByWorkspaceResponse{}, err
+		return PrivateEndpointConnectionsClientDeleteByWorkspaceResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateEndpointConnectionsDeleteByWorkspaceResponse{}, err
+		return PrivateEndpointConnectionsClientDeleteByWorkspaceResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return PrivateEndpointConnectionsDeleteByWorkspaceResponse{}, client.deleteByWorkspaceHandleError(resp)
+		return PrivateEndpointConnectionsClientDeleteByWorkspaceResponse{}, runtime.NewResponseError(resp)
 	}
-	return PrivateEndpointConnectionsDeleteByWorkspaceResponse{RawResponse: resp}, nil
+	return PrivateEndpointConnectionsClientDeleteByWorkspaceResponse{}, nil
 }
 
 // deleteByWorkspaceCreateRequest creates the DeleteByWorkspace request.
-func (client *PrivateEndpointConnectionsClient) deleteByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsDeleteByWorkspaceOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) deleteByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientDeleteByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -138,49 +149,42 @@ func (client *PrivateEndpointConnectionsClient) deleteByWorkspaceCreateRequest(c
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteByWorkspaceHandleError handles the DeleteByWorkspace error response.
-func (client *PrivateEndpointConnectionsClient) deleteByWorkspaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetByHostPool - Get a private endpoint connection.
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateEndpointConnectionsClient) GetByHostPool(ctx context.Context, resourceGroupName string, hostPoolName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsGetByHostPoolOptions) (PrivateEndpointConnectionsGetByHostPoolResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-10-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// hostPoolName - The name of the host pool within the specified resource group
+// privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
+// options - PrivateEndpointConnectionsClientGetByHostPoolOptions contains the optional parameters for the PrivateEndpointConnectionsClient.GetByHostPool
+// method.
+func (client *PrivateEndpointConnectionsClient) GetByHostPool(ctx context.Context, resourceGroupName string, hostPoolName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientGetByHostPoolOptions) (PrivateEndpointConnectionsClientGetByHostPoolResponse, error) {
 	req, err := client.getByHostPoolCreateRequest(ctx, resourceGroupName, hostPoolName, privateEndpointConnectionName, options)
 	if err != nil {
-		return PrivateEndpointConnectionsGetByHostPoolResponse{}, err
+		return PrivateEndpointConnectionsClientGetByHostPoolResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateEndpointConnectionsGetByHostPoolResponse{}, err
+		return PrivateEndpointConnectionsClientGetByHostPoolResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateEndpointConnectionsGetByHostPoolResponse{}, client.getByHostPoolHandleError(resp)
+		return PrivateEndpointConnectionsClientGetByHostPoolResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByHostPoolHandleResponse(resp)
 }
 
 // getByHostPoolCreateRequest creates the GetByHostPool request.
-func (client *PrivateEndpointConnectionsClient) getByHostPoolCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsGetByHostPoolOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) getByHostPoolCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientGetByHostPoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -198,58 +202,51 @@ func (client *PrivateEndpointConnectionsClient) getByHostPoolCreateRequest(ctx c
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getByHostPoolHandleResponse handles the GetByHostPool response.
-func (client *PrivateEndpointConnectionsClient) getByHostPoolHandleResponse(resp *http.Response) (PrivateEndpointConnectionsGetByHostPoolResponse, error) {
-	result := PrivateEndpointConnectionsGetByHostPoolResponse{RawResponse: resp}
+func (client *PrivateEndpointConnectionsClient) getByHostPoolHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientGetByHostPoolResponse, error) {
+	result := PrivateEndpointConnectionsClientGetByHostPoolResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionWithSystemData); err != nil {
-		return PrivateEndpointConnectionsGetByHostPoolResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateEndpointConnectionsClientGetByHostPoolResponse{}, err
 	}
 	return result, nil
 }
 
-// getByHostPoolHandleError handles the GetByHostPool error response.
-func (client *PrivateEndpointConnectionsClient) getByHostPoolHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetByWorkspace - Get a private endpoint connection.
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateEndpointConnectionsClient) GetByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsGetByWorkspaceOptions) (PrivateEndpointConnectionsGetByWorkspaceResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-10-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace
+// privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
+// options - PrivateEndpointConnectionsClientGetByWorkspaceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.GetByWorkspace
+// method.
+func (client *PrivateEndpointConnectionsClient) GetByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientGetByWorkspaceOptions) (PrivateEndpointConnectionsClientGetByWorkspaceResponse, error) {
 	req, err := client.getByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, privateEndpointConnectionName, options)
 	if err != nil {
-		return PrivateEndpointConnectionsGetByWorkspaceResponse{}, err
+		return PrivateEndpointConnectionsClientGetByWorkspaceResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateEndpointConnectionsGetByWorkspaceResponse{}, err
+		return PrivateEndpointConnectionsClientGetByWorkspaceResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateEndpointConnectionsGetByWorkspaceResponse{}, client.getByWorkspaceHandleError(resp)
+		return PrivateEndpointConnectionsClientGetByWorkspaceResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByWorkspaceHandleResponse(resp)
 }
 
 // getByWorkspaceCreateRequest creates the GetByWorkspace request.
-func (client *PrivateEndpointConnectionsClient) getByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsGetByWorkspaceOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) getByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientGetByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -267,55 +264,63 @@ func (client *PrivateEndpointConnectionsClient) getByWorkspaceCreateRequest(ctx 
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getByWorkspaceHandleResponse handles the GetByWorkspace response.
-func (client *PrivateEndpointConnectionsClient) getByWorkspaceHandleResponse(resp *http.Response) (PrivateEndpointConnectionsGetByWorkspaceResponse, error) {
-	result := PrivateEndpointConnectionsGetByWorkspaceResponse{RawResponse: resp}
+func (client *PrivateEndpointConnectionsClient) getByWorkspaceHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientGetByWorkspaceResponse, error) {
+	result := PrivateEndpointConnectionsClientGetByWorkspaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionWithSystemData); err != nil {
-		return PrivateEndpointConnectionsGetByWorkspaceResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateEndpointConnectionsClientGetByWorkspaceResponse{}, err
 	}
 	return result, nil
 }
 
-// getByWorkspaceHandleError handles the GetByWorkspace error response.
-func (client *PrivateEndpointConnectionsClient) getByWorkspaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByHostPool - List private endpoint connections associated with hostpool.
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateEndpointConnectionsClient) ListByHostPool(resourceGroupName string, hostPoolName string, options *PrivateEndpointConnectionsListByHostPoolOptions) *PrivateEndpointConnectionsListByHostPoolPager {
-	return &PrivateEndpointConnectionsListByHostPoolPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByHostPoolCreateRequest(ctx, resourceGroupName, hostPoolName, options)
+// NewListByHostPoolPager - List private endpoint connections associated with hostpool.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-10-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// hostPoolName - The name of the host pool within the specified resource group
+// options - PrivateEndpointConnectionsClientListByHostPoolOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByHostPool
+// method.
+func (client *PrivateEndpointConnectionsClient) NewListByHostPoolPager(resourceGroupName string, hostPoolName string, options *PrivateEndpointConnectionsClientListByHostPoolOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByHostPoolResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointConnectionsClientListByHostPoolResponse]{
+		More: func(page PrivateEndpointConnectionsClientListByHostPoolResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateEndpointConnectionsListByHostPoolResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionListResultWithSystemData.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateEndpointConnectionsClientListByHostPoolResponse) (PrivateEndpointConnectionsClientListByHostPoolResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByHostPoolCreateRequest(ctx, resourceGroupName, hostPoolName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateEndpointConnectionsClientListByHostPoolResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateEndpointConnectionsClientListByHostPoolResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateEndpointConnectionsClientListByHostPoolResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByHostPoolHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByHostPoolCreateRequest creates the ListByHostPool request.
-func (client *PrivateEndpointConnectionsClient) listByHostPoolCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, options *PrivateEndpointConnectionsListByHostPoolOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) listByHostPoolCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, options *PrivateEndpointConnectionsClientListByHostPoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/privateEndpointConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -329,55 +334,63 @@ func (client *PrivateEndpointConnectionsClient) listByHostPoolCreateRequest(ctx 
 		return nil, errors.New("parameter hostPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hostPoolName}", url.PathEscape(hostPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByHostPoolHandleResponse handles the ListByHostPool response.
-func (client *PrivateEndpointConnectionsClient) listByHostPoolHandleResponse(resp *http.Response) (PrivateEndpointConnectionsListByHostPoolResponse, error) {
-	result := PrivateEndpointConnectionsListByHostPoolResponse{RawResponse: resp}
+func (client *PrivateEndpointConnectionsClient) listByHostPoolHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientListByHostPoolResponse, error) {
+	result := PrivateEndpointConnectionsClientListByHostPoolResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResultWithSystemData); err != nil {
-		return PrivateEndpointConnectionsListByHostPoolResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateEndpointConnectionsClientListByHostPoolResponse{}, err
 	}
 	return result, nil
 }
 
-// listByHostPoolHandleError handles the ListByHostPool error response.
-func (client *PrivateEndpointConnectionsClient) listByHostPoolHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByWorkspace - List private endpoint connections.
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateEndpointConnectionsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *PrivateEndpointConnectionsListByWorkspaceOptions) *PrivateEndpointConnectionsListByWorkspacePager {
-	return &PrivateEndpointConnectionsListByWorkspacePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
+// NewListByWorkspacePager - List private endpoint connections.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-10-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace
+// options - PrivateEndpointConnectionsClientListByWorkspaceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByWorkspace
+// method.
+func (client *PrivateEndpointConnectionsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *PrivateEndpointConnectionsClientListByWorkspaceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByWorkspaceResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointConnectionsClientListByWorkspaceResponse]{
+		More: func(page PrivateEndpointConnectionsClientListByWorkspaceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PrivateEndpointConnectionsListByWorkspaceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionListResultWithSystemData.NextLink)
+		Fetcher: func(ctx context.Context, page *PrivateEndpointConnectionsClientListByWorkspaceResponse) (PrivateEndpointConnectionsClientListByWorkspaceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PrivateEndpointConnectionsClientListByWorkspaceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PrivateEndpointConnectionsClientListByWorkspaceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PrivateEndpointConnectionsClientListByWorkspaceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByWorkspaceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *PrivateEndpointConnectionsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *PrivateEndpointConnectionsListByWorkspaceOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *PrivateEndpointConnectionsClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/workspaces/{workspaceName}/privateEndpointConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -391,58 +404,52 @@ func (client *PrivateEndpointConnectionsClient) listByWorkspaceCreateRequest(ctx
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *PrivateEndpointConnectionsClient) listByWorkspaceHandleResponse(resp *http.Response) (PrivateEndpointConnectionsListByWorkspaceResponse, error) {
-	result := PrivateEndpointConnectionsListByWorkspaceResponse{RawResponse: resp}
+func (client *PrivateEndpointConnectionsClient) listByWorkspaceHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientListByWorkspaceResponse, error) {
+	result := PrivateEndpointConnectionsClientListByWorkspaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResultWithSystemData); err != nil {
-		return PrivateEndpointConnectionsListByWorkspaceResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateEndpointConnectionsClientListByWorkspaceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByWorkspaceHandleError handles the ListByWorkspace error response.
-func (client *PrivateEndpointConnectionsClient) listByWorkspaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UpdateByHostPool - Approve or reject a private endpoint connection.
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateEndpointConnectionsClient) UpdateByHostPool(ctx context.Context, resourceGroupName string, hostPoolName string, privateEndpointConnectionName string, connection PrivateEndpointConnection, options *PrivateEndpointConnectionsUpdateByHostPoolOptions) (PrivateEndpointConnectionsUpdateByHostPoolResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-10-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// hostPoolName - The name of the host pool within the specified resource group
+// privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
+// connection - Object containing the updated connection.
+// options - PrivateEndpointConnectionsClientUpdateByHostPoolOptions contains the optional parameters for the PrivateEndpointConnectionsClient.UpdateByHostPool
+// method.
+func (client *PrivateEndpointConnectionsClient) UpdateByHostPool(ctx context.Context, resourceGroupName string, hostPoolName string, privateEndpointConnectionName string, connection PrivateEndpointConnection, options *PrivateEndpointConnectionsClientUpdateByHostPoolOptions) (PrivateEndpointConnectionsClientUpdateByHostPoolResponse, error) {
 	req, err := client.updateByHostPoolCreateRequest(ctx, resourceGroupName, hostPoolName, privateEndpointConnectionName, connection, options)
 	if err != nil {
-		return PrivateEndpointConnectionsUpdateByHostPoolResponse{}, err
+		return PrivateEndpointConnectionsClientUpdateByHostPoolResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateEndpointConnectionsUpdateByHostPoolResponse{}, err
+		return PrivateEndpointConnectionsClientUpdateByHostPoolResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateEndpointConnectionsUpdateByHostPoolResponse{}, client.updateByHostPoolHandleError(resp)
+		return PrivateEndpointConnectionsClientUpdateByHostPoolResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateByHostPoolHandleResponse(resp)
 }
 
 // updateByHostPoolCreateRequest creates the UpdateByHostPool request.
-func (client *PrivateEndpointConnectionsClient) updateByHostPoolCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, privateEndpointConnectionName string, connection PrivateEndpointConnection, options *PrivateEndpointConnectionsUpdateByHostPoolOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) updateByHostPoolCreateRequest(ctx context.Context, resourceGroupName string, hostPoolName string, privateEndpointConnectionName string, connection PrivateEndpointConnection, options *PrivateEndpointConnectionsClientUpdateByHostPoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -460,58 +467,52 @@ func (client *PrivateEndpointConnectionsClient) updateByHostPoolCreateRequest(ct
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, connection)
 }
 
 // updateByHostPoolHandleResponse handles the UpdateByHostPool response.
-func (client *PrivateEndpointConnectionsClient) updateByHostPoolHandleResponse(resp *http.Response) (PrivateEndpointConnectionsUpdateByHostPoolResponse, error) {
-	result := PrivateEndpointConnectionsUpdateByHostPoolResponse{RawResponse: resp}
+func (client *PrivateEndpointConnectionsClient) updateByHostPoolHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientUpdateByHostPoolResponse, error) {
+	result := PrivateEndpointConnectionsClientUpdateByHostPoolResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionWithSystemData); err != nil {
-		return PrivateEndpointConnectionsUpdateByHostPoolResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateEndpointConnectionsClientUpdateByHostPoolResponse{}, err
 	}
 	return result, nil
 }
 
-// updateByHostPoolHandleError handles the UpdateByHostPool error response.
-func (client *PrivateEndpointConnectionsClient) updateByHostPoolHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UpdateByWorkspace - Approve or reject a private endpoint connection.
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateEndpointConnectionsClient) UpdateByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, connection PrivateEndpointConnection, options *PrivateEndpointConnectionsUpdateByWorkspaceOptions) (PrivateEndpointConnectionsUpdateByWorkspaceResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-10-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace
+// privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
+// connection - Object containing the updated connection.
+// options - PrivateEndpointConnectionsClientUpdateByWorkspaceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.UpdateByWorkspace
+// method.
+func (client *PrivateEndpointConnectionsClient) UpdateByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, connection PrivateEndpointConnection, options *PrivateEndpointConnectionsClientUpdateByWorkspaceOptions) (PrivateEndpointConnectionsClientUpdateByWorkspaceResponse, error) {
 	req, err := client.updateByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, privateEndpointConnectionName, connection, options)
 	if err != nil {
-		return PrivateEndpointConnectionsUpdateByWorkspaceResponse{}, err
+		return PrivateEndpointConnectionsClientUpdateByWorkspaceResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateEndpointConnectionsUpdateByWorkspaceResponse{}, err
+		return PrivateEndpointConnectionsClientUpdateByWorkspaceResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateEndpointConnectionsUpdateByWorkspaceResponse{}, client.updateByWorkspaceHandleError(resp)
+		return PrivateEndpointConnectionsClientUpdateByWorkspaceResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateByWorkspaceHandleResponse(resp)
 }
 
 // updateByWorkspaceCreateRequest creates the UpdateByWorkspace request.
-func (client *PrivateEndpointConnectionsClient) updateByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, connection PrivateEndpointConnection, options *PrivateEndpointConnectionsUpdateByWorkspaceOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) updateByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, connection PrivateEndpointConnection, options *PrivateEndpointConnectionsClientUpdateByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -529,35 +530,22 @@ func (client *PrivateEndpointConnectionsClient) updateByWorkspaceCreateRequest(c
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, connection)
 }
 
 // updateByWorkspaceHandleResponse handles the UpdateByWorkspace response.
-func (client *PrivateEndpointConnectionsClient) updateByWorkspaceHandleResponse(resp *http.Response) (PrivateEndpointConnectionsUpdateByWorkspaceResponse, error) {
-	result := PrivateEndpointConnectionsUpdateByWorkspaceResponse{RawResponse: resp}
+func (client *PrivateEndpointConnectionsClient) updateByWorkspaceHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientUpdateByWorkspaceResponse, error) {
+	result := PrivateEndpointConnectionsClientUpdateByWorkspaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionWithSystemData); err != nil {
-		return PrivateEndpointConnectionsUpdateByWorkspaceResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateEndpointConnectionsClientUpdateByWorkspaceResponse{}, err
 	}
 	return result, nil
-}
-
-// updateByWorkspaceHandleError handles the UpdateByWorkspace error response.
-func (client *PrivateEndpointConnectionsClient) updateByWorkspaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,11 +9,12 @@
 package armprivatedns
 
 const (
-	module  = "armprivatedns"
-	version = "v0.2.1"
+	moduleName    = "armprivatedns"
+	moduleVersion = "v1.0.0"
 )
 
-// ProvisioningState - The provisioning state of the resource. This is a read-only property and any attempt to set this value will be ignored.
+// ProvisioningState - The provisioning state of the resource. This is a read-only property and any attempt to set this value
+// will be ignored.
 type ProvisioningState string
 
 const (
@@ -35,11 +36,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
 }
 
 type RecordType string
@@ -69,13 +65,8 @@ func PossibleRecordTypeValues() []RecordType {
 	}
 }
 
-// ToPtr returns a *RecordType pointing to the current value.
-func (c RecordType) ToPtr() *RecordType {
-	return &c
-}
-
-// VirtualNetworkLinkState - The status of the virtual network link to the Private DNS zone. Possible values are 'InProgress' and 'Done'. This is a read-only
-// property and any attempt to set this value will be ignored.
+// VirtualNetworkLinkState - The status of the virtual network link to the Private DNS zone. Possible values are 'InProgress'
+// and 'Done'. This is a read-only property and any attempt to set this value will be ignored.
 type VirtualNetworkLinkState string
 
 const (
@@ -89,9 +80,4 @@ func PossibleVirtualNetworkLinkStateValues() []VirtualNetworkLinkState {
 		VirtualNetworkLinkStateCompleted,
 		VirtualNetworkLinkStateInProgress,
 	}
-}
-
-// ToPtr returns a *VirtualNetworkLinkState pointing to the current value.
-func (c VirtualNetworkLinkState) ToPtr() *VirtualNetworkLinkState {
-	return &c
 }

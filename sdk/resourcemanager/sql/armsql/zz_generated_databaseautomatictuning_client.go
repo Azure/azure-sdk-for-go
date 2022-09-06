@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,42 +25,61 @@ import (
 // DatabaseAutomaticTuningClient contains the methods for the DatabaseAutomaticTuning group.
 // Don't use this type directly, use NewDatabaseAutomaticTuningClient() instead.
 type DatabaseAutomaticTuningClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDatabaseAutomaticTuningClient creates a new instance of DatabaseAutomaticTuningClient with the specified values.
-func NewDatabaseAutomaticTuningClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabaseAutomaticTuningClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewDatabaseAutomaticTuningClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseAutomaticTuningClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &DatabaseAutomaticTuningClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &DatabaseAutomaticTuningClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // Get - Gets a database's automatic tuning.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAutomaticTuningClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseAutomaticTuningGetOptions) (DatabaseAutomaticTuningGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// options - DatabaseAutomaticTuningClientGetOptions contains the optional parameters for the DatabaseAutomaticTuningClient.Get
+// method.
+func (client *DatabaseAutomaticTuningClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseAutomaticTuningClientGetOptions) (DatabaseAutomaticTuningClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 	if err != nil {
-		return DatabaseAutomaticTuningGetResponse{}, err
+		return DatabaseAutomaticTuningClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseAutomaticTuningGetResponse{}, err
+		return DatabaseAutomaticTuningClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseAutomaticTuningGetResponse{}, client.getHandleError(resp)
+		return DatabaseAutomaticTuningClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DatabaseAutomaticTuningClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseAutomaticTuningGetOptions) (*policy.Request, error) {
+func (client *DatabaseAutomaticTuningClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseAutomaticTuningClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/automaticTuning/current"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -77,57 +97,53 @@ func (client *DatabaseAutomaticTuningClient) getCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabaseAutomaticTuningClient) getHandleResponse(resp *http.Response) (DatabaseAutomaticTuningGetResponse, error) {
-	result := DatabaseAutomaticTuningGetResponse{RawResponse: resp}
+func (client *DatabaseAutomaticTuningClient) getHandleResponse(resp *http.Response) (DatabaseAutomaticTuningClientGetResponse, error) {
+	result := DatabaseAutomaticTuningClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAutomaticTuning); err != nil {
-		return DatabaseAutomaticTuningGetResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseAutomaticTuningClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DatabaseAutomaticTuningClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Update - Update automatic tuning properties for target database.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAutomaticTuningClient) Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseAutomaticTuning, options *DatabaseAutomaticTuningUpdateOptions) (DatabaseAutomaticTuningUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// parameters - The requested automatic tuning resource state.
+// options - DatabaseAutomaticTuningClientUpdateOptions contains the optional parameters for the DatabaseAutomaticTuningClient.Update
+// method.
+func (client *DatabaseAutomaticTuningClient) Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseAutomaticTuning, options *DatabaseAutomaticTuningClientUpdateOptions) (DatabaseAutomaticTuningClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
 	if err != nil {
-		return DatabaseAutomaticTuningUpdateResponse{}, err
+		return DatabaseAutomaticTuningClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseAutomaticTuningUpdateResponse{}, err
+		return DatabaseAutomaticTuningClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseAutomaticTuningUpdateResponse{}, client.updateHandleError(resp)
+		return DatabaseAutomaticTuningClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DatabaseAutomaticTuningClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseAutomaticTuning, options *DatabaseAutomaticTuningUpdateOptions) (*policy.Request, error) {
+func (client *DatabaseAutomaticTuningClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseAutomaticTuning, options *DatabaseAutomaticTuningClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/automaticTuning/current"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -145,34 +161,22 @@ func (client *DatabaseAutomaticTuningClient) updateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DatabaseAutomaticTuningClient) updateHandleResponse(resp *http.Response) (DatabaseAutomaticTuningUpdateResponse, error) {
-	result := DatabaseAutomaticTuningUpdateResponse{RawResponse: resp}
+func (client *DatabaseAutomaticTuningClient) updateHandleResponse(resp *http.Response) (DatabaseAutomaticTuningClientUpdateResponse, error) {
+	result := DatabaseAutomaticTuningClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAutomaticTuning); err != nil {
-		return DatabaseAutomaticTuningUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseAutomaticTuningClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *DatabaseAutomaticTuningClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

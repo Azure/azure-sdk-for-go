@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,80 +9,48 @@
 package armmanagementgroups
 
 const (
-	module  = "armmanagementgroups"
-	version = "v0.2.1"
+	moduleName    = "armmanagementgroups"
+	moduleVersion = "v1.0.0"
 )
 
-type Enum0 string
+type EntitySearchType string
 
 const (
-	Enum0Ancestors Enum0 = "ancestors"
-	Enum0Children  Enum0 = "children"
-	Enum0Path      Enum0 = "path"
+	EntitySearchTypeAllowedChildren             EntitySearchType = "AllowedChildren"
+	EntitySearchTypeAllowedParents              EntitySearchType = "AllowedParents"
+	EntitySearchTypeChildrenOnly                EntitySearchType = "ChildrenOnly"
+	EntitySearchTypeParentAndFirstLevelChildren EntitySearchType = "ParentAndFirstLevelChildren"
+	EntitySearchTypeParentOnly                  EntitySearchType = "ParentOnly"
 )
 
-// PossibleEnum0Values returns the possible values for the Enum0 const type.
-func PossibleEnum0Values() []Enum0 {
-	return []Enum0{
-		Enum0Ancestors,
-		Enum0Children,
-		Enum0Path,
+// PossibleEntitySearchTypeValues returns the possible values for the EntitySearchType const type.
+func PossibleEntitySearchTypeValues() []EntitySearchType {
+	return []EntitySearchType{
+		EntitySearchTypeAllowedChildren,
+		EntitySearchTypeAllowedParents,
+		EntitySearchTypeChildrenOnly,
+		EntitySearchTypeParentAndFirstLevelChildren,
+		EntitySearchTypeParentOnly,
 	}
 }
 
-// ToPtr returns a *Enum0 pointing to the current value.
-func (c Enum0) ToPtr() *Enum0 {
-	return &c
-}
-
-type Enum2 string
+type EntityViewParameterType string
 
 const (
-	Enum2AllowedChildren             Enum2 = "AllowedChildren"
-	Enum2AllowedParents              Enum2 = "AllowedParents"
-	Enum2ChildrenOnly                Enum2 = "ChildrenOnly"
-	Enum2ParentAndFirstLevelChildren Enum2 = "ParentAndFirstLevelChildren"
-	Enum2ParentOnly                  Enum2 = "ParentOnly"
+	EntityViewParameterTypeAudit             EntityViewParameterType = "Audit"
+	EntityViewParameterTypeFullHierarchy     EntityViewParameterType = "FullHierarchy"
+	EntityViewParameterTypeGroupsOnly        EntityViewParameterType = "GroupsOnly"
+	EntityViewParameterTypeSubscriptionsOnly EntityViewParameterType = "SubscriptionsOnly"
 )
 
-// PossibleEnum2Values returns the possible values for the Enum2 const type.
-func PossibleEnum2Values() []Enum2 {
-	return []Enum2{
-		Enum2AllowedChildren,
-		Enum2AllowedParents,
-		Enum2ChildrenOnly,
-		Enum2ParentAndFirstLevelChildren,
-		Enum2ParentOnly,
+// PossibleEntityViewParameterTypeValues returns the possible values for the EntityViewParameterType const type.
+func PossibleEntityViewParameterTypeValues() []EntityViewParameterType {
+	return []EntityViewParameterType{
+		EntityViewParameterTypeAudit,
+		EntityViewParameterTypeFullHierarchy,
+		EntityViewParameterTypeGroupsOnly,
+		EntityViewParameterTypeSubscriptionsOnly,
 	}
-}
-
-// ToPtr returns a *Enum2 pointing to the current value.
-func (c Enum2) ToPtr() *Enum2 {
-	return &c
-}
-
-type Enum3 string
-
-const (
-	Enum3Audit             Enum3 = "Audit"
-	Enum3FullHierarchy     Enum3 = "FullHierarchy"
-	Enum3GroupsOnly        Enum3 = "GroupsOnly"
-	Enum3SubscriptionsOnly Enum3 = "SubscriptionsOnly"
-)
-
-// PossibleEnum3Values returns the possible values for the Enum3 const type.
-func PossibleEnum3Values() []Enum3 {
-	return []Enum3{
-		Enum3Audit,
-		Enum3FullHierarchy,
-		Enum3GroupsOnly,
-		Enum3SubscriptionsOnly,
-	}
-}
-
-// ToPtr returns a *Enum3 pointing to the current value.
-func (c Enum3) ToPtr() *Enum3 {
-	return &c
 }
 
 // ManagementGroupChildType - The type of child resource.
@@ -101,9 +69,21 @@ func PossibleManagementGroupChildTypeValues() []ManagementGroupChildType {
 	}
 }
 
-// ToPtr returns a *ManagementGroupChildType pointing to the current value.
-func (c ManagementGroupChildType) ToPtr() *ManagementGroupChildType {
-	return &c
+type ManagementGroupExpandType string
+
+const (
+	ManagementGroupExpandTypeAncestors ManagementGroupExpandType = "ancestors"
+	ManagementGroupExpandTypeChildren  ManagementGroupExpandType = "children"
+	ManagementGroupExpandTypePath      ManagementGroupExpandType = "path"
+)
+
+// PossibleManagementGroupExpandTypeValues returns the possible values for the ManagementGroupExpandType const type.
+func PossibleManagementGroupExpandTypeValues() []ManagementGroupExpandType {
+	return []ManagementGroupExpandType{
+		ManagementGroupExpandTypeAncestors,
+		ManagementGroupExpandTypeChildren,
+		ManagementGroupExpandTypePath,
+	}
 }
 
 // Permissions - The users specific permissions to this item.
@@ -126,13 +106,8 @@ func PossiblePermissionsValues() []Permissions {
 	}
 }
 
-// ToPtr returns a *Permissions pointing to the current value.
-func (c Permissions) ToPtr() *Permissions {
-	return &c
-}
-
-// Reason - Required if nameAvailable == false. Invalid indicates the name provided does not match the resource provider's naming requirements (incorrect
-// length, unsupported characters, etc.) AlreadyExists
+// Reason - Required if nameAvailable == false. Invalid indicates the name provided does not match the resource provider's
+// naming requirements (incorrect length, unsupported characters, etc.) AlreadyExists
 // indicates that the name is already in use and is therefore unavailable.
 type Reason string
 
@@ -147,11 +122,6 @@ func PossibleReasonValues() []Reason {
 		ReasonInvalid,
 		ReasonAlreadyExists,
 	}
-}
-
-// ToPtr returns a *Reason pointing to the current value.
-func (c Reason) ToPtr() *Reason {
-	return &c
 }
 
 // Status - The status of the Tenant Backfill
@@ -176,9 +146,4 @@ func PossibleStatusValues() []Status {
 		StatusCancelled,
 		StatusCompleted,
 	}
-}
-
-// ToPtr returns a *Status pointing to the current value.
-func (c Status) ToPtr() *Status {
-	return &c
 }

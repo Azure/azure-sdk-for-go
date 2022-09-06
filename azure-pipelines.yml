@@ -1,6 +1,10 @@
 # This builds only track 1 SDKs. See eng\pipelines\templates\steps\build.yml for track 2.
 
 trigger:
+  branches:
+    include:
+    - main
+    - legacy
   paths:
     exclude:
     - sdk/
@@ -8,6 +12,10 @@ trigger:
     - eng/config.json
 
 pr:
+  branches:
+    include:
+    - main
+    - legacy
   paths:
     exclude:
     - sdk/
@@ -18,23 +26,30 @@ jobs:
   - job: Build_Test
     strategy:
       matrix:
-        Linux_Go116:
-          pool.name: azsdk-pool-mms-ubuntu-2004-general
-          go.version: '1.16.7'
         Linux_Go117:
           pool.name: azsdk-pool-mms-ubuntu-2004-general
-          go.version: '1.17'
+          go.version: '1.17.8'
+        Linux_Go118:
+          pool.name: azsdk-pool-mms-ubuntu-2004-general
+          go.version: '1.18.2'
 
     pool:
       name: $(pool.name)
 
     variables:
-      GOPATH: '$(system.defaultWorkingDirectory)/work'
-      sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
-      GO111MODULE: 'off'
-      IGNORE_BREAKING_CHANGES: true
-      go.list.filter: 'profiles services storage'
-      go.test.filter: '-path ./vendor -prune -o -path ./sdk -prune -o -path ./eng -prune'
+      - template: /eng/pipelines/templates/variables/globals.yml
+      - name: GOPATH
+        value: '$(system.defaultWorkingDirectory)/work'
+      - name: sdkPath
+        value: '$(GOPATH)/src/github.com/$(build.repository.name)'
+      - name: GO111MODULE
+        value: 'off'
+      - name: IGNORE_BREAKING_CHANGES
+        value: 'true'
+      - name: go.list.filter
+        value: 'profiles services storage'
+      - name: go.test.filter
+        value: '-path ./vendor -prune -o -path ./sdk -prune -o -path ./eng -prune -o'
 
     steps:
     - task: GoTool@0
@@ -105,7 +120,11 @@ jobs:
       failOnStderr: true
       condition: succeededOrFailed()
 
-    - script: gofmt -s -l -d $(find . -path ./vendor -prune -o -name '*.go' -print) >&2
+    - script: |
+        for dd in $(go.list.filter); do
+          cd $(sdkPath)/$dd
+          gofmt -s -l -d $(find . -name '*.go' -print) >&2
+        done
       workingDirectory: '$(sdkPath)'
       displayName: 'Format Check'
       failOnStderr: true

@@ -117,7 +117,7 @@ func (client IPFirewallRulesClient) CreateOrUpdateSender(req *http.Request) (fut
 func (client IPFirewallRulesClient) CreateOrUpdateResponder(resp *http.Response) (result IPFirewallRuleInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

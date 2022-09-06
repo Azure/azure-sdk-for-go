@@ -8,7 +8,7 @@ import (
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
-	"github.com/Azure/go-amqp"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 )
 
 // ErrMessageTooLarge is returned when a message cannot fit into a batch when using MessageBatch.Add()
@@ -21,16 +21,14 @@ type (
 
 		marshaledMessages [][]byte
 		batchEnvelope     *amqp.Message
-		maxBytes          uint64
-		size              uint64
+
+		maxBytes    uint64
+		currentSize uint64
 	}
 )
 
 const (
 	batchMessageFormat uint32 = 0x80013700
-
-	// TODO: should be calculated, not just a constant.
-	batchMessageWrapperSize = uint64(100)
 )
 
 // NewMessageBatch builds a new message batch with a default standard max message size
@@ -42,13 +40,32 @@ func newMessageBatch(maxBytes uint64) *MessageBatch {
 	return mb
 }
 
+// AddMessageOptions contains optional parameters for the AddMessage function.
+type AddMessageOptions struct {
+	// For future expansion
+}
+
 // AddMessage adds a message to the batch if the message will not exceed the max size of the batch
 // Returns:
 // - ErrMessageTooLarge if the message cannot fit
 // - a non-nil error for other failures
 // - nil, otherwise
-func (mb *MessageBatch) AddMessage(m *Message) error {
-	return mb.addAMQPMessage(m.toAMQPMessage())
+func (mb *MessageBatch) AddMessage(m *Message, options *AddMessageOptions) error {
+	return mb.addAMQPMessage(m)
+}
+
+// AddAMQPAnnotatedMessageOptions contains optional parameters for the AddAMQPAnnotatedMessage function.
+type AddAMQPAnnotatedMessageOptions struct {
+	// For future expansion
+}
+
+// AddAMQPAnnotatedMessage adds a message to the batch if the message will not exceed the max size of the batch
+// Returns:
+// - ErrMessageTooLarge if the message cannot fit
+// - a non-nil error for other failures
+// - nil, otherwise
+func (mb *MessageBatch) AddAMQPAnnotatedMessage(m *AMQPAnnotatedMessage, options *AddAMQPAnnotatedMessageOptions) error {
+	return mb.addAMQPMessage(m)
 }
 
 // NumBytes is the number of bytes in the message batch
@@ -56,12 +73,7 @@ func (mb *MessageBatch) NumBytes() uint64 {
 	mb.mu.RLock()
 	defer mb.mu.RUnlock()
 
-	// calculated data size + batch message wrapper + data wrapper portions of the message
-	return mb.numBytesNoLock()
-}
-
-func (mb *MessageBatch) numBytesNoLock() uint64 {
-	return mb.size + batchMessageWrapperSize + (uint64(len(mb.marshaledMessages)) * 5)
+	return mb.currentSize
 }
 
 // NumMessages returns the # of messages in the batch.
@@ -86,7 +98,9 @@ func (mb *MessageBatch) toAMQPMessage() *amqp.Message {
 	return mb.batchEnvelope
 }
 
-func (mb *MessageBatch) addAMQPMessage(msg *amqp.Message) error {
+func (mb *MessageBatch) addAMQPMessage(tempMsg amqpCompatibleMessage) error {
+	msg := tempMsg.toAMQPMessage()
+
 	if msg.Properties.MessageID == nil || msg.Properties.MessageID == "" {
 		uid, err := uuid.New()
 		if err != nil {
@@ -103,30 +117,66 @@ func (mb *MessageBatch) addAMQPMessage(msg *amqp.Message) error {
 	mb.mu.Lock()
 	defer mb.mu.Unlock()
 
-	if int(mb.numBytesNoLock())+len(bin) > int(mb.maxBytes) {
+	if len(mb.marshaledMessages) == 0 {
+		// the first message is special - we use its properties and annotations as the
+		// actual envelope for the batch message.
+		batchEnv, batchEnvLen, err := createBatchEnvelope(msg)
+
+		if err != nil {
+			return err
+		}
+
+		// (we'll undo this if it turns out the message was too big)
+		mb.currentSize = uint64(batchEnvLen)
+		mb.batchEnvelope = batchEnv
+	}
+
+	actualPayloadSize := calcActualSizeForPayload(bin)
+
+	if mb.currentSize+actualPayloadSize > mb.maxBytes {
+		if len(mb.marshaledMessages) == 0 {
+			// reset our our properties, this didn't end up being our first message.
+			mb.currentSize = 0
+			mb.batchEnvelope = nil
+		}
+
 		return ErrMessageTooLarge
 	}
 
-	mb.size += uint64(len(bin))
-
-	if len(mb.marshaledMessages) == 0 {
-		// first message, store it since we need to copy attributes from it
-		// when we send the overall batch message.
-		mb.batchEnvelope = createBatchEnvelope(msg)
-	}
-
+	mb.currentSize += actualPayloadSize
 	mb.marshaledMessages = append(mb.marshaledMessages, bin)
+
 	return nil
 }
 
 // createBatchEnvelope makes a copy of the properties of the message, minus any
-// payload fields (like Data, Value or (eventually) Sequence). The data field will be
+// payload fields (like Data, Value or Sequence). The data field will be
 // filled in with all the messages when the batch is completed.
-func createBatchEnvelope(am *amqp.Message) *amqp.Message {
-	newAMQPMessage := *am
+func createBatchEnvelope(am *amqp.Message) (*amqp.Message, int, error) {
+	batchEnvelope := *am
 
-	newAMQPMessage.Data = nil
-	newAMQPMessage.Value = nil
+	batchEnvelope.Data = nil
+	batchEnvelope.Value = nil
+	batchEnvelope.Sequence = nil
 
-	return &newAMQPMessage
+	bytes, err := batchEnvelope.MarshalBinary()
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return &batchEnvelope, len(bytes), nil
+}
+
+// calcActualSizeForPayload calculates the payload size based
+// on overhead from AMQP encoding.
+func calcActualSizeForPayload(payload []byte) uint64 {
+	const vbin8Overhead = 5
+	const vbin32Overhead = 8
+
+	if len(payload) < 256 {
+		return uint64(vbin8Overhead + len(payload))
+	}
+
+	return uint64(vbin32Overhead + len(payload))
 }

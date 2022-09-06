@@ -1,480 +1,362 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azsecrets
+package azsecrets_test
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
-	"net/http"
-	"os"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 	"github.com/stretchr/testify/require"
 )
 
-func TestMain(m *testing.M) {
-	// Initialize
-	if recording.GetRecordMode() == "record" {
-		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-		err := recording.AddURISanitizer("https://fakekvurl.vault.azure.net/", vaultUrl, nil)
-		if err != nil {
-			panic(err)
+// pollStatus calls a function until it stops returning a response error with the given status code.
+// If this takes more than 2 minutes, it fails the test.
+func pollStatus(t *testing.T, expectedStatus int, fn func() error) {
+	var err error
+	for i := 0; i < 12; i++ {
+		err = fn()
+		var respErr *azcore.ResponseError
+		if !(errors.As(err, &respErr) && respErr.StatusCode == expectedStatus) {
+			break
+		}
+		if i < 11 {
+			recording.Sleep(10 * time.Second)
 		}
 	}
-
-	// Run
-	exitVal := m.Run()
-
-	// cleanup
-
-	os.Exit(exitVal)
+	require.NoError(t, err)
 }
 
-func startTest(t *testing.T) func() {
-	err := recording.Start(t, pathToPackage, nil)
+type serdeModel interface {
+	json.Marshaler
+	json.Unmarshaler
+}
+
+func testSerde[T serdeModel](t *testing.T, model T) {
+	data, err := model.MarshalJSON()
 	require.NoError(t, err)
-	return func() {
-		err := recording.Stop(t, nil)
-		require.NoError(t, err)
+	err = model.UnmarshalJSON(data)
+	require.NoError(t, err)
+}
+
+func TestBackupRestore(t *testing.T) {
+	client := startTest(t)
+
+	name := createRandomName(t, "testbackupsecret")
+	value := createRandomName(t, "value")
+
+	setResp, err := client.SetSecret(context.Background(), name, azsecrets.SetSecretParameters{Value: &value}, nil)
+	require.NoError(t, err)
+	defer cleanUpSecret(t, client, name)
+
+	backupResp, err := client.BackupSecret(context.Background(), name, nil)
+	require.NoError(t, err)
+	require.Greater(t, len(backupResp.Value), 0)
+	testSerde(t, &backupResp.BackupSecretResult)
+
+	_, err = client.DeleteSecret(context.Background(), name, nil)
+	require.NoError(t, err)
+	pollStatus(t, 404, func() error {
+		_, err := client.GetDeletedSecret(context.Background(), name, nil)
+		return err
+	})
+
+	_, err = client.PurgeDeletedSecret(context.Background(), name, nil)
+	require.NoError(t, err)
+
+	var restoreResp azsecrets.RestoreSecretResponse
+	restoreParams := azsecrets.RestoreSecretParameters{backupResp.Value}
+	testSerde(t, &restoreParams)
+	pollStatus(t, 409, func() error {
+		restoreResp, err = client.RestoreSecret(context.Background(), restoreParams, nil)
+		return err
+	})
+	require.Equal(t, restoreResp.ID.Name(), name)
+	require.Equal(t, setResp.ID, restoreResp.ID)
+}
+
+func TestCRUD(t *testing.T) {
+	client := startTest(t)
+
+	name := createRandomName(t, "secret")
+	value := createRandomName(t, "value")
+
+	setParams := azsecrets.SetSecretParameters{
+		ContentType: to.Ptr("big secret"),
+		SecretAttributes: &azsecrets.SecretAttributes{
+			Enabled:   to.Ptr(true),
+			NotBefore: to.Ptr(time.Date(2030, 1, 1, 1, 1, 1, 0, time.UTC)),
+		},
+		Tags:  map[string]*string{"tag": to.Ptr("value")},
+		Value: &value,
 	}
-}
-
-func TestSetGetSecret(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	client, err := createClient(t)
+	testSerde(t, &setParams)
+	setResp, err := client.SetSecret(context.Background(), name, setParams, nil)
 	require.NoError(t, err)
+	require.Equal(t, setParams.ContentType, setResp.ContentType)
+	require.Equal(t, setParams.SecretAttributes.Enabled, setResp.Attributes.Enabled)
+	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), setResp.Attributes.NotBefore.Unix())
+	require.Equal(t, setParams.Tags, setResp.Tags)
+	require.Equal(t, setParams.Value, setResp.Value)
+	require.Equal(t, name, setResp.ID.Name())
+	require.NotEmpty(t, setResp.ID.Version())
+	testSerde(t, &setResp.SecretBundle)
 
-	secret, err := createRandomName(t, "secret")
+	getResp, err := client.GetSecret(context.Background(), setResp.ID.Name(), "", nil)
 	require.NoError(t, err)
-	value, err := createRandomName(t, "value")
-	require.NoError(t, err)
+	require.Equal(t, setParams.ContentType, getResp.ContentType)
+	require.NotNil(t, setResp.ID)
+	require.Equal(t, setResp.ID, getResp.ID)
+	require.Equal(t, setResp.ID.Name(), getResp.ID.Name())
+	require.Equal(t, setResp.ID.Version(), getResp.ID.Version())
+	require.Equal(t, setParams.SecretAttributes.Enabled, getResp.Attributes.Enabled)
+	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), getResp.Attributes.NotBefore.Unix())
+	require.Equal(t, setParams.Tags, getResp.Tags)
+	require.Equal(t, setParams.Value, getResp.Value)
 
-	defer cleanUpSecret(t, client, secret)
-
-	_, err = client.SetSecret(context.Background(), secret, value, nil)
-	require.NoError(t, err)
-
-	getResp, err := client.GetSecret(context.Background(), secret, nil)
-	require.NoError(t, err)
-	require.Equal(t, *getResp.Value, value)
-}
-
-func TestListSecretVersions(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	client, err := createClient(t)
-	require.NoError(t, err)
-
-	secret, err := createRandomName(t, "secret")
-	require.NoError(t, err)
-	value, err := createRandomName(t, "value")
-	require.NoError(t, err)
-
-	_, err = client.SetSecret(context.Background(), secret, value, nil)
-	require.NoError(t, err)
-	_, err = client.SetSecret(context.Background(), secret, value+"1", nil)
-	require.NoError(t, err)
-	_, err = client.SetSecret(context.Background(), secret, value+"2", nil)
-	require.NoError(t, err)
-	defer cleanUpSecret(t, client, secret)
-
-	count := 0
-	pager := client.ListSecretVersions(secret, nil)
-	for pager.NextPage(context.Background()) {
-		page := pager.PageResponse()
-		count += len(page.Secrets)
+	updateParams := azsecrets.UpdateSecretParameters{
+		SecretAttributes: &azsecrets.SecretAttributes{
+			Expires: to.Ptr(time.Date(2040, 1, 1, 1, 1, 1, 0, time.UTC)),
+		},
 	}
-	require.GreaterOrEqual(t, count, 3)
-	require.NoError(t, pager.Err())
+	testSerde(t, &updateParams)
+	updateResp, err := client.UpdateSecret(context.Background(), name, setResp.ID.Version(), updateParams, nil)
+	require.NoError(t, err)
+	require.Equal(t, setParams.ContentType, updateResp.ContentType)
+	require.Equal(t, setResp.ID, updateResp.ID)
+	require.Equal(t, setParams.SecretAttributes.Enabled, updateResp.Attributes.Enabled)
+	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), updateResp.Attributes.NotBefore.Unix())
+	require.Equal(t, setParams.Tags, updateResp.Tags)
+	require.Equal(t, setResp.ID.Version(), updateResp.ID.Version())
+
+	deleteResp, err := client.DeleteSecret(context.Background(), name, nil)
+	require.NoError(t, err)
+	require.Equal(t, setParams.ContentType, deleteResp.ContentType)
+	require.Equal(t, setResp.ID, deleteResp.ID)
+	require.Equal(t, setParams.SecretAttributes.Enabled, deleteResp.Attributes.Enabled)
+	require.Equal(t, updateParams.SecretAttributes.Expires.Unix(), deleteResp.Attributes.Expires.Unix())
+	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), deleteResp.Attributes.NotBefore.Unix())
+	require.Equal(t, setParams.Tags, deleteResp.Tags)
+	require.Equal(t, name, deleteResp.ID.Name())
+	require.Equal(t, updateResp.ID.Version(), deleteResp.ID.Version())
+	testSerde(t, &deleteResp.DeletedSecretBundle)
+	pollStatus(t, 404, func() error {
+		_, err := client.GetDeletedSecret(context.Background(), name, nil)
+		return err
+	})
+
+	getDeletedResp, err := client.GetDeletedSecret(context.Background(), name, nil)
+	require.NoError(t, err)
+	require.Equal(t, setParams.ContentType, getDeletedResp.ContentType)
+	require.Equal(t, setParams.SecretAttributes.Enabled, getDeletedResp.Attributes.Enabled)
+	require.Equal(t, updateParams.SecretAttributes.Expires.Unix(), getDeletedResp.Attributes.Expires.Unix())
+	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), getDeletedResp.Attributes.NotBefore.Unix())
+	require.Equal(t, setParams.Tags, getDeletedResp.Tags)
+	require.Equal(t, name, getDeletedResp.ID.Name())
+	require.Equal(t, setResp.ID.Version(), getDeletedResp.ID.Version())
+
+	_, err = client.PurgeDeletedSecret(context.Background(), name, nil)
+	require.NoError(t, err)
 }
 
-func TestListSecrets(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	client, err := createClient(t)
-	require.NoError(t, err)
-
-	_, err = client.SetSecret(context.Background(), "secret1", "value", nil)
-	require.NoError(t, err)
-	_, err = client.SetSecret(context.Background(), "secret2", "value", nil)
-	require.NoError(t, err)
-	_, err = client.SetSecret(context.Background(), "secret3", "value", nil)
-	require.NoError(t, err)
-	_, err = client.SetSecret(context.Background(), "secret4", "value", nil)
-	require.NoError(t, err)
-
-	defer cleanUpSecret(t, client, "secret1")
-	defer cleanUpSecret(t, client, "secret2")
-	defer cleanUpSecret(t, client, "secret3")
-	defer cleanUpSecret(t, client, "secret4")
-
-	count := 0
-	pager := client.ListSecrets(nil)
-	for pager.NextPage(context.Background()) {
-		page := pager.PageResponse()
-		count += len(page.Secrets)
+func TestID(t *testing.T) {
+	for _, test := range []struct{ ID, name, version string }{
+		{"https://foo.vault.azure.net/secrets/name/version", "name", "version"},
+		{"https://foo.vault.azure.net/secrets/name", "name", ""},
+	} {
+		t.Run(test.ID, func(t *testing.T) {
+			ID := azsecrets.ID(test.ID)
+			require.Equal(t, test.name, ID.Name())
+			require.Equal(t, test.version, ID.Version())
+		})
 	}
-	require.Equal(t, count, 4)
-	require.NoError(t, pager.Err())
 }
 
 func TestListDeletedSecrets(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
+	client := startTest(t)
 
-	client, err := createClient(t)
-	require.NoError(t, err)
+	secret1 := createRandomName(t, "secret1")
+	value1 := createRandomName(t, "value1")
+	secret2 := createRandomName(t, "secret2")
+	value2 := createRandomName(t, "value2")
 
-	secret1, err := createRandomName(t, "secret1")
+	_, err := client.SetSecret(context.Background(), secret1, azsecrets.SetSecretParameters{Value: &value1}, nil)
 	require.NoError(t, err)
-	value1, err := createRandomName(t, "value1")
+	_, err = client.DeleteSecret(context.Background(), secret1, nil)
 	require.NoError(t, err)
-	secret2, err := createRandomName(t, "secret2")
+	_, err = client.SetSecret(context.Background(), secret2, azsecrets.SetSecretParameters{Value: &value2}, nil)
 	require.NoError(t, err)
-	value2, err := createRandomName(t, "value2")
+	_, err = client.DeleteSecret(context.Background(), secret2, nil)
 	require.NoError(t, err)
-
-	// 1. Create 2 secrets
-	_, err = client.SetSecret(context.Background(), secret1, value1, nil)
-	require.NoError(t, err)
-
-	_, err = client.SetSecret(context.Background(), secret2, value2, nil)
-	require.NoError(t, err)
-
-	// 2. Delete both secrets
-	resp, err := client.BeginDeleteSecret(context.Background(), secret1, nil)
-	require.NoError(t, err)
-	_, err = resp.PollUntilDone(context.Background(), delay())
-	require.NoError(t, err)
-
-	resp, err = client.BeginDeleteSecret(context.Background(), secret2, nil)
-	require.NoError(t, err)
-	_, err = resp.PollUntilDone(context.Background(), delay())
-	require.NoError(t, err)
-
-	f := func() {
+	defer func() {
 		_, err := client.PurgeDeletedSecret(context.Background(), secret1, nil)
 		require.NoError(t, err)
 		_, err = client.PurgeDeletedSecret(context.Background(), secret2, nil)
 		require.NoError(t, err)
-	}
-	defer f()
+	}()
 
-	// Make sure both secrets show up in deleted secrets
-	deletedSecrets := map[string]bool{
-		secret1: false,
-		secret2: false,
-	}
-	count := 0
-	pager := client.ListDeletedSecrets(nil)
-	for pager.NextPage(context.Background()) {
-		page := pager.PageResponse()
-		count += len(page.DeletedSecrets)
-		for _, secret := range page.DeletedSecrets {
-			for deleted := range deletedSecrets {
-				if strings.Contains(*secret.ID, deleted) {
-					deletedSecrets[deleted] = true
-					break
-				}
+	pollStatus(t, 404, func() error {
+		_, err := client.GetDeletedSecret(context.Background(), secret1, nil)
+		return err
+	})
+	pollStatus(t, 404, func() error {
+		_, err := client.GetDeletedSecret(context.Background(), secret2, nil)
+		return err
+	})
+
+	expected := map[string]struct{}{secret1: {}, secret2: {}}
+	pager := client.NewListDeletedSecretsPager(&azsecrets.ListDeletedSecretsOptions{MaxResults: to.Ptr(int32(1))})
+	for pager.More() && len(expected) > 0 {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		testSerde(t, &page.DeletedSecretListResult)
+		for _, secret := range page.Value {
+			testSerde(t, secret)
+			delete(expected, secret.ID.Name())
+			if len(expected) == 0 {
+				break
 			}
 		}
 	}
+	require.Empty(t, expected, "pager didn't return all expected secrets")
+}
 
-	for _, deleted := range deletedSecrets {
-		require.True(t, deleted)
+func TestListSecrets(t *testing.T) {
+	client := startTest(t)
+
+	count := 4
+	for i := 0; i < count; i++ {
+		name := createRandomName(t, fmt.Sprintf("listsecrets%d", i))
+		value := createRandomName(t, fmt.Sprintf("value%d", i))
+		_, err := client.SetSecret(context.Background(), name, azsecrets.SetSecretParameters{Value: &value}, nil)
+		require.NoError(t, err)
+		defer cleanUpSecret(t, client, name)
 	}
-}
 
-func TestDeleteSecret(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	client, err := createClient(t)
-	require.NoError(t, err)
-
-	secret, err := createRandomName(t, "secret1")
-	require.NoError(t, err)
-	value, err := createRandomName(t, "value1")
-	require.NoError(t, err)
-
-	_, err = client.SetSecret(context.Background(), secret, value, nil)
-	require.NoError(t, err)
-
-	resp, err := client.BeginDeleteSecret(context.Background(), secret, nil)
-	require.NoError(t, err)
-
-	_, err = resp.PollUntilDone(context.Background(), delay())
-	require.NoError(t, err)
-
-	_, err = client.GetDeletedSecret(context.Background(), secret, nil)
-	require.NoError(t, err)
-
-	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
-	require.NoError(t, err)
-
-	_, err = client.GetSecret(context.Background(), secret, nil)
-	require.Error(t, err)
-
-	_, err = resp.Poller.FinalResponse(context.TODO())
-	require.NoError(t, err)
-}
-
-func TestPurgeDeletedSecret(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	client, err := createClient(t)
-	require.NoError(t, err)
-
-	secret, err := createRandomName(t, "secret1")
-	require.NoError(t, err)
-	value, err := createRandomName(t, "value1")
-	require.NoError(t, err)
-
-	_, err = client.SetSecret(context.Background(), secret, value, nil)
-	require.NoError(t, err)
-
-	resp, err := client.BeginDeleteSecret(context.Background(), secret, nil)
-	require.NoError(t, err)
-
-	_, err = resp.PollUntilDone(context.Background(), delay())
-	require.NoError(t, err)
-
-	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
-	require.NoError(t, err)
-
-	pager := client.ListDeletedSecrets(nil)
-	for pager.NextPage(context.Background()) {
-		page := pager.PageResponse()
-		for _, secret := range page.DeletedSecrets {
-			require.NotEqual(t, *secret.ID, secret)
+	pager := client.NewListSecretsPager(&azsecrets.ListSecretsOptions{MaxResults: to.Ptr(int32(1))})
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		testSerde(t, &page.SecretListResult)
+		for _, secret := range page.Value {
+			testSerde(t, secret)
+			if strings.HasPrefix(secret.ID.Name(), "listsecrets") {
+				count--
+			}
 		}
 	}
+	require.Equal(t, count, 0)
 }
 
-func TestUpdateSecretProperties(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-	err := recording.SetBodilessMatcher(t, nil)
-	require.NoError(t, err)
+func TestListSecretVersions(t *testing.T) {
+	client := startTest(t)
 
-	client, err := createClient(t)
-	require.NoError(t, err)
-
-	secret, err := createRandomName(t, "secret2")
-	require.NoError(t, err)
-	value, err := createRandomName(t, "value")
-	require.NoError(t, err)
-
-	_, err = client.SetSecret(context.Background(), secret, value, nil)
-	require.NoError(t, err)
-
-	defer cleanUpSecret(t, client, secret)
-
-	getResp, err := client.GetSecret(context.Background(), secret, nil)
-	require.NoError(t, err)
-	require.Equal(t, *getResp.Value, value)
-
-	expires := time.Now().Add(48 * time.Hour)
-	nb := time.Now().Add(-24 * time.Hour)
-	params := Properties{
-		ContentType: to.StringPtr("password"),
-		Tags: map[string]string{
-			"Tag1": "TagVal1",
-		},
-		SecretAttributes: &Attributes{
-			Enabled:   to.BoolPtr(true),
-			Expires:   &expires,
-			NotBefore: &nb,
+	name := createRandomName(t, "listversions")
+	commonParams := azsecrets.SetSecretParameters{
+		ContentType: to.Ptr("content-type"),
+		Tags:        map[string]*string{"tag": to.Ptr("value")},
+		SecretAttributes: &azsecrets.SecretAttributes{
+			Expires:   to.Ptr(time.Date(2050, 1, 1, 1, 1, 1, 0, time.UTC)),
+			NotBefore: to.Ptr(time.Date(2040, 1, 1, 1, 1, 1, 0, time.UTC)),
 		},
 	}
+	count := 3
+	for i := 0; i < count; i++ {
+		params := commonParams
+		params.Value = to.Ptr(fmt.Sprintf("value%d", i))
+		res, err := client.SetSecret(context.Background(), name, params, nil)
+		require.Equal(t, params.Value, res.Value)
+		require.NoError(t, err)
+	}
+	defer cleanUpSecret(t, client, name)
 
-	_, err = client.UpdateSecretProperties(context.Background(), secret, params, nil)
-	require.NoError(t, err)
-
-	getResp, err = client.GetSecret(context.Background(), secret, nil)
-	require.NoError(t, err)
-	require.Equal(t, *getResp.Value, value)
-	require.Equal(t, getResp.Tags["Tag1"], "TagVal1")
-	require.Equal(t, *getResp.ContentType, "password")
-}
-
-func TestBeginRecoverDeletedSecret(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	client, err := createClient(t)
-	require.NoError(t, err)
-
-	secret, err := createRandomName(t, "secret")
-	require.NoError(t, err)
-	value, err := createRandomName(t, "value")
-	require.NoError(t, err)
-
-	_, err = client.SetSecret(context.Background(), secret, value, nil)
-	require.NoError(t, err)
-
-	defer cleanUpSecret(t, client, secret)
-
-	pollerResp, err := client.BeginDeleteSecret(context.Background(), secret, nil)
-	require.NoError(t, err)
-
-	_, err = pollerResp.PollUntilDone(context.Background(), delay())
-	require.NoError(t, err)
-
-	resp, err := client.BeginRecoverDeletedSecret(context.Background(), secret, nil)
-	require.NoError(t, err)
-
-	_, err = resp.PollUntilDone(context.Background(), delay())
-	require.NoError(t, err)
-
-	_, err = client.SetSecret(context.Background(), secret, value, nil)
-	require.NoError(t, err)
-
-	getResp, err := client.GetSecret(context.Background(), secret, nil)
-	require.NoError(t, err)
-	require.Equal(t, *getResp.Value, value)
-}
-
-func TestBackupSecret(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
-
-	client, err := createClient(t)
-	require.NoError(t, err)
-
-	secret, err := createRandomName(t, "secrets")
-	require.NoError(t, err)
-	value, err := createRandomName(t, "value")
-	require.NoError(t, err)
-
-	_, err = client.SetSecret(context.Background(), secret, value, nil)
-	require.NoError(t, err)
-
-	defer cleanUpSecret(t, client, secret)
-
-	backupResp, err := client.BackupSecret(context.Background(), secret, nil)
-	require.NoError(t, err)
-	require.Greater(t, len(backupResp.Value), 0)
-
-	respPoller, err := client.BeginDeleteSecret(context.Background(), secret, nil)
-	require.NoError(t, err)
-	_, err = respPoller.PollUntilDone(context.Background(), delay())
-	require.NoError(t, err)
-
-	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
-	require.NoError(t, err)
-
-	_, err = client.GetSecret(context.Background(), secret, nil)
-	var httpErr azcore.HTTPResponse
-	require.True(t, errors.As(err, &httpErr))
-	require.Equal(t, httpErr.RawResponse().StatusCode, http.StatusNotFound)
-
-	_, err = client.GetDeletedSecret(context.Background(), secret, nil)
-	require.True(t, errors.As(err, &httpErr))
-	require.Equal(t, httpErr.RawResponse().StatusCode, http.StatusNotFound)
-
-	time.Sleep(20 * delay())
-
-	// Poll this operation manually
-	var restoreResp RestoreSecretBackupResponse
-	var i int
-	for i = 0; i < 20; i++ {
-		restoreResp, err = client.RestoreSecretBackup(context.Background(), backupResp.Value, nil)
-		if err == nil {
-			break
+	pager := client.NewListSecretVersionsPager(name, &azsecrets.ListSecretVersionsOptions{MaxResults: to.Ptr(int32(1))})
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		testSerde(t, &page.SecretListResult)
+		for i, secret := range page.Value {
+			testSerde(t, secret)
+			if i > 0 {
+				require.NotEqual(t, page.Value[i-1].ID.Version(), secret.ID.Version())
+			}
+			require.NotNil(t, secret.ID)
+			require.Equal(t, name, secret.ID.Name())
+			if strings.HasPrefix(secret.ID.Name(), name) {
+				count--
+				require.Equal(t, commonParams.ContentType, secret.ContentType)
+				require.Equal(t, commonParams.SecretAttributes.Expires.Unix(), secret.Attributes.Expires.Unix())
+				require.Equal(t, commonParams.SecretAttributes.NotBefore.Unix(), secret.Attributes.NotBefore.Unix())
+				require.Equal(t, commonParams.Tags, secret.Tags)
+			}
 		}
-		time.Sleep(delay())
 	}
-	require.NoError(t, err)
-	require.Contains(t, *restoreResp.ID, secret)
-
-	// Now the Secret should be Get-able
-	_, err = client.GetSecret(context.Background(), secret, nil)
-	require.NoError(t, err)
+	require.Equal(t, count, 0)
 }
 
-func TestTimeout(t *testing.T) {
-	fakeKVUrl := "https://test-sync-time-dummy.vault.azure.net/"
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	require.NoError(t, err)
-
-	client, err := NewClient(fakeKVUrl, cred, nil)
-	require.NoError(t, err)
-
-	c := context.Background()
-	c, cancelFunc := context.WithTimeout(c, 10*time.Second)
-	defer cancelFunc()
-
-	start := time.Now()
-	_, err = client.GetSecret(c, "nonexistentsecret", nil)
-	require.Error(t, err)
-	require.ErrorIs(t, err, context.DeadlineExceeded)
-	require.Less(t, time.Since(start).Seconds(), 11.0)
-	require.Greater(t, time.Since(start).Seconds(), 9.0)
+func TestNameRequired(t *testing.T) {
+	client := azsecrets.NewClient(fakeVaultURL, &FakeCredential{}, nil)
+	expected := "parameter name cannot be empty"
+	_, err := client.BackupSecret(context.Background(), "", nil)
+	require.EqualError(t, err, expected)
+	_, err = client.DeleteSecret(context.Background(), "", nil)
+	require.EqualError(t, err, expected)
+	_, err = client.GetDeletedSecret(context.Background(), "", nil)
+	require.EqualError(t, err, expected)
+	_, err = client.GetSecret(context.Background(), "", "", nil)
+	require.EqualError(t, err, expected)
+	_, err = client.PurgeDeletedSecret(context.Background(), "", nil)
+	require.EqualError(t, err, expected)
+	_, err = client.RecoverDeletedSecret(context.Background(), "", nil)
+	require.EqualError(t, err, expected)
+	_, err = client.SetSecret(context.Background(), "", azsecrets.SetSecretParameters{}, nil)
+	require.EqualError(t, err, expected)
+	_, err = client.UpdateSecret(context.Background(), "", "", azsecrets.UpdateSecretParameters{}, nil)
+	require.EqualError(t, err, expected)
 }
 
-func TestConstants(t *testing.T) {
-	d := CustomizedRecoverable
-	require.Equal(t, *d.toGenerated(), internal.DeletionRecoveryLevelCustomizedRecoverable)
+func TestRecover(t *testing.T) {
+	client := startTest(t)
 
-	d1 := CustomizedRecoverableProtectedSubscription
-	require.Equal(t, *d1.toGenerated(), internal.DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription)
+	name := createRandomName(t, "secret")
+	value := createRandomName(t, "value")
 
-	d2 := CustomizedRecoverablePurgeable
-	require.Equal(t, *d2.toGenerated(), internal.DeletionRecoveryLevelCustomizedRecoverablePurgeable)
+	setResp, err := client.SetSecret(context.Background(), name, azsecrets.SetSecretParameters{Value: &value}, nil)
+	require.NoError(t, err)
+	defer cleanUpSecret(t, client, name)
+	require.Equal(t, value, *setResp.Value)
 
-	d3 := Purgeable
-	require.Equal(t, *d3.toGenerated(), internal.DeletionRecoveryLevelPurgeable)
-
-	d4 := Recoverable
-	require.Equal(t, *d4.toGenerated(), internal.DeletionRecoveryLevelRecoverable)
-
-	d5 := RecoverableProtectedSubscription
-	require.Equal(t, *d5.toGenerated(), internal.DeletionRecoveryLevelRecoverableProtectedSubscription)
-
-	d6 := RecoverablePurgeable
-	require.Equal(t, *d6.toGenerated(), internal.DeletionRecoveryLevelRecoverablePurgeable)
-}
-
-func TestLogging(t *testing.T) {
-	fakeKVUrl := "https://test-sync-time-dummy.vault.azure.net/"
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_, err = client.DeleteSecret(context.Background(), name, nil)
 	require.NoError(t, err)
 
-	client, err := NewClient(fakeKVUrl, cred, nil)
-	require.NoError(t, err)
-
-	c := context.Background()
-	c, cancelFunc := context.WithTimeout(c, 10*time.Second)
-	defer cancelFunc()
-
-	log.SetListener(func(cls log.Event, msg string) {
-		fmt.Println(msg)
+	pollStatus(t, 404, func() error {
+		_, err := client.GetDeletedSecret(context.Background(), name, nil)
+		return err
 	})
-	log.SetEvents(log.EventRequest, log.EventResponse)
 
-	start := time.Now()
-	_, err = client.GetSecret(c, "nonexistentsecret", nil)
-	require.Error(t, err)
-	require.ErrorIs(t, err, context.DeadlineExceeded)
-	require.Less(t, time.Since(start).Seconds(), 11.0)
-	require.Greater(t, time.Since(start).Seconds(), 9.0)
+	recoverResp, err := client.RecoverDeletedSecret(context.Background(), name, nil)
+	require.NoError(t, err)
+	require.Equal(t, setResp.ID, recoverResp.ID)
+
+	var getResp azsecrets.GetSecretResponse
+	pollStatus(t, 404, func() error {
+		getResp, err = client.GetSecret(context.Background(), name, "", nil)
+		return err
+	})
+	require.Equal(t, value, *getResp.Value)
+	require.Equal(t, setResp.Attributes, getResp.Attributes)
+	require.Equal(t, setResp.ID, getResp.ID)
+	require.Equal(t, setResp.ContentType, getResp.ContentType)
 }

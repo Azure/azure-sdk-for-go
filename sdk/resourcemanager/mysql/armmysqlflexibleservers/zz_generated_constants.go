@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package armmysqlflexibleservers
 
 const (
-	module  = "armmysqlflexibleservers"
-	version = "v0.2.1"
+	moduleName    = "armmysqlflexibleservers"
+	moduleVersion = "v1.0.0"
 )
 
 // ConfigurationSource - Source of the configuration.
@@ -27,11 +27,6 @@ func PossibleConfigurationSourceValues() []ConfigurationSource {
 		ConfigurationSourceSystemDefault,
 		ConfigurationSourceUserOverride,
 	}
-}
-
-// ToPtr returns a *ConfigurationSource pointing to the current value.
-func (c ConfigurationSource) ToPtr() *ConfigurationSource {
-	return &c
 }
 
 // CreateMode - The mode to create a new MySQL server.
@@ -54,11 +49,6 @@ func PossibleCreateModeValues() []CreateMode {
 	}
 }
 
-// ToPtr returns a *CreateMode pointing to the current value.
-func (c CreateMode) ToPtr() *CreateMode {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -79,9 +69,20 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
+// DataEncryptionType - The key type, AzureKeyVault for enable cmk, SystemManaged for disable cmk.
+type DataEncryptionType string
+
+const (
+	DataEncryptionTypeAzureKeyVault DataEncryptionType = "AzureKeyVault"
+	DataEncryptionTypeSystemManaged DataEncryptionType = "SystemManaged"
+)
+
+// PossibleDataEncryptionTypeValues returns the possible values for the DataEncryptionType const type.
+func PossibleDataEncryptionTypeValues() []DataEncryptionType {
+	return []DataEncryptionType{
+		DataEncryptionTypeAzureKeyVault,
+		DataEncryptionTypeSystemManaged,
+	}
 }
 
 // EnableStatusEnum - Enum to indicate whether value is 'Enabled' or 'Disabled'
@@ -100,11 +101,6 @@ func PossibleEnableStatusEnumValues() []EnableStatusEnum {
 	}
 }
 
-// ToPtr returns a *EnableStatusEnum pointing to the current value.
-func (c EnableStatusEnum) ToPtr() *EnableStatusEnum {
-	return &c
-}
-
 // HighAvailabilityMode - High availability mode for a server.
 type HighAvailabilityMode string
 
@@ -121,11 +117,6 @@ func PossibleHighAvailabilityModeValues() []HighAvailabilityMode {
 		HighAvailabilityModeSameZone,
 		HighAvailabilityModeZoneRedundant,
 	}
-}
-
-// ToPtr returns a *HighAvailabilityMode pointing to the current value.
-func (c HighAvailabilityMode) ToPtr() *HighAvailabilityMode {
-	return &c
 }
 
 // HighAvailabilityState - The state of server high availability.
@@ -150,11 +141,6 @@ func PossibleHighAvailabilityStateValues() []HighAvailabilityState {
 	}
 }
 
-// ToPtr returns a *HighAvailabilityState pointing to the current value.
-func (c HighAvailabilityState) ToPtr() *HighAvailabilityState {
-	return &c
-}
-
 // IsConfigPendingRestart - If is the configuration pending restart or not.
 type IsConfigPendingRestart string
 
@@ -169,11 +155,6 @@ func PossibleIsConfigPendingRestartValues() []IsConfigPendingRestart {
 		IsConfigPendingRestartFalse,
 		IsConfigPendingRestartTrue,
 	}
-}
-
-// ToPtr returns a *IsConfigPendingRestart pointing to the current value.
-func (c IsConfigPendingRestart) ToPtr() *IsConfigPendingRestart {
-	return &c
 }
 
 // IsDynamicConfig - If is the configuration dynamic.
@@ -192,11 +173,6 @@ func PossibleIsDynamicConfigValues() []IsDynamicConfig {
 	}
 }
 
-// ToPtr returns a *IsDynamicConfig pointing to the current value.
-func (c IsDynamicConfig) ToPtr() *IsDynamicConfig {
-	return &c
-}
-
 // IsReadOnly - If is the configuration read only.
 type IsReadOnly string
 
@@ -211,11 +187,6 @@ func PossibleIsReadOnlyValues() []IsReadOnly {
 		IsReadOnlyFalse,
 		IsReadOnlyTrue,
 	}
-}
-
-// ToPtr returns a *IsReadOnly pointing to the current value.
-func (c IsReadOnly) ToPtr() *IsReadOnly {
-	return &c
 }
 
 // ReplicationRole - The replication role.
@@ -236,11 +207,6 @@ func PossibleReplicationRoleValues() []ReplicationRole {
 	}
 }
 
-// ToPtr returns a *ReplicationRole pointing to the current value.
-func (c ReplicationRole) ToPtr() *ReplicationRole {
-	return &c
-}
-
 // SKUTier - The tier of the particular SKU, e.g. GeneralPurpose.
 type SKUTier string
 
@@ -257,11 +223,6 @@ func PossibleSKUTierValues() []SKUTier {
 		SKUTierGeneralPurpose,
 		SKUTierMemoryOptimized,
 	}
-}
-
-// ToPtr returns a *SKUTier pointing to the current value.
-func (c SKUTier) ToPtr() *SKUTier {
-	return &c
 }
 
 // ServerState - The state of a server.
@@ -290,11 +251,6 @@ func PossibleServerStateValues() []ServerState {
 	}
 }
 
-// ToPtr returns a *ServerState pointing to the current value.
-func (c ServerState) ToPtr() *ServerState {
-	return &c
-}
-
 // ServerVersion - The version of a server.
 type ServerVersion string
 
@@ -309,9 +265,4 @@ func PossibleServerVersionValues() []ServerVersion {
 		ServerVersionEight021,
 		ServerVersionFive7,
 	}
-}
-
-// ToPtr returns a *ServerVersion pointing to the current value.
-func (c ServerVersion) ToPtr() *ServerVersion {
-	return &c
 }

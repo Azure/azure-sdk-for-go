@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,98 +12,117 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 )
 
-// x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingAccountsList.json
-func ExampleBillingAccountsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingAccountsList.json
+func ExampleAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingAccountsClient(cred, nil)
-	pager := client.List(&armbilling.BillingAccountsListOptions{Expand: nil})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armbilling.NewAccountsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager(&armbilling.AccountsClientListOptions{Expand: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("BillingAccount.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingAccountWithExpand.json
-func ExampleBillingAccountsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingAccountWithExpand.json
+func ExampleAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingAccountsClient(cred, nil)
-	res, err := client.Get(ctx,
-		"<billing-account-name>",
-		&armbilling.BillingAccountsGetOptions{Expand: to.StringPtr("<expand>")})
+	client, err := armbilling.NewAccountsClient(cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
 	}
-	log.Printf("BillingAccount.ID: %s\n", *res.ID)
+	res, err := client.Get(ctx,
+		"{billingAccountName}",
+		&armbilling.AccountsClientGetOptions{Expand: to.Ptr("soldTo,billingProfiles,billingProfiles/invoiceSections")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/UpdateBillingAccount.json
-func ExampleBillingAccountsClient_BeginUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/UpdateBillingAccount.json
+func ExampleAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingAccountsClient(cred, nil)
+	client, err := armbilling.NewAccountsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginUpdate(ctx,
-		"<billing-account-name>",
-		armbilling.BillingAccountUpdateRequest{
-			Properties: &armbilling.BillingAccountProperties{
-				DisplayName: to.StringPtr("<display-name>"),
+		"{billingAccountName}",
+		armbilling.AccountUpdateRequest{
+			Properties: &armbilling.AccountProperties{
+				DisplayName: to.Ptr("Test Account"),
 				SoldTo: &armbilling.AddressDetails{
-					AddressLine1: to.StringPtr("<address-line1>"),
-					City:         to.StringPtr("<city>"),
-					CompanyName:  to.StringPtr("<company-name>"),
-					Country:      to.StringPtr("<country>"),
-					FirstName:    to.StringPtr("<first-name>"),
-					LastName:     to.StringPtr("<last-name>"),
-					PostalCode:   to.StringPtr("<postal-code>"),
-					Region:       to.StringPtr("<region>"),
+					AddressLine1: to.Ptr("Test Address 1"),
+					City:         to.Ptr("Redmond"),
+					CompanyName:  to.Ptr("Contoso"),
+					Country:      to.Ptr("US"),
+					FirstName:    to.Ptr("Test"),
+					LastName:     to.Ptr("User"),
+					PostalCode:   to.Ptr("12345"),
+					Region:       to.Ptr("WA"),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("BillingAccount.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoiceSectionsListWithCreateSubPermission.json
-func ExampleBillingAccountsClient_ListInvoiceSectionsByCreateSubscriptionPermission() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/InvoiceSectionsListWithCreateSubPermission.json
+func ExampleAccountsClient_NewListInvoiceSectionsByCreateSubscriptionPermissionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewBillingAccountsClient(cred, nil)
-	pager := client.ListInvoiceSectionsByCreateSubscriptionPermission("<billing-account-name>",
+	client, err := armbilling.NewAccountsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListInvoiceSectionsByCreateSubscriptionPermissionPager("{billingAccountName}",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

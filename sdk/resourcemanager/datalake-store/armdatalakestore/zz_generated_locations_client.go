@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,42 +25,58 @@ import (
 // LocationsClient contains the methods for the Locations group.
 // Don't use this type directly, use NewLocationsClient() instead.
 type LocationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLocationsClient creates a new instance of LocationsClient with the specified values.
-func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LocationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &LocationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &LocationsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // GetCapability - Gets subscription-level properties and limits for Data Lake Store specified by resource location.
-// If the operation fails it returns a generic error.
-func (client *LocationsClient) GetCapability(ctx context.Context, location string, options *LocationsGetCapabilityOptions) (LocationsGetCapabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
+// location - The resource location without whitespace.
+// options - LocationsClientGetCapabilityOptions contains the optional parameters for the LocationsClient.GetCapability method.
+func (client *LocationsClient) GetCapability(ctx context.Context, location string, options *LocationsClientGetCapabilityOptions) (LocationsClientGetCapabilityResponse, error) {
 	req, err := client.getCapabilityCreateRequest(ctx, location, options)
 	if err != nil {
-		return LocationsGetCapabilityResponse{}, err
+		return LocationsClientGetCapabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LocationsGetCapabilityResponse{}, err
+		return LocationsClientGetCapabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotFound) {
-		return LocationsGetCapabilityResponse{}, client.getCapabilityHandleError(resp)
+		return LocationsClientGetCapabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getCapabilityHandleResponse(resp)
 }
 
 // getCapabilityCreateRequest creates the GetCapability request.
-func (client *LocationsClient) getCapabilityCreateRequest(ctx context.Context, location string, options *LocationsGetCapabilityOptions) (*policy.Request, error) {
+func (client *LocationsClient) getCapabilityCreateRequest(ctx context.Context, location string, options *LocationsClientGetCapabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeStore/locations/{location}/capability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -69,57 +86,55 @@ func (client *LocationsClient) getCapabilityCreateRequest(ctx context.Context, l
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getCapabilityHandleResponse handles the GetCapability response.
-func (client *LocationsClient) getCapabilityHandleResponse(resp *http.Response) (LocationsGetCapabilityResponse, error) {
-	result := LocationsGetCapabilityResponse{RawResponse: resp}
+func (client *LocationsClient) getCapabilityHandleResponse(resp *http.Response) (LocationsClientGetCapabilityResponse, error) {
+	result := LocationsClientGetCapabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapabilityInformation); err != nil {
-		return LocationsGetCapabilityResponse{}, runtime.NewResponseError(err, resp)
+		return LocationsClientGetCapabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// getCapabilityHandleError handles the GetCapability error response.
-func (client *LocationsClient) getCapabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// GetUsage - Gets the current usage count and the limit for the resources of the location under the subscription.
-// If the operation fails it returns a generic error.
-func (client *LocationsClient) GetUsage(ctx context.Context, location string, options *LocationsGetUsageOptions) (LocationsGetUsageResponse, error) {
-	req, err := client.getUsageCreateRequest(ctx, location, options)
-	if err != nil {
-		return LocationsGetUsageResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return LocationsGetUsageResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LocationsGetUsageResponse{}, client.getUsageHandleError(resp)
-	}
-	return client.getUsageHandleResponse(resp)
+// NewGetUsagePager - Gets the current usage count and the limit for the resources of the location under the subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
+// location - The resource location without whitespace.
+// options - LocationsClientGetUsageOptions contains the optional parameters for the LocationsClient.GetUsage method.
+func (client *LocationsClient) NewGetUsagePager(location string, options *LocationsClientGetUsageOptions) *runtime.Pager[LocationsClientGetUsageResponse] {
+	return runtime.NewPager(runtime.PagingHandler[LocationsClientGetUsageResponse]{
+		More: func(page LocationsClientGetUsageResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *LocationsClientGetUsageResponse) (LocationsClientGetUsageResponse, error) {
+			req, err := client.getUsageCreateRequest(ctx, location, options)
+			if err != nil {
+				return LocationsClientGetUsageResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return LocationsClientGetUsageResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return LocationsClientGetUsageResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getUsageHandleResponse(resp)
+		},
+	})
 }
 
 // getUsageCreateRequest creates the GetUsage request.
-func (client *LocationsClient) getUsageCreateRequest(ctx context.Context, location string, options *LocationsGetUsageOptions) (*policy.Request, error) {
+func (client *LocationsClient) getUsageCreateRequest(ctx context.Context, location string, options *LocationsClientGetUsageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeStore/locations/{location}/usages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -129,34 +144,22 @@ func (client *LocationsClient) getUsageCreateRequest(ctx context.Context, locati
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getUsageHandleResponse handles the GetUsage response.
-func (client *LocationsClient) getUsageHandleResponse(resp *http.Response) (LocationsGetUsageResponse, error) {
-	result := LocationsGetUsageResponse{RawResponse: resp}
+func (client *LocationsClient) getUsageHandleResponse(resp *http.Response) (LocationsClientGetUsageResponse, error) {
+	result := LocationsClientGetUsageResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsageListResult); err != nil {
-		return LocationsGetUsageResponse{}, runtime.NewResponseError(err, resp)
+		return LocationsClientGetUsageResponse{}, err
 	}
 	return result, nil
-}
-
-// getUsageHandleError handles the GetUsage error response.
-func (client *LocationsClient) getUsageHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -12,11 +12,36 @@ package eventgrid
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2021-06-01-preview/eventgrid"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2021-10-15-preview/eventgrid"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ChannelProvisioningState = original.ChannelProvisioningState
+
+const (
+	ChannelProvisioningStateCanceled  ChannelProvisioningState = original.ChannelProvisioningStateCanceled
+	ChannelProvisioningStateCreating  ChannelProvisioningState = original.ChannelProvisioningStateCreating
+	ChannelProvisioningStateDeleting  ChannelProvisioningState = original.ChannelProvisioningStateDeleting
+	ChannelProvisioningStateFailed    ChannelProvisioningState = original.ChannelProvisioningStateFailed
+	ChannelProvisioningStateSucceeded ChannelProvisioningState = original.ChannelProvisioningStateSucceeded
+	ChannelProvisioningStateUpdating  ChannelProvisioningState = original.ChannelProvisioningStateUpdating
+)
+
+type ChannelType = original.ChannelType
+
+const (
+	ChannelTypePartnerDestination ChannelType = original.ChannelTypePartnerDestination
+	ChannelTypePartnerTopic       ChannelType = original.ChannelTypePartnerTopic
+)
+
+type ClientAuthenticationType = original.ClientAuthenticationType
+
+const (
+	ClientAuthenticationTypeAzureAD                     ClientAuthenticationType = original.ClientAuthenticationTypeAzureAD
+	ClientAuthenticationTypePartnerClientAuthentication ClientAuthenticationType = original.ClientAuthenticationTypePartnerClientAuthentication
 )
 
 type CreatedByType = original.CreatedByType
@@ -26,6 +51,13 @@ const (
 	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
 	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
 	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
+type DataResidencyBoundary = original.DataResidencyBoundary
+
+const (
+	DataResidencyBoundaryWithinGeopair DataResidencyBoundary = original.DataResidencyBoundaryWithinGeopair
+	DataResidencyBoundaryWithinRegion  DataResidencyBoundary = original.DataResidencyBoundaryWithinRegion
 )
 
 type DomainProvisioningState = original.DomainProvisioningState
@@ -53,14 +85,8 @@ const (
 type EndpointType = original.EndpointType
 
 const (
-	EndpointTypeAzureFunction                EndpointType = original.EndpointTypeAzureFunction
-	EndpointTypeEventHub                     EndpointType = original.EndpointTypeEventHub
-	EndpointTypeEventSubscriptionDestination EndpointType = original.EndpointTypeEventSubscriptionDestination
-	EndpointTypeHybridConnection             EndpointType = original.EndpointTypeHybridConnection
-	EndpointTypeServiceBusQueue              EndpointType = original.EndpointTypeServiceBusQueue
-	EndpointTypeServiceBusTopic              EndpointType = original.EndpointTypeServiceBusTopic
-	EndpointTypeStorageQueue                 EndpointType = original.EndpointTypeStorageQueue
-	EndpointTypeWebHook                      EndpointType = original.EndpointTypeWebHook
+	EndpointTypePartnerDestinationInfo EndpointType = original.EndpointTypePartnerDestinationInfo
+	EndpointTypeWebHook                EndpointType = original.EndpointTypeWebHook
 )
 
 type EndpointTypeBasicDeadLetterDestination = original.EndpointTypeBasicDeadLetterDestination
@@ -68,6 +94,27 @@ type EndpointTypeBasicDeadLetterDestination = original.EndpointTypeBasicDeadLett
 const (
 	EndpointTypeBasicDeadLetterDestinationEndpointTypeDeadLetterDestination EndpointTypeBasicDeadLetterDestination = original.EndpointTypeBasicDeadLetterDestinationEndpointTypeDeadLetterDestination
 	EndpointTypeBasicDeadLetterDestinationEndpointTypeStorageBlob           EndpointTypeBasicDeadLetterDestination = original.EndpointTypeBasicDeadLetterDestinationEndpointTypeStorageBlob
+)
+
+type EndpointTypeBasicEventSubscriptionDestination = original.EndpointTypeBasicEventSubscriptionDestination
+
+const (
+	EndpointTypeBasicEventSubscriptionDestinationEndpointTypeAzureFunction                EndpointTypeBasicEventSubscriptionDestination = original.EndpointTypeBasicEventSubscriptionDestinationEndpointTypeAzureFunction
+	EndpointTypeBasicEventSubscriptionDestinationEndpointTypeEventHub                     EndpointTypeBasicEventSubscriptionDestination = original.EndpointTypeBasicEventSubscriptionDestinationEndpointTypeEventHub
+	EndpointTypeBasicEventSubscriptionDestinationEndpointTypeEventSubscriptionDestination EndpointTypeBasicEventSubscriptionDestination = original.EndpointTypeBasicEventSubscriptionDestinationEndpointTypeEventSubscriptionDestination
+	EndpointTypeBasicEventSubscriptionDestinationEndpointTypeHybridConnection             EndpointTypeBasicEventSubscriptionDestination = original.EndpointTypeBasicEventSubscriptionDestinationEndpointTypeHybridConnection
+	EndpointTypeBasicEventSubscriptionDestinationEndpointTypePartnerDestination           EndpointTypeBasicEventSubscriptionDestination = original.EndpointTypeBasicEventSubscriptionDestinationEndpointTypePartnerDestination
+	EndpointTypeBasicEventSubscriptionDestinationEndpointTypeServiceBusQueue              EndpointTypeBasicEventSubscriptionDestination = original.EndpointTypeBasicEventSubscriptionDestinationEndpointTypeServiceBusQueue
+	EndpointTypeBasicEventSubscriptionDestinationEndpointTypeServiceBusTopic              EndpointTypeBasicEventSubscriptionDestination = original.EndpointTypeBasicEventSubscriptionDestinationEndpointTypeServiceBusTopic
+	EndpointTypeBasicEventSubscriptionDestinationEndpointTypeStorageQueue                 EndpointTypeBasicEventSubscriptionDestination = original.EndpointTypeBasicEventSubscriptionDestinationEndpointTypeStorageQueue
+	EndpointTypeBasicEventSubscriptionDestinationEndpointTypeWebHook                      EndpointTypeBasicEventSubscriptionDestination = original.EndpointTypeBasicEventSubscriptionDestinationEndpointTypeWebHook
+)
+
+type EndpointTypeBasicPartnerUpdateDestinationInfo = original.EndpointTypeBasicPartnerUpdateDestinationInfo
+
+const (
+	EndpointTypeBasicPartnerUpdateDestinationInfoEndpointTypePartnerUpdateDestinationInfo EndpointTypeBasicPartnerUpdateDestinationInfo = original.EndpointTypeBasicPartnerUpdateDestinationInfoEndpointTypePartnerUpdateDestinationInfo
+	EndpointTypeBasicPartnerUpdateDestinationInfoEndpointTypeWebHook                      EndpointTypeBasicPartnerUpdateDestinationInfo = original.EndpointTypeBasicPartnerUpdateDestinationInfoEndpointTypeWebHook
 )
 
 type EventChannelProvisioningState = original.EventChannelProvisioningState
@@ -79,6 +126,12 @@ const (
 	EventChannelProvisioningStateFailed    EventChannelProvisioningState = original.EventChannelProvisioningStateFailed
 	EventChannelProvisioningStateSucceeded EventChannelProvisioningState = original.EventChannelProvisioningStateSucceeded
 	EventChannelProvisioningStateUpdating  EventChannelProvisioningState = original.EventChannelProvisioningStateUpdating
+)
+
+type EventDefinitionKind = original.EventDefinitionKind
+
+const (
+	EventDefinitionKindInline EventDefinitionKind = original.EventDefinitionKindInline
 )
 
 type EventDeliverySchema = original.EventDeliverySchema
@@ -163,6 +216,43 @@ const (
 	OperatorTypeStringNotIn               OperatorType = original.OperatorTypeStringNotIn
 )
 
+type ParentType = original.ParentType
+
+const (
+	ParentTypeDomains           ParentType = original.ParentTypeDomains
+	ParentTypePartnerNamespaces ParentType = original.ParentTypePartnerNamespaces
+	ParentTypeTopics            ParentType = original.ParentTypeTopics
+)
+
+type PartnerConfigurationProvisioningState = original.PartnerConfigurationProvisioningState
+
+const (
+	PartnerConfigurationProvisioningStateCanceled  PartnerConfigurationProvisioningState = original.PartnerConfigurationProvisioningStateCanceled
+	PartnerConfigurationProvisioningStateCreating  PartnerConfigurationProvisioningState = original.PartnerConfigurationProvisioningStateCreating
+	PartnerConfigurationProvisioningStateDeleting  PartnerConfigurationProvisioningState = original.PartnerConfigurationProvisioningStateDeleting
+	PartnerConfigurationProvisioningStateFailed    PartnerConfigurationProvisioningState = original.PartnerConfigurationProvisioningStateFailed
+	PartnerConfigurationProvisioningStateSucceeded PartnerConfigurationProvisioningState = original.PartnerConfigurationProvisioningStateSucceeded
+	PartnerConfigurationProvisioningStateUpdating  PartnerConfigurationProvisioningState = original.PartnerConfigurationProvisioningStateUpdating
+)
+
+type PartnerDestinationActivationState = original.PartnerDestinationActivationState
+
+const (
+	PartnerDestinationActivationStateActivated      PartnerDestinationActivationState = original.PartnerDestinationActivationStateActivated
+	PartnerDestinationActivationStateNeverActivated PartnerDestinationActivationState = original.PartnerDestinationActivationStateNeverActivated
+)
+
+type PartnerDestinationProvisioningState = original.PartnerDestinationProvisioningState
+
+const (
+	PartnerDestinationProvisioningStateCanceled  PartnerDestinationProvisioningState = original.PartnerDestinationProvisioningStateCanceled
+	PartnerDestinationProvisioningStateCreating  PartnerDestinationProvisioningState = original.PartnerDestinationProvisioningStateCreating
+	PartnerDestinationProvisioningStateDeleting  PartnerDestinationProvisioningState = original.PartnerDestinationProvisioningStateDeleting
+	PartnerDestinationProvisioningStateFailed    PartnerDestinationProvisioningState = original.PartnerDestinationProvisioningStateFailed
+	PartnerDestinationProvisioningStateSucceeded PartnerDestinationProvisioningState = original.PartnerDestinationProvisioningStateSucceeded
+	PartnerDestinationProvisioningStateUpdating  PartnerDestinationProvisioningState = original.PartnerDestinationProvisioningStateUpdating
+)
+
 type PartnerNamespaceProvisioningState = original.PartnerNamespaceProvisioningState
 
 const (
@@ -221,6 +311,13 @@ const (
 	PartnerTopicReadinessStateNotActivatedByUserYet PartnerTopicReadinessState = original.PartnerTopicReadinessStateNotActivatedByUserYet
 )
 
+type PartnerTopicRoutingMode = original.PartnerTopicRoutingMode
+
+const (
+	PartnerTopicRoutingModeChannelNameHeader    PartnerTopicRoutingMode = original.PartnerTopicRoutingModeChannelNameHeader
+	PartnerTopicRoutingModeSourceEventAttribute PartnerTopicRoutingMode = original.PartnerTopicRoutingModeSourceEventAttribute
+)
+
 type PersistedConnectionStatus = original.PersistedConnectionStatus
 
 const (
@@ -235,6 +332,13 @@ type PublicNetworkAccess = original.PublicNetworkAccess
 const (
 	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
 	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
+)
+
+type ReadinessState = original.ReadinessState
+
+const (
+	ReadinessStateActivated      ReadinessState = original.ReadinessStateActivated
+	ReadinessStateNeverActivated ReadinessState = original.ReadinessStateNeverActivated
 )
 
 type ResourceKind = original.ResourceKind
@@ -299,7 +403,20 @@ const (
 	TypeStatic                   Type = original.TypeStatic
 )
 
+type VerifiedPartnerProvisioningState = original.VerifiedPartnerProvisioningState
+
+const (
+	VerifiedPartnerProvisioningStateCanceled  VerifiedPartnerProvisioningState = original.VerifiedPartnerProvisioningStateCanceled
+	VerifiedPartnerProvisioningStateCreating  VerifiedPartnerProvisioningState = original.VerifiedPartnerProvisioningStateCreating
+	VerifiedPartnerProvisioningStateDeleting  VerifiedPartnerProvisioningState = original.VerifiedPartnerProvisioningStateDeleting
+	VerifiedPartnerProvisioningStateFailed    VerifiedPartnerProvisioningState = original.VerifiedPartnerProvisioningStateFailed
+	VerifiedPartnerProvisioningStateSucceeded VerifiedPartnerProvisioningState = original.VerifiedPartnerProvisioningStateSucceeded
+	VerifiedPartnerProvisioningStateUpdating  VerifiedPartnerProvisioningState = original.VerifiedPartnerProvisioningStateUpdating
+)
+
 type AdvancedFilter = original.AdvancedFilter
+type AzureADPartnerClientAuthentication = original.AzureADPartnerClientAuthentication
+type AzureADPartnerClientAuthenticationProperties = original.AzureADPartnerClientAuthenticationProperties
 type AzureFunctionEventSubscriptionDestination = original.AzureFunctionEventSubscriptionDestination
 type AzureFunctionEventSubscriptionDestinationProperties = original.AzureFunctionEventSubscriptionDestinationProperties
 type BaseClient = original.BaseClient
@@ -308,7 +425,19 @@ type BasicDeadLetterDestination = original.BasicDeadLetterDestination
 type BasicDeliveryAttributeMapping = original.BasicDeliveryAttributeMapping
 type BasicEventSubscriptionDestination = original.BasicEventSubscriptionDestination
 type BasicInputSchemaMapping = original.BasicInputSchemaMapping
+type BasicPartnerClientAuthentication = original.BasicPartnerClientAuthentication
+type BasicPartnerDestinationInfo = original.BasicPartnerDestinationInfo
+type BasicPartnerUpdateDestinationInfo = original.BasicPartnerUpdateDestinationInfo
 type BoolEqualsAdvancedFilter = original.BoolEqualsAdvancedFilter
+type Channel = original.Channel
+type ChannelProperties = original.ChannelProperties
+type ChannelUpdateParameters = original.ChannelUpdateParameters
+type ChannelUpdateParametersProperties = original.ChannelUpdateParametersProperties
+type ChannelsClient = original.ChannelsClient
+type ChannelsDeleteFuture = original.ChannelsDeleteFuture
+type ChannelsListResult = original.ChannelsListResult
+type ChannelsListResultIterator = original.ChannelsListResultIterator
+type ChannelsListResultPage = original.ChannelsListResultPage
 type ConnectionState = original.ConnectionState
 type DeadLetterDestination = original.DeadLetterDestination
 type DeadLetterWithResourceIdentity = original.DeadLetterWithResourceIdentity
@@ -316,10 +445,18 @@ type DeliveryAttributeListResult = original.DeliveryAttributeListResult
 type DeliveryAttributeMapping = original.DeliveryAttributeMapping
 type DeliveryWithResourceIdentity = original.DeliveryWithResourceIdentity
 type Domain = original.Domain
+type DomainEventSubscriptionsClient = original.DomainEventSubscriptionsClient
+type DomainEventSubscriptionsCreateOrUpdateFuture = original.DomainEventSubscriptionsCreateOrUpdateFuture
+type DomainEventSubscriptionsDeleteFuture = original.DomainEventSubscriptionsDeleteFuture
+type DomainEventSubscriptionsUpdateFuture = original.DomainEventSubscriptionsUpdateFuture
 type DomainProperties = original.DomainProperties
 type DomainRegenerateKeyRequest = original.DomainRegenerateKeyRequest
 type DomainSharedAccessKeys = original.DomainSharedAccessKeys
 type DomainTopic = original.DomainTopic
+type DomainTopicEventSubscriptionsClient = original.DomainTopicEventSubscriptionsClient
+type DomainTopicEventSubscriptionsCreateOrUpdateFuture = original.DomainTopicEventSubscriptionsCreateOrUpdateFuture
+type DomainTopicEventSubscriptionsDeleteFuture = original.DomainTopicEventSubscriptionsDeleteFuture
+type DomainTopicEventSubscriptionsUpdateFuture = original.DomainTopicEventSubscriptionsUpdateFuture
 type DomainTopicProperties = original.DomainTopicProperties
 type DomainTopicsClient = original.DomainTopicsClient
 type DomainTopicsCreateOrUpdateFuture = original.DomainTopicsCreateOrUpdateFuture
@@ -365,6 +502,7 @@ type EventSubscriptionsListResultIterator = original.EventSubscriptionsListResul
 type EventSubscriptionsListResultPage = original.EventSubscriptionsListResultPage
 type EventSubscriptionsUpdateFuture = original.EventSubscriptionsUpdateFuture
 type EventType = original.EventType
+type EventTypeInfo = original.EventTypeInfo
 type EventTypeProperties = original.EventTypeProperties
 type EventTypesListResult = original.EventTypesListResult
 type ExtendedLocation = original.ExtendedLocation
@@ -375,6 +513,7 @@ type HybridConnectionEventSubscriptionDestination = original.HybridConnectionEve
 type HybridConnectionEventSubscriptionDestinationProperties = original.HybridConnectionEventSubscriptionDestinationProperties
 type IdentityInfo = original.IdentityInfo
 type InboundIPRule = original.InboundIPRule
+type InlineEventProperties = original.InlineEventProperties
 type InputSchemaMapping = original.InputSchemaMapping
 type IsNotNullAdvancedFilter = original.IsNotNullAdvancedFilter
 type IsNullOrUndefinedAdvancedFilter = original.IsNullOrUndefinedAdvancedFilter
@@ -394,6 +533,32 @@ type Operation = original.Operation
 type OperationInfo = original.OperationInfo
 type OperationsClient = original.OperationsClient
 type OperationsListResult = original.OperationsListResult
+type Partner = original.Partner
+type PartnerAuthorization = original.PartnerAuthorization
+type PartnerClientAuthentication = original.PartnerClientAuthentication
+type PartnerConfiguration = original.PartnerConfiguration
+type PartnerConfigurationProperties = original.PartnerConfigurationProperties
+type PartnerConfigurationUpdateParameterProperties = original.PartnerConfigurationUpdateParameterProperties
+type PartnerConfigurationUpdateParameters = original.PartnerConfigurationUpdateParameters
+type PartnerConfigurationsClient = original.PartnerConfigurationsClient
+type PartnerConfigurationsCreateOrUpdateFuture = original.PartnerConfigurationsCreateOrUpdateFuture
+type PartnerConfigurationsDeleteFuture = original.PartnerConfigurationsDeleteFuture
+type PartnerConfigurationsListResult = original.PartnerConfigurationsListResult
+type PartnerConfigurationsListResultIterator = original.PartnerConfigurationsListResultIterator
+type PartnerConfigurationsListResultPage = original.PartnerConfigurationsListResultPage
+type PartnerConfigurationsUpdateFuture = original.PartnerConfigurationsUpdateFuture
+type PartnerDestination = original.PartnerDestination
+type PartnerDestinationInfo = original.PartnerDestinationInfo
+type PartnerDestinationProperties = original.PartnerDestinationProperties
+type PartnerDestinationUpdateParameters = original.PartnerDestinationUpdateParameters
+type PartnerDestinationsClient = original.PartnerDestinationsClient
+type PartnerDestinationsDeleteFuture = original.PartnerDestinationsDeleteFuture
+type PartnerDestinationsListResult = original.PartnerDestinationsListResult
+type PartnerDestinationsListResultIterator = original.PartnerDestinationsListResultIterator
+type PartnerDestinationsListResultPage = original.PartnerDestinationsListResultPage
+type PartnerDetails = original.PartnerDetails
+type PartnerEventSubscriptionDestination = original.PartnerEventSubscriptionDestination
+type PartnerEventSubscriptionDestinationProperties = original.PartnerEventSubscriptionDestinationProperties
 type PartnerNamespace = original.PartnerNamespace
 type PartnerNamespaceProperties = original.PartnerNamespaceProperties
 type PartnerNamespaceRegenerateKeyRequest = original.PartnerNamespaceRegenerateKeyRequest
@@ -411,14 +576,18 @@ type PartnerRegistration = original.PartnerRegistration
 type PartnerRegistrationProperties = original.PartnerRegistrationProperties
 type PartnerRegistrationUpdateParameters = original.PartnerRegistrationUpdateParameters
 type PartnerRegistrationsClient = original.PartnerRegistrationsClient
+type PartnerRegistrationsCreateOrUpdateFuture = original.PartnerRegistrationsCreateOrUpdateFuture
+type PartnerRegistrationsDeleteFuture = original.PartnerRegistrationsDeleteFuture
 type PartnerRegistrationsListResult = original.PartnerRegistrationsListResult
 type PartnerRegistrationsListResultIterator = original.PartnerRegistrationsListResultIterator
 type PartnerRegistrationsListResultPage = original.PartnerRegistrationsListResultPage
+type PartnerRegistrationsUpdateFuture = original.PartnerRegistrationsUpdateFuture
 type PartnerTopic = original.PartnerTopic
 type PartnerTopicEventSubscriptionsClient = original.PartnerTopicEventSubscriptionsClient
 type PartnerTopicEventSubscriptionsCreateOrUpdateFuture = original.PartnerTopicEventSubscriptionsCreateOrUpdateFuture
 type PartnerTopicEventSubscriptionsDeleteFuture = original.PartnerTopicEventSubscriptionsDeleteFuture
 type PartnerTopicEventSubscriptionsUpdateFuture = original.PartnerTopicEventSubscriptionsUpdateFuture
+type PartnerTopicInfo = original.PartnerTopicInfo
 type PartnerTopicProperties = original.PartnerTopicProperties
 type PartnerTopicUpdateParameters = original.PartnerTopicUpdateParameters
 type PartnerTopicsClient = original.PartnerTopicsClient
@@ -426,6 +595,8 @@ type PartnerTopicsDeleteFuture = original.PartnerTopicsDeleteFuture
 type PartnerTopicsListResult = original.PartnerTopicsListResult
 type PartnerTopicsListResultIterator = original.PartnerTopicsListResultIterator
 type PartnerTopicsListResultPage = original.PartnerTopicsListResultPage
+type PartnerUpdateDestinationInfo = original.PartnerUpdateDestinationInfo
+type PartnerUpdateTopicInfo = original.PartnerUpdateTopicInfo
 type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointConnection = original.PrivateEndpointConnection
 type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
@@ -442,6 +613,7 @@ type PrivateLinkResourcesListResult = original.PrivateLinkResourcesListResult
 type PrivateLinkResourcesListResultIterator = original.PrivateLinkResourcesListResultIterator
 type PrivateLinkResourcesListResultPage = original.PrivateLinkResourcesListResultPage
 type Resource = original.Resource
+type ResourceMoveChangeHistory = original.ResourceMoveChangeHistory
 type ResourceSku = original.ResourceSku
 type RetryPolicy = original.RetryPolicy
 type ServiceBusQueueEventSubscriptionDestination = original.ServiceBusQueueEventSubscriptionDestination
@@ -478,6 +650,10 @@ type SystemTopicsListResultIterator = original.SystemTopicsListResultIterator
 type SystemTopicsListResultPage = original.SystemTopicsListResultPage
 type SystemTopicsUpdateFuture = original.SystemTopicsUpdateFuture
 type Topic = original.Topic
+type TopicEventSubscriptionsClient = original.TopicEventSubscriptionsClient
+type TopicEventSubscriptionsCreateOrUpdateFuture = original.TopicEventSubscriptionsCreateOrUpdateFuture
+type TopicEventSubscriptionsDeleteFuture = original.TopicEventSubscriptionsDeleteFuture
+type TopicEventSubscriptionsUpdateFuture = original.TopicEventSubscriptionsUpdateFuture
 type TopicProperties = original.TopicProperties
 type TopicRegenerateKeyRequest = original.TopicRegenerateKeyRequest
 type TopicSharedAccessKeys = original.TopicSharedAccessKeys
@@ -497,11 +673,44 @@ type TopicsRegenerateKeyFuture = original.TopicsRegenerateKeyFuture
 type TopicsUpdateFuture = original.TopicsUpdateFuture
 type TrackedResource = original.TrackedResource
 type UserIdentityProperties = original.UserIdentityProperties
+type VerifiedPartner = original.VerifiedPartner
+type VerifiedPartnerProperties = original.VerifiedPartnerProperties
+type VerifiedPartnersClient = original.VerifiedPartnersClient
+type VerifiedPartnersListResult = original.VerifiedPartnersListResult
+type VerifiedPartnersListResultIterator = original.VerifiedPartnersListResultIterator
+type VerifiedPartnersListResultPage = original.VerifiedPartnersListResultPage
 type WebHookEventSubscriptionDestination = original.WebHookEventSubscriptionDestination
 type WebHookEventSubscriptionDestinationProperties = original.WebHookEventSubscriptionDestinationProperties
+type WebhookPartnerDestinationInfo = original.WebhookPartnerDestinationInfo
+type WebhookPartnerDestinationProperties = original.WebhookPartnerDestinationProperties
+type WebhookUpdatePartnerDestinationInfo = original.WebhookUpdatePartnerDestinationInfo
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewChannelsClient(subscriptionID string) ChannelsClient {
+	return original.NewChannelsClient(subscriptionID)
+}
+func NewChannelsClientWithBaseURI(baseURI string, subscriptionID string) ChannelsClient {
+	return original.NewChannelsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewChannelsListResultIterator(page ChannelsListResultPage) ChannelsListResultIterator {
+	return original.NewChannelsListResultIterator(page)
+}
+func NewChannelsListResultPage(cur ChannelsListResult, getNextPage func(context.Context, ChannelsListResult) (ChannelsListResult, error)) ChannelsListResultPage {
+	return original.NewChannelsListResultPage(cur, getNextPage)
+}
+func NewDomainEventSubscriptionsClient(subscriptionID string) DomainEventSubscriptionsClient {
+	return original.NewDomainEventSubscriptionsClient(subscriptionID)
+}
+func NewDomainEventSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) DomainEventSubscriptionsClient {
+	return original.NewDomainEventSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDomainTopicEventSubscriptionsClient(subscriptionID string) DomainTopicEventSubscriptionsClient {
+	return original.NewDomainTopicEventSubscriptionsClient(subscriptionID)
+}
+func NewDomainTopicEventSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) DomainTopicEventSubscriptionsClient {
+	return original.NewDomainTopicEventSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDomainTopicsClient(subscriptionID string) DomainTopicsClient {
 	return original.NewDomainTopicsClient(subscriptionID)
@@ -562,6 +771,30 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPartnerConfigurationsClient(subscriptionID string) PartnerConfigurationsClient {
+	return original.NewPartnerConfigurationsClient(subscriptionID)
+}
+func NewPartnerConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) PartnerConfigurationsClient {
+	return original.NewPartnerConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPartnerConfigurationsListResultIterator(page PartnerConfigurationsListResultPage) PartnerConfigurationsListResultIterator {
+	return original.NewPartnerConfigurationsListResultIterator(page)
+}
+func NewPartnerConfigurationsListResultPage(cur PartnerConfigurationsListResult, getNextPage func(context.Context, PartnerConfigurationsListResult) (PartnerConfigurationsListResult, error)) PartnerConfigurationsListResultPage {
+	return original.NewPartnerConfigurationsListResultPage(cur, getNextPage)
+}
+func NewPartnerDestinationsClient(subscriptionID string) PartnerDestinationsClient {
+	return original.NewPartnerDestinationsClient(subscriptionID)
+}
+func NewPartnerDestinationsClientWithBaseURI(baseURI string, subscriptionID string) PartnerDestinationsClient {
+	return original.NewPartnerDestinationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPartnerDestinationsListResultIterator(page PartnerDestinationsListResultPage) PartnerDestinationsListResultIterator {
+	return original.NewPartnerDestinationsListResultIterator(page)
+}
+func NewPartnerDestinationsListResultPage(cur PartnerDestinationsListResult, getNextPage func(context.Context, PartnerDestinationsListResult) (PartnerDestinationsListResult, error)) PartnerDestinationsListResultPage {
+	return original.NewPartnerDestinationsListResultPage(cur, getNextPage)
 }
 func NewPartnerNamespacesClient(subscriptionID string) PartnerNamespacesClient {
 	return original.NewPartnerNamespacesClient(subscriptionID)
@@ -647,6 +880,12 @@ func NewSystemTopicsListResultIterator(page SystemTopicsListResultPage) SystemTo
 func NewSystemTopicsListResultPage(cur SystemTopicsListResult, getNextPage func(context.Context, SystemTopicsListResult) (SystemTopicsListResult, error)) SystemTopicsListResultPage {
 	return original.NewSystemTopicsListResultPage(cur, getNextPage)
 }
+func NewTopicEventSubscriptionsClient(subscriptionID string) TopicEventSubscriptionsClient {
+	return original.NewTopicEventSubscriptionsClient(subscriptionID)
+}
+func NewTopicEventSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) TopicEventSubscriptionsClient {
+	return original.NewTopicEventSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewTopicTypesClient(subscriptionID string) TopicTypesClient {
 	return original.NewTopicTypesClient(subscriptionID)
 }
@@ -665,11 +904,35 @@ func NewTopicsListResultIterator(page TopicsListResultPage) TopicsListResultIter
 func NewTopicsListResultPage(cur TopicsListResult, getNextPage func(context.Context, TopicsListResult) (TopicsListResult, error)) TopicsListResultPage {
 	return original.NewTopicsListResultPage(cur, getNextPage)
 }
+func NewVerifiedPartnersClient(subscriptionID string) VerifiedPartnersClient {
+	return original.NewVerifiedPartnersClient(subscriptionID)
+}
+func NewVerifiedPartnersClientWithBaseURI(baseURI string, subscriptionID string) VerifiedPartnersClient {
+	return original.NewVerifiedPartnersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVerifiedPartnersListResultIterator(page VerifiedPartnersListResultPage) VerifiedPartnersListResultIterator {
+	return original.NewVerifiedPartnersListResultIterator(page)
+}
+func NewVerifiedPartnersListResultPage(cur VerifiedPartnersListResult, getNextPage func(context.Context, VerifiedPartnersListResult) (VerifiedPartnersListResult, error)) VerifiedPartnersListResultPage {
+	return original.NewVerifiedPartnersListResultPage(cur, getNextPage)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleChannelProvisioningStateValues() []ChannelProvisioningState {
+	return original.PossibleChannelProvisioningStateValues()
+}
+func PossibleChannelTypeValues() []ChannelType {
+	return original.PossibleChannelTypeValues()
+}
+func PossibleClientAuthenticationTypeValues() []ClientAuthenticationType {
+	return original.PossibleClientAuthenticationTypeValues()
+}
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()
+}
+func PossibleDataResidencyBoundaryValues() []DataResidencyBoundary {
+	return original.PossibleDataResidencyBoundaryValues()
 }
 func PossibleDomainProvisioningStateValues() []DomainProvisioningState {
 	return original.PossibleDomainProvisioningStateValues()
@@ -680,11 +943,20 @@ func PossibleDomainTopicProvisioningStateValues() []DomainTopicProvisioningState
 func PossibleEndpointTypeBasicDeadLetterDestinationValues() []EndpointTypeBasicDeadLetterDestination {
 	return original.PossibleEndpointTypeBasicDeadLetterDestinationValues()
 }
+func PossibleEndpointTypeBasicEventSubscriptionDestinationValues() []EndpointTypeBasicEventSubscriptionDestination {
+	return original.PossibleEndpointTypeBasicEventSubscriptionDestinationValues()
+}
+func PossibleEndpointTypeBasicPartnerUpdateDestinationInfoValues() []EndpointTypeBasicPartnerUpdateDestinationInfo {
+	return original.PossibleEndpointTypeBasicPartnerUpdateDestinationInfoValues()
+}
 func PossibleEndpointTypeValues() []EndpointType {
 	return original.PossibleEndpointTypeValues()
 }
 func PossibleEventChannelProvisioningStateValues() []EventChannelProvisioningState {
 	return original.PossibleEventChannelProvisioningStateValues()
+}
+func PossibleEventDefinitionKindValues() []EventDefinitionKind {
+	return original.PossibleEventDefinitionKindValues()
 }
 func PossibleEventDeliverySchemaValues() []EventDeliverySchema {
 	return original.PossibleEventDeliverySchemaValues()
@@ -710,6 +982,18 @@ func PossibleInputSchemaValues() []InputSchema {
 func PossibleOperatorTypeValues() []OperatorType {
 	return original.PossibleOperatorTypeValues()
 }
+func PossibleParentTypeValues() []ParentType {
+	return original.PossibleParentTypeValues()
+}
+func PossiblePartnerConfigurationProvisioningStateValues() []PartnerConfigurationProvisioningState {
+	return original.PossiblePartnerConfigurationProvisioningStateValues()
+}
+func PossiblePartnerDestinationActivationStateValues() []PartnerDestinationActivationState {
+	return original.PossiblePartnerDestinationActivationStateValues()
+}
+func PossiblePartnerDestinationProvisioningStateValues() []PartnerDestinationProvisioningState {
+	return original.PossiblePartnerDestinationProvisioningStateValues()
+}
 func PossiblePartnerNamespaceProvisioningStateValues() []PartnerNamespaceProvisioningState {
 	return original.PossiblePartnerNamespaceProvisioningStateValues()
 }
@@ -728,11 +1012,17 @@ func PossiblePartnerTopicProvisioningStateValues() []PartnerTopicProvisioningSta
 func PossiblePartnerTopicReadinessStateValues() []PartnerTopicReadinessState {
 	return original.PossiblePartnerTopicReadinessStateValues()
 }
+func PossiblePartnerTopicRoutingModeValues() []PartnerTopicRoutingMode {
+	return original.PossiblePartnerTopicRoutingModeValues()
+}
 func PossiblePersistedConnectionStatusValues() []PersistedConnectionStatus {
 	return original.PossiblePersistedConnectionStatusValues()
 }
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return original.PossiblePublicNetworkAccessValues()
+}
+func PossibleReadinessStateValues() []ReadinessState {
+	return original.PossibleReadinessStateValues()
 }
 func PossibleResourceKindValues() []ResourceKind {
 	return original.PossibleResourceKindValues()
@@ -754,6 +1044,9 @@ func PossibleTopicTypeProvisioningStateValues() []TopicTypeProvisioningState {
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
+}
+func PossibleVerifiedPartnerProvisioningStateValues() []VerifiedPartnerProvisioningState {
+	return original.PossibleVerifiedPartnerProvisioningStateValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

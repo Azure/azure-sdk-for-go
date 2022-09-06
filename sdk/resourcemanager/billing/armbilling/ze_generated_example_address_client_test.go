@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,24 +17,29 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 )
 
-// x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/AddressInvalid.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/AddressInvalid.json
 func ExampleAddressClient_Validate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armbilling.NewAddressClient(cred, nil)
-	_, err = client.Validate(ctx,
+	client, err := armbilling.NewAddressClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.Validate(ctx,
 		armbilling.AddressDetails{
-			AddressLine1: to.StringPtr("<address-line1>"),
-			City:         to.StringPtr("<city>"),
-			Country:      to.StringPtr("<country>"),
-			PostalCode:   to.StringPtr("<postal-code>"),
-			Region:       to.StringPtr("<region>"),
+			AddressLine1: to.Ptr("1 Test"),
+			City:         to.Ptr("bellevue"),
+			Country:      to.Ptr("us"),
+			PostalCode:   to.Ptr("12345"),
+			Region:       to.Ptr("wa"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }

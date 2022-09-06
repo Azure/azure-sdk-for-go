@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,148 +8,67 @@
 
 package armattestation
 
-import "net/http"
-
-// AttestationProvidersCreateResponse contains the response from method AttestationProviders.Create.
-type AttestationProvidersCreateResponse struct {
-	AttestationProvidersCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AttestationProvidersCreateResult contains the result from method AttestationProviders.Create.
-type AttestationProvidersCreateResult struct {
-	AttestationProvider
-}
-
-// AttestationProvidersDeleteResponse contains the response from method AttestationProviders.Delete.
-type AttestationProvidersDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AttestationProvidersGetDefaultByLocationResponse contains the response from method AttestationProviders.GetDefaultByLocation.
-type AttestationProvidersGetDefaultByLocationResponse struct {
-	AttestationProvidersGetDefaultByLocationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AttestationProvidersGetDefaultByLocationResult contains the result from method AttestationProviders.GetDefaultByLocation.
-type AttestationProvidersGetDefaultByLocationResult struct {
-	AttestationProvider
-}
-
-// AttestationProvidersGetResponse contains the response from method AttestationProviders.Get.
-type AttestationProvidersGetResponse struct {
-	AttestationProvidersGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AttestationProvidersGetResult contains the result from method AttestationProviders.Get.
-type AttestationProvidersGetResult struct {
-	AttestationProvider
-}
-
-// AttestationProvidersListByResourceGroupResponse contains the response from method AttestationProviders.ListByResourceGroup.
-type AttestationProvidersListByResourceGroupResponse struct {
-	AttestationProvidersListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AttestationProvidersListByResourceGroupResult contains the result from method AttestationProviders.ListByResourceGroup.
-type AttestationProvidersListByResourceGroupResult struct {
-	AttestationProviderListResult
-}
-
-// AttestationProvidersListDefaultResponse contains the response from method AttestationProviders.ListDefault.
-type AttestationProvidersListDefaultResponse struct {
-	AttestationProvidersListDefaultResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AttestationProvidersListDefaultResult contains the result from method AttestationProviders.ListDefault.
-type AttestationProvidersListDefaultResult struct {
-	AttestationProviderListResult
-}
-
-// AttestationProvidersListResponse contains the response from method AttestationProviders.List.
-type AttestationProvidersListResponse struct {
-	AttestationProvidersListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AttestationProvidersListResult contains the result from method AttestationProviders.List.
-type AttestationProvidersListResult struct {
-	AttestationProviderListResult
-}
-
-// AttestationProvidersUpdateResponse contains the response from method AttestationProviders.Update.
-type AttestationProvidersUpdateResponse struct {
-	AttestationProvidersUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AttestationProvidersUpdateResult contains the result from method AttestationProviders.Update.
-type AttestationProvidersUpdateResult struct {
-	AttestationProvider
-}
-
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
 	OperationList
 }
 
-// PrivateEndpointConnectionsCreateResponse contains the response from method PrivateEndpointConnections.Create.
-type PrivateEndpointConnectionsCreateResponse struct {
-	PrivateEndpointConnectionsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsCreateResult contains the result from method PrivateEndpointConnections.Create.
-type PrivateEndpointConnectionsCreateResult struct {
+// PrivateEndpointConnectionsClientCreateResponse contains the response from method PrivateEndpointConnectionsClient.Create.
+type PrivateEndpointConnectionsClientCreateResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsDeleteResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PrivateEndpointConnectionsGetResponse contains the response from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResponse struct {
-	PrivateEndpointConnectionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsGetResult contains the result from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResult struct {
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsListResponse contains the response from method PrivateEndpointConnections.List.
-type PrivateEndpointConnectionsListResponse struct {
-	PrivateEndpointConnectionsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsListResult contains the result from method PrivateEndpointConnections.List.
-type PrivateEndpointConnectionsListResult struct {
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
+type PrivateEndpointConnectionsClientListResponse struct {
 	PrivateEndpointConnectionListResult
+}
+
+// ProvidersClientCreateResponse contains the response from method ProvidersClient.Create.
+type ProvidersClientCreateResponse struct {
+	Provider
+}
+
+// ProvidersClientDeleteResponse contains the response from method ProvidersClient.Delete.
+type ProvidersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ProvidersClientGetDefaultByLocationResponse contains the response from method ProvidersClient.GetDefaultByLocation.
+type ProvidersClientGetDefaultByLocationResponse struct {
+	Provider
+}
+
+// ProvidersClientGetResponse contains the response from method ProvidersClient.Get.
+type ProvidersClientGetResponse struct {
+	Provider
+}
+
+// ProvidersClientListByResourceGroupResponse contains the response from method ProvidersClient.ListByResourceGroup.
+type ProvidersClientListByResourceGroupResponse struct {
+	ProviderListResult
+}
+
+// ProvidersClientListDefaultResponse contains the response from method ProvidersClient.ListDefault.
+type ProvidersClientListDefaultResponse struct {
+	ProviderListResult
+}
+
+// ProvidersClientListResponse contains the response from method ProvidersClient.List.
+type ProvidersClientListResponse struct {
+	ProviderListResult
+}
+
+// ProvidersClientUpdateResponse contains the response from method ProvidersClient.Update.
+type ProvidersClientUpdateResponse struct {
+	Provider
 }

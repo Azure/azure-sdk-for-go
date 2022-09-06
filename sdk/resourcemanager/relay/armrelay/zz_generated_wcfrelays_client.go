@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armrelay
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,62 @@ import (
 // WCFRelaysClient contains the methods for the WCFRelays group.
 // Don't use this type directly, use NewWCFRelaysClient() instead.
 type WCFRelaysClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWCFRelaysClient creates a new instance of WCFRelaysClient with the specified values.
-func NewWCFRelaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WCFRelaysClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewWCFRelaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WCFRelaysClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &WCFRelaysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &WCFRelaysClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a WCF relay. This operation is idempotent.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WCFRelaysClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, parameters WcfRelay, options *WCFRelaysCreateOrUpdateOptions) (WCFRelaysCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// relayName - The relay name.
+// parameters - Parameters supplied to create a WCF relay.
+// options - WCFRelaysClientCreateOrUpdateOptions contains the optional parameters for the WCFRelaysClient.CreateOrUpdate
+// method.
+func (client *WCFRelaysClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, parameters WcfRelay, options *WCFRelaysClientCreateOrUpdateOptions) (WCFRelaysClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, relayName, parameters, options)
 	if err != nil {
-		return WCFRelaysCreateOrUpdateResponse{}, err
+		return WCFRelaysClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WCFRelaysCreateOrUpdateResponse{}, err
+		return WCFRelaysClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WCFRelaysCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return WCFRelaysClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *WCFRelaysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, parameters WcfRelay, options *WCFRelaysCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, parameters WcfRelay, options *WCFRelaysClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,58 +98,53 @@ func (client *WCFRelaysClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *WCFRelaysClient) createOrUpdateHandleResponse(resp *http.Response) (WCFRelaysCreateOrUpdateResponse, error) {
-	result := WCFRelaysCreateOrUpdateResponse{RawResponse: resp}
+func (client *WCFRelaysClient) createOrUpdateHandleResponse(resp *http.Response) (WCFRelaysClientCreateOrUpdateResponse, error) {
+	result := WCFRelaysClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WcfRelay); err != nil {
-		return WCFRelaysCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return WCFRelaysClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *WCFRelaysClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CreateOrUpdateAuthorizationRule - Creates or updates an authorization rule for a WCF relay.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WCFRelaysClient) CreateOrUpdateAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, parameters AuthorizationRule, options *WCFRelaysCreateOrUpdateAuthorizationRuleOptions) (WCFRelaysCreateOrUpdateAuthorizationRuleResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// relayName - The relay name.
+// authorizationRuleName - The authorization rule name.
+// parameters - The authorization rule parameters.
+// options - WCFRelaysClientCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the WCFRelaysClient.CreateOrUpdateAuthorizationRule
+// method.
+func (client *WCFRelaysClient) CreateOrUpdateAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, parameters AuthorizationRule, options *WCFRelaysClientCreateOrUpdateAuthorizationRuleOptions) (WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse, error) {
 	req, err := client.createOrUpdateAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, relayName, authorizationRuleName, parameters, options)
 	if err != nil {
-		return WCFRelaysCreateOrUpdateAuthorizationRuleResponse{}, err
+		return WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WCFRelaysCreateOrUpdateAuthorizationRuleResponse{}, err
+		return WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WCFRelaysCreateOrUpdateAuthorizationRuleResponse{}, client.createOrUpdateAuthorizationRuleHandleError(resp)
+		return WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateAuthorizationRuleHandleResponse(resp)
 }
 
 // createOrUpdateAuthorizationRuleCreateRequest creates the CreateOrUpdateAuthorizationRule request.
-func (client *WCFRelaysClient) createOrUpdateAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, parameters AuthorizationRule, options *WCFRelaysCreateOrUpdateAuthorizationRuleOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) createOrUpdateAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, parameters AuthorizationRule, options *WCFRelaysClientCreateOrUpdateAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -151,58 +166,50 @@ func (client *WCFRelaysClient) createOrUpdateAuthorizationRuleCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateAuthorizationRuleHandleResponse handles the CreateOrUpdateAuthorizationRule response.
-func (client *WCFRelaysClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (WCFRelaysCreateOrUpdateAuthorizationRuleResponse, error) {
-	result := WCFRelaysCreateOrUpdateAuthorizationRuleResponse{RawResponse: resp}
+func (client *WCFRelaysClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse, error) {
+	result := WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
-		return WCFRelaysCreateOrUpdateAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
+		return WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateAuthorizationRuleHandleError handles the CreateOrUpdateAuthorizationRule error response.
-func (client *WCFRelaysClient) createOrUpdateAuthorizationRuleHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a WCF relay.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WCFRelaysClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysDeleteOptions) (WCFRelaysDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// relayName - The relay name.
+// options - WCFRelaysClientDeleteOptions contains the optional parameters for the WCFRelaysClient.Delete method.
+func (client *WCFRelaysClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysClientDeleteOptions) (WCFRelaysClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, namespaceName, relayName, options)
 	if err != nil {
-		return WCFRelaysDeleteResponse{}, err
+		return WCFRelaysClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WCFRelaysDeleteResponse{}, err
+		return WCFRelaysClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return WCFRelaysDeleteResponse{}, client.deleteHandleError(resp)
+		return WCFRelaysClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return WCFRelaysDeleteResponse{RawResponse: resp}, nil
+	return WCFRelaysClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *WCFRelaysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysDeleteOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -220,49 +227,43 @@ func (client *WCFRelaysClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *WCFRelaysClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // DeleteAuthorizationRule - Deletes a WCF relay authorization rule.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WCFRelaysClient) DeleteAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *WCFRelaysDeleteAuthorizationRuleOptions) (WCFRelaysDeleteAuthorizationRuleResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// relayName - The relay name.
+// authorizationRuleName - The authorization rule name.
+// options - WCFRelaysClientDeleteAuthorizationRuleOptions contains the optional parameters for the WCFRelaysClient.DeleteAuthorizationRule
+// method.
+func (client *WCFRelaysClient) DeleteAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *WCFRelaysClientDeleteAuthorizationRuleOptions) (WCFRelaysClientDeleteAuthorizationRuleResponse, error) {
 	req, err := client.deleteAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, relayName, authorizationRuleName, options)
 	if err != nil {
-		return WCFRelaysDeleteAuthorizationRuleResponse{}, err
+		return WCFRelaysClientDeleteAuthorizationRuleResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WCFRelaysDeleteAuthorizationRuleResponse{}, err
+		return WCFRelaysClientDeleteAuthorizationRuleResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return WCFRelaysDeleteAuthorizationRuleResponse{}, client.deleteAuthorizationRuleHandleError(resp)
+		return WCFRelaysClientDeleteAuthorizationRuleResponse{}, runtime.NewResponseError(resp)
 	}
-	return WCFRelaysDeleteAuthorizationRuleResponse{RawResponse: resp}, nil
+	return WCFRelaysClientDeleteAuthorizationRuleResponse{}, nil
 }
 
 // deleteAuthorizationRuleCreateRequest creates the DeleteAuthorizationRule request.
-func (client *WCFRelaysClient) deleteAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *WCFRelaysDeleteAuthorizationRuleOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) deleteAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *WCFRelaysClientDeleteAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -284,49 +285,41 @@ func (client *WCFRelaysClient) deleteAuthorizationRuleCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteAuthorizationRuleHandleError handles the DeleteAuthorizationRule error response.
-func (client *WCFRelaysClient) deleteAuthorizationRuleHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Returns the description for the specified WCF relay.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WCFRelaysClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysGetOptions) (WCFRelaysGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// relayName - The relay name.
+// options - WCFRelaysClientGetOptions contains the optional parameters for the WCFRelaysClient.Get method.
+func (client *WCFRelaysClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysClientGetOptions) (WCFRelaysClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, namespaceName, relayName, options)
 	if err != nil {
-		return WCFRelaysGetResponse{}, err
+		return WCFRelaysClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WCFRelaysGetResponse{}, err
+		return WCFRelaysClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return WCFRelaysGetResponse{}, client.getHandleError(resp)
+		return WCFRelaysClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *WCFRelaysClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysGetOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -344,58 +337,52 @@ func (client *WCFRelaysClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *WCFRelaysClient) getHandleResponse(resp *http.Response) (WCFRelaysGetResponse, error) {
-	result := WCFRelaysGetResponse{RawResponse: resp}
+func (client *WCFRelaysClient) getHandleResponse(resp *http.Response) (WCFRelaysClientGetResponse, error) {
+	result := WCFRelaysClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WcfRelay); err != nil {
-		return WCFRelaysGetResponse{}, runtime.NewResponseError(err, resp)
+		return WCFRelaysClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *WCFRelaysClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAuthorizationRule - Get authorizationRule for a WCF relay by name.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WCFRelaysClient) GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *WCFRelaysGetAuthorizationRuleOptions) (WCFRelaysGetAuthorizationRuleResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// relayName - The relay name.
+// authorizationRuleName - The authorization rule name.
+// options - WCFRelaysClientGetAuthorizationRuleOptions contains the optional parameters for the WCFRelaysClient.GetAuthorizationRule
+// method.
+func (client *WCFRelaysClient) GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *WCFRelaysClientGetAuthorizationRuleOptions) (WCFRelaysClientGetAuthorizationRuleResponse, error) {
 	req, err := client.getAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, relayName, authorizationRuleName, options)
 	if err != nil {
-		return WCFRelaysGetAuthorizationRuleResponse{}, err
+		return WCFRelaysClientGetAuthorizationRuleResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WCFRelaysGetAuthorizationRuleResponse{}, err
+		return WCFRelaysClientGetAuthorizationRuleResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WCFRelaysGetAuthorizationRuleResponse{}, client.getAuthorizationRuleHandleError(resp)
+		return WCFRelaysClientGetAuthorizationRuleResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAuthorizationRuleHandleResponse(resp)
 }
 
 // getAuthorizationRuleCreateRequest creates the GetAuthorizationRule request.
-func (client *WCFRelaysClient) getAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *WCFRelaysGetAuthorizationRuleOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) getAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *WCFRelaysClientGetAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -417,55 +404,64 @@ func (client *WCFRelaysClient) getAuthorizationRuleCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getAuthorizationRuleHandleResponse handles the GetAuthorizationRule response.
-func (client *WCFRelaysClient) getAuthorizationRuleHandleResponse(resp *http.Response) (WCFRelaysGetAuthorizationRuleResponse, error) {
-	result := WCFRelaysGetAuthorizationRuleResponse{RawResponse: resp}
+func (client *WCFRelaysClient) getAuthorizationRuleHandleResponse(resp *http.Response) (WCFRelaysClientGetAuthorizationRuleResponse, error) {
+	result := WCFRelaysClientGetAuthorizationRuleResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
-		return WCFRelaysGetAuthorizationRuleResponse{}, runtime.NewResponseError(err, resp)
+		return WCFRelaysClientGetAuthorizationRuleResponse{}, err
 	}
 	return result, nil
 }
 
-// getAuthorizationRuleHandleError handles the GetAuthorizationRule error response.
-func (client *WCFRelaysClient) getAuthorizationRuleHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListAuthorizationRules - Authorization rules for a WCF relay.
-// If the operation fails it returns a generic error.
-func (client *WCFRelaysClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysListAuthorizationRulesOptions) *WCFRelaysListAuthorizationRulesPager {
-	return &WCFRelaysListAuthorizationRulesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, relayName, options)
+// NewListAuthorizationRulesPager - Authorization rules for a WCF relay.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// relayName - The relay name.
+// options - WCFRelaysClientListAuthorizationRulesOptions contains the optional parameters for the WCFRelaysClient.ListAuthorizationRules
+// method.
+func (client *WCFRelaysClient) NewListAuthorizationRulesPager(resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysClientListAuthorizationRulesOptions) *runtime.Pager[WCFRelaysClientListAuthorizationRulesResponse] {
+	return runtime.NewPager(runtime.PagingHandler[WCFRelaysClientListAuthorizationRulesResponse]{
+		More: func(page WCFRelaysClientListAuthorizationRulesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WCFRelaysListAuthorizationRulesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AuthorizationRuleListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *WCFRelaysClientListAuthorizationRulesResponse) (WCFRelaysClientListAuthorizationRulesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, relayName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WCFRelaysClientListAuthorizationRulesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WCFRelaysClientListAuthorizationRulesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WCFRelaysClientListAuthorizationRulesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAuthorizationRulesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
-func (client *WCFRelaysClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysListAuthorizationRulesOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysClientListAuthorizationRulesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -483,54 +479,63 @@ func (client *WCFRelaysClient) listAuthorizationRulesCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listAuthorizationRulesHandleResponse handles the ListAuthorizationRules response.
-func (client *WCFRelaysClient) listAuthorizationRulesHandleResponse(resp *http.Response) (WCFRelaysListAuthorizationRulesResponse, error) {
-	result := WCFRelaysListAuthorizationRulesResponse{RawResponse: resp}
+func (client *WCFRelaysClient) listAuthorizationRulesHandleResponse(resp *http.Response) (WCFRelaysClientListAuthorizationRulesResponse, error) {
+	result := WCFRelaysClientListAuthorizationRulesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRuleListResult); err != nil {
-		return WCFRelaysListAuthorizationRulesResponse{}, runtime.NewResponseError(err, resp)
+		return WCFRelaysClientListAuthorizationRulesResponse{}, err
 	}
 	return result, nil
 }
 
-// listAuthorizationRulesHandleError handles the ListAuthorizationRules error response.
-func (client *WCFRelaysClient) listAuthorizationRulesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListByNamespace - Lists the WCF relays within the namespace.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WCFRelaysClient) ListByNamespace(resourceGroupName string, namespaceName string, options *WCFRelaysListByNamespaceOptions) *WCFRelaysListByNamespacePager {
-	return &WCFRelaysListByNamespacePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, options)
+// NewListByNamespacePager - Lists the WCF relays within the namespace.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// options - WCFRelaysClientListByNamespaceOptions contains the optional parameters for the WCFRelaysClient.ListByNamespace
+// method.
+func (client *WCFRelaysClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *WCFRelaysClientListByNamespaceOptions) *runtime.Pager[WCFRelaysClientListByNamespaceResponse] {
+	return runtime.NewPager(runtime.PagingHandler[WCFRelaysClientListByNamespaceResponse]{
+		More: func(page WCFRelaysClientListByNamespaceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp WCFRelaysListByNamespaceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WcfRelaysListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *WCFRelaysClientListByNamespaceResponse) (WCFRelaysClientListByNamespaceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return WCFRelaysClientListByNamespaceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return WCFRelaysClientListByNamespaceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return WCFRelaysClientListByNamespaceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByNamespaceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByNamespaceCreateRequest creates the ListByNamespace request.
-func (client *WCFRelaysClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *WCFRelaysListByNamespaceOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *WCFRelaysClientListByNamespaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -544,58 +549,51 @@ func (client *WCFRelaysClient) listByNamespaceCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByNamespaceHandleResponse handles the ListByNamespace response.
-func (client *WCFRelaysClient) listByNamespaceHandleResponse(resp *http.Response) (WCFRelaysListByNamespaceResponse, error) {
-	result := WCFRelaysListByNamespaceResponse{RawResponse: resp}
+func (client *WCFRelaysClient) listByNamespaceHandleResponse(resp *http.Response) (WCFRelaysClientListByNamespaceResponse, error) {
+	result := WCFRelaysClientListByNamespaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WcfRelaysListResult); err != nil {
-		return WCFRelaysListByNamespaceResponse{}, runtime.NewResponseError(err, resp)
+		return WCFRelaysClientListByNamespaceResponse{}, err
 	}
 	return result, nil
 }
 
-// listByNamespaceHandleError handles the ListByNamespace error response.
-func (client *WCFRelaysClient) listByNamespaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListKeys - Primary and secondary connection strings to the WCF relay.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WCFRelaysClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *WCFRelaysListKeysOptions) (WCFRelaysListKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// relayName - The relay name.
+// authorizationRuleName - The authorization rule name.
+// options - WCFRelaysClientListKeysOptions contains the optional parameters for the WCFRelaysClient.ListKeys method.
+func (client *WCFRelaysClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *WCFRelaysClientListKeysOptions) (WCFRelaysClientListKeysResponse, error) {
 	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, namespaceName, relayName, authorizationRuleName, options)
 	if err != nil {
-		return WCFRelaysListKeysResponse{}, err
+		return WCFRelaysClientListKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WCFRelaysListKeysResponse{}, err
+		return WCFRelaysClientListKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WCFRelaysListKeysResponse{}, client.listKeysHandleError(resp)
+		return WCFRelaysClientListKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listKeysHandleResponse(resp)
 }
 
 // listKeysCreateRequest creates the ListKeys request.
-func (client *WCFRelaysClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *WCFRelaysListKeysOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, options *WCFRelaysClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}/listKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -617,58 +615,53 @@ func (client *WCFRelaysClient) listKeysCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *WCFRelaysClient) listKeysHandleResponse(resp *http.Response) (WCFRelaysListKeysResponse, error) {
-	result := WCFRelaysListKeysResponse{RawResponse: resp}
+func (client *WCFRelaysClient) listKeysHandleResponse(resp *http.Response) (WCFRelaysClientListKeysResponse, error) {
+	result := WCFRelaysClientListKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return WCFRelaysListKeysResponse{}, runtime.NewResponseError(err, resp)
+		return WCFRelaysClientListKeysResponse{}, err
 	}
 	return result, nil
 }
 
-// listKeysHandleError handles the ListKeys error response.
-func (client *WCFRelaysClient) listKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // RegenerateKeys - Regenerates the primary or secondary connection strings to the WCF relay.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *WCFRelaysClient) RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *WCFRelaysRegenerateKeysOptions) (WCFRelaysRegenerateKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// namespaceName - The namespace name
+// relayName - The relay name.
+// authorizationRuleName - The authorization rule name.
+// parameters - Parameters supplied to regenerate authorization rule.
+// options - WCFRelaysClientRegenerateKeysOptions contains the optional parameters for the WCFRelaysClient.RegenerateKeys
+// method.
+func (client *WCFRelaysClient) RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *WCFRelaysClientRegenerateKeysOptions) (WCFRelaysClientRegenerateKeysResponse, error) {
 	req, err := client.regenerateKeysCreateRequest(ctx, resourceGroupName, namespaceName, relayName, authorizationRuleName, parameters, options)
 	if err != nil {
-		return WCFRelaysRegenerateKeysResponse{}, err
+		return WCFRelaysClientRegenerateKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return WCFRelaysRegenerateKeysResponse{}, err
+		return WCFRelaysClientRegenerateKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return WCFRelaysRegenerateKeysResponse{}, client.regenerateKeysHandleError(resp)
+		return WCFRelaysClientRegenerateKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.regenerateKeysHandleResponse(resp)
 }
 
 // regenerateKeysCreateRequest creates the RegenerateKeys request.
-func (client *WCFRelaysClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *WCFRelaysRegenerateKeysOptions) (*policy.Request, error) {
+func (client *WCFRelaysClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *WCFRelaysClientRegenerateKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}/regenerateKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -690,35 +683,22 @@ func (client *WCFRelaysClient) regenerateKeysCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-04-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // regenerateKeysHandleResponse handles the RegenerateKeys response.
-func (client *WCFRelaysClient) regenerateKeysHandleResponse(resp *http.Response) (WCFRelaysRegenerateKeysResponse, error) {
-	result := WCFRelaysRegenerateKeysResponse{RawResponse: resp}
+func (client *WCFRelaysClient) regenerateKeysHandleResponse(resp *http.Response) (WCFRelaysClientRegenerateKeysResponse, error) {
+	result := WCFRelaysClientRegenerateKeysResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return WCFRelaysRegenerateKeysResponse{}, runtime.NewResponseError(err, resp)
+		return WCFRelaysClientRegenerateKeysResponse{}, err
 	}
 	return result, nil
-}
-
-// regenerateKeysHandleError handles the RegenerateKeys error response.
-func (client *WCFRelaysClient) regenerateKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

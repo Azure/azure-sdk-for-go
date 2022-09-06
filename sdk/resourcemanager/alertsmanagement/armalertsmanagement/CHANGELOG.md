@@ -1,22 +1,16 @@
 # Release History
 
-## 0.2.1 (Unreleased)
-
+## 0.7.0 (2022-08-19)
 ### Features Added
 
-### Breaking Changes
+- New field `Origin` in struct `Operation`
+- New field `Comment` in struct `AlertsClientChangeStateOptions`
 
-### Bugs Fixed
 
-### Other Changes
+## 0.6.0 (2022-05-17)
 
-## 0.2.0 (2021-10-29)
+The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertsmanagement/armalertsmanagement` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 0.6.0, which contains breaking changes.
 
-### Breaking Changes
+To migrate the existing applications to the latest version, please refer to [Migration Guide](https://aka.ms/azsdk/go/mgmt/migration).
 
-- `arm.Connection` has been removed in `github.com/Azure/azure-sdk-for-go/sdk/azcore/v0.20.0`
-- The parameters of `NewXXXClient` has been changed from `(con *arm.Connection, subscriptionID string)` to `(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions)`
-
-## 0.1.0 (2021-10-26)
-
-- Initial preview release.
+To learn more, please refer to our documentation [Quick Start](https://aka.ms/azsdk/go/mgmt).

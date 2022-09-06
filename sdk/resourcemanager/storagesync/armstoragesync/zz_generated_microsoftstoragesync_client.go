@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armstoragesync
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,59 @@ import (
 // MicrosoftStorageSyncClient contains the methods for the MicrosoftStorageSync group.
 // Don't use this type directly, use NewMicrosoftStorageSyncClient() instead.
 type MicrosoftStorageSyncClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewMicrosoftStorageSyncClient creates a new instance of MicrosoftStorageSyncClient with the specified values.
-func NewMicrosoftStorageSyncClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MicrosoftStorageSyncClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewMicrosoftStorageSyncClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MicrosoftStorageSyncClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &MicrosoftStorageSyncClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &MicrosoftStorageSyncClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // LocationOperationStatus - Get Operation status
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *MicrosoftStorageSyncClient) LocationOperationStatus(ctx context.Context, locationName string, operationID string, options *MicrosoftStorageSyncLocationOperationStatusOptions) (MicrosoftStorageSyncLocationOperationStatusResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+// locationName - The desired region to obtain information from.
+// operationID - operation Id
+// options - MicrosoftStorageSyncClientLocationOperationStatusOptions contains the optional parameters for the MicrosoftStorageSyncClient.LocationOperationStatus
+// method.
+func (client *MicrosoftStorageSyncClient) LocationOperationStatus(ctx context.Context, locationName string, operationID string, options *MicrosoftStorageSyncClientLocationOperationStatusOptions) (MicrosoftStorageSyncClientLocationOperationStatusResponse, error) {
 	req, err := client.locationOperationStatusCreateRequest(ctx, locationName, operationID, options)
 	if err != nil {
-		return MicrosoftStorageSyncLocationOperationStatusResponse{}, err
+		return MicrosoftStorageSyncClientLocationOperationStatusResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MicrosoftStorageSyncLocationOperationStatusResponse{}, err
+		return MicrosoftStorageSyncClientLocationOperationStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MicrosoftStorageSyncLocationOperationStatusResponse{}, client.locationOperationStatusHandleError(resp)
+		return MicrosoftStorageSyncClientLocationOperationStatusResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.locationOperationStatusHandleResponse(resp)
 }
 
 // locationOperationStatusCreateRequest creates the LocationOperationStatus request.
-func (client *MicrosoftStorageSyncClient) locationOperationStatusCreateRequest(ctx context.Context, locationName string, operationID string, options *MicrosoftStorageSyncLocationOperationStatusOptions) (*policy.Request, error) {
+func (client *MicrosoftStorageSyncClient) locationOperationStatusCreateRequest(ctx context.Context, locationName string, operationID string, options *MicrosoftStorageSyncClientLocationOperationStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StorageSync/locations/{locationName}/operations/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,20 +91,20 @@ func (client *MicrosoftStorageSyncClient) locationOperationStatusCreateRequest(c
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // locationOperationStatusHandleResponse handles the LocationOperationStatus response.
-func (client *MicrosoftStorageSyncClient) locationOperationStatusHandleResponse(resp *http.Response) (MicrosoftStorageSyncLocationOperationStatusResponse, error) {
-	result := MicrosoftStorageSyncLocationOperationStatusResponse{RawResponse: resp}
+func (client *MicrosoftStorageSyncClient) locationOperationStatusHandleResponse(resp *http.Response) (MicrosoftStorageSyncClientLocationOperationStatusResponse, error) {
+	result := MicrosoftStorageSyncClientLocationOperationStatusResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.XMSRequestID = &val
 	}
@@ -95,20 +112,7 @@ func (client *MicrosoftStorageSyncClient) locationOperationStatusHandleResponse(
 		result.XMSCorrelationRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocationOperationStatus); err != nil {
-		return MicrosoftStorageSyncLocationOperationStatusResponse{}, runtime.NewResponseError(err, resp)
+		return MicrosoftStorageSyncClientLocationOperationStatusResponse{}, err
 	}
 	return result, nil
-}
-
-// locationOperationStatusHandleError handles the LocationOperationStatus error response.
-func (client *MicrosoftStorageSyncClient) locationOperationStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageSyncError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

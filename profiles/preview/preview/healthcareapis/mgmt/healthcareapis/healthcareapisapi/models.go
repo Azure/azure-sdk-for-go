@@ -9,8 +9,16 @@
 
 package healthcareapisapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/healthcareapis/mgmt/2018-08-20-preview/healthcareapis/healthcareapisapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/healthcareapis/mgmt/2021-06-01-preview/healthcareapis/healthcareapisapi"
 
+type DicomServicesClientAPI = original.DicomServicesClientAPI
+type FhirDestinationsClientAPI = original.FhirDestinationsClientAPI
+type FhirServicesClientAPI = original.FhirServicesClientAPI
+type IotConnectorFhirDestinationClientAPI = original.IotConnectorFhirDestinationClientAPI
+type IotConnectorsClientAPI = original.IotConnectorsClientAPI
 type OperationResultsClientAPI = original.OperationResultsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
 type ServicesClientAPI = original.ServicesClientAPI
+type WorkspacesClientAPI = original.WorkspacesClientAPI

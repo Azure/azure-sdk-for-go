@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,139 +12,158 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations"
 )
 
-// x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/CalculateReservationOrder.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/CalculateReservationOrder.json
 func ExampleReservationOrderClient_Calculate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armreservations.NewReservationOrderClient(cred, nil)
-	_, err = client.Calculate(ctx,
+	client, err := armreservations.NewReservationOrderClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.Calculate(ctx,
 		armreservations.PurchaseRequest{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armreservations.PurchaseRequestProperties{
-				AppliedScopeType: armreservations.AppliedScopeTypeShared.ToPtr(),
-				AppliedScopes:    []*string{},
-				BillingPlan:      armreservations.ReservationBillingPlanMonthly.ToPtr(),
-				BillingScopeID:   to.StringPtr("<billing-scope-id>"),
-				DisplayName:      to.StringPtr("<display-name>"),
-				Quantity:         to.Int32Ptr(1),
+				AppliedScopeType: to.Ptr(armreservations.AppliedScopeTypeShared),
+				BillingPlan:      to.Ptr(armreservations.ReservationBillingPlanMonthly),
+				BillingScopeID:   to.Ptr("/subscriptions/ed3a1871-612d-abcd-a849-c2542a68be83"),
+				DisplayName:      to.Ptr("TestReservationOrder"),
+				Quantity:         to.Ptr[int32](1),
 				ReservedResourceProperties: &armreservations.PurchaseRequestPropertiesReservedResourceProperties{
-					InstanceFlexibility: armreservations.InstanceFlexibilityOn.ToPtr(),
+					InstanceFlexibility: to.Ptr(armreservations.InstanceFlexibilityOn),
 				},
-				ReservedResourceType: armreservations.ReservedResourceTypeVirtualMachines.ToPtr(),
-				Term:                 armreservations.ReservationTermP1Y.ToPtr(),
+				ReservedResourceType: to.Ptr(armreservations.ReservedResourceTypeVirtualMachines),
+				Term:                 to.Ptr(armreservations.ReservationTermP1Y),
 			},
 			SKU: &armreservations.SKUName{
-				Name: to.StringPtr("<name>"),
+				Name: to.Ptr("standard_D1"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/GetReservationOrders.json
-func ExampleReservationOrderClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/GetReservationOrders.json
+func ExampleReservationOrderClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armreservations.NewReservationOrderClient(cred, nil)
-	pager := client.List(nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armreservations.NewReservationOrderClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager(nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ReservationOrderResponse.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/PurchaseReservationOrder.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/PurchaseReservationOrder.json
 func ExampleReservationOrderClient_BeginPurchase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armreservations.NewReservationOrderClient(cred, nil)
+	client, err := armreservations.NewReservationOrderClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginPurchase(ctx,
-		"<reservation-order-id>",
+		"a075419f-44cc-497f-b68a-14ee811d48b9",
 		armreservations.PurchaseRequest{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armreservations.PurchaseRequestProperties{
-				AppliedScopeType: armreservations.AppliedScopeTypeShared.ToPtr(),
-				AppliedScopes:    []*string{},
-				BillingPlan:      armreservations.ReservationBillingPlanMonthly.ToPtr(),
-				BillingScopeID:   to.StringPtr("<billing-scope-id>"),
-				DisplayName:      to.StringPtr("<display-name>"),
-				Quantity:         to.Int32Ptr(1),
-				Renew:            to.BoolPtr(false),
+				AppliedScopeType: to.Ptr(armreservations.AppliedScopeTypeShared),
+				BillingPlan:      to.Ptr(armreservations.ReservationBillingPlanMonthly),
+				BillingScopeID:   to.Ptr("/subscriptions/ed3a1871-612d-abcd-a849-c2542a68be83"),
+				DisplayName:      to.Ptr("TestReservationOrder"),
+				Quantity:         to.Ptr[int32](1),
+				Renew:            to.Ptr(false),
 				ReservedResourceProperties: &armreservations.PurchaseRequestPropertiesReservedResourceProperties{
-					InstanceFlexibility: armreservations.InstanceFlexibilityOn.ToPtr(),
+					InstanceFlexibility: to.Ptr(armreservations.InstanceFlexibilityOn),
 				},
-				ReservedResourceType: armreservations.ReservedResourceTypeVirtualMachines.ToPtr(),
-				Term:                 armreservations.ReservationTermP1Y.ToPtr(),
+				ReservedResourceType: to.Ptr(armreservations.ReservedResourceTypeVirtualMachines),
+				Term:                 to.Ptr(armreservations.ReservationTermP1Y),
 			},
 			SKU: &armreservations.SKUName{
-				Name: to.StringPtr("<name>"),
+				Name: to.Ptr("standard_D1"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("ReservationOrderResponse.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/GetReservationOrderDetails.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/GetReservationOrderDetails.json
 func ExampleReservationOrderClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armreservations.NewReservationOrderClient(cred, nil)
-	res, err := client.Get(ctx,
-		"<reservation-order-id>",
-		&armreservations.ReservationOrderGetOptions{Expand: nil})
+	client, err := armreservations.NewReservationOrderClient(cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
 	}
-	log.Printf("ReservationOrderResponse.ID: %s\n", *res.ID)
+	res, err := client.Get(ctx,
+		"a075419f-44cc-497f-b68a-14ee811d48b9",
+		&armreservations.ReservationOrderClientGetOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/ChangeDirectoryReservationOrder.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/ChangeDirectoryReservationOrder.json
 func ExampleReservationOrderClient_ChangeDirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armreservations.NewReservationOrderClient(cred, nil)
-	_, err = client.ChangeDirectory(ctx,
-		"<reservation-order-id>",
+	client, err := armreservations.NewReservationOrderClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.ChangeDirectory(ctx,
+		"a075419f-44cc-497f-b68a-14ee811d48b9",
 		armreservations.ChangeDirectoryRequest{
-			DestinationTenantID: to.StringPtr("<destination-tenant-id>"),
+			DestinationTenantID: to.Ptr("906655ea-30be-4587-9d12-b50e077b0f32"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }

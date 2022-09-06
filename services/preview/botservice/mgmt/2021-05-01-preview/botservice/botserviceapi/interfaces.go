@@ -34,7 +34,7 @@ type ChannelsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, resourceName string, channelName string) (result botservice.BotChannel, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, resourceName string) (result botservice.ChannelResponseListPage, err error)
 	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, resourceName string) (result botservice.ChannelResponseListIterator, err error)
-	ListWithKeys(ctx context.Context, resourceGroupName string, resourceName string, channelName botservice.ChannelName) (result botservice.BotChannel, err error)
+	ListWithKeys(ctx context.Context, resourceGroupName string, resourceName string, channelName botservice.ChannelName) (result botservice.ListChannelWithKeysResponse, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceName string, channelName botservice.ChannelName, parameters botservice.BotChannel) (result botservice.BotChannel, err error)
 }
 

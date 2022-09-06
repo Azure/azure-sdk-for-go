@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,356 +8,88 @@
 
 package armcontainerinstance
 
-import (
-	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"net/http"
-	"time"
-)
-
-// ContainerGroupsCreateOrUpdatePollerResponse contains the response from method ContainerGroups.CreateOrUpdate.
-type ContainerGroupsCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ContainerGroupsCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ContainerGroupsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ContainerGroupsCreateOrUpdateResponse, error) {
-	respType := ContainerGroupsCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ContainerGroup)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ContainerGroupsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *ContainerGroupsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ContainerGroupsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ContainerGroupsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &ContainerGroupsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// ContainerGroupsCreateOrUpdateResponse contains the response from method ContainerGroups.CreateOrUpdate.
-type ContainerGroupsCreateOrUpdateResponse struct {
-	ContainerGroupsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContainerGroupsCreateOrUpdateResult contains the result from method ContainerGroups.CreateOrUpdate.
-type ContainerGroupsCreateOrUpdateResult struct {
+// ContainerGroupsClientCreateOrUpdateResponse contains the response from method ContainerGroupsClient.CreateOrUpdate.
+type ContainerGroupsClientCreateOrUpdateResponse struct {
 	ContainerGroup
 }
 
-// ContainerGroupsDeletePollerResponse contains the response from method ContainerGroups.Delete.
-type ContainerGroupsDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ContainerGroupsDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ContainerGroupsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ContainerGroupsDeleteResponse, error) {
-	respType := ContainerGroupsDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ContainerGroup)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ContainerGroupsDeletePollerResponse from the provided client and resume token.
-func (l *ContainerGroupsDeletePollerResponse) Resume(ctx context.Context, client *ContainerGroupsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ContainerGroupsClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &ContainerGroupsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// ContainerGroupsDeleteResponse contains the response from method ContainerGroups.Delete.
-type ContainerGroupsDeleteResponse struct {
-	ContainerGroupsDeleteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContainerGroupsDeleteResult contains the result from method ContainerGroups.Delete.
-type ContainerGroupsDeleteResult struct {
+// ContainerGroupsClientDeleteResponse contains the response from method ContainerGroupsClient.Delete.
+type ContainerGroupsClientDeleteResponse struct {
 	ContainerGroup
 }
 
-// ContainerGroupsGetOutboundNetworkDependenciesEndpointsResponse contains the response from method ContainerGroups.GetOutboundNetworkDependenciesEndpoints.
-type ContainerGroupsGetOutboundNetworkDependenciesEndpointsResponse struct {
-	ContainerGroupsGetOutboundNetworkDependenciesEndpointsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContainerGroupsGetOutboundNetworkDependenciesEndpointsResult contains the result from method ContainerGroups.GetOutboundNetworkDependenciesEndpoints.
-type ContainerGroupsGetOutboundNetworkDependenciesEndpointsResult struct {
+// ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsResponse contains the response from method ContainerGroupsClient.GetOutboundNetworkDependenciesEndpoints.
+type ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsResponse struct {
 	// Response for network dependencies, always empty list.
 	StringArray []*string
 }
 
-// ContainerGroupsGetResponse contains the response from method ContainerGroups.Get.
-type ContainerGroupsGetResponse struct {
-	ContainerGroupsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContainerGroupsGetResult contains the result from method ContainerGroups.Get.
-type ContainerGroupsGetResult struct {
+// ContainerGroupsClientGetResponse contains the response from method ContainerGroupsClient.Get.
+type ContainerGroupsClientGetResponse struct {
 	ContainerGroup
 }
 
-// ContainerGroupsListByResourceGroupResponse contains the response from method ContainerGroups.ListByResourceGroup.
-type ContainerGroupsListByResourceGroupResponse struct {
-	ContainerGroupsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContainerGroupsListByResourceGroupResult contains the result from method ContainerGroups.ListByResourceGroup.
-type ContainerGroupsListByResourceGroupResult struct {
+// ContainerGroupsClientListByResourceGroupResponse contains the response from method ContainerGroupsClient.ListByResourceGroup.
+type ContainerGroupsClientListByResourceGroupResponse struct {
 	ContainerGroupListResult
 }
 
-// ContainerGroupsListResponse contains the response from method ContainerGroups.List.
-type ContainerGroupsListResponse struct {
-	ContainerGroupsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContainerGroupsListResult contains the result from method ContainerGroups.List.
-type ContainerGroupsListResult struct {
+// ContainerGroupsClientListResponse contains the response from method ContainerGroupsClient.List.
+type ContainerGroupsClientListResponse struct {
 	ContainerGroupListResult
 }
 
-// ContainerGroupsRestartPollerResponse contains the response from method ContainerGroups.Restart.
-type ContainerGroupsRestartPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ContainerGroupsRestartPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ContainerGroupsClientRestartResponse contains the response from method ContainerGroupsClient.Restart.
+type ContainerGroupsClientRestartResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ContainerGroupsRestartPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ContainerGroupsRestartResponse, error) {
-	respType := ContainerGroupsRestartResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
+// ContainerGroupsClientStartResponse contains the response from method ContainerGroupsClient.Start.
+type ContainerGroupsClientStartResponse struct {
+	// placeholder for future response values
 }
 
-// Resume rehydrates a ContainerGroupsRestartPollerResponse from the provided client and resume token.
-func (l *ContainerGroupsRestartPollerResponse) Resume(ctx context.Context, client *ContainerGroupsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ContainerGroupsClient.Restart", token, client.pl, client.restartHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &ContainerGroupsRestartPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
+// ContainerGroupsClientStopResponse contains the response from method ContainerGroupsClient.Stop.
+type ContainerGroupsClientStopResponse struct {
+	// placeholder for future response values
 }
 
-// ContainerGroupsRestartResponse contains the response from method ContainerGroups.Restart.
-type ContainerGroupsRestartResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContainerGroupsStartPollerResponse contains the response from method ContainerGroups.Start.
-type ContainerGroupsStartPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ContainerGroupsStartPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ContainerGroupsStartPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ContainerGroupsStartResponse, error) {
-	respType := ContainerGroupsStartResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ContainerGroupsStartPollerResponse from the provided client and resume token.
-func (l *ContainerGroupsStartPollerResponse) Resume(ctx context.Context, client *ContainerGroupsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ContainerGroupsClient.Start", token, client.pl, client.startHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &ContainerGroupsStartPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// ContainerGroupsStartResponse contains the response from method ContainerGroups.Start.
-type ContainerGroupsStartResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContainerGroupsStopResponse contains the response from method ContainerGroups.Stop.
-type ContainerGroupsStopResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContainerGroupsUpdateResponse contains the response from method ContainerGroups.Update.
-type ContainerGroupsUpdateResponse struct {
-	ContainerGroupsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContainerGroupsUpdateResult contains the result from method ContainerGroups.Update.
-type ContainerGroupsUpdateResult struct {
+// ContainerGroupsClientUpdateResponse contains the response from method ContainerGroupsClient.Update.
+type ContainerGroupsClientUpdateResponse struct {
 	ContainerGroup
 }
 
-// ContainersAttachResponse contains the response from method Containers.Attach.
-type ContainersAttachResponse struct {
-	ContainersAttachResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContainersAttachResult contains the result from method Containers.Attach.
-type ContainersAttachResult struct {
+// ContainersClientAttachResponse contains the response from method ContainersClient.Attach.
+type ContainersClientAttachResponse struct {
 	ContainerAttachResponse
 }
 
-// ContainersExecuteCommandResponse contains the response from method Containers.ExecuteCommand.
-type ContainersExecuteCommandResponse struct {
-	ContainersExecuteCommandResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContainersExecuteCommandResult contains the result from method Containers.ExecuteCommand.
-type ContainersExecuteCommandResult struct {
+// ContainersClientExecuteCommandResponse contains the response from method ContainersClient.ExecuteCommand.
+type ContainersClientExecuteCommandResponse struct {
 	ContainerExecResponse
 }
 
-// ContainersListLogsResponse contains the response from method Containers.ListLogs.
-type ContainersListLogsResponse struct {
-	ContainersListLogsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContainersListLogsResult contains the result from method Containers.ListLogs.
-type ContainersListLogsResult struct {
+// ContainersClientListLogsResponse contains the response from method ContainersClient.ListLogs.
+type ContainersClientListLogsResponse struct {
 	Logs
 }
 
-// LocationListCachedImagesResponse contains the response from method Location.ListCachedImages.
-type LocationListCachedImagesResponse struct {
-	LocationListCachedImagesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// LocationListCachedImagesResult contains the result from method Location.ListCachedImages.
-type LocationListCachedImagesResult struct {
+// LocationClientListCachedImagesResponse contains the response from method LocationClient.ListCachedImages.
+type LocationClientListCachedImagesResponse struct {
 	CachedImagesListResult
 }
 
-// LocationListCapabilitiesResponse contains the response from method Location.ListCapabilities.
-type LocationListCapabilitiesResponse struct {
-	LocationListCapabilitiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// LocationListCapabilitiesResult contains the result from method Location.ListCapabilities.
-type LocationListCapabilitiesResult struct {
+// LocationClientListCapabilitiesResponse contains the response from method LocationClient.ListCapabilities.
+type LocationClientListCapabilitiesResponse struct {
 	CapabilitiesListResult
 }
 
-// LocationListUsageResponse contains the response from method Location.ListUsage.
-type LocationListUsageResponse struct {
-	LocationListUsageResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// LocationListUsageResult contains the result from method Location.ListUsage.
-type LocationListUsageResult struct {
+// LocationClientListUsageResponse contains the response from method LocationClient.ListUsage.
+type LocationClientListUsageResponse struct {
 	UsageListResult
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
 	OperationListResult
 }

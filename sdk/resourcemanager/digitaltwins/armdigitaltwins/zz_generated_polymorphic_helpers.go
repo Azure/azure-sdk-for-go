@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armdigitaltwins
 
 import "encoding/json"
 
-func unmarshalDigitalTwinsEndpointResourcePropertiesClassification(rawMsg json.RawMessage) (DigitalTwinsEndpointResourcePropertiesClassification, error) {
+func unmarshalEndpointResourcePropertiesClassification(rawMsg json.RawMessage) (EndpointResourcePropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
@@ -18,7 +18,7 @@ func unmarshalDigitalTwinsEndpointResourcePropertiesClassification(rawMsg json.R
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b DigitalTwinsEndpointResourcePropertiesClassification
+	var b EndpointResourcePropertiesClassification
 	switch m["endpointType"] {
 	case string(EndpointTypeEventGrid):
 		b = &EventGrid{}
@@ -27,45 +27,25 @@ func unmarshalDigitalTwinsEndpointResourcePropertiesClassification(rawMsg json.R
 	case string(EndpointTypeServiceBus):
 		b = &ServiceBus{}
 	default:
-		b = &DigitalTwinsEndpointResourceProperties{}
+		b = &EndpointResourceProperties{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalDigitalTwinsEndpointResourcePropertiesClassificationArray(rawMsg json.RawMessage) ([]DigitalTwinsEndpointResourcePropertiesClassification, error) {
+func unmarshalTimeSeriesDatabaseConnectionPropertiesClassification(rawMsg json.RawMessage) (TimeSeriesDatabaseConnectionPropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	fArray := make([]DigitalTwinsEndpointResourcePropertiesClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalDigitalTwinsEndpointResourcePropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
+	var b TimeSeriesDatabaseConnectionPropertiesClassification
+	switch m["connectionType"] {
+	case string(ConnectionTypeAzureDataExplorer):
+		b = &AzureDataExplorerConnectionProperties{}
+	default:
+		b = &TimeSeriesDatabaseConnectionProperties{}
 	}
-	return fArray, nil
-}
-
-func unmarshalDigitalTwinsEndpointResourcePropertiesClassificationMap(rawMsg json.RawMessage) (map[string]DigitalTwinsEndpointResourcePropertiesClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]DigitalTwinsEndpointResourcePropertiesClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalDigitalTwinsEndpointResourcePropertiesClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
+	return b, json.Unmarshal(rawMsg, b)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armazuredata
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,62 @@ import (
 // SQLServersClient contains the methods for the SQLServers group.
 // Don't use this type directly, use NewSQLServersClient() instead.
 type SQLServersClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSQLServersClient creates a new instance of SQLServersClient with the specified values.
-func NewSQLServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SQLServersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewSQLServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SQLServersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &SQLServersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &SQLServersClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a SQL Server.
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLServersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, sqlServerRegistrationName string, sqlServerName string, parameters SQLServer, options *SQLServersCreateOrUpdateOptions) (SQLServersCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-24-preview
+// resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
+// Manager API or the portal.
+// sqlServerRegistrationName - Name of the SQL Server registration.
+// sqlServerName - Name of the SQL Server.
+// parameters - The SQL Server to be created or updated.
+// options - SQLServersClientCreateOrUpdateOptions contains the optional parameters for the SQLServersClient.CreateOrUpdate
+// method.
+func (client *SQLServersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, sqlServerRegistrationName string, sqlServerName string, parameters SQLServer, options *SQLServersClientCreateOrUpdateOptions) (SQLServersClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, sqlServerRegistrationName, sqlServerName, parameters, options)
 	if err != nil {
-		return SQLServersCreateOrUpdateResponse{}, err
+		return SQLServersClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLServersCreateOrUpdateResponse{}, err
+		return SQLServersClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return SQLServersCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return SQLServersClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SQLServersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, sqlServerRegistrationName string, sqlServerName string, parameters SQLServer, options *SQLServersCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SQLServersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, sqlServerRegistrationName string, sqlServerName string, parameters SQLServer, options *SQLServersClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureData/sqlServerRegistrations/{sqlServerRegistrationName}/sqlServers/{sqlServerName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,58 +98,51 @@ func (client *SQLServersClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-07-24-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SQLServersClient) createOrUpdateHandleResponse(resp *http.Response) (SQLServersCreateOrUpdateResponse, error) {
-	result := SQLServersCreateOrUpdateResponse{RawResponse: resp}
+func (client *SQLServersClient) createOrUpdateHandleResponse(resp *http.Response) (SQLServersClientCreateOrUpdateResponse, error) {
+	result := SQLServersClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLServer); err != nil {
-		return SQLServersCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SQLServersClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SQLServersClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a SQL Server.
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLServersClient) Delete(ctx context.Context, resourceGroupName string, sqlServerRegistrationName string, sqlServerName string, options *SQLServersDeleteOptions) (SQLServersDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-24-preview
+// resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
+// Manager API or the portal.
+// sqlServerRegistrationName - Name of the SQL Server registration.
+// sqlServerName - Name of the SQL Server.
+// options - SQLServersClientDeleteOptions contains the optional parameters for the SQLServersClient.Delete method.
+func (client *SQLServersClient) Delete(ctx context.Context, resourceGroupName string, sqlServerRegistrationName string, sqlServerName string, options *SQLServersClientDeleteOptions) (SQLServersClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, sqlServerRegistrationName, sqlServerName, options)
 	if err != nil {
-		return SQLServersDeleteResponse{}, err
+		return SQLServersClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLServersDeleteResponse{}, err
+		return SQLServersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return SQLServersDeleteResponse{}, client.deleteHandleError(resp)
+		return SQLServersClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SQLServersDeleteResponse{RawResponse: resp}, nil
+	return SQLServersClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SQLServersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sqlServerRegistrationName string, sqlServerName string, options *SQLServersDeleteOptions) (*policy.Request, error) {
+func (client *SQLServersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sqlServerRegistrationName string, sqlServerName string, options *SQLServersClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureData/sqlServerRegistrations/{sqlServerRegistrationName}/sqlServers/{sqlServerName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -147,49 +160,42 @@ func (client *SQLServersClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-07-24-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SQLServersClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a SQL Server.
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLServersClient) Get(ctx context.Context, resourceGroupName string, sqlServerRegistrationName string, sqlServerName string, options *SQLServersGetOptions) (SQLServersGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-24-preview
+// resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
+// Manager API or the portal.
+// sqlServerRegistrationName - Name of the SQL Server registration.
+// sqlServerName - Name of the SQL Server.
+// options - SQLServersClientGetOptions contains the optional parameters for the SQLServersClient.Get method.
+func (client *SQLServersClient) Get(ctx context.Context, resourceGroupName string, sqlServerRegistrationName string, sqlServerName string, options *SQLServersClientGetOptions) (SQLServersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, sqlServerRegistrationName, sqlServerName, options)
 	if err != nil {
-		return SQLServersGetResponse{}, err
+		return SQLServersClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SQLServersGetResponse{}, err
+		return SQLServersClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SQLServersGetResponse{}, client.getHandleError(resp)
+		return SQLServersClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SQLServersClient) getCreateRequest(ctx context.Context, resourceGroupName string, sqlServerRegistrationName string, sqlServerName string, options *SQLServersGetOptions) (*policy.Request, error) {
+func (client *SQLServersClient) getCreateRequest(ctx context.Context, resourceGroupName string, sqlServerRegistrationName string, sqlServerName string, options *SQLServersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureData/sqlServerRegistrations/{sqlServerRegistrationName}/sqlServers/{sqlServerName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -207,7 +213,7 @@ func (client *SQLServersClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -217,48 +223,57 @@ func (client *SQLServersClient) getCreateRequest(ctx context.Context, resourceGr
 	}
 	reqQP.Set("api-version", "2019-07-24-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SQLServersClient) getHandleResponse(resp *http.Response) (SQLServersGetResponse, error) {
-	result := SQLServersGetResponse{RawResponse: resp}
+func (client *SQLServersClient) getHandleResponse(resp *http.Response) (SQLServersClientGetResponse, error) {
+	result := SQLServersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLServer); err != nil {
-		return SQLServersGetResponse{}, runtime.NewResponseError(err, resp)
+		return SQLServersClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SQLServersClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByResourceGroup - Gets all SQL Servers in a SQL Server Registration.
-// If the operation fails it returns the *CloudError error type.
-func (client *SQLServersClient) ListByResourceGroup(resourceGroupName string, sqlServerRegistrationName string, options *SQLServersListByResourceGroupOptions) *SQLServersListByResourceGroupPager {
-	return &SQLServersListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, sqlServerRegistrationName, options)
+// NewListByResourceGroupPager - Gets all SQL Servers in a SQL Server Registration.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-24-preview
+// resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
+// Manager API or the portal.
+// sqlServerRegistrationName - Name of the SQL Server registration.
+// options - SQLServersClientListByResourceGroupOptions contains the optional parameters for the SQLServersClient.ListByResourceGroup
+// method.
+func (client *SQLServersClient) NewListByResourceGroupPager(resourceGroupName string, sqlServerRegistrationName string, options *SQLServersClientListByResourceGroupOptions) *runtime.Pager[SQLServersClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SQLServersClientListByResourceGroupResponse]{
+		More: func(page SQLServersClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SQLServersListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SQLServerListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SQLServersClientListByResourceGroupResponse) (SQLServersClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, sqlServerRegistrationName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SQLServersClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SQLServersClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SQLServersClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *SQLServersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, sqlServerRegistrationName string, options *SQLServersListByResourceGroupOptions) (*policy.Request, error) {
+func (client *SQLServersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, sqlServerRegistrationName string, options *SQLServersClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureData/sqlServerRegistrations/{sqlServerRegistrationName}/sqlServers"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -272,7 +287,7 @@ func (client *SQLServersClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -282,28 +297,15 @@ func (client *SQLServersClient) listByResourceGroupCreateRequest(ctx context.Con
 	}
 	reqQP.Set("api-version", "2019-07-24-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *SQLServersClient) listByResourceGroupHandleResponse(resp *http.Response) (SQLServersListByResourceGroupResponse, error) {
-	result := SQLServersListByResourceGroupResponse{RawResponse: resp}
+func (client *SQLServersClient) listByResourceGroupHandleResponse(resp *http.Response) (SQLServersClientListByResourceGroupResponse, error) {
+	result := SQLServersClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SQLServerListResult); err != nil {
-		return SQLServersListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return SQLServersClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
-}
-
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *SQLServersClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

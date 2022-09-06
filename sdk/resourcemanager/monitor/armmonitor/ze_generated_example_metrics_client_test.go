@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,27 +17,32 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/examples/GetMetric.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/examples/GetMetric.json
 func ExampleMetricsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewMetricsClient(cred, nil)
-	_, err = client.List(ctx,
-		"<resource-uri>",
-		&armmonitor.MetricsListOptions{Timespan: to.StringPtr("<timespan>"),
-			Interval:        to.StringPtr("<interval>"),
+	client, err := armmonitor.NewMetricsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.List(ctx,
+		"subscriptions/b324c52b-4073-4807-93af-e07d289c093e/resourceGroups/test/providers/Microsoft.Storage/storageAccounts/larryshoebox/blobServices/default",
+		&armmonitor.MetricsClientListOptions{Timespan: to.Ptr("2017-04-14T02:20:00Z/2017-04-14T04:20:00Z"),
+			Interval:        to.Ptr("PT1M"),
 			Metricnames:     nil,
-			Aggregation:     to.StringPtr("<aggregation>"),
-			Top:             to.Int32Ptr(3),
-			Orderby:         to.StringPtr("<orderby>"),
-			Filter:          to.StringPtr("<filter>"),
+			Aggregation:     to.Ptr("Average,count"),
+			Top:             to.Ptr[int32](3),
+			Orderby:         to.Ptr("Average asc"),
+			Filter:          to.Ptr("BlobType eq '*'"),
 			ResultType:      nil,
-			Metricnamespace: to.StringPtr("<metricnamespace>"),
+			Metricnamespace: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }

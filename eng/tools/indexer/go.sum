@@ -1,2 +1,2 @@
-github.com/Azure/azure-sdk-for-go v54.2.1+incompatible h1:RiwBAqYP8Xz2yTPNzrwiHX5+lfPkRlHuk/x4BOAyAjA=
-github.com/Azure/azure-sdk-for-go v54.2.1+incompatible/go.mod h1:9XXNKU+eRnpl9moKnB4QOLf1HestfXbmab5FXxiDBjc=
+github.com/Azure/azure-sdk-for-go v63.3.0+incompatible h1:INepVujzUrmArRZjDLHbtER+FkvCoEwyRCXGqOlmDII=
+github.com/Azure/azure-sdk-for-go v63.3.0+incompatible/go.mod h1:9XXNKU+eRnpl9moKnB4QOLf1HestfXbmab5FXxiDBjc=

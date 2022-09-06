@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armblueprint
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,41 +25,59 @@ import (
 // PublishedBlueprintsClient contains the methods for the PublishedBlueprints group.
 // Don't use this type directly, use NewPublishedBlueprintsClient() instead.
 type PublishedBlueprintsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewPublishedBlueprintsClient creates a new instance of PublishedBlueprintsClient with the specified values.
-func NewPublishedBlueprintsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *PublishedBlueprintsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewPublishedBlueprintsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PublishedBlueprintsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &PublishedBlueprintsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &PublishedBlueprintsClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
-// Create - Publish a new version of the blueprint definition with the latest artifacts. Published blueprint definitions are immutable.
-// If the operation fails it returns the *CloudError error type.
-func (client *PublishedBlueprintsClient) Create(ctx context.Context, resourceScope string, blueprintName string, versionID string, options *PublishedBlueprintsCreateOptions) (PublishedBlueprintsCreateResponse, error) {
+// Create - Publish a new version of the blueprint definition with the latest artifacts. Published blueprint definitions are
+// immutable.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
+// resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+// subscription (format: '/subscriptions/{subscriptionId}').
+// blueprintName - Name of the blueprint definition.
+// versionID - Version of the published blueprint definition.
+// options - PublishedBlueprintsClientCreateOptions contains the optional parameters for the PublishedBlueprintsClient.Create
+// method.
+func (client *PublishedBlueprintsClient) Create(ctx context.Context, resourceScope string, blueprintName string, versionID string, options *PublishedBlueprintsClientCreateOptions) (PublishedBlueprintsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceScope, blueprintName, versionID, options)
 	if err != nil {
-		return PublishedBlueprintsCreateResponse{}, err
+		return PublishedBlueprintsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PublishedBlueprintsCreateResponse{}, err
+		return PublishedBlueprintsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return PublishedBlueprintsCreateResponse{}, client.createHandleError(resp)
+		return PublishedBlueprintsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *PublishedBlueprintsClient) createCreateRequest(ctx context.Context, resourceScope string, blueprintName string, versionID string, options *PublishedBlueprintsCreateOptions) (*policy.Request, error) {
+func (client *PublishedBlueprintsClient) createCreateRequest(ctx context.Context, resourceScope string, blueprintName string, versionID string, options *PublishedBlueprintsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	if blueprintName == "" {
@@ -70,14 +88,14 @@ func (client *PublishedBlueprintsClient) createCreateRequest(ctx context.Context
 		return nil, errors.New("parameter versionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{versionId}", url.PathEscape(versionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.PublishedBlueprint != nil {
 		return req, runtime.MarshalAsJSON(req, *options.PublishedBlueprint)
 	}
@@ -85,46 +103,40 @@ func (client *PublishedBlueprintsClient) createCreateRequest(ctx context.Context
 }
 
 // createHandleResponse handles the Create response.
-func (client *PublishedBlueprintsClient) createHandleResponse(resp *http.Response) (PublishedBlueprintsCreateResponse, error) {
-	result := PublishedBlueprintsCreateResponse{RawResponse: resp}
+func (client *PublishedBlueprintsClient) createHandleResponse(resp *http.Response) (PublishedBlueprintsClientCreateResponse, error) {
+	result := PublishedBlueprintsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublishedBlueprint); err != nil {
-		return PublishedBlueprintsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return PublishedBlueprintsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *PublishedBlueprintsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a published version of a blueprint definition.
-// If the operation fails it returns the *CloudError error type.
-func (client *PublishedBlueprintsClient) Delete(ctx context.Context, resourceScope string, blueprintName string, versionID string, options *PublishedBlueprintsDeleteOptions) (PublishedBlueprintsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
+// resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+// subscription (format: '/subscriptions/{subscriptionId}').
+// blueprintName - Name of the blueprint definition.
+// versionID - Version of the published blueprint definition.
+// options - PublishedBlueprintsClientDeleteOptions contains the optional parameters for the PublishedBlueprintsClient.Delete
+// method.
+func (client *PublishedBlueprintsClient) Delete(ctx context.Context, resourceScope string, blueprintName string, versionID string, options *PublishedBlueprintsClientDeleteOptions) (PublishedBlueprintsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceScope, blueprintName, versionID, options)
 	if err != nil {
-		return PublishedBlueprintsDeleteResponse{}, err
+		return PublishedBlueprintsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PublishedBlueprintsDeleteResponse{}, err
+		return PublishedBlueprintsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return PublishedBlueprintsDeleteResponse{}, client.deleteHandleError(resp)
+		return PublishedBlueprintsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteHandleResponse(resp)
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PublishedBlueprintsClient) deleteCreateRequest(ctx context.Context, resourceScope string, blueprintName string, versionID string, options *PublishedBlueprintsDeleteOptions) (*policy.Request, error) {
+func (client *PublishedBlueprintsClient) deleteCreateRequest(ctx context.Context, resourceScope string, blueprintName string, versionID string, options *PublishedBlueprintsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	if blueprintName == "" {
@@ -135,58 +147,51 @@ func (client *PublishedBlueprintsClient) deleteCreateRequest(ctx context.Context
 		return nil, errors.New("parameter versionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{versionId}", url.PathEscape(versionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *PublishedBlueprintsClient) deleteHandleResponse(resp *http.Response) (PublishedBlueprintsDeleteResponse, error) {
-	result := PublishedBlueprintsDeleteResponse{RawResponse: resp}
+func (client *PublishedBlueprintsClient) deleteHandleResponse(resp *http.Response) (PublishedBlueprintsClientDeleteResponse, error) {
+	result := PublishedBlueprintsClientDeleteResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublishedBlueprint); err != nil {
-		return PublishedBlueprintsDeleteResponse{}, runtime.NewResponseError(err, resp)
+		return PublishedBlueprintsClientDeleteResponse{}, err
 	}
 	return result, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *PublishedBlueprintsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a published version of a blueprint definition.
-// If the operation fails it returns the *CloudError error type.
-func (client *PublishedBlueprintsClient) Get(ctx context.Context, resourceScope string, blueprintName string, versionID string, options *PublishedBlueprintsGetOptions) (PublishedBlueprintsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
+// resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+// subscription (format: '/subscriptions/{subscriptionId}').
+// blueprintName - Name of the blueprint definition.
+// versionID - Version of the published blueprint definition.
+// options - PublishedBlueprintsClientGetOptions contains the optional parameters for the PublishedBlueprintsClient.Get method.
+func (client *PublishedBlueprintsClient) Get(ctx context.Context, resourceScope string, blueprintName string, versionID string, options *PublishedBlueprintsClientGetOptions) (PublishedBlueprintsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceScope, blueprintName, versionID, options)
 	if err != nil {
-		return PublishedBlueprintsGetResponse{}, err
+		return PublishedBlueprintsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PublishedBlueprintsGetResponse{}, err
+		return PublishedBlueprintsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PublishedBlueprintsGetResponse{}, client.getHandleError(resp)
+		return PublishedBlueprintsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PublishedBlueprintsClient) getCreateRequest(ctx context.Context, resourceScope string, blueprintName string, versionID string, options *PublishedBlueprintsGetOptions) (*policy.Request, error) {
+func (client *PublishedBlueprintsClient) getCreateRequest(ctx context.Context, resourceScope string, blueprintName string, versionID string, options *PublishedBlueprintsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions/{versionId}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	if blueprintName == "" {
@@ -197,90 +202,86 @@ func (client *PublishedBlueprintsClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter versionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{versionId}", url.PathEscape(versionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PublishedBlueprintsClient) getHandleResponse(resp *http.Response) (PublishedBlueprintsGetResponse, error) {
-	result := PublishedBlueprintsGetResponse{RawResponse: resp}
+func (client *PublishedBlueprintsClient) getHandleResponse(resp *http.Response) (PublishedBlueprintsClientGetResponse, error) {
+	result := PublishedBlueprintsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublishedBlueprint); err != nil {
-		return PublishedBlueprintsGetResponse{}, runtime.NewResponseError(err, resp)
+		return PublishedBlueprintsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PublishedBlueprintsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - List published versions of given blueprint definition.
-// If the operation fails it returns the *CloudError error type.
-func (client *PublishedBlueprintsClient) List(resourceScope string, blueprintName string, options *PublishedBlueprintsListOptions) *PublishedBlueprintsListPager {
-	return &PublishedBlueprintsListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceScope, blueprintName, options)
+// NewListPager - List published versions of given blueprint definition.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
+// resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+// subscription (format: '/subscriptions/{subscriptionId}').
+// blueprintName - Name of the blueprint definition.
+// options - PublishedBlueprintsClientListOptions contains the optional parameters for the PublishedBlueprintsClient.List
+// method.
+func (client *PublishedBlueprintsClient) NewListPager(resourceScope string, blueprintName string, options *PublishedBlueprintsClientListOptions) *runtime.Pager[PublishedBlueprintsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PublishedBlueprintsClientListResponse]{
+		More: func(page PublishedBlueprintsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PublishedBlueprintsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PublishedBlueprintList.NextLink)
+		Fetcher: func(ctx context.Context, page *PublishedBlueprintsClientListResponse) (PublishedBlueprintsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceScope, blueprintName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PublishedBlueprintsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PublishedBlueprintsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PublishedBlueprintsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *PublishedBlueprintsClient) listCreateRequest(ctx context.Context, resourceScope string, blueprintName string, options *PublishedBlueprintsListOptions) (*policy.Request, error) {
+func (client *PublishedBlueprintsClient) listCreateRequest(ctx context.Context, resourceScope string, blueprintName string, options *PublishedBlueprintsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceScope}/providers/Microsoft.Blueprint/blueprints/{blueprintName}/versions"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	if blueprintName == "" {
 		return nil, errors.New("parameter blueprintName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{blueprintName}", url.PathEscape(blueprintName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *PublishedBlueprintsClient) listHandleResponse(resp *http.Response) (PublishedBlueprintsListResponse, error) {
-	result := PublishedBlueprintsListResponse{RawResponse: resp}
+func (client *PublishedBlueprintsClient) listHandleResponse(resp *http.Response) (PublishedBlueprintsClientListResponse, error) {
+	result := PublishedBlueprintsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublishedBlueprintList); err != nil {
-		return PublishedBlueprintsListResponse{}, runtime.NewResponseError(err, resp)
+		return PublishedBlueprintsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *PublishedBlueprintsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

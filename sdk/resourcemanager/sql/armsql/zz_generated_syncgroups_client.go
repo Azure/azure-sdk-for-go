@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,42 +25,61 @@ import (
 // SyncGroupsClient contains the methods for the SyncGroups group.
 // Don't use this type directly, use NewSyncGroupsClient() instead.
 type SyncGroupsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSyncGroupsClient creates a new instance of SyncGroupsClient with the specified values.
-func NewSyncGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SyncGroupsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewSyncGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SyncGroupsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &SyncGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &SyncGroupsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // CancelSync - Cancels a sync group synchronization.
-// If the operation fails it returns a generic error.
-func (client *SyncGroupsClient) CancelSync(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsCancelSyncOptions) (SyncGroupsCancelSyncResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database on which the sync group is hosted.
+// syncGroupName - The name of the sync group.
+// options - SyncGroupsClientCancelSyncOptions contains the optional parameters for the SyncGroupsClient.CancelSync method.
+func (client *SyncGroupsClient) CancelSync(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientCancelSyncOptions) (SyncGroupsClientCancelSyncResponse, error) {
 	req, err := client.cancelSyncCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
 	if err != nil {
-		return SyncGroupsCancelSyncResponse{}, err
+		return SyncGroupsClientCancelSyncResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SyncGroupsCancelSyncResponse{}, err
+		return SyncGroupsClientCancelSyncResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SyncGroupsCancelSyncResponse{}, client.cancelSyncHandleError(resp)
+		return SyncGroupsClientCancelSyncResponse{}, runtime.NewResponseError(resp)
 	}
-	return SyncGroupsCancelSyncResponse{RawResponse: resp}, nil
+	return SyncGroupsClientCancelSyncResponse{}, nil
 }
 
 // cancelSyncCreateRequest creates the CancelSync request.
-func (client *SyncGroupsClient) cancelSyncCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsCancelSyncOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) cancelSyncCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientCancelSyncOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/cancelSync"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -81,7 +101,7 @@ func (client *SyncGroupsClient) cancelSyncCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,41 +111,33 @@ func (client *SyncGroupsClient) cancelSyncCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// cancelSyncHandleError handles the CancelSync error response.
-func (client *SyncGroupsClient) cancelSyncHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginCreateOrUpdate - Creates or updates a sync group.
-// If the operation fails it returns a generic error.
-func (client *SyncGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsBeginCreateOrUpdateOptions) (SyncGroupsCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, databaseName, syncGroupName, parameters, options)
-	if err != nil {
-		return SyncGroupsCreateOrUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database on which the sync group is hosted.
+// syncGroupName - The name of the sync group.
+// parameters - The requested sync group resource state.
+// options - SyncGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the SyncGroupsClient.BeginCreateOrUpdate
+// method.
+func (client *SyncGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[SyncGroupsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, databaseName, syncGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[SyncGroupsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[SyncGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SyncGroupsCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SyncGroupsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return SyncGroupsCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &SyncGroupsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a sync group.
-// If the operation fails it returns a generic error.
-func (client *SyncGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+func (client *SyncGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -135,13 +147,13 @@ func (client *SyncGroupsClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SyncGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -163,52 +175,42 @@ func (client *SyncGroupsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SyncGroupsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Deletes a sync group.
-// If the operation fails it returns a generic error.
-func (client *SyncGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsBeginDeleteOptions) (SyncGroupsDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
-	if err != nil {
-		return SyncGroupsDeletePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database on which the sync group is hosted.
+// syncGroupName - The name of the sync group.
+// options - SyncGroupsClientBeginDeleteOptions contains the optional parameters for the SyncGroupsClient.BeginDelete method.
+func (client *SyncGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientBeginDeleteOptions) (*runtime.Poller[SyncGroupsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[SyncGroupsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[SyncGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SyncGroupsDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SyncGroupsClient.Delete", "", resp, client.pl, client.deleteHandleError)
-	if err != nil {
-		return SyncGroupsDeletePollerResponse{}, err
-	}
-	result.Poller = &SyncGroupsDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a sync group.
-// If the operation fails it returns a generic error.
-func (client *SyncGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+func (client *SyncGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
 	if err != nil {
 		return nil, err
@@ -218,13 +220,13 @@ func (client *SyncGroupsClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SyncGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsBeginDeleteOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -246,7 +248,7 @@ func (client *SyncGroupsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -256,37 +258,32 @@ func (client *SyncGroupsClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SyncGroupsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a sync group.
-// If the operation fails it returns a generic error.
-func (client *SyncGroupsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsGetOptions) (SyncGroupsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database on which the sync group is hosted.
+// syncGroupName - The name of the sync group.
+// options - SyncGroupsClientGetOptions contains the optional parameters for the SyncGroupsClient.Get method.
+func (client *SyncGroupsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientGetOptions) (SyncGroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
 	if err != nil {
-		return SyncGroupsGetResponse{}, err
+		return SyncGroupsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SyncGroupsGetResponse{}, err
+		return SyncGroupsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SyncGroupsGetResponse{}, client.getHandleError(resp)
+		return SyncGroupsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SyncGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsGetOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -308,54 +305,65 @@ func (client *SyncGroupsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SyncGroupsClient) getHandleResponse(resp *http.Response) (SyncGroupsGetResponse, error) {
-	result := SyncGroupsGetResponse{RawResponse: resp}
+func (client *SyncGroupsClient) getHandleResponse(resp *http.Response) (SyncGroupsClientGetResponse, error) {
+	result := SyncGroupsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncGroup); err != nil {
-		return SyncGroupsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SyncGroupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SyncGroupsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListByDatabase - Lists sync groups under a hub database.
-// If the operation fails it returns a generic error.
-func (client *SyncGroupsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *SyncGroupsListByDatabaseOptions) *SyncGroupsListByDatabasePager {
-	return &SyncGroupsListByDatabasePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+// NewListByDatabasePager - Lists sync groups under a hub database.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database on which the sync group is hosted.
+// options - SyncGroupsClientListByDatabaseOptions contains the optional parameters for the SyncGroupsClient.ListByDatabase
+// method.
+func (client *SyncGroupsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *SyncGroupsClientListByDatabaseOptions) *runtime.Pager[SyncGroupsClientListByDatabaseResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SyncGroupsClientListByDatabaseResponse]{
+		More: func(page SyncGroupsClientListByDatabaseResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SyncGroupsListByDatabaseResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SyncGroupListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SyncGroupsClientListByDatabaseResponse) (SyncGroupsClientListByDatabaseResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SyncGroupsClientListByDatabaseResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SyncGroupsClientListByDatabaseResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SyncGroupsClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByDatabaseHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *SyncGroupsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *SyncGroupsListByDatabaseOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *SyncGroupsClientListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -373,54 +381,66 @@ func (client *SyncGroupsClient) listByDatabaseCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *SyncGroupsClient) listByDatabaseHandleResponse(resp *http.Response) (SyncGroupsListByDatabaseResponse, error) {
-	result := SyncGroupsListByDatabaseResponse{RawResponse: resp}
+func (client *SyncGroupsClient) listByDatabaseHandleResponse(resp *http.Response) (SyncGroupsClientListByDatabaseResponse, error) {
+	result := SyncGroupsClientListByDatabaseResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncGroupListResult); err != nil {
-		return SyncGroupsListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
+		return SyncGroupsClientListByDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
-// listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *SyncGroupsClient) listByDatabaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListHubSchemas - Gets a collection of hub database schemas.
-// If the operation fails it returns a generic error.
-func (client *SyncGroupsClient) ListHubSchemas(resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsListHubSchemasOptions) *SyncGroupsListHubSchemasPager {
-	return &SyncGroupsListHubSchemasPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listHubSchemasCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
+// NewListHubSchemasPager - Gets a collection of hub database schemas.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database on which the sync group is hosted.
+// syncGroupName - The name of the sync group.
+// options - SyncGroupsClientListHubSchemasOptions contains the optional parameters for the SyncGroupsClient.ListHubSchemas
+// method.
+func (client *SyncGroupsClient) NewListHubSchemasPager(resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientListHubSchemasOptions) *runtime.Pager[SyncGroupsClientListHubSchemasResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SyncGroupsClientListHubSchemasResponse]{
+		More: func(page SyncGroupsClientListHubSchemasResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SyncGroupsListHubSchemasResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SyncFullSchemaPropertiesListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SyncGroupsClientListHubSchemasResponse) (SyncGroupsClientListHubSchemasResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listHubSchemasCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SyncGroupsClientListHubSchemasResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SyncGroupsClientListHubSchemasResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SyncGroupsClientListHubSchemasResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHubSchemasHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listHubSchemasCreateRequest creates the ListHubSchemas request.
-func (client *SyncGroupsClient) listHubSchemasCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsListHubSchemasOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) listHubSchemasCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientListHubSchemasOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/hubSchemas"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -442,54 +462,68 @@ func (client *SyncGroupsClient) listHubSchemasCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHubSchemasHandleResponse handles the ListHubSchemas response.
-func (client *SyncGroupsClient) listHubSchemasHandleResponse(resp *http.Response) (SyncGroupsListHubSchemasResponse, error) {
-	result := SyncGroupsListHubSchemasResponse{RawResponse: resp}
+func (client *SyncGroupsClient) listHubSchemasHandleResponse(resp *http.Response) (SyncGroupsClientListHubSchemasResponse, error) {
+	result := SyncGroupsClientListHubSchemasResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncFullSchemaPropertiesListResult); err != nil {
-		return SyncGroupsListHubSchemasResponse{}, runtime.NewResponseError(err, resp)
+		return SyncGroupsClientListHubSchemasResponse{}, err
 	}
 	return result, nil
 }
 
-// listHubSchemasHandleError handles the ListHubSchemas error response.
-func (client *SyncGroupsClient) listHubSchemasHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListLogs - Gets a collection of sync group logs.
-// If the operation fails it returns a generic error.
-func (client *SyncGroupsClient) ListLogs(resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParam Enum75, options *SyncGroupsListLogsOptions) *SyncGroupsListLogsPager {
-	return &SyncGroupsListLogsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listLogsCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, startTime, endTime, typeParam, options)
+// NewListLogsPager - Gets a collection of sync group logs.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database on which the sync group is hosted.
+// syncGroupName - The name of the sync group.
+// startTime - Get logs generated after this time.
+// endTime - Get logs generated before this time.
+// typeParam - The types of logs to retrieve.
+// options - SyncGroupsClientListLogsOptions contains the optional parameters for the SyncGroupsClient.ListLogs method.
+func (client *SyncGroupsClient) NewListLogsPager(resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParam SyncGroupsType, options *SyncGroupsClientListLogsOptions) *runtime.Pager[SyncGroupsClientListLogsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SyncGroupsClientListLogsResponse]{
+		More: func(page SyncGroupsClientListLogsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SyncGroupsListLogsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SyncGroupLogListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SyncGroupsClientListLogsResponse) (SyncGroupsClientListLogsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listLogsCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, startTime, endTime, typeParam, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SyncGroupsClientListLogsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SyncGroupsClientListLogsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SyncGroupsClientListLogsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listLogsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listLogsCreateRequest creates the ListLogs request.
-func (client *SyncGroupsClient) listLogsCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParam Enum75, options *SyncGroupsListLogsOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) listLogsCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParam SyncGroupsType, options *SyncGroupsClientListLogsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/logs"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -511,7 +545,7 @@ func (client *SyncGroupsClient) listLogsCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -524,47 +558,55 @@ func (client *SyncGroupsClient) listLogsCreateRequest(ctx context.Context, resou
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listLogsHandleResponse handles the ListLogs response.
-func (client *SyncGroupsClient) listLogsHandleResponse(resp *http.Response) (SyncGroupsListLogsResponse, error) {
-	result := SyncGroupsListLogsResponse{RawResponse: resp}
+func (client *SyncGroupsClient) listLogsHandleResponse(resp *http.Response) (SyncGroupsClientListLogsResponse, error) {
+	result := SyncGroupsClientListLogsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncGroupLogListResult); err != nil {
-		return SyncGroupsListLogsResponse{}, runtime.NewResponseError(err, resp)
+		return SyncGroupsClientListLogsResponse{}, err
 	}
 	return result, nil
 }
 
-// listLogsHandleError handles the ListLogs error response.
-func (client *SyncGroupsClient) listLogsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListSyncDatabaseIDs - Gets a collection of sync database ids.
-// If the operation fails it returns a generic error.
-func (client *SyncGroupsClient) ListSyncDatabaseIDs(locationName string, options *SyncGroupsListSyncDatabaseIDsOptions) *SyncGroupsListSyncDatabaseIDsPager {
-	return &SyncGroupsListSyncDatabaseIDsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listSyncDatabaseIDsCreateRequest(ctx, locationName, options)
+// NewListSyncDatabaseIDsPager - Gets a collection of sync database ids.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// locationName - The name of the region where the resource is located.
+// options - SyncGroupsClientListSyncDatabaseIDsOptions contains the optional parameters for the SyncGroupsClient.ListSyncDatabaseIDs
+// method.
+func (client *SyncGroupsClient) NewListSyncDatabaseIDsPager(locationName string, options *SyncGroupsClientListSyncDatabaseIDsOptions) *runtime.Pager[SyncGroupsClientListSyncDatabaseIDsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SyncGroupsClientListSyncDatabaseIDsResponse]{
+		More: func(page SyncGroupsClientListSyncDatabaseIDsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SyncGroupsListSyncDatabaseIDsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SyncDatabaseIDListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SyncGroupsClientListSyncDatabaseIDsResponse) (SyncGroupsClientListSyncDatabaseIDsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listSyncDatabaseIDsCreateRequest(ctx, locationName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SyncGroupsClientListSyncDatabaseIDsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SyncGroupsClientListSyncDatabaseIDsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SyncGroupsClientListSyncDatabaseIDsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSyncDatabaseIDsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listSyncDatabaseIDsCreateRequest creates the ListSyncDatabaseIDs request.
-func (client *SyncGroupsClient) listSyncDatabaseIDsCreateRequest(ctx context.Context, locationName string, options *SyncGroupsListSyncDatabaseIDsOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) listSyncDatabaseIDsCreateRequest(ctx context.Context, locationName string, options *SyncGroupsClientListSyncDatabaseIDsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/syncDatabaseIds"
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")
@@ -574,61 +616,52 @@ func (client *SyncGroupsClient) listSyncDatabaseIDsCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listSyncDatabaseIDsHandleResponse handles the ListSyncDatabaseIDs response.
-func (client *SyncGroupsClient) listSyncDatabaseIDsHandleResponse(resp *http.Response) (SyncGroupsListSyncDatabaseIDsResponse, error) {
-	result := SyncGroupsListSyncDatabaseIDsResponse{RawResponse: resp}
+func (client *SyncGroupsClient) listSyncDatabaseIDsHandleResponse(resp *http.Response) (SyncGroupsClientListSyncDatabaseIDsResponse, error) {
+	result := SyncGroupsClientListSyncDatabaseIDsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncDatabaseIDListResult); err != nil {
-		return SyncGroupsListSyncDatabaseIDsResponse{}, runtime.NewResponseError(err, resp)
+		return SyncGroupsClientListSyncDatabaseIDsResponse{}, err
 	}
 	return result, nil
-}
-
-// listSyncDatabaseIDsHandleError handles the ListSyncDatabaseIDs error response.
-func (client *SyncGroupsClient) listSyncDatabaseIDsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginRefreshHubSchema - Refreshes a hub database schema.
-// If the operation fails it returns a generic error.
-func (client *SyncGroupsClient) BeginRefreshHubSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsBeginRefreshHubSchemaOptions) (SyncGroupsRefreshHubSchemaPollerResponse, error) {
-	resp, err := client.refreshHubSchema(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
-	if err != nil {
-		return SyncGroupsRefreshHubSchemaPollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database on which the sync group is hosted.
+// syncGroupName - The name of the sync group.
+// options - SyncGroupsClientBeginRefreshHubSchemaOptions contains the optional parameters for the SyncGroupsClient.BeginRefreshHubSchema
+// method.
+func (client *SyncGroupsClient) BeginRefreshHubSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientBeginRefreshHubSchemaOptions) (*runtime.Poller[SyncGroupsClientRefreshHubSchemaResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.refreshHubSchema(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[SyncGroupsClientRefreshHubSchemaResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[SyncGroupsClientRefreshHubSchemaResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SyncGroupsRefreshHubSchemaPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SyncGroupsClient.RefreshHubSchema", "", resp, client.pl, client.refreshHubSchemaHandleError)
-	if err != nil {
-		return SyncGroupsRefreshHubSchemaPollerResponse{}, err
-	}
-	result.Poller = &SyncGroupsRefreshHubSchemaPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // RefreshHubSchema - Refreshes a hub database schema.
-// If the operation fails it returns a generic error.
-func (client *SyncGroupsClient) refreshHubSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsBeginRefreshHubSchemaOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+func (client *SyncGroupsClient) refreshHubSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientBeginRefreshHubSchemaOptions) (*http.Response, error) {
 	req, err := client.refreshHubSchemaCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
 	if err != nil {
 		return nil, err
@@ -638,13 +671,13 @@ func (client *SyncGroupsClient) refreshHubSchema(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.refreshHubSchemaHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // refreshHubSchemaCreateRequest creates the RefreshHubSchema request.
-func (client *SyncGroupsClient) refreshHubSchemaCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsBeginRefreshHubSchemaOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) refreshHubSchemaCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientBeginRefreshHubSchemaOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/refreshHubSchema"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -666,7 +699,7 @@ func (client *SyncGroupsClient) refreshHubSchemaCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -676,37 +709,32 @@ func (client *SyncGroupsClient) refreshHubSchemaCreateRequest(ctx context.Contex
 	return req, nil
 }
 
-// refreshHubSchemaHandleError handles the RefreshHubSchema error response.
-func (client *SyncGroupsClient) refreshHubSchemaHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // TriggerSync - Triggers a sync group synchronization.
-// If the operation fails it returns a generic error.
-func (client *SyncGroupsClient) TriggerSync(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsTriggerSyncOptions) (SyncGroupsTriggerSyncResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database on which the sync group is hosted.
+// syncGroupName - The name of the sync group.
+// options - SyncGroupsClientTriggerSyncOptions contains the optional parameters for the SyncGroupsClient.TriggerSync method.
+func (client *SyncGroupsClient) TriggerSync(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientTriggerSyncOptions) (SyncGroupsClientTriggerSyncResponse, error) {
 	req, err := client.triggerSyncCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
 	if err != nil {
-		return SyncGroupsTriggerSyncResponse{}, err
+		return SyncGroupsClientTriggerSyncResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SyncGroupsTriggerSyncResponse{}, err
+		return SyncGroupsClientTriggerSyncResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SyncGroupsTriggerSyncResponse{}, client.triggerSyncHandleError(resp)
+		return SyncGroupsClientTriggerSyncResponse{}, runtime.NewResponseError(resp)
 	}
-	return SyncGroupsTriggerSyncResponse{RawResponse: resp}, nil
+	return SyncGroupsClientTriggerSyncResponse{}, nil
 }
 
 // triggerSyncCreateRequest creates the TriggerSync request.
-func (client *SyncGroupsClient) triggerSyncCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsTriggerSyncOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) triggerSyncCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientTriggerSyncOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/triggerSync"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -728,7 +756,7 @@ func (client *SyncGroupsClient) triggerSyncCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -738,41 +766,32 @@ func (client *SyncGroupsClient) triggerSyncCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// triggerSyncHandleError handles the TriggerSync error response.
-func (client *SyncGroupsClient) triggerSyncHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginUpdate - Updates a sync group.
-// If the operation fails it returns a generic error.
-func (client *SyncGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsBeginUpdateOptions) (SyncGroupsUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, serverName, databaseName, syncGroupName, parameters, options)
-	if err != nil {
-		return SyncGroupsUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database on which the sync group is hosted.
+// syncGroupName - The name of the sync group.
+// parameters - The requested sync group resource state.
+// options - SyncGroupsClientBeginUpdateOptions contains the optional parameters for the SyncGroupsClient.BeginUpdate method.
+func (client *SyncGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsClientBeginUpdateOptions) (*runtime.Poller[SyncGroupsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, serverName, databaseName, syncGroupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[SyncGroupsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[SyncGroupsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SyncGroupsUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SyncGroupsClient.Update", "", resp, client.pl, client.updateHandleError)
-	if err != nil {
-		return SyncGroupsUpdatePollerResponse{}, err
-	}
-	result.Poller = &SyncGroupsUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates a sync group.
-// If the operation fails it returns a generic error.
-func (client *SyncGroupsClient) update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+func (client *SyncGroupsClient) update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -782,13 +801,13 @@ func (client *SyncGroupsClient) update(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SyncGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsBeginUpdateOptions) (*policy.Request, error) {
+func (client *SyncGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -810,25 +829,13 @@ func (client *SyncGroupsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *SyncGroupsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

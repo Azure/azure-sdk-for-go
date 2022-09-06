@@ -168,6 +168,6 @@ func createLink(parentPath string, pathSegment string, id string) string {
 	}
 	completePath.WriteString(pathSegment)
 	completePath.WriteString("/")
-	completePath.WriteString(url.QueryEscape(id))
+	completePath.WriteString(url.PathEscape(id))
 	return completePath.String()
 }

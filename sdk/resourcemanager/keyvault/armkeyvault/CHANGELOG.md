@@ -1,17 +1,33 @@
 # Release History
 
-## 0.2.1 (2021-11-26)
+## 1.1.0-beta.1 (2022-05-19)
+### Features Added
 
-### Other Changes
+- New const `KeyRotationPolicyActionTypeNotify`
+- New const `JSONWebKeyOperationRelease`
+- New const `KeyRotationPolicyActionTypeRotate`
+- New const `KeyPermissionsRotate`
+- New const `KeyPermissionsRelease`
+- New const `KeyPermissionsSetrotationpolicy`
+- New const `KeyPermissionsGetrotationpolicy`
+- New function `PossibleKeyRotationPolicyActionTypeValues() []KeyRotationPolicyActionType`
+- New function `*KeyReleasePolicy.UnmarshalJSON([]byte) error`
+- New function `KeyReleasePolicy.MarshalJSON() ([]byte, error)`
+- New function `RotationPolicy.MarshalJSON() ([]byte, error)`
+- New struct `Action`
+- New struct `KeyReleasePolicy`
+- New struct `KeyRotationPolicyAttributes`
+- New struct `LifetimeAction`
+- New struct `RotationPolicy`
+- New struct `Trigger`
+- New field `ReleasePolicy` in struct `KeyProperties`
+- New field `RotationPolicy` in struct `KeyProperties`
 
-- Now use `github.com/Azure/azure-sdk-for-go/sdk/azidentity@v0.12.0` explicitly.
 
-## 0.2.0 (2021-10-29)
+## 1.0.0 (2022-05-16)
 
-### Breaking Changes
+The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.
 
-- `arm.Connection` has been removed in `github.com/Azure/azure-sdk-for-go/sdk/azcore/v0.20.0`
-- The parameters of `NewXXXClient` has been changed from `(con *arm.Connection, subscriptionID string)` to `(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions)`
+To migrate the existing applications to the latest version, please refer to [Migration Guide](https://aka.ms/azsdk/go/mgmt/migration).
 
-## 0.1.0 (2021-09-29)
-- To better align with the Azure SDK guidelines (https://azure.github.io/azure-sdk/general_introduction.html), we have decided to change the module path to "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault". Therefore, we are deprecating the old module path (which is "github.com/Azure/azure-sdk-for-go/sdk/keyvault/armkeyvault") to avoid confusion. 
+To learn more, please refer to our documentation [Quick Start](https://aka.ms/azsdk/go/mgmt).

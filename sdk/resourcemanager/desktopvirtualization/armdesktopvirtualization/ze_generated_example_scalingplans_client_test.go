@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,194 +14,222 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization/v2"
 )
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ScalingPlan_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ScalingPlan_Get.json
 func ExampleScalingPlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewScalingPlansClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewScalingPlansClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<scaling-plan-name>",
+		"resourceGroup1",
+		"scalingPlan1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("ScalingPlan.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ScalingPlan_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ScalingPlan_Create.json
 func ExampleScalingPlansClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewScalingPlansClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewScalingPlansClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<scaling-plan-name>",
+		"resourceGroup1",
+		"scalingPlan1",
 		armdesktopvirtualization.ScalingPlan{
-			ResourceModelWithAllowedPropertySet: armdesktopvirtualization.ResourceModelWithAllowedPropertySet{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"tag1": to.StringPtr("value1"),
-					"tag2": to.StringPtr("value2"),
-				},
+			Location: to.Ptr("centralus"),
+			Tags: map[string]*string{
+				"tag1": to.Ptr("value1"),
+				"tag2": to.Ptr("value2"),
 			},
 			Properties: &armdesktopvirtualization.ScalingPlanProperties{
-				Description:  to.StringPtr("<description>"),
-				ExclusionTag: to.StringPtr("<exclusion-tag>"),
-				FriendlyName: to.StringPtr("<friendly-name>"),
+				Description:  to.Ptr("Description of Scaling Plan"),
+				ExclusionTag: to.Ptr("value"),
+				FriendlyName: to.Ptr("Scaling Plan 1"),
 				HostPoolReferences: []*armdesktopvirtualization.ScalingHostPoolReference{
 					{
-						HostPoolArmPath:    to.StringPtr("<host-pool-arm-path>"),
-						ScalingPlanEnabled: to.BoolPtr(true),
+						HostPoolArmPath:    to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostPools/hostPool1"),
+						ScalingPlanEnabled: to.Ptr(true),
 					}},
-				HostPoolType: armdesktopvirtualization.ScalingHostPoolTypePooled.ToPtr(),
+				HostPoolType: to.Ptr(armdesktopvirtualization.ScalingHostPoolTypePooled),
 				Schedules: []*armdesktopvirtualization.ScalingSchedule{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("schedule1"),
 						DaysOfWeek: []*armdesktopvirtualization.ScalingScheduleDaysOfWeekItem{
-							armdesktopvirtualization.ScalingScheduleDaysOfWeekItemMonday.ToPtr(),
-							armdesktopvirtualization.ScalingScheduleDaysOfWeekItemTuesday.ToPtr(),
-							armdesktopvirtualization.ScalingScheduleDaysOfWeekItemWednesday.ToPtr(),
-							armdesktopvirtualization.ScalingScheduleDaysOfWeekItemThursday.ToPtr(),
-							armdesktopvirtualization.ScalingScheduleDaysOfWeekItemFriday.ToPtr()},
-						OffPeakLoadBalancingAlgorithm: armdesktopvirtualization.SessionHostLoadBalancingAlgorithmDepthFirst.ToPtr(),
+							to.Ptr(armdesktopvirtualization.ScalingScheduleDaysOfWeekItemMonday),
+							to.Ptr(armdesktopvirtualization.ScalingScheduleDaysOfWeekItemTuesday),
+							to.Ptr(armdesktopvirtualization.ScalingScheduleDaysOfWeekItemWednesday),
+							to.Ptr(armdesktopvirtualization.ScalingScheduleDaysOfWeekItemThursday),
+							to.Ptr(armdesktopvirtualization.ScalingScheduleDaysOfWeekItemFriday)},
+						OffPeakLoadBalancingAlgorithm: to.Ptr(armdesktopvirtualization.SessionHostLoadBalancingAlgorithmDepthFirst),
 						OffPeakStartTime: &armdesktopvirtualization.Time{
-							Hour:   to.Int32Ptr(20),
-							Minute: to.Int32Ptr(0),
+							Hour:   to.Ptr[int32](20),
+							Minute: to.Ptr[int32](0),
 						},
-						PeakLoadBalancingAlgorithm: armdesktopvirtualization.SessionHostLoadBalancingAlgorithmBreadthFirst.ToPtr(),
+						PeakLoadBalancingAlgorithm: to.Ptr(armdesktopvirtualization.SessionHostLoadBalancingAlgorithmBreadthFirst),
 						PeakStartTime: &armdesktopvirtualization.Time{
-							Hour:   to.Int32Ptr(8),
-							Minute: to.Int32Ptr(0),
+							Hour:   to.Ptr[int32](8),
+							Minute: to.Ptr[int32](0),
 						},
-						RampDownCapacityThresholdPct:   to.Int32Ptr(50),
-						RampDownForceLogoffUsers:       to.BoolPtr(true),
-						RampDownLoadBalancingAlgorithm: armdesktopvirtualization.SessionHostLoadBalancingAlgorithmDepthFirst.ToPtr(),
-						RampDownMinimumHostsPct:        to.Int32Ptr(20),
-						RampDownNotificationMessage:    to.StringPtr("<ramp-down-notification-message>"),
+						RampDownCapacityThresholdPct:   to.Ptr[int32](50),
+						RampDownForceLogoffUsers:       to.Ptr(true),
+						RampDownLoadBalancingAlgorithm: to.Ptr(armdesktopvirtualization.SessionHostLoadBalancingAlgorithmDepthFirst),
+						RampDownMinimumHostsPct:        to.Ptr[int32](20),
+						RampDownNotificationMessage:    to.Ptr("message"),
 						RampDownStartTime: &armdesktopvirtualization.Time{
-							Hour:   to.Int32Ptr(18),
-							Minute: to.Int32Ptr(0),
+							Hour:   to.Ptr[int32](18),
+							Minute: to.Ptr[int32](0),
 						},
-						RampDownWaitTimeMinutes:      to.Int32Ptr(30),
-						RampUpCapacityThresholdPct:   to.Int32Ptr(80),
-						RampUpLoadBalancingAlgorithm: armdesktopvirtualization.SessionHostLoadBalancingAlgorithmDepthFirst.ToPtr(),
-						RampUpMinimumHostsPct:        to.Int32Ptr(20),
+						RampDownWaitTimeMinutes:      to.Ptr[int32](30),
+						RampUpCapacityThresholdPct:   to.Ptr[int32](80),
+						RampUpLoadBalancingAlgorithm: to.Ptr(armdesktopvirtualization.SessionHostLoadBalancingAlgorithmDepthFirst),
+						RampUpMinimumHostsPct:        to.Ptr[int32](20),
 						RampUpStartTime: &armdesktopvirtualization.Time{
-							Hour:   to.Int32Ptr(6),
-							Minute: to.Int32Ptr(0),
+							Hour:   to.Ptr[int32](6),
+							Minute: to.Ptr[int32](0),
 						},
 					}},
-				TimeZone: to.StringPtr("<time-zone>"),
+				TimeZone: to.Ptr("Central Standard Time"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("ScalingPlan.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ScalingPlan_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ScalingPlan_Delete.json
 func ExampleScalingPlansClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewScalingPlansClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewScalingPlansClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<scaling-plan-name>",
+		"resourceGroup1",
+		"scalingPlan1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ScalingPlan_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ScalingPlan_Update.json
 func ExampleScalingPlansClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewScalingPlansClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewScalingPlansClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<scaling-plan-name>",
-		&armdesktopvirtualization.ScalingPlansUpdateOptions{ScalingPlan: nil})
+		"resourceGroup1",
+		"scalingPlan1",
+		&armdesktopvirtualization.ScalingPlansClientUpdateOptions{ScalingPlan: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("ScalingPlan.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ScalingPlan_ListByResourceGroup.json
-func ExampleScalingPlansClient_ListByResourceGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ScalingPlan_ListByResourceGroup.json
+func ExampleScalingPlansClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewScalingPlansClient("<subscription-id>", cred, nil)
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	client, err := armdesktopvirtualization.NewScalingPlansClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByResourceGroupPager("resourceGroup1",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ScalingPlan.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ScalingPlan_ListBySubscription.json
-func ExampleScalingPlansClient_ListBySubscription() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ScalingPlan_ListBySubscription.json
+func ExampleScalingPlansClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewScalingPlansClient("<subscription-id>", cred, nil)
-	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armdesktopvirtualization.NewScalingPlansClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListBySubscriptionPager(nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ScalingPlan.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ScalingPlan_ListByHostPool.json
-func ExampleScalingPlansClient_ListByHostPool() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/ScalingPlan_ListByHostPool.json
+func ExampleScalingPlansClient_NewListByHostPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewScalingPlansClient("<subscription-id>", cred, nil)
-	pager := client.ListByHostPool("<resource-group-name>",
-		"<host-pool-name>",
+	client, err := armdesktopvirtualization.NewScalingPlansClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByHostPoolPager("resourceGroup1",
+		"hostPool1",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ScalingPlan.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

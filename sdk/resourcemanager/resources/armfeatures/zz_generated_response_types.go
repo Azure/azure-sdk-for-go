@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,130 +8,57 @@
 
 package armfeatures
 
-import "net/http"
+// ClientGetResponse contains the response from method Client.Get.
+type ClientGetResponse struct {
+	FeatureResult
+}
+
+// ClientListAllResponse contains the response from method Client.ListAll.
+type ClientListAllResponse struct {
+	FeatureOperationsListResult
+}
+
+// ClientListResponse contains the response from method Client.List.
+type ClientListResponse struct {
+	FeatureOperationsListResult
+}
+
+// ClientRegisterResponse contains the response from method Client.Register.
+type ClientRegisterResponse struct {
+	FeatureResult
+}
+
+// ClientUnregisterResponse contains the response from method Client.Unregister.
+type ClientUnregisterResponse struct {
+	FeatureResult
+}
 
 // FeatureClientListOperationsResponse contains the response from method FeatureClient.ListOperations.
 type FeatureClientListOperationsResponse struct {
-	FeatureClientListOperationsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// FeatureClientListOperationsResult contains the result from method FeatureClient.ListOperations.
-type FeatureClientListOperationsResult struct {
 	OperationListResult
 }
 
-// FeaturesGetResponse contains the response from method Features.Get.
-type FeaturesGetResponse struct {
-	FeaturesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// FeaturesGetResult contains the result from method Features.Get.
-type FeaturesGetResult struct {
-	FeatureResult
-}
-
-// FeaturesListAllResponse contains the response from method Features.ListAll.
-type FeaturesListAllResponse struct {
-	FeaturesListAllResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// FeaturesListAllResult contains the result from method Features.ListAll.
-type FeaturesListAllResult struct {
-	FeatureOperationsListResult
-}
-
-// FeaturesListResponse contains the response from method Features.List.
-type FeaturesListResponse struct {
-	FeaturesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// FeaturesListResult contains the result from method Features.List.
-type FeaturesListResult struct {
-	FeatureOperationsListResult
-}
-
-// FeaturesRegisterResponse contains the response from method Features.Register.
-type FeaturesRegisterResponse struct {
-	FeaturesRegisterResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// FeaturesRegisterResult contains the result from method Features.Register.
-type FeaturesRegisterResult struct {
-	FeatureResult
-}
-
-// FeaturesUnregisterResponse contains the response from method Features.Unregister.
-type FeaturesUnregisterResponse struct {
-	FeaturesUnregisterResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// FeaturesUnregisterResult contains the result from method Features.Unregister.
-type FeaturesUnregisterResult struct {
-	FeatureResult
-}
-
-// SubscriptionFeatureRegistrationsCreateOrUpdateResponse contains the response from method SubscriptionFeatureRegistrations.CreateOrUpdate.
-type SubscriptionFeatureRegistrationsCreateOrUpdateResponse struct {
-	SubscriptionFeatureRegistrationsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SubscriptionFeatureRegistrationsCreateOrUpdateResult contains the result from method SubscriptionFeatureRegistrations.CreateOrUpdate.
-type SubscriptionFeatureRegistrationsCreateOrUpdateResult struct {
+// SubscriptionFeatureRegistrationsClientCreateOrUpdateResponse contains the response from method SubscriptionFeatureRegistrationsClient.CreateOrUpdate.
+type SubscriptionFeatureRegistrationsClientCreateOrUpdateResponse struct {
 	SubscriptionFeatureRegistration
 }
 
-// SubscriptionFeatureRegistrationsDeleteResponse contains the response from method SubscriptionFeatureRegistrations.Delete.
-type SubscriptionFeatureRegistrationsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// SubscriptionFeatureRegistrationsClientDeleteResponse contains the response from method SubscriptionFeatureRegistrationsClient.Delete.
+type SubscriptionFeatureRegistrationsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// SubscriptionFeatureRegistrationsGetResponse contains the response from method SubscriptionFeatureRegistrations.Get.
-type SubscriptionFeatureRegistrationsGetResponse struct {
-	SubscriptionFeatureRegistrationsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SubscriptionFeatureRegistrationsGetResult contains the result from method SubscriptionFeatureRegistrations.Get.
-type SubscriptionFeatureRegistrationsGetResult struct {
+// SubscriptionFeatureRegistrationsClientGetResponse contains the response from method SubscriptionFeatureRegistrationsClient.Get.
+type SubscriptionFeatureRegistrationsClientGetResponse struct {
 	SubscriptionFeatureRegistration
 }
 
-// SubscriptionFeatureRegistrationsListAllBySubscriptionResponse contains the response from method SubscriptionFeatureRegistrations.ListAllBySubscription.
-type SubscriptionFeatureRegistrationsListAllBySubscriptionResponse struct {
-	SubscriptionFeatureRegistrationsListAllBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SubscriptionFeatureRegistrationsListAllBySubscriptionResult contains the result from method SubscriptionFeatureRegistrations.ListAllBySubscription.
-type SubscriptionFeatureRegistrationsListAllBySubscriptionResult struct {
+// SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse contains the response from method SubscriptionFeatureRegistrationsClient.ListAllBySubscription.
+type SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse struct {
 	SubscriptionFeatureRegistrationList
 }
 
-// SubscriptionFeatureRegistrationsListBySubscriptionResponse contains the response from method SubscriptionFeatureRegistrations.ListBySubscription.
-type SubscriptionFeatureRegistrationsListBySubscriptionResponse struct {
-	SubscriptionFeatureRegistrationsListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SubscriptionFeatureRegistrationsListBySubscriptionResult contains the result from method SubscriptionFeatureRegistrations.ListBySubscription.
-type SubscriptionFeatureRegistrationsListBySubscriptionResult struct {
+// SubscriptionFeatureRegistrationsClientListBySubscriptionResponse contains the response from method SubscriptionFeatureRegistrationsClient.ListBySubscription.
+type SubscriptionFeatureRegistrationsClientListBySubscriptionResponse struct {
 	SubscriptionFeatureRegistrationList
 }

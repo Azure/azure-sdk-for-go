@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package armreservations
 
 const (
-	module  = "armreservations"
-	version = "v0.1.0"
+	moduleName    = "armreservations"
+	moduleVersion = "v1.0.0"
 )
 
 // AppliedScopeType - Type of the Applied Scope.
@@ -27,11 +27,6 @@ func PossibleAppliedScopeTypeValues() []AppliedScopeType {
 		AppliedScopeTypeShared,
 		AppliedScopeTypeSingle,
 	}
-}
-
-// ToPtr returns a *AppliedScopeType pointing to the current value.
-func (c AppliedScopeType) ToPtr() *AppliedScopeType {
-	return &c
 }
 
 // CalculateExchangeOperationResultStatus - Status of the operation.
@@ -54,11 +49,6 @@ func PossibleCalculateExchangeOperationResultStatusValues() []CalculateExchangeO
 	}
 }
 
-// ToPtr returns a *CalculateExchangeOperationResultStatus pointing to the current value.
-func (c CalculateExchangeOperationResultStatus) ToPtr() *CalculateExchangeOperationResultStatus {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -79,21 +69,17 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // DisplayProvisioningState - Represent the current display state of the Reservation.
 type DisplayProvisioningState string
 
 const (
-	DisplayProvisioningStateCancelled DisplayProvisioningState = "Cancelled"
-	DisplayProvisioningStateExpired   DisplayProvisioningState = "Expired"
-	DisplayProvisioningStateExpiring  DisplayProvisioningState = "Expiring"
-	DisplayProvisioningStateFailed    DisplayProvisioningState = "Failed"
-	DisplayProvisioningStatePending   DisplayProvisioningState = "Pending"
-	DisplayProvisioningStateSucceeded DisplayProvisioningState = "Succeeded"
+	DisplayProvisioningStateCancelled  DisplayProvisioningState = "Cancelled"
+	DisplayProvisioningStateExpired    DisplayProvisioningState = "Expired"
+	DisplayProvisioningStateExpiring   DisplayProvisioningState = "Expiring"
+	DisplayProvisioningStateFailed     DisplayProvisioningState = "Failed"
+	DisplayProvisioningStatePending    DisplayProvisioningState = "Pending"
+	DisplayProvisioningStateProcessing DisplayProvisioningState = "Processing"
+	DisplayProvisioningStateSucceeded  DisplayProvisioningState = "Succeeded"
 )
 
 // PossibleDisplayProvisioningStateValues returns the possible values for the DisplayProvisioningState const type.
@@ -104,13 +90,9 @@ func PossibleDisplayProvisioningStateValues() []DisplayProvisioningState {
 		DisplayProvisioningStateExpiring,
 		DisplayProvisioningStateFailed,
 		DisplayProvisioningStatePending,
+		DisplayProvisioningStateProcessing,
 		DisplayProvisioningStateSucceeded,
 	}
-}
-
-// ToPtr returns a *DisplayProvisioningState pointing to the current value.
-func (c DisplayProvisioningState) ToPtr() *DisplayProvisioningState {
-	return &c
 }
 
 type ErrorResponseCode string
@@ -236,11 +218,6 @@ func PossibleErrorResponseCodeValues() []ErrorResponseCode {
 	}
 }
 
-// ToPtr returns a *ErrorResponseCode pointing to the current value.
-func (c ErrorResponseCode) ToPtr() *ErrorResponseCode {
-	return &c
-}
-
 // ExchangeOperationResultStatus - Status of the operation.
 type ExchangeOperationResultStatus string
 
@@ -263,13 +240,8 @@ func PossibleExchangeOperationResultStatusValues() []ExchangeOperationResultStat
 	}
 }
 
-// ToPtr returns a *ExchangeOperationResultStatus pointing to the current value.
-func (c ExchangeOperationResultStatus) ToPtr() *ExchangeOperationResultStatus {
-	return &c
-}
-
-// InstanceFlexibility - Turning this on will apply the reservation discount to other VMs in the same VM size group. Only specify for VirtualMachines reserved
-// resource type.
+// InstanceFlexibility - Turning this on will apply the reservation discount to other VMs in the same VM size group. Only
+// specify for VirtualMachines reserved resource type.
 type InstanceFlexibility string
 
 const (
@@ -283,11 +255,6 @@ func PossibleInstanceFlexibilityValues() []InstanceFlexibility {
 		InstanceFlexibilityOff,
 		InstanceFlexibilityOn,
 	}
-}
-
-// ToPtr returns a *InstanceFlexibility pointing to the current value.
-func (c InstanceFlexibility) ToPtr() *InstanceFlexibility {
-	return &c
 }
 
 // Location - Location in which the Resources needs to be reserved. It cannot be changed after the resource has been created.
@@ -350,11 +317,6 @@ func PossibleLocationValues() []Location {
 	}
 }
 
-// ToPtr returns a *Location pointing to the current value.
-func (c Location) ToPtr() *Location {
-	return &c
-}
-
 // OperationStatus - Status of the individual operation.
 type OperationStatus string
 
@@ -375,11 +337,6 @@ func PossibleOperationStatusValues() []OperationStatus {
 	}
 }
 
-// ToPtr returns a *OperationStatus pointing to the current value.
-func (c OperationStatus) ToPtr() *OperationStatus {
-	return &c
-}
-
 // PaymentStatus - Describes whether the payment is completed, failed, cancelled or scheduled in the future.
 type PaymentStatus string
 
@@ -398,11 +355,6 @@ func PossiblePaymentStatusValues() []PaymentStatus {
 		PaymentStatusScheduled,
 		PaymentStatusSucceeded,
 	}
-}
-
-// ToPtr returns a *PaymentStatus pointing to the current value.
-func (c PaymentStatus) ToPtr() *PaymentStatus {
-	return &c
 }
 
 // ProvisioningState - Represent the current state of the Reservation.
@@ -443,11 +395,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // QuotaRequestState - The quota request status.
 type QuotaRequestState string
 
@@ -470,11 +417,6 @@ func PossibleQuotaRequestStateValues() []QuotaRequestState {
 	}
 }
 
-// ToPtr returns a *QuotaRequestState pointing to the current value.
-func (c QuotaRequestState) ToPtr() *QuotaRequestState {
-	return &c
-}
-
 // ReservationBillingPlan - Represent the billing plans.
 type ReservationBillingPlan string
 
@@ -491,11 +433,6 @@ func PossibleReservationBillingPlanValues() []ReservationBillingPlan {
 	}
 }
 
-// ToPtr returns a *ReservationBillingPlan pointing to the current value.
-func (c ReservationBillingPlan) ToPtr() *ReservationBillingPlan {
-	return &c
-}
-
 type ReservationStatusCode string
 
 const (
@@ -505,6 +442,7 @@ const (
 	ReservationStatusCodeNone                   ReservationStatusCode = "None"
 	ReservationStatusCodePaymentInstrumentError ReservationStatusCode = "PaymentInstrumentError"
 	ReservationStatusCodePending                ReservationStatusCode = "Pending"
+	ReservationStatusCodeProcessing             ReservationStatusCode = "Processing"
 	ReservationStatusCodePurchaseError          ReservationStatusCode = "PurchaseError"
 	ReservationStatusCodeSplit                  ReservationStatusCode = "Split"
 	ReservationStatusCodeSucceeded              ReservationStatusCode = "Succeeded"
@@ -519,15 +457,11 @@ func PossibleReservationStatusCodeValues() []ReservationStatusCode {
 		ReservationStatusCodeNone,
 		ReservationStatusCodePaymentInstrumentError,
 		ReservationStatusCodePending,
+		ReservationStatusCodeProcessing,
 		ReservationStatusCodePurchaseError,
 		ReservationStatusCodeSplit,
 		ReservationStatusCodeSucceeded,
 	}
-}
-
-// ToPtr returns a *ReservationStatusCode pointing to the current value.
-func (c ReservationStatusCode) ToPtr() *ReservationStatusCode {
-	return &c
 }
 
 // ReservationTerm - Represent the term of Reservation.
@@ -548,40 +482,36 @@ func PossibleReservationTermValues() []ReservationTerm {
 	}
 }
 
-// ToPtr returns a *ReservationTerm pointing to the current value.
-func (c ReservationTerm) ToPtr() *ReservationTerm {
-	return &c
-}
-
 // ReservedResourceType - The type of the resource that is being reserved.
 type ReservedResourceType string
 
 const (
-	ReservedResourceTypeAVS                   ReservedResourceType = "AVS"
-	ReservedResourceTypeAppService            ReservedResourceType = "AppService"
-	ReservedResourceTypeAzureDataExplorer     ReservedResourceType = "AzureDataExplorer"
-	ReservedResourceTypeAzureFiles            ReservedResourceType = "AzureFiles"
-	ReservedResourceTypeBlockBlob             ReservedResourceType = "BlockBlob"
-	ReservedResourceTypeCosmosDb              ReservedResourceType = "CosmosDb"
-	ReservedResourceTypeDataFactory           ReservedResourceType = "DataFactory"
-	ReservedResourceTypeDatabricks            ReservedResourceType = "Databricks"
-	ReservedResourceTypeDedicatedHost         ReservedResourceType = "DedicatedHost"
-	ReservedResourceTypeManagedDisk           ReservedResourceType = "ManagedDisk"
-	ReservedResourceTypeMariaDb               ReservedResourceType = "MariaDb"
-	ReservedResourceTypeMySQL                 ReservedResourceType = "MySql"
-	ReservedResourceTypeNetAppStorage         ReservedResourceType = "NetAppStorage"
-	ReservedResourceTypePostgreSQL            ReservedResourceType = "PostgreSql"
-	ReservedResourceTypeRedHat                ReservedResourceType = "RedHat"
-	ReservedResourceTypeRedHatOsa             ReservedResourceType = "RedHatOsa"
-	ReservedResourceTypeRedisCache            ReservedResourceType = "RedisCache"
-	ReservedResourceTypeSQLAzureHybridBenefit ReservedResourceType = "SqlAzureHybridBenefit"
-	ReservedResourceTypeSQLDataWarehouse      ReservedResourceType = "SqlDataWarehouse"
-	ReservedResourceTypeSQLDatabases          ReservedResourceType = "SqlDatabases"
-	ReservedResourceTypeSQLEdge               ReservedResourceType = "SqlEdge"
-	ReservedResourceTypeSapHana               ReservedResourceType = "SapHana"
-	ReservedResourceTypeSuseLinux             ReservedResourceType = "SuseLinux"
-	ReservedResourceTypeVMwareCloudSimple     ReservedResourceType = "VMwareCloudSimple"
-	ReservedResourceTypeVirtualMachines       ReservedResourceType = "VirtualMachines"
+	ReservedResourceTypeAVS                    ReservedResourceType = "AVS"
+	ReservedResourceTypeAppService             ReservedResourceType = "AppService"
+	ReservedResourceTypeAzureDataExplorer      ReservedResourceType = "AzureDataExplorer"
+	ReservedResourceTypeAzureFiles             ReservedResourceType = "AzureFiles"
+	ReservedResourceTypeBlockBlob              ReservedResourceType = "BlockBlob"
+	ReservedResourceTypeCosmosDb               ReservedResourceType = "CosmosDb"
+	ReservedResourceTypeDataFactory            ReservedResourceType = "DataFactory"
+	ReservedResourceTypeDatabricks             ReservedResourceType = "Databricks"
+	ReservedResourceTypeDedicatedHost          ReservedResourceType = "DedicatedHost"
+	ReservedResourceTypeManagedDisk            ReservedResourceType = "ManagedDisk"
+	ReservedResourceTypeMariaDb                ReservedResourceType = "MariaDb"
+	ReservedResourceTypeMySQL                  ReservedResourceType = "MySql"
+	ReservedResourceTypeNetAppStorage          ReservedResourceType = "NetAppStorage"
+	ReservedResourceTypePostgreSQL             ReservedResourceType = "PostgreSql"
+	ReservedResourceTypeRedHat                 ReservedResourceType = "RedHat"
+	ReservedResourceTypeRedHatOsa              ReservedResourceType = "RedHatOsa"
+	ReservedResourceTypeRedisCache             ReservedResourceType = "RedisCache"
+	ReservedResourceTypeSQLAzureHybridBenefit  ReservedResourceType = "SqlAzureHybridBenefit"
+	ReservedResourceTypeSQLDataWarehouse       ReservedResourceType = "SqlDataWarehouse"
+	ReservedResourceTypeSQLDatabases           ReservedResourceType = "SqlDatabases"
+	ReservedResourceTypeSQLEdge                ReservedResourceType = "SqlEdge"
+	ReservedResourceTypeSapHana                ReservedResourceType = "SapHana"
+	ReservedResourceTypeSuseLinux              ReservedResourceType = "SuseLinux"
+	ReservedResourceTypeVMwareCloudSimple      ReservedResourceType = "VMwareCloudSimple"
+	ReservedResourceTypeVirtualMachineSoftware ReservedResourceType = "VirtualMachineSoftware"
+	ReservedResourceTypeVirtualMachines        ReservedResourceType = "VirtualMachines"
 )
 
 // PossibleReservedResourceTypeValues returns the possible values for the ReservedResourceType const type.
@@ -611,13 +541,9 @@ func PossibleReservedResourceTypeValues() []ReservedResourceType {
 		ReservedResourceTypeSapHana,
 		ReservedResourceTypeSuseLinux,
 		ReservedResourceTypeVMwareCloudSimple,
+		ReservedResourceTypeVirtualMachineSoftware,
 		ReservedResourceTypeVirtualMachines,
 	}
-}
-
-// ToPtr returns a *ReservedResourceType pointing to the current value.
-func (c ReservedResourceType) ToPtr() *ReservedResourceType {
-	return &c
 }
 
 // ResourceType - The resource types.
@@ -642,11 +568,6 @@ func PossibleResourceTypeValues() []ResourceType {
 	}
 }
 
-// ToPtr returns a *ResourceType pointing to the current value.
-func (c ResourceType) ToPtr() *ResourceType {
-	return &c
-}
-
 // UserFriendlyAppliedScopeType - The applied scope type
 type UserFriendlyAppliedScopeType string
 
@@ -669,11 +590,6 @@ func PossibleUserFriendlyAppliedScopeTypeValues() []UserFriendlyAppliedScopeType
 	}
 }
 
-// ToPtr returns a *UserFriendlyAppliedScopeType pointing to the current value.
-func (c UserFriendlyAppliedScopeType) ToPtr() *UserFriendlyAppliedScopeType {
-	return &c
-}
-
 // UserFriendlyRenewState - The renew state of the reservation
 type UserFriendlyRenewState string
 
@@ -694,9 +610,4 @@ func PossibleUserFriendlyRenewStateValues() []UserFriendlyRenewState {
 		UserFriendlyRenewStateOn,
 		UserFriendlyRenewStateRenewed,
 	}
-}
-
-// ToPtr returns a *UserFriendlyRenewState pointing to the current value.
-func (c UserFriendlyRenewState) ToPtr() *UserFriendlyRenewState {
-	return &c
 }

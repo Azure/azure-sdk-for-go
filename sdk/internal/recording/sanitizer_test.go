@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -10,7 +10,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"strings"
@@ -230,7 +230,7 @@ func TestUriSanitizer(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
@@ -287,7 +287,7 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
@@ -324,7 +324,7 @@ func TestBodyKeySanitizer(t *testing.T) {
 	marshalled, err := json.Marshal(bodyValue)
 	require.NoError(t, err)
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 
 	err = AddBodyKeySanitizer("$.Tag", "Sanitized", "", nil)
 	require.NoError(t, err)
@@ -344,7 +344,7 @@ func TestBodyKeySanitizer(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
@@ -379,7 +379,7 @@ func TestBodyRegexSanitizer(t *testing.T) {
 	marshalled, err := json.Marshal(bodyValue)
 	require.NoError(t, err)
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 
 	err = AddBodyRegexSanitizer("Sanitized", "Value", nil)
 	require.NoError(t, err)
@@ -401,7 +401,7 @@ func TestBodyRegexSanitizer(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
@@ -451,7 +451,7 @@ func TestRemoveHeaderSanitizer(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
@@ -487,7 +487,7 @@ func TestContinuationSanitizer(t *testing.T) {
 	marshalled, err := json.Marshal(bodyValue)
 	require.NoError(t, err)
 
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
 
 	err = AddContinuationSanitizer("Location", "Sanitized", true, nil)
 	require.NoError(t, err)
@@ -515,7 +515,7 @@ func TestContinuationSanitizer(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
@@ -562,7 +562,7 @@ func TestGeneralRegexSanitizer(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
@@ -608,7 +608,7 @@ func TestOAuthResponseSanitizer(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
@@ -651,7 +651,7 @@ func TestUriSubscriptionIdSanitizer(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
@@ -682,11 +682,11 @@ func TestResetSanitizers(t *testing.T) {
 	req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
 
 	// Add a sanitizer
-	err = AddRemoveHeaderSanitizer([]string{"FakeStorageLocation"}, nil)
+	err = AddRemoveHeaderSanitizer([]string{"FakeStorageLocation"}, &RecordingOptions{TestInstance: t})
 	require.NoError(t, err)
 
 	// Remove all sanitizers
-	err = ResetProxy(nil)
+	err = ResetProxy(&RecordingOptions{TestInstance: t})
 	require.NoError(t, err)
 
 	resp, err := client.Do(req)
@@ -704,10 +704,67 @@ func TestResetSanitizers(t *testing.T) {
 	defer jsonFile.Close()
 
 	var data RecordingFileStruct
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
 
 	require.Equal(t, data.Entries[0].RequestHeaders["fakestoragelocation"], "https://fakeaccount.blob.core.windows.net")
+}
+
+func TestSingleTestSanitizer(t *testing.T) {
+	err := ResetProxy(nil)
+	require.NoError(t, err)
+
+	// The first iteration, add a sanitizer for just that test. The
+	// second iteration, verify that the sanitizer was not applied.
+	for i := 0; i < 2; i++ {
+		t.Run(fmt.Sprintf("%s-%d", t.Name(), i), func(t *testing.T) {
+			err = Start(t, packagePath, nil)
+			require.NoError(t, err)
+
+			if i == 0 {
+				// The first time we'll set a per-test sanitizer
+				// Add a sanitizer
+				err = AddRemoveHeaderSanitizer([]string{"FakeStorageLocation"}, &RecordingOptions{TestInstance: t})
+				require.NoError(t, err)
+			}
+
+			srvURL := "http://host.docker.internal:8080/uri-sanitizer"
+
+			client, err := GetHTTPClient(t)
+			require.NoError(t, err)
+
+			req, err := http.NewRequest("POST", "https://localhost:5001", nil)
+			require.NoError(t, err)
+
+			req.Header.Set(UpstreamURIHeader, srvURL)
+			req.Header.Set(ModeHeader, GetRecordMode())
+			req.Header.Set(IDHeader, GetRecordingId(t))
+			req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
+
+			_, err = client.Do(req)
+			require.NoError(t, err)
+
+			err = Stop(t, nil)
+			require.NoError(t, err)
+
+			// Read the file
+			jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
+			require.NoError(t, err)
+			defer jsonFile.Close()
+
+			var data RecordingFileStruct
+			byteValue, err := io.ReadAll(jsonFile)
+			require.NoError(t, err)
+			err = json.Unmarshal(byteValue, &data)
+			require.NoError(t, err)
+
+			if i == 0 {
+				require.NotContains(t, data.Entries[0].RequestHeaders, "fakestoragelocation")
+			} else {
+				require.Equal(t, data.Entries[0].RequestHeaders["fakestoragelocation"], "https://fakeaccount.blob.core.windows.net")
+			}
+		})
+	}
 }

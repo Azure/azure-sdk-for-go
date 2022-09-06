@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,252 +12,301 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto"
 )
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDatabasesCheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDatabasesCheckNameAvailability.json
 func ExampleDatabasesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armkusto.NewDatabasesClient("<subscription-id>", cred, nil)
-	_, err = client.CheckNameAvailability(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+	client, err := armkusto.NewDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.CheckNameAvailability(ctx,
+		"kustorptest",
+		"kustoCluster",
 		armkusto.CheckNameRequest{
-			Name: to.StringPtr("<name>"),
-			Type: armkusto.TypeMicrosoftKustoClustersDatabases.ToPtr(),
+			Name: to.Ptr("database1"),
+			Type: to.Ptr(armkusto.TypeMicrosoftKustoClustersDatabases),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDatabasesListByCluster.json
-func ExampleDatabasesClient_ListByCluster() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDatabasesListByCluster.json
+func ExampleDatabasesClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armkusto.NewDatabasesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByCluster(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		nil)
+	client, err := armkusto.NewDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByClusterPager("kustorptest",
+		"kustoCluster",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDatabasesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDatabasesGet.json
 func ExampleDatabasesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armkusto.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"kustorptest",
+		"kustoCluster",
+		"KustoDatabase8",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("DatabaseClassification.GetDatabase().ID: %s\n", *res.GetDatabase().ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDatabaseReadonlyUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDatabaseReadonlyUpdate.json
 func ExampleDatabasesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armkusto.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"kustorptest",
+		"kustoCluster",
+		"kustoReadOnlyDatabase",
 		&armkusto.ReadOnlyFollowingDatabase{
-			Database: armkusto.Database{
-				Kind:     armkusto.KindReadOnlyFollowing.ToPtr(),
-				Location: to.StringPtr("<location>"),
-			},
+			Kind:     to.Ptr(armkusto.KindReadOnlyFollowing),
+			Location: to.Ptr("westus"),
 			Properties: &armkusto.ReadOnlyFollowingDatabaseProperties{
-				HotCachePeriod: to.StringPtr("<hot-cache-period>"),
+				HotCachePeriod: to.Ptr("P1D"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("DatabaseClassification.GetDatabase().ID: %s\n", *res.GetDatabase().ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDatabasesUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDatabasesUpdate.json
 func ExampleDatabasesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armkusto.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
-		&armkusto.Database{},
+		"kustorptest",
+		"kustoCluster",
+		"KustoDatabase8",
+		&armkusto.ReadWriteDatabase{
+			Kind: to.Ptr(armkusto.KindReadWrite),
+			Properties: &armkusto.ReadWriteDatabaseProperties{
+				HotCachePeriod: to.Ptr("P1D"),
+			},
+		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("DatabaseClassification.GetDatabase().ID: %s\n", *res.GetDatabase().ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDatabasesDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDatabasesDelete.json
 func ExampleDatabasesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armkusto.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"kustorptest",
+		"kustoCluster",
+		"KustoDatabase8",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDatabaseListPrincipals.json
-func ExampleDatabasesClient_ListPrincipals() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDatabaseListPrincipals.json
+func ExampleDatabasesClient_NewListPrincipalsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armkusto.NewDatabasesClient("<subscription-id>", cred, nil)
-	_, err = client.ListPrincipals(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
-		nil)
+	client, err := armkusto.NewDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPrincipalsPager("kustorptest",
+		"kustoCluster",
+		"KustoDatabase8",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDatabaseAddPrincipals.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDatabaseAddPrincipals.json
 func ExampleDatabasesClient_AddPrincipals() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armkusto.NewDatabasesClient("<subscription-id>", cred, nil)
-	_, err = client.AddPrincipals(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+	client, err := armkusto.NewDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.AddPrincipals(ctx,
+		"kustorptest",
+		"kustoCluster",
+		"KustoDatabase8",
 		armkusto.DatabasePrincipalListRequest{
 			Value: []*armkusto.DatabasePrincipal{
 				{
-					Name:  to.StringPtr("<name>"),
-					Type:  armkusto.DatabasePrincipalTypeUser.ToPtr(),
-					AppID: to.StringPtr("<app-id>"),
-					Email: to.StringPtr("<email>"),
-					Fqn:   to.StringPtr("<fqn>"),
-					Role:  armkusto.DatabasePrincipalRoleAdmin.ToPtr(),
+					Name:  to.Ptr("Some User"),
+					Type:  to.Ptr(armkusto.DatabasePrincipalTypeUser),
+					AppID: to.Ptr(""),
+					Email: to.Ptr("user@microsoft.com"),
+					Fqn:   to.Ptr("aaduser=some_guid"),
+					Role:  to.Ptr(armkusto.DatabasePrincipalRoleAdmin),
 				},
 				{
-					Name:  to.StringPtr("<name>"),
-					Type:  armkusto.DatabasePrincipalTypeGroup.ToPtr(),
-					AppID: to.StringPtr("<app-id>"),
-					Email: to.StringPtr("<email>"),
-					Fqn:   to.StringPtr("<fqn>"),
-					Role:  armkusto.DatabasePrincipalRoleViewer.ToPtr(),
+					Name:  to.Ptr("Kusto"),
+					Type:  to.Ptr(armkusto.DatabasePrincipalTypeGroup),
+					AppID: to.Ptr(""),
+					Email: to.Ptr("kusto@microsoft.com"),
+					Fqn:   to.Ptr("aadgroup=some_guid"),
+					Role:  to.Ptr(armkusto.DatabasePrincipalRoleViewer),
 				},
 				{
-					Name:  to.StringPtr("<name>"),
-					Type:  armkusto.DatabasePrincipalTypeApp.ToPtr(),
-					AppID: to.StringPtr("<app-id>"),
-					Email: to.StringPtr("<email>"),
-					Fqn:   to.StringPtr("<fqn>"),
-					Role:  armkusto.DatabasePrincipalRoleAdmin.ToPtr(),
+					Name:  to.Ptr("SomeApp"),
+					Type:  to.Ptr(armkusto.DatabasePrincipalTypeApp),
+					AppID: to.Ptr("some_guid_app_id"),
+					Email: to.Ptr(""),
+					Fqn:   to.Ptr("aadapp=some_guid_app_id"),
+					Role:  to.Ptr(armkusto.DatabasePrincipalRoleAdmin),
 				}},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDatabaseRemovePrincipals.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDatabaseRemovePrincipals.json
 func ExampleDatabasesClient_RemovePrincipals() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armkusto.NewDatabasesClient("<subscription-id>", cred, nil)
-	_, err = client.RemovePrincipals(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+	client, err := armkusto.NewDatabasesClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.RemovePrincipals(ctx,
+		"kustorptest",
+		"kustoCluster",
+		"KustoDatabase8",
 		armkusto.DatabasePrincipalListRequest{
 			Value: []*armkusto.DatabasePrincipal{
 				{
-					Name:  to.StringPtr("<name>"),
-					Type:  armkusto.DatabasePrincipalTypeUser.ToPtr(),
-					AppID: to.StringPtr("<app-id>"),
-					Email: to.StringPtr("<email>"),
-					Fqn:   to.StringPtr("<fqn>"),
-					Role:  armkusto.DatabasePrincipalRoleAdmin.ToPtr(),
+					Name:  to.Ptr("Some User"),
+					Type:  to.Ptr(armkusto.DatabasePrincipalTypeUser),
+					AppID: to.Ptr(""),
+					Email: to.Ptr("user@microsoft.com"),
+					Fqn:   to.Ptr("aaduser=some_guid"),
+					Role:  to.Ptr(armkusto.DatabasePrincipalRoleAdmin),
 				},
 				{
-					Name:  to.StringPtr("<name>"),
-					Type:  armkusto.DatabasePrincipalTypeGroup.ToPtr(),
-					AppID: to.StringPtr("<app-id>"),
-					Email: to.StringPtr("<email>"),
-					Fqn:   to.StringPtr("<fqn>"),
-					Role:  armkusto.DatabasePrincipalRoleViewer.ToPtr(),
+					Name:  to.Ptr("Kusto"),
+					Type:  to.Ptr(armkusto.DatabasePrincipalTypeGroup),
+					AppID: to.Ptr(""),
+					Email: to.Ptr("kusto@microsoft.com"),
+					Fqn:   to.Ptr("aadgroup=some_guid"),
+					Role:  to.Ptr(armkusto.DatabasePrincipalRoleViewer),
 				},
 				{
-					Name:  to.StringPtr("<name>"),
-					Type:  armkusto.DatabasePrincipalTypeApp.ToPtr(),
-					AppID: to.StringPtr("<app-id>"),
-					Email: to.StringPtr("<email>"),
-					Fqn:   to.StringPtr("<fqn>"),
-					Role:  armkusto.DatabasePrincipalRoleAdmin.ToPtr(),
+					Name:  to.Ptr("SomeApp"),
+					Type:  to.Ptr(armkusto.DatabasePrincipalTypeApp),
+					AppID: to.Ptr("some_guid_app_id"),
+					Email: to.Ptr(""),
+					Fqn:   to.Ptr("aadapp=some_guid_app_id"),
+					Role:  to.Ptr(armkusto.DatabasePrincipalRoleAdmin),
 				}},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }

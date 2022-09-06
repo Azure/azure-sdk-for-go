@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armnotificationhubs
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AdmCredential - Description of a NotificationHub AdmCredential.
 type AdmCredential struct {
@@ -39,14 +34,14 @@ type ApnsCredential struct {
 	Properties *ApnsCredentialProperties `json:"properties,omitempty"`
 }
 
-// ApnsCredentialProperties - Description of a NotificationHub ApnsCredential. Note that there is no explicit switch between Certificate and Token Authentication
-// Modes. The mode is determined based on the properties passed in.
+// ApnsCredentialProperties - Description of a NotificationHub ApnsCredential. Note that there is no explicit switch between
+// Certificate and Token Authentication Modes. The mode is determined based on the properties passed in.
 type ApnsCredentialProperties struct {
 	// The APNS certificate. Specify if using Certificate Authentication Mode.
 	ApnsCertificate *string `json:"apnsCertificate,omitempty"`
 
-	// The issuer (iss) registered claim key. The value is a 10-character TeamId, obtained from your developer account. Specify if using Token Authentication
-	// Mode.
+	// The issuer (iss) registered claim key. The value is a 10-character TeamId, obtained from your developer account. Specify
+	// if using Token Authentication Mode.
 	AppID *string `json:"appId,omitempty"`
 
 	// The name of the application or BundleId. Specify if using Token Authentication Mode.
@@ -55,10 +50,10 @@ type ApnsCredentialProperties struct {
 	// The APNS certificate password if it exists.
 	CertificateKey *string `json:"certificateKey,omitempty"`
 
-	// The APNS endpoint of this credential. If using Certificate Authentication Mode and Sandbox specify 'gateway.sandbox.push.apple.com'. If using Certificate
-	// Authentication Mode and Production specify
-	// 'gateway.push.apple.com'. If using Token Authentication Mode and Sandbox specify 'https://api.development.push.apple.com:443/3/device'. If using Token
-	// Authentication Mode and Production specify
+	// The APNS endpoint of this credential. If using Certificate Authentication Mode and Sandbox specify 'gateway.sandbox.push.apple.com'.
+	// If using Certificate Authentication Mode and Production specify
+	// 'gateway.push.apple.com'. If using Token Authentication Mode and Sandbox specify 'https://api.development.push.apple.com:443/3/device'.
+	// If using Token Authentication Mode and Production specify
 	// 'https://api.push.apple.com:443/3/device'.
 	Endpoint *string `json:"endpoint,omitempty"`
 
@@ -114,47 +109,126 @@ type CheckAvailabilityParameters struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CheckAvailabilityParameters.
-func (c CheckAvailabilityParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "isAvailiable", c.IsAvailiable)
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "sku", c.SKU)
-	populate(objectMap, "tags", c.Tags)
-	populate(objectMap, "type", c.Type)
-	return json.Marshal(objectMap)
-}
-
 // CheckAvailabilityResult - Description of a CheckAvailability resource.
 type CheckAvailabilityResult struct {
-	Resource
 	// True if the name is available and can be used to create new Namespace/NotificationHub. Otherwise false.
 	IsAvailiable *bool `json:"isAvailiable,omitempty"`
+
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
+	// The sku of the created namespace
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CheckAvailabilityResult.
-func (c CheckAvailabilityResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
-	populate(objectMap, "isAvailiable", c.IsAvailiable)
-	return json.Marshal(objectMap)
+// ClientCheckNotificationHubAvailabilityOptions contains the optional parameters for the Client.CheckNotificationHubAvailability
+// method.
+type ClientCheckNotificationHubAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the Client.CreateOrUpdateAuthorizationRule
+// method.
+type ClientCreateOrUpdateAuthorizationRuleOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientCreateOrUpdateOptions contains the optional parameters for the Client.CreateOrUpdate method.
+type ClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientDebugSendOptions contains the optional parameters for the Client.DebugSend method.
+type ClientDebugSendOptions struct {
+	// Debug send parameters
+	Parameters interface{}
+}
+
+// ClientDeleteAuthorizationRuleOptions contains the optional parameters for the Client.DeleteAuthorizationRule method.
+type ClientDeleteAuthorizationRuleOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientDeleteOptions contains the optional parameters for the Client.Delete method.
+type ClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientGetAuthorizationRuleOptions contains the optional parameters for the Client.GetAuthorizationRule method.
+type ClientGetAuthorizationRuleOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientGetOptions contains the optional parameters for the Client.Get method.
+type ClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientGetPnsCredentialsOptions contains the optional parameters for the Client.GetPnsCredentials method.
+type ClientGetPnsCredentialsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientListAuthorizationRulesOptions contains the optional parameters for the Client.ListAuthorizationRules method.
+type ClientListAuthorizationRulesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientListKeysOptions contains the optional parameters for the Client.ListKeys method.
+type ClientListKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientListOptions contains the optional parameters for the Client.List method.
+type ClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientPatchOptions contains the optional parameters for the Client.Patch method.
+type ClientPatchOptions struct {
+	// Parameters supplied to patch a NotificationHub Resource.
+	Parameters *NotificationHubPatchParameters
+}
+
+// ClientRegenerateKeysOptions contains the optional parameters for the Client.RegenerateKeys method.
+type ClientRegenerateKeysOptions struct {
+	// placeholder for future optional parameters
 }
 
 // DebugSendResponse - Description of a NotificationHub Resource.
 type DebugSendResponse struct {
-	Resource
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
 	// Properties of the NotificationHub.
 	Properties *DebugSendResult `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type DebugSendResponse.
-func (d DebugSendResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
+	// The sku of the created namespace
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 type DebugSendResult struct {
@@ -162,27 +236,20 @@ type DebugSendResult struct {
 	Failure *float32 `json:"failure,omitempty"`
 
 	// actual failure description
-	Results map[string]interface{} `json:"results,omitempty"`
+	Results interface{} `json:"results,omitempty"`
 
 	// successful send
 	Success *float32 `json:"success,omitempty"`
 }
 
-// ErrorResponse - Error response indicates NotificationHubs service is not able to process the incoming request. The reason is provided in the error message.
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Error response indicates NotificationHubs service is not able to process the incoming request. The reason
+// is provided in the error message.
 type ErrorResponse struct {
-	raw string
 	// Error code.
 	Code *string `json:"code,omitempty"`
 
 	// Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
 }
 
 // GCMCredential - Description of a NotificationHub GcmCredential.
@@ -220,17 +287,26 @@ type MpnsCredentialProperties struct {
 
 // NamespaceCreateOrUpdateParameters - Parameters supplied to the CreateOrUpdate Namespace operation.
 type NamespaceCreateOrUpdateParameters struct {
-	Resource
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
 	// Properties of the Namespace.
 	Properties *NamespaceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type NamespaceCreateOrUpdateParameters.
-func (n NamespaceCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	n.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", n.Properties)
-	return json.Marshal(objectMap)
+	// The sku of the created namespace
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // NamespaceListResult - The response of the List Namespace operation.
@@ -242,14 +318,6 @@ type NamespaceListResult struct {
 	Value []*NamespaceResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NamespaceListResult.
-func (n NamespaceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", n.NextLink)
-	populate(objectMap, "value", n.Value)
-	return json.Marshal(objectMap)
-}
-
 // NamespacePatchParameters - Parameters supplied to the Patch Namespace operation.
 type NamespacePatchParameters struct {
 	// The sku of the created namespace
@@ -257,14 +325,6 @@ type NamespacePatchParameters struct {
 
 	// Resource tags
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type NamespacePatchParameters.
-func (n NamespacePatchParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "sku", n.SKU)
-	populate(objectMap, "tags", n.Tags)
-	return json.Marshal(objectMap)
 }
 
 // NamespaceProperties - Namespace properties.
@@ -290,8 +350,8 @@ type NamespaceProperties struct {
 	// Provisioning state of the Namespace.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 
-	// Specifies the targeted region in which the namespace should be created. It can be any of the following values: Australia East, Australia Southeast, Central
-	// US, East US, East US 2, West US, North
+	// Specifies the targeted region in which the namespace should be created. It can be any of the following values: Australia
+	// East, Australia Southeast, Central US, East US, East US 2, West US, North
 	// Central US, South Central US, East Asia, Southeast Asia, Brazil South, Japan East, Japan West, North Europe, West Europe
 	Region *string `json:"region,omitempty"`
 
@@ -314,178 +374,122 @@ type NamespaceProperties struct {
 	MetricID *string `json:"metricId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NamespaceProperties.
-func (n NamespaceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", n.CreatedAt)
-	populate(objectMap, "critical", n.Critical)
-	populate(objectMap, "dataCenter", n.DataCenter)
-	populate(objectMap, "enabled", n.Enabled)
-	populate(objectMap, "metricId", n.MetricID)
-	populate(objectMap, "name", n.Name)
-	populate(objectMap, "namespaceType", n.NamespaceType)
-	populate(objectMap, "provisioningState", n.ProvisioningState)
-	populate(objectMap, "region", n.Region)
-	populate(objectMap, "scaleUnit", n.ScaleUnit)
-	populate(objectMap, "serviceBusEndpoint", n.ServiceBusEndpoint)
-	populate(objectMap, "status", n.Status)
-	populate(objectMap, "subscriptionId", n.SubscriptionID)
-	populateTimeRFC3339(objectMap, "updatedAt", n.UpdatedAt)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type NamespaceProperties.
-func (n *NamespaceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &n.CreatedAt)
-			delete(rawMsg, key)
-		case "critical":
-			err = unpopulate(val, &n.Critical)
-			delete(rawMsg, key)
-		case "dataCenter":
-			err = unpopulate(val, &n.DataCenter)
-			delete(rawMsg, key)
-		case "enabled":
-			err = unpopulate(val, &n.Enabled)
-			delete(rawMsg, key)
-		case "metricId":
-			err = unpopulate(val, &n.MetricID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &n.Name)
-			delete(rawMsg, key)
-		case "namespaceType":
-			err = unpopulate(val, &n.NamespaceType)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &n.ProvisioningState)
-			delete(rawMsg, key)
-		case "region":
-			err = unpopulate(val, &n.Region)
-			delete(rawMsg, key)
-		case "scaleUnit":
-			err = unpopulate(val, &n.ScaleUnit)
-			delete(rawMsg, key)
-		case "serviceBusEndpoint":
-			err = unpopulate(val, &n.ServiceBusEndpoint)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &n.Status)
-			delete(rawMsg, key)
-		case "subscriptionId":
-			err = unpopulate(val, &n.SubscriptionID)
-			delete(rawMsg, key)
-		case "updatedAt":
-			err = unpopulateTimeRFC3339(val, &n.UpdatedAt)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // NamespaceResource - Description of a Namespace resource.
 type NamespaceResource struct {
-	Resource
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
 	// Properties of the Namespace.
 	Properties *NamespaceProperties `json:"properties,omitempty"`
+
+	// The sku of the created namespace
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NamespaceResource.
-func (n NamespaceResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	n.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", n.Properties)
-	return json.Marshal(objectMap)
+// NamespacesClientBeginDeleteOptions contains the optional parameters for the NamespacesClient.BeginDelete method.
+type NamespacesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// NamespacesBeginDeleteOptions contains the optional parameters for the Namespaces.BeginDelete method.
-type NamespacesBeginDeleteOptions struct {
+// NamespacesClientCheckAvailabilityOptions contains the optional parameters for the NamespacesClient.CheckAvailability method.
+type NamespacesClientCheckAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesCheckAvailabilityOptions contains the optional parameters for the Namespaces.CheckAvailability method.
-type NamespacesCheckAvailabilityOptions struct {
+// NamespacesClientCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the NamespacesClient.CreateOrUpdateAuthorizationRule
+// method.
+type NamespacesClientCreateOrUpdateAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the Namespaces.CreateOrUpdateAuthorizationRule method.
-type NamespacesCreateOrUpdateAuthorizationRuleOptions struct {
+// NamespacesClientCreateOrUpdateOptions contains the optional parameters for the NamespacesClient.CreateOrUpdate method.
+type NamespacesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesCreateOrUpdateOptions contains the optional parameters for the Namespaces.CreateOrUpdate method.
-type NamespacesCreateOrUpdateOptions struct {
+// NamespacesClientDeleteAuthorizationRuleOptions contains the optional parameters for the NamespacesClient.DeleteAuthorizationRule
+// method.
+type NamespacesClientDeleteAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesDeleteAuthorizationRuleOptions contains the optional parameters for the Namespaces.DeleteAuthorizationRule method.
-type NamespacesDeleteAuthorizationRuleOptions struct {
+// NamespacesClientGetAuthorizationRuleOptions contains the optional parameters for the NamespacesClient.GetAuthorizationRule
+// method.
+type NamespacesClientGetAuthorizationRuleOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesGetAuthorizationRuleOptions contains the optional parameters for the Namespaces.GetAuthorizationRule method.
-type NamespacesGetAuthorizationRuleOptions struct {
+// NamespacesClientGetOptions contains the optional parameters for the NamespacesClient.Get method.
+type NamespacesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesGetOptions contains the optional parameters for the Namespaces.Get method.
-type NamespacesGetOptions struct {
+// NamespacesClientListAllOptions contains the optional parameters for the NamespacesClient.ListAll method.
+type NamespacesClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesListAllOptions contains the optional parameters for the Namespaces.ListAll method.
-type NamespacesListAllOptions struct {
+// NamespacesClientListAuthorizationRulesOptions contains the optional parameters for the NamespacesClient.ListAuthorizationRules
+// method.
+type NamespacesClientListAuthorizationRulesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesListAuthorizationRulesOptions contains the optional parameters for the Namespaces.ListAuthorizationRules method.
-type NamespacesListAuthorizationRulesOptions struct {
+// NamespacesClientListKeysOptions contains the optional parameters for the NamespacesClient.ListKeys method.
+type NamespacesClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesListKeysOptions contains the optional parameters for the Namespaces.ListKeys method.
-type NamespacesListKeysOptions struct {
+// NamespacesClientListOptions contains the optional parameters for the NamespacesClient.List method.
+type NamespacesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesListOptions contains the optional parameters for the Namespaces.List method.
-type NamespacesListOptions struct {
+// NamespacesClientPatchOptions contains the optional parameters for the NamespacesClient.Patch method.
+type NamespacesClientPatchOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NamespacesPatchOptions contains the optional parameters for the Namespaces.Patch method.
-type NamespacesPatchOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NamespacesRegenerateKeysOptions contains the optional parameters for the Namespaces.RegenerateKeys method.
-type NamespacesRegenerateKeysOptions struct {
+// NamespacesClientRegenerateKeysOptions contains the optional parameters for the NamespacesClient.RegenerateKeys method.
+type NamespacesClientRegenerateKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
 // NotificationHubCreateOrUpdateParameters - Parameters supplied to the CreateOrUpdate NotificationHub operation.
 type NotificationHubCreateOrUpdateParameters struct {
-	Resource
 	// REQUIRED; Properties of the NotificationHub.
 	Properties *NotificationHubProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type NotificationHubCreateOrUpdateParameters.
-func (n NotificationHubCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	n.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", n.Properties)
-	return json.Marshal(objectMap)
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
+	// The sku of the created namespace
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // NotificationHubListResult - The response of the List NotificationHub operation.
@@ -497,27 +501,28 @@ type NotificationHubListResult struct {
 	Value []*NotificationHubResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NotificationHubListResult.
-func (n NotificationHubListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", n.NextLink)
-	populate(objectMap, "value", n.Value)
-	return json.Marshal(objectMap)
-}
-
 // NotificationHubPatchParameters - Parameters supplied to the patch NotificationHub operation.
 type NotificationHubPatchParameters struct {
-	Resource
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
 	// Properties of the NotificationHub.
 	Properties *NotificationHubProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type NotificationHubPatchParameters.
-func (n NotificationHubPatchParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	n.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", n.Properties)
-	return json.Marshal(objectMap)
+	// The sku of the created namespace
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // NotificationHubProperties - NotificationHub properties.
@@ -550,106 +555,28 @@ type NotificationHubProperties struct {
 	WnsCredential *WnsCredential `json:"wnsCredential,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NotificationHubProperties.
-func (n NotificationHubProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "admCredential", n.AdmCredential)
-	populate(objectMap, "apnsCredential", n.ApnsCredential)
-	populate(objectMap, "authorizationRules", n.AuthorizationRules)
-	populate(objectMap, "baiduCredential", n.BaiduCredential)
-	populate(objectMap, "gcmCredential", n.GCMCredential)
-	populate(objectMap, "mpnsCredential", n.MpnsCredential)
-	populate(objectMap, "name", n.Name)
-	populate(objectMap, "registrationTtl", n.RegistrationTTL)
-	populate(objectMap, "wnsCredential", n.WnsCredential)
-	return json.Marshal(objectMap)
-}
-
 // NotificationHubResource - Description of a NotificationHub Resource.
 type NotificationHubResource struct {
-	Resource
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
 	// Properties of the NotificationHub.
 	Properties *NotificationHubProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type NotificationHubResource.
-func (n NotificationHubResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	n.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", n.Properties)
-	return json.Marshal(objectMap)
-}
+	// The sku of the created namespace
+	SKU *SKU `json:"sku,omitempty"`
 
-// NotificationHubsCheckNotificationHubAvailabilityOptions contains the optional parameters for the NotificationHubs.CheckNotificationHubAvailability method.
-type NotificationHubsCheckNotificationHubAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
 
-// NotificationHubsCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the NotificationHubs.CreateOrUpdateAuthorizationRule method.
-type NotificationHubsCreateOrUpdateAuthorizationRuleOptions struct {
-	// placeholder for future optional parameters
-}
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-// NotificationHubsCreateOrUpdateOptions contains the optional parameters for the NotificationHubs.CreateOrUpdate method.
-type NotificationHubsCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
 
-// NotificationHubsDebugSendOptions contains the optional parameters for the NotificationHubs.DebugSend method.
-type NotificationHubsDebugSendOptions struct {
-	// Debug send parameters
-	Parameters map[string]interface{}
-}
-
-// NotificationHubsDeleteAuthorizationRuleOptions contains the optional parameters for the NotificationHubs.DeleteAuthorizationRule method.
-type NotificationHubsDeleteAuthorizationRuleOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NotificationHubsDeleteOptions contains the optional parameters for the NotificationHubs.Delete method.
-type NotificationHubsDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NotificationHubsGetAuthorizationRuleOptions contains the optional parameters for the NotificationHubs.GetAuthorizationRule method.
-type NotificationHubsGetAuthorizationRuleOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NotificationHubsGetOptions contains the optional parameters for the NotificationHubs.Get method.
-type NotificationHubsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NotificationHubsGetPnsCredentialsOptions contains the optional parameters for the NotificationHubs.GetPnsCredentials method.
-type NotificationHubsGetPnsCredentialsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NotificationHubsListAuthorizationRulesOptions contains the optional parameters for the NotificationHubs.ListAuthorizationRules method.
-type NotificationHubsListAuthorizationRulesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NotificationHubsListKeysOptions contains the optional parameters for the NotificationHubs.ListKeys method.
-type NotificationHubsListKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NotificationHubsListOptions contains the optional parameters for the NotificationHubs.List method.
-type NotificationHubsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// NotificationHubsPatchOptions contains the optional parameters for the NotificationHubs.Patch method.
-type NotificationHubsPatchOptions struct {
-	// Parameters supplied to patch a NotificationHub Resource.
-	Parameters *NotificationHubPatchParameters
-}
-
-// NotificationHubsRegenerateKeysOptions contains the optional parameters for the NotificationHubs.RegenerateKeys method.
-type NotificationHubsRegenerateKeysOptions struct {
-	// placeholder for future optional parameters
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Operation - A NotificationHubs REST API operation
@@ -673,8 +600,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - Result of the request to list NotificationHubs operations. It contains a list of operations and a URL link to get the next set
-// of results.
+// OperationListResult - Result of the request to list NotificationHubs operations. It contains a list of operations and a
+// URL link to get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -683,16 +610,8 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -719,22 +638,32 @@ type PnsCredentialsProperties struct {
 
 // PnsCredentialsResource - Description of a NotificationHub PNS Credentials.
 type PnsCredentialsResource struct {
-	Resource
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
 	// NotificationHub PNS Credentials.
 	Properties *PnsCredentialsProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PnsCredentialsResource.
-func (p PnsCredentialsResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// The sku of the created namespace
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PolicykeyResource - Namespace/NotificationHub Regenerate Keys
 type PolicykeyResource struct {
-	// Name of the key that has to be regenerated for the Namespace/Notification Hub Authorization Rule. The value can be Primary Key/Secondary Key.
+	// Name of the key that has to be regenerated for the Namespace/Notification Hub Authorization Rule. The value can be Primary
+	// Key/Secondary Key.
 	PolicyKey *string `json:"policyKey,omitempty"`
 }
 
@@ -756,22 +685,6 @@ type Resource struct {
 
 	// READ-ONLY; Resource type
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "sku", r.SKU)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
 }
 
 // ResourceListKeys - Namespace/NotificationHub Connection String
@@ -825,14 +738,6 @@ type SharedAccessAuthorizationRuleListResult struct {
 	Value []*SharedAccessAuthorizationRuleResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SharedAccessAuthorizationRuleListResult.
-func (s SharedAccessAuthorizationRuleListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SharedAccessAuthorizationRuleProperties - SharedAccessAuthorizationRule properties.
 type SharedAccessAuthorizationRuleProperties struct {
 	// The rights associated with the rule.
@@ -863,34 +768,28 @@ type SharedAccessAuthorizationRuleProperties struct {
 	SecondaryKey *string `json:"secondaryKey,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SharedAccessAuthorizationRuleProperties.
-func (s SharedAccessAuthorizationRuleProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "claimType", s.ClaimType)
-	populate(objectMap, "claimValue", s.ClaimValue)
-	populate(objectMap, "createdTime", s.CreatedTime)
-	populate(objectMap, "keyName", s.KeyName)
-	populate(objectMap, "modifiedTime", s.ModifiedTime)
-	populate(objectMap, "primaryKey", s.PrimaryKey)
-	populate(objectMap, "revision", s.Revision)
-	populate(objectMap, "rights", s.Rights)
-	populate(objectMap, "secondaryKey", s.SecondaryKey)
-	return json.Marshal(objectMap)
-}
-
 // SharedAccessAuthorizationRuleResource - Description of a Namespace AuthorizationRules.
 type SharedAccessAuthorizationRuleResource struct {
-	Resource
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
 	// Properties of the Namespace AuthorizationRule.
 	Properties *SharedAccessAuthorizationRuleProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type SharedAccessAuthorizationRuleResource.
-func (s SharedAccessAuthorizationRuleResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
+	// The sku of the created namespace
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 type SubResource struct {
@@ -914,21 +813,4 @@ type WnsCredentialProperties struct {
 
 	// The Windows Live endpoint.
 	WindowsLiveEndpoint *string `json:"windowsLiveEndpoint,omitempty"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

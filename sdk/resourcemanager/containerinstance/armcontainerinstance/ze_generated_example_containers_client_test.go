@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,65 +17,80 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance"
 )
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerListLogs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerListLogs.json
 func ExampleContainersClient_ListLogs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcontainerinstance.NewContainersClient("<subscription-id>", cred, nil)
-	_, err = client.ListLogs(ctx,
-		"<resource-group-name>",
-		"<container-group-name>",
-		"<container-name>",
-		&armcontainerinstance.ContainersListLogsOptions{Tail: to.Int32Ptr(10),
+	client, err := armcontainerinstance.NewContainersClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.ListLogs(ctx,
+		"demo",
+		"demo1",
+		"container1",
+		&armcontainerinstance.ContainersClientListLogsOptions{Tail: to.Ptr[int32](10),
 			Timestamps: nil,
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerExec.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerExec.json
 func ExampleContainersClient_ExecuteCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcontainerinstance.NewContainersClient("<subscription-id>", cred, nil)
-	_, err = client.ExecuteCommand(ctx,
-		"<resource-group-name>",
-		"<container-group-name>",
-		"<container-name>",
+	client, err := armcontainerinstance.NewContainersClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.ExecuteCommand(ctx,
+		"demo",
+		"demo1",
+		"container1",
 		armcontainerinstance.ContainerExecRequest{
-			Command: to.StringPtr("<command>"),
+			Command: to.Ptr("/bin/bash"),
 			TerminalSize: &armcontainerinstance.ContainerExecRequestTerminalSize{
-				Cols: to.Int32Ptr(12),
-				Rows: to.Int32Ptr(12),
+				Cols: to.Ptr[int32](12),
+				Rows: to.Ptr[int32](12),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerAttach.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerAttach.json
 func ExampleContainersClient_Attach() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcontainerinstance.NewContainersClient("<subscription-id>", cred, nil)
-	_, err = client.Attach(ctx,
-		"<resource-group-name>",
-		"<container-group-name>",
-		"<container-name>",
+	client, err := armcontainerinstance.NewContainersClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.Attach(ctx,
+		"demo",
+		"demo1",
+		"container1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,47 +25,62 @@ import (
 // AdaptiveNetworkHardeningsClient contains the methods for the AdaptiveNetworkHardenings group.
 // Don't use this type directly, use NewAdaptiveNetworkHardeningsClient() instead.
 type AdaptiveNetworkHardeningsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAdaptiveNetworkHardeningsClient creates a new instance of AdaptiveNetworkHardeningsClient with the specified values.
-func NewAdaptiveNetworkHardeningsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AdaptiveNetworkHardeningsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Azure subscription ID
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewAdaptiveNetworkHardeningsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AdaptiveNetworkHardeningsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &AdaptiveNetworkHardeningsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &AdaptiveNetworkHardeningsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // BeginEnforce - Enforces the given rules on the NSG(s) listed in the request
-// If the operation fails it returns the *CloudError error type.
-func (client *AdaptiveNetworkHardeningsClient) BeginEnforce(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, adaptiveNetworkHardeningResourceName string, adaptiveNetworkHardeningEnforceAction Enum53, body AdaptiveNetworkHardeningEnforceRequest, options *AdaptiveNetworkHardeningsBeginEnforceOptions) (AdaptiveNetworkHardeningsEnforcePollerResponse, error) {
-	resp, err := client.enforce(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, adaptiveNetworkHardeningResourceName, adaptiveNetworkHardeningEnforceAction, body, options)
-	if err != nil {
-		return AdaptiveNetworkHardeningsEnforcePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// resourceNamespace - The Namespace of the resource.
+// resourceType - The type of the resource.
+// resourceName - Name of the resource.
+// adaptiveNetworkHardeningResourceName - The name of the Adaptive Network Hardening resource.
+// options - AdaptiveNetworkHardeningsClientBeginEnforceOptions contains the optional parameters for the AdaptiveNetworkHardeningsClient.BeginEnforce
+// method.
+func (client *AdaptiveNetworkHardeningsClient) BeginEnforce(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, adaptiveNetworkHardeningResourceName string, body AdaptiveNetworkHardeningEnforceRequest, options *AdaptiveNetworkHardeningsClientBeginEnforceOptions) (*runtime.Poller[AdaptiveNetworkHardeningsClientEnforceResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.enforce(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, adaptiveNetworkHardeningResourceName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[AdaptiveNetworkHardeningsClientEnforceResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[AdaptiveNetworkHardeningsClientEnforceResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := AdaptiveNetworkHardeningsEnforcePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("AdaptiveNetworkHardeningsClient.Enforce", "", resp, client.pl, client.enforceHandleError)
-	if err != nil {
-		return AdaptiveNetworkHardeningsEnforcePollerResponse{}, err
-	}
-	result.Poller = &AdaptiveNetworkHardeningsEnforcePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Enforce - Enforces the given rules on the NSG(s) listed in the request
-// If the operation fails it returns the *CloudError error type.
-func (client *AdaptiveNetworkHardeningsClient) enforce(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, adaptiveNetworkHardeningResourceName string, adaptiveNetworkHardeningEnforceAction Enum53, body AdaptiveNetworkHardeningEnforceRequest, options *AdaptiveNetworkHardeningsBeginEnforceOptions) (*http.Response, error) {
-	req, err := client.enforceCreateRequest(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, adaptiveNetworkHardeningResourceName, adaptiveNetworkHardeningEnforceAction, body, options)
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
+func (client *AdaptiveNetworkHardeningsClient) enforce(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, adaptiveNetworkHardeningResourceName string, body AdaptiveNetworkHardeningEnforceRequest, options *AdaptiveNetworkHardeningsClientBeginEnforceOptions) (*http.Response, error) {
+	req, err := client.enforceCreateRequest(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, adaptiveNetworkHardeningResourceName, body, options)
 	if err != nil {
 		return nil, err
 	}
@@ -74,13 +89,13 @@ func (client *AdaptiveNetworkHardeningsClient) enforce(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.enforceHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // enforceCreateRequest creates the Enforce request.
-func (client *AdaptiveNetworkHardeningsClient) enforceCreateRequest(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, adaptiveNetworkHardeningResourceName string, adaptiveNetworkHardeningEnforceAction Enum53, body AdaptiveNetworkHardeningEnforceRequest, options *AdaptiveNetworkHardeningsBeginEnforceOptions) (*policy.Request, error) {
+func (client *AdaptiveNetworkHardeningsClient) enforceCreateRequest(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, adaptiveNetworkHardeningResourceName string, body AdaptiveNetworkHardeningEnforceRequest, options *AdaptiveNetworkHardeningsClientBeginEnforceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Security/adaptiveNetworkHardenings/{adaptiveNetworkHardeningResourceName}/{adaptiveNetworkHardeningEnforceAction}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -106,53 +121,45 @@ func (client *AdaptiveNetworkHardeningsClient) enforceCreateRequest(ctx context.
 		return nil, errors.New("parameter adaptiveNetworkHardeningResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{adaptiveNetworkHardeningResourceName}", url.PathEscape(adaptiveNetworkHardeningResourceName))
-	if adaptiveNetworkHardeningEnforceAction == "" {
-		return nil, errors.New("parameter adaptiveNetworkHardeningEnforceAction cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{adaptiveNetworkHardeningEnforceAction}", url.PathEscape(string(adaptiveNetworkHardeningEnforceAction)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	urlPath = strings.ReplaceAll(urlPath, "{adaptiveNetworkHardeningEnforceAction}", url.PathEscape("enforce"))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// enforceHandleError handles the Enforce error response.
-func (client *AdaptiveNetworkHardeningsClient) enforceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a single Adaptive Network Hardening resource
-// If the operation fails it returns the *CloudError error type.
-func (client *AdaptiveNetworkHardeningsClient) Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, adaptiveNetworkHardeningResourceName string, options *AdaptiveNetworkHardeningsGetOptions) (AdaptiveNetworkHardeningsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// resourceNamespace - The Namespace of the resource.
+// resourceType - The type of the resource.
+// resourceName - Name of the resource.
+// adaptiveNetworkHardeningResourceName - The name of the Adaptive Network Hardening resource.
+// options - AdaptiveNetworkHardeningsClientGetOptions contains the optional parameters for the AdaptiveNetworkHardeningsClient.Get
+// method.
+func (client *AdaptiveNetworkHardeningsClient) Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, adaptiveNetworkHardeningResourceName string, options *AdaptiveNetworkHardeningsClientGetOptions) (AdaptiveNetworkHardeningsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, adaptiveNetworkHardeningResourceName, options)
 	if err != nil {
-		return AdaptiveNetworkHardeningsGetResponse{}, err
+		return AdaptiveNetworkHardeningsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AdaptiveNetworkHardeningsGetResponse{}, err
+		return AdaptiveNetworkHardeningsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AdaptiveNetworkHardeningsGetResponse{}, client.getHandleError(resp)
+		return AdaptiveNetworkHardeningsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AdaptiveNetworkHardeningsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, adaptiveNetworkHardeningResourceName string, options *AdaptiveNetworkHardeningsGetOptions) (*policy.Request, error) {
+func (client *AdaptiveNetworkHardeningsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, adaptiveNetworkHardeningResourceName string, options *AdaptiveNetworkHardeningsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Security/adaptiveNetworkHardenings/{adaptiveNetworkHardeningResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,55 +185,65 @@ func (client *AdaptiveNetworkHardeningsClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter adaptiveNetworkHardeningResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{adaptiveNetworkHardeningResourceName}", url.PathEscape(adaptiveNetworkHardeningResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AdaptiveNetworkHardeningsClient) getHandleResponse(resp *http.Response) (AdaptiveNetworkHardeningsGetResponse, error) {
-	result := AdaptiveNetworkHardeningsGetResponse{RawResponse: resp}
+func (client *AdaptiveNetworkHardeningsClient) getHandleResponse(resp *http.Response) (AdaptiveNetworkHardeningsClientGetResponse, error) {
+	result := AdaptiveNetworkHardeningsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdaptiveNetworkHardening); err != nil {
-		return AdaptiveNetworkHardeningsGetResponse{}, runtime.NewResponseError(err, resp)
+		return AdaptiveNetworkHardeningsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AdaptiveNetworkHardeningsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByExtendedResource - Gets a list of Adaptive Network Hardenings resources in scope of an extended resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *AdaptiveNetworkHardeningsClient) ListByExtendedResource(resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, options *AdaptiveNetworkHardeningsListByExtendedResourceOptions) *AdaptiveNetworkHardeningsListByExtendedResourcePager {
-	return &AdaptiveNetworkHardeningsListByExtendedResourcePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByExtendedResourceCreateRequest(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, options)
+// NewListByExtendedResourcePager - Gets a list of Adaptive Network Hardenings resources in scope of an extended resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// resourceNamespace - The Namespace of the resource.
+// resourceType - The type of the resource.
+// resourceName - Name of the resource.
+// options - AdaptiveNetworkHardeningsClientListByExtendedResourceOptions contains the optional parameters for the AdaptiveNetworkHardeningsClient.ListByExtendedResource
+// method.
+func (client *AdaptiveNetworkHardeningsClient) NewListByExtendedResourcePager(resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, options *AdaptiveNetworkHardeningsClientListByExtendedResourceOptions) *runtime.Pager[AdaptiveNetworkHardeningsClientListByExtendedResourceResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AdaptiveNetworkHardeningsClientListByExtendedResourceResponse]{
+		More: func(page AdaptiveNetworkHardeningsClientListByExtendedResourceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AdaptiveNetworkHardeningsListByExtendedResourceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AdaptiveNetworkHardeningsList.NextLink)
+		Fetcher: func(ctx context.Context, page *AdaptiveNetworkHardeningsClientListByExtendedResourceResponse) (AdaptiveNetworkHardeningsClientListByExtendedResourceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByExtendedResourceCreateRequest(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AdaptiveNetworkHardeningsClientListByExtendedResourceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AdaptiveNetworkHardeningsClientListByExtendedResourceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AdaptiveNetworkHardeningsClientListByExtendedResourceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByExtendedResourceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByExtendedResourceCreateRequest creates the ListByExtendedResource request.
-func (client *AdaptiveNetworkHardeningsClient) listByExtendedResourceCreateRequest(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, options *AdaptiveNetworkHardeningsListByExtendedResourceOptions) (*policy.Request, error) {
+func (client *AdaptiveNetworkHardeningsClient) listByExtendedResourceCreateRequest(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, options *AdaptiveNetworkHardeningsClientListByExtendedResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Security/adaptiveNetworkHardenings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -248,35 +265,22 @@ func (client *AdaptiveNetworkHardeningsClient) listByExtendedResourceCreateReque
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByExtendedResourceHandleResponse handles the ListByExtendedResource response.
-func (client *AdaptiveNetworkHardeningsClient) listByExtendedResourceHandleResponse(resp *http.Response) (AdaptiveNetworkHardeningsListByExtendedResourceResponse, error) {
-	result := AdaptiveNetworkHardeningsListByExtendedResourceResponse{RawResponse: resp}
+func (client *AdaptiveNetworkHardeningsClient) listByExtendedResourceHandleResponse(resp *http.Response) (AdaptiveNetworkHardeningsClientListByExtendedResourceResponse, error) {
+	result := AdaptiveNetworkHardeningsClientListByExtendedResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdaptiveNetworkHardeningsList); err != nil {
-		return AdaptiveNetworkHardeningsListByExtendedResourceResponse{}, runtime.NewResponseError(err, resp)
+		return AdaptiveNetworkHardeningsClientListByExtendedResourceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByExtendedResourceHandleError handles the ListByExtendedResource error response.
-func (client *AdaptiveNetworkHardeningsClient) listByExtendedResourceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

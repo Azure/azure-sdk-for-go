@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,28 @@
 
 package armguestconfiguration
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
+
+// Assignment - Guest configuration assignment is an association between a machine and guest configuration.
+type Assignment struct {
+	// Region where the VM is located.
+	Location *string `json:"location,omitempty"`
+
+	// Name of the guest configuration assignment.
+	Name *string `json:"name,omitempty"`
+
+	// Properties of the Guest configuration assignment.
+	Properties *AssignmentProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; ARM resource id of the guest configuration assignment.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
 
 // AssignmentInfo - Information about the guest configuration assignment.
 type AssignmentInfo struct {
@@ -24,292 +40,22 @@ type AssignmentInfo struct {
 	Name *string `json:"name,omitempty" azure:"ro"`
 }
 
-type AssignmentReport struct {
-	// Configuration details of the guest configuration assignment.
-	Assignment *AssignmentInfo `json:"assignment,omitempty"`
-
-	// The list of resources for which guest configuration assignment compliance is checked.
-	Resources []*AssignmentReportResource `json:"resources,omitempty"`
-
-	// Information about the VM.
-	VM *VMInfo `json:"vm,omitempty"`
-
-	// READ-ONLY; A value indicating compliance status of the machine for the assigned guest configuration.
-	ComplianceStatus *ComplianceStatus `json:"complianceStatus,omitempty" azure:"ro"`
-
-	// READ-ONLY; End date and time of the guest configuration assignment compliance status check.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
-
-	// READ-ONLY; ARM resource id of the report for the guest configuration assignment.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Type of report, Consistency or Initial
-	OperationType *Type `json:"operationType,omitempty" azure:"ro"`
-
-	// READ-ONLY; GUID that identifies the guest configuration assignment report under a subscription, resource group.
-	ReportID *string `json:"reportId,omitempty" azure:"ro"`
-
-	// READ-ONLY; Start date and time of the guest configuration assignment compliance status check.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AssignmentReport.
-func (a AssignmentReport) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "assignment", a.Assignment)
-	populate(objectMap, "complianceStatus", a.ComplianceStatus)
-	populateTimeRFC3339(objectMap, "endTime", a.EndTime)
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "operationType", a.OperationType)
-	populate(objectMap, "reportId", a.ReportID)
-	populate(objectMap, "resources", a.Resources)
-	populateTimeRFC3339(objectMap, "startTime", a.StartTime)
-	populate(objectMap, "vm", a.VM)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AssignmentReport.
-func (a *AssignmentReport) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "assignment":
-			err = unpopulate(val, &a.Assignment)
-			delete(rawMsg, key)
-		case "complianceStatus":
-			err = unpopulate(val, &a.ComplianceStatus)
-			delete(rawMsg, key)
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &a.EndTime)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "operationType":
-			err = unpopulate(val, &a.OperationType)
-			delete(rawMsg, key)
-		case "reportId":
-			err = unpopulate(val, &a.ReportID)
-			delete(rawMsg, key)
-		case "resources":
-			err = unpopulate(val, &a.Resources)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &a.StartTime)
-			delete(rawMsg, key)
-		case "vm":
-			err = unpopulate(val, &a.VM)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// AssignmentReportDetails - Details of the guest configuration assignment report.
-type AssignmentReportDetails struct {
-	// The list of resources for which guest configuration assignment compliance is checked.
-	Resources []*AssignmentReportResource `json:"resources,omitempty"`
-
-	// READ-ONLY; A value indicating compliance status of the machine for the assigned guest configuration.
-	ComplianceStatus *ComplianceStatus `json:"complianceStatus,omitempty" azure:"ro"`
-
-	// READ-ONLY; End date and time of the guest configuration assignment compliance status check.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
-
-	// READ-ONLY; GUID of the report.
-	JobID *string `json:"jobId,omitempty" azure:"ro"`
-
-	// READ-ONLY; Type of report, Consistency or Initial
-	OperationType *Type `json:"operationType,omitempty" azure:"ro"`
-
-	// READ-ONLY; Start date and time of the guest configuration assignment compliance status check.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AssignmentReportDetails.
-func (a AssignmentReportDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "complianceStatus", a.ComplianceStatus)
-	populateTimeRFC3339(objectMap, "endTime", a.EndTime)
-	populate(objectMap, "jobId", a.JobID)
-	populate(objectMap, "operationType", a.OperationType)
-	populate(objectMap, "resources", a.Resources)
-	populateTimeRFC3339(objectMap, "startTime", a.StartTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AssignmentReportDetails.
-func (a *AssignmentReportDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "complianceStatus":
-			err = unpopulate(val, &a.ComplianceStatus)
-			delete(rawMsg, key)
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &a.EndTime)
-			delete(rawMsg, key)
-		case "jobId":
-			err = unpopulate(val, &a.JobID)
-			delete(rawMsg, key)
-		case "operationType":
-			err = unpopulate(val, &a.OperationType)
-			delete(rawMsg, key)
-		case "resources":
-			err = unpopulate(val, &a.Resources)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &a.StartTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// AssignmentReportResource - The guest configuration assignment resource.
-type AssignmentReportResource struct {
-	// Compliance reason and reason code for a resource.
-	Reasons []*AssignmentReportResourceComplianceReason `json:"reasons,omitempty"`
-
-	// READ-ONLY; A value indicating compliance status of the machine for the assigned guest configuration.
-	ComplianceStatus *ComplianceStatus `json:"complianceStatus,omitempty" azure:"ro"`
-
-	// READ-ONLY; Properties of a guest configuration assignment resource.
-	Properties map[string]interface{} `json:"properties,omitempty" azure:"ro"`
-
-	// READ-ONLY; Name of the guest configuration assignment resource setting.
-	ResourceID *string `json:"resourceId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AssignmentReportResource.
-func (a AssignmentReportResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "complianceStatus", a.ComplianceStatus)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "reasons", a.Reasons)
-	populate(objectMap, "resourceId", a.ResourceID)
-	return json.Marshal(objectMap)
-}
-
-// AssignmentReportResourceComplianceReason - Reason and code for the compliance of the guest configuration assignment resource.
-type AssignmentReportResourceComplianceReason struct {
-	// READ-ONLY; Code for the compliance of the guest configuration assignment resource.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; Reason for the compliance of the guest configuration assignment resource.
-	Phrase *string `json:"phrase,omitempty" azure:"ro"`
-}
-
-// ConfigurationInfo - Information about the configuration.
-type ConfigurationInfo struct {
-	// READ-ONLY; Name of the configuration.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Version of the configuration.
-	Version *string `json:"version,omitempty" azure:"ro"`
-}
-
-// ConfigurationParameter - Represents a configuration parameter.
-type ConfigurationParameter struct {
-	// Name of the configuration parameter.
-	Name *string `json:"name,omitempty"`
-
-	// Value of the configuration parameter.
-	Value *string `json:"value,omitempty"`
-}
-
-// ConfigurationSetting - Configuration setting of LCM (Local Configuration Manager).
-type ConfigurationSetting struct {
-	// Specifies what happens after a reboot during the application of a configuration. The possible values are ContinueConfiguration and StopConfiguration
-	ActionAfterReboot *ActionAfterReboot `json:"actionAfterReboot,omitempty"`
-
-	// If true - new configurations downloaded from the pull service are allowed to overwrite the old ones on the target node. Otherwise, false
-	AllowModuleOverwrite *bool `json:"allowModuleOverwrite,omitempty"`
-
-	// Specifies how the LCM(Local Configuration Manager) actually applies the configuration to the target nodes. Possible values are ApplyOnly, ApplyAndMonitor,
-	// and ApplyAndAutoCorrect.
-	ConfigurationMode *ConfigurationMode `json:"configurationMode,omitempty"`
-
-	// How often, in minutes, the current configuration is checked and applied. This property is ignored if the ConfigurationMode property is set to ApplyOnly.
-	// The default value is 15.
-	ConfigurationModeFrequencyMins *float32 `json:"configurationModeFrequencyMins,omitempty"`
-
-	// Set this to true to automatically reboot the node after a configuration that requires reboot is applied. Otherwise, you will have to manually reboot
-	// the node for any configuration that requires it.
-	// The default value is false. To use this setting when a reboot condition is enacted by something other than DSC (such as Windows Installer), combine this
-	// setting with the xPendingReboot module.
-	RebootIfNeeded *bool `json:"rebootIfNeeded,omitempty"`
-
-	// The time interval, in minutes, at which the LCM checks a pull service to get updated configurations. This value is ignored if the LCM is not configured
-	// in pull mode. The default value is 30.
-	RefreshFrequencyMins *float32 `json:"refreshFrequencyMins,omitempty"`
-}
-
-// ErrorResponse - Error response of an operation failure
-// Implements the error and azcore.HTTPResponse interfaces.
-type ErrorResponse struct {
-	raw        string
-	InnerError *ErrorResponseError `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
-}
-
-type ErrorResponseError struct {
-	// Error code.
-	Code *string `json:"code,omitempty"`
-
-	// Detail error message indicating why the operation failed.
-	Message *string `json:"message,omitempty"`
-}
-
-// GuestConfigurationAssignment - Guest configuration assignment is an association between a machine and guest configuration.
-type GuestConfigurationAssignment struct {
-	ProxyResource
-	// Properties of the Guest configuration assignment.
-	Properties *GuestConfigurationAssignmentProperties `json:"properties,omitempty"`
-}
-
-// GuestConfigurationAssignmentList - The response of the list guest configuration assignment operation.
-type GuestConfigurationAssignmentList struct {
+// AssignmentList - The response of the list guest configuration assignment operation.
+type AssignmentList struct {
 	// Result of the list guest configuration assignment operation.
-	Value []*GuestConfigurationAssignment `json:"value,omitempty"`
+	Value []*Assignment `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GuestConfigurationAssignmentList.
-func (g GuestConfigurationAssignmentList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", g.Value)
-	return json.Marshal(objectMap)
-}
-
-// GuestConfigurationAssignmentProperties - Guest configuration assignment properties.
-type GuestConfigurationAssignmentProperties struct {
+// AssignmentProperties - Guest configuration assignment properties.
+type AssignmentProperties struct {
 	// The source which initiated the guest configuration assignment. Ex: Azure Policy
 	Context *string `json:"context,omitempty"`
 
 	// The guest configuration to assign.
-	GuestConfiguration *GuestConfigurationNavigation `json:"guestConfiguration,omitempty"`
+	GuestConfiguration *Navigation `json:"guestConfiguration,omitempty"`
 
 	// Last reported guest configuration assignment report.
-	LatestAssignmentReport *AssignmentReport `json:"latestAssignmentReport,omitempty"`
+	LatestAssignmentReport *CommonAssignmentReport `json:"latestAssignmentReport,omitempty"`
 
 	// The list of VM Compliance data for VMSS
 	VmssVMList []*VMSSVMInfo `json:"vmssVMList,omitempty"`
@@ -339,82 +85,11 @@ type GuestConfigurationAssignmentProperties struct {
 	TargetResourceID *string `json:"targetResourceId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GuestConfigurationAssignmentProperties.
-func (g GuestConfigurationAssignmentProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "assignmentHash", g.AssignmentHash)
-	populate(objectMap, "complianceStatus", g.ComplianceStatus)
-	populate(objectMap, "context", g.Context)
-	populate(objectMap, "guestConfiguration", g.GuestConfiguration)
-	populateTimeRFC3339(objectMap, "lastComplianceStatusChecked", g.LastComplianceStatusChecked)
-	populate(objectMap, "latestAssignmentReport", g.LatestAssignmentReport)
-	populate(objectMap, "latestReportId", g.LatestReportID)
-	populate(objectMap, "parameterHash", g.ParameterHash)
-	populate(objectMap, "provisioningState", g.ProvisioningState)
-	populate(objectMap, "resourceType", g.ResourceType)
-	populate(objectMap, "targetResourceId", g.TargetResourceID)
-	populate(objectMap, "vmssVMList", g.VmssVMList)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type GuestConfigurationAssignmentProperties.
-func (g *GuestConfigurationAssignmentProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "assignmentHash":
-			err = unpopulate(val, &g.AssignmentHash)
-			delete(rawMsg, key)
-		case "complianceStatus":
-			err = unpopulate(val, &g.ComplianceStatus)
-			delete(rawMsg, key)
-		case "context":
-			err = unpopulate(val, &g.Context)
-			delete(rawMsg, key)
-		case "guestConfiguration":
-			err = unpopulate(val, &g.GuestConfiguration)
-			delete(rawMsg, key)
-		case "lastComplianceStatusChecked":
-			err = unpopulateTimeRFC3339(val, &g.LastComplianceStatusChecked)
-			delete(rawMsg, key)
-		case "latestAssignmentReport":
-			err = unpopulate(val, &g.LatestAssignmentReport)
-			delete(rawMsg, key)
-		case "latestReportId":
-			err = unpopulate(val, &g.LatestReportID)
-			delete(rawMsg, key)
-		case "parameterHash":
-			err = unpopulate(val, &g.ParameterHash)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &g.ProvisioningState)
-			delete(rawMsg, key)
-		case "resourceType":
-			err = unpopulate(val, &g.ResourceType)
-			delete(rawMsg, key)
-		case "targetResourceId":
-			err = unpopulate(val, &g.TargetResourceID)
-			delete(rawMsg, key)
-		case "vmssVMList":
-			err = unpopulate(val, &g.VmssVMList)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// GuestConfigurationAssignmentReport - Report for the guest configuration assignment. Report contains information such as compliance status, reason, and
-// more.
-type GuestConfigurationAssignmentReport struct {
+// AssignmentReport - Report for the guest configuration assignment. Report contains information such as compliance status,
+// reason, and more.
+type AssignmentReport struct {
 	// Properties of the guest configuration report.
-	Properties *GuestConfigurationAssignmentReportProperties `json:"properties,omitempty"`
+	Properties *AssignmentReportProperties `json:"properties,omitempty"`
 
 	// READ-ONLY; ARM resource id of the report for the guest configuration assignment.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -423,22 +98,36 @@ type GuestConfigurationAssignmentReport struct {
 	Name *string `json:"name,omitempty" azure:"ro"`
 }
 
-// GuestConfigurationAssignmentReportList - List of guest configuration assignment reports.
-type GuestConfigurationAssignmentReportList struct {
+// AssignmentReportDetails - Details of the guest configuration assignment report.
+type AssignmentReportDetails struct {
+	// The list of resources for which guest configuration assignment compliance is checked.
+	Resources []*AssignmentReportResource `json:"resources,omitempty"`
+
+	// READ-ONLY; A value indicating compliance status of the machine for the assigned guest configuration.
+	ComplianceStatus *ComplianceStatus `json:"complianceStatus,omitempty" azure:"ro"`
+
+	// READ-ONLY; End date and time of the guest configuration assignment compliance status check.
+	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; GUID of the report.
+	JobID *string `json:"jobId,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of report, Consistency or Initial
+	OperationType *Type `json:"operationType,omitempty" azure:"ro"`
+
+	// READ-ONLY; Start date and time of the guest configuration assignment compliance status check.
+	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+}
+
+// AssignmentReportList - List of guest configuration assignment reports.
+type AssignmentReportList struct {
 	// List of reports for the guest configuration. Report contains information such as compliance status, reason and more.
-	Value []*GuestConfigurationAssignmentReport `json:"value,omitempty"`
+	Value []*AssignmentReport `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GuestConfigurationAssignmentReportList.
-func (g GuestConfigurationAssignmentReportList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", g.Value)
-	return json.Marshal(objectMap)
-}
-
-// GuestConfigurationAssignmentReportProperties - Report for the guest configuration assignment. Report contains information such as compliance status,
-// reason, and more.
-type GuestConfigurationAssignmentReportProperties struct {
+// AssignmentReportProperties - Report for the guest configuration assignment. Report contains information such as compliance
+// status, reason, and more.
+type AssignmentReportProperties struct {
 	// Configuration details of the guest configuration assignment.
 	Assignment *AssignmentInfo `json:"assignment,omitempty"`
 
@@ -464,136 +153,221 @@ type GuestConfigurationAssignmentReportProperties struct {
 	VmssResourceID *string `json:"vmssResourceId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GuestConfigurationAssignmentReportProperties.
-func (g GuestConfigurationAssignmentReportProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "assignment", g.Assignment)
-	populate(objectMap, "complianceStatus", g.ComplianceStatus)
-	populate(objectMap, "details", g.Details)
-	populateTimeRFC3339(objectMap, "endTime", g.EndTime)
-	populate(objectMap, "reportId", g.ReportID)
-	populateTimeRFC3339(objectMap, "startTime", g.StartTime)
-	populate(objectMap, "vm", g.VM)
-	populate(objectMap, "vmssResourceId", g.VmssResourceID)
-	return json.Marshal(objectMap)
+// AssignmentReportResource - The guest configuration assignment resource.
+type AssignmentReportResource struct {
+	// Compliance reason and reason code for a resource.
+	Reasons []*AssignmentReportResourceComplianceReason `json:"reasons,omitempty"`
+
+	// READ-ONLY; A value indicating compliance status of the machine for the assigned guest configuration.
+	ComplianceStatus *ComplianceStatus `json:"complianceStatus,omitempty" azure:"ro"`
+
+	// READ-ONLY; Properties of a guest configuration assignment resource.
+	Properties interface{} `json:"properties,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the guest configuration assignment resource setting.
+	ResourceID *string `json:"resourceId,omitempty" azure:"ro"`
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type GuestConfigurationAssignmentReportProperties.
-func (g *GuestConfigurationAssignmentReportProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "assignment":
-			err = unpopulate(val, &g.Assignment)
-			delete(rawMsg, key)
-		case "complianceStatus":
-			err = unpopulate(val, &g.ComplianceStatus)
-			delete(rawMsg, key)
-		case "details":
-			err = unpopulate(val, &g.Details)
-			delete(rawMsg, key)
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &g.EndTime)
-			delete(rawMsg, key)
-		case "reportId":
-			err = unpopulate(val, &g.ReportID)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &g.StartTime)
-			delete(rawMsg, key)
-		case "vm":
-			err = unpopulate(val, &g.VM)
-			delete(rawMsg, key)
-		case "vmssResourceId":
-			err = unpopulate(val, &g.VmssResourceID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+// AssignmentReportResourceComplianceReason - Reason and code for the compliance of the guest configuration assignment resource.
+type AssignmentReportResourceComplianceReason struct {
+	// READ-ONLY; Code for the compliance of the guest configuration assignment resource.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; Reason for the compliance of the guest configuration assignment resource.
+	Phrase *string `json:"phrase,omitempty" azure:"ro"`
 }
 
-// GuestConfigurationAssignmentReportsGetOptions contains the optional parameters for the GuestConfigurationAssignmentReports.Get method.
-type GuestConfigurationAssignmentReportsGetOptions struct {
+// AssignmentReportsClientGetOptions contains the optional parameters for the AssignmentReportsClient.Get method.
+type AssignmentReportsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GuestConfigurationAssignmentReportsListOptions contains the optional parameters for the GuestConfigurationAssignmentReports.List method.
-type GuestConfigurationAssignmentReportsListOptions struct {
+// AssignmentReportsClientListOptions contains the optional parameters for the AssignmentReportsClient.List method.
+type AssignmentReportsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GuestConfigurationAssignmentsCreateOrUpdateOptions contains the optional parameters for the GuestConfigurationAssignments.CreateOrUpdate method.
-type GuestConfigurationAssignmentsCreateOrUpdateOptions struct {
+// AssignmentReportsVMSSClientGetOptions contains the optional parameters for the AssignmentReportsVMSSClient.Get method.
+type AssignmentReportsVMSSClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GuestConfigurationAssignmentsDeleteOptions contains the optional parameters for the GuestConfigurationAssignments.Delete method.
-type GuestConfigurationAssignmentsDeleteOptions struct {
+// AssignmentReportsVMSSClientListOptions contains the optional parameters for the AssignmentReportsVMSSClient.List method.
+type AssignmentReportsVMSSClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GuestConfigurationAssignmentsGetOptions contains the optional parameters for the GuestConfigurationAssignments.Get method.
-type GuestConfigurationAssignmentsGetOptions struct {
+// AssignmentsClientCreateOrUpdateOptions contains the optional parameters for the AssignmentsClient.CreateOrUpdate method.
+type AssignmentsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GuestConfigurationAssignmentsListOptions contains the optional parameters for the GuestConfigurationAssignments.List method.
-type GuestConfigurationAssignmentsListOptions struct {
+// AssignmentsClientDeleteOptions contains the optional parameters for the AssignmentsClient.Delete method.
+type AssignmentsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GuestConfigurationAssignmentsRGListOptions contains the optional parameters for the GuestConfigurationAssignments.RGList method.
-type GuestConfigurationAssignmentsRGListOptions struct {
+// AssignmentsClientGetOptions contains the optional parameters for the AssignmentsClient.Get method.
+type AssignmentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GuestConfigurationAssignmentsSubscriptionListOptions contains the optional parameters for the GuestConfigurationAssignments.SubscriptionList method.
-type GuestConfigurationAssignmentsSubscriptionListOptions struct {
+// AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.List method.
+type AssignmentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GuestConfigurationHCRPAssignmentReportsGetOptions contains the optional parameters for the GuestConfigurationHCRPAssignmentReports.Get method.
-type GuestConfigurationHCRPAssignmentReportsGetOptions struct {
+// AssignmentsClientRGListOptions contains the optional parameters for the AssignmentsClient.RGList method.
+type AssignmentsClientRGListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GuestConfigurationHCRPAssignmentReportsListOptions contains the optional parameters for the GuestConfigurationHCRPAssignmentReports.List method.
-type GuestConfigurationHCRPAssignmentReportsListOptions struct {
+// AssignmentsClientSubscriptionListOptions contains the optional parameters for the AssignmentsClient.SubscriptionList method.
+type AssignmentsClientSubscriptionListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GuestConfigurationHCRPAssignmentsCreateOrUpdateOptions contains the optional parameters for the GuestConfigurationHCRPAssignments.CreateOrUpdate method.
-type GuestConfigurationHCRPAssignmentsCreateOrUpdateOptions struct {
+// AssignmentsVMSSClientDeleteOptions contains the optional parameters for the AssignmentsVMSSClient.Delete method.
+type AssignmentsVMSSClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GuestConfigurationHCRPAssignmentsDeleteOptions contains the optional parameters for the GuestConfigurationHCRPAssignments.Delete method.
-type GuestConfigurationHCRPAssignmentsDeleteOptions struct {
+// AssignmentsVMSSClientGetOptions contains the optional parameters for the AssignmentsVMSSClient.Get method.
+type AssignmentsVMSSClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GuestConfigurationHCRPAssignmentsGetOptions contains the optional parameters for the GuestConfigurationHCRPAssignments.Get method.
-type GuestConfigurationHCRPAssignmentsGetOptions struct {
+// AssignmentsVMSSClientListOptions contains the optional parameters for the AssignmentsVMSSClient.List method.
+type AssignmentsVMSSClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GuestConfigurationHCRPAssignmentsListOptions contains the optional parameters for the GuestConfigurationHCRPAssignments.List method.
-type GuestConfigurationHCRPAssignmentsListOptions struct {
+type CommonAssignmentReport struct {
+	// Configuration details of the guest configuration assignment.
+	Assignment *AssignmentInfo `json:"assignment,omitempty"`
+
+	// The list of resources for which guest configuration assignment compliance is checked.
+	Resources []*AssignmentReportResource `json:"resources,omitempty"`
+
+	// Information about the VM.
+	VM *VMInfo `json:"vm,omitempty"`
+
+	// READ-ONLY; A value indicating compliance status of the machine for the assigned guest configuration.
+	ComplianceStatus *ComplianceStatus `json:"complianceStatus,omitempty" azure:"ro"`
+
+	// READ-ONLY; End date and time of the guest configuration assignment compliance status check.
+	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; ARM resource id of the report for the guest configuration assignment.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of report, Consistency or Initial
+	OperationType *Type `json:"operationType,omitempty" azure:"ro"`
+
+	// READ-ONLY; GUID that identifies the guest configuration assignment report under a subscription, resource group.
+	ReportID *string `json:"reportId,omitempty" azure:"ro"`
+
+	// READ-ONLY; Start date and time of the guest configuration assignment compliance status check.
+	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+}
+
+// ConfigurationInfo - Information about the configuration.
+type ConfigurationInfo struct {
+	// READ-ONLY; Name of the configuration.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Version of the configuration.
+	Version *string `json:"version,omitempty" azure:"ro"`
+}
+
+// ConfigurationParameter - Represents a configuration parameter.
+type ConfigurationParameter struct {
+	// Name of the configuration parameter.
+	Name *string `json:"name,omitempty"`
+
+	// Value of the configuration parameter.
+	Value *string `json:"value,omitempty"`
+}
+
+// ConfigurationSetting - Configuration setting of LCM (Local Configuration Manager).
+type ConfigurationSetting struct {
+	// READ-ONLY; Specifies what happens after a reboot during the application of a configuration. The possible values are ContinueConfiguration
+	// and StopConfiguration
+	ActionAfterReboot *ActionAfterReboot `json:"actionAfterReboot,omitempty" azure:"ro"`
+
+	// READ-ONLY; If true - new configurations downloaded from the pull service are allowed to overwrite the old ones on the target
+	// node. Otherwise, false
+	AllowModuleOverwrite *bool `json:"allowModuleOverwrite,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specifies how the LCM(Local Configuration Manager) actually applies the configuration to the target nodes. Possible
+	// values are ApplyOnly, ApplyAndMonitor, and ApplyAndAutoCorrect.
+	ConfigurationMode *ConfigurationMode `json:"configurationMode,omitempty" azure:"ro"`
+
+	// READ-ONLY; How often, in minutes, the current configuration is checked and applied. This property is ignored if the ConfigurationMode
+	// property is set to ApplyOnly. The default value is 15.
+	ConfigurationModeFrequencyMins *float32 `json:"configurationModeFrequencyMins,omitempty" azure:"ro"`
+
+	// READ-ONLY; Set this to true to automatically reboot the node after a configuration that requires reboot is applied. Otherwise,
+	// you will have to manually reboot the node for any configuration that requires it.
+	// The default value is false. To use this setting when a reboot condition is enacted by something other than DSC (such as
+	// Windows Installer), combine this setting with the xPendingReboot module.
+	RebootIfNeeded *bool `json:"rebootIfNeeded,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time interval, in minutes, at which the LCM checks a pull service to get updated configurations. This value
+	// is ignored if the LCM is not configured in pull mode. The default value is 30.
+	RefreshFrequencyMins *float32 `json:"refreshFrequencyMins,omitempty" azure:"ro"`
+}
+
+// ErrorResponse - Error response of an operation failure
+type ErrorResponse struct {
+	Error *ErrorResponseError `json:"error,omitempty"`
+}
+
+type ErrorResponseError struct {
+	// Error code.
+	Code *string `json:"code,omitempty"`
+
+	// Detail error message indicating why the operation failed.
+	Message *string `json:"message,omitempty"`
+}
+
+// HCRPAssignmentReportsClientGetOptions contains the optional parameters for the HCRPAssignmentReportsClient.Get method.
+type HCRPAssignmentReportsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GuestConfigurationNavigation - Guest configuration is an artifact that encapsulates DSC configuration and its dependencies. The artifact is a zip file
-// containing DSC configuration (as MOF) and dependent resources and other
+// HCRPAssignmentReportsClientListOptions contains the optional parameters for the HCRPAssignmentReportsClient.List method.
+type HCRPAssignmentReportsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HCRPAssignmentsClientCreateOrUpdateOptions contains the optional parameters for the HCRPAssignmentsClient.CreateOrUpdate
+// method.
+type HCRPAssignmentsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HCRPAssignmentsClientDeleteOptions contains the optional parameters for the HCRPAssignmentsClient.Delete method.
+type HCRPAssignmentsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HCRPAssignmentsClientGetOptions contains the optional parameters for the HCRPAssignmentsClient.Get method.
+type HCRPAssignmentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HCRPAssignmentsClientListOptions contains the optional parameters for the HCRPAssignmentsClient.List method.
+type HCRPAssignmentsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// Navigation - Guest configuration is an artifact that encapsulates DSC configuration and its dependencies. The artifact
+// is a zip file containing DSC configuration (as MOF) and dependent resources and other
 // dependencies like modules.
-type GuestConfigurationNavigation struct {
-	// Specifies the assignment type and execution of the configuration. Possible values are Audit, DeployAndAutoCorrect, ApplyAndAutoCorrect and ApplyAndMonitor.
+type Navigation struct {
+	// Specifies the assignment type and execution of the configuration. Possible values are Audit, DeployAndAutoCorrect, ApplyAndAutoCorrect
+	// and ApplyAndMonitor.
 	AssignmentType *AssignmentType `json:"assignmentType,omitempty"`
 
 	// The configuration parameters for the guest configuration.
@@ -601,9 +375,6 @@ type GuestConfigurationNavigation struct {
 
 	// The protected configuration parameters for the guest configuration.
 	ConfigurationProtectedParameter []*ConfigurationParameter `json:"configurationProtectedParameter,omitempty"`
-
-	// The configuration setting for the guest configuration.
-	ConfigurationSetting *ConfigurationSetting `json:"configurationSetting,omitempty"`
 
 	// Combined hash of the guest configuration package and configuration parameters.
 	ContentHash *string `json:"contentHash,omitempty"`
@@ -620,24 +391,14 @@ type GuestConfigurationNavigation struct {
 	// Version of the guest configuration.
 	Version *string `json:"version,omitempty"`
 
+	// READ-ONLY; Specifies the origin of the configuration.
+	AssignmentSource *string `json:"assignmentSource,omitempty" azure:"ro"`
+
+	// READ-ONLY; The configuration setting for the guest configuration.
+	ConfigurationSetting *ConfigurationSetting `json:"configurationSetting,omitempty" azure:"ro"`
+
 	// READ-ONLY; Specifies the content type of the configuration. Possible values could be Builtin or Custom.
 	ContentType *string `json:"contentType,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type GuestConfigurationNavigation.
-func (g GuestConfigurationNavigation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "assignmentType", g.AssignmentType)
-	populate(objectMap, "configurationParameter", g.ConfigurationParameter)
-	populate(objectMap, "configurationProtectedParameter", g.ConfigurationProtectedParameter)
-	populate(objectMap, "configurationSetting", g.ConfigurationSetting)
-	populate(objectMap, "contentHash", g.ContentHash)
-	populate(objectMap, "contentType", g.ContentType)
-	populate(objectMap, "contentUri", g.ContentURI)
-	populate(objectMap, "kind", g.Kind)
-	populate(objectMap, "name", g.Name)
-	populate(objectMap, "version", g.Version)
-	return json.Marshal(objectMap)
 }
 
 // Operation - GuestConfiguration REST API operation
@@ -673,27 +434,30 @@ type OperationList struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationList.
-func (o OperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationProperties - Provider, Resource, Operation and description values.
 type OperationProperties struct {
 	// Service provider: Microsoft.GuestConfiguration
 	StatusCode *string `json:"statusCode,omitempty"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ProxyResource - ARM proxy resource.
 type ProxyResource struct {
-	Resource
+	// Region where the VM is located.
+	Location *string `json:"location,omitempty"`
+
+	// Name of the guest configuration assignment.
+	Name *string `json:"name,omitempty"`
+
+	// READ-ONLY; ARM resource id of the guest configuration assignment.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Resource - The core properties of ARM resources
@@ -709,6 +473,27 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
 // VMInfo - Information about the VM.
@@ -736,64 +521,4 @@ type VMSSVMInfo struct {
 
 	// READ-ONLY; Azure resource Id of the VM.
 	VMResourceID *string `json:"vmResourceId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VMSSVMInfo.
-func (v VMSSVMInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "complianceStatus", v.ComplianceStatus)
-	populateTimeRFC3339(objectMap, "lastComplianceChecked", v.LastComplianceChecked)
-	populate(objectMap, "latestReportId", v.LatestReportID)
-	populate(objectMap, "vmId", v.VMID)
-	populate(objectMap, "vmResourceId", v.VMResourceID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMSSVMInfo.
-func (v *VMSSVMInfo) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "complianceStatus":
-			err = unpopulate(val, &v.ComplianceStatus)
-			delete(rawMsg, key)
-		case "lastComplianceChecked":
-			err = unpopulateTimeRFC3339(val, &v.LastComplianceChecked)
-			delete(rawMsg, key)
-		case "latestReportId":
-			err = unpopulate(val, &v.LatestReportID)
-			delete(rawMsg, key)
-		case "vmId":
-			err = unpopulate(val, &v.VMID)
-			delete(rawMsg, key)
-		case "vmResourceId":
-			err = unpopulate(val, &v.VMResourceID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

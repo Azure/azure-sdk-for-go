@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armhdinsight
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,59 @@ import (
 // LocationsClient contains the methods for the Locations group.
 // Don't use this type directly, use NewLocationsClient() instead.
 type LocationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLocationsClient creates a new instance of LocationsClient with the specified values.
-func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LocationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &LocationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &LocationsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // CheckNameAvailability - Check the cluster name is available or not.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LocationsClient) CheckNameAvailability(ctx context.Context, location string, parameters NameAvailabilityCheckRequestParameters, options *LocationsCheckNameAvailabilityOptions) (LocationsCheckNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// location - The Azure location (region) for which to make the request.
+// options - LocationsClientCheckNameAvailabilityOptions contains the optional parameters for the LocationsClient.CheckNameAvailability
+// method.
+func (client *LocationsClient) CheckNameAvailability(ctx context.Context, location string, parameters NameAvailabilityCheckRequestParameters, options *LocationsClientCheckNameAvailabilityOptions) (LocationsClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, location, parameters, options)
 	if err != nil {
-		return LocationsCheckNameAvailabilityResponse{}, err
+		return LocationsClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LocationsCheckNameAvailabilityResponse{}, err
+		return LocationsClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LocationsCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return LocationsClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *LocationsClient) checkNameAvailabilityCreateRequest(ctx context.Context, location string, parameters NameAvailabilityCheckRequestParameters, options *LocationsCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *LocationsClient) checkNameAvailabilityCreateRequest(ctx context.Context, location string, parameters NameAvailabilityCheckRequestParameters, options *LocationsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,58 +87,50 @@ func (client *LocationsClient) checkNameAvailabilityCreateRequest(ctx context.Co
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *LocationsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (LocationsCheckNameAvailabilityResponse, error) {
-	result := LocationsCheckNameAvailabilityResponse{RawResponse: resp}
+func (client *LocationsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (LocationsClientCheckNameAvailabilityResponse, error) {
+	result := LocationsClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailabilityCheckResult); err != nil {
-		return LocationsCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return LocationsClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *LocationsClient) checkNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAzureAsyncOperationStatus - Get the async operation status.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LocationsClient) GetAzureAsyncOperationStatus(ctx context.Context, location string, operationID string, options *LocationsGetAzureAsyncOperationStatusOptions) (LocationsGetAzureAsyncOperationStatusResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// location - The Azure location (region) for which to make the request.
+// operationID - The long running operation id.
+// options - LocationsClientGetAzureAsyncOperationStatusOptions contains the optional parameters for the LocationsClient.GetAzureAsyncOperationStatus
+// method.
+func (client *LocationsClient) GetAzureAsyncOperationStatus(ctx context.Context, location string, operationID string, options *LocationsClientGetAzureAsyncOperationStatusOptions) (LocationsClientGetAzureAsyncOperationStatusResponse, error) {
 	req, err := client.getAzureAsyncOperationStatusCreateRequest(ctx, location, operationID, options)
 	if err != nil {
-		return LocationsGetAzureAsyncOperationStatusResponse{}, err
+		return LocationsClientGetAzureAsyncOperationStatusResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LocationsGetAzureAsyncOperationStatusResponse{}, err
+		return LocationsClientGetAzureAsyncOperationStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LocationsGetAzureAsyncOperationStatusResponse{}, client.getAzureAsyncOperationStatusHandleError(resp)
+		return LocationsClientGetAzureAsyncOperationStatusResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAzureAsyncOperationStatusHandleResponse(resp)
 }
 
 // getAzureAsyncOperationStatusCreateRequest creates the GetAzureAsyncOperationStatus request.
-func (client *LocationsClient) getAzureAsyncOperationStatusCreateRequest(ctx context.Context, location string, operationID string, options *LocationsGetAzureAsyncOperationStatusOptions) (*policy.Request, error) {
+func (client *LocationsClient) getAzureAsyncOperationStatusCreateRequest(ctx context.Context, location string, operationID string, options *LocationsClientGetAzureAsyncOperationStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/azureasyncoperations/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -135,58 +144,49 @@ func (client *LocationsClient) getAzureAsyncOperationStatusCreateRequest(ctx con
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getAzureAsyncOperationStatusHandleResponse handles the GetAzureAsyncOperationStatus response.
-func (client *LocationsClient) getAzureAsyncOperationStatusHandleResponse(resp *http.Response) (LocationsGetAzureAsyncOperationStatusResponse, error) {
-	result := LocationsGetAzureAsyncOperationStatusResponse{RawResponse: resp}
+func (client *LocationsClient) getAzureAsyncOperationStatusHandleResponse(resp *http.Response) (LocationsClientGetAzureAsyncOperationStatusResponse, error) {
+	result := LocationsClientGetAzureAsyncOperationStatusResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AsyncOperationResult); err != nil {
-		return LocationsGetAzureAsyncOperationStatusResponse{}, runtime.NewResponseError(err, resp)
+		return LocationsClientGetAzureAsyncOperationStatusResponse{}, err
 	}
 	return result, nil
 }
 
-// getAzureAsyncOperationStatusHandleError handles the GetAzureAsyncOperationStatus error response.
-func (client *LocationsClient) getAzureAsyncOperationStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetCapabilities - Gets the capabilities for the specified location.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LocationsClient) GetCapabilities(ctx context.Context, location string, options *LocationsGetCapabilitiesOptions) (LocationsGetCapabilitiesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// location - The Azure location (region) for which to make the request.
+// options - LocationsClientGetCapabilitiesOptions contains the optional parameters for the LocationsClient.GetCapabilities
+// method.
+func (client *LocationsClient) GetCapabilities(ctx context.Context, location string, options *LocationsClientGetCapabilitiesOptions) (LocationsClientGetCapabilitiesResponse, error) {
 	req, err := client.getCapabilitiesCreateRequest(ctx, location, options)
 	if err != nil {
-		return LocationsGetCapabilitiesResponse{}, err
+		return LocationsClientGetCapabilitiesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LocationsGetCapabilitiesResponse{}, err
+		return LocationsClientGetCapabilitiesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LocationsGetCapabilitiesResponse{}, client.getCapabilitiesHandleError(resp)
+		return LocationsClientGetCapabilitiesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getCapabilitiesHandleResponse(resp)
 }
 
 // getCapabilitiesCreateRequest creates the GetCapabilities request.
-func (client *LocationsClient) getCapabilitiesCreateRequest(ctx context.Context, location string, options *LocationsGetCapabilitiesOptions) (*policy.Request, error) {
+func (client *LocationsClient) getCapabilitiesCreateRequest(ctx context.Context, location string, options *LocationsClientGetCapabilitiesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/capabilities"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -196,58 +196,49 @@ func (client *LocationsClient) getCapabilitiesCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getCapabilitiesHandleResponse handles the GetCapabilities response.
-func (client *LocationsClient) getCapabilitiesHandleResponse(resp *http.Response) (LocationsGetCapabilitiesResponse, error) {
-	result := LocationsGetCapabilitiesResponse{RawResponse: resp}
+func (client *LocationsClient) getCapabilitiesHandleResponse(resp *http.Response) (LocationsClientGetCapabilitiesResponse, error) {
+	result := LocationsClientGetCapabilitiesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapabilitiesResult); err != nil {
-		return LocationsGetCapabilitiesResponse{}, runtime.NewResponseError(err, resp)
+		return LocationsClientGetCapabilitiesResponse{}, err
 	}
 	return result, nil
 }
 
-// getCapabilitiesHandleError handles the GetCapabilities error response.
-func (client *LocationsClient) getCapabilitiesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListBillingSpecs - Lists the billingSpecs for the specified subscription and location.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LocationsClient) ListBillingSpecs(ctx context.Context, location string, options *LocationsListBillingSpecsOptions) (LocationsListBillingSpecsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// location - The Azure location (region) for which to make the request.
+// options - LocationsClientListBillingSpecsOptions contains the optional parameters for the LocationsClient.ListBillingSpecs
+// method.
+func (client *LocationsClient) ListBillingSpecs(ctx context.Context, location string, options *LocationsClientListBillingSpecsOptions) (LocationsClientListBillingSpecsResponse, error) {
 	req, err := client.listBillingSpecsCreateRequest(ctx, location, options)
 	if err != nil {
-		return LocationsListBillingSpecsResponse{}, err
+		return LocationsClientListBillingSpecsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LocationsListBillingSpecsResponse{}, err
+		return LocationsClientListBillingSpecsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LocationsListBillingSpecsResponse{}, client.listBillingSpecsHandleError(resp)
+		return LocationsClientListBillingSpecsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listBillingSpecsHandleResponse(resp)
 }
 
 // listBillingSpecsCreateRequest creates the ListBillingSpecs request.
-func (client *LocationsClient) listBillingSpecsCreateRequest(ctx context.Context, location string, options *LocationsListBillingSpecsOptions) (*policy.Request, error) {
+func (client *LocationsClient) listBillingSpecsCreateRequest(ctx context.Context, location string, options *LocationsClientListBillingSpecsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/billingSpecs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -257,58 +248,48 @@ func (client *LocationsClient) listBillingSpecsCreateRequest(ctx context.Context
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBillingSpecsHandleResponse handles the ListBillingSpecs response.
-func (client *LocationsClient) listBillingSpecsHandleResponse(resp *http.Response) (LocationsListBillingSpecsResponse, error) {
-	result := LocationsListBillingSpecsResponse{RawResponse: resp}
+func (client *LocationsClient) listBillingSpecsHandleResponse(resp *http.Response) (LocationsClientListBillingSpecsResponse, error) {
+	result := LocationsClientListBillingSpecsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BillingResponseListResult); err != nil {
-		return LocationsListBillingSpecsResponse{}, runtime.NewResponseError(err, resp)
+		return LocationsClientListBillingSpecsResponse{}, err
 	}
 	return result, nil
 }
 
-// listBillingSpecsHandleError handles the ListBillingSpecs error response.
-func (client *LocationsClient) listBillingSpecsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListUsages - Lists the usages for the specified location.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LocationsClient) ListUsages(ctx context.Context, location string, options *LocationsListUsagesOptions) (LocationsListUsagesResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// location - The Azure location (region) for which to make the request.
+// options - LocationsClientListUsagesOptions contains the optional parameters for the LocationsClient.ListUsages method.
+func (client *LocationsClient) ListUsages(ctx context.Context, location string, options *LocationsClientListUsagesOptions) (LocationsClientListUsagesResponse, error) {
 	req, err := client.listUsagesCreateRequest(ctx, location, options)
 	if err != nil {
-		return LocationsListUsagesResponse{}, err
+		return LocationsClientListUsagesResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LocationsListUsagesResponse{}, err
+		return LocationsClientListUsagesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LocationsListUsagesResponse{}, client.listUsagesHandleError(resp)
+		return LocationsClientListUsagesResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listUsagesHandleResponse(resp)
 }
 
 // listUsagesCreateRequest creates the ListUsages request.
-func (client *LocationsClient) listUsagesCreateRequest(ctx context.Context, location string, options *LocationsListUsagesOptions) (*policy.Request, error) {
+func (client *LocationsClient) listUsagesCreateRequest(ctx context.Context, location string, options *LocationsClientListUsagesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/usages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -318,58 +299,49 @@ func (client *LocationsClient) listUsagesCreateRequest(ctx context.Context, loca
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listUsagesHandleResponse handles the ListUsages response.
-func (client *LocationsClient) listUsagesHandleResponse(resp *http.Response) (LocationsListUsagesResponse, error) {
-	result := LocationsListUsagesResponse{RawResponse: resp}
+func (client *LocationsClient) listUsagesHandleResponse(resp *http.Response) (LocationsClientListUsagesResponse, error) {
+	result := LocationsClientListUsagesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesListResult); err != nil {
-		return LocationsListUsagesResponse{}, runtime.NewResponseError(err, resp)
+		return LocationsClientListUsagesResponse{}, err
 	}
 	return result, nil
 }
 
-// listUsagesHandleError handles the ListUsages error response.
-func (client *LocationsClient) listUsagesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ValidateClusterCreateRequest - Validate the cluster create request spec is valid or not.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LocationsClient) ValidateClusterCreateRequest(ctx context.Context, location string, parameters ClusterCreateRequestValidationParameters, options *LocationsValidateClusterCreateRequestOptions) (LocationsValidateClusterCreateRequestResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// location - The Azure location (region) for which to make the request.
+// options - LocationsClientValidateClusterCreateRequestOptions contains the optional parameters for the LocationsClient.ValidateClusterCreateRequest
+// method.
+func (client *LocationsClient) ValidateClusterCreateRequest(ctx context.Context, location string, parameters ClusterCreateRequestValidationParameters, options *LocationsClientValidateClusterCreateRequestOptions) (LocationsClientValidateClusterCreateRequestResponse, error) {
 	req, err := client.validateClusterCreateRequestCreateRequest(ctx, location, parameters, options)
 	if err != nil {
-		return LocationsValidateClusterCreateRequestResponse{}, err
+		return LocationsClientValidateClusterCreateRequestResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LocationsValidateClusterCreateRequestResponse{}, err
+		return LocationsClientValidateClusterCreateRequestResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LocationsValidateClusterCreateRequestResponse{}, client.validateClusterCreateRequestHandleError(resp)
+		return LocationsClientValidateClusterCreateRequestResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.validateClusterCreateRequestHandleResponse(resp)
 }
 
 // validateClusterCreateRequestCreateRequest creates the ValidateClusterCreateRequest request.
-func (client *LocationsClient) validateClusterCreateRequestCreateRequest(ctx context.Context, location string, parameters ClusterCreateRequestValidationParameters, options *LocationsValidateClusterCreateRequestOptions) (*policy.Request, error) {
+func (client *LocationsClient) validateClusterCreateRequestCreateRequest(ctx context.Context, location string, parameters ClusterCreateRequestValidationParameters, options *LocationsClientValidateClusterCreateRequestOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/validateCreateRequest"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -379,35 +351,22 @@ func (client *LocationsClient) validateClusterCreateRequestCreateRequest(ctx con
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // validateClusterCreateRequestHandleResponse handles the ValidateClusterCreateRequest response.
-func (client *LocationsClient) validateClusterCreateRequestHandleResponse(resp *http.Response) (LocationsValidateClusterCreateRequestResponse, error) {
-	result := LocationsValidateClusterCreateRequestResponse{RawResponse: resp}
+func (client *LocationsClient) validateClusterCreateRequestHandleResponse(resp *http.Response) (LocationsClientValidateClusterCreateRequestResponse, error) {
+	result := LocationsClientValidateClusterCreateRequestResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCreateValidationResult); err != nil {
-		return LocationsValidateClusterCreateRequestResponse{}, runtime.NewResponseError(err, resp)
+		return LocationsClientValidateClusterCreateRequestResponse{}, err
 	}
 	return result, nil
-}
-
-// validateClusterCreateRequestHandleError handles the ValidateClusterCreateRequest error response.
-func (client *LocationsClient) validateClusterCreateRequestHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

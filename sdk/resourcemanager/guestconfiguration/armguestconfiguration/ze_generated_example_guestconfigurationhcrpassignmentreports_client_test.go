@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -16,40 +16,49 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration"
 )
 
-// x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/listAllGuestConfigurationHCRPAssignmentReports.json
-func ExampleGuestConfigurationHCRPAssignmentReportsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/listAllGuestConfigurationHCRPAssignmentReports.json
+func ExampleHCRPAssignmentReportsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationHCRPAssignmentReportsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
-		"<resource-group-name>",
-		"<guest-configuration-assignment-name>",
-		"<machine-name>",
+	client, err := armguestconfiguration.NewHCRPAssignmentReportsClient("mySubscriptionid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.List(ctx,
+		"myResourceGroupName",
+		"AuditSecureProtocol",
+		"myMachineName",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/getGuestConfigurationHCRPAssignmentReportById.json
-func ExampleGuestConfigurationHCRPAssignmentReportsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/getGuestConfigurationHCRPAssignmentReportById.json
+func ExampleHCRPAssignmentReportsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationHCRPAssignmentReportsClient("<subscription-id>", cred, nil)
+	client, err := armguestconfiguration.NewHCRPAssignmentReportsClient("mySubscriptionid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<guest-configuration-assignment-name>",
-		"<report-id>",
-		"<machine-name>",
+		"myResourceGroupName",
+		"AuditSecureProtocol",
+		"7367cbb8-ae99-47d0-a33b-a283564d2cb1",
+		"myMachineName",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("GuestConfigurationAssignmentReport.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }

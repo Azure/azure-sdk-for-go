@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armblueprint
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,106 +25,115 @@ import (
 // AssignmentsClient contains the methods for the Assignments group.
 // Don't use this type directly, use NewAssignmentsClient() instead.
 type AssignmentsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewAssignmentsClient creates a new instance of AssignmentsClient with the specified values.
-func NewAssignmentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AssignmentsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewAssignmentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AssignmentsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &AssignmentsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &AssignmentsClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update a blueprint assignment.
-// If the operation fails it returns the *CloudError error type.
-func (client *AssignmentsClient) CreateOrUpdate(ctx context.Context, resourceScope string, assignmentName string, assignment Assignment, options *AssignmentsCreateOrUpdateOptions) (AssignmentsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
+// resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+// subscription (format: '/subscriptions/{subscriptionId}').
+// assignmentName - Name of the blueprint assignment.
+// assignment - Blueprint assignment object to save.
+// options - AssignmentsClientCreateOrUpdateOptions contains the optional parameters for the AssignmentsClient.CreateOrUpdate
+// method.
+func (client *AssignmentsClient) CreateOrUpdate(ctx context.Context, resourceScope string, assignmentName string, assignment Assignment, options *AssignmentsClientCreateOrUpdateOptions) (AssignmentsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceScope, assignmentName, assignment, options)
 	if err != nil {
-		return AssignmentsCreateOrUpdateResponse{}, err
+		return AssignmentsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AssignmentsCreateOrUpdateResponse{}, err
+		return AssignmentsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusCreated) {
-		return AssignmentsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return AssignmentsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceScope string, assignmentName string, assignment Assignment, options *AssignmentsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceScope string, assignmentName string, assignment Assignment, options *AssignmentsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceScope}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	if assignmentName == "" {
 		return nil, errors.New("parameter assignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assignmentName}", url.PathEscape(assignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, assignment)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AssignmentsClient) createOrUpdateHandleResponse(resp *http.Response) (AssignmentsCreateOrUpdateResponse, error) {
-	result := AssignmentsCreateOrUpdateResponse{RawResponse: resp}
+func (client *AssignmentsClient) createOrUpdateHandleResponse(resp *http.Response) (AssignmentsClientCreateOrUpdateResponse, error) {
+	result := AssignmentsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
-		return AssignmentsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return AssignmentsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *AssignmentsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a blueprint assignment.
-// If the operation fails it returns the *CloudError error type.
-func (client *AssignmentsClient) Delete(ctx context.Context, resourceScope string, assignmentName string, options *AssignmentsDeleteOptions) (AssignmentsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
+// resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+// subscription (format: '/subscriptions/{subscriptionId}').
+// assignmentName - Name of the blueprint assignment.
+// options - AssignmentsClientDeleteOptions contains the optional parameters for the AssignmentsClient.Delete method.
+func (client *AssignmentsClient) Delete(ctx context.Context, resourceScope string, assignmentName string, options *AssignmentsClientDeleteOptions) (AssignmentsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceScope, assignmentName, options)
 	if err != nil {
-		return AssignmentsDeleteResponse{}, err
+		return AssignmentsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AssignmentsDeleteResponse{}, err
+		return AssignmentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return AssignmentsDeleteResponse{}, client.deleteHandleError(resp)
+		return AssignmentsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.deleteHandleResponse(resp)
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AssignmentsClient) deleteCreateRequest(ctx context.Context, resourceScope string, assignmentName string, options *AssignmentsDeleteOptions) (*policy.Request, error) {
+func (client *AssignmentsClient) deleteCreateRequest(ctx context.Context, resourceScope string, assignmentName string, options *AssignmentsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceScope}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	if assignmentName == "" {
 		return nil, errors.New("parameter assignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assignmentName}", url.PathEscape(assignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -134,195 +143,174 @@ func (client *AssignmentsClient) deleteCreateRequest(ctx context.Context, resour
 		reqQP.Set("deleteBehavior", string(*options.DeleteBehavior))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *AssignmentsClient) deleteHandleResponse(resp *http.Response) (AssignmentsDeleteResponse, error) {
-	result := AssignmentsDeleteResponse{RawResponse: resp}
+func (client *AssignmentsClient) deleteHandleResponse(resp *http.Response) (AssignmentsClientDeleteResponse, error) {
+	result := AssignmentsClientDeleteResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
-		return AssignmentsDeleteResponse{}, runtime.NewResponseError(err, resp)
+		return AssignmentsClientDeleteResponse{}, err
 	}
 	return result, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AssignmentsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a blueprint assignment.
-// If the operation fails it returns the *CloudError error type.
-func (client *AssignmentsClient) Get(ctx context.Context, resourceScope string, assignmentName string, options *AssignmentsGetOptions) (AssignmentsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
+// resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+// subscription (format: '/subscriptions/{subscriptionId}').
+// assignmentName - Name of the blueprint assignment.
+// options - AssignmentsClientGetOptions contains the optional parameters for the AssignmentsClient.Get method.
+func (client *AssignmentsClient) Get(ctx context.Context, resourceScope string, assignmentName string, options *AssignmentsClientGetOptions) (AssignmentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceScope, assignmentName, options)
 	if err != nil {
-		return AssignmentsGetResponse{}, err
+		return AssignmentsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AssignmentsGetResponse{}, err
+		return AssignmentsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AssignmentsGetResponse{}, client.getHandleError(resp)
+		return AssignmentsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AssignmentsClient) getCreateRequest(ctx context.Context, resourceScope string, assignmentName string, options *AssignmentsGetOptions) (*policy.Request, error) {
+func (client *AssignmentsClient) getCreateRequest(ctx context.Context, resourceScope string, assignmentName string, options *AssignmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceScope}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	if assignmentName == "" {
 		return nil, errors.New("parameter assignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assignmentName}", url.PathEscape(assignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AssignmentsClient) getHandleResponse(resp *http.Response) (AssignmentsGetResponse, error) {
-	result := AssignmentsGetResponse{RawResponse: resp}
+func (client *AssignmentsClient) getHandleResponse(resp *http.Response) (AssignmentsClientGetResponse, error) {
+	result := AssignmentsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
-		return AssignmentsGetResponse{}, runtime.NewResponseError(err, resp)
+		return AssignmentsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AssignmentsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - List blueprint assignments within a subscription or a management group.
-// If the operation fails it returns the *CloudError error type.
-func (client *AssignmentsClient) List(resourceScope string, options *AssignmentsListOptions) *AssignmentsListPager {
-	return &AssignmentsListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceScope, options)
+// NewListPager - List blueprint assignments within a subscription or a management group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
+// resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+// subscription (format: '/subscriptions/{subscriptionId}').
+// options - AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.List method.
+func (client *AssignmentsClient) NewListPager(resourceScope string, options *AssignmentsClientListOptions) *runtime.Pager[AssignmentsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientListResponse]{
+		More: func(page AssignmentsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AssignmentsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AssignmentList.NextLink)
+		Fetcher: func(ctx context.Context, page *AssignmentsClientListResponse) (AssignmentsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceScope, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AssignmentsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AssignmentsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AssignmentsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AssignmentsClient) listCreateRequest(ctx context.Context, resourceScope string, options *AssignmentsListOptions) (*policy.Request, error) {
+func (client *AssignmentsClient) listCreateRequest(ctx context.Context, resourceScope string, options *AssignmentsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceScope}/providers/Microsoft.Blueprint/blueprintAssignments"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AssignmentsClient) listHandleResponse(resp *http.Response) (AssignmentsListResponse, error) {
-	result := AssignmentsListResponse{RawResponse: resp}
+func (client *AssignmentsClient) listHandleResponse(resp *http.Response) (AssignmentsClientListResponse, error) {
+	result := AssignmentsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentList); err != nil {
-		return AssignmentsListResponse{}, runtime.NewResponseError(err, resp)
+		return AssignmentsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *AssignmentsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // WhoIsBlueprint - Get Blueprints service SPN objectId
-// If the operation fails it returns the *CloudError error type.
-func (client *AssignmentsClient) WhoIsBlueprint(ctx context.Context, resourceScope string, assignmentName string, options *AssignmentsWhoIsBlueprintOptions) (AssignmentsWhoIsBlueprintResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-01-preview
+// resourceScope - The scope of the resource. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
+// subscription (format: '/subscriptions/{subscriptionId}').
+// assignmentName - Name of the blueprint assignment.
+// options - AssignmentsClientWhoIsBlueprintOptions contains the optional parameters for the AssignmentsClient.WhoIsBlueprint
+// method.
+func (client *AssignmentsClient) WhoIsBlueprint(ctx context.Context, resourceScope string, assignmentName string, options *AssignmentsClientWhoIsBlueprintOptions) (AssignmentsClientWhoIsBlueprintResponse, error) {
 	req, err := client.whoIsBlueprintCreateRequest(ctx, resourceScope, assignmentName, options)
 	if err != nil {
-		return AssignmentsWhoIsBlueprintResponse{}, err
+		return AssignmentsClientWhoIsBlueprintResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AssignmentsWhoIsBlueprintResponse{}, err
+		return AssignmentsClientWhoIsBlueprintResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AssignmentsWhoIsBlueprintResponse{}, client.whoIsBlueprintHandleError(resp)
+		return AssignmentsClientWhoIsBlueprintResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.whoIsBlueprintHandleResponse(resp)
 }
 
 // whoIsBlueprintCreateRequest creates the WhoIsBlueprint request.
-func (client *AssignmentsClient) whoIsBlueprintCreateRequest(ctx context.Context, resourceScope string, assignmentName string, options *AssignmentsWhoIsBlueprintOptions) (*policy.Request, error) {
+func (client *AssignmentsClient) whoIsBlueprintCreateRequest(ctx context.Context, resourceScope string, assignmentName string, options *AssignmentsClientWhoIsBlueprintOptions) (*policy.Request, error) {
 	urlPath := "/{resourceScope}/providers/Microsoft.Blueprint/blueprintAssignments/{assignmentName}/whoIsBlueprint"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
 	if assignmentName == "" {
 		return nil, errors.New("parameter assignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assignmentName}", url.PathEscape(assignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // whoIsBlueprintHandleResponse handles the WhoIsBlueprint response.
-func (client *AssignmentsClient) whoIsBlueprintHandleResponse(resp *http.Response) (AssignmentsWhoIsBlueprintResponse, error) {
-	result := AssignmentsWhoIsBlueprintResponse{RawResponse: resp}
+func (client *AssignmentsClient) whoIsBlueprintHandleResponse(resp *http.Response) (AssignmentsClientWhoIsBlueprintResponse, error) {
+	result := AssignmentsClientWhoIsBlueprintResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WhoIsBlueprintContract); err != nil {
-		return AssignmentsWhoIsBlueprintResponse{}, runtime.NewResponseError(err, resp)
+		return AssignmentsClientWhoIsBlueprintResponse{}, err
 	}
 	return result, nil
-}
-
-// whoIsBlueprintHandleError handles the WhoIsBlueprint error response.
-func (client *AssignmentsClient) whoIsBlueprintHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

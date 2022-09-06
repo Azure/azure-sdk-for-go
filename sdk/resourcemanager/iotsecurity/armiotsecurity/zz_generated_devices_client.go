@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armiotsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,43 +25,61 @@ import (
 // DevicesClient contains the methods for the Devices group.
 // Don't use this type directly, use NewDevicesClient() instead.
 type DevicesClient struct {
-	ep                  string
-	pl                  runtime.Pipeline
+	host                string
 	subscriptionID      string
 	iotDefenderLocation string
+	pl                  runtime.Pipeline
 }
 
 // NewDevicesClient creates a new instance of DevicesClient with the specified values.
-func NewDevicesClient(subscriptionID string, iotDefenderLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *DevicesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The ID of the target subscription.
+// iotDefenderLocation - Defender for IoT location
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewDevicesClient(subscriptionID string, iotDefenderLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DevicesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &DevicesClient{subscriptionID: subscriptionID, iotDefenderLocation: iotDefenderLocation, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &DevicesClient{
+		subscriptionID:      subscriptionID,
+		iotDefenderLocation: iotDefenderLocation,
+		host:                ep,
+		pl:                  pl,
+	}
+	return client, nil
 }
 
 // Get - Get device
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DevicesClient) Get(ctx context.Context, deviceGroupName string, deviceID string, options *DevicesGetOptions) (DevicesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
+// deviceGroupName - Device group name
+// deviceID - Device Id
+// options - DevicesClientGetOptions contains the optional parameters for the DevicesClient.Get method.
+func (client *DevicesClient) Get(ctx context.Context, deviceGroupName string, deviceID string, options *DevicesClientGetOptions) (DevicesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, deviceGroupName, deviceID, options)
 	if err != nil {
-		return DevicesGetResponse{}, err
+		return DevicesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DevicesGetResponse{}, err
+		return DevicesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DevicesGetResponse{}, client.getHandleError(resp)
+		return DevicesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DevicesClient) getCreateRequest(ctx context.Context, deviceGroupName string, deviceID string, options *DevicesGetOptions) (*policy.Request, error) {
+func (client *DevicesClient) getCreateRequest(ctx context.Context, deviceGroupName string, deviceID string, options *DevicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/locations/{iotDefenderLocation}/deviceGroups/{deviceGroupName}/devices/{deviceId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,55 +97,61 @@ func (client *DevicesClient) getCreateRequest(ctx context.Context, deviceGroupNa
 		return nil, errors.New("parameter deviceID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deviceId}", url.PathEscape(deviceID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DevicesClient) getHandleResponse(resp *http.Response) (DevicesGetResponse, error) {
-	result := DevicesGetResponse{RawResponse: resp}
+func (client *DevicesClient) getHandleResponse(resp *http.Response) (DevicesClientGetResponse, error) {
+	result := DevicesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceModel); err != nil {
-		return DevicesGetResponse{}, runtime.NewResponseError(err, resp)
+		return DevicesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DevicesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - List devices
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *DevicesClient) List(deviceGroupName string, options *DevicesListOptions) *DevicesListPager {
-	return &DevicesListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, deviceGroupName, options)
+// NewListPager - List devices
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
+// deviceGroupName - Device group name
+// options - DevicesClientListOptions contains the optional parameters for the DevicesClient.List method.
+func (client *DevicesClient) NewListPager(deviceGroupName string, options *DevicesClientListOptions) *runtime.Pager[DevicesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DevicesClientListResponse]{
+		More: func(page DevicesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DevicesListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeviceList.NextLink)
+		Fetcher: func(ctx context.Context, page *DevicesClientListResponse) (DevicesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, deviceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DevicesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DevicesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DevicesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *DevicesClient) listCreateRequest(ctx context.Context, deviceGroupName string, options *DevicesListOptions) (*policy.Request, error) {
+func (client *DevicesClient) listCreateRequest(ctx context.Context, deviceGroupName string, options *DevicesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/locations/{iotDefenderLocation}/deviceGroups/{deviceGroupName}/devices"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -141,7 +165,7 @@ func (client *DevicesClient) listCreateRequest(ctx context.Context, deviceGroupN
 		return nil, errors.New("parameter deviceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deviceGroupName}", url.PathEscape(deviceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -151,28 +175,15 @@ func (client *DevicesClient) listCreateRequest(ctx context.Context, deviceGroupN
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DevicesClient) listHandleResponse(resp *http.Response) (DevicesListResponse, error) {
-	result := DevicesListResponse{RawResponse: resp}
+func (client *DevicesClient) listHandleResponse(resp *http.Response) (DevicesClientListResponse, error) {
+	result := DevicesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceList); err != nil {
-		return DevicesListResponse{}, runtime.NewResponseError(err, resp)
+		return DevicesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *DevicesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

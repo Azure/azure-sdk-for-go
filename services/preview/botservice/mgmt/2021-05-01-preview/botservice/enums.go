@@ -26,6 +26,8 @@ const (
 	ChannelNameLineChannel ChannelName = "LineChannel"
 	// ChannelNameMsTeamsChannel ...
 	ChannelNameMsTeamsChannel ChannelName = "MsTeamsChannel"
+	// ChannelNameOutlookChannel ...
+	ChannelNameOutlookChannel ChannelName = "OutlookChannel"
 	// ChannelNameSkypeChannel ...
 	ChannelNameSkypeChannel ChannelName = "SkypeChannel"
 	// ChannelNameSlackChannel ...
@@ -40,7 +42,7 @@ const (
 
 // PossibleChannelNameValues returns an array of possible values for the ChannelName const type.
 func PossibleChannelNameValues() []ChannelName {
-	return []ChannelName{ChannelNameAlexaChannel, ChannelNameDirectLineChannel, ChannelNameDirectLineSpeechChannel, ChannelNameEmailChannel, ChannelNameFacebookChannel, ChannelNameKikChannel, ChannelNameLineChannel, ChannelNameMsTeamsChannel, ChannelNameSkypeChannel, ChannelNameSlackChannel, ChannelNameSmsChannel, ChannelNameTelegramChannel, ChannelNameWebChatChannel}
+	return []ChannelName{ChannelNameAlexaChannel, ChannelNameDirectLineChannel, ChannelNameDirectLineSpeechChannel, ChannelNameEmailChannel, ChannelNameFacebookChannel, ChannelNameKikChannel, ChannelNameLineChannel, ChannelNameMsTeamsChannel, ChannelNameOutlookChannel, ChannelNameSkypeChannel, ChannelNameSlackChannel, ChannelNameSmsChannel, ChannelNameTelegramChannel, ChannelNameWebChatChannel}
 }
 
 // ChannelNameBasicChannel enumerates the values for channel name basic channel.
@@ -191,6 +193,21 @@ const (
 // PossiblePrivateEndpointServiceConnectionStatusValues returns an array of possible values for the PrivateEndpointServiceConnectionStatus const type.
 func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
 	return []PrivateEndpointServiceConnectionStatus{PrivateEndpointServiceConnectionStatusApproved, PrivateEndpointServiceConnectionStatusPending, PrivateEndpointServiceConnectionStatusRejected}
+}
+
+// PublicNetworkAccess enumerates the values for public network access.
+type PublicNetworkAccess string
+
+const (
+	// PublicNetworkAccessDisabled ...
+	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
+	// PublicNetworkAccessEnabled ...
+	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
+)
+
+// PossiblePublicNetworkAccessValues returns an array of possible values for the PublicNetworkAccess const type.
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return []PublicNetworkAccess{PublicNetworkAccessDisabled, PublicNetworkAccessEnabled}
 }
 
 // RegenerateKeysChannelName enumerates the values for regenerate keys channel name.

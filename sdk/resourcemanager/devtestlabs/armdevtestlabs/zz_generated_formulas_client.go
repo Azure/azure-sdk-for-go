@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armdevtestlabs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,46 +26,60 @@ import (
 // FormulasClient contains the methods for the Formulas group.
 // Don't use this type directly, use NewFormulasClient() instead.
 type FormulasClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewFormulasClient creates a new instance of FormulasClient with the specified values.
-func NewFormulasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FormulasClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewFormulasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FormulasClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &FormulasClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &FormulasClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or replace an existing formula. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *FormulasClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, formula Formula, options *FormulasBeginCreateOrUpdateOptions) (FormulasCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, name, formula, options)
-	if err != nil {
-		return FormulasCreateOrUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the formula.
+// formula - A formula for creating a VM, specifying an image base and other parameters
+// options - FormulasClientBeginCreateOrUpdateOptions contains the optional parameters for the FormulasClient.BeginCreateOrUpdate
+// method.
+func (client *FormulasClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, formula Formula, options *FormulasClientBeginCreateOrUpdateOptions) (*runtime.Poller[FormulasClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, name, formula, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[FormulasClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[FormulasClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := FormulasCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("FormulasClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return FormulasCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &FormulasCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or replace an existing formula. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *FormulasClient) createOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, formula Formula, options *FormulasBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+func (client *FormulasClient) createOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, formula Formula, options *FormulasClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, labName, name, formula, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +89,13 @@ func (client *FormulasClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *FormulasClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, formula Formula, options *FormulasBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *FormulasClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, formula Formula, options *FormulasClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/formulas/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -99,49 +113,41 @@ func (client *FormulasClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, formula)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *FormulasClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete formula.
-// If the operation fails it returns the *CloudError error type.
-func (client *FormulasClient) Delete(ctx context.Context, resourceGroupName string, labName string, name string, options *FormulasDeleteOptions) (FormulasDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the formula.
+// options - FormulasClientDeleteOptions contains the optional parameters for the FormulasClient.Delete method.
+func (client *FormulasClient) Delete(ctx context.Context, resourceGroupName string, labName string, name string, options *FormulasClientDeleteOptions) (FormulasClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, labName, name, options)
 	if err != nil {
-		return FormulasDeleteResponse{}, err
+		return FormulasClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FormulasDeleteResponse{}, err
+		return FormulasClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return FormulasDeleteResponse{}, client.deleteHandleError(resp)
+		return FormulasClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return FormulasDeleteResponse{RawResponse: resp}, nil
+	return FormulasClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *FormulasClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *FormulasDeleteOptions) (*policy.Request, error) {
+func (client *FormulasClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *FormulasClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/formulas/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -159,49 +165,41 @@ func (client *FormulasClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *FormulasClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get formula.
-// If the operation fails it returns the *CloudError error type.
-func (client *FormulasClient) Get(ctx context.Context, resourceGroupName string, labName string, name string, options *FormulasGetOptions) (FormulasGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the formula.
+// options - FormulasClientGetOptions contains the optional parameters for the FormulasClient.Get method.
+func (client *FormulasClient) Get(ctx context.Context, resourceGroupName string, labName string, name string, options *FormulasClientGetOptions) (FormulasClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, labName, name, options)
 	if err != nil {
-		return FormulasGetResponse{}, err
+		return FormulasClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FormulasGetResponse{}, err
+		return FormulasClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FormulasGetResponse{}, client.getHandleError(resp)
+		return FormulasClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *FormulasClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *FormulasGetOptions) (*policy.Request, error) {
+func (client *FormulasClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *FormulasClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/formulas/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -219,7 +217,7 @@ func (client *FormulasClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -229,48 +227,55 @@ func (client *FormulasClient) getCreateRequest(ctx context.Context, resourceGrou
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *FormulasClient) getHandleResponse(resp *http.Response) (FormulasGetResponse, error) {
-	result := FormulasGetResponse{RawResponse: resp}
+func (client *FormulasClient) getHandleResponse(resp *http.Response) (FormulasClientGetResponse, error) {
+	result := FormulasClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Formula); err != nil {
-		return FormulasGetResponse{}, runtime.NewResponseError(err, resp)
+		return FormulasClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *FormulasClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - List formulas in a given lab.
-// If the operation fails it returns the *CloudError error type.
-func (client *FormulasClient) List(resourceGroupName string, labName string, options *FormulasListOptions) *FormulasListPager {
-	return &FormulasListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, labName, options)
+// NewListPager - List formulas in a given lab.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// options - FormulasClientListOptions contains the optional parameters for the FormulasClient.List method.
+func (client *FormulasClient) NewListPager(resourceGroupName string, labName string, options *FormulasClientListOptions) *runtime.Pager[FormulasClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[FormulasClientListResponse]{
+		More: func(page FormulasClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp FormulasListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.FormulaList.NextLink)
+		Fetcher: func(ctx context.Context, page *FormulasClientListResponse) (FormulasClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, labName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return FormulasClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return FormulasClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return FormulasClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *FormulasClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, options *FormulasListOptions) (*policy.Request, error) {
+func (client *FormulasClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, options *FormulasClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/formulas"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -284,7 +289,7 @@ func (client *FormulasClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter labName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labName}", url.PathEscape(labName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -303,51 +308,44 @@ func (client *FormulasClient) listCreateRequest(ctx context.Context, resourceGro
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *FormulasClient) listHandleResponse(resp *http.Response) (FormulasListResponse, error) {
-	result := FormulasListResponse{RawResponse: resp}
+func (client *FormulasClient) listHandleResponse(resp *http.Response) (FormulasClientListResponse, error) {
+	result := FormulasClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FormulaList); err != nil {
-		return FormulasListResponse{}, runtime.NewResponseError(err, resp)
+		return FormulasClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *FormulasClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Allows modifying tags of formulas. All other properties will be ignored.
-// If the operation fails it returns the *CloudError error type.
-func (client *FormulasClient) Update(ctx context.Context, resourceGroupName string, labName string, name string, formula FormulaFragment, options *FormulasUpdateOptions) (FormulasUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the formula.
+// formula - A formula for creating a VM, specifying an image base and other parameters
+// options - FormulasClientUpdateOptions contains the optional parameters for the FormulasClient.Update method.
+func (client *FormulasClient) Update(ctx context.Context, resourceGroupName string, labName string, name string, formula FormulaFragment, options *FormulasClientUpdateOptions) (FormulasClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, labName, name, formula, options)
 	if err != nil {
-		return FormulasUpdateResponse{}, err
+		return FormulasClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FormulasUpdateResponse{}, err
+		return FormulasClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FormulasUpdateResponse{}, client.updateHandleError(resp)
+		return FormulasClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *FormulasClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, formula FormulaFragment, options *FormulasUpdateOptions) (*policy.Request, error) {
+func (client *FormulasClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, formula FormulaFragment, options *FormulasClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/formulas/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -365,35 +363,22 @@ func (client *FormulasClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, formula)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *FormulasClient) updateHandleResponse(resp *http.Response) (FormulasUpdateResponse, error) {
-	result := FormulasUpdateResponse{RawResponse: resp}
+func (client *FormulasClient) updateHandleResponse(resp *http.Response) (FormulasClientUpdateResponse, error) {
+	result := FormulasClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Formula); err != nil {
-		return FormulasUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return FormulasClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *FormulasClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

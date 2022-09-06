@@ -1,0 +1,30 @@
+{
+    "init": {
+        "initScript": {
+            "path": "./eng/scripts/automation_init.sh",
+            "logPrefix": "[GO]",
+            "stderr":{
+                "storeAllLog": true
+            }
+        }
+    },
+    "generateAndBuild": {
+        "generateAndBuildScript": {
+            "path": "generator automation-v2",
+            "logPrefix": "[GO-Generate]",
+            "stderr":{
+                "storeLogByFilter": "[error|Error|Exception]"
+            }
+        }
+    },
+    "mockTest": {
+        "mockTestScript": {
+            "path": "./eng/scripts/automation/Invoke-MockTest.ps1",
+            "script": "pwsh",
+            "logPrefix": "[GO-MockTest]",
+            "stderr":{
+                "storeLogByFilter": "[error|Error|Exception]"
+            }
+        }
+    }
+}

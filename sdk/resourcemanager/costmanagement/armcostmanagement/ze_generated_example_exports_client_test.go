@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,142 +19,164 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement"
 )
 
-// x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportsGetByBillingAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportsGetByBillingAccount.json
 func ExampleExportsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcostmanagement.NewExportsClient(cred, nil)
-	_, err = client.List(ctx,
-		"<scope>",
-		&armcostmanagement.ExportsListOptions{Expand: nil})
+	client, err := armcostmanagement.NewExportsClient(cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
 	}
+	res, err := client.List(ctx,
+		"providers/Microsoft.Billing/billingAccounts/123456",
+		&armcostmanagement.ExportsClientListOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportGetByBillingAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportGetByBillingAccount.json
 func ExampleExportsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcostmanagement.NewExportsClient(cred, nil)
-	res, err := client.Get(ctx,
-		"<scope>",
-		"<export-name>",
-		&armcostmanagement.ExportsGetOptions{Expand: nil})
+	client, err := armcostmanagement.NewExportsClient(cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
 	}
-	log.Printf("Export.ID: %s\n", *res.ID)
+	res, err := client.Get(ctx,
+		"providers/Microsoft.Billing/billingAccounts/123456",
+		"TestExport",
+		&armcostmanagement.ExportsClientGetOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportCreateOrUpdateByBillingAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportCreateOrUpdateByBillingAccount.json
 func ExampleExportsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcostmanagement.NewExportsClient(cred, nil)
+	client, err := armcostmanagement.NewExportsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<scope>",
-		"<export-name>",
+		"providers/Microsoft.Billing/billingAccounts/123456",
+		"TestExport",
 		armcostmanagement.Export{
 			Properties: &armcostmanagement.ExportProperties{
-				CommonExportProperties: armcostmanagement.CommonExportProperties{
-					Format: armcostmanagement.FormatTypeCSV.ToPtr(),
-					Definition: &armcostmanagement.ExportDefinition{
-						Type: armcostmanagement.ExportTypeActualCost.ToPtr(),
-						DataSet: &armcostmanagement.ExportDataset{
-							Configuration: &armcostmanagement.ExportDatasetConfiguration{
-								Columns: []*string{
-									to.StringPtr("Date"),
-									to.StringPtr("MeterId"),
-									to.StringPtr("ResourceId"),
-									to.StringPtr("ResourceLocation"),
-									to.StringPtr("Quantity")},
-							},
-							Granularity: armcostmanagement.GranularityTypeDaily.ToPtr(),
+				Format: to.Ptr(armcostmanagement.FormatTypeCSV),
+				Definition: &armcostmanagement.ExportDefinition{
+					Type: to.Ptr(armcostmanagement.ExportTypeActualCost),
+					DataSet: &armcostmanagement.ExportDataset{
+						Configuration: &armcostmanagement.ExportDatasetConfiguration{
+							Columns: []*string{
+								to.Ptr("Date"),
+								to.Ptr("MeterId"),
+								to.Ptr("ResourceId"),
+								to.Ptr("ResourceLocation"),
+								to.Ptr("Quantity")},
 						},
-						Timeframe: armcostmanagement.TimeframeTypeMonthToDate.ToPtr(),
+						Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 					},
-					DeliveryInfo: &armcostmanagement.ExportDeliveryInfo{
-						Destination: &armcostmanagement.ExportDeliveryDestination{
-							Container:      to.StringPtr("<container>"),
-							ResourceID:     to.StringPtr("<resource-id>"),
-							RootFolderPath: to.StringPtr("<root-folder-path>"),
-						},
+					Timeframe: to.Ptr(armcostmanagement.TimeframeTypeMonthToDate),
+				},
+				DeliveryInfo: &armcostmanagement.ExportDeliveryInfo{
+					Destination: &armcostmanagement.ExportDeliveryDestination{
+						Container:      to.Ptr("exports"),
+						ResourceID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182"),
+						RootFolderPath: to.Ptr("ad-hoc"),
 					},
 				},
 				Schedule: &armcostmanagement.ExportSchedule{
-					Recurrence: armcostmanagement.RecurrenceTypeWeekly.ToPtr(),
+					Recurrence: to.Ptr(armcostmanagement.RecurrenceTypeWeekly),
 					RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
-						From: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t }()),
-						To:   to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t }()),
+						From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t }()),
+						To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t }()),
 					},
-					Status: armcostmanagement.StatusTypeActive.ToPtr(),
+					Status: to.Ptr(armcostmanagement.StatusTypeActive),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Export.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportDeleteByBillingAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportDeleteByBillingAccount.json
 func ExampleExportsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcostmanagement.NewExportsClient(cred, nil)
+	client, err := armcostmanagement.NewExportsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<scope>",
-		"<export-name>",
+		"providers/Microsoft.Billing/billingAccounts/123456",
+		"TestExport",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportRunByBillingAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportRunByBillingAccount.json
 func ExampleExportsClient_Execute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcostmanagement.NewExportsClient(cred, nil)
+	client, err := armcostmanagement.NewExportsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Execute(ctx,
-		"<scope>",
-		"<export-name>",
+		"providers/Microsoft.Billing/billingAccounts/123456",
+		"TestExport",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportRunHistoryGetByBillingAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2021-10-01/examples/ExportRunHistoryGetByBillingAccount.json
 func ExampleExportsClient_GetExecutionHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armcostmanagement.NewExportsClient(cred, nil)
-	_, err = client.GetExecutionHistory(ctx,
-		"<scope>",
-		"<export-name>",
+	client, err := armcostmanagement.NewExportsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.GetExecutionHistory(ctx,
+		"providers/Microsoft.Billing/billingAccounts/123456",
+		"TestExport",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }

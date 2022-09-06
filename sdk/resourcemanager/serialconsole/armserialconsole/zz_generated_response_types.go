@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,109 +8,55 @@
 
 package armserialconsole
 
-import "net/http"
-
 // MicrosoftSerialConsoleClientDisableConsoleResponse contains the response from method MicrosoftSerialConsoleClient.DisableConsole.
 type MicrosoftSerialConsoleClientDisableConsoleResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// // Possible types are DisableSerialConsoleResult, GetSerialConsoleSubscriptionNotFound
 	Value interface{}
 }
 
 // MicrosoftSerialConsoleClientEnableConsoleResponse contains the response from method MicrosoftSerialConsoleClient.EnableConsole.
 type MicrosoftSerialConsoleClientEnableConsoleResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
 	// // Possible types are EnableSerialConsoleResult, GetSerialConsoleSubscriptionNotFound
 	Value interface{}
 }
 
 // MicrosoftSerialConsoleClientGetConsoleStatusResponse contains the response from method MicrosoftSerialConsoleClient.GetConsoleStatus.
 type MicrosoftSerialConsoleClientGetConsoleStatusResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// // Possible types are SerialConsoleStatus, GetSerialConsoleSubscriptionNotFound
+	// // Possible types are Status, GetSerialConsoleSubscriptionNotFound
 	Value interface{}
 }
 
 // MicrosoftSerialConsoleClientListOperationsResponse contains the response from method MicrosoftSerialConsoleClient.ListOperations.
 type MicrosoftSerialConsoleClientListOperationsResponse struct {
-	MicrosoftSerialConsoleClientListOperationsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	Operations
 }
 
-// MicrosoftSerialConsoleClientListOperationsResult contains the result from method MicrosoftSerialConsoleClient.ListOperations.
-type MicrosoftSerialConsoleClientListOperationsResult struct {
-	SerialConsoleOperations
-}
-
-// SerialPortsConnectResponse contains the response from method SerialPorts.Connect.
-type SerialPortsConnectResponse struct {
-	SerialPortsConnectResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SerialPortsConnectResult contains the result from method SerialPorts.Connect.
-type SerialPortsConnectResult struct {
+// SerialPortsClientConnectResponse contains the response from method SerialPortsClient.Connect.
+type SerialPortsClientConnectResponse struct {
 	SerialPortConnectResult
 }
 
-// SerialPortsCreateResponse contains the response from method SerialPorts.Create.
-type SerialPortsCreateResponse struct {
-	SerialPortsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SerialPortsCreateResult contains the result from method SerialPorts.Create.
-type SerialPortsCreateResult struct {
+// SerialPortsClientCreateResponse contains the response from method SerialPortsClient.Create.
+type SerialPortsClientCreateResponse struct {
 	SerialPort
 }
 
-// SerialPortsDeleteResponse contains the response from method SerialPorts.Delete.
-type SerialPortsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// SerialPortsClientDeleteResponse contains the response from method SerialPortsClient.Delete.
+type SerialPortsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// SerialPortsGetResponse contains the response from method SerialPorts.Get.
-type SerialPortsGetResponse struct {
-	SerialPortsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SerialPortsGetResult contains the result from method SerialPorts.Get.
-type SerialPortsGetResult struct {
+// SerialPortsClientGetResponse contains the response from method SerialPortsClient.Get.
+type SerialPortsClientGetResponse struct {
 	SerialPort
 }
 
-// SerialPortsListBySubscriptionsResponse contains the response from method SerialPorts.ListBySubscriptions.
-type SerialPortsListBySubscriptionsResponse struct {
-	SerialPortsListBySubscriptionsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SerialPortsListBySubscriptionsResult contains the result from method SerialPorts.ListBySubscriptions.
-type SerialPortsListBySubscriptionsResult struct {
+// SerialPortsClientListBySubscriptionsResponse contains the response from method SerialPortsClient.ListBySubscriptions.
+type SerialPortsClientListBySubscriptionsResponse struct {
 	SerialPortListResult
 }
 
-// SerialPortsListResponse contains the response from method SerialPorts.List.
-type SerialPortsListResponse struct {
-	SerialPortsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SerialPortsListResult contains the result from method SerialPorts.List.
-type SerialPortsListResult struct {
+// SerialPortsClientListResponse contains the response from method SerialPortsClient.List.
+type SerialPortsClientListResponse struct {
 	SerialPortListResult
 }

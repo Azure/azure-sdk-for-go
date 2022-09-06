@@ -1,6 +1,6 @@
 # Azure Operational Insights Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights/v2)
 
 The `armoperationalinsights` module provides operations for working with Azure Operational Insights.
 
@@ -11,7 +11,7 @@ The `armoperationalinsights` module provides operations for working with Azure O
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.16 or above
+- Go 1.18 or above
 
 ## Install the package
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Operational Insights module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights/v2
 ```
 
 ## Authorization
@@ -38,17 +38,25 @@ For more information on authentication, please see the documentation for `aziden
 Azure Operational Insights modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
 
 ```go
-client := armoperationalinsights.NewStorageInsightConfigsClient(<subscription ID>, cred, nil)
+client, err := armoperationalinsights.NewStorageInsightConfigsClient(<subscription ID>, cred, nil)
 ```
 
 You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
 
 ```go
-options = arm.ClientOptions{
-    Host: arm.AzureChina,
+options := arm.ClientOptions {
+    ClientOptions: azcore.ClientOptions {
+        Cloud: cloud.AzureChina,
+    },
 }
-client := armoperationalinsights.NewStorageInsightConfigsClient(<subscription ID>, cred, &options)
+client, err := armoperationalinsights.NewStorageInsightConfigsClient(<subscription ID>, cred, &options)
 ```
+
+## More sample code
+
+- [Data Source](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/operationalinsights/datasource)
+- [Workspace Purge](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/operationalinsights/workspace_purge)
+- [Workspace](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/operationalinsights/workspaces)
 
 ## Provide Feedback
 

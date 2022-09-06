@@ -1,6 +1,6 @@
 # Release History
 
-## 0.8.4 (Unreleased)
+## 1.0.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,39 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.1 (2022-08-22)
+
+### Bugs Fixed
+* Don't modify the original *http.Request during recording/perf as it causes failures during retries.
+
+## 1.0.0 (2022-05-12)
+
+### Features Added
+* Added `temporal` package for handling of temporal resources.
+
+### Breaking Changes
+* Removed logging constants from the `log` package.
+* Removed `atomic` package as it wasn't being used.
+
+### Other Changes
+* Updated build constraints and Go version to 1.18.
+
+## 0.9.2 (2022-04-04)
+
+### Features Added
+* Set sanitizers at the test level by specifying `RecordingOptions.TestInstance`
+* Added the `perf` library for performance testing client SDKs
+
+## 0.9.1 (2022-02-01)
+
+### Features Added
+* Adds a `CustomDefaultMatcher` that adds headers `:path`, `:authority`, `:method`, and `:scheme` to the default matcher.
+
+## 0.9.0 (2022-01-24)
+
+### Breaking Changes
+* The `x-recording-file` is now encoded in the body of a `Start` request, previously was included in a header [#16876](https://github.com/Azure/azure-sdk-for-go/pull/16876).
 
 ## 0.8.3 (2021-12-07)
 

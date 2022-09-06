@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +26,60 @@ import (
 // JobsClient contains the methods for the Jobs group.
 // Don't use this type directly, use NewJobsClient() instead.
 type JobsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewJobsClient creates a new instance of JobsClient with the specified values.
-func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &JobsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &JobsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // CreateOrUpdate - Provisions a new job or updates an existing job.
-// If the operation fails it returns a generic error.
-func (client *JobsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition, options *JobsCreateOrUpdateOptions) (JobsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
+// resourceGroupName - The resource group name.
+// jobCollectionName - The job collection name.
+// jobName - The job name.
+// job - The job definition.
+// options - JobsClientCreateOrUpdateOptions contains the optional parameters for the JobsClient.CreateOrUpdate method.
+func (client *JobsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition, options *JobsClientCreateOrUpdateOptions) (JobsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, jobCollectionName, jobName, job, options)
 	if err != nil {
-		return JobsCreateOrUpdateResponse{}, err
+		return JobsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobsCreateOrUpdateResponse{}, err
+		return JobsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return JobsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return JobsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *JobsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition, options *JobsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *JobsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition, options *JobsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs/{jobName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,57 +97,50 @@ func (client *JobsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, runtime.MarshalAsJSON(req, job)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *JobsClient) createOrUpdateHandleResponse(resp *http.Response) (JobsCreateOrUpdateResponse, error) {
-	result := JobsCreateOrUpdateResponse{RawResponse: resp}
+func (client *JobsClient) createOrUpdateHandleResponse(resp *http.Response) (JobsClientCreateOrUpdateResponse, error) {
+	result := JobsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobDefinition); err != nil {
-		return JobsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return JobsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *JobsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Delete - Deletes a job.
-// If the operation fails it returns a generic error.
-func (client *JobsClient) Delete(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, options *JobsDeleteOptions) (JobsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
+// resourceGroupName - The resource group name.
+// jobCollectionName - The job collection name.
+// jobName - The job name.
+// options - JobsClientDeleteOptions contains the optional parameters for the JobsClient.Delete method.
+func (client *JobsClient) Delete(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, options *JobsClientDeleteOptions) (JobsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, jobCollectionName, jobName, options)
 	if err != nil {
-		return JobsDeleteResponse{}, err
+		return JobsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobsDeleteResponse{}, err
+		return JobsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JobsDeleteResponse{}, client.deleteHandleError(resp)
+		return JobsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return JobsDeleteResponse{RawResponse: resp}, nil
+	return JobsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *JobsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, options *JobsDeleteOptions) (*policy.Request, error) {
+func (client *JobsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, options *JobsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs/{jobName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -146,7 +158,7 @@ func (client *JobsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -156,37 +168,30 @@ func (client *JobsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *JobsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a job.
-// If the operation fails it returns a generic error.
-func (client *JobsClient) Get(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, options *JobsGetOptions) (JobsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
+// resourceGroupName - The resource group name.
+// jobCollectionName - The job collection name.
+// jobName - The job name.
+// options - JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
+func (client *JobsClient) Get(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, options *JobsClientGetOptions) (JobsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, jobCollectionName, jobName, options)
 	if err != nil {
-		return JobsGetResponse{}, err
+		return JobsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobsGetResponse{}, err
+		return JobsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JobsGetResponse{}, client.getHandleError(resp)
+		return JobsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *JobsClient) getCreateRequest(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, options *JobsGetOptions) (*policy.Request, error) {
+func (client *JobsClient) getCreateRequest(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, options *JobsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs/{jobName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -204,54 +209,62 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsGetResponse, error) {
-	result := JobsGetResponse{RawResponse: resp}
+func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetResponse, error) {
+	result := JobsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobDefinition); err != nil {
-		return JobsGetResponse{}, runtime.NewResponseError(err, resp)
+		return JobsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *JobsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// List - Lists all jobs under the specified job collection.
-// If the operation fails it returns a generic error.
-func (client *JobsClient) List(resourceGroupName string, jobCollectionName string, options *JobsListOptions) *JobsListPager {
-	return &JobsListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, jobCollectionName, options)
+// NewListPager - Lists all jobs under the specified job collection.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
+// resourceGroupName - The resource group name.
+// jobCollectionName - The job collection name.
+// options - JobsClientListOptions contains the optional parameters for the JobsClient.List method.
+func (client *JobsClient) NewListPager(resourceGroupName string, jobCollectionName string, options *JobsClientListOptions) *runtime.Pager[JobsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[JobsClientListResponse]{
+		More: func(page JobsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp JobsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *JobsClientListResponse) (JobsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, jobCollectionName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return JobsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return JobsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return JobsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *JobsClient) listCreateRequest(ctx context.Context, resourceGroupName string, jobCollectionName string, options *JobsListOptions) (*policy.Request, error) {
+func (client *JobsClient) listCreateRequest(ctx context.Context, resourceGroupName string, jobCollectionName string, options *JobsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -265,7 +278,7 @@ func (client *JobsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter jobCollectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobCollectionName}", url.PathEscape(jobCollectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -281,47 +294,56 @@ func (client *JobsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *JobsClient) listHandleResponse(resp *http.Response) (JobsListResponse, error) {
-	result := JobsListResponse{RawResponse: resp}
+func (client *JobsClient) listHandleResponse(resp *http.Response) (JobsClientListResponse, error) {
+	result := JobsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobListResult); err != nil {
-		return JobsListResponse{}, runtime.NewResponseError(err, resp)
+		return JobsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *JobsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListJobHistory - Lists job history.
-// If the operation fails it returns a generic error.
-func (client *JobsClient) ListJobHistory(resourceGroupName string, jobCollectionName string, jobName string, options *JobsListJobHistoryOptions) *JobsListJobHistoryPager {
-	return &JobsListJobHistoryPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listJobHistoryCreateRequest(ctx, resourceGroupName, jobCollectionName, jobName, options)
+// NewListJobHistoryPager - Lists job history.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
+// resourceGroupName - The resource group name.
+// jobCollectionName - The job collection name.
+// jobName - The job name.
+// options - JobsClientListJobHistoryOptions contains the optional parameters for the JobsClient.ListJobHistory method.
+func (client *JobsClient) NewListJobHistoryPager(resourceGroupName string, jobCollectionName string, jobName string, options *JobsClientListJobHistoryOptions) *runtime.Pager[JobsClientListJobHistoryResponse] {
+	return runtime.NewPager(runtime.PagingHandler[JobsClientListJobHistoryResponse]{
+		More: func(page JobsClientListJobHistoryResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp JobsListJobHistoryResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobHistoryListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *JobsClientListJobHistoryResponse) (JobsClientListJobHistoryResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listJobHistoryCreateRequest(ctx, resourceGroupName, jobCollectionName, jobName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return JobsClientListJobHistoryResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return JobsClientListJobHistoryResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return JobsClientListJobHistoryResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listJobHistoryHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listJobHistoryCreateRequest creates the ListJobHistory request.
-func (client *JobsClient) listJobHistoryCreateRequest(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, options *JobsListJobHistoryOptions) (*policy.Request, error) {
+func (client *JobsClient) listJobHistoryCreateRequest(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, options *JobsClientListJobHistoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs/{jobName}/history"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -339,7 +361,7 @@ func (client *JobsClient) listJobHistoryCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -355,50 +377,44 @@ func (client *JobsClient) listJobHistoryCreateRequest(ctx context.Context, resou
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, nil
 }
 
 // listJobHistoryHandleResponse handles the ListJobHistory response.
-func (client *JobsClient) listJobHistoryHandleResponse(resp *http.Response) (JobsListJobHistoryResponse, error) {
-	result := JobsListJobHistoryResponse{RawResponse: resp}
+func (client *JobsClient) listJobHistoryHandleResponse(resp *http.Response) (JobsClientListJobHistoryResponse, error) {
+	result := JobsClientListJobHistoryResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobHistoryListResult); err != nil {
-		return JobsListJobHistoryResponse{}, runtime.NewResponseError(err, resp)
+		return JobsClientListJobHistoryResponse{}, err
 	}
 	return result, nil
 }
 
-// listJobHistoryHandleError handles the ListJobHistory error response.
-func (client *JobsClient) listJobHistoryHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Patch - Patches an existing job.
-// If the operation fails it returns a generic error.
-func (client *JobsClient) Patch(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition, options *JobsPatchOptions) (JobsPatchResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
+// resourceGroupName - The resource group name.
+// jobCollectionName - The job collection name.
+// jobName - The job name.
+// job - The job definition.
+// options - JobsClientPatchOptions contains the optional parameters for the JobsClient.Patch method.
+func (client *JobsClient) Patch(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition, options *JobsClientPatchOptions) (JobsClientPatchResponse, error) {
 	req, err := client.patchCreateRequest(ctx, resourceGroupName, jobCollectionName, jobName, job, options)
 	if err != nil {
-		return JobsPatchResponse{}, err
+		return JobsClientPatchResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobsPatchResponse{}, err
+		return JobsClientPatchResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JobsPatchResponse{}, client.patchHandleError(resp)
+		return JobsClientPatchResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.patchHandleResponse(resp)
 }
 
 // patchCreateRequest creates the Patch request.
-func (client *JobsClient) patchCreateRequest(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition, options *JobsPatchOptions) (*policy.Request, error) {
+func (client *JobsClient) patchCreateRequest(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition, options *JobsClientPatchOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs/{jobName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -416,57 +432,50 @@ func (client *JobsClient) patchCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, runtime.MarshalAsJSON(req, job)
 }
 
 // patchHandleResponse handles the Patch response.
-func (client *JobsClient) patchHandleResponse(resp *http.Response) (JobsPatchResponse, error) {
-	result := JobsPatchResponse{RawResponse: resp}
+func (client *JobsClient) patchHandleResponse(resp *http.Response) (JobsClientPatchResponse, error) {
+	result := JobsClientPatchResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobDefinition); err != nil {
-		return JobsPatchResponse{}, runtime.NewResponseError(err, resp)
+		return JobsClientPatchResponse{}, err
 	}
 	return result, nil
 }
 
-// patchHandleError handles the Patch error response.
-func (client *JobsClient) patchHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Run - Runs a job.
-// If the operation fails it returns a generic error.
-func (client *JobsClient) Run(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, options *JobsRunOptions) (JobsRunResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
+// resourceGroupName - The resource group name.
+// jobCollectionName - The job collection name.
+// jobName - The job name.
+// options - JobsClientRunOptions contains the optional parameters for the JobsClient.Run method.
+func (client *JobsClient) Run(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, options *JobsClientRunOptions) (JobsClientRunResponse, error) {
 	req, err := client.runCreateRequest(ctx, resourceGroupName, jobCollectionName, jobName, options)
 	if err != nil {
-		return JobsRunResponse{}, err
+		return JobsClientRunResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobsRunResponse{}, err
+		return JobsClientRunResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JobsRunResponse{}, client.runHandleError(resp)
+		return JobsClientRunResponse{}, runtime.NewResponseError(resp)
 	}
-	return JobsRunResponse{RawResponse: resp}, nil
+	return JobsClientRunResponse{}, nil
 }
 
 // runCreateRequest creates the Run request.
-func (client *JobsClient) runCreateRequest(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, options *JobsRunOptions) (*policy.Request, error) {
+func (client *JobsClient) runCreateRequest(ctx context.Context, resourceGroupName string, jobCollectionName string, jobName string, options *JobsClientRunOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Scheduler/jobCollections/{jobCollectionName}/jobs/{jobName}/run"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -484,7 +493,7 @@ func (client *JobsClient) runCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -492,16 +501,4 @@ func (client *JobsClient) runCreateRequest(ctx context.Context, resourceGroupNam
 	reqQP.Set("api-version", "2016-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
-}
-
-// runHandleError handles the Run error response.
-func (client *JobsClient) runHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

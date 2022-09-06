@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armauthorization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,41 +25,57 @@ import (
 // AccessReviewInstanceMyDecisionsClient contains the methods for the AccessReviewInstanceMyDecisions group.
 // Don't use this type directly, use NewAccessReviewInstanceMyDecisionsClient() instead.
 type AccessReviewInstanceMyDecisionsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewAccessReviewInstanceMyDecisionsClient creates a new instance of AccessReviewInstanceMyDecisionsClient with the specified values.
-func NewAccessReviewInstanceMyDecisionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AccessReviewInstanceMyDecisionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewAccessReviewInstanceMyDecisionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewInstanceMyDecisionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &AccessReviewInstanceMyDecisionsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &AccessReviewInstanceMyDecisionsClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
 // GetByID - Get my single access review instance decision.
-// If the operation fails it returns the *ErrorDefinition error type.
-func (client *AccessReviewInstanceMyDecisionsClient) GetByID(ctx context.Context, scheduleDefinitionID string, id string, decisionID string, options *AccessReviewInstanceMyDecisionsGetByIDOptions) (AccessReviewInstanceMyDecisionsGetByIDResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
+// scheduleDefinitionID - The id of the access review schedule definition.
+// id - The id of the access review instance.
+// decisionID - The id of the decision record.
+// options - AccessReviewInstanceMyDecisionsClientGetByIDOptions contains the optional parameters for the AccessReviewInstanceMyDecisionsClient.GetByID
+// method.
+func (client *AccessReviewInstanceMyDecisionsClient) GetByID(ctx context.Context, scheduleDefinitionID string, id string, decisionID string, options *AccessReviewInstanceMyDecisionsClientGetByIDOptions) (AccessReviewInstanceMyDecisionsClientGetByIDResponse, error) {
 	req, err := client.getByIDCreateRequest(ctx, scheduleDefinitionID, id, decisionID, options)
 	if err != nil {
-		return AccessReviewInstanceMyDecisionsGetByIDResponse{}, err
+		return AccessReviewInstanceMyDecisionsClientGetByIDResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AccessReviewInstanceMyDecisionsGetByIDResponse{}, err
+		return AccessReviewInstanceMyDecisionsClientGetByIDResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AccessReviewInstanceMyDecisionsGetByIDResponse{}, client.getByIDHandleError(resp)
+		return AccessReviewInstanceMyDecisionsClientGetByIDResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByIDHandleResponse(resp)
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *AccessReviewInstanceMyDecisionsClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, decisionID string, options *AccessReviewInstanceMyDecisionsGetByIDOptions) (*policy.Request, error) {
+func (client *AccessReviewInstanceMyDecisionsClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, decisionID string, options *AccessReviewInstanceMyDecisionsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/decisions/{decisionId}"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")
@@ -73,55 +89,63 @@ func (client *AccessReviewInstanceMyDecisionsClient) getByIDCreateRequest(ctx co
 		return nil, errors.New("parameter decisionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{decisionId}", url.PathEscape(decisionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getByIDHandleResponse handles the GetByID response.
-func (client *AccessReviewInstanceMyDecisionsClient) getByIDHandleResponse(resp *http.Response) (AccessReviewInstanceMyDecisionsGetByIDResponse, error) {
-	result := AccessReviewInstanceMyDecisionsGetByIDResponse{RawResponse: resp}
+func (client *AccessReviewInstanceMyDecisionsClient) getByIDHandleResponse(resp *http.Response) (AccessReviewInstanceMyDecisionsClientGetByIDResponse, error) {
+	result := AccessReviewInstanceMyDecisionsClientGetByIDResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewDecision); err != nil {
-		return AccessReviewInstanceMyDecisionsGetByIDResponse{}, runtime.NewResponseError(err, resp)
+		return AccessReviewInstanceMyDecisionsClientGetByIDResponse{}, err
 	}
 	return result, nil
 }
 
-// getByIDHandleError handles the GetByID error response.
-func (client *AccessReviewInstanceMyDecisionsClient) getByIDHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDefinition{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Get my access review instance decisions.
-// If the operation fails it returns the *ErrorDefinition error type.
-func (client *AccessReviewInstanceMyDecisionsClient) List(scheduleDefinitionID string, id string, options *AccessReviewInstanceMyDecisionsListOptions) *AccessReviewInstanceMyDecisionsListPager {
-	return &AccessReviewInstanceMyDecisionsListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, scheduleDefinitionID, id, options)
+// NewListPager - Get my access review instance decisions.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
+// scheduleDefinitionID - The id of the access review schedule definition.
+// id - The id of the access review instance.
+// options - AccessReviewInstanceMyDecisionsClientListOptions contains the optional parameters for the AccessReviewInstanceMyDecisionsClient.List
+// method.
+func (client *AccessReviewInstanceMyDecisionsClient) NewListPager(scheduleDefinitionID string, id string, options *AccessReviewInstanceMyDecisionsClientListOptions) *runtime.Pager[AccessReviewInstanceMyDecisionsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AccessReviewInstanceMyDecisionsClientListResponse]{
+		More: func(page AccessReviewInstanceMyDecisionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AccessReviewInstanceMyDecisionsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccessReviewDecisionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AccessReviewInstanceMyDecisionsClientListResponse) (AccessReviewInstanceMyDecisionsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, scheduleDefinitionID, id, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AccessReviewInstanceMyDecisionsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AccessReviewInstanceMyDecisionsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AccessReviewInstanceMyDecisionsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AccessReviewInstanceMyDecisionsClient) listCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstanceMyDecisionsListOptions) (*policy.Request, error) {
+func (client *AccessReviewInstanceMyDecisionsClient) listCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstanceMyDecisionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/decisions"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")
@@ -131,58 +155,57 @@ func (client *AccessReviewInstanceMyDecisionsClient) listCreateRequest(ctx conte
 		return nil, errors.New("parameter id cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{id}", url.PathEscape(id))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	unencodedParams := []string{req.Raw().URL.RawQuery}
+	if options != nil && options.Filter != nil {
+		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
+	}
+	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AccessReviewInstanceMyDecisionsClient) listHandleResponse(resp *http.Response) (AccessReviewInstanceMyDecisionsListResponse, error) {
-	result := AccessReviewInstanceMyDecisionsListResponse{RawResponse: resp}
+func (client *AccessReviewInstanceMyDecisionsClient) listHandleResponse(resp *http.Response) (AccessReviewInstanceMyDecisionsClientListResponse, error) {
+	result := AccessReviewInstanceMyDecisionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewDecisionListResult); err != nil {
-		return AccessReviewInstanceMyDecisionsListResponse{}, runtime.NewResponseError(err, resp)
+		return AccessReviewInstanceMyDecisionsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *AccessReviewInstanceMyDecisionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDefinition{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Patch - Record a decision.
-// If the operation fails it returns the *ErrorDefinition error type.
-func (client *AccessReviewInstanceMyDecisionsClient) Patch(ctx context.Context, scheduleDefinitionID string, id string, decisionID string, properties AccessReviewDecisionProperties, options *AccessReviewInstanceMyDecisionsPatchOptions) (AccessReviewInstanceMyDecisionsPatchResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
+// scheduleDefinitionID - The id of the access review schedule definition.
+// id - The id of the access review instance.
+// decisionID - The id of the decision record.
+// properties - Access review decision properties to patch.
+// options - AccessReviewInstanceMyDecisionsClientPatchOptions contains the optional parameters for the AccessReviewInstanceMyDecisionsClient.Patch
+// method.
+func (client *AccessReviewInstanceMyDecisionsClient) Patch(ctx context.Context, scheduleDefinitionID string, id string, decisionID string, properties AccessReviewDecisionProperties, options *AccessReviewInstanceMyDecisionsClientPatchOptions) (AccessReviewInstanceMyDecisionsClientPatchResponse, error) {
 	req, err := client.patchCreateRequest(ctx, scheduleDefinitionID, id, decisionID, properties, options)
 	if err != nil {
-		return AccessReviewInstanceMyDecisionsPatchResponse{}, err
+		return AccessReviewInstanceMyDecisionsClientPatchResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AccessReviewInstanceMyDecisionsPatchResponse{}, err
+		return AccessReviewInstanceMyDecisionsClientPatchResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AccessReviewInstanceMyDecisionsPatchResponse{}, client.patchHandleError(resp)
+		return AccessReviewInstanceMyDecisionsClientPatchResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.patchHandleResponse(resp)
 }
 
 // patchCreateRequest creates the Patch request.
-func (client *AccessReviewInstanceMyDecisionsClient) patchCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, decisionID string, properties AccessReviewDecisionProperties, options *AccessReviewInstanceMyDecisionsPatchOptions) (*policy.Request, error) {
+func (client *AccessReviewInstanceMyDecisionsClient) patchCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, decisionID string, properties AccessReviewDecisionProperties, options *AccessReviewInstanceMyDecisionsClientPatchOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/decisions/{decisionId}"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")
@@ -196,35 +219,22 @@ func (client *AccessReviewInstanceMyDecisionsClient) patchCreateRequest(ctx cont
 		return nil, errors.New("parameter decisionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{decisionId}", url.PathEscape(decisionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 
 // patchHandleResponse handles the Patch response.
-func (client *AccessReviewInstanceMyDecisionsClient) patchHandleResponse(resp *http.Response) (AccessReviewInstanceMyDecisionsPatchResponse, error) {
-	result := AccessReviewInstanceMyDecisionsPatchResponse{RawResponse: resp}
+func (client *AccessReviewInstanceMyDecisionsClient) patchHandleResponse(resp *http.Response) (AccessReviewInstanceMyDecisionsClientPatchResponse, error) {
+	result := AccessReviewInstanceMyDecisionsClientPatchResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewDecision); err != nil {
-		return AccessReviewInstanceMyDecisionsPatchResponse{}, runtime.NewResponseError(err, resp)
+		return AccessReviewInstanceMyDecisionsClientPatchResponse{}, err
 	}
 	return result, nil
-}
-
-// patchHandleError handles the Patch error response.
-func (client *AccessReviewInstanceMyDecisionsClient) patchHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDefinition{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

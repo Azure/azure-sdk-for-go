@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -30,42 +30,4 @@ func unmarshalHTTPAuthenticationClassification(rawMsg json.RawMessage) (HTTPAuth
 		b = &HTTPAuthentication{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalHTTPAuthenticationClassificationArray(rawMsg json.RawMessage) ([]HTTPAuthenticationClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]HTTPAuthenticationClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalHTTPAuthenticationClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalHTTPAuthenticationClassificationMap(rawMsg json.RawMessage) (map[string]HTTPAuthenticationClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]HTTPAuthenticationClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalHTTPAuthenticationClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

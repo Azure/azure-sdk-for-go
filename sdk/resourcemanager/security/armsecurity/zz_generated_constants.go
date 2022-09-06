@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package armsecurity
 
 const (
-	module  = "armsecurity"
-	version = "v0.2.1"
+	moduleName    = "armsecurity"
+	moduleVersion = "v0.7.0"
 )
 
 // AADConnectivityState - The connectivity state of the external AAD solution
@@ -31,11 +31,6 @@ func PossibleAADConnectivityStateValues() []AADConnectivityState {
 	}
 }
 
-// ToPtr returns a *AADConnectivityState pointing to the current value.
-func (c AADConnectivityState) ToPtr() *AADConnectivityState {
-	return &c
-}
-
 // ActionType - The type of the action that will be triggered by the Automation
 type ActionType string
 
@@ -52,11 +47,6 @@ func PossibleActionTypeValues() []ActionType {
 		ActionTypeLogicApp,
 		ActionTypeWorkspace,
 	}
-}
-
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
 }
 
 // AdaptiveApplicationControlIssue - An alert that machines within a group can have
@@ -83,11 +73,6 @@ func PossibleAdaptiveApplicationControlIssueValues() []AdaptiveApplicationContro
 	}
 }
 
-// ToPtr returns a *AdaptiveApplicationControlIssue pointing to the current value.
-func (c AdaptiveApplicationControlIssue) ToPtr() *AdaptiveApplicationControlIssue {
-	return &c
-}
-
 // AdditionalWorkspaceDataType - Data types sent to workspace.
 type AdditionalWorkspaceDataType string
 
@@ -104,11 +89,6 @@ func PossibleAdditionalWorkspaceDataTypeValues() []AdditionalWorkspaceDataType {
 	}
 }
 
-// ToPtr returns a *AdditionalWorkspaceDataType pointing to the current value.
-func (c AdditionalWorkspaceDataType) ToPtr() *AdditionalWorkspaceDataType {
-	return &c
-}
-
 // AdditionalWorkspaceType - Workspace type.
 type AdditionalWorkspaceType string
 
@@ -121,11 +101,6 @@ func PossibleAdditionalWorkspaceTypeValues() []AdditionalWorkspaceType {
 	return []AdditionalWorkspaceType{
 		AdditionalWorkspaceTypeSentinel,
 	}
-}
-
-// ToPtr returns a *AdditionalWorkspaceType pointing to the current value.
-func (c AdditionalWorkspaceType) ToPtr() *AdditionalWorkspaceType {
-	return &c
 }
 
 // AlertNotifications - Whether to send security alerts notifications to the security contact
@@ -144,11 +119,6 @@ func PossibleAlertNotificationsValues() []AlertNotifications {
 		AlertNotificationsOff,
 		AlertNotificationsOn,
 	}
-}
-
-// ToPtr returns a *AlertNotifications pointing to the current value.
-func (c AlertNotifications) ToPtr() *AlertNotifications {
-	return &c
 }
 
 // AlertSeverity - The risk level of the threat that was detected. Learn more: https://docs.microsoft.com/en-us/azure/security-center/security-center-alerts-overview#how-are-alerts-classified.
@@ -175,11 +145,6 @@ func PossibleAlertSeverityValues() []AlertSeverity {
 	}
 }
 
-// ToPtr returns a *AlertSeverity pointing to the current value.
-func (c AlertSeverity) ToPtr() *AlertSeverity {
-	return &c
-}
-
 // AlertStatus - The life cycle status of the alert.
 type AlertStatus string
 
@@ -201,11 +166,6 @@ func PossibleAlertStatusValues() []AlertStatus {
 	}
 }
 
-// ToPtr returns a *AlertStatus pointing to the current value.
-func (c AlertStatus) ToPtr() *AlertStatus {
-	return &c
-}
-
 // AlertsToAdmins - Whether to send security alerts notifications to subscription admins
 type AlertsToAdmins string
 
@@ -224,11 +184,6 @@ func PossibleAlertsToAdminsValues() []AlertsToAdmins {
 	}
 }
 
-// ToPtr returns a *AlertsToAdmins pointing to the current value.
-func (c AlertsToAdmins) ToPtr() *AlertsToAdmins {
-	return &c
-}
-
 // AssessedResourceType - Sub-assessment resource type
 type AssessedResourceType string
 
@@ -245,11 +200,6 @@ func PossibleAssessedResourceTypeValues() []AssessedResourceType {
 		AssessedResourceTypeSQLServerVulnerability,
 		AssessedResourceTypeServerVulnerability,
 	}
-}
-
-// ToPtr returns a *AssessedResourceType pointing to the current value.
-func (c AssessedResourceType) ToPtr() *AssessedResourceType {
-	return &c
 }
 
 // AssessmentStatusCode - Programmatic code for the status of the assessment
@@ -273,20 +223,18 @@ func PossibleAssessmentStatusCodeValues() []AssessmentStatusCode {
 	}
 }
 
-// ToPtr returns a *AssessmentStatusCode pointing to the current value.
-func (c AssessmentStatusCode) ToPtr() *AssessmentStatusCode {
-	return &c
-}
-
-// AssessmentType - BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on custom Azure Policy definition
+// AssessmentType - BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on
+// custom Azure Policy definition
 type AssessmentType string
 
 const (
-	// AssessmentTypeBuiltIn - Azure Security Center managed assessments
+	// AssessmentTypeBuiltIn - Microsoft Defender for Cloud managed assessments
 	AssessmentTypeBuiltIn AssessmentType = "BuiltIn"
-	// AssessmentTypeCustomPolicy - User defined policies that are automatically ingested from Azure Policy to Azure Security Center
+	// AssessmentTypeCustomPolicy - User defined policies that are automatically ingested from Azure Policy to Microsoft Defender
+	// for Cloud
 	AssessmentTypeCustomPolicy AssessmentType = "CustomPolicy"
-	// AssessmentTypeCustomerManaged - User assessments pushed directly by the user or other third party to Azure Security Center
+	// AssessmentTypeCustomerManaged - User assessments pushed directly by the user or other third party to Microsoft Defender
+	// for Cloud
 	AssessmentTypeCustomerManaged AssessmentType = "CustomerManaged"
 	// AssessmentTypeVerifiedPartner - An assessment that was created by a verified 3rd party if the user connected it to ASC
 	AssessmentTypeVerifiedPartner AssessmentType = "VerifiedPartner"
@@ -300,11 +248,6 @@ func PossibleAssessmentTypeValues() []AssessmentType {
 		AssessmentTypeCustomerManaged,
 		AssessmentTypeVerifiedPartner,
 	}
-}
-
-// ToPtr returns a *AssessmentType pointing to the current value.
-func (c AssessmentType) ToPtr() *AssessmentType {
-	return &c
 }
 
 // AuthenticationProvisioningState - State of the multi-cloud connector
@@ -331,13 +274,8 @@ func PossibleAuthenticationProvisioningStateValues() []AuthenticationProvisionin
 	}
 }
 
-// ToPtr returns a *AuthenticationProvisioningState pointing to the current value.
-func (c AuthenticationProvisioningState) ToPtr() *AuthenticationProvisioningState {
-	return &c
-}
-
-// AuthenticationType - Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use account organization
-// credentials.
+// AuthenticationType - Connect to your cloud account, for AWS use either account credentials or role-based authentication.
+// For GCP use account organization credentials.
 type AuthenticationType string
 
 const (
@@ -358,11 +296,6 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 	}
 }
 
-// ToPtr returns a *AuthenticationType pointing to the current value.
-func (c AuthenticationType) ToPtr() *AuthenticationType {
-	return &c
-}
-
 // AutoProvision - Describes what kind of security agent provisioning action to take
 type AutoProvision string
 
@@ -379,11 +312,6 @@ func PossibleAutoProvisionValues() []AutoProvision {
 		AutoProvisionOff,
 		AutoProvisionOn,
 	}
-}
-
-// ToPtr returns a *AutoProvision pointing to the current value.
-func (c AutoProvision) ToPtr() *AutoProvision {
-	return &c
 }
 
 // BundleType - Alert Simulator supported bundles.
@@ -414,11 +342,6 @@ func PossibleBundleTypeValues() []BundleType {
 	}
 }
 
-// ToPtr returns a *BundleType pointing to the current value.
-func (c BundleType) ToPtr() *BundleType {
-	return &c
-}
-
 // Categories - The categories of resource that is at risk when the assessment is unhealthy
 type Categories string
 
@@ -441,11 +364,6 @@ func PossibleCategoriesValues() []Categories {
 	}
 }
 
-// ToPtr returns a *Categories pointing to the current value.
-func (c Categories) ToPtr() *Categories {
-	return &c
-}
-
 // CloudName - The multi cloud resource's cloud name.
 type CloudName string
 
@@ -462,11 +380,6 @@ func PossibleCloudNameValues() []CloudName {
 		CloudNameAzure,
 		CloudNameGCP,
 	}
-}
-
-// ToPtr returns a *CloudName pointing to the current value.
-func (c CloudName) ToPtr() *CloudName {
-	return &c
 }
 
 // ConfigurationStatus - The configuration status of the machines group or machine or rule
@@ -491,11 +404,6 @@ func PossibleConfigurationStatusValues() []ConfigurationStatus {
 	}
 }
 
-// ToPtr returns a *ConfigurationStatus pointing to the current value.
-func (c ConfigurationStatus) ToPtr() *ConfigurationStatus {
-	return &c
-}
-
 type ConnectionType string
 
 const (
@@ -511,18 +419,13 @@ func PossibleConnectionTypeValues() []ConnectionType {
 	}
 }
 
-// ToPtr returns a *ConnectionType pointing to the current value.
-func (c ConnectionType) ToPtr() *ConnectionType {
-	return &c
-}
-
 // ControlType - The type of security control (for example, BuiltIn)
 type ControlType string
 
 const (
-	// ControlTypeBuiltIn - Azure Security Center managed assessments
+	// ControlTypeBuiltIn - Microsoft Defender for Cloud managed assessments
 	ControlTypeBuiltIn ControlType = "BuiltIn"
-	// ControlTypeCustom - Non Azure Security Center managed assessments
+	// ControlTypeCustom - Non Microsoft Defender for Cloud managed assessments
 	ControlTypeCustom ControlType = "Custom"
 )
 
@@ -532,11 +435,6 @@ func PossibleControlTypeValues() []ControlType {
 		ControlTypeBuiltIn,
 		ControlTypeCustom,
 	}
-}
-
-// ToPtr returns a *ControlType pointing to the current value.
-func (c ControlType) ToPtr() *ControlType {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -559,11 +457,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 type DataSource string
 
 const (
@@ -576,11 +469,6 @@ func PossibleDataSourceValues() []DataSource {
 	return []DataSource{
 		DataSourceTwinData,
 	}
-}
-
-// ToPtr returns a *DataSource pointing to the current value.
-func (c DataSource) ToPtr() *DataSource {
-	return &c
 }
 
 // Direction - The rule's direction
@@ -597,11 +485,6 @@ func PossibleDirectionValues() []Direction {
 		DirectionInbound,
 		DirectionOutbound,
 	}
-}
-
-// ToPtr returns a *Direction pointing to the current value.
-func (c Direction) ToPtr() *Direction {
-	return &c
 }
 
 // EndOfSupportStatus - End of support status.
@@ -626,11 +509,6 @@ func PossibleEndOfSupportStatusValues() []EndOfSupportStatus {
 	}
 }
 
-// ToPtr returns a *EndOfSupportStatus pointing to the current value.
-func (c EndOfSupportStatus) ToPtr() *EndOfSupportStatus {
-	return &c
-}
-
 // EnforcementMode - The application control policy enforcement/protection mode of the machine group
 type EnforcementMode string
 
@@ -649,11 +527,6 @@ func PossibleEnforcementModeValues() []EnforcementMode {
 	}
 }
 
-// ToPtr returns a *EnforcementMode pointing to the current value.
-func (c EnforcementMode) ToPtr() *EnforcementMode {
-	return &c
-}
-
 // EnforcementSupport - The machine supportability of Enforce feature
 type EnforcementSupport string
 
@@ -670,153 +543,6 @@ func PossibleEnforcementSupportValues() []EnforcementSupport {
 		EnforcementSupportSupported,
 		EnforcementSupportUnknown,
 	}
-}
-
-// ToPtr returns a *EnforcementSupport pointing to the current value.
-func (c EnforcementSupport) ToPtr() *EnforcementSupport {
-	return &c
-}
-
-type Enum18 string
-
-const (
-	Enum18Activate Enum18 = "Activate"
-	Enum18Close    Enum18 = "Close"
-	Enum18Dismiss  Enum18 = "Dismiss"
-	Enum18Resolve  Enum18 = "Resolve"
-	Enum18Start    Enum18 = "Start"
-)
-
-// PossibleEnum18Values returns the possible values for the Enum18 const type.
-func PossibleEnum18Values() []Enum18 {
-	return []Enum18{
-		Enum18Activate,
-		Enum18Close,
-		Enum18Dismiss,
-		Enum18Resolve,
-		Enum18Start,
-	}
-}
-
-// ToPtr returns a *Enum18 pointing to the current value.
-func (c Enum18) ToPtr() *Enum18 {
-	return &c
-}
-
-type Enum20 string
-
-const (
-	Enum20Custom    Enum20 = "custom"
-	Enum20Effective Enum20 = "effective"
-)
-
-// PossibleEnum20Values returns the possible values for the Enum20 const type.
-func PossibleEnum20Values() []Enum20 {
-	return []Enum20{
-		Enum20Custom,
-		Enum20Effective,
-	}
-}
-
-// ToPtr returns a *Enum20 pointing to the current value.
-func (c Enum20) ToPtr() *Enum20 {
-	return &c
-}
-
-type Enum33 string
-
-const (
-	Enum33Default Enum33 = "default"
-)
-
-// PossibleEnum33Values returns the possible values for the Enum33 const type.
-func PossibleEnum33Values() []Enum33 {
-	return []Enum33{
-		Enum33Default,
-	}
-}
-
-// ToPtr returns a *Enum33 pointing to the current value.
-func (c Enum33) ToPtr() *Enum33 {
-	return &c
-}
-
-type Enum53 string
-
-const (
-	Enum53Enforce Enum53 = "enforce"
-)
-
-// PossibleEnum53Values returns the possible values for the Enum53 const type.
-func PossibleEnum53Values() []Enum53 {
-	return []Enum53{
-		Enum53Enforce,
-	}
-}
-
-// ToPtr returns a *Enum53 pointing to the current value.
-func (c Enum53) ToPtr() *Enum53 {
-	return &c
-}
-
-type Enum58 string
-
-const (
-	Enum58Initiate Enum58 = "initiate"
-)
-
-// PossibleEnum58Values returns the possible values for the Enum58 const type.
-func PossibleEnum58Values() []Enum58 {
-	return []Enum58{
-		Enum58Initiate,
-	}
-}
-
-// ToPtr returns a *Enum58 pointing to the current value.
-func (c Enum58) ToPtr() *Enum58 {
-	return &c
-}
-
-type Enum7 string
-
-const (
-	Enum7Current Enum7 = "current"
-)
-
-// PossibleEnum7Values returns the possible values for the Enum7 const type.
-func PossibleEnum7Values() []Enum7 {
-	return []Enum7{
-		Enum7Current,
-	}
-}
-
-// ToPtr returns a *Enum7 pointing to the current value.
-func (c Enum7) ToPtr() *Enum7 {
-	return &c
-}
-
-type Enum79 string
-
-const (
-	Enum79MCAS                           Enum79 = "MCAS"
-	Enum79Sentinel                       Enum79 = "Sentinel"
-	Enum79WDATP                          Enum79 = "WDATP"
-	Enum79WDATPEXCLUDELINUXPUBLICPREVIEW Enum79 = "WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW"
-)
-
-// PossibleEnum79Values returns the possible values for the Enum79 const type.
-func PossibleEnum79Values() []Enum79 {
-	return []Enum79{
-		Enum79MCAS,
-		Enum79Sentinel,
-		Enum79WDATP,
-		Enum79WDATPEXCLUDELINUXPUBLICPREVIEW,
-	}
-}
-
-// ToPtr returns a *Enum79 pointing to the current value.
-func (c Enum79) ToPtr() *Enum79 {
-	return &c
 }
 
 // EventSource - A valid event source type.
@@ -853,11 +579,6 @@ func PossibleEventSourceValues() []EventSource {
 	}
 }
 
-// ToPtr returns a *EventSource pointing to the current value.
-func (c EventSource) ToPtr() *EventSource {
-	return &c
-}
-
 type ExpandControlsEnum string
 
 const (
@@ -870,11 +591,6 @@ func PossibleExpandControlsEnumValues() []ExpandControlsEnum {
 	return []ExpandControlsEnum{
 		ExpandControlsEnumDefinition,
 	}
-}
-
-// ToPtr returns a *ExpandControlsEnum pointing to the current value.
-func (c ExpandControlsEnum) ToPtr() *ExpandControlsEnum {
-	return &c
 }
 
 type ExpandEnum string
@@ -894,11 +610,6 @@ func PossibleExpandEnumValues() []ExpandEnum {
 	}
 }
 
-// ToPtr returns a *ExpandEnum pointing to the current value.
-func (c ExpandEnum) ToPtr() *ExpandEnum {
-	return &c
-}
-
 type ExportData string
 
 const (
@@ -911,11 +622,6 @@ func PossibleExportDataValues() []ExportData {
 	return []ExportData{
 		ExportDataRawEvents,
 	}
-}
-
-// ToPtr returns a *ExportData pointing to the current value.
-func (c ExportData) ToPtr() *ExportData {
-	return &c
 }
 
 // ExternalSecuritySolutionKind - The kind of the external solution
@@ -934,11 +640,6 @@ func PossibleExternalSecuritySolutionKindValues() []ExternalSecuritySolutionKind
 		ExternalSecuritySolutionKindATA,
 		ExternalSecuritySolutionKindCEF,
 	}
-}
-
-// ToPtr returns a *ExternalSecuritySolutionKind pointing to the current value.
-func (c ExternalSecuritySolutionKind) ToPtr() *ExternalSecuritySolutionKind {
-	return &c
 }
 
 // FileType - The type of the file (for Linux files - Executable is used)
@@ -965,11 +666,6 @@ func PossibleFileTypeValues() []FileType {
 	}
 }
 
-// ToPtr returns a *FileType pointing to the current value.
-func (c FileType) ToPtr() *FileType {
-	return &c
-}
-
 // HybridComputeProvisioningState - State of the service principal and its secret
 type HybridComputeProvisioningState string
 
@@ -991,11 +687,6 @@ func PossibleHybridComputeProvisioningStateValues() []HybridComputeProvisioningS
 	}
 }
 
-// ToPtr returns a *HybridComputeProvisioningState pointing to the current value.
-func (c HybridComputeProvisioningState) ToPtr() *HybridComputeProvisioningState {
-	return &c
-}
-
 // ImplementationEffort - The implementation effort required to remediate this assessment
 type ImplementationEffort string
 
@@ -1014,78 +705,70 @@ func PossibleImplementationEffortValues() []ImplementationEffort {
 	}
 }
 
-// ToPtr returns a *ImplementationEffort pointing to the current value.
-func (c ImplementationEffort) ToPtr() *ImplementationEffort {
-	return &c
-}
-
-// ImplementationEffortEnum - The implementation effort to relate to the assessments generated by this assessment automation.
-type ImplementationEffortEnum string
+type InformationProtectionPolicyName string
 
 const (
-	ImplementationEffortEnumHigh     ImplementationEffortEnum = "High"
-	ImplementationEffortEnumLow      ImplementationEffortEnum = "Low"
-	ImplementationEffortEnumModerate ImplementationEffortEnum = "Moderate"
+	InformationProtectionPolicyNameCustom    InformationProtectionPolicyName = "custom"
+	InformationProtectionPolicyNameEffective InformationProtectionPolicyName = "effective"
 )
 
-// PossibleImplementationEffortEnumValues returns the possible values for the ImplementationEffortEnum const type.
-func PossibleImplementationEffortEnumValues() []ImplementationEffortEnum {
-	return []ImplementationEffortEnum{
-		ImplementationEffortEnumHigh,
-		ImplementationEffortEnumLow,
-		ImplementationEffortEnumModerate,
+// PossibleInformationProtectionPolicyNameValues returns the possible values for the InformationProtectionPolicyName const type.
+func PossibleInformationProtectionPolicyNameValues() []InformationProtectionPolicyName {
+	return []InformationProtectionPolicyName{
+		InformationProtectionPolicyNameCustom,
+		InformationProtectionPolicyNameEffective,
 	}
 }
 
-// ToPtr returns a *ImplementationEffortEnum pointing to the current value.
-func (c ImplementationEffortEnum) ToPtr() *ImplementationEffortEnum {
-	return &c
-}
-
-// Intent - The kill chain related intent behind the alert. For list of supported values, and explanations of Azure Security Center's supported kill chain
-// intents.
+// Intent - The kill chain related intent behind the alert. For list of supported values, and explanations of Azure Security
+// Center's supported kill chain intents.
 type Intent string
 
 const (
-	// IntentCollection - Collection consists of techniques used to identify and gather information, such as sensitive files, from a target network prior to
-	// exfiltration.
+	// IntentCollection - Collection consists of techniques used to identify and gather information, such as sensitive files,
+	// from a target network prior to exfiltration.
 	IntentCollection Intent = "Collection"
-	// IntentCommandAndControl - The command and control tactic represents how adversaries communicate with systems under their control within a target network.
+	// IntentCommandAndControl - The command and control tactic represents how adversaries communicate with systems under their
+	// control within a target network.
 	IntentCommandAndControl Intent = "CommandAndControl"
-	// IntentCredentialAccess - Credential access represents techniques resulting in access to or control over system, domain, or service credentials that are
-	// used within an enterprise environment.
+	// IntentCredentialAccess - Credential access represents techniques resulting in access to or control over system, domain,
+	// or service credentials that are used within an enterprise environment.
 	IntentCredentialAccess Intent = "CredentialAccess"
 	// IntentDefenseEvasion - Defense evasion consists of techniques an adversary may use to evade detection or avoid other defenses.
 	IntentDefenseEvasion Intent = "DefenseEvasion"
-	// IntentDiscovery - Discovery consists of techniques that allow the adversary to gain knowledge about the system and internal network.
-	IntentDiscovery Intent = "Discovery"
-	// IntentExecution - The execution tactic represents techniques that result in execution of adversary-controlled code on a local or remote system.
-	IntentExecution Intent = "Execution"
-	// IntentExfiltration - Exfiltration refers to techniques and attributes that result or aid in the adversary removing files and information from a target
+	// IntentDiscovery - Discovery consists of techniques that allow the adversary to gain knowledge about the system and internal
 	// network.
+	IntentDiscovery Intent = "Discovery"
+	// IntentExecution - The execution tactic represents techniques that result in execution of adversary-controlled code on a
+	// local or remote system.
+	IntentExecution Intent = "Execution"
+	// IntentExfiltration - Exfiltration refers to techniques and attributes that result or aid in the adversary removing files
+	// and information from a target network.
 	IntentExfiltration Intent = "Exfiltration"
-	// IntentExploitation - Exploitation is the stage where an attacker manages to get a foothold on the attacked resource. This stage is relevant for compute
-	// hosts and resources such as user accounts, certificates etc.
+	// IntentExploitation - Exploitation is the stage where an attacker manages to get a foothold on the attacked resource. This
+	// stage is relevant for compute hosts and resources such as user accounts, certificates etc.
 	IntentExploitation Intent = "Exploitation"
-	// IntentImpact - Impact events primarily try to directly reduce the availability or integrity of a system, service, or network; including manipulation
-	// of data to impact a business or operational process.
+	// IntentImpact - Impact events primarily try to directly reduce the availability or integrity of a system, service, or network;
+	// including manipulation of data to impact a business or operational process.
 	IntentImpact Intent = "Impact"
 	// IntentInitialAccess - InitialAccess is the stage where an attacker manages to get foothold on the attacked resource.
 	IntentInitialAccess Intent = "InitialAccess"
-	// IntentLateralMovement - Lateral movement consists of techniques that enable an adversary to access and control remote systems on a network and could,
-	// but does not necessarily, include execution of tools on remote systems.
+	// IntentLateralMovement - Lateral movement consists of techniques that enable an adversary to access and control remote systems
+	// on a network and could, but does not necessarily, include execution of tools on remote systems.
 	IntentLateralMovement Intent = "LateralMovement"
-	// IntentPersistence - Persistence is any access, action, or configuration change to a system that gives a threat actor a persistent presence on that system.
+	// IntentPersistence - Persistence is any access, action, or configuration change to a system that gives a threat actor a
+	// persistent presence on that system.
 	IntentPersistence Intent = "Persistence"
-	// IntentPreAttack - PreAttack could be either an attempt to access a certain resource regardless of a malicious intent, or a failed attempt to gain access
-	// to a target system to gather information prior to exploitation. This step is usually detected as an attempt, originating from outside the network, to
-	// scan the target system and find a way in. Further details on the PreAttack stage can be read in [MITRE Pre-Att&ck matrix](https://attack.mitre.org/matrices/pre/).
+	// IntentPreAttack - PreAttack could be either an attempt to access a certain resource regardless of a malicious intent, or
+	// a failed attempt to gain access to a target system to gather information prior to exploitation. This step is usually detected
+	// as an attempt, originating from outside the network, to scan the target system and find a way in. Further details on the
+	// PreAttack stage can be read in [MITRE Pre-Att&ck matrix](https://attack.mitre.org/matrices/pre/).
 	IntentPreAttack Intent = "PreAttack"
-	// IntentPrivilegeEscalation - Privilege escalation is the result of actions that allow an adversary to obtain a higher level of permissions on a system
-	// or network.
+	// IntentPrivilegeEscalation - Privilege escalation is the result of actions that allow an adversary to obtain a higher level
+	// of permissions on a system or network.
 	IntentPrivilegeEscalation Intent = "PrivilegeEscalation"
-	// IntentProbing - Probing could be either an attempt to access a certain resource regardless of a malicious intent, or a failed attempt to gain access
-	// to a target system to gather information prior to exploitation.
+	// IntentProbing - Probing could be either an attempt to access a certain resource regardless of a malicious intent, or a
+	// failed attempt to gain access to a target system to gather information prior to exploitation.
 	IntentProbing Intent = "Probing"
 	// IntentUnknown - Unknown
 	IntentUnknown Intent = "Unknown"
@@ -1113,11 +796,6 @@ func PossibleIntentValues() []Intent {
 	}
 }
 
-// ToPtr returns a *Intent pointing to the current value.
-func (c Intent) ToPtr() *Intent {
-	return &c
-}
-
 // Kind - The kind of alert simulation.
 type Kind string
 
@@ -1133,11 +811,6 @@ func PossibleKindValues() []Kind {
 	}
 }
 
-// ToPtr returns a *Kind pointing to the current value.
-func (c Kind) ToPtr() *Kind {
-	return &c
-}
-
 // OfferingType - The type of the security offering.
 type OfferingType string
 
@@ -1145,6 +818,7 @@ const (
 	OfferingTypeCspmMonitorAws           OfferingType = "CspmMonitorAws"
 	OfferingTypeDefenderForContainersAws OfferingType = "DefenderForContainersAws"
 	OfferingTypeDefenderForServersAws    OfferingType = "DefenderForServersAws"
+	OfferingTypeInformationProtectionAws OfferingType = "InformationProtectionAws"
 )
 
 // PossibleOfferingTypeValues returns the possible values for the OfferingType const type.
@@ -1153,12 +827,8 @@ func PossibleOfferingTypeValues() []OfferingType {
 		OfferingTypeCspmMonitorAws,
 		OfferingTypeDefenderForContainersAws,
 		OfferingTypeDefenderForServersAws,
+		OfferingTypeInformationProtectionAws,
 	}
-}
-
-// ToPtr returns a *OfferingType pointing to the current value.
-func (c OfferingType) ToPtr() *OfferingType {
-	return &c
 }
 
 // Operator - A valid comparer operator to use. A case-insensitive comparison will be applied for String PropertyType.
@@ -1200,11 +870,6 @@ func PossibleOperatorValues() []Operator {
 	}
 }
 
-// ToPtr returns a *Operator pointing to the current value.
-func (c Operator) ToPtr() *Operator {
-	return &c
-}
-
 // OrganizationMembershipType - The multi cloud account's membership type in the organization
 type OrganizationMembershipType string
 
@@ -1221,18 +886,14 @@ func PossibleOrganizationMembershipTypeValues() []OrganizationMembershipType {
 	}
 }
 
-// ToPtr returns a *OrganizationMembershipType pointing to the current value.
-func (c OrganizationMembershipType) ToPtr() *OrganizationMembershipType {
-	return &c
-}
-
 // PermissionProperty - A permission detected in the cloud account.
 type PermissionProperty string
 
 const (
 	// PermissionPropertyAWSAWSSecurityHubReadOnlyAccess - This permission provides read only access to AWS Security Hub resources.
 	PermissionPropertyAWSAWSSecurityHubReadOnlyAccess PermissionProperty = "AWS::AWSSecurityHubReadOnlyAccess"
-	// PermissionPropertyAWSAmazonSSMAutomationRole - The permission provides for EC2 Automation service to execute activities defined within Automation documents.
+	// PermissionPropertyAWSAmazonSSMAutomationRole - The permission provides for EC2 Automation service to execute activities
+	// defined within Automation documents.
 	PermissionPropertyAWSAmazonSSMAutomationRole PermissionProperty = "AWS::AmazonSSMAutomationRole"
 	// PermissionPropertyAWSSecurityAudit - This permission grants access to read security configuration metadata.
 	PermissionPropertyAWSSecurityAudit PermissionProperty = "AWS::SecurityAudit"
@@ -1250,20 +911,15 @@ func PossiblePermissionPropertyValues() []PermissionProperty {
 	}
 }
 
-// ToPtr returns a *PermissionProperty pointing to the current value.
-func (c PermissionProperty) ToPtr() *PermissionProperty {
-	return &c
-}
-
-// PricingTier - The pricing tier value. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with
-// a trial period. The standard tier offers advanced security
-// capabilities, while the free tier offers basic security features.
+// PricingTier - The pricing tier value. Microsoft Defender for Cloud is provided in two pricing tiers: free and standard,
+// with the standard tier available with a trial period. The standard tier offers advanced
+// security capabilities, while the free tier offers basic security features.
 type PricingTier string
 
 const (
-	// PricingTierFree - Get free Azure security center experience with basic security features
+	// PricingTierFree - Get free Microsoft Defender for Cloud experience with basic security features
 	PricingTierFree PricingTier = "Free"
-	// PricingTierStandard - Get the standard Azure security center experience with advanced security features
+	// PricingTierStandard - Get the standard Microsoft Defender for Cloud experience with advanced security features
 	PricingTierStandard PricingTier = "Standard"
 )
 
@@ -1273,11 +929,6 @@ func PossiblePricingTierValues() []PricingTier {
 		PricingTierFree,
 		PricingTierStandard,
 	}
-}
-
-// ToPtr returns a *PricingTier pointing to the current value.
-func (c PricingTier) ToPtr() *PricingTier {
-	return &c
 }
 
 // PropertyType - The data type of the compared operands (string, integer, floating point number or a boolean [true/false]]
@@ -1300,11 +951,6 @@ func PossiblePropertyTypeValues() []PropertyType {
 	}
 }
 
-// ToPtr returns a *PropertyType pointing to the current value.
-func (c PropertyType) ToPtr() *PropertyType {
-	return &c
-}
-
 type Protocol string
 
 const (
@@ -1320,11 +966,6 @@ func PossibleProtocolValues() []Protocol {
 		ProtocolTCP,
 		ProtocolUDP,
 	}
-}
-
-// ToPtr returns a *Protocol pointing to the current value.
-func (c Protocol) ToPtr() *Protocol {
-	return &c
 }
 
 // ProvisioningState - The security family provisioning State
@@ -1343,11 +984,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
 }
 
 // Rank - The rank of the sensitivity label.
@@ -1372,11 +1008,6 @@ func PossibleRankValues() []Rank {
 	}
 }
 
-// ToPtr returns a *Rank pointing to the current value.
-func (c Rank) ToPtr() *Rank {
-	return &c
-}
-
 // RecommendationAction - The recommendation action of the machine or rule
 type RecommendationAction string
 
@@ -1395,12 +1026,8 @@ func PossibleRecommendationActionValues() []RecommendationAction {
 	}
 }
 
-// ToPtr returns a *RecommendationAction pointing to the current value.
-func (c RecommendationAction) ToPtr() *RecommendationAction {
-	return &c
-}
-
-// RecommendationConfigStatus - Recommendation status. When the recommendation status is disabled recommendations are not generated.
+// RecommendationConfigStatus - Recommendation status. When the recommendation status is disabled recommendations are not
+// generated.
 type RecommendationConfigStatus string
 
 const (
@@ -1414,11 +1041,6 @@ func PossibleRecommendationConfigStatusValues() []RecommendationConfigStatus {
 		RecommendationConfigStatusDisabled,
 		RecommendationConfigStatusEnabled,
 	}
-}
-
-// ToPtr returns a *RecommendationConfigStatus pointing to the current value.
-func (c RecommendationConfigStatus) ToPtr() *RecommendationConfigStatus {
-	return &c
 }
 
 // RecommendationStatus - The initial recommendation status of the machine group or machine
@@ -1441,53 +1063,51 @@ func PossibleRecommendationStatusValues() []RecommendationStatus {
 	}
 }
 
-// ToPtr returns a *RecommendationStatus pointing to the current value.
-func (c RecommendationStatus) ToPtr() *RecommendationStatus {
-	return &c
-}
-
 // RecommendationType - The type of IoT Security recommendation.
 type RecommendationType string
 
 const (
-	// RecommendationTypeIoTAcrauthentication - Authentication schema used for pull an edge module from an ACR repository does not use Service Principal Authentication.
+	// RecommendationTypeIoTAcrauthentication - Authentication schema used for pull an edge module from an ACR repository does
+	// not use Service Principal Authentication.
 	RecommendationTypeIoTAcrauthentication RecommendationType = "IoT_ACRAuthentication"
-	// RecommendationTypeIoTAgentSendsUnutilizedMessages - IoT agent message size capacity is currently underutilized, causing an increase in the number of
-	// sent messages. Adjust message intervals for better utilization.
+	// RecommendationTypeIoTAgentSendsUnutilizedMessages - IoT agent message size capacity is currently underutilized, causing
+	// an increase in the number of sent messages. Adjust message intervals for better utilization.
 	RecommendationTypeIoTAgentSendsUnutilizedMessages RecommendationType = "IoT_AgentSendsUnutilizedMessages"
 	// RecommendationTypeIoTBaseline - Identified security related system configuration issues.
 	RecommendationTypeIoTBaseline RecommendationType = "IoT_Baseline"
-	// RecommendationTypeIoTEdgeHubMemOptimize - You can optimize Edge Hub memory usage by turning off protocol heads for any protocols not used by Edge modules
-	// in your solution.
+	// RecommendationTypeIoTEdgeHubMemOptimize - You can optimize Edge Hub memory usage by turning off protocol heads for any
+	// protocols not used by Edge modules in your solution.
 	RecommendationTypeIoTEdgeHubMemOptimize RecommendationType = "IoT_EdgeHubMemOptimize"
 	// RecommendationTypeIoTEdgeLoggingOptions - Logging is disabled for this edge module.
 	RecommendationTypeIoTEdgeLoggingOptions RecommendationType = "IoT_EdgeLoggingOptions"
-	// RecommendationTypeIoTInconsistentModuleSettings - A minority within a device security group has inconsistent Edge Module settings with the rest of their
-	// group.
+	// RecommendationTypeIoTInconsistentModuleSettings - A minority within a device security group has inconsistent Edge Module
+	// settings with the rest of their group.
 	RecommendationTypeIoTInconsistentModuleSettings RecommendationType = "IoT_InconsistentModuleSettings"
 	// RecommendationTypeIoTInstallAgent - Install the Azure Security of Things Agent.
 	RecommendationTypeIoTInstallAgent RecommendationType = "IoT_InstallAgent"
-	// RecommendationTypeIoTIpfilterDenyAll - IP Filter Configuration should have rules defined for allowed traffic and should deny all other traffic by default.
+	// RecommendationTypeIoTIpfilterDenyAll - IP Filter Configuration should have rules defined for allowed traffic and should
+	// deny all other traffic by default.
 	RecommendationTypeIoTIpfilterDenyAll RecommendationType = "IoT_IPFilter_DenyAll"
-	// RecommendationTypeIoTIpfilterPermissiveRule - An Allow IP Filter rules source IP range is too large. Overly permissive rules might expose your IoT hub
-	// to malicious intenders.
+	// RecommendationTypeIoTIpfilterPermissiveRule - An Allow IP Filter rules source IP range is too large. Overly permissive
+	// rules might expose your IoT hub to malicious intenders.
 	RecommendationTypeIoTIpfilterPermissiveRule RecommendationType = "IoT_IPFilter_PermissiveRule"
 	// RecommendationTypeIoTOpenPorts - A listening endpoint was found on the device.
 	RecommendationTypeIoTOpenPorts RecommendationType = "IoT_OpenPorts"
-	// RecommendationTypeIoTPermissiveFirewallPolicy - An Allowed firewall policy was found (INPUT/OUTPUT). The policy should Deny all traffic by default and
-	// define rules to allow necessary communication to/from the device.
+	// RecommendationTypeIoTPermissiveFirewallPolicy - An Allowed firewall policy was found (INPUT/OUTPUT). The policy should
+	// Deny all traffic by default and define rules to allow necessary communication to/from the device.
 	RecommendationTypeIoTPermissiveFirewallPolicy RecommendationType = "IoT_PermissiveFirewallPolicy"
-	// RecommendationTypeIoTPermissiveInputFirewallRules - A rule in the firewall has been found that contains a permissive pattern for a wide range of IP addresses
-	// or Ports.
+	// RecommendationTypeIoTPermissiveInputFirewallRules - A rule in the firewall has been found that contains a permissive pattern
+	// for a wide range of IP addresses or Ports.
 	RecommendationTypeIoTPermissiveInputFirewallRules RecommendationType = "IoT_PermissiveInputFirewallRules"
-	// RecommendationTypeIoTPermissiveOutputFirewallRules - A rule in the firewall has been found that contains a permissive pattern for a wide range of IP
-	// addresses or Ports.
+	// RecommendationTypeIoTPermissiveOutputFirewallRules - A rule in the firewall has been found that contains a permissive pattern
+	// for a wide range of IP addresses or Ports.
 	RecommendationTypeIoTPermissiveOutputFirewallRules RecommendationType = "IoT_PermissiveOutputFirewallRules"
-	// RecommendationTypeIoTPrivilegedDockerOptions - Edge module is configured to run in privileged mode, with extensive Linux capabilities or with host-level
-	// network access (send/receive data to host machine).
+	// RecommendationTypeIoTPrivilegedDockerOptions - Edge module is configured to run in privileged mode, with extensive Linux
+	// capabilities or with host-level network access (send/receive data to host machine).
 	RecommendationTypeIoTPrivilegedDockerOptions RecommendationType = "IoT_PrivilegedDockerOptions"
-	// RecommendationTypeIoTSharedCredentials - Same authentication credentials to the IoT Hub used by multiple devices. This could indicate an illegitimate
-	// device impersonating a legitimate device. It also exposes the risk of device impersonation by an attacker.
+	// RecommendationTypeIoTSharedCredentials - Same authentication credentials to the IoT Hub used by multiple devices. This
+	// could indicate an illegitimate device impersonating a legitimate device. It also exposes the risk of device impersonation
+	// by an attacker.
 	RecommendationTypeIoTSharedCredentials RecommendationType = "IoT_SharedCredentials"
 	// RecommendationTypeIoTVulnerableTLSCipherSuite - Insecure TLS configurations detected. Immediate upgrade recommended.
 	RecommendationTypeIoTVulnerableTLSCipherSuite RecommendationType = "IoT_VulnerableTLSCipherSuite"
@@ -1515,11 +1135,6 @@ func PossibleRecommendationTypeValues() []RecommendationType {
 	}
 }
 
-// ToPtr returns a *RecommendationType pointing to the current value.
-func (c RecommendationType) ToPtr() *RecommendationType {
-	return &c
-}
-
 // ReportedSeverity - Assessed alert severity.
 type ReportedSeverity string
 
@@ -1540,12 +1155,8 @@ func PossibleReportedSeverityValues() []ReportedSeverity {
 	}
 }
 
-// ToPtr returns a *ReportedSeverity pointing to the current value.
-func (c ReportedSeverity) ToPtr() *ReportedSeverity {
-	return &c
-}
-
-// ResourceIdentifierType - There can be multiple identifiers of different type per alert, this field specify the identifier type.
+// ResourceIdentifierType - There can be multiple identifiers of different type per alert, this field specify the identifier
+// type.
 type ResourceIdentifierType string
 
 const (
@@ -1559,11 +1170,6 @@ func PossibleResourceIdentifierTypeValues() []ResourceIdentifierType {
 		ResourceIdentifierTypeAzureResource,
 		ResourceIdentifierTypeLogAnalytics,
 	}
-}
-
-// ToPtr returns a *ResourceIdentifierType pointing to the current value.
-func (c ResourceIdentifierType) ToPtr() *ResourceIdentifierType {
-	return &c
 }
 
 // ResourceStatus - The status of the resource regarding a single assessment
@@ -1588,11 +1194,6 @@ func PossibleResourceStatusValues() []ResourceStatus {
 		ResourceStatusNotHealthy,
 		ResourceStatusOffByPolicy,
 	}
-}
-
-// ToPtr returns a *ResourceStatus pointing to the current value.
-func (c ResourceStatus) ToPtr() *ResourceStatus {
-	return &c
 }
 
 // RuleSeverity - The rule severity.
@@ -1622,11 +1223,6 @@ func PossibleRuleSeverityValues() []RuleSeverity {
 	}
 }
 
-// ToPtr returns a *RuleSeverity pointing to the current value.
-func (c RuleSeverity) ToPtr() *RuleSeverity {
-	return &c
-}
-
 // RuleState - Possible states of the rule
 type RuleState string
 
@@ -1643,11 +1239,6 @@ func PossibleRuleStateValues() []RuleState {
 		RuleStateDisabled,
 		RuleStateExpired,
 	}
-}
-
-// ToPtr returns a *RuleState pointing to the current value.
-func (c RuleState) ToPtr() *RuleState {
-	return &c
 }
 
 // RuleStatus - The rule result status.
@@ -1669,11 +1260,6 @@ func PossibleRuleStatusValues() []RuleStatus {
 		RuleStatusInternalError,
 		RuleStatusNonFinding,
 	}
-}
-
-// ToPtr returns a *RuleStatus pointing to the current value.
-func (c RuleStatus) ToPtr() *RuleStatus {
-	return &c
 }
 
 // RuleType - The rule type.
@@ -1700,11 +1286,6 @@ func PossibleRuleTypeValues() []RuleType {
 	}
 }
 
-// ToPtr returns a *RuleType pointing to the current value.
-func (c RuleType) ToPtr() *RuleType {
-	return &c
-}
-
 // ScanState - The scan status.
 type ScanState string
 
@@ -1729,11 +1310,6 @@ func PossibleScanStateValues() []ScanState {
 	}
 }
 
-// ToPtr returns a *ScanState pointing to the current value.
-func (c ScanState) ToPtr() *ScanState {
-	return &c
-}
-
 // ScanTriggerType - The scan trigger type.
 type ScanTriggerType string
 
@@ -1750,11 +1326,6 @@ func PossibleScanTriggerTypeValues() []ScanTriggerType {
 		ScanTriggerTypeOnDemand,
 		ScanTriggerTypeRecurring,
 	}
-}
-
-// ToPtr returns a *ScanTriggerType pointing to the current value.
-func (c ScanTriggerType) ToPtr() *ScanTriggerType {
-	return &c
 }
 
 // SecurityFamily - The security family of the discovered solution
@@ -1777,11 +1348,6 @@ func PossibleSecurityFamilyValues() []SecurityFamily {
 	}
 }
 
-// ToPtr returns a *SecurityFamily pointing to the current value.
-func (c SecurityFamily) ToPtr() *SecurityFamily {
-	return &c
-}
-
 // SecuritySolutionStatus - Status of the IoT Security solution.
 type SecuritySolutionStatus string
 
@@ -1798,12 +1364,8 @@ func PossibleSecuritySolutionStatusValues() []SecuritySolutionStatus {
 	}
 }
 
-// ToPtr returns a *SecuritySolutionStatus pointing to the current value.
-func (c SecuritySolutionStatus) ToPtr() *SecuritySolutionStatus {
-	return &c
-}
-
-// ServerVulnerabilityAssessmentPropertiesProvisioningState - The provisioningState of the vulnerability assessment capability on the VM
+// ServerVulnerabilityAssessmentPropertiesProvisioningState - The provisioningState of the vulnerability assessment capability
+// on the VM
 type ServerVulnerabilityAssessmentPropertiesProvisioningState string
 
 const (
@@ -1825,11 +1387,6 @@ func PossibleServerVulnerabilityAssessmentPropertiesProvisioningStateValues() []
 	}
 }
 
-// ToPtr returns a *ServerVulnerabilityAssessmentPropertiesProvisioningState pointing to the current value.
-func (c ServerVulnerabilityAssessmentPropertiesProvisioningState) ToPtr() *ServerVulnerabilityAssessmentPropertiesProvisioningState {
-	return &c
-}
-
 // SettingKind - the kind of the settings string
 type SettingKind string
 
@@ -1848,9 +1405,23 @@ func PossibleSettingKindValues() []SettingKind {
 	}
 }
 
-// ToPtr returns a *SettingKind pointing to the current value.
-func (c SettingKind) ToPtr() *SettingKind {
-	return &c
+type SettingName string
+
+const (
+	SettingNameMCAS                           SettingName = "MCAS"
+	SettingNameSentinel                       SettingName = "Sentinel"
+	SettingNameWDATP                          SettingName = "WDATP"
+	SettingNameWDATPEXCLUDELINUXPUBLICPREVIEW SettingName = "WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW"
+)
+
+// PossibleSettingNameValues returns the possible values for the SettingName const type.
+func PossibleSettingNameValues() []SettingName {
+	return []SettingName{
+		SettingNameMCAS,
+		SettingNameSentinel,
+		SettingNameWDATP,
+		SettingNameWDATPEXCLUDELINUXPUBLICPREVIEW,
+	}
 }
 
 // Severity - The sub-assessment severity level
@@ -1871,11 +1442,6 @@ func PossibleSeverityValues() []Severity {
 	}
 }
 
-// ToPtr returns a *Severity pointing to the current value.
-func (c Severity) ToPtr() *Severity {
-	return &c
-}
-
 // SeverityEnum - The severity to relate to the assessments generated by this assessment automation.
 type SeverityEnum string
 
@@ -1892,11 +1458,6 @@ func PossibleSeverityEnumValues() []SeverityEnum {
 		SeverityEnumLow,
 		SeverityEnumMedium,
 	}
-}
-
-// ToPtr returns a *SeverityEnum pointing to the current value.
-func (c SeverityEnum) ToPtr() *SeverityEnum {
-	return &c
 }
 
 // Source - The platform where the assessed resource resides
@@ -1920,11 +1481,6 @@ func PossibleSourceValues() []Source {
 	}
 }
 
-// ToPtr returns a *Source pointing to the current value.
-func (c Source) ToPtr() *Source {
-	return &c
-}
-
 // SourceSystem - The source type of the machine group
 type SourceSystem string
 
@@ -1945,11 +1501,6 @@ func PossibleSourceSystemValues() []SourceSystem {
 		SourceSystemNonAzureAuditD,
 		SourceSystemNone,
 	}
-}
-
-// ToPtr returns a *SourceSystem pointing to the current value.
-func (c SourceSystem) ToPtr() *SourceSystem {
-	return &c
 }
 
 // State - Aggregative state based on the standard's supported controls states
@@ -1976,11 +1527,6 @@ func PossibleStateValues() []State {
 	}
 }
 
-// ToPtr returns a *State pointing to the current value.
-func (c State) ToPtr() *State {
-	return &c
-}
-
 // Status - The status of the port
 type Status string
 
@@ -1995,11 +1541,6 @@ func PossibleStatusValues() []Status {
 		StatusInitiated,
 		StatusRevoked,
 	}
-}
-
-// ToPtr returns a *Status pointing to the current value.
-func (c Status) ToPtr() *Status {
-	return &c
 }
 
 // StatusReason - A description of why the status has its value
@@ -2018,11 +1559,6 @@ func PossibleStatusReasonValues() []StatusReason {
 		StatusReasonNewerRequestInitiated,
 		StatusReasonUserRequested,
 	}
-}
-
-// ToPtr returns a *StatusReason pointing to the current value.
-func (c StatusReason) ToPtr() *StatusReason {
-	return &c
 }
 
 // SubAssessmentStatusCode - Programmatic code for the status of the assessment
@@ -2046,28 +1582,20 @@ func PossibleSubAssessmentStatusCodeValues() []SubAssessmentStatusCode {
 	}
 }
 
-// ToPtr returns a *SubAssessmentStatusCode pointing to the current value.
-func (c SubAssessmentStatusCode) ToPtr() *SubAssessmentStatusCode {
-	return &c
-}
-
 // SupportedCloudEnum - Relevant cloud for the custom assessment automation.
 type SupportedCloudEnum string
 
 const (
 	SupportedCloudEnumAWS SupportedCloudEnum = "AWS"
+	SupportedCloudEnumGCP SupportedCloudEnum = "GCP"
 )
 
 // PossibleSupportedCloudEnumValues returns the possible values for the SupportedCloudEnum const type.
 func PossibleSupportedCloudEnumValues() []SupportedCloudEnum {
 	return []SupportedCloudEnum{
 		SupportedCloudEnumAWS,
+		SupportedCloudEnumGCP,
 	}
-}
-
-// ToPtr returns a *SupportedCloudEnum pointing to the current value.
-func (c SupportedCloudEnum) ToPtr() *SupportedCloudEnum {
-	return &c
 }
 
 // Tactics - Tactic of the assessment
@@ -2110,9 +1638,25 @@ func PossibleTacticsValues() []Tactics {
 	}
 }
 
-// ToPtr returns a *Tactics pointing to the current value.
-func (c Tactics) ToPtr() *Tactics {
-	return &c
+type TaskUpdateActionType string
+
+const (
+	TaskUpdateActionTypeActivate TaskUpdateActionType = "Activate"
+	TaskUpdateActionTypeClose    TaskUpdateActionType = "Close"
+	TaskUpdateActionTypeDismiss  TaskUpdateActionType = "Dismiss"
+	TaskUpdateActionTypeResolve  TaskUpdateActionType = "Resolve"
+	TaskUpdateActionTypeStart    TaskUpdateActionType = "Start"
+)
+
+// PossibleTaskUpdateActionTypeValues returns the possible values for the TaskUpdateActionType const type.
+func PossibleTaskUpdateActionTypeValues() []TaskUpdateActionType {
+	return []TaskUpdateActionType{
+		TaskUpdateActionTypeActivate,
+		TaskUpdateActionTypeClose,
+		TaskUpdateActionTypeDismiss,
+		TaskUpdateActionTypeResolve,
+		TaskUpdateActionTypeStart,
+	}
 }
 
 // Techniques - Techniques of the assessment
@@ -2335,11 +1879,6 @@ func PossibleTechniquesValues() []Techniques {
 	}
 }
 
-// ToPtr returns a *Techniques pointing to the current value.
-func (c Techniques) ToPtr() *Techniques {
-	return &c
-}
-
 // Threats - Threats impact of the assessment
 type Threats string
 
@@ -2368,11 +1907,6 @@ func PossibleThreatsValues() []Threats {
 	}
 }
 
-// ToPtr returns a *Threats pointing to the current value.
-func (c Threats) ToPtr() *Threats {
-	return &c
-}
-
 type TransportProtocol string
 
 const (
@@ -2386,11 +1920,6 @@ func PossibleTransportProtocolValues() []TransportProtocol {
 		TransportProtocolTCP,
 		TransportProtocolUDP,
 	}
-}
-
-// ToPtr returns a *TransportProtocol pointing to the current value.
-func (c TransportProtocol) ToPtr() *TransportProtocol {
-	return &c
 }
 
 // UnmaskedIPLoggingStatus - Unmasked IP address logging status
@@ -2411,11 +1940,6 @@ func PossibleUnmaskedIPLoggingStatusValues() []UnmaskedIPLoggingStatus {
 	}
 }
 
-// ToPtr returns a *UnmaskedIPLoggingStatus pointing to the current value.
-func (c UnmaskedIPLoggingStatus) ToPtr() *UnmaskedIPLoggingStatus {
-	return &c
-}
-
 // UserImpact - The user impact of the assessment
 type UserImpact string
 
@@ -2434,34 +1958,6 @@ func PossibleUserImpactValues() []UserImpact {
 	}
 }
 
-// ToPtr returns a *UserImpact pointing to the current value.
-func (c UserImpact) ToPtr() *UserImpact {
-	return &c
-}
-
-// UserImpactEnum - The user impact to relate to the assessments generated by this assessment automation.
-type UserImpactEnum string
-
-const (
-	UserImpactEnumHigh     UserImpactEnum = "High"
-	UserImpactEnumLow      UserImpactEnum = "Low"
-	UserImpactEnumModerate UserImpactEnum = "Moderate"
-)
-
-// PossibleUserImpactEnumValues returns the possible values for the UserImpactEnum const type.
-func PossibleUserImpactEnumValues() []UserImpactEnum {
-	return []UserImpactEnum{
-		UserImpactEnumHigh,
-		UserImpactEnumLow,
-		UserImpactEnumModerate,
-	}
-}
-
-// ToPtr returns a *UserImpactEnum pointing to the current value.
-func (c UserImpactEnum) ToPtr() *UserImpactEnum {
-	return &c
-}
-
 // ValueType - The value type of the items in the list.
 type ValueType string
 
@@ -2478,9 +1974,4 @@ func PossibleValueTypeValues() []ValueType {
 		ValueTypeIPCidr,
 		ValueTypeString,
 	}
-}
-
-// ToPtr returns a *ValueType pointing to the current value.
-func (c ValueType) ToPtr() *ValueType {
-	return &c
 }

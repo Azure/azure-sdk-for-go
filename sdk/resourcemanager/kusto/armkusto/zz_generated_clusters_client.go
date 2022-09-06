@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armkusto
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,46 +25,60 @@ import (
 // ClustersClient contains the methods for the Clusters group.
 // Don't use this type directly, use NewClustersClient() instead.
 type ClustersClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewClustersClient creates a new instance of ClustersClient with the specified values.
-func NewClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ClustersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClustersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &ClustersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &ClustersClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // BeginAddLanguageExtensions - Add a list of language extensions that can run within KQL queries.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) BeginAddLanguageExtensions(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToAdd LanguageExtensionsList, options *ClustersBeginAddLanguageExtensionsOptions) (ClustersAddLanguageExtensionsPollerResponse, error) {
-	resp, err := client.addLanguageExtensions(ctx, resourceGroupName, clusterName, languageExtensionsToAdd, options)
-	if err != nil {
-		return ClustersAddLanguageExtensionsPollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// languageExtensionsToAdd - The language extensions to add.
+// options - ClustersClientBeginAddLanguageExtensionsOptions contains the optional parameters for the ClustersClient.BeginAddLanguageExtensions
+// method.
+func (client *ClustersClient) BeginAddLanguageExtensions(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToAdd LanguageExtensionsList, options *ClustersClientBeginAddLanguageExtensionsOptions) (*runtime.Poller[ClustersClientAddLanguageExtensionsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.addLanguageExtensions(ctx, resourceGroupName, clusterName, languageExtensionsToAdd, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[ClustersClientAddLanguageExtensionsResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[ClustersClientAddLanguageExtensionsResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersAddLanguageExtensionsPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.AddLanguageExtensions", "", resp, client.pl, client.addLanguageExtensionsHandleError)
-	if err != nil {
-		return ClustersAddLanguageExtensionsPollerResponse{}, err
-	}
-	result.Poller = &ClustersAddLanguageExtensionsPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // AddLanguageExtensions - Add a list of language extensions that can run within KQL queries.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) addLanguageExtensions(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToAdd LanguageExtensionsList, options *ClustersBeginAddLanguageExtensionsOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+func (client *ClustersClient) addLanguageExtensions(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToAdd LanguageExtensionsList, options *ClustersClientBeginAddLanguageExtensionsOptions) (*http.Response, error) {
 	req, err := client.addLanguageExtensionsCreateRequest(ctx, resourceGroupName, clusterName, languageExtensionsToAdd, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +88,13 @@ func (client *ClustersClient) addLanguageExtensions(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.addLanguageExtensionsHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // addLanguageExtensionsCreateRequest creates the AddLanguageExtensions request.
-func (client *ClustersClient) addLanguageExtensionsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToAdd LanguageExtensionsList, options *ClustersBeginAddLanguageExtensionsOptions) (*policy.Request, error) {
+func (client *ClustersClient) addLanguageExtensionsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToAdd LanguageExtensionsList, options *ClustersClientBeginAddLanguageExtensionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/addLanguageExtensions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,49 +108,41 @@ func (client *ClustersClient) addLanguageExtensionsCreateRequest(ctx context.Con
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, languageExtensionsToAdd)
 }
 
-// addLanguageExtensionsHandleError handles the AddLanguageExtensions error response.
-func (client *ClustersClient) addLanguageExtensionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // CheckNameAvailability - Checks that the cluster name is valid and is not already in use.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) CheckNameAvailability(ctx context.Context, location string, clusterName ClusterCheckNameRequest, options *ClustersCheckNameAvailabilityOptions) (ClustersCheckNameAvailabilityResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// location - Azure location (region) name.
+// clusterName - The name of the cluster.
+// options - ClustersClientCheckNameAvailabilityOptions contains the optional parameters for the ClustersClient.CheckNameAvailability
+// method.
+func (client *ClustersClient) CheckNameAvailability(ctx context.Context, location string, clusterName ClusterCheckNameRequest, options *ClustersClientCheckNameAvailabilityOptions) (ClustersClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, location, clusterName, options)
 	if err != nil {
-		return ClustersCheckNameAvailabilityResponse{}, err
+		return ClustersClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ClustersCheckNameAvailabilityResponse{}, err
+		return ClustersClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClustersCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
+		return ClustersClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *ClustersClient) checkNameAvailabilityCreateRequest(ctx context.Context, location string, clusterName ClusterCheckNameRequest, options *ClustersCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *ClustersClient) checkNameAvailabilityCreateRequest(ctx context.Context, location string, clusterName ClusterCheckNameRequest, options *ClustersClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/locations/{location}/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -146,62 +152,50 @@ func (client *ClustersClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, clusterName)
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *ClustersClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ClustersCheckNameAvailabilityResponse, error) {
-	result := ClustersCheckNameAvailabilityResponse{RawResponse: resp}
+func (client *ClustersClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ClustersClientCheckNameAvailabilityResponse, error) {
+	result := ClustersClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameResult); err != nil {
-		return ClustersCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
+		return ClustersClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
-}
-
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *ClustersClient) checkNameAvailabilityHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginCreateOrUpdate - Create or update a Kusto cluster.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster, options *ClustersBeginCreateOrUpdateOptions) (ClustersCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, parameters, options)
-	if err != nil {
-		return ClustersCreateOrUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// parameters - The Kusto cluster parameters supplied to the CreateOrUpdate operation.
+// options - ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate
+// method.
+func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClustersClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[ClustersClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[ClustersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return ClustersCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ClustersCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or update a Kusto cluster.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster, options *ClustersBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+func (client *ClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -211,13 +205,13 @@ func (client *ClustersClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster, options *ClustersBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -231,59 +225,45 @@ func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ClustersClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a Kusto cluster.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersBeginDeleteOptions) (ClustersDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ClustersDeletePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// options - ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
+func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*runtime.Poller[ClustersClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[ClustersClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[ClustersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.Delete", "", resp, client.pl, client.deleteHandleError)
-	if err != nil {
-		return ClustersDeletePollerResponse{}, err
-	}
-	result.Poller = &ClustersDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a Kusto cluster.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
 		return nil, err
@@ -293,13 +273,13 @@ func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersBeginDeleteOptions) (*policy.Request, error) {
+func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -313,53 +293,41 @@ func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ClustersClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDetachFollowerDatabases - Detaches all followers of a database owned by this cluster.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) BeginDetachFollowerDatabases(ctx context.Context, resourceGroupName string, clusterName string, followerDatabaseToRemove FollowerDatabaseDefinition, options *ClustersBeginDetachFollowerDatabasesOptions) (ClustersDetachFollowerDatabasesPollerResponse, error) {
-	resp, err := client.detachFollowerDatabases(ctx, resourceGroupName, clusterName, followerDatabaseToRemove, options)
-	if err != nil {
-		return ClustersDetachFollowerDatabasesPollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// followerDatabaseToRemove - The follower databases properties to remove.
+// options - ClustersClientBeginDetachFollowerDatabasesOptions contains the optional parameters for the ClustersClient.BeginDetachFollowerDatabases
+// method.
+func (client *ClustersClient) BeginDetachFollowerDatabases(ctx context.Context, resourceGroupName string, clusterName string, followerDatabaseToRemove FollowerDatabaseDefinition, options *ClustersClientBeginDetachFollowerDatabasesOptions) (*runtime.Poller[ClustersClientDetachFollowerDatabasesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.detachFollowerDatabases(ctx, resourceGroupName, clusterName, followerDatabaseToRemove, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[ClustersClientDetachFollowerDatabasesResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[ClustersClientDetachFollowerDatabasesResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersDetachFollowerDatabasesPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.DetachFollowerDatabases", "", resp, client.pl, client.detachFollowerDatabasesHandleError)
-	if err != nil {
-		return ClustersDetachFollowerDatabasesPollerResponse{}, err
-	}
-	result.Poller = &ClustersDetachFollowerDatabasesPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DetachFollowerDatabases - Detaches all followers of a database owned by this cluster.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) detachFollowerDatabases(ctx context.Context, resourceGroupName string, clusterName string, followerDatabaseToRemove FollowerDatabaseDefinition, options *ClustersBeginDetachFollowerDatabasesOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+func (client *ClustersClient) detachFollowerDatabases(ctx context.Context, resourceGroupName string, clusterName string, followerDatabaseToRemove FollowerDatabaseDefinition, options *ClustersClientBeginDetachFollowerDatabasesOptions) (*http.Response, error) {
 	req, err := client.detachFollowerDatabasesCreateRequest(ctx, resourceGroupName, clusterName, followerDatabaseToRemove, options)
 	if err != nil {
 		return nil, err
@@ -369,13 +337,13 @@ func (client *ClustersClient) detachFollowerDatabases(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.detachFollowerDatabasesHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // detachFollowerDatabasesCreateRequest creates the DetachFollowerDatabases request.
-func (client *ClustersClient) detachFollowerDatabasesCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, followerDatabaseToRemove FollowerDatabaseDefinition, options *ClustersBeginDetachFollowerDatabasesOptions) (*policy.Request, error) {
+func (client *ClustersClient) detachFollowerDatabasesCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, followerDatabaseToRemove FollowerDatabaseDefinition, options *ClustersClientBeginDetachFollowerDatabasesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/detachFollowerDatabases"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -389,53 +357,44 @@ func (client *ClustersClient) detachFollowerDatabasesCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, followerDatabaseToRemove)
 }
 
-// detachFollowerDatabasesHandleError handles the DetachFollowerDatabases error response.
-func (client *ClustersClient) detachFollowerDatabasesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
+// BeginDiagnoseVirtualNetwork - Diagnoses network connectivity status for external resources on which the service is dependent
+// on.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// options - ClustersClientBeginDiagnoseVirtualNetworkOptions contains the optional parameters for the ClustersClient.BeginDiagnoseVirtualNetwork
+// method.
+func (client *ClustersClient) BeginDiagnoseVirtualNetwork(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDiagnoseVirtualNetworkOptions) (*runtime.Poller[ClustersClientDiagnoseVirtualNetworkResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.diagnoseVirtualNetwork(ctx, resourceGroupName, clusterName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ClustersClientDiagnoseVirtualNetworkResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[ClustersClientDiagnoseVirtualNetworkResponse](options.ResumeToken, client.pl, nil)
 	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }
 
-// BeginDiagnoseVirtualNetwork - Diagnoses network connectivity status for external resources on which the service is dependent on.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) BeginDiagnoseVirtualNetwork(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersBeginDiagnoseVirtualNetworkOptions) (ClustersDiagnoseVirtualNetworkPollerResponse, error) {
-	resp, err := client.diagnoseVirtualNetwork(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ClustersDiagnoseVirtualNetworkPollerResponse{}, err
-	}
-	result := ClustersDiagnoseVirtualNetworkPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.DiagnoseVirtualNetwork", "location", resp, client.pl, client.diagnoseVirtualNetworkHandleError)
-	if err != nil {
-		return ClustersDiagnoseVirtualNetworkPollerResponse{}, err
-	}
-	result.Poller = &ClustersDiagnoseVirtualNetworkPoller{
-		pt: pt,
-	}
-	return result, nil
-}
-
-// DiagnoseVirtualNetwork - Diagnoses network connectivity status for external resources on which the service is dependent on.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) diagnoseVirtualNetwork(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersBeginDiagnoseVirtualNetworkOptions) (*http.Response, error) {
+// DiagnoseVirtualNetwork - Diagnoses network connectivity status for external resources on which the service is dependent
+// on.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+func (client *ClustersClient) diagnoseVirtualNetwork(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDiagnoseVirtualNetworkOptions) (*http.Response, error) {
 	req, err := client.diagnoseVirtualNetworkCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
 		return nil, err
@@ -445,13 +404,13 @@ func (client *ClustersClient) diagnoseVirtualNetwork(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.diagnoseVirtualNetworkHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // diagnoseVirtualNetworkCreateRequest creates the DiagnoseVirtualNetwork request.
-func (client *ClustersClient) diagnoseVirtualNetworkCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersBeginDiagnoseVirtualNetworkOptions) (*policy.Request, error) {
+func (client *ClustersClient) diagnoseVirtualNetworkCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDiagnoseVirtualNetworkOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/diagnoseVirtualNetwork"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -465,49 +424,40 @@ func (client *ClustersClient) diagnoseVirtualNetworkCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// diagnoseVirtualNetworkHandleError handles the DiagnoseVirtualNetwork error response.
-func (client *ClustersClient) diagnoseVirtualNetworkHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a Kusto cluster.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) Get(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersGetOptions) (ClustersGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// options - ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
+func (client *ClustersClient) Get(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientGetOptions) (ClustersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
-		return ClustersGetResponse{}, err
+		return ClustersClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ClustersGetResponse{}, err
+		return ClustersClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClustersGetResponse{}, client.getHandleError(resp)
+		return ClustersClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersGetOptions) (*policy.Request, error) {
+func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -521,115 +471,109 @@ func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersGetResponse, error) {
-	result := ClustersGetResponse{RawResponse: resp}
+func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersClientGetResponse, error) {
+	result := ClustersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Cluster); err != nil {
-		return ClustersGetResponse{}, runtime.NewResponseError(err, resp)
+		return ClustersClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ClustersClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Lists all Kusto clusters within a subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) List(ctx context.Context, options *ClustersListOptions) (ClustersListResponse, error) {
-	req, err := client.listCreateRequest(ctx, options)
-	if err != nil {
-		return ClustersListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ClustersListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClustersListResponse{}, client.listHandleError(resp)
-	}
-	return client.listHandleResponse(resp)
+// NewListPager - Lists all Kusto clusters within a subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// options - ClustersClientListOptions contains the optional parameters for the ClustersClient.List method.
+func (client *ClustersClient) NewListPager(options *ClustersClientListOptions) *runtime.Pager[ClustersClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ClustersClientListResponse]{
+		More: func(page ClustersClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ClustersClientListResponse) (ClustersClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, options)
+			if err != nil {
+				return ClustersClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClustersClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClustersClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ClustersClient) listCreateRequest(ctx context.Context, options *ClustersListOptions) (*policy.Request, error) {
+func (client *ClustersClient) listCreateRequest(ctx context.Context, options *ClustersClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/clusters"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ClustersClient) listHandleResponse(resp *http.Response) (ClustersListResponse, error) {
-	result := ClustersListResponse{RawResponse: resp}
+func (client *ClustersClient) listHandleResponse(resp *http.Response) (ClustersClientListResponse, error) {
+	result := ClustersClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterListResult); err != nil {
-		return ClustersListResponse{}, runtime.NewResponseError(err, resp)
+		return ClustersClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ClustersClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByResourceGroup - Lists all Kusto clusters within a resource group.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *ClustersListByResourceGroupOptions) (ClustersListByResourceGroupResponse, error) {
-	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-	if err != nil {
-		return ClustersListByResourceGroupResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ClustersListByResourceGroupResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClustersListByResourceGroupResponse{}, client.listByResourceGroupHandleError(resp)
-	}
-	return client.listByResourceGroupHandleResponse(resp)
+// NewListByResourceGroupPager - Lists all Kusto clusters within a resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup
+// method.
+func (client *ClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ClustersClientListByResourceGroupResponse]{
+		More: func(page ClustersClientListByResourceGroupResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ClustersClientListByResourceGroupResponse) (ClustersClientListByResourceGroupResponse, error) {
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			if err != nil {
+				return ClustersClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClustersClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClustersClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
+		},
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ClustersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ClustersListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ClustersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ClustersClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -639,58 +583,58 @@ func (client *ClustersClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ClustersClient) listByResourceGroupHandleResponse(resp *http.Response) (ClustersListByResourceGroupResponse, error) {
-	result := ClustersListByResourceGroupResponse{RawResponse: resp}
+func (client *ClustersClient) listByResourceGroupHandleResponse(resp *http.Response) (ClustersClientListByResourceGroupResponse, error) {
+	result := ClustersClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterListResult); err != nil {
-		return ClustersListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ClustersClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *ClustersClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListFollowerDatabases - Returns a list of databases that are owned by this cluster and were followed by another cluster.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) ListFollowerDatabases(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersListFollowerDatabasesOptions) (ClustersListFollowerDatabasesResponse, error) {
-	req, err := client.listFollowerDatabasesCreateRequest(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ClustersListFollowerDatabasesResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ClustersListFollowerDatabasesResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClustersListFollowerDatabasesResponse{}, client.listFollowerDatabasesHandleError(resp)
-	}
-	return client.listFollowerDatabasesHandleResponse(resp)
+// NewListFollowerDatabasesPager - Returns a list of databases that are owned by this cluster and were followed by another
+// cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// options - ClustersClientListFollowerDatabasesOptions contains the optional parameters for the ClustersClient.ListFollowerDatabases
+// method.
+func (client *ClustersClient) NewListFollowerDatabasesPager(resourceGroupName string, clusterName string, options *ClustersClientListFollowerDatabasesOptions) *runtime.Pager[ClustersClientListFollowerDatabasesResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ClustersClientListFollowerDatabasesResponse]{
+		More: func(page ClustersClientListFollowerDatabasesResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ClustersClientListFollowerDatabasesResponse) (ClustersClientListFollowerDatabasesResponse, error) {
+			req, err := client.listFollowerDatabasesCreateRequest(ctx, resourceGroupName, clusterName, options)
+			if err != nil {
+				return ClustersClientListFollowerDatabasesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClustersClientListFollowerDatabasesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClustersClientListFollowerDatabasesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listFollowerDatabasesHandleResponse(resp)
+		},
+	})
 }
 
 // listFollowerDatabasesCreateRequest creates the ListFollowerDatabases request.
-func (client *ClustersClient) listFollowerDatabasesCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersListFollowerDatabasesOptions) (*policy.Request, error) {
+func (client *ClustersClient) listFollowerDatabasesCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientListFollowerDatabasesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/listFollowerDatabases"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -704,58 +648,57 @@ func (client *ClustersClient) listFollowerDatabasesCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listFollowerDatabasesHandleResponse handles the ListFollowerDatabases response.
-func (client *ClustersClient) listFollowerDatabasesHandleResponse(resp *http.Response) (ClustersListFollowerDatabasesResponse, error) {
-	result := ClustersListFollowerDatabasesResponse{RawResponse: resp}
+func (client *ClustersClient) listFollowerDatabasesHandleResponse(resp *http.Response) (ClustersClientListFollowerDatabasesResponse, error) {
+	result := ClustersClientListFollowerDatabasesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FollowerDatabaseListResult); err != nil {
-		return ClustersListFollowerDatabasesResponse{}, runtime.NewResponseError(err, resp)
+		return ClustersClientListFollowerDatabasesResponse{}, err
 	}
 	return result, nil
 }
 
-// listFollowerDatabasesHandleError handles the ListFollowerDatabases error response.
-func (client *ClustersClient) listFollowerDatabasesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListLanguageExtensions - Returns a list of language extensions that can run within KQL queries.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) ListLanguageExtensions(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersListLanguageExtensionsOptions) (ClustersListLanguageExtensionsResponse, error) {
-	req, err := client.listLanguageExtensionsCreateRequest(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ClustersListLanguageExtensionsResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ClustersListLanguageExtensionsResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClustersListLanguageExtensionsResponse{}, client.listLanguageExtensionsHandleError(resp)
-	}
-	return client.listLanguageExtensionsHandleResponse(resp)
+// NewListLanguageExtensionsPager - Returns a list of language extensions that can run within KQL queries.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// options - ClustersClientListLanguageExtensionsOptions contains the optional parameters for the ClustersClient.ListLanguageExtensions
+// method.
+func (client *ClustersClient) NewListLanguageExtensionsPager(resourceGroupName string, clusterName string, options *ClustersClientListLanguageExtensionsOptions) *runtime.Pager[ClustersClientListLanguageExtensionsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ClustersClientListLanguageExtensionsResponse]{
+		More: func(page ClustersClientListLanguageExtensionsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ClustersClientListLanguageExtensionsResponse) (ClustersClientListLanguageExtensionsResponse, error) {
+			req, err := client.listLanguageExtensionsCreateRequest(ctx, resourceGroupName, clusterName, options)
+			if err != nil {
+				return ClustersClientListLanguageExtensionsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClustersClientListLanguageExtensionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClustersClientListLanguageExtensionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listLanguageExtensionsHandleResponse(resp)
+		},
+	})
 }
 
 // listLanguageExtensionsCreateRequest creates the ListLanguageExtensions request.
-func (client *ClustersClient) listLanguageExtensionsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersListLanguageExtensionsOptions) (*policy.Request, error) {
+func (client *ClustersClient) listLanguageExtensionsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientListLanguageExtensionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/listLanguageExtensions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -769,55 +712,63 @@ func (client *ClustersClient) listLanguageExtensionsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listLanguageExtensionsHandleResponse handles the ListLanguageExtensions response.
-func (client *ClustersClient) listLanguageExtensionsHandleResponse(resp *http.Response) (ClustersListLanguageExtensionsResponse, error) {
-	result := ClustersListLanguageExtensionsResponse{RawResponse: resp}
+func (client *ClustersClient) listLanguageExtensionsHandleResponse(resp *http.Response) (ClustersClientListLanguageExtensionsResponse, error) {
+	result := ClustersClientListLanguageExtensionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LanguageExtensionsList); err != nil {
-		return ClustersListLanguageExtensionsResponse{}, runtime.NewResponseError(err, resp)
+		return ClustersClientListLanguageExtensionsResponse{}, err
 	}
 	return result, nil
 }
 
-// listLanguageExtensionsHandleError handles the ListLanguageExtensions error response.
-func (client *ClustersClient) listLanguageExtensionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListOutboundNetworkDependenciesEndpoints - Gets the network endpoints of all outbound dependencies of a Kusto cluster
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) ListOutboundNetworkDependenciesEndpoints(resourceGroupName string, clusterName string, options *ClustersListOutboundNetworkDependenciesEndpointsOptions) *ClustersListOutboundNetworkDependenciesEndpointsPager {
-	return &ClustersListOutboundNetworkDependenciesEndpointsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, clusterName, options)
+// NewListOutboundNetworkDependenciesEndpointsPager - Gets the network endpoints of all outbound dependencies of a Kusto cluster
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// options - ClustersClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the ClustersClient.ListOutboundNetworkDependenciesEndpoints
+// method.
+func (client *ClustersClient) NewListOutboundNetworkDependenciesEndpointsPager(resourceGroupName string, clusterName string, options *ClustersClientListOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[ClustersClientListOutboundNetworkDependenciesEndpointsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ClustersClientListOutboundNetworkDependenciesEndpointsResponse]{
+		More: func(page ClustersClientListOutboundNetworkDependenciesEndpointsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ClustersListOutboundNetworkDependenciesEndpointsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OutboundNetworkDependenciesEndpointListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ClustersClientListOutboundNetworkDependenciesEndpointsResponse) (ClustersClientListOutboundNetworkDependenciesEndpointsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, clusterName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ClustersClientListOutboundNetworkDependenciesEndpointsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClustersClientListOutboundNetworkDependenciesEndpointsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClustersClientListOutboundNetworkDependenciesEndpointsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listOutboundNetworkDependenciesEndpointsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listOutboundNetworkDependenciesEndpointsCreateRequest creates the ListOutboundNetworkDependenciesEndpoints request.
-func (client *ClustersClient) listOutboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersListOutboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
+func (client *ClustersClient) listOutboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientListOutboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/outboundNetworkDependenciesEndpoints"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -831,115 +782,110 @@ func (client *ClustersClient) listOutboundNetworkDependenciesEndpointsCreateRequ
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listOutboundNetworkDependenciesEndpointsHandleResponse handles the ListOutboundNetworkDependenciesEndpoints response.
-func (client *ClustersClient) listOutboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response) (ClustersListOutboundNetworkDependenciesEndpointsResponse, error) {
-	result := ClustersListOutboundNetworkDependenciesEndpointsResponse{RawResponse: resp}
+func (client *ClustersClient) listOutboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response) (ClustersClientListOutboundNetworkDependenciesEndpointsResponse, error) {
+	result := ClustersClientListOutboundNetworkDependenciesEndpointsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OutboundNetworkDependenciesEndpointListResult); err != nil {
-		return ClustersListOutboundNetworkDependenciesEndpointsResponse{}, runtime.NewResponseError(err, resp)
+		return ClustersClientListOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
 	return result, nil
 }
 
-// listOutboundNetworkDependenciesEndpointsHandleError handles the ListOutboundNetworkDependenciesEndpoints error response.
-func (client *ClustersClient) listOutboundNetworkDependenciesEndpointsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListSKUs - Lists eligible SKUs for Kusto resource provider.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) ListSKUs(ctx context.Context, options *ClustersListSKUsOptions) (ClustersListSKUsResponse, error) {
-	req, err := client.listSKUsCreateRequest(ctx, options)
-	if err != nil {
-		return ClustersListSKUsResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ClustersListSKUsResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClustersListSKUsResponse{}, client.listSKUsHandleError(resp)
-	}
-	return client.listSKUsHandleResponse(resp)
+// NewListSKUsPager - Lists eligible SKUs for Kusto resource provider.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// options - ClustersClientListSKUsOptions contains the optional parameters for the ClustersClient.ListSKUs method.
+func (client *ClustersClient) NewListSKUsPager(options *ClustersClientListSKUsOptions) *runtime.Pager[ClustersClientListSKUsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ClustersClientListSKUsResponse]{
+		More: func(page ClustersClientListSKUsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ClustersClientListSKUsResponse) (ClustersClientListSKUsResponse, error) {
+			req, err := client.listSKUsCreateRequest(ctx, options)
+			if err != nil {
+				return ClustersClientListSKUsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClustersClientListSKUsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClustersClientListSKUsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSKUsHandleResponse(resp)
+		},
+	})
 }
 
 // listSKUsCreateRequest creates the ListSKUs request.
-func (client *ClustersClient) listSKUsCreateRequest(ctx context.Context, options *ClustersListSKUsOptions) (*policy.Request, error) {
+func (client *ClustersClient) listSKUsCreateRequest(ctx context.Context, options *ClustersClientListSKUsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/skus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listSKUsHandleResponse handles the ListSKUs response.
-func (client *ClustersClient) listSKUsHandleResponse(resp *http.Response) (ClustersListSKUsResponse, error) {
-	result := ClustersListSKUsResponse{RawResponse: resp}
+func (client *ClustersClient) listSKUsHandleResponse(resp *http.Response) (ClustersClientListSKUsResponse, error) {
+	result := ClustersClientListSKUsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUDescriptionList); err != nil {
-		return ClustersListSKUsResponse{}, runtime.NewResponseError(err, resp)
+		return ClustersClientListSKUsResponse{}, err
 	}
 	return result, nil
 }
 
-// listSKUsHandleError handles the ListSKUs error response.
-func (client *ClustersClient) listSKUsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListSKUsByResource - Returns the SKUs available for the provided resource.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) ListSKUsByResource(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersListSKUsByResourceOptions) (ClustersListSKUsByResourceResponse, error) {
-	req, err := client.listSKUsByResourceCreateRequest(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ClustersListSKUsByResourceResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ClustersListSKUsByResourceResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ClustersListSKUsByResourceResponse{}, client.listSKUsByResourceHandleError(resp)
-	}
-	return client.listSKUsByResourceHandleResponse(resp)
+// NewListSKUsByResourcePager - Returns the SKUs available for the provided resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// options - ClustersClientListSKUsByResourceOptions contains the optional parameters for the ClustersClient.ListSKUsByResource
+// method.
+func (client *ClustersClient) NewListSKUsByResourcePager(resourceGroupName string, clusterName string, options *ClustersClientListSKUsByResourceOptions) *runtime.Pager[ClustersClientListSKUsByResourceResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ClustersClientListSKUsByResourceResponse]{
+		More: func(page ClustersClientListSKUsByResourceResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ClustersClientListSKUsByResourceResponse) (ClustersClientListSKUsByResourceResponse, error) {
+			req, err := client.listSKUsByResourceCreateRequest(ctx, resourceGroupName, clusterName, options)
+			if err != nil {
+				return ClustersClientListSKUsByResourceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ClustersClientListSKUsByResourceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ClustersClientListSKUsByResourceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSKUsByResourceHandleResponse(resp)
+		},
+	})
 }
 
 // listSKUsByResourceCreateRequest creates the ListSKUsByResource request.
-func (client *ClustersClient) listSKUsByResourceCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersListSKUsByResourceOptions) (*policy.Request, error) {
+func (client *ClustersClient) listSKUsByResourceCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientListSKUsByResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/skus"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -953,62 +899,50 @@ func (client *ClustersClient) listSKUsByResourceCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listSKUsByResourceHandleResponse handles the ListSKUsByResource response.
-func (client *ClustersClient) listSKUsByResourceHandleResponse(resp *http.Response) (ClustersListSKUsByResourceResponse, error) {
-	result := ClustersListSKUsByResourceResponse{RawResponse: resp}
+func (client *ClustersClient) listSKUsByResourceHandleResponse(resp *http.Response) (ClustersClientListSKUsByResourceResponse, error) {
+	result := ClustersClientListSKUsByResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResourceSKUsResult); err != nil {
-		return ClustersListSKUsByResourceResponse{}, runtime.NewResponseError(err, resp)
+		return ClustersClientListSKUsByResourceResponse{}, err
 	}
 	return result, nil
-}
-
-// listSKUsByResourceHandleError handles the ListSKUsByResource error response.
-func (client *ClustersClient) listSKUsByResourceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginRemoveLanguageExtensions - Remove a list of language extensions that can run within KQL queries.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) BeginRemoveLanguageExtensions(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToRemove LanguageExtensionsList, options *ClustersBeginRemoveLanguageExtensionsOptions) (ClustersRemoveLanguageExtensionsPollerResponse, error) {
-	resp, err := client.removeLanguageExtensions(ctx, resourceGroupName, clusterName, languageExtensionsToRemove, options)
-	if err != nil {
-		return ClustersRemoveLanguageExtensionsPollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// languageExtensionsToRemove - The language extensions to remove.
+// options - ClustersClientBeginRemoveLanguageExtensionsOptions contains the optional parameters for the ClustersClient.BeginRemoveLanguageExtensions
+// method.
+func (client *ClustersClient) BeginRemoveLanguageExtensions(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToRemove LanguageExtensionsList, options *ClustersClientBeginRemoveLanguageExtensionsOptions) (*runtime.Poller[ClustersClientRemoveLanguageExtensionsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.removeLanguageExtensions(ctx, resourceGroupName, clusterName, languageExtensionsToRemove, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[ClustersClientRemoveLanguageExtensionsResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[ClustersClientRemoveLanguageExtensionsResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersRemoveLanguageExtensionsPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.RemoveLanguageExtensions", "", resp, client.pl, client.removeLanguageExtensionsHandleError)
-	if err != nil {
-		return ClustersRemoveLanguageExtensionsPollerResponse{}, err
-	}
-	result.Poller = &ClustersRemoveLanguageExtensionsPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // RemoveLanguageExtensions - Remove a list of language extensions that can run within KQL queries.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) removeLanguageExtensions(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToRemove LanguageExtensionsList, options *ClustersBeginRemoveLanguageExtensionsOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+func (client *ClustersClient) removeLanguageExtensions(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToRemove LanguageExtensionsList, options *ClustersClientBeginRemoveLanguageExtensionsOptions) (*http.Response, error) {
 	req, err := client.removeLanguageExtensionsCreateRequest(ctx, resourceGroupName, clusterName, languageExtensionsToRemove, options)
 	if err != nil {
 		return nil, err
@@ -1018,13 +952,13 @@ func (client *ClustersClient) removeLanguageExtensions(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.removeLanguageExtensionsHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // removeLanguageExtensionsCreateRequest creates the RemoveLanguageExtensions request.
-func (client *ClustersClient) removeLanguageExtensionsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToRemove LanguageExtensionsList, options *ClustersBeginRemoveLanguageExtensionsOptions) (*policy.Request, error) {
+func (client *ClustersClient) removeLanguageExtensionsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, languageExtensionsToRemove LanguageExtensionsList, options *ClustersClientBeginRemoveLanguageExtensionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/removeLanguageExtensions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1038,53 +972,39 @@ func (client *ClustersClient) removeLanguageExtensionsCreateRequest(ctx context.
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, languageExtensionsToRemove)
 }
 
-// removeLanguageExtensionsHandleError handles the RemoveLanguageExtensions error response.
-func (client *ClustersClient) removeLanguageExtensionsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginStart - Starts a Kusto cluster.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) BeginStart(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersBeginStartOptions) (ClustersStartPollerResponse, error) {
-	resp, err := client.start(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ClustersStartPollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// options - ClustersClientBeginStartOptions contains the optional parameters for the ClustersClient.BeginStart method.
+func (client *ClustersClient) BeginStart(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginStartOptions) (*runtime.Poller[ClustersClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, clusterName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[ClustersClientStartResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[ClustersClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersStartPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.Start", "", resp, client.pl, client.startHandleError)
-	if err != nil {
-		return ClustersStartPollerResponse{}, err
-	}
-	result.Poller = &ClustersStartPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Start - Starts a Kusto cluster.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) start(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersBeginStartOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+func (client *ClustersClient) start(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
 		return nil, err
@@ -1094,13 +1014,13 @@ func (client *ClustersClient) start(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.startHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // startCreateRequest creates the Start request.
-func (client *ClustersClient) startCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersBeginStartOptions) (*policy.Request, error) {
+func (client *ClustersClient) startCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/start"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1114,53 +1034,39 @@ func (client *ClustersClient) startCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// startHandleError handles the Start error response.
-func (client *ClustersClient) startHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginStop - Stops a Kusto cluster.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) BeginStop(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersBeginStopOptions) (ClustersStopPollerResponse, error) {
-	resp, err := client.stop(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ClustersStopPollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// options - ClustersClientBeginStopOptions contains the optional parameters for the ClustersClient.BeginStop method.
+func (client *ClustersClient) BeginStop(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginStopOptions) (*runtime.Poller[ClustersClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, resourceGroupName, clusterName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[ClustersClientStopResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[ClustersClientStopResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersStopPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.Stop", "", resp, client.pl, client.stopHandleError)
-	if err != nil {
-		return ClustersStopPollerResponse{}, err
-	}
-	result.Poller = &ClustersStopPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Stop - Stops a Kusto cluster.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) stop(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersBeginStopOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+func (client *ClustersClient) stop(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
 		return nil, err
@@ -1170,13 +1076,13 @@ func (client *ClustersClient) stop(ctx context.Context, resourceGroupName string
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.stopHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *ClustersClient) stopCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersBeginStopOptions) (*policy.Request, error) {
+func (client *ClustersClient) stopCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/stop"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1190,53 +1096,40 @@ func (client *ClustersClient) stopCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// stopHandleError handles the Stop error response.
-func (client *ClustersClient) stopHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginUpdate - Update a Kusto cluster.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterUpdate, options *ClustersBeginUpdateOptions) (ClustersUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, clusterName, parameters, options)
-	if err != nil {
-		return ClustersUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group containing the Kusto cluster.
+// clusterName - The name of the Kusto cluster.
+// parameters - The Kusto cluster parameters supplied to the Update operation.
+// options - ClustersClientBeginUpdateOptions contains the optional parameters for the ClustersClient.BeginUpdate method.
+func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterUpdate, options *ClustersClientBeginUpdateOptions) (*runtime.Poller[ClustersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, clusterName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[ClustersClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[ClustersClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ClustersUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ClustersClient.Update", "", resp, client.pl, client.updateHandleError)
-	if err != nil {
-		return ClustersUpdatePollerResponse{}, err
-	}
-	result.Poller = &ClustersUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Update a Kusto cluster.
-// If the operation fails it returns the *CloudError error type.
-func (client *ClustersClient) update(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterUpdate, options *ClustersBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+func (client *ClustersClient) update(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterUpdate, options *ClustersClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -1246,13 +1139,13 @@ func (client *ClustersClient) update(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterUpdate, options *ClustersBeginUpdateOptions) (*policy.Request, error) {
+func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterUpdate, options *ClustersClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1266,29 +1159,16 @@ func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-27")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *ClustersClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

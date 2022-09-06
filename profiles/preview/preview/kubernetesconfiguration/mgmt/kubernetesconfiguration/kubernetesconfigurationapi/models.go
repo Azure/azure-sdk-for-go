@@ -9,8 +9,14 @@
 
 package kubernetesconfigurationapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/kubernetesconfiguration/mgmt/2020-07-01-preview/kubernetesconfiguration/kubernetesconfigurationapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/kubernetesconfiguration/mgmt/2022-04-02-preview/kubernetesconfiguration/kubernetesconfigurationapi"
 
 type ExtensionsClientAPI = original.ExtensionsClientAPI
+type FluxConfigOperationStatusClientAPI = original.FluxConfigOperationStatusClientAPI
+type FluxConfigurationsClientAPI = original.FluxConfigurationsClientAPI
+type OperationStatusClientAPI = original.OperationStatusClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
+type PrivateLinkScopesClientAPI = original.PrivateLinkScopesClientAPI
 type SourceControlConfigurationsClientAPI = original.SourceControlConfigurationsClientAPI

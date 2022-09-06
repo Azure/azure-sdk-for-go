@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,143 +12,161 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagepool/armstoragepool"
 )
 
-// x-ms-original-file: specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/IscsiTargets_ListByDiskPool.json
-func ExampleIscsiTargetsClient_ListByDiskPool() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/IscsiTargets_ListByDiskPool.json
+func ExampleIscsiTargetsClient_NewListByDiskPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armstoragepool.NewIscsiTargetsClient("<subscription-id>", cred, nil)
-	pager := client.ListByDiskPool("<resource-group-name>",
-		"<disk-pool-name>",
+	client, err := armstoragepool.NewIscsiTargetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByDiskPoolPager("myResourceGroup",
+		"myDiskPool",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("IscsiTarget.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/IscsiTargets_Put.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/IscsiTargets_Put.json
 func ExampleIscsiTargetsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armstoragepool.NewIscsiTargetsClient("<subscription-id>", cred, nil)
+	client, err := armstoragepool.NewIscsiTargetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<disk-pool-name>",
-		"<iscsi-target-name>",
+		"myResourceGroup",
+		"myDiskPool",
+		"myIscsiTarget",
 		armstoragepool.IscsiTargetCreate{
 			Properties: &armstoragepool.IscsiTargetCreateProperties{
-				ACLMode: armstoragepool.IscsiTargetACLModeDynamic.ToPtr(),
+				ACLMode: to.Ptr(armstoragepool.IscsiTargetACLModeDynamic),
 				Luns: []*armstoragepool.IscsiLun{
 					{
-						Name:                       to.StringPtr("<name>"),
-						ManagedDiskAzureResourceID: to.StringPtr("<managed-disk-azure-resource-id>"),
+						Name:                       to.Ptr("lun0"),
+						ManagedDiskAzureResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vm-name_DataDisk_1"),
 					}},
-				TargetIqn: to.StringPtr("<target-iqn>"),
+				TargetIqn: to.Ptr("iqn.2005-03.org.iscsi:server1"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("IscsiTarget.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/IscsiTargets_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/IscsiTargets_Patch.json
 func ExampleIscsiTargetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armstoragepool.NewIscsiTargetsClient("<subscription-id>", cred, nil)
+	client, err := armstoragepool.NewIscsiTargetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<disk-pool-name>",
-		"<iscsi-target-name>",
+		"myResourceGroup",
+		"myDiskPool",
+		"myIscsiTarget",
 		armstoragepool.IscsiTargetUpdate{
 			Properties: &armstoragepool.IscsiTargetUpdateProperties{
 				Luns: []*armstoragepool.IscsiLun{
 					{
-						Name:                       to.StringPtr("<name>"),
-						ManagedDiskAzureResourceID: to.StringPtr("<managed-disk-azure-resource-id>"),
+						Name:                       to.Ptr("lun0"),
+						ManagedDiskAzureResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vm-name_DataDisk_1"),
 					}},
 				StaticACLs: []*armstoragepool.ACL{
 					{
-						InitiatorIqn: to.StringPtr("<initiator-iqn>"),
+						InitiatorIqn: to.Ptr("iqn.2005-03.org.iscsi:client"),
 						MappedLuns: []*string{
-							to.StringPtr("lun0")},
+							to.Ptr("lun0")},
 					}},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("IscsiTarget.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/IscsiTargets_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/IscsiTargets_Delete.json
 func ExampleIscsiTargetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armstoragepool.NewIscsiTargetsClient("<subscription-id>", cred, nil)
+	client, err := armstoragepool.NewIscsiTargetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<disk-pool-name>",
-		"<iscsi-target-name>",
+		"myResourceGroup",
+		"myDiskPool",
+		"myIscsiTarget",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/IscsiTargets_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/IscsiTargets_Get.json
 func ExampleIscsiTargetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armstoragepool.NewIscsiTargetsClient("<subscription-id>", cred, nil)
+	client, err := armstoragepool.NewIscsiTargetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<disk-pool-name>",
-		"<iscsi-target-name>",
+		"myResourceGroup",
+		"myDiskPool",
+		"myIscsiTarget",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("IscsiTarget.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }

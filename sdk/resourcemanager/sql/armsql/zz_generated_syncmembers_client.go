@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,46 +25,63 @@ import (
 // SyncMembersClient contains the methods for the SyncMembers group.
 // Don't use this type directly, use NewSyncMembersClient() instead.
 type SyncMembersClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSyncMembersClient creates a new instance of SyncMembersClient with the specified values.
-func NewSyncMembersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SyncMembersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewSyncMembersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SyncMembersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &SyncMembersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &SyncMembersClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a sync member.
-// If the operation fails it returns a generic error.
-func (client *SyncMembersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters SyncMember, options *SyncMembersBeginCreateOrUpdateOptions) (SyncMembersCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, parameters, options)
-	if err != nil {
-		return SyncMembersCreateOrUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database on which the sync group is hosted.
+// syncGroupName - The name of the sync group on which the sync member is hosted.
+// syncMemberName - The name of the sync member.
+// parameters - The requested sync member resource state.
+// options - SyncMembersClientBeginCreateOrUpdateOptions contains the optional parameters for the SyncMembersClient.BeginCreateOrUpdate
+// method.
+func (client *SyncMembersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters SyncMember, options *SyncMembersClientBeginCreateOrUpdateOptions) (*runtime.Poller[SyncMembersClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[SyncMembersClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[SyncMembersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SyncMembersCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SyncMembersClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return SyncMembersCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &SyncMembersCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a sync member.
-// If the operation fails it returns a generic error.
-func (client *SyncMembersClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters SyncMember, options *SyncMembersBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+func (client *SyncMembersClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters SyncMember, options *SyncMembersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +91,13 @@ func (client *SyncMembersClient) createOrUpdate(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SyncMembersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters SyncMember, options *SyncMembersBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SyncMembersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters SyncMember, options *SyncMembersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers/{syncMemberName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -105,52 +123,43 @@ func (client *SyncMembersClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SyncMembersClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Deletes a sync member.
-// If the operation fails it returns a generic error.
-func (client *SyncMembersClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersBeginDeleteOptions) (SyncMembersDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, options)
-	if err != nil {
-		return SyncMembersDeletePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database on which the sync group is hosted.
+// syncGroupName - The name of the sync group on which the sync member is hosted.
+// syncMemberName - The name of the sync member.
+// options - SyncMembersClientBeginDeleteOptions contains the optional parameters for the SyncMembersClient.BeginDelete method.
+func (client *SyncMembersClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientBeginDeleteOptions) (*runtime.Poller[SyncMembersClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[SyncMembersClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[SyncMembersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SyncMembersDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SyncMembersClient.Delete", "", resp, client.pl, client.deleteHandleError)
-	if err != nil {
-		return SyncMembersDeletePollerResponse{}, err
-	}
-	result.Poller = &SyncMembersDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a sync member.
-// If the operation fails it returns a generic error.
-func (client *SyncMembersClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+func (client *SyncMembersClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, options)
 	if err != nil {
 		return nil, err
@@ -160,13 +169,13 @@ func (client *SyncMembersClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SyncMembersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersBeginDeleteOptions) (*policy.Request, error) {
+func (client *SyncMembersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers/{syncMemberName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -192,7 +201,7 @@ func (client *SyncMembersClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -202,37 +211,33 @@ func (client *SyncMembersClient) deleteCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SyncMembersClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a sync member.
-// If the operation fails it returns a generic error.
-func (client *SyncMembersClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersGetOptions) (SyncMembersGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database on which the sync group is hosted.
+// syncGroupName - The name of the sync group on which the sync member is hosted.
+// syncMemberName - The name of the sync member.
+// options - SyncMembersClientGetOptions contains the optional parameters for the SyncMembersClient.Get method.
+func (client *SyncMembersClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientGetOptions) (SyncMembersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, options)
 	if err != nil {
-		return SyncMembersGetResponse{}, err
+		return SyncMembersClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SyncMembersGetResponse{}, err
+		return SyncMembersClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SyncMembersGetResponse{}, client.getHandleError(resp)
+		return SyncMembersClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SyncMembersClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersGetOptions) (*policy.Request, error) {
+func (client *SyncMembersClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers/{syncMemberName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -258,54 +263,66 @@ func (client *SyncMembersClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SyncMembersClient) getHandleResponse(resp *http.Response) (SyncMembersGetResponse, error) {
-	result := SyncMembersGetResponse{RawResponse: resp}
+func (client *SyncMembersClient) getHandleResponse(resp *http.Response) (SyncMembersClientGetResponse, error) {
+	result := SyncMembersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncMember); err != nil {
-		return SyncMembersGetResponse{}, runtime.NewResponseError(err, resp)
+		return SyncMembersClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SyncMembersClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListBySyncGroup - Lists sync members in the given sync group.
-// If the operation fails it returns a generic error.
-func (client *SyncMembersClient) ListBySyncGroup(resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncMembersListBySyncGroupOptions) *SyncMembersListBySyncGroupPager {
-	return &SyncMembersListBySyncGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySyncGroupCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
+// NewListBySyncGroupPager - Lists sync members in the given sync group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database on which the sync group is hosted.
+// syncGroupName - The name of the sync group.
+// options - SyncMembersClientListBySyncGroupOptions contains the optional parameters for the SyncMembersClient.ListBySyncGroup
+// method.
+func (client *SyncMembersClient) NewListBySyncGroupPager(resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncMembersClientListBySyncGroupOptions) *runtime.Pager[SyncMembersClientListBySyncGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SyncMembersClientListBySyncGroupResponse]{
+		More: func(page SyncMembersClientListBySyncGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SyncMembersListBySyncGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SyncMemberListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SyncMembersClientListBySyncGroupResponse) (SyncMembersClientListBySyncGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySyncGroupCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SyncMembersClientListBySyncGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SyncMembersClientListBySyncGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SyncMembersClientListBySyncGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySyncGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySyncGroupCreateRequest creates the ListBySyncGroup request.
-func (client *SyncMembersClient) listBySyncGroupCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncMembersListBySyncGroupOptions) (*policy.Request, error) {
+func (client *SyncMembersClient) listBySyncGroupCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncMembersClientListBySyncGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -327,54 +344,67 @@ func (client *SyncMembersClient) listBySyncGroupCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySyncGroupHandleResponse handles the ListBySyncGroup response.
-func (client *SyncMembersClient) listBySyncGroupHandleResponse(resp *http.Response) (SyncMembersListBySyncGroupResponse, error) {
-	result := SyncMembersListBySyncGroupResponse{RawResponse: resp}
+func (client *SyncMembersClient) listBySyncGroupHandleResponse(resp *http.Response) (SyncMembersClientListBySyncGroupResponse, error) {
+	result := SyncMembersClientListBySyncGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncMemberListResult); err != nil {
-		return SyncMembersListBySyncGroupResponse{}, runtime.NewResponseError(err, resp)
+		return SyncMembersClientListBySyncGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySyncGroupHandleError handles the ListBySyncGroup error response.
-func (client *SyncMembersClient) listBySyncGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListMemberSchemas - Gets a sync member database schema.
-// If the operation fails it returns a generic error.
-func (client *SyncMembersClient) ListMemberSchemas(resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersListMemberSchemasOptions) *SyncMembersListMemberSchemasPager {
-	return &SyncMembersListMemberSchemasPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listMemberSchemasCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, options)
+// NewListMemberSchemasPager - Gets a sync member database schema.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database on which the sync group is hosted.
+// syncGroupName - The name of the sync group on which the sync member is hosted.
+// syncMemberName - The name of the sync member.
+// options - SyncMembersClientListMemberSchemasOptions contains the optional parameters for the SyncMembersClient.ListMemberSchemas
+// method.
+func (client *SyncMembersClient) NewListMemberSchemasPager(resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientListMemberSchemasOptions) *runtime.Pager[SyncMembersClientListMemberSchemasResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SyncMembersClientListMemberSchemasResponse]{
+		More: func(page SyncMembersClientListMemberSchemasResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SyncMembersListMemberSchemasResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SyncFullSchemaPropertiesListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *SyncMembersClientListMemberSchemasResponse) (SyncMembersClientListMemberSchemasResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listMemberSchemasCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SyncMembersClientListMemberSchemasResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SyncMembersClientListMemberSchemasResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SyncMembersClientListMemberSchemasResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listMemberSchemasHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listMemberSchemasCreateRequest creates the ListMemberSchemas request.
-func (client *SyncMembersClient) listMemberSchemasCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersListMemberSchemasOptions) (*policy.Request, error) {
+func (client *SyncMembersClient) listMemberSchemasCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientListMemberSchemasOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers/{syncMemberName}/schemas"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -400,61 +430,53 @@ func (client *SyncMembersClient) listMemberSchemasCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listMemberSchemasHandleResponse handles the ListMemberSchemas response.
-func (client *SyncMembersClient) listMemberSchemasHandleResponse(resp *http.Response) (SyncMembersListMemberSchemasResponse, error) {
-	result := SyncMembersListMemberSchemasResponse{RawResponse: resp}
+func (client *SyncMembersClient) listMemberSchemasHandleResponse(resp *http.Response) (SyncMembersClientListMemberSchemasResponse, error) {
+	result := SyncMembersClientListMemberSchemasResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncFullSchemaPropertiesListResult); err != nil {
-		return SyncMembersListMemberSchemasResponse{}, runtime.NewResponseError(err, resp)
+		return SyncMembersClientListMemberSchemasResponse{}, err
 	}
 	return result, nil
-}
-
-// listMemberSchemasHandleError handles the ListMemberSchemas error response.
-func (client *SyncMembersClient) listMemberSchemasHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginRefreshMemberSchema - Refreshes a sync member database schema.
-// If the operation fails it returns a generic error.
-func (client *SyncMembersClient) BeginRefreshMemberSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersBeginRefreshMemberSchemaOptions) (SyncMembersRefreshMemberSchemaPollerResponse, error) {
-	resp, err := client.refreshMemberSchema(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, options)
-	if err != nil {
-		return SyncMembersRefreshMemberSchemaPollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database on which the sync group is hosted.
+// syncGroupName - The name of the sync group on which the sync member is hosted.
+// syncMemberName - The name of the sync member.
+// options - SyncMembersClientBeginRefreshMemberSchemaOptions contains the optional parameters for the SyncMembersClient.BeginRefreshMemberSchema
+// method.
+func (client *SyncMembersClient) BeginRefreshMemberSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientBeginRefreshMemberSchemaOptions) (*runtime.Poller[SyncMembersClientRefreshMemberSchemaResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.refreshMemberSchema(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[SyncMembersClientRefreshMemberSchemaResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[SyncMembersClientRefreshMemberSchemaResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SyncMembersRefreshMemberSchemaPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SyncMembersClient.RefreshMemberSchema", "", resp, client.pl, client.refreshMemberSchemaHandleError)
-	if err != nil {
-		return SyncMembersRefreshMemberSchemaPollerResponse{}, err
-	}
-	result.Poller = &SyncMembersRefreshMemberSchemaPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // RefreshMemberSchema - Refreshes a sync member database schema.
-// If the operation fails it returns a generic error.
-func (client *SyncMembersClient) refreshMemberSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersBeginRefreshMemberSchemaOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+func (client *SyncMembersClient) refreshMemberSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientBeginRefreshMemberSchemaOptions) (*http.Response, error) {
 	req, err := client.refreshMemberSchemaCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, options)
 	if err != nil {
 		return nil, err
@@ -464,13 +486,13 @@ func (client *SyncMembersClient) refreshMemberSchema(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.refreshMemberSchemaHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // refreshMemberSchemaCreateRequest creates the RefreshMemberSchema request.
-func (client *SyncMembersClient) refreshMemberSchemaCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersBeginRefreshMemberSchemaOptions) (*policy.Request, error) {
+func (client *SyncMembersClient) refreshMemberSchemaCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientBeginRefreshMemberSchemaOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers/{syncMemberName}/refreshSchema"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -496,7 +518,7 @@ func (client *SyncMembersClient) refreshMemberSchemaCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -506,41 +528,33 @@ func (client *SyncMembersClient) refreshMemberSchemaCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// refreshMemberSchemaHandleError handles the RefreshMemberSchema error response.
-func (client *SyncMembersClient) refreshMemberSchemaHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginUpdate - Updates an existing sync member.
-// If the operation fails it returns a generic error.
-func (client *SyncMembersClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters SyncMember, options *SyncMembersBeginUpdateOptions) (SyncMembersUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, parameters, options)
-	if err != nil {
-		return SyncMembersUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database on which the sync group is hosted.
+// syncGroupName - The name of the sync group on which the sync member is hosted.
+// syncMemberName - The name of the sync member.
+// parameters - The requested sync member resource state.
+// options - SyncMembersClientBeginUpdateOptions contains the optional parameters for the SyncMembersClient.BeginUpdate method.
+func (client *SyncMembersClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters SyncMember, options *SyncMembersClientBeginUpdateOptions) (*runtime.Poller[SyncMembersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[SyncMembersClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[SyncMembersClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SyncMembersUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SyncMembersClient.Update", "", resp, client.pl, client.updateHandleError)
-	if err != nil {
-		return SyncMembersUpdatePollerResponse{}, err
-	}
-	result.Poller = &SyncMembersUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates an existing sync member.
-// If the operation fails it returns a generic error.
-func (client *SyncMembersClient) update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters SyncMember, options *SyncMembersBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+func (client *SyncMembersClient) update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters SyncMember, options *SyncMembersClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -550,13 +564,13 @@ func (client *SyncMembersClient) update(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SyncMembersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters SyncMember, options *SyncMembersBeginUpdateOptions) (*policy.Request, error) {
+func (client *SyncMembersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, parameters SyncMember, options *SyncMembersClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers/{syncMemberName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -582,25 +596,13 @@ func (client *SyncMembersClient) updateCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateHandleError handles the Update error response.
-func (client *SyncMembersClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

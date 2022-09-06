@@ -38,6 +38,7 @@ func (c cosmosOffers) ReadThroughputIfExists(
 		path,
 		ctx,
 		fmt.Sprintf(`SELECT * FROM c WHERE c.offerResourceId = '%s'`, targetRID),
+		nil,
 		operationContext,
 		requestOptions,
 		nil)
@@ -53,7 +54,9 @@ func (c cosmosOffers) ReadThroughputIfExists(
 
 	queryRequestCharge := newResponse(azResponse).RequestCharge
 	if len(theOffers.Offers) == 0 {
-		return ThroughputResponse{}, newCosmosErrorWithStatusCode(http.StatusNotFound, &queryRequestCharge)
+		azResponse.StatusCode = http.StatusNotFound
+		azResponse.Header.Add(cosmosHeaderRequestCharge, fmt.Sprint(queryRequestCharge))
+		return ThroughputResponse{}, newCosmosError(azResponse)
 	}
 
 	// Now read the individual offer

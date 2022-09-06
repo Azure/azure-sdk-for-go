@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,42 +25,63 @@ import (
 // JobCredentialsClient contains the methods for the JobCredentials group.
 // Don't use this type directly, use NewJobCredentialsClient() instead.
 type JobCredentialsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewJobCredentialsClient creates a new instance of JobCredentialsClient with the specified values.
-func NewJobCredentialsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobCredentialsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewJobCredentialsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobCredentialsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &JobCredentialsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &JobCredentialsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a job credential.
-// If the operation fails it returns a generic error.
-func (client *JobCredentialsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string, parameters JobCredential, options *JobCredentialsCreateOrUpdateOptions) (JobCredentialsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// jobAgentName - The name of the job agent.
+// credentialName - The name of the credential.
+// parameters - The requested job credential state.
+// options - JobCredentialsClientCreateOrUpdateOptions contains the optional parameters for the JobCredentialsClient.CreateOrUpdate
+// method.
+func (client *JobCredentialsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string, parameters JobCredential, options *JobCredentialsClientCreateOrUpdateOptions) (JobCredentialsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, credentialName, parameters, options)
 	if err != nil {
-		return JobCredentialsCreateOrUpdateResponse{}, err
+		return JobCredentialsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobCredentialsCreateOrUpdateResponse{}, err
+		return JobCredentialsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return JobCredentialsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return JobCredentialsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *JobCredentialsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string, parameters JobCredential, options *JobCredentialsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *JobCredentialsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string, parameters JobCredential, options *JobCredentialsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/credentials/{credentialName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -81,57 +103,52 @@ func (client *JobCredentialsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *JobCredentialsClient) createOrUpdateHandleResponse(resp *http.Response) (JobCredentialsCreateOrUpdateResponse, error) {
-	result := JobCredentialsCreateOrUpdateResponse{RawResponse: resp}
+func (client *JobCredentialsClient) createOrUpdateHandleResponse(resp *http.Response) (JobCredentialsClientCreateOrUpdateResponse, error) {
+	result := JobCredentialsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobCredential); err != nil {
-		return JobCredentialsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return JobCredentialsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *JobCredentialsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Delete - Deletes a job credential.
-// If the operation fails it returns a generic error.
-func (client *JobCredentialsClient) Delete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string, options *JobCredentialsDeleteOptions) (JobCredentialsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// jobAgentName - The name of the job agent.
+// credentialName - The name of the credential.
+// options - JobCredentialsClientDeleteOptions contains the optional parameters for the JobCredentialsClient.Delete method.
+func (client *JobCredentialsClient) Delete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string, options *JobCredentialsClientDeleteOptions) (JobCredentialsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, credentialName, options)
 	if err != nil {
-		return JobCredentialsDeleteResponse{}, err
+		return JobCredentialsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobCredentialsDeleteResponse{}, err
+		return JobCredentialsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return JobCredentialsDeleteResponse{}, client.deleteHandleError(resp)
+		return JobCredentialsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return JobCredentialsDeleteResponse{RawResponse: resp}, nil
+	return JobCredentialsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *JobCredentialsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string, options *JobCredentialsDeleteOptions) (*policy.Request, error) {
+func (client *JobCredentialsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string, options *JobCredentialsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/credentials/{credentialName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -153,7 +170,7 @@ func (client *JobCredentialsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -163,37 +180,32 @@ func (client *JobCredentialsClient) deleteCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *JobCredentialsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a jobs credential.
-// If the operation fails it returns a generic error.
-func (client *JobCredentialsClient) Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string, options *JobCredentialsGetOptions) (JobCredentialsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// jobAgentName - The name of the job agent.
+// credentialName - The name of the credential.
+// options - JobCredentialsClientGetOptions contains the optional parameters for the JobCredentialsClient.Get method.
+func (client *JobCredentialsClient) Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string, options *JobCredentialsClientGetOptions) (JobCredentialsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, credentialName, options)
 	if err != nil {
-		return JobCredentialsGetResponse{}, err
+		return JobCredentialsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobCredentialsGetResponse{}, err
+		return JobCredentialsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JobCredentialsGetResponse{}, client.getHandleError(resp)
+		return JobCredentialsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *JobCredentialsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string, options *JobCredentialsGetOptions) (*policy.Request, error) {
+func (client *JobCredentialsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, credentialName string, options *JobCredentialsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/credentials/{credentialName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -215,54 +227,65 @@ func (client *JobCredentialsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobCredentialsClient) getHandleResponse(resp *http.Response) (JobCredentialsGetResponse, error) {
-	result := JobCredentialsGetResponse{RawResponse: resp}
+func (client *JobCredentialsClient) getHandleResponse(resp *http.Response) (JobCredentialsClientGetResponse, error) {
+	result := JobCredentialsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobCredential); err != nil {
-		return JobCredentialsGetResponse{}, runtime.NewResponseError(err, resp)
+		return JobCredentialsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *JobCredentialsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListByAgent - Gets a list of jobs credentials.
-// If the operation fails it returns a generic error.
-func (client *JobCredentialsClient) ListByAgent(resourceGroupName string, serverName string, jobAgentName string, options *JobCredentialsListByAgentOptions) *JobCredentialsListByAgentPager {
-	return &JobCredentialsListByAgentPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAgentCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, options)
+// NewListByAgentPager - Gets a list of jobs credentials.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// jobAgentName - The name of the job agent.
+// options - JobCredentialsClientListByAgentOptions contains the optional parameters for the JobCredentialsClient.ListByAgent
+// method.
+func (client *JobCredentialsClient) NewListByAgentPager(resourceGroupName string, serverName string, jobAgentName string, options *JobCredentialsClientListByAgentOptions) *runtime.Pager[JobCredentialsClientListByAgentResponse] {
+	return runtime.NewPager(runtime.PagingHandler[JobCredentialsClientListByAgentResponse]{
+		More: func(page JobCredentialsClientListByAgentResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp JobCredentialsListByAgentResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobCredentialListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *JobCredentialsClientListByAgentResponse) (JobCredentialsClientListByAgentResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAgentCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return JobCredentialsClientListByAgentResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return JobCredentialsClientListByAgentResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return JobCredentialsClientListByAgentResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAgentHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAgentCreateRequest creates the ListByAgent request.
-func (client *JobCredentialsClient) listByAgentCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, options *JobCredentialsListByAgentOptions) (*policy.Request, error) {
+func (client *JobCredentialsClient) listByAgentCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, options *JobCredentialsClientListByAgentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/credentials"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -280,34 +303,22 @@ func (client *JobCredentialsClient) listByAgentCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByAgentHandleResponse handles the ListByAgent response.
-func (client *JobCredentialsClient) listByAgentHandleResponse(resp *http.Response) (JobCredentialsListByAgentResponse, error) {
-	result := JobCredentialsListByAgentResponse{RawResponse: resp}
+func (client *JobCredentialsClient) listByAgentHandleResponse(resp *http.Response) (JobCredentialsClientListByAgentResponse, error) {
+	result := JobCredentialsClientListByAgentResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobCredentialListResult); err != nil {
-		return JobCredentialsListByAgentResponse{}, runtime.NewResponseError(err, resp)
+		return JobCredentialsClientListByAgentResponse{}, err
 	}
 	return result, nil
-}
-
-// listByAgentHandleError handles the ListByAgent error response.
-func (client *JobCredentialsClient) listByAgentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armmarketplace
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,41 +25,56 @@ import (
 // PrivateStoreCollectionClient contains the methods for the PrivateStoreCollection group.
 // Don't use this type directly, use NewPrivateStoreCollectionClient() instead.
 type PrivateStoreCollectionClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewPrivateStoreCollectionClient creates a new instance of PrivateStoreCollectionClient with the specified values.
-func NewPrivateStoreCollectionClient(credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateStoreCollectionClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewPrivateStoreCollectionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateStoreCollectionClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &PrivateStoreCollectionClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &PrivateStoreCollectionClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update private store collection
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreCollectionClient) CreateOrUpdate(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionCreateOrUpdateOptions) (PrivateStoreCollectionCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
+// privateStoreID - The store ID - must use the tenant ID
+// collectionID - The collection ID
+// options - PrivateStoreCollectionClientCreateOrUpdateOptions contains the optional parameters for the PrivateStoreCollectionClient.CreateOrUpdate
+// method.
+func (client *PrivateStoreCollectionClient) CreateOrUpdate(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionClientCreateOrUpdateOptions) (PrivateStoreCollectionClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, privateStoreID, collectionID, options)
 	if err != nil {
-		return PrivateStoreCollectionCreateOrUpdateResponse{}, err
+		return PrivateStoreCollectionClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreCollectionCreateOrUpdateResponse{}, err
+		return PrivateStoreCollectionClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreCollectionCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return PrivateStoreCollectionClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PrivateStoreCollectionClient) createOrUpdateCreateRequest(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *PrivateStoreCollectionClient) createOrUpdateCreateRequest(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/collections/{collectionId}"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
@@ -69,14 +84,14 @@ func (client *PrivateStoreCollectionClient) createOrUpdateCreateRequest(ctx cont
 		return nil, errors.New("parameter collectionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionId}", url.PathEscape(collectionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Payload != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Payload)
 	}
@@ -84,46 +99,38 @@ func (client *PrivateStoreCollectionClient) createOrUpdateCreateRequest(ctx cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *PrivateStoreCollectionClient) createOrUpdateHandleResponse(resp *http.Response) (PrivateStoreCollectionCreateOrUpdateResponse, error) {
-	result := PrivateStoreCollectionCreateOrUpdateResponse{RawResponse: resp}
+func (client *PrivateStoreCollectionClient) createOrUpdateHandleResponse(resp *http.Response) (PrivateStoreCollectionClientCreateOrUpdateResponse, error) {
+	result := PrivateStoreCollectionClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Collection); err != nil {
-		return PrivateStoreCollectionCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateStoreCollectionClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *PrivateStoreCollectionClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a collection from the given private store.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreCollectionClient) Delete(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionDeleteOptions) (PrivateStoreCollectionDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
+// privateStoreID - The store ID - must use the tenant ID
+// collectionID - The collection ID
+// options - PrivateStoreCollectionClientDeleteOptions contains the optional parameters for the PrivateStoreCollectionClient.Delete
+// method.
+func (client *PrivateStoreCollectionClient) Delete(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionClientDeleteOptions) (PrivateStoreCollectionClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, privateStoreID, collectionID, options)
 	if err != nil {
-		return PrivateStoreCollectionDeleteResponse{}, err
+		return PrivateStoreCollectionClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreCollectionDeleteResponse{}, err
+		return PrivateStoreCollectionClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return PrivateStoreCollectionDeleteResponse{}, client.deleteHandleError(resp)
+		return PrivateStoreCollectionClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return PrivateStoreCollectionDeleteResponse{RawResponse: resp}, nil
+	return PrivateStoreCollectionClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PrivateStoreCollectionClient) deleteCreateRequest(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionDeleteOptions) (*policy.Request, error) {
+func (client *PrivateStoreCollectionClient) deleteCreateRequest(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/collections/{collectionId}"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
@@ -133,49 +140,41 @@ func (client *PrivateStoreCollectionClient) deleteCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter collectionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionId}", url.PathEscape(collectionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *PrivateStoreCollectionClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets private store collection
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreCollectionClient) Get(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionGetOptions) (PrivateStoreCollectionGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
+// privateStoreID - The store ID - must use the tenant ID
+// collectionID - The collection ID
+// options - PrivateStoreCollectionClientGetOptions contains the optional parameters for the PrivateStoreCollectionClient.Get
+// method.
+func (client *PrivateStoreCollectionClient) Get(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionClientGetOptions) (PrivateStoreCollectionClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, privateStoreID, collectionID, options)
 	if err != nil {
-		return PrivateStoreCollectionGetResponse{}, err
+		return PrivateStoreCollectionClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreCollectionGetResponse{}, err
+		return PrivateStoreCollectionClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreCollectionGetResponse{}, client.getHandleError(resp)
+		return PrivateStoreCollectionClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateStoreCollectionClient) getCreateRequest(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionGetOptions) (*policy.Request, error) {
+func (client *PrivateStoreCollectionClient) getCreateRequest(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/collections/{collectionId}"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
@@ -185,115 +184,98 @@ func (client *PrivateStoreCollectionClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter collectionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionId}", url.PathEscape(collectionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateStoreCollectionClient) getHandleResponse(resp *http.Response) (PrivateStoreCollectionGetResponse, error) {
-	result := PrivateStoreCollectionGetResponse{RawResponse: resp}
+func (client *PrivateStoreCollectionClient) getHandleResponse(resp *http.Response) (PrivateStoreCollectionClientGetResponse, error) {
+	result := PrivateStoreCollectionClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Collection); err != nil {
-		return PrivateStoreCollectionGetResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateStoreCollectionClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PrivateStoreCollectionClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets private store collections list
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreCollectionClient) List(ctx context.Context, privateStoreID string, options *PrivateStoreCollectionListOptions) (PrivateStoreCollectionListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
+// privateStoreID - The store ID - must use the tenant ID
+// options - PrivateStoreCollectionClientListOptions contains the optional parameters for the PrivateStoreCollectionClient.List
+// method.
+func (client *PrivateStoreCollectionClient) List(ctx context.Context, privateStoreID string, options *PrivateStoreCollectionClientListOptions) (PrivateStoreCollectionClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, privateStoreID, options)
 	if err != nil {
-		return PrivateStoreCollectionListResponse{}, err
+		return PrivateStoreCollectionClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreCollectionListResponse{}, err
+		return PrivateStoreCollectionClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreCollectionListResponse{}, client.listHandleError(resp)
+		return PrivateStoreCollectionClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *PrivateStoreCollectionClient) listCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreCollectionListOptions) (*policy.Request, error) {
+func (client *PrivateStoreCollectionClient) listCreateRequest(ctx context.Context, privateStoreID string, options *PrivateStoreCollectionClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/collections"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateStoreId}", url.PathEscape(privateStoreID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *PrivateStoreCollectionClient) listHandleResponse(resp *http.Response) (PrivateStoreCollectionListResponse, error) {
-	result := PrivateStoreCollectionListResponse{RawResponse: resp}
+func (client *PrivateStoreCollectionClient) listHandleResponse(resp *http.Response) (PrivateStoreCollectionClientListResponse, error) {
+	result := PrivateStoreCollectionClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CollectionsList); err != nil {
-		return PrivateStoreCollectionListResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateStoreCollectionClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *PrivateStoreCollectionClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Post - Delete Private store collection. This is a workaround.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreCollectionClient) Post(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionPostOptions) (PrivateStoreCollectionPostResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
+// privateStoreID - The store ID - must use the tenant ID
+// collectionID - The collection ID
+// options - PrivateStoreCollectionClientPostOptions contains the optional parameters for the PrivateStoreCollectionClient.Post
+// method.
+func (client *PrivateStoreCollectionClient) Post(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionClientPostOptions) (PrivateStoreCollectionClientPostResponse, error) {
 	req, err := client.postCreateRequest(ctx, privateStoreID, collectionID, options)
 	if err != nil {
-		return PrivateStoreCollectionPostResponse{}, err
+		return PrivateStoreCollectionClientPostResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreCollectionPostResponse{}, err
+		return PrivateStoreCollectionClientPostResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreCollectionPostResponse{}, client.postHandleError(resp)
+		return PrivateStoreCollectionClientPostResponse{}, runtime.NewResponseError(resp)
 	}
-	return PrivateStoreCollectionPostResponse{RawResponse: resp}, nil
+	return PrivateStoreCollectionClientPostResponse{}, nil
 }
 
 // postCreateRequest creates the Post request.
-func (client *PrivateStoreCollectionClient) postCreateRequest(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionPostOptions) (*policy.Request, error) {
+func (client *PrivateStoreCollectionClient) postCreateRequest(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionClientPostOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/collections/{collectionId}"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
@@ -303,52 +285,44 @@ func (client *PrivateStoreCollectionClient) postCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter collectionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionId}", url.PathEscape(collectionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Payload != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Payload)
 	}
 	return req, nil
 }
 
-// postHandleError handles the Post error response.
-func (client *PrivateStoreCollectionClient) postHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // TransferOffers - transferring offers (copy or move) from source collection to target collection(s)
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PrivateStoreCollectionClient) TransferOffers(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionTransferOffersOptions) (PrivateStoreCollectionTransferOffersResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
+// privateStoreID - The store ID - must use the tenant ID
+// collectionID - The collection ID
+// options - PrivateStoreCollectionClientTransferOffersOptions contains the optional parameters for the PrivateStoreCollectionClient.TransferOffers
+// method.
+func (client *PrivateStoreCollectionClient) TransferOffers(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionClientTransferOffersOptions) (PrivateStoreCollectionClientTransferOffersResponse, error) {
 	req, err := client.transferOffersCreateRequest(ctx, privateStoreID, collectionID, options)
 	if err != nil {
-		return PrivateStoreCollectionTransferOffersResponse{}, err
+		return PrivateStoreCollectionClientTransferOffersResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateStoreCollectionTransferOffersResponse{}, err
+		return PrivateStoreCollectionClientTransferOffersResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateStoreCollectionTransferOffersResponse{}, client.transferOffersHandleError(resp)
+		return PrivateStoreCollectionClientTransferOffersResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.transferOffersHandleResponse(resp)
 }
 
 // transferOffersCreateRequest creates the TransferOffers request.
-func (client *PrivateStoreCollectionClient) transferOffersCreateRequest(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionTransferOffersOptions) (*policy.Request, error) {
+func (client *PrivateStoreCollectionClient) transferOffersCreateRequest(ctx context.Context, privateStoreID string, collectionID string, options *PrivateStoreCollectionClientTransferOffersOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/collections/{collectionId}/transferOffers"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
@@ -358,14 +332,14 @@ func (client *PrivateStoreCollectionClient) transferOffersCreateRequest(ctx cont
 		return nil, errors.New("parameter collectionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionId}", url.PathEscape(collectionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Payload != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Payload)
 	}
@@ -373,23 +347,10 @@ func (client *PrivateStoreCollectionClient) transferOffersCreateRequest(ctx cont
 }
 
 // transferOffersHandleResponse handles the TransferOffers response.
-func (client *PrivateStoreCollectionClient) transferOffersHandleResponse(resp *http.Response) (PrivateStoreCollectionTransferOffersResponse, error) {
-	result := PrivateStoreCollectionTransferOffersResponse{RawResponse: resp}
+func (client *PrivateStoreCollectionClient) transferOffersHandleResponse(resp *http.Response) (PrivateStoreCollectionClientTransferOffersResponse, error) {
+	result := PrivateStoreCollectionClientTransferOffersResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransferOffersResponse); err != nil {
-		return PrivateStoreCollectionTransferOffersResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateStoreCollectionClientTransferOffersResponse{}, err
 	}
 	return result, nil
-}
-
-// transferOffersHandleError handles the TransferOffers error response.
-func (client *PrivateStoreCollectionClient) transferOffersHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

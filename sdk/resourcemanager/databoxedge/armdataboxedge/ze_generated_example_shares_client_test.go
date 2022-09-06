@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,135 +12,152 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge"
 )
 
-// x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/ShareGetAllInDevice.json
-func ExampleSharesClient_ListByDataBoxEdgeDevice() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/ShareGetAllInDevice.json
+func ExampleSharesClient_NewListByDataBoxEdgeDevicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdataboxedge.NewSharesClient("<subscription-id>", cred, nil)
-	pager := client.ListByDataBoxEdgeDevice("<device-name>",
-		"<resource-group-name>",
+	client, err := armdataboxedge.NewSharesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByDataBoxEdgeDevicePager("testedgedevice",
+		"GroupForEdgeAutomation",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Share.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/ShareGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/ShareGet.json
 func ExampleSharesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdataboxedge.NewSharesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewSharesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<device-name>",
-		"<name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"smbshare",
+		"GroupForEdgeAutomation",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Share.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/SharePut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/SharePut.json
 func ExampleSharesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdataboxedge.NewSharesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewSharesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<device-name>",
-		"<name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"smbshare",
+		"GroupForEdgeAutomation",
 		armdataboxedge.Share{
 			Properties: &armdataboxedge.ShareProperties{
-				Description:    to.StringPtr("<description>"),
-				AccessProtocol: armdataboxedge.ShareAccessProtocolSMB.ToPtr(),
+				Description:    to.Ptr(""),
+				AccessProtocol: to.Ptr(armdataboxedge.ShareAccessProtocolSMB),
 				AzureContainerInfo: &armdataboxedge.AzureContainerInfo{
-					ContainerName:              to.StringPtr("<container-name>"),
-					DataFormat:                 armdataboxedge.AzureContainerDataFormatBlockBlob.ToPtr(),
-					StorageAccountCredentialID: to.StringPtr("<storage-account-credential-id>"),
+					ContainerName:              to.Ptr("testContainerSMB"),
+					DataFormat:                 to.Ptr(armdataboxedge.AzureContainerDataFormatBlockBlob),
+					StorageAccountCredentialID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/GroupForEdgeAutomation/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/testedgedevice/storageAccountCredentials/sac1"),
 				},
-				DataPolicy:       armdataboxedge.DataPolicyCloud.ToPtr(),
-				MonitoringStatus: armdataboxedge.MonitoringStatusEnabled.ToPtr(),
-				ShareStatus:      armdataboxedge.ShareStatusOffline.ToPtr(),
+				DataPolicy:       to.Ptr(armdataboxedge.DataPolicyCloud),
+				MonitoringStatus: to.Ptr(armdataboxedge.MonitoringStatusEnabled),
+				ShareStatus:      to.Ptr(armdataboxedge.ShareStatus("Online")),
 				UserAccessRights: []*armdataboxedge.UserAccessRight{
 					{
-						AccessType: armdataboxedge.ShareAccessTypeChange.ToPtr(),
-						UserID:     to.StringPtr("<user-id>"),
+						AccessType: to.Ptr(armdataboxedge.ShareAccessTypeChange),
+						UserID:     to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/GroupForEdgeAutomation/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/testedgedevice/users/user2"),
 					}},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("Share.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/ShareDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/ShareDelete.json
 func ExampleSharesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdataboxedge.NewSharesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewSharesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginDelete(ctx,
-		"<device-name>",
-		"<name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"smbshare",
+		"GroupForEdgeAutomation",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2021-06-01/examples/ShareRefreshPost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2022-03-01/examples/ShareRefreshPost.json
 func ExampleSharesClient_BeginRefresh() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdataboxedge.NewSharesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewSharesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginRefresh(ctx,
-		"<device-name>",
-		"<name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"smbshare",
+		"GroupForEdgeAutomation",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }

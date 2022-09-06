@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,30 +8,40 @@
 
 package armedgeorderpartner
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
+
+// APISClientBeginManageInventoryMetadataOptions contains the optional parameters for the APISClient.BeginManageInventoryMetadata
+// method.
+type APISClientBeginManageInventoryMetadataOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// APISClientListOperationsPartnerOptions contains the optional parameters for the APISClient.ListOperationsPartner method.
+type APISClientListOperationsPartnerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APISClientManageLinkOptions contains the optional parameters for the APISClient.ManageLink method.
+type APISClientManageLinkOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APISClientSearchInventoriesOptions contains the optional parameters for the APISClient.SearchInventories method.
+type APISClientSearchInventoriesOptions struct {
+	// placeholder for future optional parameters
+}
 
 type AdditionalErrorInfo struct {
-	// Any object
-	Info map[string]interface{} `json:"info,omitempty"`
-	Type *string                `json:"type,omitempty"`
+	// Anything
+	Info interface{} `json:"info,omitempty"`
+	Type *string     `json:"type,omitempty"`
 }
 
 // AdditionalInventoryDetails - Contains additional data about inventory in dictionary format
 type AdditionalInventoryDetails struct {
 	// READ-ONLY; Additional Data
 	AdditionalData map[string]*string `json:"additionalData,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AdditionalInventoryDetails.
-func (a AdditionalInventoryDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", a.AdditionalData)
-	return json.Marshal(objectMap)
 }
 
 // AdditionalOrderItemDetails - Contains additional order item details
@@ -64,24 +74,13 @@ type CloudError struct {
 	Details []*CloudError `json:"details,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CloudError.
-func (c CloudError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", c.AdditionalInfo)
-	populate(objectMap, "code", c.Code)
-	populate(objectMap, "details", c.Details)
-	populate(objectMap, "message", c.Message)
-	populate(objectMap, "target", c.Target)
-	return json.Marshal(objectMap)
-}
-
 // ConfigurationData - Contains information about inventory configuration
 type ConfigurationData struct {
 	// READ-ONLY; Configuration identifier of inventory
 	ConfigurationIdentifier *string `json:"configurationIdentifier,omitempty" azure:"ro"`
 
-	// READ-ONLY; Configuration identifier on device - this is used in case of any mismatch between actual configuration on inventory and configuration stored
-	// in service
+	// READ-ONLY; Configuration identifier on device - this is used in case of any mismatch between actual configuration on inventory
+	// and configuration stored in service
 	ConfigurationIdentifierOnDevice *string `json:"configurationIdentifierOnDevice,omitempty" azure:"ro"`
 
 	// READ-ONLY; Family identifier of inventory
@@ -100,43 +99,16 @@ type ConfigurationDetails struct {
 	Specifications []*SpecificationDetails `json:"specifications,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConfigurationDetails.
-func (c ConfigurationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "specifications", c.Specifications)
-	return json.Marshal(objectMap)
-}
-
 // ConfigurationOnDevice - Configuration parameters for ManageInventoryMetadata call
 type ConfigurationOnDevice struct {
 	// REQUIRED; Configuration identifier on device
 	ConfigurationIdentifier *string `json:"configurationIdentifier,omitempty"`
 }
 
-// EdgeOrderPartnerAPISBeginManageInventoryMetadataOptions contains the optional parameters for the EdgeOrderPartnerAPIS.BeginManageInventoryMetadata method.
-type EdgeOrderPartnerAPISBeginManageInventoryMetadataOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EdgeOrderPartnerAPISListOperationsPartnerOptions contains the optional parameters for the EdgeOrderPartnerAPIS.ListOperationsPartner method.
-type EdgeOrderPartnerAPISListOperationsPartnerOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EdgeOrderPartnerAPISManageLinkOptions contains the optional parameters for the EdgeOrderPartnerAPIS.ManageLink method.
-type EdgeOrderPartnerAPISManageLinkOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EdgeOrderPartnerAPISSearchInventoriesOptions contains the optional parameters for the EdgeOrderPartnerAPIS.SearchInventories method.
-type EdgeOrderPartnerAPISSearchInventoriesOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -160,30 +132,11 @@ type ErrorDetail struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // InventoryAdditionalDetails - Represents additional details about the partner inventory
@@ -205,18 +158,6 @@ type InventoryAdditionalDetails struct {
 
 	// READ-ONLY; Represents secrets on the inventory
 	InventorySecrets map[string]*string `json:"inventorySecrets,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InventoryAdditionalDetails.
-func (i InventoryAdditionalDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "billing", i.Billing)
-	populate(objectMap, "configuration", i.Configuration)
-	populate(objectMap, "inventory", i.Inventory)
-	populate(objectMap, "inventoryMetadata", i.InventoryMetadata)
-	populate(objectMap, "inventorySecrets", i.InventorySecrets)
-	populate(objectMap, "orderItem", i.OrderItem)
-	return json.Marshal(objectMap)
 }
 
 // InventoryData - Contains basic information about inventory
@@ -293,13 +234,16 @@ type Operation struct {
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
 
-	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane operations.
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
 	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
 
-	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
 	Origin *Origin `json:"origin,omitempty" azure:"ro"`
 }
 
@@ -308,32 +252,27 @@ type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string `json:"description,omitempty" azure:"ro"`
 
-	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual Machine", "Restart Virtual
-	// Machine".
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string `json:"operation,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft Compute".
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string `json:"provider,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job Schedule Collections".
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; List of operations supported by the resource provider
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // OrderItemData - Contains information about the order item to which inventory belongs
@@ -358,14 +297,6 @@ type PartnerInventoryList struct {
 
 	// READ-ONLY; List of partner inventories
 	Value []*PartnerInventory `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PartnerInventoryList.
-func (p PartnerInventoryList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // SearchInventoriesRequest - Request body for SearchInventories call
@@ -401,45 +332,6 @@ type StageDetails struct {
 	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type StageDetails.
-func (s StageDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "displayName", s.DisplayName)
-	populate(objectMap, "stageName", s.StageName)
-	populate(objectMap, "stageStatus", s.StageStatus)
-	populateTimeRFC3339(objectMap, "startTime", s.StartTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type StageDetails.
-func (s *StageDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "displayName":
-			err = unpopulate(val, &s.DisplayName)
-			delete(rawMsg, key)
-		case "stageName":
-			err = unpopulate(val, &s.StageName)
-			delete(rawMsg, key)
-		case "stageStatus":
-			err = unpopulate(val, &s.StageStatus)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &s.StartTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // SubscriptionDetails - Contains subscription details
 type SubscriptionDetails struct {
 	// READ-ONLY; Subscription Id
@@ -450,21 +342,4 @@ type SubscriptionDetails struct {
 
 	// READ-ONLY; Subscription State
 	State *string `json:"state,omitempty" azure:"ro"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

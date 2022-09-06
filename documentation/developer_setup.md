@@ -96,7 +96,7 @@ Testing is built into the Go toolchain as well with the `testing` library. The t
 
 To get started first install [`docker`][get_docker]. Then to start the proxy, from the root of the repository, run the command `./eng/common/testproxy/docker-start-proxy.ps1 start`. This command will take care of pulling the pinned docker image and running it in the background.
 
-It is not required to run the test-proxy from within the docker container, but this is how the proxy is run in the Azure DevOps pipelines. If you would like to run the test-proxy in a different way check out the test-proxy [documentation][test_proxy_docs] for more information.
+It is not required to run the test-proxy from within the docker container, but this is how the proxy is run in the Azure DevOps pipelines. If you would like to run the test-proxy in a different manner the [documentation][test_proxy_docs] has more information.
 
 
 ### Test Mode Options
@@ -111,7 +111,7 @@ Live mode is used by the internal pipelines to test directly against a service (
 
 ### Routing Requests to the Proxy
 
-All clients should contain an options struct as the last parameter on the constructor. In this options struct you need to have a way to provide a custom HTTP transport object. In your tests, you will replace the default HTTP transport object with a custom one in the `internal/recording` library that takes care of all the routing for you. For example, here is that code snippet in the `aztables` package:
+All clients contain an options struct as the last parameter of the constructor function. In this options struct you need to have a way to provide a custom HTTP transport object. In your tests, you will replace the default HTTP transport object with a custom one in the `internal/recording` library that takes care of routing requests. Here is an example:
 
 ```golang
 package aztables
@@ -124,56 +124,17 @@ import (
 
 var pathToPackage = "sdk/data/aztables/testdata"
 
-type recordingPolicy struct {
-	options recording.RecordingOptions
-	t       *testing.T
-}
-
-func (r recordingPolicy) Host() string {
-	if r.options.UseHTTPS {
-		return "localhost:5001"
-	}
-	return "localhost:5000"
-}
-
-func (r recordingPolicy) Scheme() string {
-	if r.options.UseHTTPS {
-		return "https"
-	}
-	return "http"
-}
-
-func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Policy {
-	if o == nil {
-		o = &recording.RecordingOptions{UseHTTPS: true}
-	}
-	p := &recordingPolicy{options: *o, t: t}
-	return p
-}
-
-func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
-	if recording.GetRecordMode() != "live" && !recording.IsLiveOnly(p.t) {
-		originalURLHost := req.Raw().URL.Host
-		req.Raw().URL.Scheme = p.Scheme()
-		req.Raw().URL.Host = p.Host()
-		req.Raw().Host = p.Host()
-
-		req.Raw().Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%v://%v", p.Scheme(), originalURLHost))
-		req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
-		req.Raw().Header.Set(recording.IDHeader, recording.GetRecordingId(p.t))
-	}
-	return req.Next()
-}
-
 func createClientForRecording(t *testing.T, tableName string, serviceURL string, cred SharedKeyCredential) (*Client, error) {
-	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
-	client, err := recording.GetHTTPClient(t)
+	transport, err := recording.NewRecordingHTTPClient(t)
 	require.NoError(t, err)
 
-	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
-		PerCallPolicies: []policy.Policy{p},
-		Transport:       client,
-	}}
+	options := &ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport:       client,
+		},
+	}
+
+	// Validate the URL ends with a "/"
 	if !strings.HasSuffix(serviceURL, "/") && tableName != "" {
 		serviceURL += "/"
 	}
@@ -185,7 +146,7 @@ func createClientForRecording(t *testing.T, tableName string, serviceURL string,
 
 Including this in a file for test helper methods will ensure that before each test the developer simply has to add
 ```golang
-func TestStartTests(t *testing.T) {
+func TestExample(t *testing.T) {
 	err := recording.Start(t, "path/to/package", nil)
 	defer recording.Stop(t, nil)
 
@@ -195,7 +156,7 @@ func TestStartTests(t *testing.T) {
 	<test code>
 }
 ```
-and nearly all of the test proxy interactions will be handled for them. In a later section ([scrubbing secrets](#scrubbing-secrets)) there is more information about purging secret keys and value from recording files. The first two methods (`Start` and `Stop`) tell the proxy when an individual test is starting and stopping to communicate when to start recording HTTP interactions and when to persist it to disk. `Start` takes three parameters, the `t *testing.T` parameter of the test, the path to where the recordings live for a package (this should be the path to the package), and an optional options struct.
+The first two methods (`Start` and `Stop`) tell the proxy when an individual test is starting and stopping to communicate when to start recording HTTP interactions and when to persist it to disk. `Start` takes three parameters, the `t *testing.T` parameter of the test, the path to where the recordings live for a package (this should be the path to the package), and an optional options struct. `Stop` just takes the `t *testing.T` and an options struct as parameters.
 
 
 ### Writing Tests
@@ -219,8 +180,12 @@ const (
 
 // Test creating a single table
 func TestCreateTable(t *testing.T) {
-	recording.Start(t, pathToPackage, nil)
-	defer recording.Stop(t, nil)
+	err := recording.Start(t, pathToPackage, nil)
+	require.NoError(t, err)
+	defer func() {
+		err := recording.Stop(t, nil)
+		require.NoError(t, err)
+	}()
 
 	serviceUrl := fmt.Sprintf("https://%v.table.core.windows.net", accountName)
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -264,12 +229,44 @@ The recording files eventually live in the main repository (`github.com/Azure/az
 | URI Sanitizer | `AddURISanitizer(value, regex string, options *RecordingOptions)` |
 | URI Subscription ID Sanitizer | `AddURISubscriptionIDSanitizer(value string, options *RecordingOptions)` |
 
-Note that removing the names of accounts and other values in your recording can have side effects when running your tests in playback. To take care of this, there are additional methods in the `internal/recording` module for reading environment variables and defaulting to the processed recording value. For example, if the `aztables` library had a test for creating a client and "requiring" the account name to be the same as provided it could potentially look similar to this:
+To add a scrubber that replaces the URL of your account use the `TestMain()` function to set sanitizers before you begin running tests.
+
+```golang
+func TestMain(m *testing.M) {
+	// Initialize
+	if recording.GetRecordMode() == "record" {
+		// start all tests with a proxy using it's defaults.
+		err := recording.ResetProxy(nil)
+		if err != nil {
+			panic(err)
+		}
+
+		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
+		err = recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	exitVal := m.Run()
+
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		// reset the proxy to it's defaults
+		err := recording.ResetProxy(nil)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+```
+
+
+Note that removing the names of accounts and other values in your recording can have side effects when running your tests in playback. To take care of this, there are additional methods in the `internal/recording` module for reading environment variables and defaulting to the processed recording value. For example, an `aztables` test for the client constructor and "requiring" the account name to be the same as provided could look like this:
 
 ```golang
 func TestClient(t *testing.T) {
 	accountName := recording.GetEnvVariable(t, "TABLES_PRIMARY_ACCOUNT_NAME", "fakeAccountName")
-	// If running in playback, the value is "fakeAccountName". If running in "record" the value is whatever is stored in the environment variable
+	// If running in playback, the value is "fakeAccountName". If running in "record" the value is the environment variable
 	accountKey := recording.GetEnvVariable(t, "TABLES_PRIMARY_ACCOUNT_KEY", "fakeAccountKey")
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
@@ -296,7 +293,7 @@ func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenReque
 }
 
 func getAADCredential() (azcore.TokenCredential, error) {
-	if recording.InPlayback() {
+	if recording.GetRecordMode() == recording.PlaybackMode {
 		return NewFakeCredential(), nil
 	}
 	return azidentity.NewDefaultCredential(nil)

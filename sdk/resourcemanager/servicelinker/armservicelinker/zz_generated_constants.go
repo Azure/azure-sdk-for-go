@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package armservicelinker
 
 const (
-	module  = "armservicelinker"
-	version = "v0.1.0"
+	moduleName    = "armservicelinker"
+	moduleVersion = "v1.0.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -25,11 +25,6 @@ func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
 	}
-}
-
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
 }
 
 // AuthType - The authentication type.
@@ -54,9 +49,18 @@ func PossibleAuthTypeValues() []AuthType {
 	}
 }
 
-// ToPtr returns a *AuthType pointing to the current value.
-func (c AuthType) ToPtr() *AuthType {
-	return &c
+// AzureResourceType - The azure resource type.
+type AzureResourceType string
+
+const (
+	AzureResourceTypeKeyVault AzureResourceType = "KeyVault"
+)
+
+// PossibleAzureResourceTypeValues returns the possible values for the AzureResourceType const type.
+func PossibleAzureResourceTypeValues() []AzureResourceType {
+	return []AzureResourceType{
+		AzureResourceTypeKeyVault,
+	}
 }
 
 // ClientType - The application client type
@@ -91,11 +95,6 @@ func PossibleClientTypeValues() []ClientType {
 	}
 }
 
-// ToPtr returns a *ClientType pointing to the current value.
-func (c ClientType) ToPtr() *ClientType {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -116,33 +115,8 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
-// LinkerStatus - Specifies if the linker is healthy.
-type LinkerStatus string
-
-const (
-	LinkerStatusHealthy    LinkerStatus = "Healthy"
-	LinkerStatusNotHealthy LinkerStatus = "Not healthy"
-)
-
-// PossibleLinkerStatusValues returns the possible values for the LinkerStatus const type.
-func PossibleLinkerStatusValues() []LinkerStatus {
-	return []LinkerStatus{
-		LinkerStatusHealthy,
-		LinkerStatusNotHealthy,
-	}
-}
-
-// ToPtr returns a *LinkerStatus pointing to the current value.
-func (c LinkerStatus) ToPtr() *LinkerStatus {
-	return &c
-}
-
-// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+// value is "user,system"
 type Origin string
 
 const (
@@ -160,7 +134,72 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
-// ToPtr returns a *Origin pointing to the current value.
-func (c Origin) ToPtr() *Origin {
-	return &c
+// SecretType - The secret type.
+type SecretType string
+
+const (
+	SecretTypeKeyVaultSecretReference SecretType = "keyVaultSecretReference"
+	SecretTypeKeyVaultSecretURI       SecretType = "keyVaultSecretUri"
+	SecretTypeRawValue                SecretType = "rawValue"
+)
+
+// PossibleSecretTypeValues returns the possible values for the SecretType const type.
+func PossibleSecretTypeValues() []SecretType {
+	return []SecretType{
+		SecretTypeKeyVaultSecretReference,
+		SecretTypeKeyVaultSecretURI,
+		SecretTypeRawValue,
+	}
+}
+
+// TargetServiceType - The target service type.
+type TargetServiceType string
+
+const (
+	TargetServiceTypeAzureResource            TargetServiceType = "AzureResource"
+	TargetServiceTypeConfluentBootstrapServer TargetServiceType = "ConfluentBootstrapServer"
+	TargetServiceTypeConfluentSchemaRegistry  TargetServiceType = "ConfluentSchemaRegistry"
+)
+
+// PossibleTargetServiceTypeValues returns the possible values for the TargetServiceType const type.
+func PossibleTargetServiceTypeValues() []TargetServiceType {
+	return []TargetServiceType{
+		TargetServiceTypeAzureResource,
+		TargetServiceTypeConfluentBootstrapServer,
+		TargetServiceTypeConfluentSchemaRegistry,
+	}
+}
+
+// VNetSolutionType - Type of VNet solution.
+type VNetSolutionType string
+
+const (
+	VNetSolutionTypePrivateLink     VNetSolutionType = "privateLink"
+	VNetSolutionTypeServiceEndpoint VNetSolutionType = "serviceEndpoint"
+)
+
+// PossibleVNetSolutionTypeValues returns the possible values for the VNetSolutionType const type.
+func PossibleVNetSolutionTypeValues() []VNetSolutionType {
+	return []VNetSolutionType{
+		VNetSolutionTypePrivateLink,
+		VNetSolutionTypeServiceEndpoint,
+	}
+}
+
+// ValidationResultStatus - The result of validation
+type ValidationResultStatus string
+
+const (
+	ValidationResultStatusFailure ValidationResultStatus = "failure"
+	ValidationResultStatusSuccess ValidationResultStatus = "success"
+	ValidationResultStatusWarning ValidationResultStatus = "warning"
+)
+
+// PossibleValidationResultStatusValues returns the possible values for the ValidationResultStatus const type.
+func PossibleValidationResultStatusValues() []ValidationResultStatus {
+	return []ValidationResultStatus{
+		ValidationResultStatusFailure,
+		ValidationResultStatusSuccess,
+		ValidationResultStatusWarning,
+	}
 }

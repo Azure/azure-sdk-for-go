@@ -9,11 +9,20 @@
 
 package authorizationapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization/authorizationapi"
+import original "github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2020-10-01/authorization/authorizationapi"
 
 type ClassicAdministratorsClientAPI = original.ClassicAdministratorsClientAPI
+type EligibleChildResourcesClientAPI = original.EligibleChildResourcesClientAPI
 type GlobalAdministratorClientAPI = original.GlobalAdministratorClientAPI
 type PermissionsClientAPI = original.PermissionsClientAPI
 type ProviderOperationsMetadataClientAPI = original.ProviderOperationsMetadataClientAPI
+type RoleAssignmentScheduleInstancesClientAPI = original.RoleAssignmentScheduleInstancesClientAPI
+type RoleAssignmentScheduleRequestsClientAPI = original.RoleAssignmentScheduleRequestsClientAPI
+type RoleAssignmentSchedulesClientAPI = original.RoleAssignmentSchedulesClientAPI
 type RoleAssignmentsClientAPI = original.RoleAssignmentsClientAPI
 type RoleDefinitionsClientAPI = original.RoleDefinitionsClientAPI
+type RoleEligibilityScheduleInstancesClientAPI = original.RoleEligibilityScheduleInstancesClientAPI
+type RoleEligibilityScheduleRequestsClientAPI = original.RoleEligibilityScheduleRequestsClientAPI
+type RoleEligibilitySchedulesClientAPI = original.RoleEligibilitySchedulesClientAPI
+type RoleManagementPoliciesClientAPI = original.RoleManagementPoliciesClientAPI
+type RoleManagementPolicyAssignmentsClientAPI = original.RoleManagementPolicyAssignmentsClientAPI

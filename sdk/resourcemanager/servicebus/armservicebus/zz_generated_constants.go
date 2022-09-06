@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,30 +9,25 @@
 package armservicebus
 
 const (
-	module  = "armservicebus"
-	version = "v0.2.1"
+	moduleName    = "armservicebus"
+	moduleVersion = "v2.0.0-beta.1"
 )
 
 type AccessRights string
 
 const (
+	AccessRightsListen AccessRights = "Listen"
 	AccessRightsManage AccessRights = "Manage"
 	AccessRightsSend   AccessRights = "Send"
-	AccessRightsListen AccessRights = "Listen"
 )
 
 // PossibleAccessRightsValues returns the possible values for the AccessRights const type.
 func PossibleAccessRightsValues() []AccessRights {
 	return []AccessRights{
+		AccessRightsListen,
 		AccessRightsManage,
 		AccessRightsSend,
-		AccessRightsListen,
 	}
-}
-
-// ToPtr returns a *AccessRights pointing to the current value.
-func (c AccessRights) ToPtr() *AccessRights {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -55,11 +50,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // DefaultAction - Default Action for Network Rule Set
 type DefaultAction string
 
@@ -74,11 +64,6 @@ func PossibleDefaultActionValues() []DefaultAction {
 		DefaultActionAllow,
 		DefaultActionDeny,
 	}
-}
-
-// ToPtr returns a *DefaultAction pointing to the current value.
-func (c DefaultAction) ToPtr() *DefaultAction {
-	return &c
 }
 
 // EndPointProvisioningState - Provisioning state of the Private Endpoint Connection.
@@ -103,11 +88,6 @@ func PossibleEndPointProvisioningStateValues() []EndPointProvisioningState {
 		EndPointProvisioningStateSucceeded,
 		EndPointProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *EndPointProvisioningState pointing to the current value.
-func (c EndPointProvisioningState) ToPtr() *EndPointProvisioningState {
-	return &c
 }
 
 // EntityStatus - Entity status.
@@ -140,30 +120,34 @@ func PossibleEntityStatusValues() []EntityStatus {
 	}
 }
 
-// ToPtr returns a *EntityStatus pointing to the current value.
-func (c EntityStatus) ToPtr() *EntityStatus {
-	return &c
-}
-
 // FilterType - Rule filter types
 type FilterType string
 
 const (
-	FilterTypeSQLFilter         FilterType = "SqlFilter"
 	FilterTypeCorrelationFilter FilterType = "CorrelationFilter"
+	FilterTypeSQLFilter         FilterType = "SqlFilter"
 )
 
 // PossibleFilterTypeValues returns the possible values for the FilterType const type.
 func PossibleFilterTypeValues() []FilterType {
 	return []FilterType{
-		FilterTypeSQLFilter,
 		FilterTypeCorrelationFilter,
+		FilterTypeSQLFilter,
 	}
 }
 
-// ToPtr returns a *FilterType pointing to the current value.
-func (c FilterType) ToPtr() *FilterType {
-	return &c
+// KeySource - Enumerates the possible value of keySource for Encryption
+type KeySource string
+
+const (
+	KeySourceMicrosoftKeyVault KeySource = "Microsoft.KeyVault"
+)
+
+// PossibleKeySourceValues returns the possible values for the KeySource const type.
+func PossibleKeySourceValues() []KeySource {
+	return []KeySource{
+		KeySourceMicrosoftKeyVault,
+	}
 }
 
 // KeyType - The access key to regenerate.
@@ -182,34 +166,24 @@ func PossibleKeyTypeValues() []KeyType {
 	}
 }
 
-// ToPtr returns a *KeyType pointing to the current value.
-func (c KeyType) ToPtr() *KeyType {
-	return &c
-}
-
 // ManagedServiceIdentityType - Type of managed service identity.
 type ManagedServiceIdentityType string
 
 const (
-	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
-	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
-	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned, UserAssigned"
 	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned, UserAssigned"
+	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
 )
 
 // PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
 func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 	return []ManagedServiceIdentityType{
-		ManagedServiceIdentityTypeSystemAssigned,
-		ManagedServiceIdentityTypeUserAssigned,
-		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
 		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
 	}
-}
-
-// ToPtr returns a *ManagedServiceIdentityType pointing to the current value.
-func (c ManagedServiceIdentityType) ToPtr() *ManagedServiceIdentityType {
-	return &c
 }
 
 type MigrationConfigurationName string
@@ -225,11 +199,6 @@ func PossibleMigrationConfigurationNameValues() []MigrationConfigurationName {
 	}
 }
 
-// ToPtr returns a *MigrationConfigurationName pointing to the current value.
-func (c MigrationConfigurationName) ToPtr() *MigrationConfigurationName {
-	return &c
-}
-
 // NetworkRuleIPAction - The IP Filter Action
 type NetworkRuleIPAction string
 
@@ -242,11 +211,6 @@ func PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction {
 	return []NetworkRuleIPAction{
 		NetworkRuleIPActionAllow,
 	}
-}
-
-// ToPtr returns a *NetworkRuleIPAction pointing to the current value.
-func (c NetworkRuleIPAction) ToPtr() *NetworkRuleIPAction {
-	return &c
 }
 
 // PrivateLinkConnectionStatus - Status of the connection.
@@ -269,32 +233,41 @@ func PossiblePrivateLinkConnectionStatusValues() []PrivateLinkConnectionStatus {
 	}
 }
 
-// ToPtr returns a *PrivateLinkConnectionStatus pointing to the current value.
-func (c PrivateLinkConnectionStatus) ToPtr() *PrivateLinkConnectionStatus {
-	return &c
-}
-
-// ProvisioningStateDR - Provisioning state of the Alias(Disaster Recovery configuration) - possible values 'Accepted' or 'Succeeded' or 'Failed'
+// ProvisioningStateDR - Provisioning state of the Alias(Disaster Recovery configuration) - possible values 'Accepted' or
+// 'Succeeded' or 'Failed'
 type ProvisioningStateDR string
 
 const (
 	ProvisioningStateDRAccepted  ProvisioningStateDR = "Accepted"
-	ProvisioningStateDRSucceeded ProvisioningStateDR = "Succeeded"
 	ProvisioningStateDRFailed    ProvisioningStateDR = "Failed"
+	ProvisioningStateDRSucceeded ProvisioningStateDR = "Succeeded"
 )
 
 // PossibleProvisioningStateDRValues returns the possible values for the ProvisioningStateDR const type.
 func PossibleProvisioningStateDRValues() []ProvisioningStateDR {
 	return []ProvisioningStateDR{
 		ProvisioningStateDRAccepted,
-		ProvisioningStateDRSucceeded,
 		ProvisioningStateDRFailed,
+		ProvisioningStateDRSucceeded,
 	}
 }
 
-// ToPtr returns a *ProvisioningStateDR pointing to the current value.
-func (c ProvisioningStateDR) ToPtr() *ProvisioningStateDR {
-	return &c
+// PublicNetworkAccess - This determines if traffic is allowed over public network. By default it is enabled.
+type PublicNetworkAccess string
+
+const (
+	PublicNetworkAccessDisabled           PublicNetworkAccess = "Disabled"
+	PublicNetworkAccessEnabled            PublicNetworkAccess = "Enabled"
+	PublicNetworkAccessSecuredByPerimeter PublicNetworkAccess = "SecuredByPerimeter"
+)
+
+// PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return []PublicNetworkAccess{
+		PublicNetworkAccessDisabled,
+		PublicNetworkAccessEnabled,
+		PublicNetworkAccessSecuredByPerimeter,
+	}
 }
 
 // PublicNetworkAccessFlag - This determines if traffic is allowed over public network. By default it is enabled.
@@ -311,11 +284,6 @@ func PossiblePublicNetworkAccessFlagValues() []PublicNetworkAccessFlag {
 		PublicNetworkAccessFlagDisabled,
 		PublicNetworkAccessFlagEnabled,
 	}
-}
-
-// ToPtr returns a *PublicNetworkAccessFlag pointing to the current value.
-func (c PublicNetworkAccessFlag) ToPtr() *PublicNetworkAccessFlag {
-	return &c
 }
 
 // RoleDisasterRecovery - role of namespace in GEO DR - possible values 'Primary' or 'PrimaryNotReplicating' or 'Secondary'
@@ -336,32 +304,22 @@ func PossibleRoleDisasterRecoveryValues() []RoleDisasterRecovery {
 	}
 }
 
-// ToPtr returns a *RoleDisasterRecovery pointing to the current value.
-func (c RoleDisasterRecovery) ToPtr() *RoleDisasterRecovery {
-	return &c
-}
-
 // SKUName - Name of this SKU.
 type SKUName string
 
 const (
 	SKUNameBasic    SKUName = "Basic"
-	SKUNameStandard SKUName = "Standard"
 	SKUNamePremium  SKUName = "Premium"
+	SKUNameStandard SKUName = "Standard"
 )
 
 // PossibleSKUNameValues returns the possible values for the SKUName const type.
 func PossibleSKUNameValues() []SKUName {
 	return []SKUName{
 		SKUNameBasic,
-		SKUNameStandard,
 		SKUNamePremium,
+		SKUNameStandard,
 	}
-}
-
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
-	return &c
 }
 
 // SKUTier - The billing tier of this particular SKU.
@@ -369,49 +327,57 @@ type SKUTier string
 
 const (
 	SKUTierBasic    SKUTier = "Basic"
-	SKUTierStandard SKUTier = "Standard"
 	SKUTierPremium  SKUTier = "Premium"
+	SKUTierStandard SKUTier = "Standard"
 )
 
 // PossibleSKUTierValues returns the possible values for the SKUTier const type.
 func PossibleSKUTierValues() []SKUTier {
 	return []SKUTier{
 		SKUTierBasic,
-		SKUTierStandard,
 		SKUTierPremium,
+		SKUTierStandard,
 	}
 }
 
-// ToPtr returns a *SKUTier pointing to the current value.
-func (c SKUTier) ToPtr() *SKUTier {
-	return &c
+// TLSVersion - The minimum TLS version for the cluster to support, e.g. '1.2'
+type TLSVersion string
+
+const (
+	TLSVersionOne0 TLSVersion = "1.0"
+	TLSVersionOne1 TLSVersion = "1.1"
+	TLSVersionOne2 TLSVersion = "1.2"
+)
+
+// PossibleTLSVersionValues returns the possible values for the TLSVersion const type.
+func PossibleTLSVersionValues() []TLSVersion {
+	return []TLSVersion{
+		TLSVersionOne0,
+		TLSVersionOne1,
+		TLSVersionOne2,
+	}
 }
 
 // UnavailableReason - Specifies the reason for the unavailability of the service.
 type UnavailableReason string
 
 const (
-	UnavailableReasonNone                                  UnavailableReason = "None"
 	UnavailableReasonInvalidName                           UnavailableReason = "InvalidName"
-	UnavailableReasonSubscriptionIsDisabled                UnavailableReason = "SubscriptionIsDisabled"
-	UnavailableReasonNameInUse                             UnavailableReason = "NameInUse"
 	UnavailableReasonNameInLockdown                        UnavailableReason = "NameInLockdown"
+	UnavailableReasonNameInUse                             UnavailableReason = "NameInUse"
+	UnavailableReasonNone                                  UnavailableReason = "None"
+	UnavailableReasonSubscriptionIsDisabled                UnavailableReason = "SubscriptionIsDisabled"
 	UnavailableReasonTooManyNamespaceInCurrentSubscription UnavailableReason = "TooManyNamespaceInCurrentSubscription"
 )
 
 // PossibleUnavailableReasonValues returns the possible values for the UnavailableReason const type.
 func PossibleUnavailableReasonValues() []UnavailableReason {
 	return []UnavailableReason{
-		UnavailableReasonNone,
 		UnavailableReasonInvalidName,
-		UnavailableReasonSubscriptionIsDisabled,
-		UnavailableReasonNameInUse,
 		UnavailableReasonNameInLockdown,
+		UnavailableReasonNameInUse,
+		UnavailableReasonNone,
+		UnavailableReasonSubscriptionIsDisabled,
 		UnavailableReasonTooManyNamespaceInCurrentSubscription,
 	}
-}
-
-// ToPtr returns a *UnavailableReason pointing to the current value.
-func (c UnavailableReason) ToPtr() *UnavailableReason {
-	return &c
 }

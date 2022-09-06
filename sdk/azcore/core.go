@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -7,29 +7,43 @@
 package azcore
 
 import (
+	"context"
 	"reflect"
+	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
+
+// AccessToken represents an Azure service bearer access token with expiry information.
+type AccessToken struct {
+	Token     string
+	ExpiresOn time.Time
+}
+
+// TokenCredential represents a credential capable of providing an OAuth token.
+type TokenCredential interface {
+	// GetToken requests an access token for the specified set of scopes.
+	GetToken(ctx context.Context, options policy.TokenRequestOptions) (AccessToken, error)
+}
 
 // holds sentinel values used to send nulls
 var nullables map[reflect.Type]interface{} = map[reflect.Type]interface{}{}
 
 // NullValue is used to send an explicit 'null' within a request.
 // This is typically used in JSON-MERGE-PATCH operations to delete a value.
-func NullValue(v interface{}) interface{} {
-	t := reflect.TypeOf(v)
-	if k := t.Kind(); k != reflect.Ptr && k != reflect.Slice && k != reflect.Map {
-		// t is not of pointer type, make it be of pointer type
-		t = reflect.PtrTo(t)
-	}
+func NullValue[T any]() T {
+	t := shared.TypeOfT[T]()
 	v, found := nullables[t]
 	if !found {
 		var o reflect.Value
-		if k := t.Kind(); k == reflect.Slice || k == reflect.Map {
-			o = reflect.New(t) // *[]type / *map[]
-			o = o.Elem()       // []type / map[]
+		if k := t.Kind(); k == reflect.Map {
+			o = reflect.MakeMap(t)
+		} else if k == reflect.Slice {
+			// empty slices appear to all point to the same data block
+			// which causes comparisons to become ambiguous.  so we create
+			// a slice with len/cap of one which ensures a unique address.
+			o = reflect.MakeSlice(t, 1, 1)
 		} else {
 			o = reflect.New(t.Elem())
 		}
@@ -37,18 +51,14 @@ func NullValue(v interface{}) interface{} {
 		nullables[t] = v
 	}
 	// return the sentinel object
-	return v
+	return v.(T)
 }
 
 // IsNullValue returns true if the field contains a null sentinel value.
 // This is used by custom marshallers to properly encode a null value.
-func IsNullValue(v interface{}) bool {
+func IsNullValue[T any](v T) bool {
 	// see if our map has a sentinel object for this *T
 	t := reflect.TypeOf(v)
-	if k := t.Kind(); k != reflect.Ptr && k != reflect.Slice && k != reflect.Map {
-		// v isn't a pointer type so it can never be a null
-		return false
-	}
 	if o, found := nullables[t]; found {
 		o1 := reflect.ValueOf(o)
 		v1 := reflect.ValueOf(v)
@@ -63,6 +73,3 @@ func IsNullValue(v interface{}) bool {
 
 // ClientOptions contains configuration settings for a client's pipeline.
 type ClientOptions = policy.ClientOptions
-
-// Poller encapsulates state and logic for polling on long-running operations.
-type Poller = pollers.Poller

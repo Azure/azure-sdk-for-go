@@ -2369,8 +2369,8 @@ func (client BaseClient) GetIterationResponder(resp *http.Response) (result Iter
 // Parameters:
 // projectID - the id of the project the iteration belongs to.
 // iterationID - the id of the iteration to get.
-// threshold - the threshold used to determine true predictions.
-// overlapThreshold - if applicable, the bounding box overlap threshold used to determine true predictions.
+// threshold - the threshold used to determine true predictions. Accepted values are between 1 and 0. Defaults to 0.8.
+// overlapThreshold - if applicable, the bounding box overlap threshold used to determine true predictions. Accepted values are between 1 and 0. Defaults to 0.5.
 func (client BaseClient) GetIterationPerformance(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID, threshold *float64, overlapThreshold *float64) (result IterationPerformance, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetIterationPerformance")

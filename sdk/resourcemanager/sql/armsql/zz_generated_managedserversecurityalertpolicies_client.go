@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,46 +25,61 @@ import (
 // ManagedServerSecurityAlertPoliciesClient contains the methods for the ManagedServerSecurityAlertPolicies group.
 // Don't use this type directly, use NewManagedServerSecurityAlertPoliciesClient() instead.
 type ManagedServerSecurityAlertPoliciesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewManagedServerSecurityAlertPoliciesClient creates a new instance of ManagedServerSecurityAlertPoliciesClient with the specified values.
-func NewManagedServerSecurityAlertPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedServerSecurityAlertPoliciesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewManagedServerSecurityAlertPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedServerSecurityAlertPoliciesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &ManagedServerSecurityAlertPoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &ManagedServerSecurityAlertPoliciesClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a threat detection policy.
-// If the operation fails it returns a generic error.
-func (client *ManagedServerSecurityAlertPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ManagedServerSecurityAlertPolicy, options *ManagedServerSecurityAlertPoliciesBeginCreateOrUpdateOptions) (ManagedServerSecurityAlertPoliciesCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, managedInstanceName, securityAlertPolicyName, parameters, options)
-	if err != nil {
-		return ManagedServerSecurityAlertPoliciesCreateOrUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// securityAlertPolicyName - The name of the security alert policy.
+// parameters - The managed server security alert policy.
+// options - ManagedServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedServerSecurityAlertPoliciesClient.BeginCreateOrUpdate
+// method.
+func (client *ManagedServerSecurityAlertPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ManagedServerSecurityAlertPolicy, options *ManagedServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ManagedServerSecurityAlertPoliciesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, managedInstanceName, securityAlertPolicyName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[ManagedServerSecurityAlertPoliciesClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[ManagedServerSecurityAlertPoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ManagedServerSecurityAlertPoliciesCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ManagedServerSecurityAlertPoliciesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return ManagedServerSecurityAlertPoliciesCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ManagedServerSecurityAlertPoliciesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a threat detection policy.
-// If the operation fails it returns a generic error.
-func (client *ManagedServerSecurityAlertPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ManagedServerSecurityAlertPolicy, options *ManagedServerSecurityAlertPoliciesBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+func (client *ManagedServerSecurityAlertPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ManagedServerSecurityAlertPolicy, options *ManagedServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, securityAlertPolicyName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -73,13 +89,13 @@ func (client *ManagedServerSecurityAlertPoliciesClient) createOrUpdate(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ManagedServerSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ManagedServerSecurityAlertPolicy, options *ManagedServerSecurityAlertPoliciesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ManagedServerSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ManagedServerSecurityAlertPolicy, options *ManagedServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/securityAlertPolicies/{securityAlertPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -97,48 +113,43 @@ func (client *ManagedServerSecurityAlertPoliciesClient) createOrUpdateCreateRequ
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ManagedServerSecurityAlertPoliciesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Get a managed server's threat detection policy.
-// If the operation fails it returns a generic error.
-func (client *ManagedServerSecurityAlertPoliciesClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, securityAlertPolicyName SecurityAlertPolicyName, options *ManagedServerSecurityAlertPoliciesGetOptions) (ManagedServerSecurityAlertPoliciesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// securityAlertPolicyName - The name of the security alert policy.
+// options - ManagedServerSecurityAlertPoliciesClientGetOptions contains the optional parameters for the ManagedServerSecurityAlertPoliciesClient.Get
+// method.
+func (client *ManagedServerSecurityAlertPoliciesClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, securityAlertPolicyName SecurityAlertPolicyName, options *ManagedServerSecurityAlertPoliciesClientGetOptions) (ManagedServerSecurityAlertPoliciesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, securityAlertPolicyName, options)
 	if err != nil {
-		return ManagedServerSecurityAlertPoliciesGetResponse{}, err
+		return ManagedServerSecurityAlertPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagedServerSecurityAlertPoliciesGetResponse{}, err
+		return ManagedServerSecurityAlertPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagedServerSecurityAlertPoliciesGetResponse{}, client.getHandleError(resp)
+		return ManagedServerSecurityAlertPoliciesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedServerSecurityAlertPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, securityAlertPolicyName SecurityAlertPolicyName, options *ManagedServerSecurityAlertPoliciesGetOptions) (*policy.Request, error) {
+func (client *ManagedServerSecurityAlertPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, securityAlertPolicyName SecurityAlertPolicyName, options *ManagedServerSecurityAlertPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/securityAlertPolicies/{securityAlertPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -156,54 +167,64 @@ func (client *ManagedServerSecurityAlertPoliciesClient) getCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedServerSecurityAlertPoliciesClient) getHandleResponse(resp *http.Response) (ManagedServerSecurityAlertPoliciesGetResponse, error) {
-	result := ManagedServerSecurityAlertPoliciesGetResponse{RawResponse: resp}
+func (client *ManagedServerSecurityAlertPoliciesClient) getHandleResponse(resp *http.Response) (ManagedServerSecurityAlertPoliciesClientGetResponse, error) {
+	result := ManagedServerSecurityAlertPoliciesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedServerSecurityAlertPolicy); err != nil {
-		return ManagedServerSecurityAlertPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedServerSecurityAlertPoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ManagedServerSecurityAlertPoliciesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListByInstance - Get the managed server's threat detection policies.
-// If the operation fails it returns a generic error.
-func (client *ManagedServerSecurityAlertPoliciesClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *ManagedServerSecurityAlertPoliciesListByInstanceOptions) *ManagedServerSecurityAlertPoliciesListByInstancePager {
-	return &ManagedServerSecurityAlertPoliciesListByInstancePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
+// NewListByInstancePager - Get the managed server's threat detection policies.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// options - ManagedServerSecurityAlertPoliciesClientListByInstanceOptions contains the optional parameters for the ManagedServerSecurityAlertPoliciesClient.ListByInstance
+// method.
+func (client *ManagedServerSecurityAlertPoliciesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedServerSecurityAlertPoliciesClientListByInstanceOptions) *runtime.Pager[ManagedServerSecurityAlertPoliciesClientListByInstanceResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ManagedServerSecurityAlertPoliciesClientListByInstanceResponse]{
+		More: func(page ManagedServerSecurityAlertPoliciesClientListByInstanceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ManagedServerSecurityAlertPoliciesListByInstanceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedServerSecurityAlertPolicyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ManagedServerSecurityAlertPoliciesClientListByInstanceResponse) (ManagedServerSecurityAlertPoliciesClientListByInstanceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ManagedServerSecurityAlertPoliciesClientListByInstanceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ManagedServerSecurityAlertPoliciesClientListByInstanceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ManagedServerSecurityAlertPoliciesClientListByInstanceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByInstanceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByInstanceCreateRequest creates the ListByInstance request.
-func (client *ManagedServerSecurityAlertPoliciesClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedServerSecurityAlertPoliciesListByInstanceOptions) (*policy.Request, error) {
+func (client *ManagedServerSecurityAlertPoliciesClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedServerSecurityAlertPoliciesClientListByInstanceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/securityAlertPolicies"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -217,34 +238,22 @@ func (client *ManagedServerSecurityAlertPoliciesClient) listByInstanceCreateRequ
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByInstanceHandleResponse handles the ListByInstance response.
-func (client *ManagedServerSecurityAlertPoliciesClient) listByInstanceHandleResponse(resp *http.Response) (ManagedServerSecurityAlertPoliciesListByInstanceResponse, error) {
-	result := ManagedServerSecurityAlertPoliciesListByInstanceResponse{RawResponse: resp}
+func (client *ManagedServerSecurityAlertPoliciesClient) listByInstanceHandleResponse(resp *http.Response) (ManagedServerSecurityAlertPoliciesClientListByInstanceResponse, error) {
+	result := ManagedServerSecurityAlertPoliciesClientListByInstanceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedServerSecurityAlertPolicyListResult); err != nil {
-		return ManagedServerSecurityAlertPoliciesListByInstanceResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedServerSecurityAlertPoliciesClientListByInstanceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByInstanceHandleError handles the ListByInstance error response.
-func (client *ManagedServerSecurityAlertPoliciesClient) listByInstanceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

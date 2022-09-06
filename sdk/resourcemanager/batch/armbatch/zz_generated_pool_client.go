@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armbatch
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,42 +26,60 @@ import (
 // PoolClient contains the methods for the Pool group.
 // Don't use this type directly, use NewPoolClient() instead.
 type PoolClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPoolClient creates a new instance of PoolClient with the specified values.
-func NewPoolClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PoolClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewPoolClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PoolClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &PoolClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &PoolClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // Create - Creates a new pool inside the specified account.
-// If the operation fails it returns the *CloudError error type.
-func (client *PoolClient) Create(ctx context.Context, resourceGroupName string, accountName string, poolName string, parameters Pool, options *PoolCreateOptions) (PoolCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
+// resourceGroupName - The name of the resource group that contains the Batch account.
+// accountName - The name of the Batch account.
+// poolName - The pool name. This must be unique within the account.
+// parameters - Additional parameters for pool creation.
+// options - PoolClientCreateOptions contains the optional parameters for the PoolClient.Create method.
+func (client *PoolClient) Create(ctx context.Context, resourceGroupName string, accountName string, poolName string, parameters Pool, options *PoolClientCreateOptions) (PoolClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, poolName, parameters, options)
 	if err != nil {
-		return PoolCreateResponse{}, err
+		return PoolClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PoolCreateResponse{}, err
+		return PoolClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PoolCreateResponse{}, client.createHandleError(resp)
+		return PoolClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *PoolClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, parameters Pool, options *PoolCreateOptions) (*policy.Request, error) {
+func (client *PoolClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, parameters Pool, options *PoolClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -79,71 +97,60 @@ func (client *PoolClient) createCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createHandleResponse handles the Create response.
-func (client *PoolClient) createHandleResponse(resp *http.Response) (PoolCreateResponse, error) {
-	result := PoolCreateResponse{RawResponse: resp}
+func (client *PoolClient) createHandleResponse(resp *http.Response) (PoolClientCreateResponse, error) {
+	result := PoolClientCreateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
-		return PoolCreateResponse{}, runtime.NewResponseError(err, resp)
+		return PoolClientCreateResponse{}, err
 	}
 	return result, nil
-}
-
-// createHandleError handles the Create error response.
-func (client *PoolClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginDelete - Deletes the specified pool.
-// If the operation fails it returns the *CloudError error type.
-func (client *PoolClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolBeginDeleteOptions) (PoolDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, poolName, options)
-	if err != nil {
-		return PoolDeletePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
+// resourceGroupName - The name of the resource group that contains the Batch account.
+// accountName - The name of the Batch account.
+// poolName - The pool name. This must be unique within the account.
+// options - PoolClientBeginDeleteOptions contains the optional parameters for the PoolClient.BeginDelete method.
+func (client *PoolClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolClientBeginDeleteOptions) (*runtime.Poller[PoolClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, poolName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PoolClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[PoolClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := PoolDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("PoolClient.Delete", "location", resp, client.pl, client.deleteHandleError)
-	if err != nil {
-		return PoolDeletePollerResponse{}, err
-	}
-	result.Poller = &PoolDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified pool.
-// If the operation fails it returns the *CloudError error type.
-func (client *PoolClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
+func (client *PoolClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, poolName, options)
 	if err != nil {
 		return nil, err
@@ -153,13 +160,13 @@ func (client *PoolClient) deleteOperation(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PoolClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolBeginDeleteOptions) (*policy.Request, error) {
+func (client *PoolClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -177,49 +184,41 @@ func (client *PoolClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *PoolClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // DisableAutoScale - Disables automatic scaling for a pool.
-// If the operation fails it returns the *CloudError error type.
-func (client *PoolClient) DisableAutoScale(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolDisableAutoScaleOptions) (PoolDisableAutoScaleResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
+// resourceGroupName - The name of the resource group that contains the Batch account.
+// accountName - The name of the Batch account.
+// poolName - The pool name. This must be unique within the account.
+// options - PoolClientDisableAutoScaleOptions contains the optional parameters for the PoolClient.DisableAutoScale method.
+func (client *PoolClient) DisableAutoScale(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolClientDisableAutoScaleOptions) (PoolClientDisableAutoScaleResponse, error) {
 	req, err := client.disableAutoScaleCreateRequest(ctx, resourceGroupName, accountName, poolName, options)
 	if err != nil {
-		return PoolDisableAutoScaleResponse{}, err
+		return PoolClientDisableAutoScaleResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PoolDisableAutoScaleResponse{}, err
+		return PoolClientDisableAutoScaleResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PoolDisableAutoScaleResponse{}, client.disableAutoScaleHandleError(resp)
+		return PoolClientDisableAutoScaleResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.disableAutoScaleHandleResponse(resp)
 }
 
 // disableAutoScaleCreateRequest creates the DisableAutoScale request.
-func (client *PoolClient) disableAutoScaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolDisableAutoScaleOptions) (*policy.Request, error) {
+func (client *PoolClient) disableAutoScaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolClientDisableAutoScaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}/disableAutoScale"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -237,61 +236,53 @@ func (client *PoolClient) disableAutoScaleCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // disableAutoScaleHandleResponse handles the DisableAutoScale response.
-func (client *PoolClient) disableAutoScaleHandleResponse(resp *http.Response) (PoolDisableAutoScaleResponse, error) {
-	result := PoolDisableAutoScaleResponse{RawResponse: resp}
+func (client *PoolClient) disableAutoScaleHandleResponse(resp *http.Response) (PoolClientDisableAutoScaleResponse, error) {
+	result := PoolClientDisableAutoScaleResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
-		return PoolDisableAutoScaleResponse{}, runtime.NewResponseError(err, resp)
+		return PoolClientDisableAutoScaleResponse{}, err
 	}
 	return result, nil
 }
 
-// disableAutoScaleHandleError handles the DisableAutoScale error response.
-func (client *PoolClient) disableAutoScaleHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets information about the specified pool.
-// If the operation fails it returns the *CloudError error type.
-func (client *PoolClient) Get(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolGetOptions) (PoolGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
+// resourceGroupName - The name of the resource group that contains the Batch account.
+// accountName - The name of the Batch account.
+// poolName - The pool name. This must be unique within the account.
+// options - PoolClientGetOptions contains the optional parameters for the PoolClient.Get method.
+func (client *PoolClient) Get(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolClientGetOptions) (PoolClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, poolName, options)
 	if err != nil {
-		return PoolGetResponse{}, err
+		return PoolClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PoolGetResponse{}, err
+		return PoolClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PoolGetResponse{}, client.getHandleError(resp)
+		return PoolClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PoolClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolGetOptions) (*policy.Request, error) {
+func (client *PoolClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -309,58 +300,65 @@ func (client *PoolClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PoolClient) getHandleResponse(resp *http.Response) (PoolGetResponse, error) {
-	result := PoolGetResponse{RawResponse: resp}
+func (client *PoolClient) getHandleResponse(resp *http.Response) (PoolClientGetResponse, error) {
+	result := PoolClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
-		return PoolGetResponse{}, runtime.NewResponseError(err, resp)
+		return PoolClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PoolClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByBatchAccount - Lists all of the pools in the specified account.
-// If the operation fails it returns the *CloudError error type.
-func (client *PoolClient) ListByBatchAccount(resourceGroupName string, accountName string, options *PoolListByBatchAccountOptions) *PoolListByBatchAccountPager {
-	return &PoolListByBatchAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByBatchAccountCreateRequest(ctx, resourceGroupName, accountName, options)
+// NewListByBatchAccountPager - Lists all of the pools in the specified account.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
+// resourceGroupName - The name of the resource group that contains the Batch account.
+// accountName - The name of the Batch account.
+// options - PoolClientListByBatchAccountOptions contains the optional parameters for the PoolClient.ListByBatchAccount method.
+func (client *PoolClient) NewListByBatchAccountPager(resourceGroupName string, accountName string, options *PoolClientListByBatchAccountOptions) *runtime.Pager[PoolClientListByBatchAccountResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PoolClientListByBatchAccountResponse]{
+		More: func(page PoolClientListByBatchAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PoolListByBatchAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListPoolsResult.NextLink)
+		Fetcher: func(ctx context.Context, page *PoolClientListByBatchAccountResponse) (PoolClientListByBatchAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByBatchAccountCreateRequest(ctx, resourceGroupName, accountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PoolClientListByBatchAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PoolClientListByBatchAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PoolClientListByBatchAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByBatchAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByBatchAccountCreateRequest creates the ListByBatchAccount request.
-func (client *PoolClient) listByBatchAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *PoolListByBatchAccountOptions) (*policy.Request, error) {
+func (client *PoolClient) listByBatchAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *PoolClientListByBatchAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -374,7 +372,7 @@ func (client *PoolClient) listByBatchAccountCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -388,57 +386,49 @@ func (client *PoolClient) listByBatchAccountCreateRequest(ctx context.Context, r
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBatchAccountHandleResponse handles the ListByBatchAccount response.
-func (client *PoolClient) listByBatchAccountHandleResponse(resp *http.Response) (PoolListByBatchAccountResponse, error) {
-	result := PoolListByBatchAccountResponse{RawResponse: resp}
+func (client *PoolClient) listByBatchAccountHandleResponse(resp *http.Response) (PoolClientListByBatchAccountResponse, error) {
+	result := PoolClientListByBatchAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListPoolsResult); err != nil {
-		return PoolListByBatchAccountResponse{}, runtime.NewResponseError(err, resp)
+		return PoolClientListByBatchAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByBatchAccountHandleError handles the ListByBatchAccount error response.
-func (client *PoolClient) listByBatchAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// StopResize - This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the
-// pool maintains its current state. After stopping, the pool
-// stabilizes at the number of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes first to stopping
-// and then to steady. A resize operation need
+// StopResize - This does not restore the pool to its previous state before the resize operation: it only stops any further
+// changes being made, and the pool maintains its current state. After stopping, the pool
+// stabilizes at the number of nodes it was at when the stop operation was done. During the stop operation, the pool allocation
+// state changes first to stopping and then to steady. A resize operation need
 // not be an explicit resize pool request; this API can also be used to halt the initial sizing of the pool when it is created.
-// If the operation fails it returns the *CloudError error type.
-func (client *PoolClient) StopResize(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolStopResizeOptions) (PoolStopResizeResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
+// resourceGroupName - The name of the resource group that contains the Batch account.
+// accountName - The name of the Batch account.
+// poolName - The pool name. This must be unique within the account.
+// options - PoolClientStopResizeOptions contains the optional parameters for the PoolClient.StopResize method.
+func (client *PoolClient) StopResize(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolClientStopResizeOptions) (PoolClientStopResizeResponse, error) {
 	req, err := client.stopResizeCreateRequest(ctx, resourceGroupName, accountName, poolName, options)
 	if err != nil {
-		return PoolStopResizeResponse{}, err
+		return PoolClientStopResizeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PoolStopResizeResponse{}, err
+		return PoolClientStopResizeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PoolStopResizeResponse{}, client.stopResizeHandleError(resp)
+		return PoolClientStopResizeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.stopResizeHandleResponse(resp)
 }
 
 // stopResizeCreateRequest creates the StopResize request.
-func (client *PoolClient) stopResizeCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolStopResizeOptions) (*policy.Request, error) {
+func (client *PoolClient) stopResizeCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolClientStopResizeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}/stopResize"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -456,61 +446,55 @@ func (client *PoolClient) stopResizeCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // stopResizeHandleResponse handles the StopResize response.
-func (client *PoolClient) stopResizeHandleResponse(resp *http.Response) (PoolStopResizeResponse, error) {
-	result := PoolStopResizeResponse{RawResponse: resp}
+func (client *PoolClient) stopResizeHandleResponse(resp *http.Response) (PoolClientStopResizeResponse, error) {
+	result := PoolClientStopResizeResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
-		return PoolStopResizeResponse{}, runtime.NewResponseError(err, resp)
+		return PoolClientStopResizeResponse{}, err
 	}
 	return result, nil
 }
 
-// stopResizeHandleError handles the StopResize error response.
-func (client *PoolClient) stopResizeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates the properties of an existing pool.
-// If the operation fails it returns the *CloudError error type.
-func (client *PoolClient) Update(ctx context.Context, resourceGroupName string, accountName string, poolName string, parameters Pool, options *PoolUpdateOptions) (PoolUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
+// resourceGroupName - The name of the resource group that contains the Batch account.
+// accountName - The name of the Batch account.
+// poolName - The pool name. This must be unique within the account.
+// parameters - Pool properties that should be updated. Properties that are supplied will be updated, any property not supplied
+// will be unchanged.
+// options - PoolClientUpdateOptions contains the optional parameters for the PoolClient.Update method.
+func (client *PoolClient) Update(ctx context.Context, resourceGroupName string, accountName string, poolName string, parameters Pool, options *PoolClientUpdateOptions) (PoolClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, poolName, parameters, options)
 	if err != nil {
-		return PoolUpdateResponse{}, err
+		return PoolClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PoolUpdateResponse{}, err
+		return PoolClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PoolUpdateResponse{}, client.updateHandleError(resp)
+		return PoolClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PoolClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, parameters Pool, options *PoolUpdateOptions) (*policy.Request, error) {
+func (client *PoolClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, parameters Pool, options *PoolClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -528,41 +512,28 @@ func (client *PoolClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *PoolClient) updateHandleResponse(resp *http.Response) (PoolUpdateResponse, error) {
-	result := PoolUpdateResponse{RawResponse: resp}
+func (client *PoolClient) updateHandleResponse(resp *http.Response) (PoolClientUpdateResponse, error) {
+	result := PoolClientUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
-		return PoolUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return PoolClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *PoolClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

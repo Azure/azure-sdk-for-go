@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,101 +19,117 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare"
 )
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Triggers_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Triggers_Get.json
 func ExampleTriggersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewTriggersClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewTriggersClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-subscription-name>",
-		"<trigger-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"ShareSubscription1",
+		"Trigger1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("TriggerClassification.GetTrigger().ID: %s\n", *res.GetTrigger().ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Triggers_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Triggers_Create.json
 func ExampleTriggersClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewTriggersClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewTriggersClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-subscription-name>",
-		"<trigger-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"ShareSubscription1",
+		"Trigger1",
 		&armdatashare.ScheduledTrigger{
-			Trigger: armdatashare.Trigger{
-				Kind: armdatashare.TriggerKindScheduleBased.ToPtr(),
-			},
+			Kind: to.Ptr(armdatashare.TriggerKindScheduleBased),
 			Properties: &armdatashare.ScheduledTriggerProperties{
-				RecurrenceInterval:  armdatashare.RecurrenceIntervalDay.ToPtr(),
-				SynchronizationMode: armdatashare.SynchronizationModeIncremental.ToPtr(),
-				SynchronizationTime: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.9614956Z"); return t }()),
+				RecurrenceInterval:  to.Ptr(armdatashare.RecurrenceIntervalDay),
+				SynchronizationMode: to.Ptr(armdatashare.SynchronizationModeIncremental),
+				SynchronizationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-14T04:47:52.9614956Z"); return t }()),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("TriggerClassification.GetTrigger().ID: %s\n", *res.GetTrigger().ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Triggers_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Triggers_Delete.json
 func ExampleTriggersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewTriggersClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewTriggersClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-subscription-name>",
-		"<trigger-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"ShareSubscription1",
+		"Trigger1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Triggers_ListByShareSubscription.json
-func ExampleTriggersClient_ListByShareSubscription() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Triggers_ListByShareSubscription.json
+func ExampleTriggersClient_NewListByShareSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewTriggersClient("<subscription-id>", cred, nil)
-	pager := client.ListByShareSubscription("<resource-group-name>",
-		"<account-name>",
-		"<share-subscription-name>",
-		&armdatashare.TriggersListByShareSubscriptionOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armdatashare.NewTriggersClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByShareSubscriptionPager("SampleResourceGroup",
+		"Account1",
+		"ShareSubscription1",
+		&armdatashare.TriggersClientListByShareSubscriptionOptions{SkipToken: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("TriggerClassification.GetTrigger().ID: %s\n", *v.GetTrigger().ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

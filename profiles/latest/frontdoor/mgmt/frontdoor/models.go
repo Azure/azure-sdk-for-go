@@ -12,7 +12,7 @@ package frontdoor
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-05-01/frontdoor"
+	original "github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-11-01/frontdoor"
 )
 
 const (
@@ -22,31 +22,31 @@ const (
 type ActionType = original.ActionType
 
 const (
-	Allow    ActionType = original.Allow
-	Block    ActionType = original.Block
-	Log      ActionType = original.Log
-	Redirect ActionType = original.Redirect
+	ActionTypeAllow    ActionType = original.ActionTypeAllow
+	ActionTypeBlock    ActionType = original.ActionTypeBlock
+	ActionTypeLog      ActionType = original.ActionTypeLog
+	ActionTypeRedirect ActionType = original.ActionTypeRedirect
 )
 
 type AggregationInterval = original.AggregationInterval
 
 const (
-	Daily  AggregationInterval = original.Daily
-	Hourly AggregationInterval = original.Hourly
+	AggregationIntervalDaily  AggregationInterval = original.AggregationIntervalDaily
+	AggregationIntervalHourly AggregationInterval = original.AggregationIntervalHourly
 )
 
 type Availability = original.Availability
 
 const (
-	Available   Availability = original.Available
-	Unavailable Availability = original.Unavailable
+	AvailabilityAvailable   Availability = original.AvailabilityAvailable
+	AvailabilityUnavailable Availability = original.AvailabilityUnavailable
 )
 
 type BackendEnabledState = original.BackendEnabledState
 
 const (
-	Disabled BackendEnabledState = original.Disabled
-	Enabled  BackendEnabledState = original.Enabled
+	BackendEnabledStateDisabled BackendEnabledState = original.BackendEnabledStateDisabled
+	BackendEnabledStateEnabled  BackendEnabledState = original.BackendEnabledStateEnabled
 )
 
 type CertificateSource = original.CertificateSource
@@ -59,7 +59,7 @@ const (
 type CertificateType = original.CertificateType
 
 const (
-	Dedicated CertificateType = original.Dedicated
+	CertificateTypeDedicated CertificateType = original.CertificateTypeDedicated
 )
 
 type CustomHTTPSProvisioningState = original.CustomHTTPSProvisioningState
@@ -75,16 +75,16 @@ const (
 type CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstate
 
 const (
-	CertificateDeleted                            CustomHTTPSProvisioningSubstate = original.CertificateDeleted
-	CertificateDeployed                           CustomHTTPSProvisioningSubstate = original.CertificateDeployed
-	DeletingCertificate                           CustomHTTPSProvisioningSubstate = original.DeletingCertificate
-	DeployingCertificate                          CustomHTTPSProvisioningSubstate = original.DeployingCertificate
-	DomainControlValidationRequestApproved        CustomHTTPSProvisioningSubstate = original.DomainControlValidationRequestApproved
-	DomainControlValidationRequestRejected        CustomHTTPSProvisioningSubstate = original.DomainControlValidationRequestRejected
-	DomainControlValidationRequestTimedOut        CustomHTTPSProvisioningSubstate = original.DomainControlValidationRequestTimedOut
-	IssuingCertificate                            CustomHTTPSProvisioningSubstate = original.IssuingCertificate
-	PendingDomainControlValidationREquestApproval CustomHTTPSProvisioningSubstate = original.PendingDomainControlValidationREquestApproval
-	SubmittingDomainControlValidationRequest      CustomHTTPSProvisioningSubstate = original.SubmittingDomainControlValidationRequest
+	CustomHTTPSProvisioningSubstateCertificateDeleted                            CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstateCertificateDeleted
+	CustomHTTPSProvisioningSubstateCertificateDeployed                           CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstateCertificateDeployed
+	CustomHTTPSProvisioningSubstateDeletingCertificate                           CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstateDeletingCertificate
+	CustomHTTPSProvisioningSubstateDeployingCertificate                          CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstateDeployingCertificate
+	CustomHTTPSProvisioningSubstateDomainControlValidationRequestApproved        CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstateDomainControlValidationRequestApproved
+	CustomHTTPSProvisioningSubstateDomainControlValidationRequestRejected        CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstateDomainControlValidationRequestRejected
+	CustomHTTPSProvisioningSubstateDomainControlValidationRequestTimedOut        CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstateDomainControlValidationRequestTimedOut
+	CustomHTTPSProvisioningSubstateIssuingCertificate                            CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstateIssuingCertificate
+	CustomHTTPSProvisioningSubstatePendingDomainControlValidationREquestApproval CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstatePendingDomainControlValidationREquestApproval
+	CustomHTTPSProvisioningSubstateSubmittingDomainControlValidationRequest      CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstateSubmittingDomainControlValidationRequest
 )
 
 type CustomRuleEnabledState = original.CustomRuleEnabledState
@@ -111,10 +111,10 @@ const (
 type EndpointType = original.EndpointType
 
 const (
-	AFD         EndpointType = original.AFD
-	ATM         EndpointType = original.ATM
-	AzureRegion EndpointType = original.AzureRegion
-	CDN         EndpointType = original.CDN
+	EndpointTypeAFD         EndpointType = original.EndpointTypeAFD
+	EndpointTypeATM         EndpointType = original.EndpointTypeATM
+	EndpointTypeAzureRegion EndpointType = original.EndpointTypeAzureRegion
+	EndpointTypeCDN         EndpointType = original.EndpointTypeCDN
 )
 
 type EnforceCertificateNameCheckEnabledState = original.EnforceCertificateNameCheckEnabledState
@@ -127,17 +127,17 @@ const (
 type ForwardingProtocol = original.ForwardingProtocol
 
 const (
-	HTTPOnly     ForwardingProtocol = original.HTTPOnly
-	HTTPSOnly    ForwardingProtocol = original.HTTPSOnly
-	MatchRequest ForwardingProtocol = original.MatchRequest
+	ForwardingProtocolHTTPOnly     ForwardingProtocol = original.ForwardingProtocolHTTPOnly
+	ForwardingProtocolHTTPSOnly    ForwardingProtocol = original.ForwardingProtocolHTTPSOnly
+	ForwardingProtocolMatchRequest ForwardingProtocol = original.ForwardingProtocolMatchRequest
 )
 
 type HeaderActionType = original.HeaderActionType
 
 const (
-	Append    HeaderActionType = original.Append
-	Delete    HeaderActionType = original.Delete
-	Overwrite HeaderActionType = original.Overwrite
+	HeaderActionTypeAppend    HeaderActionType = original.HeaderActionTypeAppend
+	HeaderActionTypeDelete    HeaderActionType = original.HeaderActionTypeDelete
+	HeaderActionTypeOverwrite HeaderActionType = original.HeaderActionTypeOverwrite
 )
 
 type HealthProbeEnabled = original.HealthProbeEnabled
@@ -150,8 +150,8 @@ const (
 type HealthProbeMethod = original.HealthProbeMethod
 
 const (
-	GET  HealthProbeMethod = original.GET
-	HEAD HealthProbeMethod = original.HEAD
+	HealthProbeMethodGET  HealthProbeMethod = original.HealthProbeMethodGET
+	HealthProbeMethodHEAD HealthProbeMethod = original.HealthProbeMethodHEAD
 )
 
 type LatencyScorecardAggregationInterval = original.LatencyScorecardAggregationInterval
@@ -172,48 +172,57 @@ const (
 type ManagedRuleExclusionMatchVariable = original.ManagedRuleExclusionMatchVariable
 
 const (
-	QueryStringArgNames     ManagedRuleExclusionMatchVariable = original.QueryStringArgNames
-	RequestBodyPostArgNames ManagedRuleExclusionMatchVariable = original.RequestBodyPostArgNames
-	RequestCookieNames      ManagedRuleExclusionMatchVariable = original.RequestCookieNames
-	RequestHeaderNames      ManagedRuleExclusionMatchVariable = original.RequestHeaderNames
+	ManagedRuleExclusionMatchVariableQueryStringArgNames     ManagedRuleExclusionMatchVariable = original.ManagedRuleExclusionMatchVariableQueryStringArgNames
+	ManagedRuleExclusionMatchVariableRequestBodyJSONArgNames ManagedRuleExclusionMatchVariable = original.ManagedRuleExclusionMatchVariableRequestBodyJSONArgNames
+	ManagedRuleExclusionMatchVariableRequestBodyPostArgNames ManagedRuleExclusionMatchVariable = original.ManagedRuleExclusionMatchVariableRequestBodyPostArgNames
+	ManagedRuleExclusionMatchVariableRequestCookieNames      ManagedRuleExclusionMatchVariable = original.ManagedRuleExclusionMatchVariableRequestCookieNames
+	ManagedRuleExclusionMatchVariableRequestHeaderNames      ManagedRuleExclusionMatchVariable = original.ManagedRuleExclusionMatchVariableRequestHeaderNames
 )
 
 type ManagedRuleExclusionSelectorMatchOperator = original.ManagedRuleExclusionSelectorMatchOperator
 
 const (
-	Contains   ManagedRuleExclusionSelectorMatchOperator = original.Contains
-	EndsWith   ManagedRuleExclusionSelectorMatchOperator = original.EndsWith
-	Equals     ManagedRuleExclusionSelectorMatchOperator = original.Equals
-	EqualsAny  ManagedRuleExclusionSelectorMatchOperator = original.EqualsAny
-	StartsWith ManagedRuleExclusionSelectorMatchOperator = original.StartsWith
+	ManagedRuleExclusionSelectorMatchOperatorContains   ManagedRuleExclusionSelectorMatchOperator = original.ManagedRuleExclusionSelectorMatchOperatorContains
+	ManagedRuleExclusionSelectorMatchOperatorEndsWith   ManagedRuleExclusionSelectorMatchOperator = original.ManagedRuleExclusionSelectorMatchOperatorEndsWith
+	ManagedRuleExclusionSelectorMatchOperatorEquals     ManagedRuleExclusionSelectorMatchOperator = original.ManagedRuleExclusionSelectorMatchOperatorEquals
+	ManagedRuleExclusionSelectorMatchOperatorEqualsAny  ManagedRuleExclusionSelectorMatchOperator = original.ManagedRuleExclusionSelectorMatchOperatorEqualsAny
+	ManagedRuleExclusionSelectorMatchOperatorStartsWith ManagedRuleExclusionSelectorMatchOperator = original.ManagedRuleExclusionSelectorMatchOperatorStartsWith
+)
+
+type ManagedRuleSetActionType = original.ManagedRuleSetActionType
+
+const (
+	ManagedRuleSetActionTypeBlock    ManagedRuleSetActionType = original.ManagedRuleSetActionTypeBlock
+	ManagedRuleSetActionTypeLog      ManagedRuleSetActionType = original.ManagedRuleSetActionTypeLog
+	ManagedRuleSetActionTypeRedirect ManagedRuleSetActionType = original.ManagedRuleSetActionTypeRedirect
 )
 
 type MatchProcessingBehavior = original.MatchProcessingBehavior
 
 const (
-	Continue MatchProcessingBehavior = original.Continue
-	Stop     MatchProcessingBehavior = original.Stop
+	MatchProcessingBehaviorContinue MatchProcessingBehavior = original.MatchProcessingBehaviorContinue
+	MatchProcessingBehaviorStop     MatchProcessingBehavior = original.MatchProcessingBehaviorStop
 )
 
 type MatchVariable = original.MatchVariable
 
 const (
-	Cookies       MatchVariable = original.Cookies
-	PostArgs      MatchVariable = original.PostArgs
-	QueryString   MatchVariable = original.QueryString
-	RemoteAddr    MatchVariable = original.RemoteAddr
-	RequestBody   MatchVariable = original.RequestBody
-	RequestHeader MatchVariable = original.RequestHeader
-	RequestMethod MatchVariable = original.RequestMethod
-	RequestURI    MatchVariable = original.RequestURI
-	SocketAddr    MatchVariable = original.SocketAddr
+	MatchVariableCookies       MatchVariable = original.MatchVariableCookies
+	MatchVariablePostArgs      MatchVariable = original.MatchVariablePostArgs
+	MatchVariableQueryString   MatchVariable = original.MatchVariableQueryString
+	MatchVariableRemoteAddr    MatchVariable = original.MatchVariableRemoteAddr
+	MatchVariableRequestBody   MatchVariable = original.MatchVariableRequestBody
+	MatchVariableRequestHeader MatchVariable = original.MatchVariableRequestHeader
+	MatchVariableRequestMethod MatchVariable = original.MatchVariableRequestMethod
+	MatchVariableRequestURI    MatchVariable = original.MatchVariableRequestURI
+	MatchVariableSocketAddr    MatchVariable = original.MatchVariableSocketAddr
 )
 
 type MinimumTLSVersion = original.MinimumTLSVersion
 
 const (
-	OneFullStopTwo  MinimumTLSVersion = original.OneFullStopTwo
-	OneFullStopZero MinimumTLSVersion = original.OneFullStopZero
+	MinimumTLSVersionOneFullStopTwo  MinimumTLSVersion = original.MinimumTLSVersionOneFullStopTwo
+	MinimumTLSVersionOneFullStopZero MinimumTLSVersion = original.MinimumTLSVersionOneFullStopZero
 )
 
 type NetworkExperimentResourceState = original.NetworkExperimentResourceState
@@ -230,9 +239,9 @@ const (
 type NetworkOperationStatus = original.NetworkOperationStatus
 
 const (
-	Failed     NetworkOperationStatus = original.Failed
-	InProgress NetworkOperationStatus = original.InProgress
-	Succeeded  NetworkOperationStatus = original.Succeeded
+	NetworkOperationStatusFailed     NetworkOperationStatus = original.NetworkOperationStatusFailed
+	NetworkOperationStatusInProgress NetworkOperationStatus = original.NetworkOperationStatusInProgress
+	NetworkOperationStatusSucceeded  NetworkOperationStatus = original.NetworkOperationStatusSucceeded
 )
 
 type OdataType = original.OdataType
@@ -270,8 +279,15 @@ const (
 type PolicyMode = original.PolicyMode
 
 const (
-	Detection  PolicyMode = original.Detection
-	Prevention PolicyMode = original.Prevention
+	PolicyModeDetection  PolicyMode = original.PolicyModeDetection
+	PolicyModePrevention PolicyMode = original.PolicyModePrevention
+)
+
+type PolicyRequestBodyCheck = original.PolicyRequestBodyCheck
+
+const (
+	PolicyRequestBodyCheckDisabled PolicyRequestBodyCheck = original.PolicyRequestBodyCheckDisabled
+	PolicyRequestBodyCheckEnabled  PolicyRequestBodyCheck = original.PolicyRequestBodyCheckEnabled
 )
 
 type PolicyResourceState = original.PolicyResourceState
@@ -288,27 +304,27 @@ const (
 type PrivateEndpointStatus = original.PrivateEndpointStatus
 
 const (
-	Approved     PrivateEndpointStatus = original.Approved
-	Disconnected PrivateEndpointStatus = original.Disconnected
-	Pending      PrivateEndpointStatus = original.Pending
-	Rejected     PrivateEndpointStatus = original.Rejected
-	Timeout      PrivateEndpointStatus = original.Timeout
+	PrivateEndpointStatusApproved     PrivateEndpointStatus = original.PrivateEndpointStatusApproved
+	PrivateEndpointStatusDisconnected PrivateEndpointStatus = original.PrivateEndpointStatusDisconnected
+	PrivateEndpointStatusPending      PrivateEndpointStatus = original.PrivateEndpointStatusPending
+	PrivateEndpointStatusRejected     PrivateEndpointStatus = original.PrivateEndpointStatusRejected
+	PrivateEndpointStatusTimeout      PrivateEndpointStatus = original.PrivateEndpointStatusTimeout
 )
 
 type Protocol = original.Protocol
 
 const (
-	HTTP  Protocol = original.HTTP
-	HTTPS Protocol = original.HTTPS
+	ProtocolHTTP  Protocol = original.ProtocolHTTP
+	ProtocolHTTPS Protocol = original.ProtocolHTTPS
 )
 
 type Query = original.Query
 
 const (
-	StripAll       Query = original.StripAll
-	StripAllExcept Query = original.StripAllExcept
-	StripNone      Query = original.StripNone
-	StripOnly      Query = original.StripOnly
+	QueryStripAll       Query = original.QueryStripAll
+	QueryStripAllExcept Query = original.QueryStripAllExcept
+	QueryStripNone      Query = original.QueryStripNone
+	QueryStripOnly      Query = original.QueryStripOnly
 )
 
 type RedirectProtocol = original.RedirectProtocol
@@ -322,10 +338,10 @@ const (
 type RedirectType = original.RedirectType
 
 const (
-	Found             RedirectType = original.Found
-	Moved             RedirectType = original.Moved
-	PermanentRedirect RedirectType = original.PermanentRedirect
-	TemporaryRedirect RedirectType = original.TemporaryRedirect
+	RedirectTypeFound             RedirectType = original.RedirectTypeFound
+	RedirectTypeMoved             RedirectType = original.RedirectTypeMoved
+	RedirectTypePermanentRedirect RedirectType = original.RedirectTypePermanentRedirect
+	RedirectTypeTemporaryRedirect RedirectType = original.RedirectTypeTemporaryRedirect
 )
 
 type ResourceState = original.ResourceState
@@ -342,8 +358,8 @@ const (
 type ResourceType = original.ResourceType
 
 const (
-	MicrosoftNetworkfrontDoors                  ResourceType = original.MicrosoftNetworkfrontDoors
-	MicrosoftNetworkfrontDoorsfrontendEndpoints ResourceType = original.MicrosoftNetworkfrontDoorsfrontendEndpoints
+	ResourceTypeMicrosoftNetworkfrontDoors                  ResourceType = original.ResourceTypeMicrosoftNetworkfrontDoors
+	ResourceTypeMicrosoftNetworkfrontDoorsfrontendEndpoints ResourceType = original.ResourceTypeMicrosoftNetworkfrontDoorsfrontendEndpoints
 )
 
 type RoutingRuleEnabledState = original.RoutingRuleEnabledState
@@ -356,8 +372,8 @@ const (
 type RuleType = original.RuleType
 
 const (
-	MatchRule     RuleType = original.MatchRule
-	RateLimitRule RuleType = original.RateLimitRule
+	RuleTypeMatchRule     RuleType = original.RuleTypeMatchRule
+	RuleTypeRateLimitRule RuleType = original.RuleTypeRateLimitRule
 )
 
 type RulesEngineMatchVariable = original.RulesEngineMatchVariable
@@ -400,6 +416,14 @@ const (
 	SessionAffinityEnabledStateEnabled  SessionAffinityEnabledState = original.SessionAffinityEnabledStateEnabled
 )
 
+type SkuName = original.SkuName
+
+const (
+	SkuNameClassicAzureFrontDoor  SkuName = original.SkuNameClassicAzureFrontDoor
+	SkuNamePremiumAzureFrontDoor  SkuName = original.SkuNamePremiumAzureFrontDoor
+	SkuNameStandardAzureFrontDoor SkuName = original.SkuNameStandardAzureFrontDoor
+)
+
 type State = original.State
 
 const (
@@ -417,21 +441,21 @@ const (
 type TimeseriesType = original.TimeseriesType
 
 const (
-	LatencyP50        TimeseriesType = original.LatencyP50
-	LatencyP75        TimeseriesType = original.LatencyP75
-	LatencyP95        TimeseriesType = original.LatencyP95
-	MeasurementCounts TimeseriesType = original.MeasurementCounts
+	TimeseriesTypeLatencyP50        TimeseriesType = original.TimeseriesTypeLatencyP50
+	TimeseriesTypeLatencyP75        TimeseriesType = original.TimeseriesTypeLatencyP75
+	TimeseriesTypeLatencyP95        TimeseriesType = original.TimeseriesTypeLatencyP95
+	TimeseriesTypeMeasurementCounts TimeseriesType = original.TimeseriesTypeMeasurementCounts
 )
 
 type Transform = original.Transform
 
 const (
-	Lowercase   Transform = original.Lowercase
-	RemoveNulls Transform = original.RemoveNulls
-	Trim        Transform = original.Trim
-	Uppercase   Transform = original.Uppercase
-	URLDecode   Transform = original.URLDecode
-	URLEncode   Transform = original.URLEncode
+	TransformLowercase   Transform = original.TransformLowercase
+	TransformRemoveNulls Transform = original.TransformRemoveNulls
+	TransformTrim        Transform = original.TransformTrim
+	TransformUppercase   Transform = original.TransformUppercase
+	TransformURLDecode   Transform = original.TransformURLDecode
+	TransformURLEncode   Transform = original.TransformURLEncode
 )
 
 type TransformType = original.TransformType
@@ -572,6 +596,8 @@ type RulesEngineUpdateParameters = original.RulesEngineUpdateParameters
 type RulesEnginesClient = original.RulesEnginesClient
 type RulesEnginesCreateOrUpdateFuture = original.RulesEnginesCreateOrUpdateFuture
 type RulesEnginesDeleteFuture = original.RulesEnginesDeleteFuture
+type SecurityPolicyLink = original.SecurityPolicyLink
+type Sku = original.Sku
 type SubResource = original.SubResource
 type TagsObject = original.TagsObject
 type Timeseries = original.Timeseries
@@ -775,6 +801,9 @@ func PossibleManagedRuleExclusionMatchVariableValues() []ManagedRuleExclusionMat
 func PossibleManagedRuleExclusionSelectorMatchOperatorValues() []ManagedRuleExclusionSelectorMatchOperator {
 	return original.PossibleManagedRuleExclusionSelectorMatchOperatorValues()
 }
+func PossibleManagedRuleSetActionTypeValues() []ManagedRuleSetActionType {
+	return original.PossibleManagedRuleSetActionTypeValues()
+}
 func PossibleMatchProcessingBehaviorValues() []MatchProcessingBehavior {
 	return original.PossibleMatchProcessingBehaviorValues()
 }
@@ -801,6 +830,9 @@ func PossiblePolicyEnabledStateValues() []PolicyEnabledState {
 }
 func PossiblePolicyModeValues() []PolicyMode {
 	return original.PossiblePolicyModeValues()
+}
+func PossiblePolicyRequestBodyCheckValues() []PolicyRequestBodyCheck {
+	return original.PossiblePolicyRequestBodyCheckValues()
 }
 func PossiblePolicyResourceStateValues() []PolicyResourceState {
 	return original.PossiblePolicyResourceStateValues()
@@ -840,6 +872,9 @@ func PossibleRulesEngineOperatorValues() []RulesEngineOperator {
 }
 func PossibleSessionAffinityEnabledStateValues() []SessionAffinityEnabledState {
 	return original.PossibleSessionAffinityEnabledStateValues()
+}
+func PossibleSkuNameValues() []SkuName {
+	return original.PossibleSkuNameValues()
 }
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()

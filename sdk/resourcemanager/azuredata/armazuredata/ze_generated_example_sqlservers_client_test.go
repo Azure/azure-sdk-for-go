@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,88 +17,104 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazuredata"
 )
 
-// x-ms-original-file: specification/azuredata/resource-manager/Microsoft.AzureData/preview/2019-07-24-preview/examples/GetSqlServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azuredata/resource-manager/Microsoft.AzureData/preview/2019-07-24-preview/examples/GetSqlServer.json
 func ExampleSQLServersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armazuredata.NewSQLServersClient("<subscription-id>", cred, nil)
-	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<sql-server-registration-name>",
-		"<sql-server-name>",
-		&armazuredata.SQLServersGetOptions{Expand: nil})
+	client, err := armazuredata.NewSQLServersClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
 	}
-	log.Printf("SQLServer.ID: %s\n", *res.ID)
+	res, err := client.Get(ctx,
+		"testrg",
+		"testsqlregistration",
+		"testsqlserver",
+		&armazuredata.SQLServersClientGetOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azuredata/resource-manager/Microsoft.AzureData/preview/2019-07-24-preview/examples/CreateOrUpdateSqlServerWithRegistrationGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azuredata/resource-manager/Microsoft.AzureData/preview/2019-07-24-preview/examples/CreateOrUpdateSqlServerWithRegistrationGroup.json
 func ExampleSQLServersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armazuredata.NewSQLServersClient("<subscription-id>", cred, nil)
+	client, err := armazuredata.NewSQLServersClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<sql-server-registration-name>",
-		"<sql-server-name>",
+		"testrg",
+		"testsqlregistration",
+		"testsqlserver",
 		armazuredata.SQLServer{
 			Properties: &armazuredata.SQLServerProperties{
-				Cores:          to.Int32Ptr(8),
-				Edition:        to.StringPtr("<edition>"),
-				PropertyBag:    to.StringPtr("<property-bag>"),
-				RegistrationID: to.StringPtr("<registration-id>"),
-				Version:        to.StringPtr("<version>"),
+				Cores:          to.Ptr[int32](8),
+				Edition:        to.Ptr("Latin"),
+				PropertyBag:    to.Ptr(""),
+				RegistrationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.AzureData/SqlServerRegistrations/testsqlregistration"),
+				Version:        to.Ptr("2008"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("SQLServer.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azuredata/resource-manager/Microsoft.AzureData/preview/2019-07-24-preview/examples/DeleteSqlServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azuredata/resource-manager/Microsoft.AzureData/preview/2019-07-24-preview/examples/DeleteSqlServer.json
 func ExampleSQLServersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armazuredata.NewSQLServersClient("<subscription-id>", cred, nil)
+	client, err := armazuredata.NewSQLServersClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<sql-server-registration-name>",
-		"<sql-server-name>",
+		"testrg",
+		"testsqlregistration",
+		"testsqlserver",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/azuredata/resource-manager/Microsoft.AzureData/preview/2019-07-24-preview/examples/ListByResourceGroupSqlServer.json
-func ExampleSQLServersClient_ListByResourceGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azuredata/resource-manager/Microsoft.AzureData/preview/2019-07-24-preview/examples/ListByResourceGroupSqlServer.json
+func ExampleSQLServersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armazuredata.NewSQLServersClient("<subscription-id>", cred, nil)
-	pager := client.ListByResourceGroup("<resource-group-name>",
-		"<sql-server-registration-name>",
-		&armazuredata.SQLServersListByResourceGroupOptions{Expand: nil})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armazuredata.NewSQLServersClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByResourceGroupPager("testrg",
+		"testsqlregistration",
+		&armazuredata.SQLServersClientListByResourceGroupOptions{Expand: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("SQLServer.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

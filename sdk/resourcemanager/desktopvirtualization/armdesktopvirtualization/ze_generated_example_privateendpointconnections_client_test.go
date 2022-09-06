@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,177 +14,209 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization/v2"
 )
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/PrivateEndpointConnection_ListByHostPool.json
-func ExamplePrivateEndpointConnectionsClient_ListByHostPool() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/PrivateEndpointConnection_ListByHostPool.json
+func ExamplePrivateEndpointConnectionsClient_NewListByHostPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
-	pager := client.ListByHostPool("<resource-group-name>",
-		"<host-pool-name>",
+	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByHostPoolPager("resourceGroup1",
+		"hostPool1",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateEndpointConnectionWithSystemData.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/PrivateEndpointConnection_GetByHostPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/PrivateEndpointConnection_GetByHostPool.json
 func ExamplePrivateEndpointConnectionsClient_GetByHostPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.GetByHostPool(ctx,
-		"<resource-group-name>",
-		"<host-pool-name>",
-		"<private-endpoint-connection-name>",
+		"resourceGroup1",
+		"hostPool1",
+		"hostPool1.377103f1-5179-4bdf-8556-4cdd3207cc5b",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("PrivateEndpointConnectionWithSystemData.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/PrivateEndpointConnection_DeleteByHostPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/PrivateEndpointConnection_DeleteByHostPool.json
 func ExamplePrivateEndpointConnectionsClient_DeleteByHostPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.DeleteByHostPool(ctx,
-		"<resource-group-name>",
-		"<host-pool-name>",
-		"<private-endpoint-connection-name>",
+		"resourceGroup1",
+		"hostPool1",
+		"hostPool1.377103f1-5179-4bdf-8556-4cdd3207cc5b",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/PrivateEndpointConnection_UpdateByHostPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/PrivateEndpointConnection_UpdateByHostPool.json
 func ExamplePrivateEndpointConnectionsClient_UpdateByHostPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.UpdateByHostPool(ctx,
-		"<resource-group-name>",
-		"<host-pool-name>",
-		"<private-endpoint-connection-name>",
+		"resourceGroup1",
+		"hostPool1",
+		"hostPool1.377103f1-5179-4bdf-8556-4cdd3207cc5b",
 		armdesktopvirtualization.PrivateEndpointConnection{
 			Properties: &armdesktopvirtualization.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armdesktopvirtualization.PrivateLinkServiceConnectionState{
-					Description:     to.StringPtr("<description>"),
-					ActionsRequired: to.StringPtr("<actions-required>"),
-					Status:          armdesktopvirtualization.PrivateEndpointServiceConnectionStatusApproved.ToPtr(),
+					Description:     to.Ptr("Approved by admin@consoto.com"),
+					ActionsRequired: to.Ptr("None"),
+					Status:          to.Ptr(armdesktopvirtualization.PrivateEndpointServiceConnectionStatusApproved),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("PrivateEndpointConnectionWithSystemData.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/PrivateEndpointConnection_ListByWorkspace.json
-func ExamplePrivateEndpointConnectionsClient_ListByWorkspace() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/PrivateEndpointConnection_ListByWorkspace.json
+func ExamplePrivateEndpointConnectionsClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
-	pager := client.ListByWorkspace("<resource-group-name>",
-		"<workspace-name>",
+	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByWorkspacePager("resourceGroup1",
+		"workspace1",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateEndpointConnectionWithSystemData.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/PrivateEndpointConnection_GetByWorkspace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/PrivateEndpointConnection_GetByWorkspace.json
 func ExamplePrivateEndpointConnectionsClient_GetByWorkspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.GetByWorkspace(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<private-endpoint-connection-name>",
+		"resourceGroup1",
+		"workspace1",
+		"workspace1.377103f1-5179-4bdf-8556-4cdd3207cc5b",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("PrivateEndpointConnectionWithSystemData.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/PrivateEndpointConnection_DeleteByWorkspace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/PrivateEndpointConnection_DeleteByWorkspace.json
 func ExamplePrivateEndpointConnectionsClient_DeleteByWorkspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.DeleteByWorkspace(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<private-endpoint-connection-name>",
+		"resourceGroup1",
+		"workspace1",
+		"workspace1.377103f1-5179-4bdf-8556-4cdd3207cc5b",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/PrivateEndpointConnection_UpdateByWorkspace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/PrivateEndpointConnection_UpdateByWorkspace.json
 func ExamplePrivateEndpointConnectionsClient_UpdateByWorkspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewPrivateEndpointConnectionsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.UpdateByWorkspace(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<private-endpoint-connection-name>",
+		"resourceGroup1",
+		"workspace1",
+		"workspace1.377103f1-5179-4bdf-8556-4cdd3207cc5b",
 		armdesktopvirtualization.PrivateEndpointConnection{
 			Properties: &armdesktopvirtualization.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armdesktopvirtualization.PrivateLinkServiceConnectionState{
-					Description:     to.StringPtr("<description>"),
-					ActionsRequired: to.StringPtr("<actions-required>"),
-					Status:          armdesktopvirtualization.PrivateEndpointServiceConnectionStatusApproved.ToPtr(),
+					Description:     to.Ptr("Approved by admin@consoto.com"),
+					ActionsRequired: to.Ptr("None"),
+					Status:          to.Ptr(armdesktopvirtualization.PrivateEndpointServiceConnectionStatusApproved),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("PrivateEndpointConnectionWithSystemData.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }

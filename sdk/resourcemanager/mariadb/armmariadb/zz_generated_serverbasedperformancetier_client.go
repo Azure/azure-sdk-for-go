@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armmariadb
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,66 @@ import (
 // ServerBasedPerformanceTierClient contains the methods for the ServerBasedPerformanceTier group.
 // Don't use this type directly, use NewServerBasedPerformanceTierClient() instead.
 type ServerBasedPerformanceTierClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServerBasedPerformanceTierClient creates a new instance of ServerBasedPerformanceTierClient with the specified values.
-func NewServerBasedPerformanceTierClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerBasedPerformanceTierClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewServerBasedPerformanceTierClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServerBasedPerformanceTierClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &ServerBasedPerformanceTierClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &ServerBasedPerformanceTierClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
-// List - List all the performance tiers for a MariaDB server.
-// If the operation fails it returns the *CloudError error type.
-func (client *ServerBasedPerformanceTierClient) List(ctx context.Context, resourceGroupName string, serverName string, options *ServerBasedPerformanceTierListOptions) (ServerBasedPerformanceTierListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceGroupName, serverName, options)
-	if err != nil {
-		return ServerBasedPerformanceTierListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ServerBasedPerformanceTierListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServerBasedPerformanceTierListResponse{}, client.listHandleError(resp)
-	}
-	return client.listHandleResponse(resp)
+// NewListPager - List all the performance tiers for a MariaDB server.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverName - The name of the server.
+// options - ServerBasedPerformanceTierClientListOptions contains the optional parameters for the ServerBasedPerformanceTierClient.List
+// method.
+func (client *ServerBasedPerformanceTierClient) NewListPager(resourceGroupName string, serverName string, options *ServerBasedPerformanceTierClientListOptions) *runtime.Pager[ServerBasedPerformanceTierClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ServerBasedPerformanceTierClientListResponse]{
+		More: func(page ServerBasedPerformanceTierClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ServerBasedPerformanceTierClientListResponse) (ServerBasedPerformanceTierClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, resourceGroupName, serverName, options)
+			if err != nil {
+				return ServerBasedPerformanceTierClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServerBasedPerformanceTierClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServerBasedPerformanceTierClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ServerBasedPerformanceTierClient) listCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerBasedPerformanceTierListOptions) (*policy.Request, error) {
+func (client *ServerBasedPerformanceTierClient) listCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServerBasedPerformanceTierClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB/servers/{serverName}/performanceTiers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,35 +98,22 @@ func (client *ServerBasedPerformanceTierClient) listCreateRequest(ctx context.Co
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ServerBasedPerformanceTierClient) listHandleResponse(resp *http.Response) (ServerBasedPerformanceTierListResponse, error) {
-	result := ServerBasedPerformanceTierListResponse{RawResponse: resp}
+func (client *ServerBasedPerformanceTierClient) listHandleResponse(resp *http.Response) (ServerBasedPerformanceTierClientListResponse, error) {
+	result := ServerBasedPerformanceTierClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PerformanceTierListResult); err != nil {
-		return ServerBasedPerformanceTierListResponse{}, runtime.NewResponseError(err, resp)
+		return ServerBasedPerformanceTierClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ServerBasedPerformanceTierClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

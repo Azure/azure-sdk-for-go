@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,48 +25,62 @@ import (
 // DataManagersClient contains the methods for the DataManagers group.
 // Don't use this type directly, use NewDataManagersClient() instead.
 type DataManagersClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDataManagersClient creates a new instance of DataManagersClient with the specified values.
-func NewDataManagersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataManagersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The Subscription Id
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewDataManagersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataManagersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &DataManagersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &DataManagersClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
-// BeginCreate - Creates a new data manager resource with the specified parameters. Existing resources cannot be updated with this API and should instead
-// be updated with the Update data manager resource API.
-// If the operation fails it returns a generic error.
-func (client *DataManagersClient) BeginCreate(ctx context.Context, resourceGroupName string, dataManagerName string, dataManager DataManager, options *DataManagersBeginCreateOptions) (DataManagersCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, dataManagerName, dataManager, options)
-	if err != nil {
-		return DataManagersCreatePollerResponse{}, err
+// BeginCreate - Creates a new data manager resource with the specified parameters. Existing resources cannot be updated with
+// this API and should instead be updated with the Update data manager resource API.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
+// resourceGroupName - The Resource Group Name
+// dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
+// 3 and 24 characters in length and use any alphanumeric and underscore only
+// dataManager - Data manager resource details from request body.
+// options - DataManagersClientBeginCreateOptions contains the optional parameters for the DataManagersClient.BeginCreate
+// method.
+func (client *DataManagersClient) BeginCreate(ctx context.Context, resourceGroupName string, dataManagerName string, dataManager DataManager, options *DataManagersClientBeginCreateOptions) (*runtime.Poller[DataManagersClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, dataManagerName, dataManager, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[DataManagersClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[DataManagersClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DataManagersCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DataManagersClient.Create", "", resp, client.pl, client.createHandleError)
-	if err != nil {
-		return DataManagersCreatePollerResponse{}, err
-	}
-	result.Poller = &DataManagersCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
-// Create - Creates a new data manager resource with the specified parameters. Existing resources cannot be updated with this API and should instead be
-// updated with the Update data manager resource API.
-// If the operation fails it returns a generic error.
-func (client *DataManagersClient) create(ctx context.Context, resourceGroupName string, dataManagerName string, dataManager DataManager, options *DataManagersBeginCreateOptions) (*http.Response, error) {
+// Create - Creates a new data manager resource with the specified parameters. Existing resources cannot be updated with this
+// API and should instead be updated with the Update data manager resource API.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
+func (client *DataManagersClient) create(ctx context.Context, resourceGroupName string, dataManagerName string, dataManager DataManager, options *DataManagersClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, dataManagerName, dataManager, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +90,13 @@ func (client *DataManagersClient) create(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *DataManagersClient) createCreateRequest(ctx context.Context, resourceGroupName string, dataManagerName string, dataManager DataManager, options *DataManagersBeginCreateOptions) (*policy.Request, error) {
+func (client *DataManagersClient) createCreateRequest(ctx context.Context, resourceGroupName string, dataManagerName string, dataManager DataManager, options *DataManagersClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridData/dataManagers/{dataManagerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -95,52 +110,41 @@ func (client *DataManagersClient) createCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter dataManagerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataManagerName}", url.PathEscape(dataManagerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dataManager)
 }
 
-// createHandleError handles the Create error response.
-func (client *DataManagersClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // BeginDelete - Deletes a data manager resource in Microsoft Azure.
-// If the operation fails it returns a generic error.
-func (client *DataManagersClient) BeginDelete(ctx context.Context, resourceGroupName string, dataManagerName string, options *DataManagersBeginDeleteOptions) (DataManagersDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, dataManagerName, options)
-	if err != nil {
-		return DataManagersDeletePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
+// resourceGroupName - The Resource Group Name
+// dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
+// 3 and 24 characters in length and use any alphanumeric and underscore only
+// options - DataManagersClientBeginDeleteOptions contains the optional parameters for the DataManagersClient.BeginDelete
+// method.
+func (client *DataManagersClient) BeginDelete(ctx context.Context, resourceGroupName string, dataManagerName string, options *DataManagersClientBeginDeleteOptions) (*runtime.Poller[DataManagersClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, dataManagerName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[DataManagersClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[DataManagersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DataManagersDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DataManagersClient.Delete", "", resp, client.pl, client.deleteHandleError)
-	if err != nil {
-		return DataManagersDeletePollerResponse{}, err
-	}
-	result.Poller = &DataManagersDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a data manager resource in Microsoft Azure.
-// If the operation fails it returns a generic error.
-func (client *DataManagersClient) deleteOperation(ctx context.Context, resourceGroupName string, dataManagerName string, options *DataManagersBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
+func (client *DataManagersClient) deleteOperation(ctx context.Context, resourceGroupName string, dataManagerName string, options *DataManagersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, dataManagerName, options)
 	if err != nil {
 		return nil, err
@@ -150,13 +154,13 @@ func (client *DataManagersClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DataManagersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dataManagerName string, options *DataManagersBeginDeleteOptions) (*policy.Request, error) {
+func (client *DataManagersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dataManagerName string, options *DataManagersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridData/dataManagers/{dataManagerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -170,7 +174,7 @@ func (client *DataManagersClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter dataManagerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataManagerName}", url.PathEscape(dataManagerName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -180,37 +184,30 @@ func (client *DataManagersClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *DataManagersClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets information about the specified data manager resource.
-// If the operation fails it returns a generic error.
-func (client *DataManagersClient) Get(ctx context.Context, resourceGroupName string, dataManagerName string, options *DataManagersGetOptions) (DataManagersGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
+// resourceGroupName - The Resource Group Name
+// dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
+// 3 and 24 characters in length and use any alphanumeric and underscore only
+// options - DataManagersClientGetOptions contains the optional parameters for the DataManagersClient.Get method.
+func (client *DataManagersClient) Get(ctx context.Context, resourceGroupName string, dataManagerName string, options *DataManagersClientGetOptions) (DataManagersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, dataManagerName, options)
 	if err != nil {
-		return DataManagersGetResponse{}, err
+		return DataManagersClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataManagersGetResponse{}, err
+		return DataManagersClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataManagersGetResponse{}, client.getHandleError(resp)
+		return DataManagersClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DataManagersClient) getCreateRequest(ctx context.Context, resourceGroupName string, dataManagerName string, options *DataManagersGetOptions) (*policy.Request, error) {
+func (client *DataManagersClient) getCreateRequest(ctx context.Context, resourceGroupName string, dataManagerName string, options *DataManagersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridData/dataManagers/{dataManagerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -224,113 +221,109 @@ func (client *DataManagersClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter dataManagerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataManagerName}", url.PathEscape(dataManagerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataManagersClient) getHandleResponse(resp *http.Response) (DataManagersGetResponse, error) {
-	result := DataManagersGetResponse{RawResponse: resp}
+func (client *DataManagersClient) getHandleResponse(resp *http.Response) (DataManagersClientGetResponse, error) {
+	result := DataManagersClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataManager); err != nil {
-		return DataManagersGetResponse{}, runtime.NewResponseError(err, resp)
+		return DataManagersClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DataManagersClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// List - Lists all the data manager resources available under the subscription.
-// If the operation fails it returns a generic error.
-func (client *DataManagersClient) List(ctx context.Context, options *DataManagersListOptions) (DataManagersListResponse, error) {
-	req, err := client.listCreateRequest(ctx, options)
-	if err != nil {
-		return DataManagersListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return DataManagersListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataManagersListResponse{}, client.listHandleError(resp)
-	}
-	return client.listHandleResponse(resp)
+// NewListPager - Lists all the data manager resources available under the subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
+// options - DataManagersClientListOptions contains the optional parameters for the DataManagersClient.List method.
+func (client *DataManagersClient) NewListPager(options *DataManagersClientListOptions) *runtime.Pager[DataManagersClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DataManagersClientListResponse]{
+		More: func(page DataManagersClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *DataManagersClientListResponse) (DataManagersClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, options)
+			if err != nil {
+				return DataManagersClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DataManagersClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DataManagersClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *DataManagersClient) listCreateRequest(ctx context.Context, options *DataManagersListOptions) (*policy.Request, error) {
+func (client *DataManagersClient) listCreateRequest(ctx context.Context, options *DataManagersClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridData/dataManagers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DataManagersClient) listHandleResponse(resp *http.Response) (DataManagersListResponse, error) {
-	result := DataManagersListResponse{RawResponse: resp}
+func (client *DataManagersClient) listHandleResponse(resp *http.Response) (DataManagersClientListResponse, error) {
+	result := DataManagersClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataManagerList); err != nil {
-		return DataManagersListResponse{}, runtime.NewResponseError(err, resp)
+		return DataManagersClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *DataManagersClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListByResourceGroup - Lists all the data manager resources available under the given resource group.
-// If the operation fails it returns a generic error.
-func (client *DataManagersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *DataManagersListByResourceGroupOptions) (DataManagersListByResourceGroupResponse, error) {
-	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-	if err != nil {
-		return DataManagersListByResourceGroupResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return DataManagersListByResourceGroupResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DataManagersListByResourceGroupResponse{}, client.listByResourceGroupHandleError(resp)
-	}
-	return client.listByResourceGroupHandleResponse(resp)
+// NewListByResourceGroupPager - Lists all the data manager resources available under the given resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
+// resourceGroupName - The Resource Group Name
+// options - DataManagersClientListByResourceGroupOptions contains the optional parameters for the DataManagersClient.ListByResourceGroup
+// method.
+func (client *DataManagersClient) NewListByResourceGroupPager(resourceGroupName string, options *DataManagersClientListByResourceGroupOptions) *runtime.Pager[DataManagersClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DataManagersClientListByResourceGroupResponse]{
+		More: func(page DataManagersClientListByResourceGroupResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *DataManagersClientListByResourceGroupResponse) (DataManagersClientListByResourceGroupResponse, error) {
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			if err != nil {
+				return DataManagersClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DataManagersClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DataManagersClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
+		},
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *DataManagersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DataManagersListByResourceGroupOptions) (*policy.Request, error) {
+func (client *DataManagersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DataManagersClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridData/dataManagers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -340,61 +333,51 @@ func (client *DataManagersClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *DataManagersClient) listByResourceGroupHandleResponse(resp *http.Response) (DataManagersListByResourceGroupResponse, error) {
-	result := DataManagersListByResourceGroupResponse{RawResponse: resp}
+func (client *DataManagersClient) listByResourceGroupHandleResponse(resp *http.Response) (DataManagersClientListByResourceGroupResponse, error) {
+	result := DataManagersClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataManagerList); err != nil {
-		return DataManagersListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return DataManagersClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
-}
-
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *DataManagersClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginUpdate - Updates the properties of an existing data manager resource.
-// If the operation fails it returns a generic error.
-func (client *DataManagersClient) BeginUpdate(ctx context.Context, resourceGroupName string, dataManagerName string, dataManagerUpdateParameter DataManagerUpdateParameter, options *DataManagersBeginUpdateOptions) (DataManagersUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, dataManagerName, dataManagerUpdateParameter, options)
-	if err != nil {
-		return DataManagersUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
+// resourceGroupName - The Resource Group Name
+// dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
+// 3 and 24 characters in length and use any alphanumeric and underscore only
+// dataManagerUpdateParameter - Data manager resource details from request body.
+// options - DataManagersClientBeginUpdateOptions contains the optional parameters for the DataManagersClient.BeginUpdate
+// method.
+func (client *DataManagersClient) BeginUpdate(ctx context.Context, resourceGroupName string, dataManagerName string, dataManagerUpdateParameter DataManagerUpdateParameter, options *DataManagersClientBeginUpdateOptions) (*runtime.Poller[DataManagersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, dataManagerName, dataManagerUpdateParameter, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[DataManagersClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[DataManagersClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := DataManagersUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("DataManagersClient.Update", "", resp, client.pl, client.updateHandleError)
-	if err != nil {
-		return DataManagersUpdatePollerResponse{}, err
-	}
-	result.Poller = &DataManagersUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates the properties of an existing data manager resource.
-// If the operation fails it returns a generic error.
-func (client *DataManagersClient) update(ctx context.Context, resourceGroupName string, dataManagerName string, dataManagerUpdateParameter DataManagerUpdateParameter, options *DataManagersBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
+func (client *DataManagersClient) update(ctx context.Context, resourceGroupName string, dataManagerName string, dataManagerUpdateParameter DataManagerUpdateParameter, options *DataManagersClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, dataManagerName, dataManagerUpdateParameter, options)
 	if err != nil {
 		return nil, err
@@ -404,13 +387,13 @@ func (client *DataManagersClient) update(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DataManagersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dataManagerName string, dataManagerUpdateParameter DataManagerUpdateParameter, options *DataManagersBeginUpdateOptions) (*policy.Request, error) {
+func (client *DataManagersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dataManagerName string, dataManagerUpdateParameter DataManagerUpdateParameter, options *DataManagersClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridData/dataManagers/{dataManagerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -424,7 +407,7 @@ func (client *DataManagersClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter dataManagerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataManagerName}", url.PathEscape(dataManagerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -432,20 +415,8 @@ func (client *DataManagersClient) updateCreateRequest(ctx context.Context, resou
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dataManagerUpdateParameter)
-}
-
-// updateHandleError handles the Update error response.
-func (client *DataManagersClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

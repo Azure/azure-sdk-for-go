@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,203 +12,239 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations"
 )
 
-// x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/GetAvailableScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/GetAvailableScope.json
 func ExampleReservationClient_BeginAvailableScopes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armreservations.NewReservationClient(cred, nil)
+	client, err := armreservations.NewReservationClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginAvailableScopes(ctx,
-		"<reservation-order-id>",
-		"<reservation-id>",
+		"276e7ae4-84d0-4da6-ab4b-d6b94f3557da",
+		"356e7ae4-84d0-4da6-ab4b-d6b94f3557da",
 		armreservations.AvailableScopeRequest{
 			Properties: &armreservations.AvailableScopeRequestProperties{
 				Scopes: []*string{
-					to.StringPtr("/subscriptions/efc7c997-7700-4a74-b731-55aec16c15e9")},
+					to.Ptr("/subscriptions/efc7c997-7700-4a74-b731-55aec16c15e9")},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/SplitReservation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/SplitReservation.json
 func ExampleReservationClient_BeginSplit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armreservations.NewReservationClient(cred, nil)
+	client, err := armreservations.NewReservationClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginSplit(ctx,
-		"<reservation-order-id>",
+		"276e7ae4-84d0-4da6-ab4b-d6b94f3557da",
 		armreservations.SplitRequest{
 			Properties: &armreservations.SplitProperties{
 				Quantities: []*int32{
-					to.Int32Ptr(1),
-					to.Int32Ptr(2)},
-				ReservationID: to.StringPtr("<reservation-id>"),
+					to.Ptr[int32](1),
+					to.Ptr[int32](2)},
+				ReservationID: to.Ptr("/providers/Microsoft.Capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/bcae77cd-3119-4766-919f-b50d36c75c7a"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/MergeReservations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/MergeReservations.json
 func ExampleReservationClient_BeginMerge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armreservations.NewReservationClient(cred, nil)
+	client, err := armreservations.NewReservationClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginMerge(ctx,
-		"<reservation-order-id>",
+		"276e7ae4-84d0-4da6-ab4b-d6b94f3557da",
 		armreservations.MergeRequest{
 			Properties: &armreservations.MergeProperties{
 				Sources: []*string{
-					to.StringPtr("/providers/Microsoft.Capacity/reservationOrders/c0565a8a-4491-4e77-b07b-5e6d66718e1c/reservations/cea04232-932e-47db-acb5-e29a945ecc73"),
-					to.StringPtr("/providers/Microsoft.Capacity/reservationOrders/c0565a8a-4491-4e77-b07b-5e6d66718e1c/reservations/5bf54dc7-dacd-4f46-a16b-7b78f4a59799")},
+					to.Ptr("/providers/Microsoft.Capacity/reservationOrders/c0565a8a-4491-4e77-b07b-5e6d66718e1c/reservations/cea04232-932e-47db-acb5-e29a945ecc73"),
+					to.Ptr("/providers/Microsoft.Capacity/reservationOrders/c0565a8a-4491-4e77-b07b-5e6d66718e1c/reservations/5bf54dc7-dacd-4f46-a16b-7b78f4a59799")},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/GetReservationsFromOrder.json
-func ExampleReservationClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/GetReservationsFromOrder.json
+func ExampleReservationClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armreservations.NewReservationClient(cred, nil)
-	pager := client.List("<reservation-order-id>",
+	client, err := armreservations.NewReservationClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("276e7ae4-84d0-4da6-ab4b-d6b94f3557da",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ReservationResponse.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/GetReservationDetails.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/GetReservationDetails.json
 func ExampleReservationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armreservations.NewReservationClient(cred, nil)
-	res, err := client.Get(ctx,
-		"<reservation-id>",
-		"<reservation-order-id>",
-		&armreservations.ReservationGetOptions{Expand: to.StringPtr("<expand>")})
+	client, err := armreservations.NewReservationClient(cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
 	}
-	log.Printf("ReservationResponse.ID: %s\n", *res.ID)
+	res, err := client.Get(ctx,
+		"6ef59113-3482-40da-8d79-787f823e34bc",
+		"276e7ae4-84d0-4da6-ab4b-d6b94f3557da",
+		&armreservations.ReservationClientGetOptions{Expand: to.Ptr("renewProperties")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/UpdateReservation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/UpdateReservation.json
 func ExampleReservationClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armreservations.NewReservationClient(cred, nil)
+	client, err := armreservations.NewReservationClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginUpdate(ctx,
-		"<reservation-order-id>",
-		"<reservation-id>",
+		"276e7ae4-84d0-4da6-ab4b-d6b94f3557da",
+		"6ef59113-3482-40da-8d79-787f823e34bc",
 		armreservations.Patch{
 			Properties: &armreservations.PatchProperties{
-				AppliedScopeType:    armreservations.AppliedScopeTypeShared.ToPtr(),
-				InstanceFlexibility: armreservations.InstanceFlexibilityOff.ToPtr(),
+				AppliedScopeType:    to.Ptr(armreservations.AppliedScopeTypeShared),
+				InstanceFlexibility: to.Ptr(armreservations.InstanceFlexibilityOff),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("ReservationResponse.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/GetReservationRevisions.json
-func ExampleReservationClient_ListRevisions() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/GetReservationRevisions.json
+func ExampleReservationClient_NewListRevisionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armreservations.NewReservationClient(cred, nil)
-	pager := client.ListRevisions("<reservation-id>",
-		"<reservation-order-id>",
+	client, err := armreservations.NewReservationClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListRevisionsPager("6ef59113-3482-40da-8d79-787f823e34bc",
+		"276e7ae4-84d0-4da6-ab4b-d6b94f3557da",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ReservationResponse.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2021-07-01/examples/GetReservations.json
-func ExampleReservationClient_ListAll() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/GetReservations.json
+func ExampleReservationClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armreservations.NewReservationClient(cred, nil)
-	pager := client.ListAll(&armreservations.ReservationListAllOptions{Filter: to.StringPtr("<filter>"),
-		Orderby:        to.StringPtr("<orderby>"),
+	client, err := armreservations.NewReservationClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListAllPager(&armreservations.ReservationClientListAllOptions{Filter: to.Ptr("(properties%2farchived+eq+false)"),
+		Orderby:        to.Ptr("properties/displayName asc"),
 		RefreshSummary: nil,
-		Skiptoken:      to.Float32Ptr(50),
+		Skiptoken:      to.Ptr[float32](50),
 		SelectedState:  nil,
-		Take:           to.Float32Ptr(1),
+		Take:           to.Ptr[float32](1),
 	})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ReservationResponse.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

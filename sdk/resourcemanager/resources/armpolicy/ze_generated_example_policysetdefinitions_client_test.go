@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,313 +17,304 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy"
 )
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createOrUpdatePolicySetDefinition.json
-func ExamplePolicySetDefinitionsClient_CreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createOrUpdatePolicySetDefinition.json
+func ExampleSetDefinitionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicySetDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewSetDefinitionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<policy-set-definition-name>",
-		armpolicy.PolicySetDefinition{
-			Properties: &armpolicy.PolicySetDefinitionProperties{
-				Description: to.StringPtr("<description>"),
-				DisplayName: to.StringPtr("<display-name>"),
+		"CostManagement",
+		armpolicy.SetDefinition{
+			Properties: &armpolicy.SetDefinitionProperties{
+				Description: to.Ptr("Policies to enforce low cost storage SKUs"),
+				DisplayName: to.Ptr("Cost Management"),
 				Metadata: map[string]interface{}{
 					"category": "Cost Management",
 				},
 				Parameters: map[string]*armpolicy.ParameterDefinitionsValue{
 					"namePrefix": {
-						Type: armpolicy.ParameterTypeString.ToPtr(),
-						DefaultValue: map[string]interface{}{
-							"0": "m",
-							"1": "y",
-							"2": "P",
-							"3": "r",
-							"4": "e",
-							"5": "f",
-							"6": "i",
-							"7": "x",
-						},
+						Type:         to.Ptr(armpolicy.ParameterTypeString),
+						DefaultValue: "myPrefix",
 						Metadata: &armpolicy.ParameterDefinitionsValueMetadata{
-							DisplayName: to.StringPtr("<display-name>"),
+							DisplayName: to.Ptr("Prefix to enforce on resource names"),
 						},
 					},
 				},
-				PolicyDefinitions: []*armpolicy.PolicyDefinitionReference{
+				PolicyDefinitions: []*armpolicy.DefinitionReference{
 					{
 						Parameters: map[string]*armpolicy.ParameterValuesValue{
 							"listOfAllowedSKUs": {
-								Value: map[string]interface{}{
-									"0": "Standard_GRS",
-									"1": "Standard_LRS",
+								Value: []interface{}{
+									"Standard_GRS",
+									"Standard_LRS",
 								},
 							},
 						},
-						PolicyDefinitionID:          to.StringPtr("<policy-definition-id>"),
-						PolicyDefinitionReferenceID: to.StringPtr("<policy-definition-reference-id>"),
+						PolicyDefinitionID:          to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1"),
+						PolicyDefinitionReferenceID: to.Ptr("Limit_Skus"),
 					},
 					{
 						Parameters: map[string]*armpolicy.ParameterValuesValue{
 							"prefix": {
-								Value: map[string]interface{}{
-									"0":  "[",
-									"1":  "p",
-									"2":  "a",
-									"3":  "r",
-									"4":  "a",
-									"5":  "m",
-									"6":  "e",
-									"7":  "t",
-									"8":  "e",
-									"9":  "r",
-									"10": "s",
-									"11": "(",
-									"12": "'",
-									"13": "n",
-									"14": "a",
-									"15": "m",
-									"16": "e",
-									"17": "P",
-									"18": "r",
-									"19": "e",
-									"20": "f",
-									"21": "i",
-									"22": "x",
-									"23": "'",
-									"24": ")",
-									"25": "]",
-								},
+								Value: "[parameters('namePrefix')]",
 							},
 							"suffix": {
-								Value: map[string]interface{}{
-									"0": "-",
-									"1": "L",
-									"2": "C",
-								},
+								Value: "-LC",
 							},
 						},
-						PolicyDefinitionID:          to.StringPtr("<policy-definition-id>"),
-						PolicyDefinitionReferenceID: to.StringPtr("<policy-definition-reference-id>"),
+						PolicyDefinitionID:          to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
+						PolicyDefinitionReferenceID: to.Ptr("Resource_Naming"),
 					}},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("PolicySetDefinition.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/deletePolicySetDefinition.json
-func ExamplePolicySetDefinitionsClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/deletePolicySetDefinition.json
+func ExampleSetDefinitionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicySetDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewSetDefinitionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<policy-set-definition-name>",
+		"CostManagement",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getPolicySetDefinition.json
-func ExamplePolicySetDefinitionsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getPolicySetDefinition.json
+func ExampleSetDefinitionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicySetDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewSetDefinitionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<policy-set-definition-name>",
+		"CostManagement",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("PolicySetDefinition.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getBuiltInPolicySetDefinition.json
-func ExamplePolicySetDefinitionsClient_GetBuiltIn() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getBuiltInPolicySetDefinition.json
+func ExampleSetDefinitionsClient_GetBuiltIn() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicySetDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewSetDefinitionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.GetBuiltIn(ctx,
-		"<policy-set-definition-name>",
+		"1f3afdf9-d0c9-4c3d-847f-89da613e70a8",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("PolicySetDefinition.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicySetDefinitions.json
-func ExamplePolicySetDefinitionsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicySetDefinitions.json
+func ExampleSetDefinitionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicySetDefinitionsClient("<subscription-id>", cred, nil)
-	pager := client.List(&armpolicy.PolicySetDefinitionsListOptions{Filter: nil,
+	client, err := armpolicy.NewSetDefinitionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager(&armpolicy.SetDefinitionsClientListOptions{Filter: nil,
 		Top: nil,
 	})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("PolicySetDefinition.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listBuiltInPolicySetDefinitions.json
-func ExamplePolicySetDefinitionsClient_ListBuiltIn() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listBuiltInPolicySetDefinitions.json
+func ExampleSetDefinitionsClient_NewListBuiltInPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicySetDefinitionsClient("<subscription-id>", cred, nil)
-	pager := client.ListBuiltIn(&armpolicy.PolicySetDefinitionsListBuiltInOptions{Filter: nil,
+	client, err := armpolicy.NewSetDefinitionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListBuiltInPager(&armpolicy.SetDefinitionsClientListBuiltInOptions{Filter: nil,
 		Top: nil,
 	})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("PolicySetDefinition.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createOrUpdatePolicySetDefinitionAtManagementGroup.json
-func ExamplePolicySetDefinitionsClient_CreateOrUpdateAtManagementGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createOrUpdatePolicySetDefinitionAtManagementGroup.json
+func ExampleSetDefinitionsClient_CreateOrUpdateAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicySetDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewSetDefinitionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.CreateOrUpdateAtManagementGroup(ctx,
-		"<policy-set-definition-name>",
-		"<management-group-id>",
-		armpolicy.PolicySetDefinition{
-			Properties: &armpolicy.PolicySetDefinitionProperties{
-				Description: to.StringPtr("<description>"),
-				DisplayName: to.StringPtr("<display-name>"),
+		"CostManagement",
+		"MyManagementGroup",
+		armpolicy.SetDefinition{
+			Properties: &armpolicy.SetDefinitionProperties{
+				Description: to.Ptr("Policies to enforce low cost storage SKUs"),
+				DisplayName: to.Ptr("Cost Management"),
 				Metadata: map[string]interface{}{
 					"category": "Cost Management",
 				},
-				PolicyDefinitions: []*armpolicy.PolicyDefinitionReference{
+				PolicyDefinitions: []*armpolicy.DefinitionReference{
 					{
 						Parameters: map[string]*armpolicy.ParameterValuesValue{
 							"listOfAllowedSKUs": {
-								Value: map[string]interface{}{
-									"0": "Standard_GRS",
-									"1": "Standard_LRS",
+								Value: []interface{}{
+									"Standard_GRS",
+									"Standard_LRS",
 								},
 							},
 						},
-						PolicyDefinitionID:          to.StringPtr("<policy-definition-id>"),
-						PolicyDefinitionReferenceID: to.StringPtr("<policy-definition-reference-id>"),
+						PolicyDefinitionID:          to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1"),
+						PolicyDefinitionReferenceID: to.Ptr("Limit_Skus"),
 					},
 					{
 						Parameters: map[string]*armpolicy.ParameterValuesValue{
 							"prefix": {
-								Value: map[string]interface{}{
-									"0": "D",
-									"1": "e",
-									"2": "p",
-									"3": "t",
-									"4": "A",
-								},
+								Value: "DeptA",
 							},
 							"suffix": {
-								Value: map[string]interface{}{
-									"0": "-",
-									"1": "L",
-									"2": "C",
-								},
+								Value: "-LC",
 							},
 						},
-						PolicyDefinitionID:          to.StringPtr("<policy-definition-id>"),
-						PolicyDefinitionReferenceID: to.StringPtr("<policy-definition-reference-id>"),
+						PolicyDefinitionID:          to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
+						PolicyDefinitionReferenceID: to.Ptr("Resource_Naming"),
 					}},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("PolicySetDefinition.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/deletePolicySetDefinitionAtManagementGroup.json
-func ExamplePolicySetDefinitionsClient_DeleteAtManagementGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/deletePolicySetDefinitionAtManagementGroup.json
+func ExampleSetDefinitionsClient_DeleteAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicySetDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewSetDefinitionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.DeleteAtManagementGroup(ctx,
-		"<policy-set-definition-name>",
-		"<management-group-id>",
+		"CostManagement",
+		"MyManagementGroup",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getPolicySetDefinitionAtManagementGroup.json
-func ExamplePolicySetDefinitionsClient_GetAtManagementGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getPolicySetDefinitionAtManagementGroup.json
+func ExampleSetDefinitionsClient_GetAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicySetDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewSetDefinitionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.GetAtManagementGroup(ctx,
-		"<policy-set-definition-name>",
-		"<management-group-id>",
+		"CostManagement",
+		"MyManagementGroup",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("PolicySetDefinition.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicySetDefinitionsByManagementGroup.json
-func ExamplePolicySetDefinitionsClient_ListByManagementGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicySetDefinitionsByManagementGroup.json
+func ExampleSetDefinitionsClient_NewListByManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicySetDefinitionsClient("<subscription-id>", cred, nil)
-	pager := client.ListByManagementGroup("<management-group-id>",
-		&armpolicy.PolicySetDefinitionsListByManagementGroupOptions{Filter: nil,
+	client, err := armpolicy.NewSetDefinitionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByManagementGroupPager("MyManagementGroup",
+		&armpolicy.SetDefinitionsClientListByManagementGroupOptions{Filter: nil,
 			Top: nil,
 		})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("PolicySetDefinition.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

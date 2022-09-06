@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -8,7 +8,6 @@ package recording
 
 import (
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -206,5 +205,5 @@ func (s *requestMatcherTests) TestCompareMethods() {
 }
 
 func closerFromString(content string) io.ReadCloser {
-	return ioutil.NopCloser(strings.NewReader(content))
+	return io.NopCloser(strings.NewReader(content))
 }

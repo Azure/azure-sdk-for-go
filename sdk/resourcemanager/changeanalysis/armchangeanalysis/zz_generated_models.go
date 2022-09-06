@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,18 +8,21 @@
 
 package armchangeanalysis
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // Change - The detected change.
 type Change struct {
-	ProxyResource
 	// The properties of a change.
 	Properties *ChangeProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ChangeList - The list of detected changes.
@@ -31,20 +34,13 @@ type ChangeList struct {
 	Value []*Change `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ChangeList.
-func (c ChangeList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
 // ChangeProperties - The properties of a change.
 type ChangeProperties struct {
 	// The type of the change.
 	ChangeType *ChangeType `json:"changeType,omitempty"`
 
-	// The list of identities who might initiated the change. The identity could be user name (email address) or the object ID of the Service Principal.
+	// The list of identities who might initiated the change. The identity could be user name (email address) or the object ID
+	// of the Service Principal.
 	InitiatedByList []*string `json:"initiatedByList,omitempty"`
 
 	// The list of detailed changes at json property level.
@@ -57,67 +53,28 @@ type ChangeProperties struct {
 	TimeStamp *time.Time `json:"timeStamp,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ChangeProperties.
-func (c ChangeProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "changeType", c.ChangeType)
-	populate(objectMap, "initiatedByList", c.InitiatedByList)
-	populate(objectMap, "propertyChanges", c.PropertyChanges)
-	populate(objectMap, "resourceId", c.ResourceID)
-	populateTimeRFC3339(objectMap, "timeStamp", c.TimeStamp)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ChangeProperties.
-func (c *ChangeProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "changeType":
-			err = unpopulate(val, &c.ChangeType)
-			delete(rawMsg, key)
-		case "initiatedByList":
-			err = unpopulate(val, &c.InitiatedByList)
-			delete(rawMsg, key)
-		case "propertyChanges":
-			err = unpopulate(val, &c.PropertyChanges)
-			delete(rawMsg, key)
-		case "resourceId":
-			err = unpopulate(val, &c.ResourceID)
-			delete(rawMsg, key)
-		case "timeStamp":
-			err = unpopulateTimeRFC3339(val, &c.TimeStamp)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// ChangesListChangesByResourceGroupOptions contains the optional parameters for the Changes.ListChangesByResourceGroup method.
-type ChangesListChangesByResourceGroupOptions struct {
-	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains a nextLink element, the
-	// value of the nextLink element will include a skipToken parameter that specifies a starting point to use for subsequent calls.
+// ChangesClientListChangesByResourceGroupOptions contains the optional parameters for the ChangesClient.ListChangesByResourceGroup
+// method.
+type ChangesClientListChangesByResourceGroupOptions struct {
+	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains
+	// a nextLink element, the value of the nextLink element will include a
+	// skipToken parameter that specifies a starting point to use for subsequent calls.
 	SkipToken *string
 }
 
-// ChangesListChangesBySubscriptionOptions contains the optional parameters for the Changes.ListChangesBySubscription method.
-type ChangesListChangesBySubscriptionOptions struct {
-	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains a nextLink element, the
-	// value of the nextLink element will include a skipToken parameter that specifies a starting point to use for subsequent calls.
+// ChangesClientListChangesBySubscriptionOptions contains the optional parameters for the ChangesClient.ListChangesBySubscription
+// method.
+type ChangesClientListChangesBySubscriptionOptions struct {
+	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains
+	// a nextLink element, the value of the nextLink element will include a
+	// skipToken parameter that specifies a starting point to use for subsequent calls.
 	SkipToken *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -141,36 +98,18 @@ type ErrorDetail struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
-}
-
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
-	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains a nextLink element, the
-	// value of the nextLink element will include a skipToken parameter that specifies a starting point to use for subsequent calls.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
+	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains
+	// a nextLink element, the value of the nextLink element will include a
+	// skipToken parameter that specifies a starting point to use for subsequent calls.
 	SkipToken *string
 }
 
@@ -185,11 +124,12 @@ type PropertyChange struct {
 	// The description of the changed property.
 	Description *string `json:"description,omitempty"`
 
-	// The enhanced display name of the json path. E.g., the json path value[0].properties will be translated to something meaningful like slots["Staging"].properties.
+	// The enhanced display name of the json path. E.g., the json path value[0].properties will be translated to something meaningful
+	// like slots["Staging"].properties.
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// The boolean indicating whether the oldValue and newValue are masked. The values are masked if it contains sensitive information that the user doesn't
-	// have access to.
+	// The boolean indicating whether the oldValue and newValue are masked. The values are masked if it contains sensitive information
+	// that the user doesn't have access to.
 	IsDataMasked *bool `json:"isDataMasked,omitempty"`
 
 	// The json path of the changed property.
@@ -203,9 +143,17 @@ type PropertyChange struct {
 	OldValue *string `json:"oldValue,omitempty"`
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
@@ -220,10 +168,11 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// ResourceChangesListOptions contains the optional parameters for the ResourceChanges.List method.
-type ResourceChangesListOptions struct {
-	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains a nextLink element, the
-	// value of the nextLink element will include a skipToken parameter that specifies a starting point to use for subsequent calls.
+// ResourceChangesClientListOptions contains the optional parameters for the ResourceChangesClient.List method.
+type ResourceChangesClientListOptions struct {
+	// A skip token is used to continue retrieving items after an operation returns a partial result. If a previous response contains
+	// a nextLink element, the value of the nextLink element will include a
+	// skipToken parameter that specifies a starting point to use for subsequent calls.
 	SkipToken *string
 }
 
@@ -258,29 +207,4 @@ type ResourceProviderOperationList struct {
 
 	// Resource provider operations list.
 	Value []*ResourceProviderOperationDefinition `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceProviderOperationList.
-func (r ResourceProviderOperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

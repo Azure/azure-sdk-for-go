@@ -17,7 +17,7 @@ func ExampleClient_AcceptSessionForQueue() {
 	exitOnError("Failed to receive a message", err)
 
 	for _, message := range messages {
-		err = sessionReceiver.CompleteMessage(context.TODO(), message)
+		err = sessionReceiver.CompleteMessage(context.TODO(), message, nil)
 		exitOnError("Failed to complete message", err)
 
 		fmt.Printf("Received message from session ID \"%s\" and completed it", *message.SessionID)

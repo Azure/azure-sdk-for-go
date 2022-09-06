@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armmysql
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,65 @@ import (
 // LocationBasedPerformanceTierClient contains the methods for the LocationBasedPerformanceTier group.
 // Don't use this type directly, use NewLocationBasedPerformanceTierClient() instead.
 type LocationBasedPerformanceTierClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLocationBasedPerformanceTierClient creates a new instance of LocationBasedPerformanceTierClient with the specified values.
-func NewLocationBasedPerformanceTierClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LocationBasedPerformanceTierClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewLocationBasedPerformanceTierClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationBasedPerformanceTierClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &LocationBasedPerformanceTierClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &LocationBasedPerformanceTierClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
-// List - List all the performance tiers at specified location in a given subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *LocationBasedPerformanceTierClient) List(ctx context.Context, locationName string, options *LocationBasedPerformanceTierListOptions) (LocationBasedPerformanceTierListResponse, error) {
-	req, err := client.listCreateRequest(ctx, locationName, options)
-	if err != nil {
-		return LocationBasedPerformanceTierListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return LocationBasedPerformanceTierListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LocationBasedPerformanceTierListResponse{}, client.listHandleError(resp)
-	}
-	return client.listHandleResponse(resp)
+// NewListPager - List all the performance tiers at specified location in a given subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-12-01
+// locationName - The name of the location.
+// options - LocationBasedPerformanceTierClientListOptions contains the optional parameters for the LocationBasedPerformanceTierClient.List
+// method.
+func (client *LocationBasedPerformanceTierClient) NewListPager(locationName string, options *LocationBasedPerformanceTierClientListOptions) *runtime.Pager[LocationBasedPerformanceTierClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[LocationBasedPerformanceTierClientListResponse]{
+		More: func(page LocationBasedPerformanceTierClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *LocationBasedPerformanceTierClientListResponse) (LocationBasedPerformanceTierClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, locationName, options)
+			if err != nil {
+				return LocationBasedPerformanceTierClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return LocationBasedPerformanceTierClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return LocationBasedPerformanceTierClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *LocationBasedPerformanceTierClient) listCreateRequest(ctx context.Context, locationName string, options *LocationBasedPerformanceTierListOptions) (*policy.Request, error) {
+func (client *LocationBasedPerformanceTierClient) listCreateRequest(ctx context.Context, locationName string, options *LocationBasedPerformanceTierClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/performanceTiers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,35 +93,22 @@ func (client *LocationBasedPerformanceTierClient) listCreateRequest(ctx context.
 		return nil, errors.New("parameter locationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *LocationBasedPerformanceTierClient) listHandleResponse(resp *http.Response) (LocationBasedPerformanceTierListResponse, error) {
-	result := LocationBasedPerformanceTierListResponse{RawResponse: resp}
+func (client *LocationBasedPerformanceTierClient) listHandleResponse(resp *http.Response) (LocationBasedPerformanceTierClientListResponse, error) {
+	result := LocationBasedPerformanceTierClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PerformanceTierListResult); err != nil {
-		return LocationBasedPerformanceTierListResponse{}, runtime.NewResponseError(err, resp)
+		return LocationBasedPerformanceTierClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *LocationBasedPerformanceTierClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

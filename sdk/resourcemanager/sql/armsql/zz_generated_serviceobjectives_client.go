@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,42 +25,60 @@ import (
 // ServiceObjectivesClient contains the methods for the ServiceObjectives group.
 // Don't use this type directly, use NewServiceObjectivesClient() instead.
 type ServiceObjectivesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewServiceObjectivesClient creates a new instance of ServiceObjectivesClient with the specified values.
-func NewServiceObjectivesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceObjectivesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewServiceObjectivesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceObjectivesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &ServiceObjectivesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &ServiceObjectivesClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // Get - Gets a database service objective.
-// If the operation fails it returns a generic error.
-func (client *ServiceObjectivesClient) Get(ctx context.Context, resourceGroupName string, serverName string, serviceObjectiveName string, options *ServiceObjectivesGetOptions) (ServiceObjectivesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// serviceObjectiveName - The name of the service objective to retrieve.
+// options - ServiceObjectivesClientGetOptions contains the optional parameters for the ServiceObjectivesClient.Get method.
+func (client *ServiceObjectivesClient) Get(ctx context.Context, resourceGroupName string, serverName string, serviceObjectiveName string, options *ServiceObjectivesClientGetOptions) (ServiceObjectivesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, serviceObjectiveName, options)
 	if err != nil {
-		return ServiceObjectivesGetResponse{}, err
+		return ServiceObjectivesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ServiceObjectivesGetResponse{}, err
+		return ServiceObjectivesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServiceObjectivesGetResponse{}, client.getHandleError(resp)
+		return ServiceObjectivesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServiceObjectivesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, serviceObjectiveName string, options *ServiceObjectivesGetOptions) (*policy.Request, error) {
+func (client *ServiceObjectivesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, serviceObjectiveName string, options *ServiceObjectivesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/serviceObjectives/{serviceObjectiveName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -77,57 +96,58 @@ func (client *ServiceObjectivesClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter serviceObjectiveName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceObjectiveName}", url.PathEscape(serviceObjectiveName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServiceObjectivesClient) getHandleResponse(resp *http.Response) (ServiceObjectivesGetResponse, error) {
-	result := ServiceObjectivesGetResponse{RawResponse: resp}
+func (client *ServiceObjectivesClient) getHandleResponse(resp *http.Response) (ServiceObjectivesClientGetResponse, error) {
+	result := ServiceObjectivesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceObjective); err != nil {
-		return ServiceObjectivesGetResponse{}, runtime.NewResponseError(err, resp)
+		return ServiceObjectivesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ServiceObjectivesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListByServer - Returns database service objectives.
-// If the operation fails it returns a generic error.
-func (client *ServiceObjectivesClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string, options *ServiceObjectivesListByServerOptions) (ServiceObjectivesListByServerResponse, error) {
-	req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-	if err != nil {
-		return ServiceObjectivesListByServerResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ServiceObjectivesListByServerResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServiceObjectivesListByServerResponse{}, client.listByServerHandleError(resp)
-	}
-	return client.listByServerHandleResponse(resp)
+// NewListByServerPager - Returns database service objectives.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// options - ServiceObjectivesClientListByServerOptions contains the optional parameters for the ServiceObjectivesClient.ListByServer
+// method.
+func (client *ServiceObjectivesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServiceObjectivesClientListByServerOptions) *runtime.Pager[ServiceObjectivesClientListByServerResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ServiceObjectivesClientListByServerResponse]{
+		More: func(page ServiceObjectivesClientListByServerResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ServiceObjectivesClientListByServerResponse) (ServiceObjectivesClientListByServerResponse, error) {
+			req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			if err != nil {
+				return ServiceObjectivesClientListByServerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ServiceObjectivesClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServiceObjectivesClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerHandleResponse(resp)
+		},
+	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *ServiceObjectivesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServiceObjectivesListByServerOptions) (*policy.Request, error) {
+func (client *ServiceObjectivesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ServiceObjectivesClientListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/serviceObjectives"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -141,34 +161,22 @@ func (client *ServiceObjectivesClient) listByServerCreateRequest(ctx context.Con
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *ServiceObjectivesClient) listByServerHandleResponse(resp *http.Response) (ServiceObjectivesListByServerResponse, error) {
-	result := ServiceObjectivesListByServerResponse{RawResponse: resp}
+func (client *ServiceObjectivesClient) listByServerHandleResponse(resp *http.Response) (ServiceObjectivesClientListByServerResponse, error) {
+	result := ServiceObjectivesClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceObjectiveListResult); err != nil {
-		return ServiceObjectivesListByServerResponse{}, runtime.NewResponseError(err, resp)
+		return ServiceObjectivesClientListByServerResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServerHandleError handles the ListByServer error response.
-func (client *ServiceObjectivesClient) listByServerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

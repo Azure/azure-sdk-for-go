@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,41 +26,56 @@ import (
 // ProductsClient contains the methods for the Products group.
 // Don't use this type directly, use NewProductsClient() instead.
 type ProductsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewProductsClient creates a new instance of ProductsClient with the specified values.
-func NewProductsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ProductsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewProductsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ProductsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &ProductsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &ProductsClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
-// Get - Gets a product by ID. The operation is supported only for billing accounts with agreement type Microsoft Customer Agreement.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductsClient) Get(ctx context.Context, billingAccountName string, productName string, options *ProductsGetOptions) (ProductsGetResponse, error) {
+// Get - Gets a product by ID. The operation is supported only for billing accounts with agreement type Microsoft Customer
+// Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
+// billingAccountName - The ID that uniquely identifies a billing account.
+// productName - The ID that uniquely identifies a product.
+// options - ProductsClientGetOptions contains the optional parameters for the ProductsClient.Get method.
+func (client *ProductsClient) Get(ctx context.Context, billingAccountName string, productName string, options *ProductsClientGetOptions) (ProductsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, billingAccountName, productName, options)
 	if err != nil {
-		return ProductsGetResponse{}, err
+		return ProductsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProductsGetResponse{}, err
+		return ProductsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProductsGetResponse{}, client.getHandleError(resp)
+		return ProductsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ProductsClient) getCreateRequest(ctx context.Context, billingAccountName string, productName string, options *ProductsGetOptions) (*policy.Request, error) {
+func (client *ProductsClient) getCreateRequest(ctx context.Context, billingAccountName string, productName string, options *ProductsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products/{productName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -70,63 +85,70 @@ func (client *ProductsClient) getCreateRequest(ctx context.Context, billingAccou
 		return nil, errors.New("parameter productName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{productName}", url.PathEscape(productName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProductsClient) getHandleResponse(resp *http.Response) (ProductsGetResponse, error) {
-	result := ProductsGetResponse{RawResponse: resp}
+func (client *ProductsClient) getHandleResponse(resp *http.Response) (ProductsClientGetResponse, error) {
+	result := ProductsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Product); err != nil {
-		return ProductsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ProductsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ProductsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByBillingAccount - Lists the products for a billing account. These don't include products billed based on usage. The operation is supported for billing
-// accounts with agreement type Microsoft Customer Agreement or
+// NewListByBillingAccountPager - Lists the products for a billing account. These don't include products billed based on usage.
+// The operation is supported for billing accounts with agreement type Microsoft Customer Agreement or
 // Microsoft Partner Agreement.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductsClient) ListByBillingAccount(billingAccountName string, options *ProductsListByBillingAccountOptions) *ProductsListByBillingAccountPager {
-	return &ProductsListByBillingAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByBillingAccountCreateRequest(ctx, billingAccountName, options)
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
+// billingAccountName - The ID that uniquely identifies a billing account.
+// options - ProductsClientListByBillingAccountOptions contains the optional parameters for the ProductsClient.ListByBillingAccount
+// method.
+func (client *ProductsClient) NewListByBillingAccountPager(billingAccountName string, options *ProductsClientListByBillingAccountOptions) *runtime.Pager[ProductsClientListByBillingAccountResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ProductsClientListByBillingAccountResponse]{
+		More: func(page ProductsClientListByBillingAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ProductsListByBillingAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProductsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ProductsClientListByBillingAccountResponse) (ProductsClientListByBillingAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByBillingAccountCreateRequest(ctx, billingAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ProductsClientListByBillingAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ProductsClientListByBillingAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ProductsClientListByBillingAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByBillingAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByBillingAccountCreateRequest creates the ListByBillingAccount request.
-func (client *ProductsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, options *ProductsListByBillingAccountOptions) (*policy.Request, error) {
+func (client *ProductsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, options *ProductsClientListByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -136,50 +158,58 @@ func (client *ProductsClient) listByBillingAccountCreateRequest(ctx context.Cont
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBillingAccountHandleResponse handles the ListByBillingAccount response.
-func (client *ProductsClient) listByBillingAccountHandleResponse(resp *http.Response) (ProductsListByBillingAccountResponse, error) {
-	result := ProductsListByBillingAccountResponse{RawResponse: resp}
+func (client *ProductsClient) listByBillingAccountHandleResponse(resp *http.Response) (ProductsClientListByBillingAccountResponse, error) {
+	result := ProductsClientListByBillingAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductsListResult); err != nil {
-		return ProductsListByBillingAccountResponse{}, runtime.NewResponseError(err, resp)
+		return ProductsClientListByBillingAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByBillingAccountHandleError handles the ListByBillingAccount error response.
-func (client *ProductsClient) listByBillingAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByBillingProfile - Lists the products for a billing profile. These don't include products billed based on usage. The operation is supported for billing
-// accounts with agreement type Microsoft Customer Agreement or
+// NewListByBillingProfilePager - Lists the products for a billing profile. These don't include products billed based on usage.
+// The operation is supported for billing accounts with agreement type Microsoft Customer Agreement or
 // Microsoft Partner Agreement.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductsClient) ListByBillingProfile(billingAccountName string, billingProfileName string, options *ProductsListByBillingProfileOptions) *ProductsListByBillingProfilePager {
-	return &ProductsListByBillingProfilePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, options)
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
+// billingAccountName - The ID that uniquely identifies a billing account.
+// billingProfileName - The ID that uniquely identifies a billing profile.
+// options - ProductsClientListByBillingProfileOptions contains the optional parameters for the ProductsClient.ListByBillingProfile
+// method.
+func (client *ProductsClient) NewListByBillingProfilePager(billingAccountName string, billingProfileName string, options *ProductsClientListByBillingProfileOptions) *runtime.Pager[ProductsClientListByBillingProfileResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ProductsClientListByBillingProfileResponse]{
+		More: func(page ProductsClientListByBillingProfileResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ProductsListByBillingProfileResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProductsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ProductsClientListByBillingProfileResponse) (ProductsClientListByBillingProfileResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ProductsClientListByBillingProfileResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ProductsClientListByBillingProfileResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ProductsClientListByBillingProfileResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByBillingProfileHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByBillingProfileCreateRequest creates the ListByBillingProfile request.
-func (client *ProductsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *ProductsListByBillingProfileOptions) (*policy.Request, error) {
+func (client *ProductsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *ProductsClientListByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/products"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -189,7 +219,7 @@ func (client *ProductsClient) listByBillingProfileCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter billingProfileName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -199,49 +229,56 @@ func (client *ProductsClient) listByBillingProfileCreateRequest(ctx context.Cont
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBillingProfileHandleResponse handles the ListByBillingProfile response.
-func (client *ProductsClient) listByBillingProfileHandleResponse(resp *http.Response) (ProductsListByBillingProfileResponse, error) {
-	result := ProductsListByBillingProfileResponse{RawResponse: resp}
+func (client *ProductsClient) listByBillingProfileHandleResponse(resp *http.Response) (ProductsClientListByBillingProfileResponse, error) {
+	result := ProductsClientListByBillingProfileResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductsListResult); err != nil {
-		return ProductsListByBillingProfileResponse{}, runtime.NewResponseError(err, resp)
+		return ProductsClientListByBillingProfileResponse{}, err
 	}
 	return result, nil
 }
 
-// listByBillingProfileHandleError handles the ListByBillingProfile error response.
-func (client *ProductsClient) listByBillingProfileHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByCustomer - Lists the products for a customer. These don't include products billed based on usage.The operation is supported only for billing accounts
-// with agreement type Microsoft Partner Agreement.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductsClient) ListByCustomer(billingAccountName string, customerName string, options *ProductsListByCustomerOptions) *ProductsListByCustomerPager {
-	return &ProductsListByCustomerPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByCustomerCreateRequest(ctx, billingAccountName, customerName, options)
+// NewListByCustomerPager - Lists the products for a customer. These don't include products billed based on usage.The operation
+// is supported only for billing accounts with agreement type Microsoft Partner Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
+// billingAccountName - The ID that uniquely identifies a billing account.
+// customerName - The ID that uniquely identifies a customer.
+// options - ProductsClientListByCustomerOptions contains the optional parameters for the ProductsClient.ListByCustomer method.
+func (client *ProductsClient) NewListByCustomerPager(billingAccountName string, customerName string, options *ProductsClientListByCustomerOptions) *runtime.Pager[ProductsClientListByCustomerResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ProductsClientListByCustomerResponse]{
+		More: func(page ProductsClientListByCustomerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ProductsListByCustomerResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProductsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ProductsClientListByCustomerResponse) (ProductsClientListByCustomerResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByCustomerCreateRequest(ctx, billingAccountName, customerName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ProductsClientListByCustomerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ProductsClientListByCustomerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ProductsClientListByCustomerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByCustomerHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByCustomerCreateRequest creates the ListByCustomer request.
-func (client *ProductsClient) listByCustomerCreateRequest(ctx context.Context, billingAccountName string, customerName string, options *ProductsListByCustomerOptions) (*policy.Request, error) {
+func (client *ProductsClient) listByCustomerCreateRequest(ctx context.Context, billingAccountName string, customerName string, options *ProductsClientListByCustomerOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/products"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -251,56 +288,65 @@ func (client *ProductsClient) listByCustomerCreateRequest(ctx context.Context, b
 		return nil, errors.New("parameter customerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{customerName}", url.PathEscape(customerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByCustomerHandleResponse handles the ListByCustomer response.
-func (client *ProductsClient) listByCustomerHandleResponse(resp *http.Response) (ProductsListByCustomerResponse, error) {
-	result := ProductsListByCustomerResponse{RawResponse: resp}
+func (client *ProductsClient) listByCustomerHandleResponse(resp *http.Response) (ProductsClientListByCustomerResponse, error) {
+	result := ProductsClientListByCustomerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductsListResult); err != nil {
-		return ProductsListByCustomerResponse{}, runtime.NewResponseError(err, resp)
+		return ProductsClientListByCustomerResponse{}, err
 	}
 	return result, nil
 }
 
-// listByCustomerHandleError handles the ListByCustomer error response.
-func (client *ProductsClient) listByCustomerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByInvoiceSection - Lists the products for an invoice section. These don't include products billed based on usage. The operation is supported only
-// for billing accounts with agreement type Microsoft Customer Agreement.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductsClient) ListByInvoiceSection(billingAccountName string, billingProfileName string, invoiceSectionName string, options *ProductsListByInvoiceSectionOptions) *ProductsListByInvoiceSectionPager {
-	return &ProductsListByInvoiceSectionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByInvoiceSectionCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, options)
+// NewListByInvoiceSectionPager - Lists the products for an invoice section. These don't include products billed based on
+// usage. The operation is supported only for billing accounts with agreement type Microsoft Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
+// billingAccountName - The ID that uniquely identifies a billing account.
+// billingProfileName - The ID that uniquely identifies a billing profile.
+// invoiceSectionName - The ID that uniquely identifies an invoice section.
+// options - ProductsClientListByInvoiceSectionOptions contains the optional parameters for the ProductsClient.ListByInvoiceSection
+// method.
+func (client *ProductsClient) NewListByInvoiceSectionPager(billingAccountName string, billingProfileName string, invoiceSectionName string, options *ProductsClientListByInvoiceSectionOptions) *runtime.Pager[ProductsClientListByInvoiceSectionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ProductsClientListByInvoiceSectionResponse]{
+		More: func(page ProductsClientListByInvoiceSectionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ProductsListByInvoiceSectionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProductsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ProductsClientListByInvoiceSectionResponse) (ProductsClientListByInvoiceSectionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByInvoiceSectionCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ProductsClientListByInvoiceSectionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ProductsClientListByInvoiceSectionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ProductsClientListByInvoiceSectionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByInvoiceSectionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByInvoiceSectionCreateRequest creates the ListByInvoiceSection request.
-func (client *ProductsClient) listByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *ProductsListByInvoiceSectionOptions) (*policy.Request, error) {
+func (client *ProductsClient) listByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *ProductsClientListByInvoiceSectionOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/products"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -314,7 +360,7 @@ func (client *ProductsClient) listByInvoiceSectionCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter invoiceSectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{invoiceSectionName}", url.PathEscape(invoiceSectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -324,53 +370,45 @@ func (client *ProductsClient) listByInvoiceSectionCreateRequest(ctx context.Cont
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByInvoiceSectionHandleResponse handles the ListByInvoiceSection response.
-func (client *ProductsClient) listByInvoiceSectionHandleResponse(resp *http.Response) (ProductsListByInvoiceSectionResponse, error) {
-	result := ProductsListByInvoiceSectionResponse{RawResponse: resp}
+func (client *ProductsClient) listByInvoiceSectionHandleResponse(resp *http.Response) (ProductsClientListByInvoiceSectionResponse, error) {
+	result := ProductsClientListByInvoiceSectionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductsListResult); err != nil {
-		return ProductsListByInvoiceSectionResponse{}, runtime.NewResponseError(err, resp)
+		return ProductsClientListByInvoiceSectionResponse{}, err
 	}
 	return result, nil
 }
 
-// listByInvoiceSectionHandleError handles the ListByInvoiceSection error response.
-func (client *ProductsClient) listByInvoiceSectionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Move - Moves a product's charges to a new invoice section. The new invoice section must belong to the same billing profile as the existing invoice section.
-// This operation is supported only for products that
+// Move - Moves a product's charges to a new invoice section. The new invoice section must belong to the same billing profile
+// as the existing invoice section. This operation is supported only for products that
 // are purchased with a recurring charge and for billing accounts with agreement type Microsoft Customer Agreement.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductsClient) Move(ctx context.Context, billingAccountName string, productName string, parameters TransferProductRequestProperties, options *ProductsMoveOptions) (ProductsMoveResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
+// billingAccountName - The ID that uniquely identifies a billing account.
+// productName - The ID that uniquely identifies a product.
+// parameters - Request parameters that are provided to the move product operation.
+// options - ProductsClientMoveOptions contains the optional parameters for the ProductsClient.Move method.
+func (client *ProductsClient) Move(ctx context.Context, billingAccountName string, productName string, parameters TransferProductRequestProperties, options *ProductsClientMoveOptions) (ProductsClientMoveResponse, error) {
 	req, err := client.moveCreateRequest(ctx, billingAccountName, productName, parameters, options)
 	if err != nil {
-		return ProductsMoveResponse{}, err
+		return ProductsClientMoveResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProductsMoveResponse{}, err
+		return ProductsClientMoveResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return ProductsMoveResponse{}, client.moveHandleError(resp)
+		return ProductsClientMoveResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.moveHandleResponse(resp)
 }
 
 // moveCreateRequest creates the Move request.
-func (client *ProductsClient) moveCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters TransferProductRequestProperties, options *ProductsMoveOptions) (*policy.Request, error) {
+func (client *ProductsClient) moveCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters TransferProductRequestProperties, options *ProductsClientMoveOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products/{productName}/move"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -380,20 +418,20 @@ func (client *ProductsClient) moveCreateRequest(ctx context.Context, billingAcco
 		return nil, errors.New("parameter productName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{productName}", url.PathEscape(productName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // moveHandleResponse handles the Move response.
-func (client *ProductsClient) moveHandleResponse(resp *http.Response) (ProductsMoveResponse, error) {
-	result := ProductsMoveResponse{RawResponse: resp}
+func (client *ProductsClient) moveHandleResponse(resp *http.Response) (ProductsClientMoveResponse, error) {
+	result := ProductsClientMoveResponse{}
 	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}
@@ -401,49 +439,41 @@ func (client *ProductsClient) moveHandleResponse(resp *http.Response) (ProductsM
 		retryAfter32, err := strconv.ParseInt(val, 10, 32)
 		retryAfter := int32(retryAfter32)
 		if err != nil {
-			return ProductsMoveResponse{}, err
+			return ProductsClientMoveResponse{}, err
 		}
 		result.RetryAfter = &retryAfter
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Product); err != nil {
-		return ProductsMoveResponse{}, runtime.NewResponseError(err, resp)
+		return ProductsClientMoveResponse{}, err
 	}
 	return result, nil
 }
 
-// moveHandleError handles the Move error response.
-func (client *ProductsClient) moveHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// Update - Updates the properties of a Product. Currently, auto renew can be updated. The operation is supported only for billing accounts with agreement
-// type Microsoft Customer Agreement.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductsClient) Update(ctx context.Context, billingAccountName string, productName string, parameters Product, options *ProductsUpdateOptions) (ProductsUpdateResponse, error) {
+// Update - Updates the properties of a Product. Currently, auto renew can be updated. The operation is supported only for
+// billing accounts with agreement type Microsoft Customer Agreement.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
+// billingAccountName - The ID that uniquely identifies a billing account.
+// productName - The ID that uniquely identifies a product.
+// parameters - Request parameters that are provided to the update product operation.
+// options - ProductsClientUpdateOptions contains the optional parameters for the ProductsClient.Update method.
+func (client *ProductsClient) Update(ctx context.Context, billingAccountName string, productName string, parameters Product, options *ProductsClientUpdateOptions) (ProductsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, billingAccountName, productName, parameters, options)
 	if err != nil {
-		return ProductsUpdateResponse{}, err
+		return ProductsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProductsUpdateResponse{}, err
+		return ProductsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProductsUpdateResponse{}, client.updateHandleError(resp)
+		return ProductsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ProductsClient) updateCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters Product, options *ProductsUpdateOptions) (*policy.Request, error) {
+func (client *ProductsClient) updateCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters Product, options *ProductsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products/{productName}"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -453,60 +483,52 @@ func (client *ProductsClient) updateCreateRequest(ctx context.Context, billingAc
 		return nil, errors.New("parameter productName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{productName}", url.PathEscape(productName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ProductsClient) updateHandleResponse(resp *http.Response) (ProductsUpdateResponse, error) {
-	result := ProductsUpdateResponse{RawResponse: resp}
+func (client *ProductsClient) updateHandleResponse(resp *http.Response) (ProductsClientUpdateResponse, error) {
+	result := ProductsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Product); err != nil {
-		return ProductsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ProductsClientUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// updateHandleError handles the Update error response.
-func (client *ProductsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ValidateMove - Validates if a product's charges can be moved to a new invoice section. This operation is supported only for products that are purchased
-// with a recurring charge and for billing accounts with agreement
+// ValidateMove - Validates if a product's charges can be moved to a new invoice section. This operation is supported only
+// for products that are purchased with a recurring charge and for billing accounts with agreement
 // type Microsoft Customer Agreement.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductsClient) ValidateMove(ctx context.Context, billingAccountName string, productName string, parameters TransferProductRequestProperties, options *ProductsValidateMoveOptions) (ProductsValidateMoveResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
+// billingAccountName - The ID that uniquely identifies a billing account.
+// productName - The ID that uniquely identifies a product.
+// parameters - Request parameters that are provided to the validate move eligibility operation.
+// options - ProductsClientValidateMoveOptions contains the optional parameters for the ProductsClient.ValidateMove method.
+func (client *ProductsClient) ValidateMove(ctx context.Context, billingAccountName string, productName string, parameters TransferProductRequestProperties, options *ProductsClientValidateMoveOptions) (ProductsClientValidateMoveResponse, error) {
 	req, err := client.validateMoveCreateRequest(ctx, billingAccountName, productName, parameters, options)
 	if err != nil {
-		return ProductsValidateMoveResponse{}, err
+		return ProductsClientValidateMoveResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProductsValidateMoveResponse{}, err
+		return ProductsClientValidateMoveResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ProductsValidateMoveResponse{}, client.validateMoveHandleError(resp)
+		return ProductsClientValidateMoveResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.validateMoveHandleResponse(resp)
 }
 
 // validateMoveCreateRequest creates the ValidateMove request.
-func (client *ProductsClient) validateMoveCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters TransferProductRequestProperties, options *ProductsValidateMoveOptions) (*policy.Request, error) {
+func (client *ProductsClient) validateMoveCreateRequest(ctx context.Context, billingAccountName string, productName string, parameters TransferProductRequestProperties, options *ProductsClientValidateMoveOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products/{productName}/validateMoveEligibility"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -516,35 +538,22 @@ func (client *ProductsClient) validateMoveCreateRequest(ctx context.Context, bil
 		return nil, errors.New("parameter productName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{productName}", url.PathEscape(productName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // validateMoveHandleResponse handles the ValidateMove response.
-func (client *ProductsClient) validateMoveHandleResponse(resp *http.Response) (ProductsValidateMoveResponse, error) {
-	result := ProductsValidateMoveResponse{RawResponse: resp}
+func (client *ProductsClient) validateMoveHandleResponse(resp *http.Response) (ProductsClientValidateMoveResponse, error) {
+	result := ProductsClientValidateMoveResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateProductTransferEligibilityResult); err != nil {
-		return ProductsValidateMoveResponse{}, runtime.NewResponseError(err, resp)
+		return ProductsClientValidateMoveResponse{}, err
 	}
 	return result, nil
-}
-
-// validateMoveHandleError handles the ValidateMove error response.
-func (client *ProductsClient) validateMoveHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,84 +17,109 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 )
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/GetPeerAsn.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/peering/resource-manager/Microsoft.Peering/stable/2022-01-01/examples/GetPeerAsn.json
 func ExamplePeerAsnsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeerAsnsClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewPeerAsnsClient("subId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<peer-asn-name>",
+		"peerAsnName",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("PeerAsn.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/CreatePeerAsn.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/peering/resource-manager/Microsoft.Peering/stable/2022-01-01/examples/CreatePeerAsn.json
 func ExamplePeerAsnsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeerAsnsClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewPeerAsnsClient("subId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<peer-asn-name>",
+		"peerAsnName",
 		armpeering.PeerAsn{
 			Properties: &armpeering.PeerAsnProperties{
-				PeerAsn: to.Int32Ptr(65000),
-				PeerContactInfo: &armpeering.ContactInfo{
-					Emails: []*string{
-						to.StringPtr("abc@contoso.com"),
-						to.StringPtr("xyz@contoso.com")},
-					Phone: []*string{
-						to.StringPtr("+1 (234) 567-8900")},
-				},
-				PeerName: to.StringPtr("<peer-name>"),
+				PeerAsn: to.Ptr[int32](65000),
+				PeerContactDetail: []*armpeering.ContactDetail{
+					{
+						Email: to.Ptr("noc@contoso.com"),
+						Phone: to.Ptr("+1 (234) 567-8999"),
+						Role:  to.Ptr(armpeering.RoleNoc),
+					},
+					{
+						Email: to.Ptr("abc@contoso.com"),
+						Phone: to.Ptr("+1 (234) 567-8900"),
+						Role:  to.Ptr(armpeering.RolePolicy),
+					},
+					{
+						Email: to.Ptr("xyz@contoso.com"),
+						Phone: to.Ptr("+1 (234) 567-8900"),
+						Role:  to.Ptr(armpeering.RoleTechnical),
+					}},
+				PeerName: to.Ptr("Contoso"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("PeerAsn.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/DeletePeerAsn.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/peering/resource-manager/Microsoft.Peering/stable/2022-01-01/examples/DeletePeerAsn.json
 func ExamplePeerAsnsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeerAsnsClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewPeerAsnsClient("subId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<peer-asn-name>",
+		"peerAsnName",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/ListPeerAsnsBySubscription.json
-func ExamplePeerAsnsClient_ListBySubscription() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/peering/resource-manager/Microsoft.Peering/stable/2022-01-01/examples/ListPeerAsnsBySubscription.json
+func ExamplePeerAsnsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeerAsnsClient("<subscription-id>", cred, nil)
-	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armpeering.NewPeerAsnsClient("subId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListBySubscriptionPager(nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("PeerAsn.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

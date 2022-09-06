@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -7,13 +7,11 @@
 package shared
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"errors"
 	"io"
-	"io/ioutil"
 	"net/http"
+	"reflect"
 	"strconv"
 	"time"
 )
@@ -24,47 +22,8 @@ type CtxWithHTTPHeaderKey struct{}
 // CtxWithRetryOptionsKey is used as a context key for adding/retrieving RetryOptions.
 type CtxWithRetryOptionsKey struct{}
 
-type nopCloser struct {
-	io.ReadSeeker
-}
-
-func (n nopCloser) Close() error {
-	return nil
-}
-
-// NopCloser returns a ReadSeekCloser with a no-op close method wrapping the provided io.ReadSeeker.
-func NopCloser(rs io.ReadSeeker) io.ReadSeekCloser {
-	return nopCloser{rs}
-}
-
-func NewResponseError(inner error, resp *http.Response) error {
-	return &ResponseError{inner: inner, resp: resp}
-}
-
-type ResponseError struct {
-	inner error
-	resp  *http.Response
-}
-
-// Error implements the error interface for type ResponseError.
-func (e *ResponseError) Error() string {
-	return e.inner.Error()
-}
-
-// Unwrap returns the inner error.
-func (e *ResponseError) Unwrap() error {
-	return e.inner
-}
-
-// RawResponse returns the HTTP response associated with this error.
-func (e *ResponseError) RawResponse() *http.Response {
-	return e.resp
-}
-
-// NonRetriable indicates this error is non-transient.
-func (e *ResponseError) NonRetriable() {
-	// marker method
-}
+// CtxIncludeResponseKey is used as a context key for retrieving the raw response.
+type CtxIncludeResponseKey struct{}
 
 // Delay waits for the duration to elapse or the context to be cancelled.
 func Delay(ctx context.Context, delay time.Duration) error {
@@ -74,30 +33,6 @@ func Delay(ctx context.Context, delay time.Duration) error {
 	case <-ctx.Done():
 		return ctx.Err()
 	}
-}
-
-// ErrNoBody is returned if the response didn't contain a body.
-var ErrNoBody = errors.New("the response did not contain a body")
-
-// GetJSON reads the response body into a raw JSON object.
-// It returns ErrNoBody if there was no content.
-func GetJSON(resp *http.Response) (map[string]interface{}, error) {
-	body, err := ioutil.ReadAll(resp.Body)
-	defer resp.Body.Close()
-	if err != nil {
-		return nil, err
-	}
-	if len(body) == 0 {
-		return nil, ErrNoBody
-	}
-	// put the body back so it's available to others
-	resp.Body = ioutil.NopCloser(bytes.NewReader(body))
-	// unmarshall the body to get the value
-	var jsonBody map[string]interface{}
-	if err = json.Unmarshal(body, &jsonBody); err != nil {
-		return nil, err
-	}
-	return jsonBody, nil
 }
 
 // RetryAfter returns non-zero if the response contains a Retry-After header value.
@@ -119,25 +54,82 @@ func RetryAfter(resp *http.Response) time.Duration {
 	return 0
 }
 
-// HasStatusCode returns true if the Response's status code is one of the specified values.
-func HasStatusCode(resp *http.Response, statusCodes ...int) bool {
-	if resp == nil {
-		return false
-	}
-	for _, sc := range statusCodes {
-		if resp.StatusCode == sc {
-			return true
-		}
-	}
-	return false
+// TypeOfT returns the type of the generic type param.
+func TypeOfT[T any]() reflect.Type {
+	// you can't, at present, obtain the type of
+	// a type parameter, so this is the trick
+	return reflect.TypeOf((*T)(nil)).Elem()
 }
 
-const defaultScope = "/.default"
+// BytesSetter abstracts replacing a byte slice on some type.
+type BytesSetter interface {
+	Set(b []byte)
+}
 
-// EndpointToScope converts the provided URL endpoint to its default scope.
-func EndpointToScope(endpoint string) string {
-	if endpoint[len(endpoint)-1] != '/' {
-		endpoint += "/"
+// NewNopClosingBytesReader creates a new *NopClosingBytesReader for the specified slice.
+func NewNopClosingBytesReader(data []byte) *NopClosingBytesReader {
+	return &NopClosingBytesReader{s: data}
+}
+
+// NopClosingBytesReader is an io.ReadSeekCloser around a byte slice.
+// It also provides direct access to the byte slice to avoid rereading.
+type NopClosingBytesReader struct {
+	s []byte
+	i int64
+}
+
+// Bytes returns the underlying byte slice.
+func (r *NopClosingBytesReader) Bytes() []byte {
+	return r.s
+}
+
+// Close implements the io.Closer interface.
+func (*NopClosingBytesReader) Close() error {
+	return nil
+}
+
+// Read implements the io.Reader interface.
+func (r *NopClosingBytesReader) Read(b []byte) (n int, err error) {
+	if r.i >= int64(len(r.s)) {
+		return 0, io.EOF
 	}
-	return endpoint + defaultScope
+	n = copy(b, r.s[r.i:])
+	r.i += int64(n)
+	return
+}
+
+// Set replaces the existing byte slice with the specified byte slice and resets the reader.
+func (r *NopClosingBytesReader) Set(b []byte) {
+	r.s = b
+	r.i = 0
+}
+
+// Seek implements the io.Seeker interface.
+func (r *NopClosingBytesReader) Seek(offset int64, whence int) (int64, error) {
+	var i int64
+	switch whence {
+	case io.SeekStart:
+		i = offset
+	case io.SeekCurrent:
+		i = r.i + offset
+	case io.SeekEnd:
+		i = int64(len(r.s)) + offset
+	default:
+		return 0, errors.New("nopClosingBytesReader: invalid whence")
+	}
+	if i < 0 {
+		return 0, errors.New("nopClosingBytesReader: negative position")
+	}
+	r.i = i
+	return i, nil
+}
+
+var _ BytesSetter = (*NopClosingBytesReader)(nil)
+
+// TransportFunc is a helper to use a first-class func to satisfy the Transporter interface.
+type TransportFunc func(*http.Request) (*http.Response, error)
+
+// Do implements the Transporter interface for the TransportFunc type.
+func (pf TransportFunc) Do(req *http.Request) (*http.Response, error) {
+	return pf(req)
 }

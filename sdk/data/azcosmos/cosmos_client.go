@@ -7,15 +7,19 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
+	"net/url"
+	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 )
 
-// Cosmos client is used to interact with the Azure Cosmos DB database service.
+// Client is used to interact with the Azure Cosmos DB database service.
 type Client struct {
 	endpoint string
 	pipeline azruntime.Pipeline
@@ -26,27 +30,88 @@ func (c *Client) Endpoint() string {
 	return c.endpoint
 }
 
-// NewClientWithKey creates a new instance of Cosmos client with the specified values. It uses the default pipeline configuration.
+// NewClientWithKey creates a new instance of Cosmos client with shared key authentication. It uses the default pipeline configuration.
 // endpoint - The cosmos service endpoint to use.
 // cred - The credential used to authenticate with the cosmos service.
 // options - Optional Cosmos client options.  Pass nil to accept default values.
 func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*Client, error) {
-	return &Client{endpoint: endpoint, pipeline: newPipeline(cred, o)}, nil
+	return &Client{endpoint: endpoint, pipeline: newPipeline(newSharedKeyCredPolicy(cred), o)}, nil
 }
 
-func newPipeline(cred KeyCredential, options *ClientOptions) azruntime.Pipeline {
+// NewClient creates a new instance of Cosmos client with Azure AD access token authentication. It uses the default pipeline configuration.
+// endpoint - The cosmos service endpoint to use.
+// cred - The credential used to authenticate with the cosmos service.
+// options - Optional Cosmos client options.  Pass nil to accept default values.
+func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (*Client, error) {
+	scope, err := createScopeFromEndpoint(endpoint)
+	if err != nil {
+		return nil, err
+	}
+	return &Client{endpoint: endpoint, pipeline: newPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o)}, nil
+}
+
+// NewClientFromConnectionString creates a new instance of Cosmos client from connection string. It uses the default pipeline configuration.
+// connectionString - The cosmos service connection string.
+// options - Optional Cosmos client options.  Pass nil to accept default values.
+func NewClientFromConnectionString(connectionString string, o *ClientOptions) (*Client, error) {
+	const (
+		accountEndpoint = "AccountEndpoint"
+		accountKey      = "AccountKey"
+	)
+
+	splits := strings.SplitN(connectionString, ";", 2)
+	if len(splits) < 2 {
+		return nil, errors.New("failed parsing connection string due to it not consist of two parts separated by ';'")
+	}
+
+	var endpoint string
+	var cred KeyCredential
+	for _, split := range splits {
+		keyVal := strings.SplitN(split, "=", 2)
+		if len(keyVal) < 2 {
+			return nil, fmt.Errorf("failed parsing connection string due to unmatched key value separated by '='")
+		}
+		switch {
+		case strings.EqualFold(accountEndpoint, keyVal[0]):
+			endpoint = keyVal[1]
+		case strings.EqualFold(accountKey, keyVal[0]):
+			c, err := NewKeyCredential(strings.TrimSuffix(keyVal[1], ";"))
+			if err != nil {
+				return nil, err
+			}
+			cred = c
+		}
+	}
+
+	return NewClientWithKey(endpoint, cred, o)
+}
+
+func newPipeline(authPolicy policy.Policy, options *ClientOptions) azruntime.Pipeline {
 	if options == nil {
 		options = &ClientOptions{}
 	}
 
 	return azruntime.NewPipeline("azcosmos", serviceLibVersion,
-		[]policy.Policy{
-			newSharedKeyCredPolicy(cred),
-			&headerPolicies{
-				enableContentResponseOnWrite: options.EnableContentResponseOnWrite,
-			}},
-		nil,
+		azruntime.PipelineOptions{
+			PerCall: []policy.Policy{
+				&headerPolicies{
+					enableContentResponseOnWrite: options.EnableContentResponseOnWrite,
+				},
+			},
+			PerRetry: []policy.Policy{
+				authPolicy,
+			},
+		},
 		&options.ClientOptions)
+}
+
+func createScopeFromEndpoint(endpoint string) ([]string, error) {
+	u, err := url.Parse(endpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	return []string{fmt.Sprintf("%s://%s/.default", u.Scheme, u.Hostname())}, nil
 }
 
 // NewDatabase returns a struct that represents a database and allows database level operations.
@@ -138,6 +203,7 @@ func (c *Client) sendQueryRequest(
 	path string,
 	ctx context.Context,
 	query string,
+	parameters []QueryParameter,
 	operationContext pipelineRequestOptions,
 	requestOptions cosmosRequestOptions,
 	requestEnricher func(*policy.Request)) (*http.Response, error) {
@@ -146,13 +212,11 @@ func (c *Client) sendQueryRequest(
 		return nil, err
 	}
 
-	type queryBody struct {
-		Query string `json:"query"`
-	}
-
 	err = azruntime.MarshalAsJSON(req, queryBody{
-		Query: query,
+		Query:      query,
+		Parameters: parameters,
 	})
+
 	if err != nil {
 		return nil, err
 	}
@@ -212,6 +276,26 @@ func (c *Client) sendDeleteRequest(
 	return c.executeAndEnsureSuccessResponse(req)
 }
 
+func (c *Client) sendBatchRequest(
+	ctx context.Context,
+	path string,
+	batch []batchOperation,
+	operationContext pipelineRequestOptions,
+	requestOptions cosmosRequestOptions,
+	requestEnricher func(*policy.Request)) (*http.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodPost, operationContext, requestOptions, requestEnricher)
+	if err != nil {
+		return nil, err
+	}
+
+	err = c.attachContent(batch, req)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.executeAndEnsureSuccessResponse(req)
+}
+
 func (c *Client) createRequest(
 	path string,
 	ctx context.Context,
@@ -262,7 +346,6 @@ func (c *Client) attachContent(content interface{}, req *policy.Request) error {
 	default:
 		// Otherwise, we need to marshal it
 		err = azruntime.MarshalAsJSON(req, content)
-
 	}
 
 	if err != nil {

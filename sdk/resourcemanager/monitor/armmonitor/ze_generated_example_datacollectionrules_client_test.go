@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,207 +17,226 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-04-01/examples/DataCollectionRulesListByResourceGroup.json
-func ExampleDataCollectionRulesClient_ListByResourceGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/DataCollectionRulesListByResourceGroup.json
+func ExampleDataCollectionRulesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewDataCollectionRulesClient("<subscription-id>", cred, nil)
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	client, err := armmonitor.NewDataCollectionRulesClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByResourceGroupPager("myResourceGroup",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("DataCollectionRuleResource.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-04-01/examples/DataCollectionRulesListBySubscription.json
-func ExampleDataCollectionRulesClient_ListBySubscription() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/DataCollectionRulesListBySubscription.json
+func ExampleDataCollectionRulesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewDataCollectionRulesClient("<subscription-id>", cred, nil)
-	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armmonitor.NewDataCollectionRulesClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListBySubscriptionPager(nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("DataCollectionRuleResource.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-04-01/examples/DataCollectionRulesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/DataCollectionRulesGet.json
 func ExampleDataCollectionRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewDataCollectionRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewDataCollectionRulesClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<data-collection-rule-name>",
+		"myResourceGroup",
+		"myCollectionRule",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("DataCollectionRuleResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-04-01/examples/DataCollectionRulesCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/DataCollectionRulesCreate.json
 func ExampleDataCollectionRulesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewDataCollectionRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewDataCollectionRulesClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<data-collection-rule-name>",
-		&armmonitor.DataCollectionRulesCreateOptions{Body: &armmonitor.DataCollectionRuleResource{
-			Location: to.StringPtr("<location>"),
+		"myResourceGroup",
+		"myCollectionRule",
+		&armmonitor.DataCollectionRulesClientCreateOptions{Body: &armmonitor.DataCollectionRuleResource{
+			Location: to.Ptr("eastus"),
 			Properties: &armmonitor.DataCollectionRuleResourceProperties{
-				DataCollectionRule: armmonitor.DataCollectionRule{
-					DataFlows: []*armmonitor.DataFlow{
+				DataFlows: []*armmonitor.DataFlow{
+					{
+						Destinations: []*string{
+							to.Ptr("centralWorkspace")},
+						Streams: []*armmonitor.KnownDataFlowStreams{
+							to.Ptr(armmonitor.KnownDataFlowStreamsMicrosoftPerf),
+							to.Ptr(armmonitor.KnownDataFlowStreamsMicrosoftSyslog),
+							to.Ptr(armmonitor.KnownDataFlowStreamsMicrosoftWindowsEvent)},
+					}},
+				DataSources: &armmonitor.DataCollectionRuleDataSources{
+					PerformanceCounters: []*armmonitor.PerfCounterDataSource{
 						{
-							Destinations: []*string{
-								to.StringPtr("centralWorkspace")},
-							Streams: []*armmonitor.KnownDataFlowStreams{
-								armmonitor.KnownDataFlowStreamsMicrosoftPerf.ToPtr(),
-								armmonitor.KnownDataFlowStreamsMicrosoftSyslog.ToPtr(),
-								armmonitor.KnownDataFlowStreamsMicrosoftWindowsEvent.ToPtr()},
+							Name: to.Ptr("cloudTeamCoreCounters"),
+							CounterSpecifiers: []*string{
+								to.Ptr("\\Processor(_Total)\\% Processor Time"),
+								to.Ptr("\\Memory\\Committed Bytes"),
+								to.Ptr("\\LogicalDisk(_Total)\\Free Megabytes"),
+								to.Ptr("\\PhysicalDisk(_Total)\\Avg. Disk Queue Length")},
+							SamplingFrequencyInSeconds: to.Ptr[int32](15),
+							Streams: []*armmonitor.KnownPerfCounterDataSourceStreams{
+								to.Ptr(armmonitor.KnownPerfCounterDataSourceStreamsMicrosoftPerf)},
+						},
+						{
+							Name: to.Ptr("appTeamExtraCounters"),
+							CounterSpecifiers: []*string{
+								to.Ptr("\\Process(_Total)\\Thread Count")},
+							SamplingFrequencyInSeconds: to.Ptr[int32](30),
+							Streams: []*armmonitor.KnownPerfCounterDataSourceStreams{
+								to.Ptr(armmonitor.KnownPerfCounterDataSourceStreamsMicrosoftPerf)},
 						}},
-					DataSources: &armmonitor.DataCollectionRuleDataSources{
-						DataSourcesSpec: armmonitor.DataSourcesSpec{
-							PerformanceCounters: []*armmonitor.PerfCounterDataSource{
-								{
-									Name: to.StringPtr("<name>"),
-									CounterSpecifiers: []*string{
-										to.StringPtr("\\Processor(_Total)\\% Processor Time"),
-										to.StringPtr("\\Memory\\Committed Bytes"),
-										to.StringPtr("\\LogicalDisk(_Total)\\Free Megabytes"),
-										to.StringPtr("\\PhysicalDisk(_Total)\\Avg. Disk Queue Length")},
-									SamplingFrequencyInSeconds: to.Int32Ptr(15),
-									Streams: []*armmonitor.KnownPerfCounterDataSourceStreams{
-										armmonitor.KnownPerfCounterDataSourceStreamsMicrosoftPerf.ToPtr()},
-								},
-								{
-									Name: to.StringPtr("<name>"),
-									CounterSpecifiers: []*string{
-										to.StringPtr("\\Process(_Total)\\Thread Count")},
-									SamplingFrequencyInSeconds: to.Int32Ptr(30),
-									Streams: []*armmonitor.KnownPerfCounterDataSourceStreams{
-										armmonitor.KnownPerfCounterDataSourceStreamsMicrosoftPerf.ToPtr()},
-								}},
-							Syslog: []*armmonitor.SyslogDataSource{
-								{
-									Name: to.StringPtr("<name>"),
-									FacilityNames: []*armmonitor.KnownSyslogDataSourceFacilityNames{
-										armmonitor.KnownSyslogDataSourceFacilityNamesCron.ToPtr()},
-									LogLevels: []*armmonitor.KnownSyslogDataSourceLogLevels{
-										armmonitor.KnownSyslogDataSourceLogLevelsDebug.ToPtr(),
-										armmonitor.KnownSyslogDataSourceLogLevelsCritical.ToPtr(),
-										armmonitor.KnownSyslogDataSourceLogLevelsEmergency.ToPtr()},
-									Streams: []*armmonitor.KnownSyslogDataSourceStreams{
-										armmonitor.KnownSyslogDataSourceStreamsMicrosoftSyslog.ToPtr()},
-								},
-								{
-									Name: to.StringPtr("<name>"),
-									FacilityNames: []*armmonitor.KnownSyslogDataSourceFacilityNames{
-										armmonitor.KnownSyslogDataSourceFacilityNamesSyslog.ToPtr()},
-									LogLevels: []*armmonitor.KnownSyslogDataSourceLogLevels{
-										armmonitor.KnownSyslogDataSourceLogLevelsAlert.ToPtr(),
-										armmonitor.KnownSyslogDataSourceLogLevelsCritical.ToPtr(),
-										armmonitor.KnownSyslogDataSourceLogLevelsEmergency.ToPtr()},
-									Streams: []*armmonitor.KnownSyslogDataSourceStreams{
-										armmonitor.KnownSyslogDataSourceStreamsMicrosoftSyslog.ToPtr()},
-								}},
-							WindowsEventLogs: []*armmonitor.WindowsEventLogDataSource{
-								{
-									Name: to.StringPtr("<name>"),
-									Streams: []*armmonitor.KnownWindowsEventLogDataSourceStreams{
-										armmonitor.KnownWindowsEventLogDataSourceStreamsMicrosoftWindowsEvent.ToPtr()},
-									XPathQueries: []*string{
-										to.StringPtr("Security!")},
-								},
-								{
-									Name: to.StringPtr("<name>"),
-									Streams: []*armmonitor.KnownWindowsEventLogDataSourceStreams{
-										armmonitor.KnownWindowsEventLogDataSourceStreamsMicrosoftWindowsEvent.ToPtr()},
-									XPathQueries: []*string{
-										to.StringPtr("System![System[(Level = 1 or Level = 2 or Level = 3)]]"),
-										to.StringPtr("Application!*[System[(Level = 1 or Level = 2 or Level = 3)]]")},
-								}},
+					Syslog: []*armmonitor.SyslogDataSource{
+						{
+							Name: to.Ptr("cronSyslog"),
+							FacilityNames: []*armmonitor.KnownSyslogDataSourceFacilityNames{
+								to.Ptr(armmonitor.KnownSyslogDataSourceFacilityNamesCron)},
+							LogLevels: []*armmonitor.KnownSyslogDataSourceLogLevels{
+								to.Ptr(armmonitor.KnownSyslogDataSourceLogLevelsDebug),
+								to.Ptr(armmonitor.KnownSyslogDataSourceLogLevelsCritical),
+								to.Ptr(armmonitor.KnownSyslogDataSourceLogLevelsEmergency)},
+							Streams: []*armmonitor.KnownSyslogDataSourceStreams{
+								to.Ptr(armmonitor.KnownSyslogDataSourceStreamsMicrosoftSyslog)},
 						},
-					},
-					Destinations: &armmonitor.DataCollectionRuleDestinations{
-						DestinationsSpec: armmonitor.DestinationsSpec{
-							LogAnalytics: []*armmonitor.LogAnalyticsDestination{
-								{
-									Name:                to.StringPtr("<name>"),
-									WorkspaceResourceID: to.StringPtr("<workspace-resource-id>"),
-								}},
+						{
+							Name: to.Ptr("syslogBase"),
+							FacilityNames: []*armmonitor.KnownSyslogDataSourceFacilityNames{
+								to.Ptr(armmonitor.KnownSyslogDataSourceFacilityNamesSyslog)},
+							LogLevels: []*armmonitor.KnownSyslogDataSourceLogLevels{
+								to.Ptr(armmonitor.KnownSyslogDataSourceLogLevelsAlert),
+								to.Ptr(armmonitor.KnownSyslogDataSourceLogLevelsCritical),
+								to.Ptr(armmonitor.KnownSyslogDataSourceLogLevelsEmergency)},
+							Streams: []*armmonitor.KnownSyslogDataSourceStreams{
+								to.Ptr(armmonitor.KnownSyslogDataSourceStreamsMicrosoftSyslog)},
+						}},
+					WindowsEventLogs: []*armmonitor.WindowsEventLogDataSource{
+						{
+							Name: to.Ptr("cloudSecurityTeamEvents"),
+							Streams: []*armmonitor.KnownWindowsEventLogDataSourceStreams{
+								to.Ptr(armmonitor.KnownWindowsEventLogDataSourceStreamsMicrosoftWindowsEvent)},
+							XPathQueries: []*string{
+								to.Ptr("Security!")},
 						},
-					},
+						{
+							Name: to.Ptr("appTeam1AppEvents"),
+							Streams: []*armmonitor.KnownWindowsEventLogDataSourceStreams{
+								to.Ptr(armmonitor.KnownWindowsEventLogDataSourceStreamsMicrosoftWindowsEvent)},
+							XPathQueries: []*string{
+								to.Ptr("System![System[(Level = 1 or Level = 2 or Level = 3)]]"),
+								to.Ptr("Application!*[System[(Level = 1 or Level = 2 or Level = 3)]]")},
+						}},
+				},
+				Destinations: &armmonitor.DataCollectionRuleDestinations{
+					LogAnalytics: []*armmonitor.LogAnalyticsDestination{
+						{
+							Name:                to.Ptr("centralWorkspace"),
+							WorkspaceResourceID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.OperationalInsights/workspaces/centralTeamWorkspace"),
+						}},
 				},
 			},
 		},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("DataCollectionRuleResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-04-01/examples/DataCollectionRulesUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/DataCollectionRulesUpdate.json
 func ExampleDataCollectionRulesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewDataCollectionRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewDataCollectionRulesClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<data-collection-rule-name>",
-		&armmonitor.DataCollectionRulesUpdateOptions{Body: &armmonitor.ResourceForUpdate{
+		"myResourceGroup",
+		"myCollectionRule",
+		&armmonitor.DataCollectionRulesClientUpdateOptions{Body: &armmonitor.ResourceForUpdate{
 			Tags: map[string]*string{
-				"tag1": to.StringPtr("A"),
-				"tag2": to.StringPtr("B"),
-				"tag3": to.StringPtr("C"),
+				"tag1": to.Ptr("A"),
+				"tag2": to.Ptr("B"),
+				"tag3": to.Ptr("C"),
 			},
 		},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("DataCollectionRuleResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-04-01/examples/DataCollectionRulesDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/DataCollectionRulesDelete.json
 func ExampleDataCollectionRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewDataCollectionRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewDataCollectionRulesClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<data-collection-rule-name>",
+		"myResourceGroup",
+		"myCollectionRule",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }

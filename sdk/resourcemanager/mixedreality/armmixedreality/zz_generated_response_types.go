@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,298 +8,132 @@
 
 package armmixedreality
 
-import "net/http"
-
-// MixedRealityClientCheckNameAvailabilityLocalResponse contains the response from method MixedRealityClient.CheckNameAvailabilityLocal.
-type MixedRealityClientCheckNameAvailabilityLocalResponse struct {
-	MixedRealityClientCheckNameAvailabilityLocalResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MixedRealityClientCheckNameAvailabilityLocalResult contains the result from method MixedRealityClient.CheckNameAvailabilityLocal.
-type MixedRealityClientCheckNameAvailabilityLocalResult struct {
+// ClientCheckNameAvailabilityLocalResponse contains the response from method Client.CheckNameAvailabilityLocal.
+type ClientCheckNameAvailabilityLocalResponse struct {
 	CheckNameAvailabilityResponse
 }
 
-// ObjectAnchorsAccountsCreateResponse contains the response from method ObjectAnchorsAccounts.Create.
-type ObjectAnchorsAccountsCreateResponse struct {
-	ObjectAnchorsAccountsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ObjectAnchorsAccountsCreateResult contains the result from method ObjectAnchorsAccounts.Create.
-type ObjectAnchorsAccountsCreateResult struct {
+// ObjectAnchorsAccountsClientCreateResponse contains the response from method ObjectAnchorsAccountsClient.Create.
+type ObjectAnchorsAccountsClientCreateResponse struct {
 	ObjectAnchorsAccount
 }
 
-// ObjectAnchorsAccountsDeleteResponse contains the response from method ObjectAnchorsAccounts.Delete.
-type ObjectAnchorsAccountsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ObjectAnchorsAccountsClientDeleteResponse contains the response from method ObjectAnchorsAccountsClient.Delete.
+type ObjectAnchorsAccountsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// ObjectAnchorsAccountsGetResponse contains the response from method ObjectAnchorsAccounts.Get.
-type ObjectAnchorsAccountsGetResponse struct {
-	ObjectAnchorsAccountsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ObjectAnchorsAccountsGetResult contains the result from method ObjectAnchorsAccounts.Get.
-type ObjectAnchorsAccountsGetResult struct {
+// ObjectAnchorsAccountsClientGetResponse contains the response from method ObjectAnchorsAccountsClient.Get.
+type ObjectAnchorsAccountsClientGetResponse struct {
 	ObjectAnchorsAccount
 }
 
-// ObjectAnchorsAccountsListByResourceGroupResponse contains the response from method ObjectAnchorsAccounts.ListByResourceGroup.
-type ObjectAnchorsAccountsListByResourceGroupResponse struct {
-	ObjectAnchorsAccountsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ObjectAnchorsAccountsListByResourceGroupResult contains the result from method ObjectAnchorsAccounts.ListByResourceGroup.
-type ObjectAnchorsAccountsListByResourceGroupResult struct {
+// ObjectAnchorsAccountsClientListByResourceGroupResponse contains the response from method ObjectAnchorsAccountsClient.ListByResourceGroup.
+type ObjectAnchorsAccountsClientListByResourceGroupResponse struct {
 	ObjectAnchorsAccountPage
 }
 
-// ObjectAnchorsAccountsListBySubscriptionResponse contains the response from method ObjectAnchorsAccounts.ListBySubscription.
-type ObjectAnchorsAccountsListBySubscriptionResponse struct {
-	ObjectAnchorsAccountsListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ObjectAnchorsAccountsListBySubscriptionResult contains the result from method ObjectAnchorsAccounts.ListBySubscription.
-type ObjectAnchorsAccountsListBySubscriptionResult struct {
+// ObjectAnchorsAccountsClientListBySubscriptionResponse contains the response from method ObjectAnchorsAccountsClient.ListBySubscription.
+type ObjectAnchorsAccountsClientListBySubscriptionResponse struct {
 	ObjectAnchorsAccountPage
 }
 
-// ObjectAnchorsAccountsListKeysResponse contains the response from method ObjectAnchorsAccounts.ListKeys.
-type ObjectAnchorsAccountsListKeysResponse struct {
-	ObjectAnchorsAccountsListKeysResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ObjectAnchorsAccountsListKeysResult contains the result from method ObjectAnchorsAccounts.ListKeys.
-type ObjectAnchorsAccountsListKeysResult struct {
+// ObjectAnchorsAccountsClientListKeysResponse contains the response from method ObjectAnchorsAccountsClient.ListKeys.
+type ObjectAnchorsAccountsClientListKeysResponse struct {
 	AccountKeys
 }
 
-// ObjectAnchorsAccountsRegenerateKeysResponse contains the response from method ObjectAnchorsAccounts.RegenerateKeys.
-type ObjectAnchorsAccountsRegenerateKeysResponse struct {
-	ObjectAnchorsAccountsRegenerateKeysResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ObjectAnchorsAccountsRegenerateKeysResult contains the result from method ObjectAnchorsAccounts.RegenerateKeys.
-type ObjectAnchorsAccountsRegenerateKeysResult struct {
+// ObjectAnchorsAccountsClientRegenerateKeysResponse contains the response from method ObjectAnchorsAccountsClient.RegenerateKeys.
+type ObjectAnchorsAccountsClientRegenerateKeysResponse struct {
 	AccountKeys
 }
 
-// ObjectAnchorsAccountsUpdateResponse contains the response from method ObjectAnchorsAccounts.Update.
-type ObjectAnchorsAccountsUpdateResponse struct {
-	ObjectAnchorsAccountsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ObjectAnchorsAccountsUpdateResult contains the result from method ObjectAnchorsAccounts.Update.
-type ObjectAnchorsAccountsUpdateResult struct {
+// ObjectAnchorsAccountsClientUpdateResponse contains the response from method ObjectAnchorsAccountsClient.Update.
+type ObjectAnchorsAccountsClientUpdateResponse struct {
 	ObjectAnchorsAccount
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
 	OperationPage
 }
 
-// RemoteRenderingAccountsCreateResponse contains the response from method RemoteRenderingAccounts.Create.
-type RemoteRenderingAccountsCreateResponse struct {
-	RemoteRenderingAccountsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RemoteRenderingAccountsCreateResult contains the result from method RemoteRenderingAccounts.Create.
-type RemoteRenderingAccountsCreateResult struct {
+// RemoteRenderingAccountsClientCreateResponse contains the response from method RemoteRenderingAccountsClient.Create.
+type RemoteRenderingAccountsClientCreateResponse struct {
 	RemoteRenderingAccount
 }
 
-// RemoteRenderingAccountsDeleteResponse contains the response from method RemoteRenderingAccounts.Delete.
-type RemoteRenderingAccountsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// RemoteRenderingAccountsClientDeleteResponse contains the response from method RemoteRenderingAccountsClient.Delete.
+type RemoteRenderingAccountsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// RemoteRenderingAccountsGetResponse contains the response from method RemoteRenderingAccounts.Get.
-type RemoteRenderingAccountsGetResponse struct {
-	RemoteRenderingAccountsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RemoteRenderingAccountsGetResult contains the result from method RemoteRenderingAccounts.Get.
-type RemoteRenderingAccountsGetResult struct {
+// RemoteRenderingAccountsClientGetResponse contains the response from method RemoteRenderingAccountsClient.Get.
+type RemoteRenderingAccountsClientGetResponse struct {
 	RemoteRenderingAccount
 }
 
-// RemoteRenderingAccountsListByResourceGroupResponse contains the response from method RemoteRenderingAccounts.ListByResourceGroup.
-type RemoteRenderingAccountsListByResourceGroupResponse struct {
-	RemoteRenderingAccountsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RemoteRenderingAccountsListByResourceGroupResult contains the result from method RemoteRenderingAccounts.ListByResourceGroup.
-type RemoteRenderingAccountsListByResourceGroupResult struct {
+// RemoteRenderingAccountsClientListByResourceGroupResponse contains the response from method RemoteRenderingAccountsClient.ListByResourceGroup.
+type RemoteRenderingAccountsClientListByResourceGroupResponse struct {
 	RemoteRenderingAccountPage
 }
 
-// RemoteRenderingAccountsListBySubscriptionResponse contains the response from method RemoteRenderingAccounts.ListBySubscription.
-type RemoteRenderingAccountsListBySubscriptionResponse struct {
-	RemoteRenderingAccountsListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RemoteRenderingAccountsListBySubscriptionResult contains the result from method RemoteRenderingAccounts.ListBySubscription.
-type RemoteRenderingAccountsListBySubscriptionResult struct {
+// RemoteRenderingAccountsClientListBySubscriptionResponse contains the response from method RemoteRenderingAccountsClient.ListBySubscription.
+type RemoteRenderingAccountsClientListBySubscriptionResponse struct {
 	RemoteRenderingAccountPage
 }
 
-// RemoteRenderingAccountsListKeysResponse contains the response from method RemoteRenderingAccounts.ListKeys.
-type RemoteRenderingAccountsListKeysResponse struct {
-	RemoteRenderingAccountsListKeysResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RemoteRenderingAccountsListKeysResult contains the result from method RemoteRenderingAccounts.ListKeys.
-type RemoteRenderingAccountsListKeysResult struct {
+// RemoteRenderingAccountsClientListKeysResponse contains the response from method RemoteRenderingAccountsClient.ListKeys.
+type RemoteRenderingAccountsClientListKeysResponse struct {
 	AccountKeys
 }
 
-// RemoteRenderingAccountsRegenerateKeysResponse contains the response from method RemoteRenderingAccounts.RegenerateKeys.
-type RemoteRenderingAccountsRegenerateKeysResponse struct {
-	RemoteRenderingAccountsRegenerateKeysResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RemoteRenderingAccountsRegenerateKeysResult contains the result from method RemoteRenderingAccounts.RegenerateKeys.
-type RemoteRenderingAccountsRegenerateKeysResult struct {
+// RemoteRenderingAccountsClientRegenerateKeysResponse contains the response from method RemoteRenderingAccountsClient.RegenerateKeys.
+type RemoteRenderingAccountsClientRegenerateKeysResponse struct {
 	AccountKeys
 }
 
-// RemoteRenderingAccountsUpdateResponse contains the response from method RemoteRenderingAccounts.Update.
-type RemoteRenderingAccountsUpdateResponse struct {
-	RemoteRenderingAccountsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RemoteRenderingAccountsUpdateResult contains the result from method RemoteRenderingAccounts.Update.
-type RemoteRenderingAccountsUpdateResult struct {
+// RemoteRenderingAccountsClientUpdateResponse contains the response from method RemoteRenderingAccountsClient.Update.
+type RemoteRenderingAccountsClientUpdateResponse struct {
 	RemoteRenderingAccount
 }
 
-// SpatialAnchorsAccountsCreateResponse contains the response from method SpatialAnchorsAccounts.Create.
-type SpatialAnchorsAccountsCreateResponse struct {
-	SpatialAnchorsAccountsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SpatialAnchorsAccountsCreateResult contains the result from method SpatialAnchorsAccounts.Create.
-type SpatialAnchorsAccountsCreateResult struct {
+// SpatialAnchorsAccountsClientCreateResponse contains the response from method SpatialAnchorsAccountsClient.Create.
+type SpatialAnchorsAccountsClientCreateResponse struct {
 	SpatialAnchorsAccount
 }
 
-// SpatialAnchorsAccountsDeleteResponse contains the response from method SpatialAnchorsAccounts.Delete.
-type SpatialAnchorsAccountsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// SpatialAnchorsAccountsClientDeleteResponse contains the response from method SpatialAnchorsAccountsClient.Delete.
+type SpatialAnchorsAccountsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// SpatialAnchorsAccountsGetResponse contains the response from method SpatialAnchorsAccounts.Get.
-type SpatialAnchorsAccountsGetResponse struct {
-	SpatialAnchorsAccountsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SpatialAnchorsAccountsGetResult contains the result from method SpatialAnchorsAccounts.Get.
-type SpatialAnchorsAccountsGetResult struct {
+// SpatialAnchorsAccountsClientGetResponse contains the response from method SpatialAnchorsAccountsClient.Get.
+type SpatialAnchorsAccountsClientGetResponse struct {
 	SpatialAnchorsAccount
 }
 
-// SpatialAnchorsAccountsListByResourceGroupResponse contains the response from method SpatialAnchorsAccounts.ListByResourceGroup.
-type SpatialAnchorsAccountsListByResourceGroupResponse struct {
-	SpatialAnchorsAccountsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SpatialAnchorsAccountsListByResourceGroupResult contains the result from method SpatialAnchorsAccounts.ListByResourceGroup.
-type SpatialAnchorsAccountsListByResourceGroupResult struct {
+// SpatialAnchorsAccountsClientListByResourceGroupResponse contains the response from method SpatialAnchorsAccountsClient.ListByResourceGroup.
+type SpatialAnchorsAccountsClientListByResourceGroupResponse struct {
 	SpatialAnchorsAccountPage
 }
 
-// SpatialAnchorsAccountsListBySubscriptionResponse contains the response from method SpatialAnchorsAccounts.ListBySubscription.
-type SpatialAnchorsAccountsListBySubscriptionResponse struct {
-	SpatialAnchorsAccountsListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SpatialAnchorsAccountsListBySubscriptionResult contains the result from method SpatialAnchorsAccounts.ListBySubscription.
-type SpatialAnchorsAccountsListBySubscriptionResult struct {
+// SpatialAnchorsAccountsClientListBySubscriptionResponse contains the response from method SpatialAnchorsAccountsClient.ListBySubscription.
+type SpatialAnchorsAccountsClientListBySubscriptionResponse struct {
 	SpatialAnchorsAccountPage
 }
 
-// SpatialAnchorsAccountsListKeysResponse contains the response from method SpatialAnchorsAccounts.ListKeys.
-type SpatialAnchorsAccountsListKeysResponse struct {
-	SpatialAnchorsAccountsListKeysResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SpatialAnchorsAccountsListKeysResult contains the result from method SpatialAnchorsAccounts.ListKeys.
-type SpatialAnchorsAccountsListKeysResult struct {
+// SpatialAnchorsAccountsClientListKeysResponse contains the response from method SpatialAnchorsAccountsClient.ListKeys.
+type SpatialAnchorsAccountsClientListKeysResponse struct {
 	AccountKeys
 }
 
-// SpatialAnchorsAccountsRegenerateKeysResponse contains the response from method SpatialAnchorsAccounts.RegenerateKeys.
-type SpatialAnchorsAccountsRegenerateKeysResponse struct {
-	SpatialAnchorsAccountsRegenerateKeysResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SpatialAnchorsAccountsRegenerateKeysResult contains the result from method SpatialAnchorsAccounts.RegenerateKeys.
-type SpatialAnchorsAccountsRegenerateKeysResult struct {
+// SpatialAnchorsAccountsClientRegenerateKeysResponse contains the response from method SpatialAnchorsAccountsClient.RegenerateKeys.
+type SpatialAnchorsAccountsClientRegenerateKeysResponse struct {
 	AccountKeys
 }
 
-// SpatialAnchorsAccountsUpdateResponse contains the response from method SpatialAnchorsAccounts.Update.
-type SpatialAnchorsAccountsUpdateResponse struct {
-	SpatialAnchorsAccountsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SpatialAnchorsAccountsUpdateResult contains the result from method SpatialAnchorsAccounts.Update.
-type SpatialAnchorsAccountsUpdateResult struct {
+// SpatialAnchorsAccountsClientUpdateResponse contains the response from method SpatialAnchorsAccountsClient.Update.
+type SpatialAnchorsAccountsClientUpdateResponse struct {
 	SpatialAnchorsAccount
 }

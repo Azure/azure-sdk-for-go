@@ -43,7 +43,7 @@ function Get-GoModuleProperties($goModPath)
     $modName = $matches["modName"] # We may need to start readong this from the go.mod file if the path and mod config start to differ
     $serviceDir = $matches["serviceDir"]
     $sdkType = "client"
-    if ($modName.StartsWith("arm")) { $sdkType = "mgmt" }
+    if ($modName.StartsWith("arm") -or $modPath.Contains("resourcemanager")) { $sdkType = "mgmt" }
 
     $modVersion, $versionFile = Get-GoModuleVersionInfo $goModPath
 
@@ -68,6 +68,12 @@ function Get-go-PackageInfoFromPackageFile($pkg, $workingDirectory)
 {
     $releaseNotes = ""
     $packageProperties = Get-GoModuleProperties $pkg.Directory
+
+    # We have some cases when processing service directories that non-shipping projects like perfdata
+    # we just want to exclude them as opposed to returning a property with invalid data.
+    if (!$packageProperties) {
+      return $null
+    }
 
     if ($packageProperties.ChangeLogPath -and $packageProperties.Version)
     {
@@ -123,4 +129,18 @@ function SetPackageVersion ($PackageName, $Version, $ReleaseDate, $PackageProper
     -NewVersionString $Version `
     -ReleaseDate $ReleaseDate `
     -ReplaceLatestEntryTitle $ReplaceLatestEntryTitle
+}
+
+
+function Find-Go-Artifacts-For-Apireview($ArtifactPath, $PackageName)
+{
+  $artifact = Get-ChildItem -Path (Join-Path $ArtifactPath $PackageName) -Filter "*.gosource"
+  if ($artifact)
+  {
+    $packages = @{
+      $artifact.FullName = $artifact.FullName
+    }
+    return $packages
+  }
+  return $null
 }

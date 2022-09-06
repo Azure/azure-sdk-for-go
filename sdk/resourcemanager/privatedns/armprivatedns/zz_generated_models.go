@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,12 +7,6 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package armprivatedns
-
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-)
 
 // ARecord - An A record.
 type ARecord struct {
@@ -27,17 +21,9 @@ type AaaaRecord struct {
 }
 
 // CloudError - An error response from the service.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// Cloud error body.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response from the service.
@@ -53,16 +39,6 @@ type CloudErrorBody struct {
 
 	// The target of the particular error. For example, the name of the property in error.
 	Target *string `json:"target,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CloudErrorBody.
-func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", c.Code)
-	populate(objectMap, "details", c.Details)
-	populate(objectMap, "message", c.Message)
-	populate(objectMap, "target", c.Target)
-	return json.Marshal(objectMap)
 }
 
 // CnameRecord - A CNAME record.
@@ -82,21 +58,26 @@ type MxRecord struct {
 
 // PrivateZone - Describes a Private DNS zone.
 type PrivateZone struct {
-	TrackedResource
 	// The ETag of the zone.
 	Etag *string `json:"etag,omitempty"`
 
+	// The Azure Region where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// Properties of the Private DNS zone.
 	Properties *PrivateZoneProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateZone.
-func (p PrivateZone) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "etag", p.Etag)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource. Example - '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateDnsZoneName}'.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. Example - 'Microsoft.Network/privateDnsZones'.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateZoneListResult - The response to a Private DNS zone list operation.
@@ -108,93 +89,99 @@ type PrivateZoneListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateZoneListResult.
-func (p PrivateZoneListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateZoneProperties - Represents the properties of the Private DNS zone.
 type PrivateZoneProperties struct {
 	// READ-ONLY; Private zone internal Id
 	InternalID *string `json:"internalId,omitempty" azure:"ro"`
 
-	// READ-ONLY; The maximum number of record sets that can be created in this Private DNS zone. This is a read-only property and any attempt to set this value
-	// will be ignored.
+	// READ-ONLY; The maximum number of record sets that can be created in this Private DNS zone. This is a read-only property
+	// and any attempt to set this value will be ignored.
 	MaxNumberOfRecordSets *int64 `json:"maxNumberOfRecordSets,omitempty" azure:"ro"`
 
-	// READ-ONLY; The maximum number of virtual networks that can be linked to this Private DNS zone. This is a read-only property and any attempt to set this
-	// value will be ignored.
+	// READ-ONLY; The maximum number of virtual networks that can be linked to this Private DNS zone. This is a read-only property
+	// and any attempt to set this value will be ignored.
 	MaxNumberOfVirtualNetworkLinks *int64 `json:"maxNumberOfVirtualNetworkLinks,omitempty" azure:"ro"`
 
-	// READ-ONLY; The maximum number of virtual networks that can be linked to this Private DNS zone with registration enabled. This is a read-only property
-	// and any attempt to set this value will be ignored.
+	// READ-ONLY; The maximum number of virtual networks that can be linked to this Private DNS zone with registration enabled.
+	// This is a read-only property and any attempt to set this value will be ignored.
 	MaxNumberOfVirtualNetworkLinksWithRegistration *int64 `json:"maxNumberOfVirtualNetworkLinksWithRegistration,omitempty" azure:"ro"`
 
-	// READ-ONLY; The current number of record sets in this Private DNS zone. This is a read-only property and any attempt to set this value will be ignored.
+	// READ-ONLY; The current number of record sets in this Private DNS zone. This is a read-only property and any attempt to
+	// set this value will be ignored.
 	NumberOfRecordSets *int64 `json:"numberOfRecordSets,omitempty" azure:"ro"`
 
-	// READ-ONLY; The current number of virtual networks that are linked to this Private DNS zone. This is a read-only property and any attempt to set this
-	// value will be ignored.
+	// READ-ONLY; The current number of virtual networks that are linked to this Private DNS zone. This is a read-only property
+	// and any attempt to set this value will be ignored.
 	NumberOfVirtualNetworkLinks *int64 `json:"numberOfVirtualNetworkLinks,omitempty" azure:"ro"`
 
-	// READ-ONLY; The current number of virtual networks that are linked to this Private DNS zone with registration enabled. This is a read-only property and
-	// any attempt to set this value will be ignored.
+	// READ-ONLY; The current number of virtual networks that are linked to this Private DNS zone with registration enabled. This
+	// is a read-only property and any attempt to set this value will be ignored.
 	NumberOfVirtualNetworkLinksWithRegistration *int64 `json:"numberOfVirtualNetworkLinksWithRegistration,omitempty" azure:"ro"`
 
-	// READ-ONLY; The provisioning state of the resource. This is a read-only property and any attempt to set this value will be ignored.
+	// READ-ONLY; The provisioning state of the resource. This is a read-only property and any attempt to set this value will
+	// be ignored.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// PrivateZonesBeginCreateOrUpdateOptions contains the optional parameters for the PrivateZones.BeginCreateOrUpdate method.
-type PrivateZonesBeginCreateOrUpdateOptions struct {
-	// The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen ETag value to prevent accidentally overwriting
-	// any concurrent changes.
+// PrivateZonesClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateZonesClient.BeginCreateOrUpdate
+// method.
+type PrivateZonesClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen ETag value
+	// to prevent accidentally overwriting any concurrent changes.
 	IfMatch *string
-	// Set to '*' to allow a new Private DNS zone to be created, but to prevent updating an existing zone. Other values will be ignored.
+	// Set to '*' to allow a new Private DNS zone to be created, but to prevent updating an existing zone. Other values will be
+	// ignored.
 	IfNoneMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// PrivateZonesBeginDeleteOptions contains the optional parameters for the PrivateZones.BeginDelete method.
-type PrivateZonesBeginDeleteOptions struct {
-	// The ETag of the Private DNS zone. Omit this value to always delete the current zone. Specify the last-seen ETag value to prevent accidentally deleting
-	// any concurrent changes.
+// PrivateZonesClientBeginDeleteOptions contains the optional parameters for the PrivateZonesClient.BeginDelete method.
+type PrivateZonesClientBeginDeleteOptions struct {
+	// The ETag of the Private DNS zone. Omit this value to always delete the current zone. Specify the last-seen ETag value to
+	// prevent accidentally deleting any concurrent changes.
 	IfMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// PrivateZonesBeginUpdateOptions contains the optional parameters for the PrivateZones.BeginUpdate method.
-type PrivateZonesBeginUpdateOptions struct {
-	// The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen ETag value to prevent accidentally overwriting
-	// any concurrent changes.
+// PrivateZonesClientBeginUpdateOptions contains the optional parameters for the PrivateZonesClient.BeginUpdate method.
+type PrivateZonesClientBeginUpdateOptions struct {
+	// The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen ETag value
+	// to prevent accidentally overwriting any concurrent changes.
 	IfMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// PrivateZonesGetOptions contains the optional parameters for the PrivateZones.Get method.
-type PrivateZonesGetOptions struct {
+// PrivateZonesClientGetOptions contains the optional parameters for the PrivateZonesClient.Get method.
+type PrivateZonesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateZonesListByResourceGroupOptions contains the optional parameters for the PrivateZones.ListByResourceGroup method.
-type PrivateZonesListByResourceGroupOptions struct {
+// PrivateZonesClientListByResourceGroupOptions contains the optional parameters for the PrivateZonesClient.ListByResourceGroup
+// method.
+type PrivateZonesClientListByResourceGroupOptions struct {
 	// The maximum number of record sets to return. If not specified, returns up to 100 record sets.
 	Top *int32
 }
 
-// PrivateZonesListOptions contains the optional parameters for the PrivateZones.List method.
-type PrivateZonesListOptions struct {
+// PrivateZonesClientListOptions contains the optional parameters for the PrivateZonesClient.List method.
+type PrivateZonesClientListOptions struct {
 	// The maximum number of Private DNS zones to return. If not specified, returns up to 100 zones.
 	Top *int32
 }
 
 // ProxyResource - The resource model definition for an ARM proxy resource.
 type ProxyResource struct {
-	Resource
-}
+	// READ-ONLY; Fully qualified resource Id for the resource. Example - '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateDnsZoneName}'.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. Example - 'Microsoft.Network/privateDnsZones'.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PtrRecord - A PTR record.
@@ -205,21 +192,20 @@ type PtrRecord struct {
 
 // RecordSet - Describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS zone.
 type RecordSet struct {
-	ProxyResource
 	// The ETag of the record set.
 	Etag *string `json:"etag,omitempty"`
 
 	// The properties of the record set.
 	Properties *RecordSetProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type RecordSet.
-func (r RecordSet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "etag", r.Etag)
-	populate(objectMap, "properties", r.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Fully qualified resource Id for the resource. Example - '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateDnsZoneName}'.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. Example - 'Microsoft.Network/privateDnsZones'.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RecordSetListResult - The response to a record set list operation.
@@ -229,14 +215,6 @@ type RecordSetListResult struct {
 
 	// READ-ONLY; The continuation token for the next page of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecordSetListResult.
-func (r RecordSetListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // RecordSetProperties - Represents the properties of the records in the record set.
@@ -278,67 +256,50 @@ type RecordSetProperties struct {
 	IsAutoRegistered *bool `json:"isAutoRegistered,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RecordSetProperties.
-func (r RecordSetProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aRecords", r.ARecords)
-	populate(objectMap, "aaaaRecords", r.AaaaRecords)
-	populate(objectMap, "cnameRecord", r.CnameRecord)
-	populate(objectMap, "fqdn", r.Fqdn)
-	populate(objectMap, "isAutoRegistered", r.IsAutoRegistered)
-	populate(objectMap, "metadata", r.Metadata)
-	populate(objectMap, "mxRecords", r.MxRecords)
-	populate(objectMap, "ptrRecords", r.PtrRecords)
-	populate(objectMap, "soaRecord", r.SoaRecord)
-	populate(objectMap, "srvRecords", r.SrvRecords)
-	populate(objectMap, "ttl", r.TTL)
-	populate(objectMap, "txtRecords", r.TxtRecords)
-	return json.Marshal(objectMap)
-}
-
-// RecordSetsCreateOrUpdateOptions contains the optional parameters for the RecordSets.CreateOrUpdate method.
-type RecordSetsCreateOrUpdateOptions struct {
-	// The ETag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen ETag value to prevent accidentally overwriting
-	// any concurrent changes.
+// RecordSetsClientCreateOrUpdateOptions contains the optional parameters for the RecordSetsClient.CreateOrUpdate method.
+type RecordSetsClientCreateOrUpdateOptions struct {
+	// The ETag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen ETag value
+	// to prevent accidentally overwriting any concurrent changes.
 	IfMatch *string
-	// Set to '*' to allow a new record set to be created, but to prevent updating an existing record set. Other values will be ignored.
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing record set. Other values will be
+	// ignored.
 	IfNoneMatch *string
 }
 
-// RecordSetsDeleteOptions contains the optional parameters for the RecordSets.Delete method.
-type RecordSetsDeleteOptions struct {
-	// The ETag of the record set. Omit this value to always delete the current record set. Specify the last-seen ETag value to prevent accidentally deleting
-	// any concurrent changes.
+// RecordSetsClientDeleteOptions contains the optional parameters for the RecordSetsClient.Delete method.
+type RecordSetsClientDeleteOptions struct {
+	// The ETag of the record set. Omit this value to always delete the current record set. Specify the last-seen ETag value to
+	// prevent accidentally deleting any concurrent changes.
 	IfMatch *string
 }
 
-// RecordSetsGetOptions contains the optional parameters for the RecordSets.Get method.
-type RecordSetsGetOptions struct {
+// RecordSetsClientGetOptions contains the optional parameters for the RecordSetsClient.Get method.
+type RecordSetsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecordSetsListByTypeOptions contains the optional parameters for the RecordSets.ListByType method.
-type RecordSetsListByTypeOptions struct {
-	// The suffix label of the record set name to be used to filter the record set enumeration. If this parameter is specified, the returned enumeration will
-	// only contain records that end with ".<recordsetnamesuffix>".
+// RecordSetsClientListByTypeOptions contains the optional parameters for the RecordSetsClient.ListByType method.
+type RecordSetsClientListByTypeOptions struct {
+	// The suffix label of the record set name to be used to filter the record set enumeration. If this parameter is specified,
+	// the returned enumeration will only contain records that end with ".".
 	Recordsetnamesuffix *string
 	// The maximum number of record sets to return. If not specified, returns up to 100 record sets.
 	Top *int32
 }
 
-// RecordSetsListOptions contains the optional parameters for the RecordSets.List method.
-type RecordSetsListOptions struct {
-	// The suffix label of the record set name to be used to filter the record set enumeration. If this parameter is specified, the returned enumeration will
-	// only contain records that end with ".<recordsetnamesuffix>".
+// RecordSetsClientListOptions contains the optional parameters for the RecordSetsClient.List method.
+type RecordSetsClientListOptions struct {
+	// The suffix label of the record set name to be used to filter the record set enumeration. If this parameter is specified,
+	// the returned enumeration will only contain records that end with ".".
 	Recordsetnamesuffix *string
 	// The maximum number of record sets to return. If not specified, returns up to 100 record sets.
 	Top *int32
 }
 
-// RecordSetsUpdateOptions contains the optional parameters for the RecordSets.Update method.
-type RecordSetsUpdateOptions struct {
-	// The ETag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen ETag value to prevent accidentally overwriting
-	// concurrent changes.
+// RecordSetsClientUpdateOptions contains the optional parameters for the RecordSetsClient.Update method.
+type RecordSetsClientUpdateOptions struct {
+	// The ETag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen ETag value
+	// to prevent accidentally overwriting concurrent changes.
 	IfMatch *string
 }
 
@@ -352,19 +313,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. Example - 'Microsoft.Network/privateDnsZones'.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
 }
 
 // SoaRecord - An SOA record.
@@ -414,25 +362,20 @@ type SubResource struct {
 
 // TrackedResource - The resource model definition for a ARM tracked top level resource
 type TrackedResource struct {
-	Resource
 	// The Azure Region where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; Fully qualified resource Id for the resource. Example - '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateDnsZoneName}'.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "tags", t.Tags)
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. Example - 'Microsoft.Network/privateDnsZones'.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // TxtRecord - A TXT record.
@@ -441,30 +384,28 @@ type TxtRecord struct {
 	Value []*string `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TxtRecord.
-func (t TxtRecord) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
-}
-
 // VirtualNetworkLink - Describes a link to virtual network for a Private DNS zone.
 type VirtualNetworkLink struct {
-	TrackedResource
 	// The ETag of the virtual network link.
 	Etag *string `json:"etag,omitempty"`
 
+	// The Azure Region where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// Properties of the virtual network link to the Private DNS zone.
 	Properties *VirtualNetworkLinkProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualNetworkLink.
-func (v VirtualNetworkLink) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	v.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "etag", v.Etag)
-	populate(objectMap, "properties", v.Properties)
-	return json.Marshal(objectMap)
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource. Example - '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateDnsZoneName}'.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. Example - 'Microsoft.Network/privateDnsZones'.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // VirtualNetworkLinkListResult - The response to a list virtual network link to Private DNS zone operation.
@@ -476,14 +417,6 @@ type VirtualNetworkLinkListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualNetworkLinkListResult.
-func (v VirtualNetworkLinkListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
-}
-
 // VirtualNetworkLinkProperties - Represents the properties of the Private DNS zone.
 type VirtualNetworkLinkProperties struct {
 	// Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled?
@@ -492,55 +425,58 @@ type VirtualNetworkLinkProperties struct {
 	// The reference of the virtual network.
 	VirtualNetwork *SubResource `json:"virtualNetwork,omitempty"`
 
-	// READ-ONLY; The provisioning state of the resource. This is a read-only property and any attempt to set this value will be ignored.
+	// READ-ONLY; The provisioning state of the resource. This is a read-only property and any attempt to set this value will
+	// be ignored.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
-	// READ-ONLY; The status of the virtual network link to the Private DNS zone. Possible values are 'InProgress' and 'Done'. This is a read-only property
-	// and any attempt to set this value will be ignored.
+	// READ-ONLY; The status of the virtual network link to the Private DNS zone. Possible values are 'InProgress' and 'Done'.
+	// This is a read-only property and any attempt to set this value will be ignored.
 	VirtualNetworkLinkState *VirtualNetworkLinkState `json:"virtualNetworkLinkState,omitempty" azure:"ro"`
 }
 
-// VirtualNetworkLinksBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkLinks.BeginCreateOrUpdate method.
-type VirtualNetworkLinksBeginCreateOrUpdateOptions struct {
-	// The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite the current virtual network link. Specify the last-seen
-	// ETag value to prevent accidentally overwriting any concurrent changes.
+// VirtualNetworkLinksClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkLinksClient.BeginCreateOrUpdate
+// method.
+type VirtualNetworkLinksClientBeginCreateOrUpdateOptions struct {
+	// The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite the current virtual network
+	// link. Specify the last-seen ETag value to prevent accidentally overwriting
+	// any concurrent changes.
 	IfMatch *string
-	// Set to '*' to allow a new virtual network link to the Private DNS zone to be created, but to prevent updating an existing link. Other values will be
-	// ignored.
+	// Set to '*' to allow a new virtual network link to the Private DNS zone to be created, but to prevent updating an existing
+	// link. Other values will be ignored.
 	IfNoneMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// VirtualNetworkLinksBeginDeleteOptions contains the optional parameters for the VirtualNetworkLinks.BeginDelete method.
-type VirtualNetworkLinksBeginDeleteOptions struct {
-	// The ETag of the virtual network link to the Private DNS zone. Omit this value to always delete the current zone. Specify the last-seen ETag value to
-	// prevent accidentally deleting any concurrent changes.
+// VirtualNetworkLinksClientBeginDeleteOptions contains the optional parameters for the VirtualNetworkLinksClient.BeginDelete
+// method.
+type VirtualNetworkLinksClientBeginDeleteOptions struct {
+	// The ETag of the virtual network link to the Private DNS zone. Omit this value to always delete the current zone. Specify
+	// the last-seen ETag value to prevent accidentally deleting any concurrent
+	// changes.
 	IfMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// VirtualNetworkLinksBeginUpdateOptions contains the optional parameters for the VirtualNetworkLinks.BeginUpdate method.
-type VirtualNetworkLinksBeginUpdateOptions struct {
-	// The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite the current virtual network link. Specify the last-seen
-	// ETag value to prevent accidentally overwriting any concurrent changes.
+// VirtualNetworkLinksClientBeginUpdateOptions contains the optional parameters for the VirtualNetworkLinksClient.BeginUpdate
+// method.
+type VirtualNetworkLinksClientBeginUpdateOptions struct {
+	// The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite the current virtual network
+	// link. Specify the last-seen ETag value to prevent accidentally overwriting
+	// any concurrent changes.
 	IfMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// VirtualNetworkLinksGetOptions contains the optional parameters for the VirtualNetworkLinks.Get method.
-type VirtualNetworkLinksGetOptions struct {
+// VirtualNetworkLinksClientGetOptions contains the optional parameters for the VirtualNetworkLinksClient.Get method.
+type VirtualNetworkLinksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkLinksListOptions contains the optional parameters for the VirtualNetworkLinks.List method.
-type VirtualNetworkLinksListOptions struct {
+// VirtualNetworkLinksClientListOptions contains the optional parameters for the VirtualNetworkLinksClient.List method.
+type VirtualNetworkLinksClientListOptions struct {
 	// The maximum number of virtual network links to return. If not specified, returns up to 100 virtual network links.
 	Top *int32
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
 }

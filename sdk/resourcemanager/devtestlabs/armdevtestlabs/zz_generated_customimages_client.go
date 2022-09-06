@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armdevtestlabs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,46 +26,60 @@ import (
 // CustomImagesClient contains the methods for the CustomImages group.
 // Don't use this type directly, use NewCustomImagesClient() instead.
 type CustomImagesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCustomImagesClient creates a new instance of CustomImagesClient with the specified values.
-func NewCustomImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CustomImagesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewCustomImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomImagesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &CustomImagesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &CustomImagesClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or replace an existing custom image. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *CustomImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, customImage CustomImage, options *CustomImagesBeginCreateOrUpdateOptions) (CustomImagesCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, name, customImage, options)
-	if err != nil {
-		return CustomImagesCreateOrUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the custom image.
+// customImage - A custom image.
+// options - CustomImagesClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomImagesClient.BeginCreateOrUpdate
+// method.
+func (client *CustomImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, customImage CustomImage, options *CustomImagesClientBeginCreateOrUpdateOptions) (*runtime.Poller[CustomImagesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, name, customImage, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[CustomImagesClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[CustomImagesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := CustomImagesCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CustomImagesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return CustomImagesCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &CustomImagesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Create or replace an existing custom image. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *CustomImagesClient) createOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, customImage CustomImage, options *CustomImagesBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+func (client *CustomImagesClient) createOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, customImage CustomImage, options *CustomImagesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, labName, name, customImage, options)
 	if err != nil {
 		return nil, err
@@ -75,13 +89,13 @@ func (client *CustomImagesClient) createOrUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CustomImagesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, customImage CustomImage, options *CustomImagesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *CustomImagesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, customImage CustomImage, options *CustomImagesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/customimages/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -99,53 +113,41 @@ func (client *CustomImagesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, customImage)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *CustomImagesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete custom image. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *CustomImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, name string, options *CustomImagesBeginDeleteOptions) (CustomImagesDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, labName, name, options)
-	if err != nil {
-		return CustomImagesDeletePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the custom image.
+// options - CustomImagesClientBeginDeleteOptions contains the optional parameters for the CustomImagesClient.BeginDelete
+// method.
+func (client *CustomImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, name string, options *CustomImagesClientBeginDeleteOptions) (*runtime.Poller[CustomImagesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, labName, name, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[CustomImagesClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[CustomImagesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := CustomImagesDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CustomImagesClient.Delete", "", resp, client.pl, client.deleteHandleError)
-	if err != nil {
-		return CustomImagesDeletePollerResponse{}, err
-	}
-	result.Poller = &CustomImagesDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete custom image. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *CustomImagesClient) deleteOperation(ctx context.Context, resourceGroupName string, labName string, name string, options *CustomImagesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+func (client *CustomImagesClient) deleteOperation(ctx context.Context, resourceGroupName string, labName string, name string, options *CustomImagesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, labName, name, options)
 	if err != nil {
 		return nil, err
@@ -155,13 +157,13 @@ func (client *CustomImagesClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CustomImagesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *CustomImagesBeginDeleteOptions) (*policy.Request, error) {
+func (client *CustomImagesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *CustomImagesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/customimages/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -179,49 +181,41 @@ func (client *CustomImagesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *CustomImagesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get custom image.
-// If the operation fails it returns the *CloudError error type.
-func (client *CustomImagesClient) Get(ctx context.Context, resourceGroupName string, labName string, name string, options *CustomImagesGetOptions) (CustomImagesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the custom image.
+// options - CustomImagesClientGetOptions contains the optional parameters for the CustomImagesClient.Get method.
+func (client *CustomImagesClient) Get(ctx context.Context, resourceGroupName string, labName string, name string, options *CustomImagesClientGetOptions) (CustomImagesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, labName, name, options)
 	if err != nil {
-		return CustomImagesGetResponse{}, err
+		return CustomImagesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CustomImagesGetResponse{}, err
+		return CustomImagesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CustomImagesGetResponse{}, client.getHandleError(resp)
+		return CustomImagesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CustomImagesClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *CustomImagesGetOptions) (*policy.Request, error) {
+func (client *CustomImagesClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *CustomImagesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/customimages/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -239,7 +233,7 @@ func (client *CustomImagesClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -249,48 +243,55 @@ func (client *CustomImagesClient) getCreateRequest(ctx context.Context, resource
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *CustomImagesClient) getHandleResponse(resp *http.Response) (CustomImagesGetResponse, error) {
-	result := CustomImagesGetResponse{RawResponse: resp}
+func (client *CustomImagesClient) getHandleResponse(resp *http.Response) (CustomImagesClientGetResponse, error) {
+	result := CustomImagesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomImage); err != nil {
-		return CustomImagesGetResponse{}, runtime.NewResponseError(err, resp)
+		return CustomImagesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *CustomImagesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - List custom images in a given lab.
-// If the operation fails it returns the *CloudError error type.
-func (client *CustomImagesClient) List(resourceGroupName string, labName string, options *CustomImagesListOptions) *CustomImagesListPager {
-	return &CustomImagesListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, labName, options)
+// NewListPager - List custom images in a given lab.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// options - CustomImagesClientListOptions contains the optional parameters for the CustomImagesClient.List method.
+func (client *CustomImagesClient) NewListPager(resourceGroupName string, labName string, options *CustomImagesClientListOptions) *runtime.Pager[CustomImagesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[CustomImagesClientListResponse]{
+		More: func(page CustomImagesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CustomImagesListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CustomImageList.NextLink)
+		Fetcher: func(ctx context.Context, page *CustomImagesClientListResponse) (CustomImagesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, labName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CustomImagesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CustomImagesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CustomImagesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *CustomImagesClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, options *CustomImagesListOptions) (*policy.Request, error) {
+func (client *CustomImagesClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, options *CustomImagesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/customimages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -304,7 +305,7 @@ func (client *CustomImagesClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter labName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labName}", url.PathEscape(labName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -323,51 +324,44 @@ func (client *CustomImagesClient) listCreateRequest(ctx context.Context, resourc
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *CustomImagesClient) listHandleResponse(resp *http.Response) (CustomImagesListResponse, error) {
-	result := CustomImagesListResponse{RawResponse: resp}
+func (client *CustomImagesClient) listHandleResponse(resp *http.Response) (CustomImagesClientListResponse, error) {
+	result := CustomImagesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomImageList); err != nil {
-		return CustomImagesListResponse{}, runtime.NewResponseError(err, resp)
+		return CustomImagesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *CustomImagesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Allows modifying tags of custom images. All other properties will be ignored.
-// If the operation fails it returns the *CloudError error type.
-func (client *CustomImagesClient) Update(ctx context.Context, resourceGroupName string, labName string, name string, customImage CustomImageFragment, options *CustomImagesUpdateOptions) (CustomImagesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the custom image.
+// customImage - A custom image.
+// options - CustomImagesClientUpdateOptions contains the optional parameters for the CustomImagesClient.Update method.
+func (client *CustomImagesClient) Update(ctx context.Context, resourceGroupName string, labName string, name string, customImage CustomImageFragment, options *CustomImagesClientUpdateOptions) (CustomImagesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, labName, name, customImage, options)
 	if err != nil {
-		return CustomImagesUpdateResponse{}, err
+		return CustomImagesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CustomImagesUpdateResponse{}, err
+		return CustomImagesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CustomImagesUpdateResponse{}, client.updateHandleError(resp)
+		return CustomImagesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *CustomImagesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, customImage CustomImageFragment, options *CustomImagesUpdateOptions) (*policy.Request, error) {
+func (client *CustomImagesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, customImage CustomImageFragment, options *CustomImagesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/customimages/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -385,35 +379,22 @@ func (client *CustomImagesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, customImage)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *CustomImagesClient) updateHandleResponse(resp *http.Response) (CustomImagesUpdateResponse, error) {
-	result := CustomImagesUpdateResponse{RawResponse: resp}
+func (client *CustomImagesClient) updateHandleResponse(resp *http.Response) (CustomImagesClientUpdateResponse, error) {
+	result := CustomImagesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomImage); err != nil {
-		return CustomImagesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return CustomImagesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *CustomImagesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,114 +17,125 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint"
 )
 
-// x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Blueprint_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Blueprint_Create.json
 func ExampleBlueprintsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblueprint.NewBlueprintsClient(cred, nil)
-	res, err := client.CreateOrUpdate(ctx,
-		"<resource-scope>",
-		"<blueprint-name>",
+	client, err := armblueprint.NewBlueprintsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = client.CreateOrUpdate(ctx,
+		"providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
 		armblueprint.Blueprint{
-			Properties: &armblueprint.BlueprintProperties{
-				SharedBlueprintProperties: armblueprint.SharedBlueprintProperties{
-					BlueprintResourcePropertiesBase: armblueprint.BlueprintResourcePropertiesBase{
-						Description: to.StringPtr("<description>"),
-					},
-					Parameters: map[string]*armblueprint.ParameterDefinition{
-						"costCenter": {
-							Type: armblueprint.TemplateParameterTypeString.ToPtr(),
-							Metadata: &armblueprint.ParameterDefinitionMetadata{
-								DisplayName: to.StringPtr("<display-name>"),
-							},
-						},
-						"owners": {
-							Type: armblueprint.TemplateParameterTypeArray.ToPtr(),
-							Metadata: &armblueprint.ParameterDefinitionMetadata{
-								DisplayName: to.StringPtr("<display-name>"),
-							},
-						},
-						"storageAccountType": {
-							Type: armblueprint.TemplateParameterTypeString.ToPtr(),
-							Metadata: &armblueprint.ParameterDefinitionMetadata{
-								DisplayName: to.StringPtr("<display-name>"),
-							},
+			Properties: &armblueprint.Properties{
+				Description: to.Ptr("blueprint contains all artifact kinds {'template', 'rbac', 'policy'}"),
+				Parameters: map[string]*armblueprint.ParameterDefinition{
+					"costCenter": {
+						Type: to.Ptr(armblueprint.TemplateParameterTypeString),
+						Metadata: &armblueprint.ParameterDefinitionMetadata{
+							DisplayName: to.Ptr("force cost center tag for all resources under given subscription."),
 						},
 					},
-					ResourceGroups: map[string]*armblueprint.ResourceGroupDefinition{
-						"storageRG": {
-							Metadata: &armblueprint.ParameterDefinitionMetadata{
-								Description: to.StringPtr("<description>"),
-								DisplayName: to.StringPtr("<display-name>"),
-							},
+					"owners": {
+						Type: to.Ptr(armblueprint.TemplateParameterTypeArray),
+						Metadata: &armblueprint.ParameterDefinitionMetadata{
+							DisplayName: to.Ptr("assign owners to subscription along with blueprint assignment."),
 						},
 					},
-					TargetScope: armblueprint.BlueprintTargetScopeSubscription.ToPtr(),
+					"storageAccountType": {
+						Type: to.Ptr(armblueprint.TemplateParameterTypeString),
+						Metadata: &armblueprint.ParameterDefinitionMetadata{
+							DisplayName: to.Ptr("storage account type."),
+						},
+					},
 				},
+				ResourceGroups: map[string]*armblueprint.ResourceGroupDefinition{
+					"storageRG": {
+						Metadata: &armblueprint.ParameterDefinitionMetadata{
+							Description: to.Ptr("Contains storageAccounts that collect all shoebox logs."),
+							DisplayName: to.Ptr("storage resource group"),
+						},
+					},
+				},
+				TargetScope: to.Ptr(armblueprint.BlueprintTargetScopeSubscription),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Blueprint.ID: %s\n", *res.ID)
 }
 
-// x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Blueprint_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Blueprint_Get.json
 func ExampleBlueprintsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblueprint.NewBlueprintsClient(cred, nil)
+	client, err := armblueprint.NewBlueprintsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-scope>",
-		"<blueprint-name>",
+		"providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Blueprint.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Blueprint_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Blueprint_Delete.json
 func ExampleBlueprintsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblueprint.NewBlueprintsClient(cred, nil)
+	client, err := armblueprint.NewBlueprintsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Delete(ctx,
-		"<resource-scope>",
-		"<blueprint-name>",
+		"providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Blueprint.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Blueprint_List.json
-func ExampleBlueprintsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Blueprint_List.json
+func ExampleBlueprintsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblueprint.NewBlueprintsClient(cred, nil)
-	pager := client.List("<resource-scope>",
+	client, err := armblueprint.NewBlueprintsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Blueprint.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

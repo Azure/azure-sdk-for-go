@@ -9,7 +9,7 @@
 
 package redhatopenshiftapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/redhatopenshift/mgmt/2020-04-30/redhatopenshift/redhatopenshiftapi"
+import original "github.com/Azure/azure-sdk-for-go/services/redhatopenshift/mgmt/2022-04-01/redhatopenshift/redhatopenshiftapi"
 
 type OpenShiftClustersClientAPI = original.OpenShiftClustersClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

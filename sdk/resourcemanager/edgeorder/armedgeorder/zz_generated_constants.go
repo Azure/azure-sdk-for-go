@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package armedgeorder
 
 const (
-	module  = "armedgeorder"
-	version = "v0.1.0"
+	moduleName    = "armedgeorder"
+	moduleVersion = "v1.0.0"
 )
 
 // ActionStatusEnum - Describes whether the order item is deletable or not.
@@ -31,11 +31,6 @@ func PossibleActionStatusEnumValues() []ActionStatusEnum {
 	}
 }
 
-// ToPtr returns a *ActionStatusEnum pointing to the current value.
-func (c ActionStatusEnum) ToPtr() *ActionStatusEnum {
-	return &c
-}
-
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -48,11 +43,6 @@ func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
 	}
-}
-
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
 }
 
 // AddressType - Type of address.
@@ -76,11 +66,6 @@ func PossibleAddressTypeValues() []AddressType {
 	}
 }
 
-// ToPtr returns a *AddressType pointing to the current value.
-func (c AddressType) ToPtr() *AddressType {
-	return &c
-}
-
 // AddressValidationStatus - Status of address validation
 type AddressValidationStatus string
 
@@ -100,11 +85,6 @@ func PossibleAddressValidationStatusValues() []AddressValidationStatus {
 		AddressValidationStatusInvalid,
 		AddressValidationStatusValid,
 	}
-}
-
-// ToPtr returns a *AddressValidationStatus pointing to the current value.
-func (c AddressValidationStatus) ToPtr() *AddressValidationStatus {
-	return &c
 }
 
 // AvailabilityStage - Current availability stage of the product. Availability stage
@@ -137,11 +117,6 @@ func PossibleAvailabilityStageValues() []AvailabilityStage {
 	}
 }
 
-// ToPtr returns a *AvailabilityStage pointing to the current value.
-func (c AvailabilityStage) ToPtr() *AvailabilityStage {
-	return &c
-}
-
 // BillingType - Represents billing type.
 type BillingType string
 
@@ -160,11 +135,6 @@ func PossibleBillingTypeValues() []BillingType {
 	}
 }
 
-// ToPtr returns a *BillingType pointing to the current value.
-func (c BillingType) ToPtr() *BillingType {
-	return &c
-}
-
 // ChargingType - Charging type.
 type ChargingType string
 
@@ -181,11 +151,6 @@ func PossibleChargingTypeValues() []ChargingType {
 		ChargingTypePerDevice,
 		ChargingTypePerOrder,
 	}
-}
-
-// ToPtr returns a *ChargingType pointing to the current value.
-func (c ChargingType) ToPtr() *ChargingType {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -208,11 +173,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // DescriptionType - Type of description.
 type DescriptionType string
 
@@ -228,11 +188,6 @@ func PossibleDescriptionTypeValues() []DescriptionType {
 	}
 }
 
-// ToPtr returns a *DescriptionType pointing to the current value.
-func (c DescriptionType) ToPtr() *DescriptionType {
-	return &c
-}
-
 // DisabledReason - Reason why the product is disabled.
 type DisabledReason string
 
@@ -241,7 +196,8 @@ const (
 	DisabledReasonCountry DisabledReason = "Country"
 	// DisabledReasonFeature - Required features are not enabled.
 	DisabledReasonFeature DisabledReason = "Feature"
-	// DisabledReasonNoSubscriptionInfo - Subscription has not registered to Microsoft.DataBox and Service does not have the subscription notification.
+	// DisabledReasonNoSubscriptionInfo - Subscription has not registered to Microsoft.DataBox and Service does not have the subscription
+	// notification.
 	DisabledReasonNoSubscriptionInfo DisabledReason = "NoSubscriptionInfo"
 	// DisabledReasonNone - Not disabled.
 	DisabledReasonNone DisabledReason = "None"
@@ -269,13 +225,8 @@ func PossibleDisabledReasonValues() []DisabledReason {
 	}
 }
 
-// ToPtr returns a *DisabledReason pointing to the current value.
-func (c DisabledReason) ToPtr() *DisabledReason {
-	return &c
-}
-
-// DoubleEncryptionStatus - Double encryption status as entered by the customer. It is compulsory to give this parameter if the 'Deny' or 'Disabled' policy
-// is configured.
+// DoubleEncryptionStatus - Double encryption status as entered by the customer. It is compulsory to give this parameter if
+// the 'Deny' or 'Disabled' policy is configured.
 type DoubleEncryptionStatus string
 
 const (
@@ -291,11 +242,6 @@ func PossibleDoubleEncryptionStatusValues() []DoubleEncryptionStatus {
 		DoubleEncryptionStatusDisabled,
 		DoubleEncryptionStatusEnabled,
 	}
-}
-
-// ToPtr returns a *DoubleEncryptionStatus pointing to the current value.
-func (c DoubleEncryptionStatus) ToPtr() *DoubleEncryptionStatus {
-	return &c
 }
 
 // ImageType - Type of the image
@@ -319,11 +265,6 @@ func PossibleImageTypeValues() []ImageType {
 	}
 }
 
-// ToPtr returns a *ImageType pointing to the current value.
-func (c ImageType) ToPtr() *ImageType {
-	return &c
-}
-
 // LengthHeightUnit - Unit for the dimensions of length, height and width.
 type LengthHeightUnit string
 
@@ -340,11 +281,6 @@ func PossibleLengthHeightUnitValues() []LengthHeightUnit {
 		LengthHeightUnitCM,
 		LengthHeightUnitIN,
 	}
-}
-
-// ToPtr returns a *LengthHeightUnit pointing to the current value.
-func (c LengthHeightUnit) ToPtr() *LengthHeightUnit {
-	return &c
 }
 
 // LinkType - Type of link
@@ -377,11 +313,6 @@ func PossibleLinkTypeValues() []LinkType {
 	}
 }
 
-// ToPtr returns a *LinkType pointing to the current value.
-func (c LinkType) ToPtr() *LinkType {
-	return &c
-}
-
 // MeteringType - Represents Metering type (eg one-time or recurrent)
 type MeteringType string
 
@@ -403,11 +334,6 @@ func PossibleMeteringTypeValues() []MeteringType {
 	}
 }
 
-// ToPtr returns a *MeteringType pointing to the current value.
-func (c MeteringType) ToPtr() *MeteringType {
-	return &c
-}
-
 // NotificationStageName - Name of the stage.
 type NotificationStageName string
 
@@ -424,11 +350,6 @@ func PossibleNotificationStageNameValues() []NotificationStageName {
 		NotificationStageNameDelivered,
 		NotificationStageNameShipped,
 	}
-}
-
-// ToPtr returns a *NotificationStageName pointing to the current value.
-func (c NotificationStageName) ToPtr() *NotificationStageName {
-	return &c
 }
 
 // OrderItemCancellationEnum - Describes whether the order item is cancellable or not.
@@ -452,11 +373,6 @@ func PossibleOrderItemCancellationEnumValues() []OrderItemCancellationEnum {
 	}
 }
 
-// ToPtr returns a *OrderItemCancellationEnum pointing to the current value.
-func (c OrderItemCancellationEnum) ToPtr() *OrderItemCancellationEnum {
-	return &c
-}
-
 // OrderItemReturnEnum - Describes whether the order item is returnable or not.
 type OrderItemReturnEnum string
 
@@ -478,11 +394,6 @@ func PossibleOrderItemReturnEnumValues() []OrderItemReturnEnum {
 	}
 }
 
-// ToPtr returns a *OrderItemReturnEnum pointing to the current value.
-func (c OrderItemReturnEnum) ToPtr() *OrderItemReturnEnum {
-	return &c
-}
-
 // OrderItemType - Order item type.
 type OrderItemType string
 
@@ -501,12 +412,8 @@ func PossibleOrderItemTypeValues() []OrderItemType {
 	}
 }
 
-// ToPtr returns a *OrderItemType pointing to the current value.
-func (c OrderItemType) ToPtr() *OrderItemType {
-	return &c
-}
-
-// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+// value is "user,system"
 type Origin string
 
 const (
@@ -522,11 +429,6 @@ func PossibleOriginValues() []Origin {
 		OriginUser,
 		OriginUserSystem,
 	}
-}
-
-// ToPtr returns a *Origin pointing to the current value.
-func (c Origin) ToPtr() *Origin {
-	return &c
 }
 
 // StageName - Stage name
@@ -577,11 +479,6 @@ func PossibleStageNameValues() []StageName {
 	}
 }
 
-// ToPtr returns a *StageName pointing to the current value.
-func (c StageName) ToPtr() *StageName {
-	return &c
-}
-
 // StageStatus - Stage status.
 type StageStatus string
 
@@ -612,11 +509,6 @@ func PossibleStageStatusValues() []StageStatus {
 	}
 }
 
-// ToPtr returns a *StageStatus pointing to the current value.
-func (c StageStatus) ToPtr() *StageStatus {
-	return &c
-}
-
 // SupportedFilterTypes - Type of product filter.
 type SupportedFilterTypes string
 
@@ -633,11 +525,6 @@ func PossibleSupportedFilterTypesValues() []SupportedFilterTypes {
 		SupportedFilterTypesDoubleEncryptionStatus,
 		SupportedFilterTypesShipToCountries,
 	}
-}
-
-// ToPtr returns a *SupportedFilterTypes pointing to the current value.
-func (c SupportedFilterTypes) ToPtr() *SupportedFilterTypes {
-	return &c
 }
 
 // TransportShipmentTypes - Indicates Shipment Logistics type that the customer preferred.
@@ -658,11 +545,6 @@ func PossibleTransportShipmentTypesValues() []TransportShipmentTypes {
 	}
 }
 
-// ToPtr returns a *TransportShipmentTypes pointing to the current value.
-func (c TransportShipmentTypes) ToPtr() *TransportShipmentTypes {
-	return &c
-}
-
 // WeightMeasurementUnit - Unit for the dimensions of weight.
 type WeightMeasurementUnit string
 
@@ -679,9 +561,4 @@ func PossibleWeightMeasurementUnitValues() []WeightMeasurementUnit {
 		WeightMeasurementUnitKGS,
 		WeightMeasurementUnitLBS,
 	}
-}
-
-// ToPtr returns a *WeightMeasurementUnit pointing to the current value.
-func (c WeightMeasurementUnit) ToPtr() *WeightMeasurementUnit {
-	return &c
 }

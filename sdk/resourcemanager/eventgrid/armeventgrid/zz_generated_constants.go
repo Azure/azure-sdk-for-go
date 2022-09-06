@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package armeventgrid
 
 const (
-	module  = "armeventgrid"
-	version = "v0.2.1"
+	moduleName    = "armeventgrid"
+	moduleVersion = "v2.0.0"
 )
 
 // AdvancedFilterOperatorType - The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -18,16 +18,23 @@ type AdvancedFilterOperatorType string
 
 const (
 	AdvancedFilterOperatorTypeBoolEquals                AdvancedFilterOperatorType = "BoolEquals"
+	AdvancedFilterOperatorTypeIsNotNull                 AdvancedFilterOperatorType = "IsNotNull"
+	AdvancedFilterOperatorTypeIsNullOrUndefined         AdvancedFilterOperatorType = "IsNullOrUndefined"
 	AdvancedFilterOperatorTypeNumberGreaterThan         AdvancedFilterOperatorType = "NumberGreaterThan"
 	AdvancedFilterOperatorTypeNumberGreaterThanOrEquals AdvancedFilterOperatorType = "NumberGreaterThanOrEquals"
 	AdvancedFilterOperatorTypeNumberIn                  AdvancedFilterOperatorType = "NumberIn"
+	AdvancedFilterOperatorTypeNumberInRange             AdvancedFilterOperatorType = "NumberInRange"
 	AdvancedFilterOperatorTypeNumberLessThan            AdvancedFilterOperatorType = "NumberLessThan"
 	AdvancedFilterOperatorTypeNumberLessThanOrEquals    AdvancedFilterOperatorType = "NumberLessThanOrEquals"
 	AdvancedFilterOperatorTypeNumberNotIn               AdvancedFilterOperatorType = "NumberNotIn"
+	AdvancedFilterOperatorTypeNumberNotInRange          AdvancedFilterOperatorType = "NumberNotInRange"
 	AdvancedFilterOperatorTypeStringBeginsWith          AdvancedFilterOperatorType = "StringBeginsWith"
 	AdvancedFilterOperatorTypeStringContains            AdvancedFilterOperatorType = "StringContains"
 	AdvancedFilterOperatorTypeStringEndsWith            AdvancedFilterOperatorType = "StringEndsWith"
 	AdvancedFilterOperatorTypeStringIn                  AdvancedFilterOperatorType = "StringIn"
+	AdvancedFilterOperatorTypeStringNotBeginsWith       AdvancedFilterOperatorType = "StringNotBeginsWith"
+	AdvancedFilterOperatorTypeStringNotContains         AdvancedFilterOperatorType = "StringNotContains"
+	AdvancedFilterOperatorTypeStringNotEndsWith         AdvancedFilterOperatorType = "StringNotEndsWith"
 	AdvancedFilterOperatorTypeStringNotIn               AdvancedFilterOperatorType = "StringNotIn"
 )
 
@@ -35,23 +42,65 @@ const (
 func PossibleAdvancedFilterOperatorTypeValues() []AdvancedFilterOperatorType {
 	return []AdvancedFilterOperatorType{
 		AdvancedFilterOperatorTypeBoolEquals,
+		AdvancedFilterOperatorTypeIsNotNull,
+		AdvancedFilterOperatorTypeIsNullOrUndefined,
 		AdvancedFilterOperatorTypeNumberGreaterThan,
 		AdvancedFilterOperatorTypeNumberGreaterThanOrEquals,
 		AdvancedFilterOperatorTypeNumberIn,
+		AdvancedFilterOperatorTypeNumberInRange,
 		AdvancedFilterOperatorTypeNumberLessThan,
 		AdvancedFilterOperatorTypeNumberLessThanOrEquals,
 		AdvancedFilterOperatorTypeNumberNotIn,
+		AdvancedFilterOperatorTypeNumberNotInRange,
 		AdvancedFilterOperatorTypeStringBeginsWith,
 		AdvancedFilterOperatorTypeStringContains,
 		AdvancedFilterOperatorTypeStringEndsWith,
 		AdvancedFilterOperatorTypeStringIn,
+		AdvancedFilterOperatorTypeStringNotBeginsWith,
+		AdvancedFilterOperatorTypeStringNotContains,
+		AdvancedFilterOperatorTypeStringNotEndsWith,
 		AdvancedFilterOperatorTypeStringNotIn,
 	}
 }
 
-// ToPtr returns a *AdvancedFilterOperatorType pointing to the current value.
-func (c AdvancedFilterOperatorType) ToPtr() *AdvancedFilterOperatorType {
-	return &c
+// ChannelProvisioningState - Provisioning state of the channel.
+type ChannelProvisioningState string
+
+const (
+	ChannelProvisioningStateCanceled                              ChannelProvisioningState = "Canceled"
+	ChannelProvisioningStateCreating                              ChannelProvisioningState = "Creating"
+	ChannelProvisioningStateDeleting                              ChannelProvisioningState = "Deleting"
+	ChannelProvisioningStateFailed                                ChannelProvisioningState = "Failed"
+	ChannelProvisioningStateIdleDueToMirroredPartnerTopicDeletion ChannelProvisioningState = "IdleDueToMirroredPartnerTopicDeletion"
+	ChannelProvisioningStateSucceeded                             ChannelProvisioningState = "Succeeded"
+	ChannelProvisioningStateUpdating                              ChannelProvisioningState = "Updating"
+)
+
+// PossibleChannelProvisioningStateValues returns the possible values for the ChannelProvisioningState const type.
+func PossibleChannelProvisioningStateValues() []ChannelProvisioningState {
+	return []ChannelProvisioningState{
+		ChannelProvisioningStateCanceled,
+		ChannelProvisioningStateCreating,
+		ChannelProvisioningStateDeleting,
+		ChannelProvisioningStateFailed,
+		ChannelProvisioningStateIdleDueToMirroredPartnerTopicDeletion,
+		ChannelProvisioningStateSucceeded,
+		ChannelProvisioningStateUpdating,
+	}
+}
+
+// ChannelType - The type of the event channel which represents the direction flow of events.
+type ChannelType string
+
+const (
+	ChannelTypePartnerTopic ChannelType = "PartnerTopic"
+)
+
+// PossibleChannelTypeValues returns the possible values for the ChannelType const type.
+func PossibleChannelTypeValues() []ChannelType {
+	return []ChannelType{
+		ChannelTypePartnerTopic,
+	}
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -74,9 +123,20 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
+// DataResidencyBoundary - Data Residency Boundary of the resource.
+type DataResidencyBoundary string
+
+const (
+	DataResidencyBoundaryWithinGeopair DataResidencyBoundary = "WithinGeopair"
+	DataResidencyBoundaryWithinRegion  DataResidencyBoundary = "WithinRegion"
+)
+
+// PossibleDataResidencyBoundaryValues returns the possible values for the DataResidencyBoundary const type.
+func PossibleDataResidencyBoundaryValues() []DataResidencyBoundary {
+	return []DataResidencyBoundary{
+		DataResidencyBoundaryWithinGeopair,
+		DataResidencyBoundaryWithinRegion,
+	}
 }
 
 // DeadLetterEndPointType - Type of the endpoint for the dead letter destination
@@ -93,11 +153,6 @@ func PossibleDeadLetterEndPointTypeValues() []DeadLetterEndPointType {
 	}
 }
 
-// ToPtr returns a *DeadLetterEndPointType pointing to the current value.
-func (c DeadLetterEndPointType) ToPtr() *DeadLetterEndPointType {
-	return &c
-}
-
 // DeliveryAttributeMappingType - Type of the delivery attribute or header name.
 type DeliveryAttributeMappingType string
 
@@ -112,11 +167,6 @@ func PossibleDeliveryAttributeMappingTypeValues() []DeliveryAttributeMappingType
 		DeliveryAttributeMappingTypeDynamic,
 		DeliveryAttributeMappingTypeStatic,
 	}
-}
-
-// ToPtr returns a *DeliveryAttributeMappingType pointing to the current value.
-func (c DeliveryAttributeMappingType) ToPtr() *DeliveryAttributeMappingType {
-	return &c
 }
 
 // DomainProvisioningState - Provisioning state of the Event Grid Domain Resource.
@@ -143,11 +193,6 @@ func PossibleDomainProvisioningStateValues() []DomainProvisioningState {
 	}
 }
 
-// ToPtr returns a *DomainProvisioningState pointing to the current value.
-func (c DomainProvisioningState) ToPtr() *DomainProvisioningState {
-	return &c
-}
-
 // DomainTopicProvisioningState - Provisioning state of the domain topic.
 type DomainTopicProvisioningState string
 
@@ -170,11 +215,6 @@ func PossibleDomainTopicProvisioningStateValues() []DomainTopicProvisioningState
 		DomainTopicProvisioningStateSucceeded,
 		DomainTopicProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *DomainTopicProvisioningState pointing to the current value.
-func (c DomainTopicProvisioningState) ToPtr() *DomainTopicProvisioningState {
-	return &c
 }
 
 // EndpointType - Type of the endpoint for the event subscription destination.
@@ -203,89 +243,18 @@ func PossibleEndpointTypeValues() []EndpointType {
 	}
 }
 
-// ToPtr returns a *EndpointType pointing to the current value.
-func (c EndpointType) ToPtr() *EndpointType {
-	return &c
-}
-
-type Enum18 string
+// EventDefinitionKind - The kind of event type used.
+type EventDefinitionKind string
 
 const (
-	Enum18Domains Enum18 = "domains"
-	Enum18Topics  Enum18 = "topics"
+	EventDefinitionKindInline EventDefinitionKind = "Inline"
 )
 
-// PossibleEnum18Values returns the possible values for the Enum18 const type.
-func PossibleEnum18Values() []Enum18 {
-	return []Enum18{
-		Enum18Domains,
-		Enum18Topics,
+// PossibleEventDefinitionKindValues returns the possible values for the EventDefinitionKind const type.
+func PossibleEventDefinitionKindValues() []EventDefinitionKind {
+	return []EventDefinitionKind{
+		EventDefinitionKindInline,
 	}
-}
-
-// ToPtr returns a *Enum18 pointing to the current value.
-func (c Enum18) ToPtr() *Enum18 {
-	return &c
-}
-
-type Enum19 string
-
-const (
-	Enum19Domains Enum19 = "domains"
-	Enum19Topics  Enum19 = "topics"
-)
-
-// PossibleEnum19Values returns the possible values for the Enum19 const type.
-func PossibleEnum19Values() []Enum19 {
-	return []Enum19{
-		Enum19Domains,
-		Enum19Topics,
-	}
-}
-
-// ToPtr returns a *Enum19 pointing to the current value.
-func (c Enum19) ToPtr() *Enum19 {
-	return &c
-}
-
-type Enum20 string
-
-const (
-	Enum20Domains Enum20 = "domains"
-	Enum20Topics  Enum20 = "topics"
-)
-
-// PossibleEnum20Values returns the possible values for the Enum20 const type.
-func PossibleEnum20Values() []Enum20 {
-	return []Enum20{
-		Enum20Domains,
-		Enum20Topics,
-	}
-}
-
-// ToPtr returns a *Enum20 pointing to the current value.
-func (c Enum20) ToPtr() *Enum20 {
-	return &c
-}
-
-type Enum21 string
-
-const (
-	Enum21Domains Enum21 = "domains"
-	Enum21Topics  Enum21 = "topics"
-)
-
-// PossibleEnum21Values returns the possible values for the Enum21 const type.
-func PossibleEnum21Values() []Enum21 {
-	return []Enum21{
-		Enum21Domains,
-		Enum21Topics,
-	}
-}
-
-// ToPtr returns a *Enum21 pointing to the current value.
-func (c Enum21) ToPtr() *Enum21 {
-	return &c
 }
 
 // EventDeliverySchema - The event delivery schema for the event subscription.
@@ -306,13 +275,8 @@ func PossibleEventDeliverySchemaValues() []EventDeliverySchema {
 	}
 }
 
-// ToPtr returns a *EventDeliverySchema pointing to the current value.
-func (c EventDeliverySchema) ToPtr() *EventDeliverySchema {
-	return &c
-}
-
-// EventSubscriptionIdentityType - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity
-// and a set of user-assigned identities. The type 'None' will remove any identity.
+// EventSubscriptionIdentityType - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both
+// an implicitly created identity and a set of user-assigned identities. The type 'None' will remove any identity.
 type EventSubscriptionIdentityType string
 
 const (
@@ -326,11 +290,6 @@ func PossibleEventSubscriptionIdentityTypeValues() []EventSubscriptionIdentityTy
 		EventSubscriptionIdentityTypeSystemAssigned,
 		EventSubscriptionIdentityTypeUserAssigned,
 	}
-}
-
-// ToPtr returns a *EventSubscriptionIdentityType pointing to the current value.
-func (c EventSubscriptionIdentityType) ToPtr() *EventSubscriptionIdentityType {
-	return &c
 }
 
 // EventSubscriptionProvisioningState - Provisioning state of the event subscription.
@@ -359,11 +318,6 @@ func PossibleEventSubscriptionProvisioningStateValues() []EventSubscriptionProvi
 	}
 }
 
-// ToPtr returns a *EventSubscriptionProvisioningState pointing to the current value.
-func (c EventSubscriptionProvisioningState) ToPtr() *EventSubscriptionProvisioningState {
-	return &c
-}
-
 // IPActionType - Action to perform based on the match or no match of the IpMask.
 type IPActionType string
 
@@ -378,13 +332,8 @@ func PossibleIPActionTypeValues() []IPActionType {
 	}
 }
 
-// ToPtr returns a *IPActionType pointing to the current value.
-func (c IPActionType) ToPtr() *IPActionType {
-	return &c
-}
-
-// IdentityType - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user-assigned
-// identities. The type 'None' will remove any identity.
+// IdentityType - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
+// identity and a set of user-assigned identities. The type 'None' will remove any identity.
 type IdentityType string
 
 const (
@@ -404,12 +353,8 @@ func PossibleIdentityTypeValues() []IdentityType {
 	}
 }
 
-// ToPtr returns a *IdentityType pointing to the current value.
-func (c IdentityType) ToPtr() *IdentityType {
-	return &c
-}
-
-// InputSchema - This determines the format that Event Grid should expect for incoming events published to the domain.
+// InputSchema - This determines the format that Event Grid should expect for incoming events published to the Event Grid
+// Domain Resource.
 type InputSchema string
 
 const (
@@ -427,11 +372,6 @@ func PossibleInputSchemaValues() []InputSchema {
 	}
 }
 
-// ToPtr returns a *InputSchema pointing to the current value.
-func (c InputSchema) ToPtr() *InputSchema {
-	return &c
-}
-
 // InputSchemaMappingType - Type of the custom mapping
 type InputSchemaMappingType string
 
@@ -446,9 +386,138 @@ func PossibleInputSchemaMappingTypeValues() []InputSchemaMappingType {
 	}
 }
 
-// ToPtr returns a *InputSchemaMappingType pointing to the current value.
-func (c InputSchemaMappingType) ToPtr() *InputSchemaMappingType {
-	return &c
+// PartnerConfigurationProvisioningState - Provisioning state of the partner configuration.
+type PartnerConfigurationProvisioningState string
+
+const (
+	PartnerConfigurationProvisioningStateCanceled  PartnerConfigurationProvisioningState = "Canceled"
+	PartnerConfigurationProvisioningStateCreating  PartnerConfigurationProvisioningState = "Creating"
+	PartnerConfigurationProvisioningStateDeleting  PartnerConfigurationProvisioningState = "Deleting"
+	PartnerConfigurationProvisioningStateFailed    PartnerConfigurationProvisioningState = "Failed"
+	PartnerConfigurationProvisioningStateSucceeded PartnerConfigurationProvisioningState = "Succeeded"
+	PartnerConfigurationProvisioningStateUpdating  PartnerConfigurationProvisioningState = "Updating"
+)
+
+// PossiblePartnerConfigurationProvisioningStateValues returns the possible values for the PartnerConfigurationProvisioningState const type.
+func PossiblePartnerConfigurationProvisioningStateValues() []PartnerConfigurationProvisioningState {
+	return []PartnerConfigurationProvisioningState{
+		PartnerConfigurationProvisioningStateCanceled,
+		PartnerConfigurationProvisioningStateCreating,
+		PartnerConfigurationProvisioningStateDeleting,
+		PartnerConfigurationProvisioningStateFailed,
+		PartnerConfigurationProvisioningStateSucceeded,
+		PartnerConfigurationProvisioningStateUpdating,
+	}
+}
+
+// PartnerNamespaceProvisioningState - Provisioning state of the partner namespace.
+type PartnerNamespaceProvisioningState string
+
+const (
+	PartnerNamespaceProvisioningStateCanceled  PartnerNamespaceProvisioningState = "Canceled"
+	PartnerNamespaceProvisioningStateCreating  PartnerNamespaceProvisioningState = "Creating"
+	PartnerNamespaceProvisioningStateDeleting  PartnerNamespaceProvisioningState = "Deleting"
+	PartnerNamespaceProvisioningStateFailed    PartnerNamespaceProvisioningState = "Failed"
+	PartnerNamespaceProvisioningStateSucceeded PartnerNamespaceProvisioningState = "Succeeded"
+	PartnerNamespaceProvisioningStateUpdating  PartnerNamespaceProvisioningState = "Updating"
+)
+
+// PossiblePartnerNamespaceProvisioningStateValues returns the possible values for the PartnerNamespaceProvisioningState const type.
+func PossiblePartnerNamespaceProvisioningStateValues() []PartnerNamespaceProvisioningState {
+	return []PartnerNamespaceProvisioningState{
+		PartnerNamespaceProvisioningStateCanceled,
+		PartnerNamespaceProvisioningStateCreating,
+		PartnerNamespaceProvisioningStateDeleting,
+		PartnerNamespaceProvisioningStateFailed,
+		PartnerNamespaceProvisioningStateSucceeded,
+		PartnerNamespaceProvisioningStateUpdating,
+	}
+}
+
+// PartnerRegistrationProvisioningState - Provisioning state of the partner registration.
+type PartnerRegistrationProvisioningState string
+
+const (
+	PartnerRegistrationProvisioningStateCanceled  PartnerRegistrationProvisioningState = "Canceled"
+	PartnerRegistrationProvisioningStateCreating  PartnerRegistrationProvisioningState = "Creating"
+	PartnerRegistrationProvisioningStateDeleting  PartnerRegistrationProvisioningState = "Deleting"
+	PartnerRegistrationProvisioningStateFailed    PartnerRegistrationProvisioningState = "Failed"
+	PartnerRegistrationProvisioningStateSucceeded PartnerRegistrationProvisioningState = "Succeeded"
+	PartnerRegistrationProvisioningStateUpdating  PartnerRegistrationProvisioningState = "Updating"
+)
+
+// PossiblePartnerRegistrationProvisioningStateValues returns the possible values for the PartnerRegistrationProvisioningState const type.
+func PossiblePartnerRegistrationProvisioningStateValues() []PartnerRegistrationProvisioningState {
+	return []PartnerRegistrationProvisioningState{
+		PartnerRegistrationProvisioningStateCanceled,
+		PartnerRegistrationProvisioningStateCreating,
+		PartnerRegistrationProvisioningStateDeleting,
+		PartnerRegistrationProvisioningStateFailed,
+		PartnerRegistrationProvisioningStateSucceeded,
+		PartnerRegistrationProvisioningStateUpdating,
+	}
+}
+
+// PartnerTopicActivationState - Activation state of the partner topic.
+type PartnerTopicActivationState string
+
+const (
+	PartnerTopicActivationStateActivated      PartnerTopicActivationState = "Activated"
+	PartnerTopicActivationStateDeactivated    PartnerTopicActivationState = "Deactivated"
+	PartnerTopicActivationStateNeverActivated PartnerTopicActivationState = "NeverActivated"
+)
+
+// PossiblePartnerTopicActivationStateValues returns the possible values for the PartnerTopicActivationState const type.
+func PossiblePartnerTopicActivationStateValues() []PartnerTopicActivationState {
+	return []PartnerTopicActivationState{
+		PartnerTopicActivationStateActivated,
+		PartnerTopicActivationStateDeactivated,
+		PartnerTopicActivationStateNeverActivated,
+	}
+}
+
+// PartnerTopicProvisioningState - Provisioning state of the partner topic.
+type PartnerTopicProvisioningState string
+
+const (
+	PartnerTopicProvisioningStateCanceled                                 PartnerTopicProvisioningState = "Canceled"
+	PartnerTopicProvisioningStateCreating                                 PartnerTopicProvisioningState = "Creating"
+	PartnerTopicProvisioningStateDeleting                                 PartnerTopicProvisioningState = "Deleting"
+	PartnerTopicProvisioningStateFailed                                   PartnerTopicProvisioningState = "Failed"
+	PartnerTopicProvisioningStateIdleDueToMirroredChannelResourceDeletion PartnerTopicProvisioningState = "IdleDueToMirroredChannelResourceDeletion"
+	PartnerTopicProvisioningStateSucceeded                                PartnerTopicProvisioningState = "Succeeded"
+	PartnerTopicProvisioningStateUpdating                                 PartnerTopicProvisioningState = "Updating"
+)
+
+// PossiblePartnerTopicProvisioningStateValues returns the possible values for the PartnerTopicProvisioningState const type.
+func PossiblePartnerTopicProvisioningStateValues() []PartnerTopicProvisioningState {
+	return []PartnerTopicProvisioningState{
+		PartnerTopicProvisioningStateCanceled,
+		PartnerTopicProvisioningStateCreating,
+		PartnerTopicProvisioningStateDeleting,
+		PartnerTopicProvisioningStateFailed,
+		PartnerTopicProvisioningStateIdleDueToMirroredChannelResourceDeletion,
+		PartnerTopicProvisioningStateSucceeded,
+		PartnerTopicProvisioningStateUpdating,
+	}
+}
+
+// PartnerTopicRoutingMode - This determines if events published to this partner namespace should use the source attribute
+// in the event payload or use the channel name in the header when matching to the partner topic. If none is
+// specified, source attribute routing will be used to match the partner topic.
+type PartnerTopicRoutingMode string
+
+const (
+	PartnerTopicRoutingModeChannelNameHeader    PartnerTopicRoutingMode = "ChannelNameHeader"
+	PartnerTopicRoutingModeSourceEventAttribute PartnerTopicRoutingMode = "SourceEventAttribute"
+)
+
+// PossiblePartnerTopicRoutingModeValues returns the possible values for the PartnerTopicRoutingMode const type.
+func PossiblePartnerTopicRoutingModeValues() []PartnerTopicRoutingMode {
+	return []PartnerTopicRoutingMode{
+		PartnerTopicRoutingModeChannelNameHeader,
+		PartnerTopicRoutingModeSourceEventAttribute,
+	}
 }
 
 // PersistedConnectionStatus - Status of the connection.
@@ -471,13 +540,25 @@ func PossiblePersistedConnectionStatusValues() []PersistedConnectionStatus {
 	}
 }
 
-// ToPtr returns a *PersistedConnectionStatus pointing to the current value.
-func (c PersistedConnectionStatus) ToPtr() *PersistedConnectionStatus {
-	return &c
+type PrivateEndpointConnectionsParentType string
+
+const (
+	PrivateEndpointConnectionsParentTypeDomains           PrivateEndpointConnectionsParentType = "domains"
+	PrivateEndpointConnectionsParentTypePartnerNamespaces PrivateEndpointConnectionsParentType = "partnerNamespaces"
+	PrivateEndpointConnectionsParentTypeTopics            PrivateEndpointConnectionsParentType = "topics"
+)
+
+// PossiblePrivateEndpointConnectionsParentTypeValues returns the possible values for the PrivateEndpointConnectionsParentType const type.
+func PossiblePrivateEndpointConnectionsParentTypeValues() []PrivateEndpointConnectionsParentType {
+	return []PrivateEndpointConnectionsParentType{
+		PrivateEndpointConnectionsParentTypeDomains,
+		PrivateEndpointConnectionsParentTypePartnerNamespaces,
+		PrivateEndpointConnectionsParentTypeTopics,
+	}
 }
 
-// PublicNetworkAccess - This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific IPs by
-// configuring
+// PublicNetworkAccess - This determines if traffic is allowed over public network. By default it is enabled. You can further
+// restrict to specific IPs by configuring
 type PublicNetworkAccess string
 
 const (
@@ -493,9 +574,20 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	}
 }
 
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
+// ReadinessState - The readiness state of the corresponding partner topic.
+type ReadinessState string
+
+const (
+	ReadinessStateActivated      ReadinessState = "Activated"
+	ReadinessStateNeverActivated ReadinessState = "NeverActivated"
+)
+
+// PossibleReadinessStateValues returns the possible values for the ReadinessState const type.
+func PossibleReadinessStateValues() []ReadinessState {
+	return []ReadinessState{
+		ReadinessStateActivated,
+		ReadinessStateNeverActivated,
+	}
 }
 
 // ResourceProvisioningState - Provisioning state of the Private Endpoint Connection.
@@ -522,11 +614,6 @@ func PossibleResourceProvisioningStateValues() []ResourceProvisioningState {
 	}
 }
 
-// ToPtr returns a *ResourceProvisioningState pointing to the current value.
-func (c ResourceProvisioningState) ToPtr() *ResourceProvisioningState {
-	return &c
-}
-
 // ResourceRegionType - Region type of the resource.
 type ResourceRegionType string
 
@@ -541,11 +628,6 @@ func PossibleResourceRegionTypeValues() []ResourceRegionType {
 		ResourceRegionTypeGlobalResource,
 		ResourceRegionTypeRegionalResource,
 	}
-}
-
-// ToPtr returns a *ResourceRegionType pointing to the current value.
-func (c ResourceRegionType) ToPtr() *ResourceRegionType {
-	return &c
 }
 
 // TopicProvisioningState - Provisioning state of the topic.
@@ -572,33 +654,6 @@ func PossibleTopicProvisioningStateValues() []TopicProvisioningState {
 	}
 }
 
-// ToPtr returns a *TopicProvisioningState pointing to the current value.
-func (c TopicProvisioningState) ToPtr() *TopicProvisioningState {
-	return &c
-}
-
-type TopicTypePropertiesSupportedScopesForSourceItem string
-
-const (
-	TopicTypePropertiesSupportedScopesForSourceItemAzureSubscription TopicTypePropertiesSupportedScopesForSourceItem = "AzureSubscription"
-	TopicTypePropertiesSupportedScopesForSourceItemResource          TopicTypePropertiesSupportedScopesForSourceItem = "Resource"
-	TopicTypePropertiesSupportedScopesForSourceItemResourceGroup     TopicTypePropertiesSupportedScopesForSourceItem = "ResourceGroup"
-)
-
-// PossibleTopicTypePropertiesSupportedScopesForSourceItemValues returns the possible values for the TopicTypePropertiesSupportedScopesForSourceItem const type.
-func PossibleTopicTypePropertiesSupportedScopesForSourceItemValues() []TopicTypePropertiesSupportedScopesForSourceItem {
-	return []TopicTypePropertiesSupportedScopesForSourceItem{
-		TopicTypePropertiesSupportedScopesForSourceItemAzureSubscription,
-		TopicTypePropertiesSupportedScopesForSourceItemResource,
-		TopicTypePropertiesSupportedScopesForSourceItemResourceGroup,
-	}
-}
-
-// ToPtr returns a *TopicTypePropertiesSupportedScopesForSourceItem pointing to the current value.
-func (c TopicTypePropertiesSupportedScopesForSourceItem) ToPtr() *TopicTypePropertiesSupportedScopesForSourceItem {
-	return &c
-}
-
 // TopicTypeProvisioningState - Provisioning state of the topic type
 type TopicTypeProvisioningState string
 
@@ -623,7 +678,45 @@ func PossibleTopicTypeProvisioningStateValues() []TopicTypeProvisioningState {
 	}
 }
 
-// ToPtr returns a *TopicTypeProvisioningState pointing to the current value.
-func (c TopicTypeProvisioningState) ToPtr() *TopicTypeProvisioningState {
-	return &c
+type TopicTypeSourceScope string
+
+const (
+	TopicTypeSourceScopeAzureSubscription TopicTypeSourceScope = "AzureSubscription"
+	TopicTypeSourceScopeManagementGroup   TopicTypeSourceScope = "ManagementGroup"
+	TopicTypeSourceScopeResource          TopicTypeSourceScope = "Resource"
+	TopicTypeSourceScopeResourceGroup     TopicTypeSourceScope = "ResourceGroup"
+)
+
+// PossibleTopicTypeSourceScopeValues returns the possible values for the TopicTypeSourceScope const type.
+func PossibleTopicTypeSourceScopeValues() []TopicTypeSourceScope {
+	return []TopicTypeSourceScope{
+		TopicTypeSourceScopeAzureSubscription,
+		TopicTypeSourceScopeManagementGroup,
+		TopicTypeSourceScopeResource,
+		TopicTypeSourceScopeResourceGroup,
+	}
+}
+
+// VerifiedPartnerProvisioningState - Provisioning state of the verified partner.
+type VerifiedPartnerProvisioningState string
+
+const (
+	VerifiedPartnerProvisioningStateCanceled  VerifiedPartnerProvisioningState = "Canceled"
+	VerifiedPartnerProvisioningStateCreating  VerifiedPartnerProvisioningState = "Creating"
+	VerifiedPartnerProvisioningStateDeleting  VerifiedPartnerProvisioningState = "Deleting"
+	VerifiedPartnerProvisioningStateFailed    VerifiedPartnerProvisioningState = "Failed"
+	VerifiedPartnerProvisioningStateSucceeded VerifiedPartnerProvisioningState = "Succeeded"
+	VerifiedPartnerProvisioningStateUpdating  VerifiedPartnerProvisioningState = "Updating"
+)
+
+// PossibleVerifiedPartnerProvisioningStateValues returns the possible values for the VerifiedPartnerProvisioningState const type.
+func PossibleVerifiedPartnerProvisioningStateValues() []VerifiedPartnerProvisioningState {
+	return []VerifiedPartnerProvisioningState{
+		VerifiedPartnerProvisioningStateCanceled,
+		VerifiedPartnerProvisioningStateCreating,
+		VerifiedPartnerProvisioningStateDeleting,
+		VerifiedPartnerProvisioningStateFailed,
+		VerifiedPartnerProvisioningStateSucceeded,
+		VerifiedPartnerProvisioningStateUpdating,
+	}
 }

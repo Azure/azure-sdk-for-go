@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armm365securityandcompliance
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,60 @@ import (
 // PrivateLinkResourcesSecClient contains the methods for the PrivateLinkResourcesSec group.
 // Don't use this type directly, use NewPrivateLinkResourcesSecClient() instead.
 type PrivateLinkResourcesSecClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateLinkResourcesSecClient creates a new instance of PrivateLinkResourcesSecClient with the specified values.
-func NewPrivateLinkResourcesSecClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkResourcesSecClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewPrivateLinkResourcesSecClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesSecClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &PrivateLinkResourcesSecClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &PrivateLinkResourcesSecClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // Get - Gets a private link resource that need to be created for a service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateLinkResourcesSecClient) Get(ctx context.Context, resourceGroupName string, resourceName string, groupName string, options *PrivateLinkResourcesSecGetOptions) (PrivateLinkResourcesSecGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
+// resourceGroupName - The name of the resource group that contains the service instance.
+// resourceName - The name of the service instance.
+// groupName - The name of the private link resource group.
+// options - PrivateLinkResourcesSecClientGetOptions contains the optional parameters for the PrivateLinkResourcesSecClient.Get
+// method.
+func (client *PrivateLinkResourcesSecClient) Get(ctx context.Context, resourceGroupName string, resourceName string, groupName string, options *PrivateLinkResourcesSecClientGetOptions) (PrivateLinkResourcesSecClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, groupName, options)
 	if err != nil {
-		return PrivateLinkResourcesSecGetResponse{}, err
+		return PrivateLinkResourcesSecClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateLinkResourcesSecGetResponse{}, err
+		return PrivateLinkResourcesSecClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateLinkResourcesSecGetResponse{}, client.getHandleError(resp)
+		return PrivateLinkResourcesSecClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateLinkResourcesSecClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, groupName string, options *PrivateLinkResourcesSecGetOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesSecClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, groupName string, options *PrivateLinkResourcesSecClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.M365SecurityAndCompliance/privateLinkServicesForM365SecurityCenter/{resourceName}/privateLinkResources/{groupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,58 +96,50 @@ func (client *PrivateLinkResourcesSecClient) getCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter groupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateLinkResourcesSecClient) getHandleResponse(resp *http.Response) (PrivateLinkResourcesSecGetResponse, error) {
-	result := PrivateLinkResourcesSecGetResponse{RawResponse: resp}
+func (client *PrivateLinkResourcesSecClient) getHandleResponse(resp *http.Response) (PrivateLinkResourcesSecClientGetResponse, error) {
+	result := PrivateLinkResourcesSecClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
-		return PrivateLinkResourcesSecGetResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkResourcesSecClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PrivateLinkResourcesSecClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByService - Gets the private link resources that need to be created for a service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateLinkResourcesSecClient) ListByService(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesSecListByServiceOptions) (PrivateLinkResourcesSecListByServiceResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
+// resourceGroupName - The name of the resource group that contains the service instance.
+// resourceName - The name of the service instance.
+// options - PrivateLinkResourcesSecClientListByServiceOptions contains the optional parameters for the PrivateLinkResourcesSecClient.ListByService
+// method.
+func (client *PrivateLinkResourcesSecClient) ListByService(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesSecClientListByServiceOptions) (PrivateLinkResourcesSecClientListByServiceResponse, error) {
 	req, err := client.listByServiceCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return PrivateLinkResourcesSecListByServiceResponse{}, err
+		return PrivateLinkResourcesSecClientListByServiceResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateLinkResourcesSecListByServiceResponse{}, err
+		return PrivateLinkResourcesSecClientListByServiceResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateLinkResourcesSecListByServiceResponse{}, client.listByServiceHandleError(resp)
+		return PrivateLinkResourcesSecClientListByServiceResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByServiceHandleResponse(resp)
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *PrivateLinkResourcesSecClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesSecListByServiceOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesSecClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesSecClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.M365SecurityAndCompliance/privateLinkServicesForM365SecurityCenter/{resourceName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -143,35 +153,22 @@ func (client *PrivateLinkResourcesSecClient) listByServiceCreateRequest(ctx cont
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *PrivateLinkResourcesSecClient) listByServiceHandleResponse(resp *http.Response) (PrivateLinkResourcesSecListByServiceResponse, error) {
-	result := PrivateLinkResourcesSecListByServiceResponse{RawResponse: resp}
+func (client *PrivateLinkResourcesSecClient) listByServiceHandleResponse(resp *http.Response) (PrivateLinkResourcesSecClientListByServiceResponse, error) {
+	result := PrivateLinkResourcesSecClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
-		return PrivateLinkResourcesSecListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkResourcesSecClientListByServiceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServiceHandleError handles the ListByService error response.
-func (client *PrivateLinkResourcesSecClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

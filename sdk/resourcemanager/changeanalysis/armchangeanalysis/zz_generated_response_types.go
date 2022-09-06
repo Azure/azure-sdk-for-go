@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,52 +8,22 @@
 
 package armchangeanalysis
 
-import "net/http"
-
-// ChangesListChangesByResourceGroupResponse contains the response from method Changes.ListChangesByResourceGroup.
-type ChangesListChangesByResourceGroupResponse struct {
-	ChangesListChangesByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ChangesListChangesByResourceGroupResult contains the result from method Changes.ListChangesByResourceGroup.
-type ChangesListChangesByResourceGroupResult struct {
+// ChangesClientListChangesByResourceGroupResponse contains the response from method ChangesClient.ListChangesByResourceGroup.
+type ChangesClientListChangesByResourceGroupResponse struct {
 	ChangeList
 }
 
-// ChangesListChangesBySubscriptionResponse contains the response from method Changes.ListChangesBySubscription.
-type ChangesListChangesBySubscriptionResponse struct {
-	ChangesListChangesBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ChangesListChangesBySubscriptionResult contains the result from method Changes.ListChangesBySubscription.
-type ChangesListChangesBySubscriptionResult struct {
+// ChangesClientListChangesBySubscriptionResponse contains the response from method ChangesClient.ListChangesBySubscription.
+type ChangesClientListChangesBySubscriptionResponse struct {
 	ChangeList
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
 	ResourceProviderOperationList
 }
 
-// ResourceChangesListResponse contains the response from method ResourceChanges.List.
-type ResourceChangesListResponse struct {
-	ResourceChangesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ResourceChangesListResult contains the result from method ResourceChanges.List.
-type ResourceChangesListResult struct {
+// ResourceChangesClientListResponse contains the response from method ResourceChangesClient.List.
+type ResourceChangesClientListResponse struct {
 	ChangeList
 }

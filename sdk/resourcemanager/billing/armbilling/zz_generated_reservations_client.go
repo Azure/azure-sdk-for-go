@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armbilling
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,44 +25,75 @@ import (
 // ReservationsClient contains the methods for the Reservations group.
 // Don't use this type directly, use NewReservationsClient() instead.
 type ReservationsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewReservationsClient creates a new instance of ReservationsClient with the specified values.
-func NewReservationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ReservationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewReservationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ReservationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &ReservationsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &ReservationsClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
-// ListByBillingAccount - Lists the reservations for a billing account and the roll up counts of reservations group by provisioning states.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ReservationsClient) ListByBillingAccount(billingAccountName string, options *ReservationsListByBillingAccountOptions) *ReservationsListByBillingAccountPager {
-	return &ReservationsListByBillingAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByBillingAccountCreateRequest(ctx, billingAccountName, options)
+// NewListByBillingAccountPager - Lists the reservations for a billing account and the roll up counts of reservations group
+// by provisioning states.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
+// billingAccountName - The ID that uniquely identifies a billing account.
+// options - ReservationsClientListByBillingAccountOptions contains the optional parameters for the ReservationsClient.ListByBillingAccount
+// method.
+func (client *ReservationsClient) NewListByBillingAccountPager(billingAccountName string, options *ReservationsClientListByBillingAccountOptions) *runtime.Pager[ReservationsClientListByBillingAccountResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ReservationsClientListByBillingAccountResponse]{
+		More: func(page ReservationsClientListByBillingAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReservationsListByBillingAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReservationsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ReservationsClientListByBillingAccountResponse) (ReservationsClientListByBillingAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByBillingAccountCreateRequest(ctx, billingAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReservationsClientListByBillingAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReservationsClientListByBillingAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReservationsClientListByBillingAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByBillingAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByBillingAccountCreateRequest creates the ListByBillingAccount request.
-func (client *ReservationsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, options *ReservationsListByBillingAccountOptions) (*policy.Request, error) {
+func (client *ReservationsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, options *ReservationsClientListByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/reservations"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -81,48 +112,57 @@ func (client *ReservationsClient) listByBillingAccountCreateRequest(ctx context.
 		reqQP.Set("selectedState", *options.SelectedState)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBillingAccountHandleResponse handles the ListByBillingAccount response.
-func (client *ReservationsClient) listByBillingAccountHandleResponse(resp *http.Response) (ReservationsListByBillingAccountResponse, error) {
-	result := ReservationsListByBillingAccountResponse{RawResponse: resp}
+func (client *ReservationsClient) listByBillingAccountHandleResponse(resp *http.Response) (ReservationsClientListByBillingAccountResponse, error) {
+	result := ReservationsClientListByBillingAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationsListResult); err != nil {
-		return ReservationsListByBillingAccountResponse{}, runtime.NewResponseError(err, resp)
+		return ReservationsClientListByBillingAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByBillingAccountHandleError handles the ListByBillingAccount error response.
-func (client *ReservationsClient) listByBillingAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByBillingProfile - Lists the reservations for a billing profile and the roll up counts of reservations group by provisioning state.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ReservationsClient) ListByBillingProfile(billingAccountName string, billingProfileName string, options *ReservationsListByBillingProfileOptions) *ReservationsListByBillingProfilePager {
-	return &ReservationsListByBillingProfilePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, options)
+// NewListByBillingProfilePager - Lists the reservations for a billing profile and the roll up counts of reservations group
+// by provisioning state.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
+// billingAccountName - The ID that uniquely identifies a billing account.
+// billingProfileName - The ID that uniquely identifies a billing profile.
+// options - ReservationsClientListByBillingProfileOptions contains the optional parameters for the ReservationsClient.ListByBillingProfile
+// method.
+func (client *ReservationsClient) NewListByBillingProfilePager(billingAccountName string, billingProfileName string, options *ReservationsClientListByBillingProfileOptions) *runtime.Pager[ReservationsClientListByBillingProfileResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ReservationsClientListByBillingProfileResponse]{
+		More: func(page ReservationsClientListByBillingProfileResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReservationsListByBillingProfileResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReservationsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ReservationsClientListByBillingProfileResponse) (ReservationsClientListByBillingProfileResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReservationsClientListByBillingProfileResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReservationsClientListByBillingProfileResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReservationsClientListByBillingProfileResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByBillingProfileHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByBillingProfileCreateRequest creates the ListByBillingProfile request.
-func (client *ReservationsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *ReservationsListByBillingProfileOptions) (*policy.Request, error) {
+func (client *ReservationsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *ReservationsClientListByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/reservations"
 	if billingAccountName == "" {
 		return nil, errors.New("parameter billingAccountName cannot be empty")
@@ -132,7 +172,7 @@ func (client *ReservationsClient) listByBillingProfileCreateRequest(ctx context.
 		return nil, errors.New("parameter billingProfileName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -151,28 +191,15 @@ func (client *ReservationsClient) listByBillingProfileCreateRequest(ctx context.
 		reqQP.Set("selectedState", *options.SelectedState)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBillingProfileHandleResponse handles the ListByBillingProfile response.
-func (client *ReservationsClient) listByBillingProfileHandleResponse(resp *http.Response) (ReservationsListByBillingProfileResponse, error) {
-	result := ReservationsListByBillingProfileResponse{RawResponse: resp}
+func (client *ReservationsClient) listByBillingProfileHandleResponse(resp *http.Response) (ReservationsClientListByBillingProfileResponse, error) {
+	result := ReservationsClientListByBillingProfileResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationsListResult); err != nil {
-		return ReservationsListByBillingProfileResponse{}, runtime.NewResponseError(err, resp)
+		return ReservationsClientListByBillingProfileResponse{}, err
 	}
 	return result, nil
-}
-
-// listByBillingProfileHandleError handles the ListByBillingProfile error response.
-func (client *ReservationsClient) listByBillingProfileHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

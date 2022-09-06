@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright 2017 Microsoft Corporation. All rights reserved.
 // Use of this source code is governed by an MIT
@@ -12,7 +12,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -56,7 +56,7 @@ func (w Widget) MarshalJSON() ([]byte, error) {
 
 func ExampleNullValue() {
 	w := Widget{
-		Count: azcore.NullValue(0).(*int),
+		Count: azcore.NullValue[*int](),
 	}
 	b, _ := json.Marshal(w)
 	fmt.Println(string(b))
@@ -64,24 +64,24 @@ func ExampleNullValue() {
 	// {"count":null}
 }
 
-func ExampleHTTPResponse() {
+func ExampleResponseError() {
 	pipeline := runtime.NewPipeline("module", "version", runtime.PipelineOptions{}, nil)
 	req, err := runtime.NewRequest(context.Background(), "POST", "https://fakecontainerregisty.azurecr.io/acr/v1/nonexisteng/_tags")
 	if err != nil {
 		panic(err)
 	}
 	resp, err := pipeline.Do(req)
-	var httpErr azcore.HTTPResponse
-	if errors.As(err, &httpErr) {
+	var respErr *azcore.ResponseError
+	if errors.As(err, &respErr) {
 		// Handle Error
-		if httpErr.RawResponse().StatusCode == http.StatusNotFound {
-			fmt.Printf("Repository could not be found: %v", httpErr.RawResponse())
-		} else if httpErr.RawResponse().StatusCode == http.StatusForbidden {
-			fmt.Printf("You do not have permission to access this repository: %v", httpErr.RawResponse())
+		if respErr.StatusCode == http.StatusNotFound {
+			fmt.Printf("Repository could not be found: %v", respErr)
+		} else if respErr.StatusCode == http.StatusForbidden {
+			fmt.Printf("You do not have permission to access this repository: %v", respErr)
 		} else {
 			// ...
 		}
 	}
 	// Do something with response
-	fmt.Println(ioutil.ReadAll(resp.Body))
+	fmt.Println(io.ReadAll(resp.Body))
 }

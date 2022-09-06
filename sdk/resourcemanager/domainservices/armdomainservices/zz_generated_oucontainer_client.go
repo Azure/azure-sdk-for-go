@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armdomainservices
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,46 +25,60 @@ import (
 // OuContainerClient contains the methods for the OuContainer group.
 // Don't use this type directly, use NewOuContainerClient() instead.
 type OuContainerClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewOuContainerClient creates a new instance of OuContainerClient with the specified values.
-func NewOuContainerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OuContainerClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewOuContainerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OuContainerClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &OuContainerClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &OuContainerClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // BeginCreate - The Create OuContainer operation creates a new OuContainer under the specified Domain Service instance.
-// If the operation fails it returns the *CloudError error type.
-func (client *OuContainerClient) BeginCreate(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerBeginCreateOptions) (OuContainerCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, domainServiceName, ouContainerName, containerAccount, options)
-	if err != nil {
-		return OuContainerCreatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// domainServiceName - The name of the domain service.
+// ouContainerName - The name of the OuContainer.
+// containerAccount - Container Account Description.
+// options - OuContainerClientBeginCreateOptions contains the optional parameters for the OuContainerClient.BeginCreate method.
+func (client *OuContainerClient) BeginCreate(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginCreateOptions) (*runtime.Poller[OuContainerClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, domainServiceName, ouContainerName, containerAccount, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[OuContainerClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[OuContainerClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := OuContainerCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("OuContainerClient.Create", "", resp, client.pl, client.createHandleError)
-	if err != nil {
-		return OuContainerCreatePollerResponse{}, err
-	}
-	result.Poller = &OuContainerCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - The Create OuContainer operation creates a new OuContainer under the specified Domain Service instance.
-// If the operation fails it returns the *CloudError error type.
-func (client *OuContainerClient) create(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
+func (client *OuContainerClient) create(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, domainServiceName, ouContainerName, containerAccount, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +88,13 @@ func (client *OuContainerClient) create(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *OuContainerClient) createCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerBeginCreateOptions) (*policy.Request, error) {
+func (client *OuContainerClient) createCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Aad/domainServices/{domainServiceName}/ouContainer/{ouContainerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,53 +112,40 @@ func (client *OuContainerClient) createCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter ouContainerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ouContainerName}", url.PathEscape(ouContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, containerAccount)
 }
 
-// createHandleError handles the Create error response.
-func (client *OuContainerClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - The Delete OuContainer operation deletes specified OuContainer.
-// If the operation fails it returns the *CloudError error type.
-func (client *OuContainerClient) BeginDelete(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, options *OuContainerBeginDeleteOptions) (OuContainerDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, domainServiceName, ouContainerName, options)
-	if err != nil {
-		return OuContainerDeletePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// domainServiceName - The name of the domain service.
+// ouContainerName - The name of the OuContainer.
+// options - OuContainerClientBeginDeleteOptions contains the optional parameters for the OuContainerClient.BeginDelete method.
+func (client *OuContainerClient) BeginDelete(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, options *OuContainerClientBeginDeleteOptions) (*runtime.Poller[OuContainerClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, domainServiceName, ouContainerName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[OuContainerClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[OuContainerClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := OuContainerDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("OuContainerClient.Delete", "", resp, client.pl, client.deleteHandleError)
-	if err != nil {
-		return OuContainerDeletePollerResponse{}, err
-	}
-	result.Poller = &OuContainerDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - The Delete OuContainer operation deletes specified OuContainer.
-// If the operation fails it returns the *CloudError error type.
-func (client *OuContainerClient) deleteOperation(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, options *OuContainerBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
+func (client *OuContainerClient) deleteOperation(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, options *OuContainerClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, domainServiceName, ouContainerName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +155,13 @@ func (client *OuContainerClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *OuContainerClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, options *OuContainerBeginDeleteOptions) (*policy.Request, error) {
+func (client *OuContainerClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, options *OuContainerClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Aad/domainServices/{domainServiceName}/ouContainer/{ouContainerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,49 +179,41 @@ func (client *OuContainerClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter ouContainerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ouContainerName}", url.PathEscape(ouContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *OuContainerClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get OuContainer in DomainService instance.
-// If the operation fails it returns the *CloudError error type.
-func (client *OuContainerClient) Get(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, options *OuContainerGetOptions) (OuContainerGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// domainServiceName - The name of the domain service.
+// ouContainerName - The name of the OuContainer.
+// options - OuContainerClientGetOptions contains the optional parameters for the OuContainerClient.Get method.
+func (client *OuContainerClient) Get(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, options *OuContainerClientGetOptions) (OuContainerClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, domainServiceName, ouContainerName, options)
 	if err != nil {
-		return OuContainerGetResponse{}, err
+		return OuContainerClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OuContainerGetResponse{}, err
+		return OuContainerClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OuContainerGetResponse{}, client.getHandleError(resp)
+		return OuContainerClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *OuContainerClient) getCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, options *OuContainerGetOptions) (*policy.Request, error) {
+func (client *OuContainerClient) getCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, options *OuContainerClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Aad/domainServices/{domainServiceName}/ouContainer/{ouContainerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -238,55 +231,62 @@ func (client *OuContainerClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter ouContainerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ouContainerName}", url.PathEscape(ouContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *OuContainerClient) getHandleResponse(resp *http.Response) (OuContainerGetResponse, error) {
-	result := OuContainerGetResponse{RawResponse: resp}
+func (client *OuContainerClient) getHandleResponse(resp *http.Response) (OuContainerClientGetResponse, error) {
+	result := OuContainerClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OuContainer); err != nil {
-		return OuContainerGetResponse{}, runtime.NewResponseError(err, resp)
+		return OuContainerClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *OuContainerClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - The List of OuContainers in DomainService instance.
-// If the operation fails it returns the *CloudError error type.
-func (client *OuContainerClient) List(resourceGroupName string, domainServiceName string, options *OuContainerListOptions) *OuContainerListPager {
-	return &OuContainerListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, domainServiceName, options)
+// NewListPager - The List of OuContainers in DomainService instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// domainServiceName - The name of the domain service.
+// options - OuContainerClientListOptions contains the optional parameters for the OuContainerClient.List method.
+func (client *OuContainerClient) NewListPager(resourceGroupName string, domainServiceName string, options *OuContainerClientListOptions) *runtime.Pager[OuContainerClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[OuContainerClientListResponse]{
+		More: func(page OuContainerClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp OuContainerListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OuContainerListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *OuContainerClientListResponse) (OuContainerClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, domainServiceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return OuContainerClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return OuContainerClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return OuContainerClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *OuContainerClient) listCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, options *OuContainerListOptions) (*policy.Request, error) {
+func (client *OuContainerClient) listCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, options *OuContainerClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Aad/domainServices/{domainServiceName}/ouContainer"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -300,62 +300,50 @@ func (client *OuContainerClient) listCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter domainServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{domainServiceName}", url.PathEscape(domainServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *OuContainerClient) listHandleResponse(resp *http.Response) (OuContainerListResponse, error) {
-	result := OuContainerListResponse{RawResponse: resp}
+func (client *OuContainerClient) listHandleResponse(resp *http.Response) (OuContainerClientListResponse, error) {
+	result := OuContainerClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OuContainerListResult); err != nil {
-		return OuContainerListResponse{}, runtime.NewResponseError(err, resp)
+		return OuContainerClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *OuContainerClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginUpdate - The Update OuContainer operation can be used to update the existing OuContainers.
-// If the operation fails it returns the *CloudError error type.
-func (client *OuContainerClient) BeginUpdate(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerBeginUpdateOptions) (OuContainerUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, domainServiceName, ouContainerName, containerAccount, options)
-	if err != nil {
-		return OuContainerUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// domainServiceName - The name of the domain service.
+// ouContainerName - The name of the OuContainer.
+// containerAccount - Container Account Description.
+// options - OuContainerClientBeginUpdateOptions contains the optional parameters for the OuContainerClient.BeginUpdate method.
+func (client *OuContainerClient) BeginUpdate(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginUpdateOptions) (*runtime.Poller[OuContainerClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, domainServiceName, ouContainerName, containerAccount, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[OuContainerClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[OuContainerClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := OuContainerUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("OuContainerClient.Update", "", resp, client.pl, client.updateHandleError)
-	if err != nil {
-		return OuContainerUpdatePollerResponse{}, err
-	}
-	result.Poller = &OuContainerUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - The Update OuContainer operation can be used to update the existing OuContainers.
-// If the operation fails it returns the *CloudError error type.
-func (client *OuContainerClient) update(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
+func (client *OuContainerClient) update(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, domainServiceName, ouContainerName, containerAccount, options)
 	if err != nil {
 		return nil, err
@@ -365,13 +353,13 @@ func (client *OuContainerClient) update(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *OuContainerClient) updateCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerBeginUpdateOptions) (*policy.Request, error) {
+func (client *OuContainerClient) updateCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Aad/domainServices/{domainServiceName}/ouContainer/{ouContainerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -389,26 +377,13 @@ func (client *OuContainerClient) updateCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter ouContainerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ouContainerName}", url.PathEscape(ouContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, containerAccount)
-}
-
-// updateHandleError handles the Update error response.
-func (client *OuContainerClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

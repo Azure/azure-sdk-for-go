@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,13 +8,17 @@
 
 package armsubscriptions
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-)
+// AvailabilityZonePeers - List of availability zones shared by the subscriptions.
+type AvailabilityZonePeers struct {
+	// Details of shared availability zone.
+	Peers []*Peers `json:"peers,omitempty"`
 
-// CheckResourceNameResult - Resource Name valid if not a reserved word, does not contain a reserved word and does not start with a reserved word
+	// READ-ONLY; The availabilityZone.
+	AvailabilityZone *string `json:"availabilityZone,omitempty" azure:"ro"`
+}
+
+// CheckResourceNameResult - Resource Name valid if not a reserved word, does not contain a reserved word and does not start
+// with a reserved word
 type CheckResourceNameResult struct {
 	// Name of Resource
 	Name *string `json:"name,omitempty"`
@@ -26,32 +30,84 @@ type CheckResourceNameResult struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// CloudError - An error response for a resource management request.
-// Implements the error and azcore.HTTPResponse interfaces.
-type CloudError struct {
-	raw string
-	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData error response
-	// format.)
-	InnerError *ErrorResponse `json:"error,omitempty"`
+// CheckZonePeersRequest - Check zone peers request parameters.
+type CheckZonePeersRequest struct {
+	// The Microsoft location.
+	Location *string `json:"location,omitempty"`
+
+	// The peer Microsoft Azure subscription ID.
+	SubscriptionIDs []*string `json:"subscriptionIds,omitempty"`
 }
 
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+// CheckZonePeersResult - Result of the Check zone peers operation.
+type CheckZonePeersResult struct {
+	// The Availability Zones shared by the subscriptions.
+	AvailabilityZonePeers []*AvailabilityZonePeers `json:"availabilityZonePeers,omitempty"`
+
+	// the location of the subscription.
+	Location *string `json:"location,omitempty"`
+
+	// READ-ONLY; The subscription ID.
+	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
+}
+
+// ClientCheckZonePeersOptions contains the optional parameters for the Client.CheckZonePeers method.
+type ClientCheckZonePeersOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientGetOptions contains the optional parameters for the Client.Get method.
+type ClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientListLocationsOptions contains the optional parameters for the Client.ListLocations method.
+type ClientListLocationsOptions struct {
+	// Whether to include extended locations.
+	IncludeExtendedLocations *bool
+}
+
+// ClientListOptions contains the optional parameters for the Client.List method.
+type ClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CloudError - An error response for a resource management request.
+type CloudError struct {
+	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows
+	// the OData error response format.)
+	Error *ErrorResponse `json:"error,omitempty"`
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.)
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error code.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error message.
+	Message *string `json:"message,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error target.
+	Target *string `json:"target,omitempty" azure:"ro"`
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.)
 type ErrorResponse struct {
 	// READ-ONLY; The error additional info.
 	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
@@ -69,15 +125,11 @@ type ErrorResponse struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponse.
-func (e ErrorResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
+// ErrorResponseAutoGenerated - Common error response for all Azure Resource Manager APIs to return error details for failed
+// operations. (This also follows the OData error response format.).
+type ErrorResponseAutoGenerated struct {
+	// The error object.
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // Location information.
@@ -110,13 +162,6 @@ type LocationListResult struct {
 	Value []*Location `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LocationListResult.
-func (l LocationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
 // LocationMetadata - Location metadata information
 type LocationMetadata struct {
 	// The regions paired to this region.
@@ -142,20 +187,6 @@ type LocationMetadata struct {
 
 	// READ-ONLY; The type of the region.
 	RegionType *RegionType `json:"regionType,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LocationMetadata.
-func (l LocationMetadata) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "geographyGroup", l.GeographyGroup)
-	populate(objectMap, "homeLocation", l.HomeLocation)
-	populate(objectMap, "latitude", l.Latitude)
-	populate(objectMap, "longitude", l.Longitude)
-	populate(objectMap, "pairedRegion", l.PairedRegion)
-	populate(objectMap, "physicalLocation", l.PhysicalLocation)
-	populate(objectMap, "regionCategory", l.RegionCategory)
-	populate(objectMap, "regionType", l.RegionType)
-	return json.Marshal(objectMap)
 }
 
 // ManagedByTenant - Information about a tenant managing the subscription.
@@ -188,22 +219,14 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationListResult - Result of the request to list Microsoft.Resources operations. It contains a list of operations and a URL link to get the next set
-// of results.
+// OperationListResult - Result of the request to list Microsoft.Resources operations. It contains a list of operations and
+// a URL link to get the next set of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// List of Microsoft.Resources operations.
 	Value []*Operation `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // PairedRegion - Information regarding paired region.
@@ -213,6 +236,15 @@ type PairedRegion struct {
 
 	// READ-ONLY; The name of the paired region.
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The subscription ID.
+	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
+}
+
+// Peers - Information about shared availability zone.
+type Peers struct {
+	// READ-ONLY; The availabilityZone.
+	AvailabilityZone *string `json:"availabilityZone,omitempty" azure:"ro"`
 
 	// READ-ONLY; The subscription ID.
 	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
@@ -229,8 +261,8 @@ type ResourceName struct {
 
 // Subscription information.
 type Subscription struct {
-	// The authorization source of the request. Valid values are one or more combinations of Legacy, RoleBased, Bypassed, Direct and Management. For example,
-	// 'Legacy, RoleBased'.
+	// The authorization source of the request. Valid values are one or more combinations of Legacy, RoleBased, Bypassed, Direct
+	// and Management. For example, 'Legacy, RoleBased'.
 	AuthorizationSource *string `json:"authorizationSource,omitempty"`
 
 	// An array containing the tenants managing the subscription.
@@ -258,22 +290,8 @@ type Subscription struct {
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Subscription.
-func (s Subscription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authorizationSource", s.AuthorizationSource)
-	populate(objectMap, "displayName", s.DisplayName)
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "managedByTenants", s.ManagedByTenants)
-	populate(objectMap, "state", s.State)
-	populate(objectMap, "subscriptionId", s.SubscriptionID)
-	populate(objectMap, "subscriptionPolicies", s.SubscriptionPolicies)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "tenantId", s.TenantID)
-	return json.Marshal(objectMap)
-}
-
-// SubscriptionClientCheckResourceNameOptions contains the optional parameters for the SubscriptionClient.CheckResourceName method.
+// SubscriptionClientCheckResourceNameOptions contains the optional parameters for the SubscriptionClient.CheckResourceName
+// method.
 type SubscriptionClientCheckResourceNameOptions struct {
 	// Resource object with values for resource name and resource type
 	ResourceNameDefinition *ResourceName
@@ -288,18 +306,10 @@ type SubscriptionListResult struct {
 	Value []*Subscription `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SubscriptionListResult.
-func (s SubscriptionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SubscriptionPolicies - Subscription policies.
 type SubscriptionPolicies struct {
-	// READ-ONLY; The subscription location placement ID. The ID indicates which regions are visible for a subscription. For example, a subscription with a
-	// location placement Id of Public_2014-09-01 has access to Azure
+	// READ-ONLY; The subscription location placement ID. The ID indicates which regions are visible for a subscription. For example,
+	// a subscription with a location placement Id of Public_2014-09-01 has access to Azure
 	// public regions.
 	LocationPlacementID *string `json:"locationPlacementId,omitempty" azure:"ro"`
 
@@ -308,22 +318,6 @@ type SubscriptionPolicies struct {
 
 	// READ-ONLY; The subscription spending limit.
 	SpendingLimit *SpendingLimit `json:"spendingLimit,omitempty" azure:"ro"`
-}
-
-// SubscriptionsGetOptions contains the optional parameters for the Subscriptions.Get method.
-type SubscriptionsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SubscriptionsListLocationsOptions contains the optional parameters for the Subscriptions.ListLocations method.
-type SubscriptionsListLocationsOptions struct {
-	// Whether to include extended locations.
-	IncludeExtendedLocations *bool
-}
-
-// SubscriptionsListOptions contains the optional parameters for the Subscriptions.List method.
-type SubscriptionsListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // TenantIDDescription - Tenant Id information.
@@ -359,22 +353,6 @@ type TenantIDDescription struct {
 	TenantType *string `json:"tenantType,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TenantIDDescription.
-func (t TenantIDDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "country", t.Country)
-	populate(objectMap, "countryCode", t.CountryCode)
-	populate(objectMap, "defaultDomain", t.DefaultDomain)
-	populate(objectMap, "displayName", t.DisplayName)
-	populate(objectMap, "domains", t.Domains)
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "tenantBrandingLogoUrl", t.TenantBrandingLogoURL)
-	populate(objectMap, "tenantCategory", t.TenantCategory)
-	populate(objectMap, "tenantId", t.TenantID)
-	populate(objectMap, "tenantType", t.TenantType)
-	return json.Marshal(objectMap)
-}
-
 // TenantListResult - Tenant Ids information.
 type TenantListResult struct {
 	// REQUIRED; The URL to use for getting the next set of results.
@@ -384,25 +362,7 @@ type TenantListResult struct {
 	Value []*TenantIDDescription `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TenantListResult.
-func (t TenantListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", t.NextLink)
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
-}
-
-// TenantsListOptions contains the optional parameters for the Tenants.List method.
-type TenantsListOptions struct {
+// TenantsClientListOptions contains the optional parameters for the TenantsClient.List method.
+type TenantsClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
 }

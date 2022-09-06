@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,1334 +8,535 @@
 
 package armlogic
 
-import (
-	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"net/http"
-	"time"
-)
-
-// IntegrationAccountAgreementsCreateOrUpdateResponse contains the response from method IntegrationAccountAgreements.CreateOrUpdate.
-type IntegrationAccountAgreementsCreateOrUpdateResponse struct {
-	IntegrationAccountAgreementsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountAgreementsCreateOrUpdateResult contains the result from method IntegrationAccountAgreements.CreateOrUpdate.
-type IntegrationAccountAgreementsCreateOrUpdateResult struct {
+// IntegrationAccountAgreementsClientCreateOrUpdateResponse contains the response from method IntegrationAccountAgreementsClient.CreateOrUpdate.
+type IntegrationAccountAgreementsClientCreateOrUpdateResponse struct {
 	IntegrationAccountAgreement
 }
 
-// IntegrationAccountAgreementsDeleteResponse contains the response from method IntegrationAccountAgreements.Delete.
-type IntegrationAccountAgreementsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// IntegrationAccountAgreementsClientDeleteResponse contains the response from method IntegrationAccountAgreementsClient.Delete.
+type IntegrationAccountAgreementsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// IntegrationAccountAgreementsGetResponse contains the response from method IntegrationAccountAgreements.Get.
-type IntegrationAccountAgreementsGetResponse struct {
-	IntegrationAccountAgreementsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountAgreementsGetResult contains the result from method IntegrationAccountAgreements.Get.
-type IntegrationAccountAgreementsGetResult struct {
+// IntegrationAccountAgreementsClientGetResponse contains the response from method IntegrationAccountAgreementsClient.Get.
+type IntegrationAccountAgreementsClientGetResponse struct {
 	IntegrationAccountAgreement
 }
 
-// IntegrationAccountAgreementsListContentCallbackURLResponse contains the response from method IntegrationAccountAgreements.ListContentCallbackURL.
-type IntegrationAccountAgreementsListContentCallbackURLResponse struct {
-	IntegrationAccountAgreementsListContentCallbackURLResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountAgreementsListContentCallbackURLResult contains the result from method IntegrationAccountAgreements.ListContentCallbackURL.
-type IntegrationAccountAgreementsListContentCallbackURLResult struct {
+// IntegrationAccountAgreementsClientListContentCallbackURLResponse contains the response from method IntegrationAccountAgreementsClient.ListContentCallbackURL.
+type IntegrationAccountAgreementsClientListContentCallbackURLResponse struct {
 	WorkflowTriggerCallbackURL
 }
 
-// IntegrationAccountAgreementsListResponse contains the response from method IntegrationAccountAgreements.List.
-type IntegrationAccountAgreementsListResponse struct {
-	IntegrationAccountAgreementsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountAgreementsListResult contains the result from method IntegrationAccountAgreements.List.
-type IntegrationAccountAgreementsListResult struct {
+// IntegrationAccountAgreementsClientListResponse contains the response from method IntegrationAccountAgreementsClient.List.
+type IntegrationAccountAgreementsClientListResponse struct {
 	IntegrationAccountAgreementListResult
 }
 
-// IntegrationAccountAssembliesCreateOrUpdateResponse contains the response from method IntegrationAccountAssemblies.CreateOrUpdate.
-type IntegrationAccountAssembliesCreateOrUpdateResponse struct {
-	IntegrationAccountAssembliesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountAssembliesCreateOrUpdateResult contains the result from method IntegrationAccountAssemblies.CreateOrUpdate.
-type IntegrationAccountAssembliesCreateOrUpdateResult struct {
+// IntegrationAccountAssembliesClientCreateOrUpdateResponse contains the response from method IntegrationAccountAssembliesClient.CreateOrUpdate.
+type IntegrationAccountAssembliesClientCreateOrUpdateResponse struct {
 	AssemblyDefinition
 }
 
-// IntegrationAccountAssembliesDeleteResponse contains the response from method IntegrationAccountAssemblies.Delete.
-type IntegrationAccountAssembliesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// IntegrationAccountAssembliesClientDeleteResponse contains the response from method IntegrationAccountAssembliesClient.Delete.
+type IntegrationAccountAssembliesClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// IntegrationAccountAssembliesGetResponse contains the response from method IntegrationAccountAssemblies.Get.
-type IntegrationAccountAssembliesGetResponse struct {
-	IntegrationAccountAssembliesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountAssembliesGetResult contains the result from method IntegrationAccountAssemblies.Get.
-type IntegrationAccountAssembliesGetResult struct {
+// IntegrationAccountAssembliesClientGetResponse contains the response from method IntegrationAccountAssembliesClient.Get.
+type IntegrationAccountAssembliesClientGetResponse struct {
 	AssemblyDefinition
 }
 
-// IntegrationAccountAssembliesListContentCallbackURLResponse contains the response from method IntegrationAccountAssemblies.ListContentCallbackURL.
-type IntegrationAccountAssembliesListContentCallbackURLResponse struct {
-	IntegrationAccountAssembliesListContentCallbackURLResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountAssembliesListContentCallbackURLResult contains the result from method IntegrationAccountAssemblies.ListContentCallbackURL.
-type IntegrationAccountAssembliesListContentCallbackURLResult struct {
+// IntegrationAccountAssembliesClientListContentCallbackURLResponse contains the response from method IntegrationAccountAssembliesClient.ListContentCallbackURL.
+type IntegrationAccountAssembliesClientListContentCallbackURLResponse struct {
 	WorkflowTriggerCallbackURL
 }
 
-// IntegrationAccountAssembliesListResponse contains the response from method IntegrationAccountAssemblies.List.
-type IntegrationAccountAssembliesListResponse struct {
-	IntegrationAccountAssembliesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountAssembliesListResult contains the result from method IntegrationAccountAssemblies.List.
-type IntegrationAccountAssembliesListResult struct {
+// IntegrationAccountAssembliesClientListResponse contains the response from method IntegrationAccountAssembliesClient.List.
+type IntegrationAccountAssembliesClientListResponse struct {
 	AssemblyCollection
 }
 
-// IntegrationAccountBatchConfigurationsCreateOrUpdateResponse contains the response from method IntegrationAccountBatchConfigurations.CreateOrUpdate.
-type IntegrationAccountBatchConfigurationsCreateOrUpdateResponse struct {
-	IntegrationAccountBatchConfigurationsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountBatchConfigurationsCreateOrUpdateResult contains the result from method IntegrationAccountBatchConfigurations.CreateOrUpdate.
-type IntegrationAccountBatchConfigurationsCreateOrUpdateResult struct {
+// IntegrationAccountBatchConfigurationsClientCreateOrUpdateResponse contains the response from method IntegrationAccountBatchConfigurationsClient.CreateOrUpdate.
+type IntegrationAccountBatchConfigurationsClientCreateOrUpdateResponse struct {
 	BatchConfiguration
 }
 
-// IntegrationAccountBatchConfigurationsDeleteResponse contains the response from method IntegrationAccountBatchConfigurations.Delete.
-type IntegrationAccountBatchConfigurationsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// IntegrationAccountBatchConfigurationsClientDeleteResponse contains the response from method IntegrationAccountBatchConfigurationsClient.Delete.
+type IntegrationAccountBatchConfigurationsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// IntegrationAccountBatchConfigurationsGetResponse contains the response from method IntegrationAccountBatchConfigurations.Get.
-type IntegrationAccountBatchConfigurationsGetResponse struct {
-	IntegrationAccountBatchConfigurationsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountBatchConfigurationsGetResult contains the result from method IntegrationAccountBatchConfigurations.Get.
-type IntegrationAccountBatchConfigurationsGetResult struct {
+// IntegrationAccountBatchConfigurationsClientGetResponse contains the response from method IntegrationAccountBatchConfigurationsClient.Get.
+type IntegrationAccountBatchConfigurationsClientGetResponse struct {
 	BatchConfiguration
 }
 
-// IntegrationAccountBatchConfigurationsListResponse contains the response from method IntegrationAccountBatchConfigurations.List.
-type IntegrationAccountBatchConfigurationsListResponse struct {
-	IntegrationAccountBatchConfigurationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountBatchConfigurationsListResult contains the result from method IntegrationAccountBatchConfigurations.List.
-type IntegrationAccountBatchConfigurationsListResult struct {
+// IntegrationAccountBatchConfigurationsClientListResponse contains the response from method IntegrationAccountBatchConfigurationsClient.List.
+type IntegrationAccountBatchConfigurationsClientListResponse struct {
 	BatchConfigurationCollection
 }
 
-// IntegrationAccountCertificatesCreateOrUpdateResponse contains the response from method IntegrationAccountCertificates.CreateOrUpdate.
-type IntegrationAccountCertificatesCreateOrUpdateResponse struct {
-	IntegrationAccountCertificatesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountCertificatesCreateOrUpdateResult contains the result from method IntegrationAccountCertificates.CreateOrUpdate.
-type IntegrationAccountCertificatesCreateOrUpdateResult struct {
+// IntegrationAccountCertificatesClientCreateOrUpdateResponse contains the response from method IntegrationAccountCertificatesClient.CreateOrUpdate.
+type IntegrationAccountCertificatesClientCreateOrUpdateResponse struct {
 	IntegrationAccountCertificate
 }
 
-// IntegrationAccountCertificatesDeleteResponse contains the response from method IntegrationAccountCertificates.Delete.
-type IntegrationAccountCertificatesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// IntegrationAccountCertificatesClientDeleteResponse contains the response from method IntegrationAccountCertificatesClient.Delete.
+type IntegrationAccountCertificatesClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// IntegrationAccountCertificatesGetResponse contains the response from method IntegrationAccountCertificates.Get.
-type IntegrationAccountCertificatesGetResponse struct {
-	IntegrationAccountCertificatesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountCertificatesGetResult contains the result from method IntegrationAccountCertificates.Get.
-type IntegrationAccountCertificatesGetResult struct {
+// IntegrationAccountCertificatesClientGetResponse contains the response from method IntegrationAccountCertificatesClient.Get.
+type IntegrationAccountCertificatesClientGetResponse struct {
 	IntegrationAccountCertificate
 }
 
-// IntegrationAccountCertificatesListResponse contains the response from method IntegrationAccountCertificates.List.
-type IntegrationAccountCertificatesListResponse struct {
-	IntegrationAccountCertificatesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountCertificatesListResult contains the result from method IntegrationAccountCertificates.List.
-type IntegrationAccountCertificatesListResult struct {
+// IntegrationAccountCertificatesClientListResponse contains the response from method IntegrationAccountCertificatesClient.List.
+type IntegrationAccountCertificatesClientListResponse struct {
 	IntegrationAccountCertificateListResult
 }
 
-// IntegrationAccountMapsCreateOrUpdateResponse contains the response from method IntegrationAccountMaps.CreateOrUpdate.
-type IntegrationAccountMapsCreateOrUpdateResponse struct {
-	IntegrationAccountMapsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountMapsCreateOrUpdateResult contains the result from method IntegrationAccountMaps.CreateOrUpdate.
-type IntegrationAccountMapsCreateOrUpdateResult struct {
+// IntegrationAccountMapsClientCreateOrUpdateResponse contains the response from method IntegrationAccountMapsClient.CreateOrUpdate.
+type IntegrationAccountMapsClientCreateOrUpdateResponse struct {
 	IntegrationAccountMap
 }
 
-// IntegrationAccountMapsDeleteResponse contains the response from method IntegrationAccountMaps.Delete.
-type IntegrationAccountMapsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// IntegrationAccountMapsClientDeleteResponse contains the response from method IntegrationAccountMapsClient.Delete.
+type IntegrationAccountMapsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// IntegrationAccountMapsGetResponse contains the response from method IntegrationAccountMaps.Get.
-type IntegrationAccountMapsGetResponse struct {
-	IntegrationAccountMapsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountMapsGetResult contains the result from method IntegrationAccountMaps.Get.
-type IntegrationAccountMapsGetResult struct {
+// IntegrationAccountMapsClientGetResponse contains the response from method IntegrationAccountMapsClient.Get.
+type IntegrationAccountMapsClientGetResponse struct {
 	IntegrationAccountMap
 }
 
-// IntegrationAccountMapsListContentCallbackURLResponse contains the response from method IntegrationAccountMaps.ListContentCallbackURL.
-type IntegrationAccountMapsListContentCallbackURLResponse struct {
-	IntegrationAccountMapsListContentCallbackURLResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountMapsListContentCallbackURLResult contains the result from method IntegrationAccountMaps.ListContentCallbackURL.
-type IntegrationAccountMapsListContentCallbackURLResult struct {
+// IntegrationAccountMapsClientListContentCallbackURLResponse contains the response from method IntegrationAccountMapsClient.ListContentCallbackURL.
+type IntegrationAccountMapsClientListContentCallbackURLResponse struct {
 	WorkflowTriggerCallbackURL
 }
 
-// IntegrationAccountMapsListResponse contains the response from method IntegrationAccountMaps.List.
-type IntegrationAccountMapsListResponse struct {
-	IntegrationAccountMapsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountMapsListResult contains the result from method IntegrationAccountMaps.List.
-type IntegrationAccountMapsListResult struct {
+// IntegrationAccountMapsClientListResponse contains the response from method IntegrationAccountMapsClient.List.
+type IntegrationAccountMapsClientListResponse struct {
 	IntegrationAccountMapListResult
 }
 
-// IntegrationAccountPartnersCreateOrUpdateResponse contains the response from method IntegrationAccountPartners.CreateOrUpdate.
-type IntegrationAccountPartnersCreateOrUpdateResponse struct {
-	IntegrationAccountPartnersCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountPartnersCreateOrUpdateResult contains the result from method IntegrationAccountPartners.CreateOrUpdate.
-type IntegrationAccountPartnersCreateOrUpdateResult struct {
+// IntegrationAccountPartnersClientCreateOrUpdateResponse contains the response from method IntegrationAccountPartnersClient.CreateOrUpdate.
+type IntegrationAccountPartnersClientCreateOrUpdateResponse struct {
 	IntegrationAccountPartner
 }
 
-// IntegrationAccountPartnersDeleteResponse contains the response from method IntegrationAccountPartners.Delete.
-type IntegrationAccountPartnersDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// IntegrationAccountPartnersClientDeleteResponse contains the response from method IntegrationAccountPartnersClient.Delete.
+type IntegrationAccountPartnersClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// IntegrationAccountPartnersGetResponse contains the response from method IntegrationAccountPartners.Get.
-type IntegrationAccountPartnersGetResponse struct {
-	IntegrationAccountPartnersGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountPartnersGetResult contains the result from method IntegrationAccountPartners.Get.
-type IntegrationAccountPartnersGetResult struct {
+// IntegrationAccountPartnersClientGetResponse contains the response from method IntegrationAccountPartnersClient.Get.
+type IntegrationAccountPartnersClientGetResponse struct {
 	IntegrationAccountPartner
 }
 
-// IntegrationAccountPartnersListContentCallbackURLResponse contains the response from method IntegrationAccountPartners.ListContentCallbackURL.
-type IntegrationAccountPartnersListContentCallbackURLResponse struct {
-	IntegrationAccountPartnersListContentCallbackURLResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountPartnersListContentCallbackURLResult contains the result from method IntegrationAccountPartners.ListContentCallbackURL.
-type IntegrationAccountPartnersListContentCallbackURLResult struct {
+// IntegrationAccountPartnersClientListContentCallbackURLResponse contains the response from method IntegrationAccountPartnersClient.ListContentCallbackURL.
+type IntegrationAccountPartnersClientListContentCallbackURLResponse struct {
 	WorkflowTriggerCallbackURL
 }
 
-// IntegrationAccountPartnersListResponse contains the response from method IntegrationAccountPartners.List.
-type IntegrationAccountPartnersListResponse struct {
-	IntegrationAccountPartnersListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountPartnersListResult contains the result from method IntegrationAccountPartners.List.
-type IntegrationAccountPartnersListResult struct {
+// IntegrationAccountPartnersClientListResponse contains the response from method IntegrationAccountPartnersClient.List.
+type IntegrationAccountPartnersClientListResponse struct {
 	IntegrationAccountPartnerListResult
 }
 
-// IntegrationAccountSchemasCreateOrUpdateResponse contains the response from method IntegrationAccountSchemas.CreateOrUpdate.
-type IntegrationAccountSchemasCreateOrUpdateResponse struct {
-	IntegrationAccountSchemasCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountSchemasCreateOrUpdateResult contains the result from method IntegrationAccountSchemas.CreateOrUpdate.
-type IntegrationAccountSchemasCreateOrUpdateResult struct {
+// IntegrationAccountSchemasClientCreateOrUpdateResponse contains the response from method IntegrationAccountSchemasClient.CreateOrUpdate.
+type IntegrationAccountSchemasClientCreateOrUpdateResponse struct {
 	IntegrationAccountSchema
 }
 
-// IntegrationAccountSchemasDeleteResponse contains the response from method IntegrationAccountSchemas.Delete.
-type IntegrationAccountSchemasDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// IntegrationAccountSchemasClientDeleteResponse contains the response from method IntegrationAccountSchemasClient.Delete.
+type IntegrationAccountSchemasClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// IntegrationAccountSchemasGetResponse contains the response from method IntegrationAccountSchemas.Get.
-type IntegrationAccountSchemasGetResponse struct {
-	IntegrationAccountSchemasGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountSchemasGetResult contains the result from method IntegrationAccountSchemas.Get.
-type IntegrationAccountSchemasGetResult struct {
+// IntegrationAccountSchemasClientGetResponse contains the response from method IntegrationAccountSchemasClient.Get.
+type IntegrationAccountSchemasClientGetResponse struct {
 	IntegrationAccountSchema
 }
 
-// IntegrationAccountSchemasListContentCallbackURLResponse contains the response from method IntegrationAccountSchemas.ListContentCallbackURL.
-type IntegrationAccountSchemasListContentCallbackURLResponse struct {
-	IntegrationAccountSchemasListContentCallbackURLResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountSchemasListContentCallbackURLResult contains the result from method IntegrationAccountSchemas.ListContentCallbackURL.
-type IntegrationAccountSchemasListContentCallbackURLResult struct {
+// IntegrationAccountSchemasClientListContentCallbackURLResponse contains the response from method IntegrationAccountSchemasClient.ListContentCallbackURL.
+type IntegrationAccountSchemasClientListContentCallbackURLResponse struct {
 	WorkflowTriggerCallbackURL
 }
 
-// IntegrationAccountSchemasListResponse contains the response from method IntegrationAccountSchemas.List.
-type IntegrationAccountSchemasListResponse struct {
-	IntegrationAccountSchemasListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountSchemasListResult contains the result from method IntegrationAccountSchemas.List.
-type IntegrationAccountSchemasListResult struct {
+// IntegrationAccountSchemasClientListResponse contains the response from method IntegrationAccountSchemasClient.List.
+type IntegrationAccountSchemasClientListResponse struct {
 	IntegrationAccountSchemaListResult
 }
 
-// IntegrationAccountSessionsCreateOrUpdateResponse contains the response from method IntegrationAccountSessions.CreateOrUpdate.
-type IntegrationAccountSessionsCreateOrUpdateResponse struct {
-	IntegrationAccountSessionsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountSessionsCreateOrUpdateResult contains the result from method IntegrationAccountSessions.CreateOrUpdate.
-type IntegrationAccountSessionsCreateOrUpdateResult struct {
+// IntegrationAccountSessionsClientCreateOrUpdateResponse contains the response from method IntegrationAccountSessionsClient.CreateOrUpdate.
+type IntegrationAccountSessionsClientCreateOrUpdateResponse struct {
 	IntegrationAccountSession
 }
 
-// IntegrationAccountSessionsDeleteResponse contains the response from method IntegrationAccountSessions.Delete.
-type IntegrationAccountSessionsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// IntegrationAccountSessionsClientDeleteResponse contains the response from method IntegrationAccountSessionsClient.Delete.
+type IntegrationAccountSessionsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// IntegrationAccountSessionsGetResponse contains the response from method IntegrationAccountSessions.Get.
-type IntegrationAccountSessionsGetResponse struct {
-	IntegrationAccountSessionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountSessionsGetResult contains the result from method IntegrationAccountSessions.Get.
-type IntegrationAccountSessionsGetResult struct {
+// IntegrationAccountSessionsClientGetResponse contains the response from method IntegrationAccountSessionsClient.Get.
+type IntegrationAccountSessionsClientGetResponse struct {
 	IntegrationAccountSession
 }
 
-// IntegrationAccountSessionsListResponse contains the response from method IntegrationAccountSessions.List.
-type IntegrationAccountSessionsListResponse struct {
-	IntegrationAccountSessionsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountSessionsListResult contains the result from method IntegrationAccountSessions.List.
-type IntegrationAccountSessionsListResult struct {
+// IntegrationAccountSessionsClientListResponse contains the response from method IntegrationAccountSessionsClient.List.
+type IntegrationAccountSessionsClientListResponse struct {
 	IntegrationAccountSessionListResult
 }
 
-// IntegrationAccountsCreateOrUpdateResponse contains the response from method IntegrationAccounts.CreateOrUpdate.
-type IntegrationAccountsCreateOrUpdateResponse struct {
-	IntegrationAccountsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountsCreateOrUpdateResult contains the result from method IntegrationAccounts.CreateOrUpdate.
-type IntegrationAccountsCreateOrUpdateResult struct {
+// IntegrationAccountsClientCreateOrUpdateResponse contains the response from method IntegrationAccountsClient.CreateOrUpdate.
+type IntegrationAccountsClientCreateOrUpdateResponse struct {
 	IntegrationAccount
 }
 
-// IntegrationAccountsDeleteResponse contains the response from method IntegrationAccounts.Delete.
-type IntegrationAccountsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// IntegrationAccountsClientDeleteResponse contains the response from method IntegrationAccountsClient.Delete.
+type IntegrationAccountsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// IntegrationAccountsGetResponse contains the response from method IntegrationAccounts.Get.
-type IntegrationAccountsGetResponse struct {
-	IntegrationAccountsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountsGetResult contains the result from method IntegrationAccounts.Get.
-type IntegrationAccountsGetResult struct {
+// IntegrationAccountsClientGetResponse contains the response from method IntegrationAccountsClient.Get.
+type IntegrationAccountsClientGetResponse struct {
 	IntegrationAccount
 }
 
-// IntegrationAccountsListByResourceGroupResponse contains the response from method IntegrationAccounts.ListByResourceGroup.
-type IntegrationAccountsListByResourceGroupResponse struct {
-	IntegrationAccountsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountsListByResourceGroupResult contains the result from method IntegrationAccounts.ListByResourceGroup.
-type IntegrationAccountsListByResourceGroupResult struct {
+// IntegrationAccountsClientListByResourceGroupResponse contains the response from method IntegrationAccountsClient.ListByResourceGroup.
+type IntegrationAccountsClientListByResourceGroupResponse struct {
 	IntegrationAccountListResult
 }
 
-// IntegrationAccountsListBySubscriptionResponse contains the response from method IntegrationAccounts.ListBySubscription.
-type IntegrationAccountsListBySubscriptionResponse struct {
-	IntegrationAccountsListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountsListBySubscriptionResult contains the result from method IntegrationAccounts.ListBySubscription.
-type IntegrationAccountsListBySubscriptionResult struct {
+// IntegrationAccountsClientListBySubscriptionResponse contains the response from method IntegrationAccountsClient.ListBySubscription.
+type IntegrationAccountsClientListBySubscriptionResponse struct {
 	IntegrationAccountListResult
 }
 
-// IntegrationAccountsListCallbackURLResponse contains the response from method IntegrationAccounts.ListCallbackURL.
-type IntegrationAccountsListCallbackURLResponse struct {
-	IntegrationAccountsListCallbackURLResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountsListCallbackURLResult contains the result from method IntegrationAccounts.ListCallbackURL.
-type IntegrationAccountsListCallbackURLResult struct {
+// IntegrationAccountsClientListCallbackURLResponse contains the response from method IntegrationAccountsClient.ListCallbackURL.
+type IntegrationAccountsClientListCallbackURLResponse struct {
 	CallbackURL
 }
 
-// IntegrationAccountsListKeyVaultKeysResponse contains the response from method IntegrationAccounts.ListKeyVaultKeys.
-type IntegrationAccountsListKeyVaultKeysResponse struct {
-	IntegrationAccountsListKeyVaultKeysResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountsListKeyVaultKeysResult contains the result from method IntegrationAccounts.ListKeyVaultKeys.
-type IntegrationAccountsListKeyVaultKeysResult struct {
+// IntegrationAccountsClientListKeyVaultKeysResponse contains the response from method IntegrationAccountsClient.ListKeyVaultKeys.
+type IntegrationAccountsClientListKeyVaultKeysResponse struct {
 	KeyVaultKeyCollection
 }
 
-// IntegrationAccountsLogTrackingEventsResponse contains the response from method IntegrationAccounts.LogTrackingEvents.
-type IntegrationAccountsLogTrackingEventsResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// IntegrationAccountsClientLogTrackingEventsResponse contains the response from method IntegrationAccountsClient.LogTrackingEvents.
+type IntegrationAccountsClientLogTrackingEventsResponse struct {
+	// placeholder for future response values
 }
 
-// IntegrationAccountsRegenerateAccessKeyResponse contains the response from method IntegrationAccounts.RegenerateAccessKey.
-type IntegrationAccountsRegenerateAccessKeyResponse struct {
-	IntegrationAccountsRegenerateAccessKeyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountsRegenerateAccessKeyResult contains the result from method IntegrationAccounts.RegenerateAccessKey.
-type IntegrationAccountsRegenerateAccessKeyResult struct {
+// IntegrationAccountsClientRegenerateAccessKeyResponse contains the response from method IntegrationAccountsClient.RegenerateAccessKey.
+type IntegrationAccountsClientRegenerateAccessKeyResponse struct {
 	IntegrationAccount
 }
 
-// IntegrationAccountsUpdateResponse contains the response from method IntegrationAccounts.Update.
-type IntegrationAccountsUpdateResponse struct {
-	IntegrationAccountsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationAccountsUpdateResult contains the result from method IntegrationAccounts.Update.
-type IntegrationAccountsUpdateResult struct {
+// IntegrationAccountsClientUpdateResponse contains the response from method IntegrationAccountsClient.Update.
+type IntegrationAccountsClientUpdateResponse struct {
 	IntegrationAccount
 }
 
-// IntegrationServiceEnvironmentManagedAPIOperationsListResponse contains the response from method IntegrationServiceEnvironmentManagedAPIOperations.List.
-type IntegrationServiceEnvironmentManagedAPIOperationsListResponse struct {
-	IntegrationServiceEnvironmentManagedAPIOperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationServiceEnvironmentManagedAPIOperationsListResult contains the result from method IntegrationServiceEnvironmentManagedAPIOperations.List.
-type IntegrationServiceEnvironmentManagedAPIOperationsListResult struct {
+// IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse contains the response from method IntegrationServiceEnvironmentManagedAPIOperationsClient.List.
+type IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse struct {
 	APIOperationListResult
 }
 
-// IntegrationServiceEnvironmentManagedApisDeletePollerResponse contains the response from method IntegrationServiceEnvironmentManagedApis.Delete.
-type IntegrationServiceEnvironmentManagedApisDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *IntegrationServiceEnvironmentManagedApisDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// IntegrationServiceEnvironmentManagedApisClientDeleteResponse contains the response from method IntegrationServiceEnvironmentManagedApisClient.Delete.
+type IntegrationServiceEnvironmentManagedApisClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l IntegrationServiceEnvironmentManagedApisDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IntegrationServiceEnvironmentManagedApisDeleteResponse, error) {
-	respType := IntegrationServiceEnvironmentManagedApisDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a IntegrationServiceEnvironmentManagedApisDeletePollerResponse from the provided client and resume token.
-func (l *IntegrationServiceEnvironmentManagedApisDeletePollerResponse) Resume(ctx context.Context, client *IntegrationServiceEnvironmentManagedApisClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("IntegrationServiceEnvironmentManagedApisClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &IntegrationServiceEnvironmentManagedApisDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// IntegrationServiceEnvironmentManagedApisDeleteResponse contains the response from method IntegrationServiceEnvironmentManagedApis.Delete.
-type IntegrationServiceEnvironmentManagedApisDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationServiceEnvironmentManagedApisGetResponse contains the response from method IntegrationServiceEnvironmentManagedApis.Get.
-type IntegrationServiceEnvironmentManagedApisGetResponse struct {
-	IntegrationServiceEnvironmentManagedApisGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationServiceEnvironmentManagedApisGetResult contains the result from method IntegrationServiceEnvironmentManagedApis.Get.
-type IntegrationServiceEnvironmentManagedApisGetResult struct {
+// IntegrationServiceEnvironmentManagedApisClientGetResponse contains the response from method IntegrationServiceEnvironmentManagedApisClient.Get.
+type IntegrationServiceEnvironmentManagedApisClientGetResponse struct {
 	IntegrationServiceEnvironmentManagedAPI
 }
 
-// IntegrationServiceEnvironmentManagedApisListResponse contains the response from method IntegrationServiceEnvironmentManagedApis.List.
-type IntegrationServiceEnvironmentManagedApisListResponse struct {
-	IntegrationServiceEnvironmentManagedApisListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationServiceEnvironmentManagedApisListResult contains the result from method IntegrationServiceEnvironmentManagedApis.List.
-type IntegrationServiceEnvironmentManagedApisListResult struct {
+// IntegrationServiceEnvironmentManagedApisClientListResponse contains the response from method IntegrationServiceEnvironmentManagedApisClient.List.
+type IntegrationServiceEnvironmentManagedApisClientListResponse struct {
 	IntegrationServiceEnvironmentManagedAPIListResult
 }
 
-// IntegrationServiceEnvironmentManagedApisPutPollerResponse contains the response from method IntegrationServiceEnvironmentManagedApis.Put.
-type IntegrationServiceEnvironmentManagedApisPutPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *IntegrationServiceEnvironmentManagedApisPutPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l IntegrationServiceEnvironmentManagedApisPutPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IntegrationServiceEnvironmentManagedApisPutResponse, error) {
-	respType := IntegrationServiceEnvironmentManagedApisPutResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.IntegrationServiceEnvironmentManagedAPI)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a IntegrationServiceEnvironmentManagedApisPutPollerResponse from the provided client and resume token.
-func (l *IntegrationServiceEnvironmentManagedApisPutPollerResponse) Resume(ctx context.Context, client *IntegrationServiceEnvironmentManagedApisClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("IntegrationServiceEnvironmentManagedApisClient.Put", token, client.pl, client.putHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &IntegrationServiceEnvironmentManagedApisPutPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// IntegrationServiceEnvironmentManagedApisPutResponse contains the response from method IntegrationServiceEnvironmentManagedApis.Put.
-type IntegrationServiceEnvironmentManagedApisPutResponse struct {
-	IntegrationServiceEnvironmentManagedApisPutResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationServiceEnvironmentManagedApisPutResult contains the result from method IntegrationServiceEnvironmentManagedApis.Put.
-type IntegrationServiceEnvironmentManagedApisPutResult struct {
+// IntegrationServiceEnvironmentManagedApisClientPutResponse contains the response from method IntegrationServiceEnvironmentManagedApisClient.Put.
+type IntegrationServiceEnvironmentManagedApisClientPutResponse struct {
 	IntegrationServiceEnvironmentManagedAPI
 }
 
-// IntegrationServiceEnvironmentNetworkHealthGetResponse contains the response from method IntegrationServiceEnvironmentNetworkHealth.Get.
-type IntegrationServiceEnvironmentNetworkHealthGetResponse struct {
-	IntegrationServiceEnvironmentNetworkHealthGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationServiceEnvironmentNetworkHealthGetResult contains the result from method IntegrationServiceEnvironmentNetworkHealth.Get.
-type IntegrationServiceEnvironmentNetworkHealthGetResult struct {
+// IntegrationServiceEnvironmentNetworkHealthClientGetResponse contains the response from method IntegrationServiceEnvironmentNetworkHealthClient.Get.
+type IntegrationServiceEnvironmentNetworkHealthClientGetResponse struct {
 	// The integration service environment network health of all the subnets.
 	Value map[string]*IntegrationServiceEnvironmentSubnetNetworkHealth
 }
 
-// IntegrationServiceEnvironmentSKUsListResponse contains the response from method IntegrationServiceEnvironmentSKUs.List.
-type IntegrationServiceEnvironmentSKUsListResponse struct {
-	IntegrationServiceEnvironmentSKUsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationServiceEnvironmentSKUsListResult contains the result from method IntegrationServiceEnvironmentSKUs.List.
-type IntegrationServiceEnvironmentSKUsListResult struct {
+// IntegrationServiceEnvironmentSKUsClientListResponse contains the response from method IntegrationServiceEnvironmentSKUsClient.List.
+type IntegrationServiceEnvironmentSKUsClientListResponse struct {
 	IntegrationServiceEnvironmentSKUList
 }
 
-// IntegrationServiceEnvironmentsCreateOrUpdatePollerResponse contains the response from method IntegrationServiceEnvironments.CreateOrUpdate.
-type IntegrationServiceEnvironmentsCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *IntegrationServiceEnvironmentsCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l IntegrationServiceEnvironmentsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IntegrationServiceEnvironmentsCreateOrUpdateResponse, error) {
-	respType := IntegrationServiceEnvironmentsCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.IntegrationServiceEnvironment)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a IntegrationServiceEnvironmentsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *IntegrationServiceEnvironmentsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *IntegrationServiceEnvironmentsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("IntegrationServiceEnvironmentsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &IntegrationServiceEnvironmentsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// IntegrationServiceEnvironmentsCreateOrUpdateResponse contains the response from method IntegrationServiceEnvironments.CreateOrUpdate.
-type IntegrationServiceEnvironmentsCreateOrUpdateResponse struct {
-	IntegrationServiceEnvironmentsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationServiceEnvironmentsCreateOrUpdateResult contains the result from method IntegrationServiceEnvironments.CreateOrUpdate.
-type IntegrationServiceEnvironmentsCreateOrUpdateResult struct {
+// IntegrationServiceEnvironmentsClientCreateOrUpdateResponse contains the response from method IntegrationServiceEnvironmentsClient.CreateOrUpdate.
+type IntegrationServiceEnvironmentsClientCreateOrUpdateResponse struct {
 	IntegrationServiceEnvironment
 }
 
-// IntegrationServiceEnvironmentsDeleteResponse contains the response from method IntegrationServiceEnvironments.Delete.
-type IntegrationServiceEnvironmentsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// IntegrationServiceEnvironmentsClientDeleteResponse contains the response from method IntegrationServiceEnvironmentsClient.Delete.
+type IntegrationServiceEnvironmentsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// IntegrationServiceEnvironmentsGetResponse contains the response from method IntegrationServiceEnvironments.Get.
-type IntegrationServiceEnvironmentsGetResponse struct {
-	IntegrationServiceEnvironmentsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationServiceEnvironmentsGetResult contains the result from method IntegrationServiceEnvironments.Get.
-type IntegrationServiceEnvironmentsGetResult struct {
+// IntegrationServiceEnvironmentsClientGetResponse contains the response from method IntegrationServiceEnvironmentsClient.Get.
+type IntegrationServiceEnvironmentsClientGetResponse struct {
 	IntegrationServiceEnvironment
 }
 
-// IntegrationServiceEnvironmentsListByResourceGroupResponse contains the response from method IntegrationServiceEnvironments.ListByResourceGroup.
-type IntegrationServiceEnvironmentsListByResourceGroupResponse struct {
-	IntegrationServiceEnvironmentsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationServiceEnvironmentsListByResourceGroupResult contains the result from method IntegrationServiceEnvironments.ListByResourceGroup.
-type IntegrationServiceEnvironmentsListByResourceGroupResult struct {
+// IntegrationServiceEnvironmentsClientListByResourceGroupResponse contains the response from method IntegrationServiceEnvironmentsClient.ListByResourceGroup.
+type IntegrationServiceEnvironmentsClientListByResourceGroupResponse struct {
 	IntegrationServiceEnvironmentListResult
 }
 
-// IntegrationServiceEnvironmentsListBySubscriptionResponse contains the response from method IntegrationServiceEnvironments.ListBySubscription.
-type IntegrationServiceEnvironmentsListBySubscriptionResponse struct {
-	IntegrationServiceEnvironmentsListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationServiceEnvironmentsListBySubscriptionResult contains the result from method IntegrationServiceEnvironments.ListBySubscription.
-type IntegrationServiceEnvironmentsListBySubscriptionResult struct {
+// IntegrationServiceEnvironmentsClientListBySubscriptionResponse contains the response from method IntegrationServiceEnvironmentsClient.ListBySubscription.
+type IntegrationServiceEnvironmentsClientListBySubscriptionResponse struct {
 	IntegrationServiceEnvironmentListResult
 }
 
-// IntegrationServiceEnvironmentsRestartResponse contains the response from method IntegrationServiceEnvironments.Restart.
-type IntegrationServiceEnvironmentsRestartResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// IntegrationServiceEnvironmentsClientRestartResponse contains the response from method IntegrationServiceEnvironmentsClient.Restart.
+type IntegrationServiceEnvironmentsClientRestartResponse struct {
+	// placeholder for future response values
 }
 
-// IntegrationServiceEnvironmentsUpdatePollerResponse contains the response from method IntegrationServiceEnvironments.Update.
-type IntegrationServiceEnvironmentsUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *IntegrationServiceEnvironmentsUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l IntegrationServiceEnvironmentsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (IntegrationServiceEnvironmentsUpdateResponse, error) {
-	respType := IntegrationServiceEnvironmentsUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.IntegrationServiceEnvironment)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a IntegrationServiceEnvironmentsUpdatePollerResponse from the provided client and resume token.
-func (l *IntegrationServiceEnvironmentsUpdatePollerResponse) Resume(ctx context.Context, client *IntegrationServiceEnvironmentsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("IntegrationServiceEnvironmentsClient.Update", token, client.pl, client.updateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &IntegrationServiceEnvironmentsUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// IntegrationServiceEnvironmentsUpdateResponse contains the response from method IntegrationServiceEnvironments.Update.
-type IntegrationServiceEnvironmentsUpdateResponse struct {
-	IntegrationServiceEnvironmentsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IntegrationServiceEnvironmentsUpdateResult contains the result from method IntegrationServiceEnvironments.Update.
-type IntegrationServiceEnvironmentsUpdateResult struct {
+// IntegrationServiceEnvironmentsClientUpdateResponse contains the response from method IntegrationServiceEnvironmentsClient.Update.
+type IntegrationServiceEnvironmentsClientUpdateResponse struct {
 	IntegrationServiceEnvironment
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// WorkflowRunActionRepetitionsGetResponse contains the response from method WorkflowRunActionRepetitions.Get.
-type WorkflowRunActionRepetitionsGetResponse struct {
-	WorkflowRunActionRepetitionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowRunActionRepetitionsGetResult contains the result from method WorkflowRunActionRepetitions.Get.
-type WorkflowRunActionRepetitionsGetResult struct {
+// WorkflowRunActionRepetitionsClientGetResponse contains the response from method WorkflowRunActionRepetitionsClient.Get.
+type WorkflowRunActionRepetitionsClientGetResponse struct {
 	WorkflowRunActionRepetitionDefinition
 }
 
-// WorkflowRunActionRepetitionsListExpressionTracesResponse contains the response from method WorkflowRunActionRepetitions.ListExpressionTraces.
-type WorkflowRunActionRepetitionsListExpressionTracesResponse struct {
-	WorkflowRunActionRepetitionsListExpressionTracesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowRunActionRepetitionsListExpressionTracesResult contains the result from method WorkflowRunActionRepetitions.ListExpressionTraces.
-type WorkflowRunActionRepetitionsListExpressionTracesResult struct {
+// WorkflowRunActionRepetitionsClientListExpressionTracesResponse contains the response from method WorkflowRunActionRepetitionsClient.ListExpressionTraces.
+type WorkflowRunActionRepetitionsClientListExpressionTracesResponse struct {
 	ExpressionTraces
 }
 
-// WorkflowRunActionRepetitionsListResponse contains the response from method WorkflowRunActionRepetitions.List.
-type WorkflowRunActionRepetitionsListResponse struct {
-	WorkflowRunActionRepetitionsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowRunActionRepetitionsListResult contains the result from method WorkflowRunActionRepetitions.List.
-type WorkflowRunActionRepetitionsListResult struct {
+// WorkflowRunActionRepetitionsClientListResponse contains the response from method WorkflowRunActionRepetitionsClient.List.
+type WorkflowRunActionRepetitionsClientListResponse struct {
 	WorkflowRunActionRepetitionDefinitionCollection
 }
 
-// WorkflowRunActionRepetitionsRequestHistoriesGetResponse contains the response from method WorkflowRunActionRepetitionsRequestHistories.Get.
-type WorkflowRunActionRepetitionsRequestHistoriesGetResponse struct {
-	WorkflowRunActionRepetitionsRequestHistoriesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowRunActionRepetitionsRequestHistoriesGetResult contains the result from method WorkflowRunActionRepetitionsRequestHistories.Get.
-type WorkflowRunActionRepetitionsRequestHistoriesGetResult struct {
+// WorkflowRunActionRepetitionsRequestHistoriesClientGetResponse contains the response from method WorkflowRunActionRepetitionsRequestHistoriesClient.Get.
+type WorkflowRunActionRepetitionsRequestHistoriesClientGetResponse struct {
 	RequestHistory
 }
 
-// WorkflowRunActionRepetitionsRequestHistoriesListResponse contains the response from method WorkflowRunActionRepetitionsRequestHistories.List.
-type WorkflowRunActionRepetitionsRequestHistoriesListResponse struct {
-	WorkflowRunActionRepetitionsRequestHistoriesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowRunActionRepetitionsRequestHistoriesListResult contains the result from method WorkflowRunActionRepetitionsRequestHistories.List.
-type WorkflowRunActionRepetitionsRequestHistoriesListResult struct {
+// WorkflowRunActionRepetitionsRequestHistoriesClientListResponse contains the response from method WorkflowRunActionRepetitionsRequestHistoriesClient.List.
+type WorkflowRunActionRepetitionsRequestHistoriesClientListResponse struct {
 	RequestHistoryListResult
 }
 
-// WorkflowRunActionRequestHistoriesGetResponse contains the response from method WorkflowRunActionRequestHistories.Get.
-type WorkflowRunActionRequestHistoriesGetResponse struct {
-	WorkflowRunActionRequestHistoriesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowRunActionRequestHistoriesGetResult contains the result from method WorkflowRunActionRequestHistories.Get.
-type WorkflowRunActionRequestHistoriesGetResult struct {
+// WorkflowRunActionRequestHistoriesClientGetResponse contains the response from method WorkflowRunActionRequestHistoriesClient.Get.
+type WorkflowRunActionRequestHistoriesClientGetResponse struct {
 	RequestHistory
 }
 
-// WorkflowRunActionRequestHistoriesListResponse contains the response from method WorkflowRunActionRequestHistories.List.
-type WorkflowRunActionRequestHistoriesListResponse struct {
-	WorkflowRunActionRequestHistoriesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowRunActionRequestHistoriesListResult contains the result from method WorkflowRunActionRequestHistories.List.
-type WorkflowRunActionRequestHistoriesListResult struct {
+// WorkflowRunActionRequestHistoriesClientListResponse contains the response from method WorkflowRunActionRequestHistoriesClient.List.
+type WorkflowRunActionRequestHistoriesClientListResponse struct {
 	RequestHistoryListResult
 }
 
-// WorkflowRunActionScopeRepetitionsGetResponse contains the response from method WorkflowRunActionScopeRepetitions.Get.
-type WorkflowRunActionScopeRepetitionsGetResponse struct {
-	WorkflowRunActionScopeRepetitionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowRunActionScopeRepetitionsGetResult contains the result from method WorkflowRunActionScopeRepetitions.Get.
-type WorkflowRunActionScopeRepetitionsGetResult struct {
+// WorkflowRunActionScopeRepetitionsClientGetResponse contains the response from method WorkflowRunActionScopeRepetitionsClient.Get.
+type WorkflowRunActionScopeRepetitionsClientGetResponse struct {
 	WorkflowRunActionRepetitionDefinition
 }
 
-// WorkflowRunActionScopeRepetitionsListResponse contains the response from method WorkflowRunActionScopeRepetitions.List.
-type WorkflowRunActionScopeRepetitionsListResponse struct {
-	WorkflowRunActionScopeRepetitionsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowRunActionScopeRepetitionsListResult contains the result from method WorkflowRunActionScopeRepetitions.List.
-type WorkflowRunActionScopeRepetitionsListResult struct {
+// WorkflowRunActionScopeRepetitionsClientListResponse contains the response from method WorkflowRunActionScopeRepetitionsClient.List.
+type WorkflowRunActionScopeRepetitionsClientListResponse struct {
 	WorkflowRunActionRepetitionDefinitionCollection
 }
 
-// WorkflowRunActionsGetResponse contains the response from method WorkflowRunActions.Get.
-type WorkflowRunActionsGetResponse struct {
-	WorkflowRunActionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowRunActionsGetResult contains the result from method WorkflowRunActions.Get.
-type WorkflowRunActionsGetResult struct {
+// WorkflowRunActionsClientGetResponse contains the response from method WorkflowRunActionsClient.Get.
+type WorkflowRunActionsClientGetResponse struct {
 	WorkflowRunAction
 }
 
-// WorkflowRunActionsListExpressionTracesResponse contains the response from method WorkflowRunActions.ListExpressionTraces.
-type WorkflowRunActionsListExpressionTracesResponse struct {
-	WorkflowRunActionsListExpressionTracesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowRunActionsListExpressionTracesResult contains the result from method WorkflowRunActions.ListExpressionTraces.
-type WorkflowRunActionsListExpressionTracesResult struct {
+// WorkflowRunActionsClientListExpressionTracesResponse contains the response from method WorkflowRunActionsClient.ListExpressionTraces.
+type WorkflowRunActionsClientListExpressionTracesResponse struct {
 	ExpressionTraces
 }
 
-// WorkflowRunActionsListResponse contains the response from method WorkflowRunActions.List.
-type WorkflowRunActionsListResponse struct {
-	WorkflowRunActionsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowRunActionsListResult contains the result from method WorkflowRunActions.List.
-type WorkflowRunActionsListResult struct {
+// WorkflowRunActionsClientListResponse contains the response from method WorkflowRunActionsClient.List.
+type WorkflowRunActionsClientListResponse struct {
 	WorkflowRunActionListResult
 }
 
-// WorkflowRunOperationsGetResponse contains the response from method WorkflowRunOperations.Get.
-type WorkflowRunOperationsGetResponse struct {
-	WorkflowRunOperationsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowRunOperationsGetResult contains the result from method WorkflowRunOperations.Get.
-type WorkflowRunOperationsGetResult struct {
+// WorkflowRunOperationsClientGetResponse contains the response from method WorkflowRunOperationsClient.Get.
+type WorkflowRunOperationsClientGetResponse struct {
 	WorkflowRun
 }
 
-// WorkflowRunsCancelResponse contains the response from method WorkflowRuns.Cancel.
-type WorkflowRunsCancelResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// WorkflowRunsClientCancelResponse contains the response from method WorkflowRunsClient.Cancel.
+type WorkflowRunsClientCancelResponse struct {
+	// placeholder for future response values
 }
 
-// WorkflowRunsGetResponse contains the response from method WorkflowRuns.Get.
-type WorkflowRunsGetResponse struct {
-	WorkflowRunsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowRunsGetResult contains the result from method WorkflowRuns.Get.
-type WorkflowRunsGetResult struct {
+// WorkflowRunsClientGetResponse contains the response from method WorkflowRunsClient.Get.
+type WorkflowRunsClientGetResponse struct {
 	WorkflowRun
 }
 
-// WorkflowRunsListResponse contains the response from method WorkflowRuns.List.
-type WorkflowRunsListResponse struct {
-	WorkflowRunsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowRunsListResult contains the result from method WorkflowRuns.List.
-type WorkflowRunsListResult struct {
+// WorkflowRunsClientListResponse contains the response from method WorkflowRunsClient.List.
+type WorkflowRunsClientListResponse struct {
 	WorkflowRunListResult
 }
 
-// WorkflowTriggerHistoriesGetResponse contains the response from method WorkflowTriggerHistories.Get.
-type WorkflowTriggerHistoriesGetResponse struct {
-	WorkflowTriggerHistoriesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowTriggerHistoriesGetResult contains the result from method WorkflowTriggerHistories.Get.
-type WorkflowTriggerHistoriesGetResult struct {
+// WorkflowTriggerHistoriesClientGetResponse contains the response from method WorkflowTriggerHistoriesClient.Get.
+type WorkflowTriggerHistoriesClientGetResponse struct {
 	WorkflowTriggerHistory
 }
 
-// WorkflowTriggerHistoriesListResponse contains the response from method WorkflowTriggerHistories.List.
-type WorkflowTriggerHistoriesListResponse struct {
-	WorkflowTriggerHistoriesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowTriggerHistoriesListResult contains the result from method WorkflowTriggerHistories.List.
-type WorkflowTriggerHistoriesListResult struct {
+// WorkflowTriggerHistoriesClientListResponse contains the response from method WorkflowTriggerHistoriesClient.List.
+type WorkflowTriggerHistoriesClientListResponse struct {
 	WorkflowTriggerHistoryListResult
 }
 
-// WorkflowTriggerHistoriesResubmitResponse contains the response from method WorkflowTriggerHistories.Resubmit.
-type WorkflowTriggerHistoriesResubmitResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// WorkflowTriggerHistoriesClientResubmitResponse contains the response from method WorkflowTriggerHistoriesClient.Resubmit.
+type WorkflowTriggerHistoriesClientResubmitResponse struct {
+	// placeholder for future response values
 }
 
-// WorkflowTriggersGetResponse contains the response from method WorkflowTriggers.Get.
-type WorkflowTriggersGetResponse struct {
-	WorkflowTriggersGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowTriggersGetResult contains the result from method WorkflowTriggers.Get.
-type WorkflowTriggersGetResult struct {
+// WorkflowTriggersClientGetResponse contains the response from method WorkflowTriggersClient.Get.
+type WorkflowTriggersClientGetResponse struct {
 	WorkflowTrigger
 }
 
-// WorkflowTriggersGetSchemaJSONResponse contains the response from method WorkflowTriggers.GetSchemaJSON.
-type WorkflowTriggersGetSchemaJSONResponse struct {
-	WorkflowTriggersGetSchemaJSONResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowTriggersGetSchemaJSONResult contains the result from method WorkflowTriggers.GetSchemaJSON.
-type WorkflowTriggersGetSchemaJSONResult struct {
+// WorkflowTriggersClientGetSchemaJSONResponse contains the response from method WorkflowTriggersClient.GetSchemaJSON.
+type WorkflowTriggersClientGetSchemaJSONResponse struct {
 	JSONSchema
 }
 
-// WorkflowTriggersListCallbackURLResponse contains the response from method WorkflowTriggers.ListCallbackURL.
-type WorkflowTriggersListCallbackURLResponse struct {
-	WorkflowTriggersListCallbackURLResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowTriggersListCallbackURLResult contains the result from method WorkflowTriggers.ListCallbackURL.
-type WorkflowTriggersListCallbackURLResult struct {
+// WorkflowTriggersClientListCallbackURLResponse contains the response from method WorkflowTriggersClient.ListCallbackURL.
+type WorkflowTriggersClientListCallbackURLResponse struct {
 	WorkflowTriggerCallbackURL
 }
 
-// WorkflowTriggersListResponse contains the response from method WorkflowTriggers.List.
-type WorkflowTriggersListResponse struct {
-	WorkflowTriggersListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowTriggersListResult contains the result from method WorkflowTriggers.List.
-type WorkflowTriggersListResult struct {
+// WorkflowTriggersClientListResponse contains the response from method WorkflowTriggersClient.List.
+type WorkflowTriggersClientListResponse struct {
 	WorkflowTriggerListResult
 }
 
-// WorkflowTriggersResetResponse contains the response from method WorkflowTriggers.Reset.
-type WorkflowTriggersResetResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// WorkflowTriggersClientResetResponse contains the response from method WorkflowTriggersClient.Reset.
+type WorkflowTriggersClientResetResponse struct {
+	// placeholder for future response values
 }
 
-// WorkflowTriggersRunResponse contains the response from method WorkflowTriggers.Run.
-type WorkflowTriggersRunResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// WorkflowTriggersClientRunResponse contains the response from method WorkflowTriggersClient.Run.
+type WorkflowTriggersClientRunResponse struct {
+	// placeholder for future response values
 }
 
-// WorkflowTriggersSetStateResponse contains the response from method WorkflowTriggers.SetState.
-type WorkflowTriggersSetStateResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// WorkflowTriggersClientSetStateResponse contains the response from method WorkflowTriggersClient.SetState.
+type WorkflowTriggersClientSetStateResponse struct {
+	// placeholder for future response values
 }
 
-// WorkflowVersionTriggersListCallbackURLResponse contains the response from method WorkflowVersionTriggers.ListCallbackURL.
-type WorkflowVersionTriggersListCallbackURLResponse struct {
-	WorkflowVersionTriggersListCallbackURLResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowVersionTriggersListCallbackURLResult contains the result from method WorkflowVersionTriggers.ListCallbackURL.
-type WorkflowVersionTriggersListCallbackURLResult struct {
+// WorkflowVersionTriggersClientListCallbackURLResponse contains the response from method WorkflowVersionTriggersClient.ListCallbackURL.
+type WorkflowVersionTriggersClientListCallbackURLResponse struct {
 	WorkflowTriggerCallbackURL
 }
 
-// WorkflowVersionsGetResponse contains the response from method WorkflowVersions.Get.
-type WorkflowVersionsGetResponse struct {
-	WorkflowVersionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowVersionsGetResult contains the result from method WorkflowVersions.Get.
-type WorkflowVersionsGetResult struct {
+// WorkflowVersionsClientGetResponse contains the response from method WorkflowVersionsClient.Get.
+type WorkflowVersionsClientGetResponse struct {
 	WorkflowVersion
 }
 
-// WorkflowVersionsListResponse contains the response from method WorkflowVersions.List.
-type WorkflowVersionsListResponse struct {
-	WorkflowVersionsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowVersionsListResult contains the result from method WorkflowVersions.List.
-type WorkflowVersionsListResult struct {
+// WorkflowVersionsClientListResponse contains the response from method WorkflowVersionsClient.List.
+type WorkflowVersionsClientListResponse struct {
 	WorkflowVersionListResult
 }
 
-// WorkflowsCreateOrUpdateResponse contains the response from method Workflows.CreateOrUpdate.
-type WorkflowsCreateOrUpdateResponse struct {
-	WorkflowsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowsCreateOrUpdateResult contains the result from method Workflows.CreateOrUpdate.
-type WorkflowsCreateOrUpdateResult struct {
+// WorkflowsClientCreateOrUpdateResponse contains the response from method WorkflowsClient.CreateOrUpdate.
+type WorkflowsClientCreateOrUpdateResponse struct {
 	Workflow
 }
 
-// WorkflowsDeleteResponse contains the response from method Workflows.Delete.
-type WorkflowsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// WorkflowsClientDeleteResponse contains the response from method WorkflowsClient.Delete.
+type WorkflowsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// WorkflowsDisableResponse contains the response from method Workflows.Disable.
-type WorkflowsDisableResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// WorkflowsClientDisableResponse contains the response from method WorkflowsClient.Disable.
+type WorkflowsClientDisableResponse struct {
+	// placeholder for future response values
 }
 
-// WorkflowsEnableResponse contains the response from method Workflows.Enable.
-type WorkflowsEnableResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// WorkflowsClientEnableResponse contains the response from method WorkflowsClient.Enable.
+type WorkflowsClientEnableResponse struct {
+	// placeholder for future response values
 }
 
-// WorkflowsGenerateUpgradedDefinitionResponse contains the response from method Workflows.GenerateUpgradedDefinition.
-type WorkflowsGenerateUpgradedDefinitionResponse struct {
-	WorkflowsGenerateUpgradedDefinitionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// WorkflowsClientGenerateUpgradedDefinitionResponse contains the response from method WorkflowsClient.GenerateUpgradedDefinition.
+type WorkflowsClientGenerateUpgradedDefinitionResponse struct {
+	// Anything
+	Interface interface{}
 }
 
-// WorkflowsGenerateUpgradedDefinitionResult contains the result from method Workflows.GenerateUpgradedDefinition.
-type WorkflowsGenerateUpgradedDefinitionResult struct {
-	// Any object
-	Object map[string]interface{}
-}
-
-// WorkflowsGetResponse contains the response from method Workflows.Get.
-type WorkflowsGetResponse struct {
-	WorkflowsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowsGetResult contains the result from method Workflows.Get.
-type WorkflowsGetResult struct {
+// WorkflowsClientGetResponse contains the response from method WorkflowsClient.Get.
+type WorkflowsClientGetResponse struct {
 	Workflow
 }
 
-// WorkflowsListByResourceGroupResponse contains the response from method Workflows.ListByResourceGroup.
-type WorkflowsListByResourceGroupResponse struct {
-	WorkflowsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowsListByResourceGroupResult contains the result from method Workflows.ListByResourceGroup.
-type WorkflowsListByResourceGroupResult struct {
+// WorkflowsClientListByResourceGroupResponse contains the response from method WorkflowsClient.ListByResourceGroup.
+type WorkflowsClientListByResourceGroupResponse struct {
 	WorkflowListResult
 }
 
-// WorkflowsListBySubscriptionResponse contains the response from method Workflows.ListBySubscription.
-type WorkflowsListBySubscriptionResponse struct {
-	WorkflowsListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowsListBySubscriptionResult contains the result from method Workflows.ListBySubscription.
-type WorkflowsListBySubscriptionResult struct {
+// WorkflowsClientListBySubscriptionResponse contains the response from method WorkflowsClient.ListBySubscription.
+type WorkflowsClientListBySubscriptionResponse struct {
 	WorkflowListResult
 }
 
-// WorkflowsListCallbackURLResponse contains the response from method Workflows.ListCallbackURL.
-type WorkflowsListCallbackURLResponse struct {
-	WorkflowsListCallbackURLResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowsListCallbackURLResult contains the result from method Workflows.ListCallbackURL.
-type WorkflowsListCallbackURLResult struct {
+// WorkflowsClientListCallbackURLResponse contains the response from method WorkflowsClient.ListCallbackURL.
+type WorkflowsClientListCallbackURLResponse struct {
 	WorkflowTriggerCallbackURL
 }
 
-// WorkflowsListSwaggerResponse contains the response from method Workflows.ListSwagger.
-type WorkflowsListSwaggerResponse struct {
-	WorkflowsListSwaggerResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// WorkflowsClientListSwaggerResponse contains the response from method WorkflowsClient.ListSwagger.
+type WorkflowsClientListSwaggerResponse struct {
+	// Anything
+	Interface interface{}
 }
 
-// WorkflowsListSwaggerResult contains the result from method Workflows.ListSwagger.
-type WorkflowsListSwaggerResult struct {
-	// Any object
-	Object map[string]interface{}
+// WorkflowsClientMoveResponse contains the response from method WorkflowsClient.Move.
+type WorkflowsClientMoveResponse struct {
+	// placeholder for future response values
 }
 
-// WorkflowsMovePollerResponse contains the response from method Workflows.Move.
-type WorkflowsMovePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *WorkflowsMovePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// WorkflowsClientRegenerateAccessKeyResponse contains the response from method WorkflowsClient.RegenerateAccessKey.
+type WorkflowsClientRegenerateAccessKeyResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l WorkflowsMovePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WorkflowsMoveResponse, error) {
-	respType := WorkflowsMoveResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a WorkflowsMovePollerResponse from the provided client and resume token.
-func (l *WorkflowsMovePollerResponse) Resume(ctx context.Context, client *WorkflowsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("WorkflowsClient.Move", token, client.pl, client.moveHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &WorkflowsMovePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// WorkflowsMoveResponse contains the response from method Workflows.Move.
-type WorkflowsMoveResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowsRegenerateAccessKeyResponse contains the response from method Workflows.RegenerateAccessKey.
-type WorkflowsRegenerateAccessKeyResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowsUpdateResponse contains the response from method Workflows.Update.
-type WorkflowsUpdateResponse struct {
-	WorkflowsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowsUpdateResult contains the result from method Workflows.Update.
-type WorkflowsUpdateResult struct {
+// WorkflowsClientUpdateResponse contains the response from method WorkflowsClient.Update.
+type WorkflowsClientUpdateResponse struct {
 	Workflow
 }
 
-// WorkflowsValidateByLocationResponse contains the response from method Workflows.ValidateByLocation.
-type WorkflowsValidateByLocationResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// WorkflowsClientValidateByLocationResponse contains the response from method WorkflowsClient.ValidateByLocation.
+type WorkflowsClientValidateByLocationResponse struct {
+	// placeholder for future response values
 }
 
-// WorkflowsValidateByResourceGroupResponse contains the response from method Workflows.ValidateByResourceGroup.
-type WorkflowsValidateByResourceGroupResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// WorkflowsClientValidateByResourceGroupResponse contains the response from method WorkflowsClient.ValidateByResourceGroup.
+type WorkflowsClientValidateByResourceGroupResponse struct {
+	// placeholder for future response values
 }

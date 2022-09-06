@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -16,137 +16,157 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization/v2"
 )
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/MsixPackage_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/MsixPackage_Get.json
 func ExampleMSIXPackagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewMSIXPackagesClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewMSIXPackagesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<host-pool-name>",
-		"<msix-package-full-name>",
+		"resourceGroup1",
+		"hostpool1",
+		"packagefullname",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("MSIXPackage.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/MsixPackage_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/MsixPackage_Create.json
 func ExampleMSIXPackagesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewMSIXPackagesClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewMSIXPackagesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<host-pool-name>",
-		"<msix-package-full-name>",
+		"resourceGroup1",
+		"hostpool1",
+		"msixpackagefullname",
 		armdesktopvirtualization.MSIXPackage{
 			Properties: &armdesktopvirtualization.MSIXPackageProperties{
-				DisplayName:           to.StringPtr("<display-name>"),
-				ImagePath:             to.StringPtr("<image-path>"),
-				IsActive:              to.BoolPtr(false),
-				IsRegularRegistration: to.BoolPtr(false),
-				LastUpdated:           to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.9571247Z"); return t }()),
+				DisplayName:           to.Ptr("displayname"),
+				ImagePath:             to.Ptr("imagepath"),
+				IsActive:              to.Ptr(false),
+				IsRegularRegistration: to.Ptr(false),
+				LastUpdated:           to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.9571247Z"); return t }()),
 				PackageApplications: []*armdesktopvirtualization.MsixPackageApplications{
 					{
-						Description:    to.StringPtr("<description>"),
-						AppID:          to.StringPtr("<app-id>"),
-						AppUserModelID: to.StringPtr("<app-user-model-id>"),
-						FriendlyName:   to.StringPtr("<friendly-name>"),
-						IconImageName:  to.StringPtr("<icon-image-name>"),
+						Description:    to.Ptr("application-desc"),
+						AppID:          to.Ptr("ApplicationId"),
+						AppUserModelID: to.Ptr("AppUserModelId"),
+						FriendlyName:   to.Ptr("friendlyname"),
+						IconImageName:  to.Ptr("Apptile"),
 						RawIcon:        []byte("VGhpcyBpcyBhIHN0cmluZyB0byBoYXNo"),
 						RawPNG:         []byte("VGhpcyBpcyBhIHN0cmluZyB0byBoYXNo"),
 					}},
 				PackageDependencies: []*armdesktopvirtualization.MsixPackageDependencies{
 					{
-						DependencyName: to.StringPtr("<dependency-name>"),
-						MinVersion:     to.StringPtr("<min-version>"),
-						Publisher:      to.StringPtr("<publisher>"),
+						DependencyName: to.Ptr("MsixTest_Dependency_Name"),
+						MinVersion:     to.Ptr("version"),
+						Publisher:      to.Ptr("PublishedName"),
 					}},
-				PackageFamilyName:   to.StringPtr("<package-family-name>"),
-				PackageName:         to.StringPtr("<package-name>"),
-				PackageRelativePath: to.StringPtr("<package-relative-path>"),
-				Version:             to.StringPtr("<version>"),
+				PackageFamilyName:   to.Ptr("MsixPackage_FamilyName"),
+				PackageName:         to.Ptr("MsixPackage_name"),
+				PackageRelativePath: to.Ptr("packagerelativepath"),
+				Version:             to.Ptr("version"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("MSIXPackage.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/MsixPackage_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/MsixPackage_Delete.json
 func ExampleMSIXPackagesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewMSIXPackagesClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewMSIXPackagesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<host-pool-name>",
-		"<msix-package-full-name>",
+		"resourceGroup1",
+		"hostpool1",
+		"packagefullname",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/MsixPackage_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/MsixPackage_Update.json
 func ExampleMSIXPackagesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewMSIXPackagesClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewMSIXPackagesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<host-pool-name>",
-		"<msix-package-full-name>",
-		&armdesktopvirtualization.MSIXPackagesUpdateOptions{MsixPackage: &armdesktopvirtualization.MSIXPackagePatch{
+		"resourceGroup1",
+		"hostpool1",
+		"msixpackagefullname",
+		&armdesktopvirtualization.MSIXPackagesClientUpdateOptions{MsixPackage: &armdesktopvirtualization.MSIXPackagePatch{
 			Properties: &armdesktopvirtualization.MSIXPackagePatchProperties{
-				DisplayName:           to.StringPtr("<display-name>"),
-				IsActive:              to.BoolPtr(true),
-				IsRegularRegistration: to.BoolPtr(false),
+				DisplayName:           to.Ptr("displayname"),
+				IsActive:              to.Ptr(true),
+				IsRegularRegistration: to.Ptr(false),
 			},
 		},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("MSIXPackage.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/MsixPackage_List.json
-func ExampleMSIXPackagesClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/MsixPackage_List.json
+func ExampleMSIXPackagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewMSIXPackagesClient("<subscription-id>", cred, nil)
-	pager := client.List("<resource-group-name>",
-		"<host-pool-name>",
+	client, err := armdesktopvirtualization.NewMSIXPackagesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("resourceGroup1",
+		"hostpool1",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("MSIXPackage.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

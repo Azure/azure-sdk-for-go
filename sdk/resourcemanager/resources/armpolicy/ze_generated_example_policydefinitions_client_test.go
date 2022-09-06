@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,37 +17,40 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy"
 )
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createOrUpdatePolicyDefinition.json
-func ExamplePolicyDefinitionsClient_CreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createOrUpdatePolicyDefinition.json
+func ExampleDefinitionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
-	res, err := client.CreateOrUpdate(ctx,
-		"<policy-definition-name>",
-		armpolicy.PolicyDefinition{
-			Properties: &armpolicy.PolicyDefinitionProperties{
-				Description: to.StringPtr("<description>"),
-				DisplayName: to.StringPtr("<display-name>"),
+	client, err := armpolicy.NewDefinitionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = client.CreateOrUpdate(ctx,
+		"ResourceNaming",
+		armpolicy.Definition{
+			Properties: &armpolicy.DefinitionProperties{
+				Description: to.Ptr("Force resource names to begin with given 'prefix' and/or end with given 'suffix'"),
+				DisplayName: to.Ptr("Enforce resource naming convention"),
 				Metadata: map[string]interface{}{
 					"category": "Naming",
 				},
-				Mode: to.StringPtr("<mode>"),
+				Mode: to.Ptr("All"),
 				Parameters: map[string]*armpolicy.ParameterDefinitionsValue{
 					"prefix": {
-						Type: armpolicy.ParameterTypeString.ToPtr(),
+						Type: to.Ptr(armpolicy.ParameterTypeString),
 						Metadata: &armpolicy.ParameterDefinitionsValueMetadata{
-							Description: to.StringPtr("<description>"),
-							DisplayName: to.StringPtr("<display-name>"),
+							Description: to.Ptr("Resource name prefix"),
+							DisplayName: to.Ptr("Prefix"),
 						},
 					},
 					"suffix": {
-						Type: armpolicy.ParameterTypeString.ToPtr(),
+						Type: to.Ptr(armpolicy.ParameterTypeString),
 						Metadata: &armpolicy.ParameterDefinitionsValueMetadata{
-							Description: to.StringPtr("<description>"),
-							DisplayName: to.StringPtr("<display-name>"),
+							Description: to.Ptr("Resource name suffix"),
+							DisplayName: to.Ptr("Suffix"),
 						},
 					},
 				},
@@ -66,93 +69,106 @@ func ExamplePolicyDefinitionsClient_CreateOrUpdate() {
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("PolicyDefinition.ID: %s\n", *res.ID)
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/deletePolicyDefinition.json
-func ExamplePolicyDefinitionsClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/deletePolicyDefinition.json
+func ExampleDefinitionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewDefinitionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<policy-definition-name>",
+		"ResourceNaming",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getPolicyDefinition.json
-func ExamplePolicyDefinitionsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getPolicyDefinition.json
+func ExampleDefinitionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewDefinitionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<policy-definition-name>",
+		"ResourceNaming",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("PolicyDefinition.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getBuiltinPolicyDefinition.json
-func ExamplePolicyDefinitionsClient_GetBuiltIn() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getBuiltinPolicyDefinition.json
+func ExampleDefinitionsClient_GetBuiltIn() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.GetBuiltIn(ctx,
-		"<policy-definition-name>",
+		"7433c107-6db4-4ad1-b57a-a76dce0154a1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("PolicyDefinition.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createOrUpdatePolicyDefinitionAtManagementGroup.json
-func ExamplePolicyDefinitionsClient_CreateOrUpdateAtManagementGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createOrUpdatePolicyDefinitionAtManagementGroup.json
+func ExampleDefinitionsClient_CreateOrUpdateAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
-	res, err := client.CreateOrUpdateAtManagementGroup(ctx,
-		"<policy-definition-name>",
-		"<management-group-id>",
-		armpolicy.PolicyDefinition{
-			Properties: &armpolicy.PolicyDefinitionProperties{
-				Description: to.StringPtr("<description>"),
-				DisplayName: to.StringPtr("<display-name>"),
+	client, err := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = client.CreateOrUpdateAtManagementGroup(ctx,
+		"ResourceNaming",
+		"MyManagementGroup",
+		armpolicy.Definition{
+			Properties: &armpolicy.DefinitionProperties{
+				Description: to.Ptr("Force resource names to begin with given 'prefix' and/or end with given 'suffix'"),
+				DisplayName: to.Ptr("Enforce resource naming convention"),
 				Metadata: map[string]interface{}{
 					"category": "Naming",
 				},
-				Mode: to.StringPtr("<mode>"),
+				Mode: to.Ptr("All"),
 				Parameters: map[string]*armpolicy.ParameterDefinitionsValue{
 					"prefix": {
-						Type: armpolicy.ParameterTypeString.ToPtr(),
+						Type: to.Ptr(armpolicy.ParameterTypeString),
 						Metadata: &armpolicy.ParameterDefinitionsValueMetadata{
-							Description: to.StringPtr("<description>"),
-							DisplayName: to.StringPtr("<display-name>"),
+							Description: to.Ptr("Resource name prefix"),
+							DisplayName: to.Ptr("Prefix"),
 						},
 					},
 					"suffix": {
-						Type: armpolicy.ParameterTypeString.ToPtr(),
+						Type: to.Ptr(armpolicy.ParameterTypeString),
 						Metadata: &armpolicy.ParameterDefinitionsValueMetadata{
-							Description: to.StringPtr("<description>"),
-							DisplayName: to.StringPtr("<display-name>"),
+							Description: to.Ptr("Resource name suffix"),
+							DisplayName: to.Ptr("Suffix"),
 						},
 					},
 				},
@@ -171,106 +187,127 @@ func ExamplePolicyDefinitionsClient_CreateOrUpdateAtManagementGroup() {
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("PolicyDefinition.ID: %s\n", *res.ID)
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/deletePolicyDefinitionAtManagementGroup.json
-func ExamplePolicyDefinitionsClient_DeleteAtManagementGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/deletePolicyDefinitionAtManagementGroup.json
+func ExampleDefinitionsClient_DeleteAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.DeleteAtManagementGroup(ctx,
-		"<policy-definition-name>",
-		"<management-group-id>",
+		"ResourceNaming",
+		"MyManagementGroup",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getPolicyDefinitionAtManagementGroup.json
-func ExamplePolicyDefinitionsClient_GetAtManagementGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getPolicyDefinitionAtManagementGroup.json
+func ExampleDefinitionsClient_GetAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.GetAtManagementGroup(ctx,
-		"<policy-definition-name>",
-		"<management-group-id>",
+		"ResourceNaming",
+		"MyManagementGroup",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("PolicyDefinition.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyDefinitions.json
-func ExamplePolicyDefinitionsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyDefinitions.json
+func ExampleDefinitionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
-	pager := client.List(&armpolicy.PolicyDefinitionsListOptions{Filter: nil,
+	client, err := armpolicy.NewDefinitionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager(&armpolicy.DefinitionsClientListOptions{Filter: nil,
 		Top: nil,
 	})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("PolicyDefinition.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listBuiltInPolicyDefinitions.json
-func ExamplePolicyDefinitionsClient_ListBuiltIn() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listBuiltInPolicyDefinitions.json
+func ExampleDefinitionsClient_NewListBuiltInPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
-	pager := client.ListBuiltIn(&armpolicy.PolicyDefinitionsListBuiltInOptions{Filter: nil,
+	client, err := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListBuiltInPager(&armpolicy.DefinitionsClientListBuiltInOptions{Filter: nil,
 		Top: nil,
 	})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("PolicyDefinition.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyDefinitionsByManagementGroup.json
-func ExamplePolicyDefinitionsClient_ListByManagementGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyDefinitionsByManagementGroup.json
+func ExampleDefinitionsClient_NewListByManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicy.NewPolicyDefinitionsClient("<subscription-id>", cred, nil)
-	pager := client.ListByManagementGroup("<management-group-id>",
-		&armpolicy.PolicyDefinitionsListByManagementGroupOptions{Filter: nil,
+	client, err := armpolicy.NewDefinitionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByManagementGroupPager("MyManagementGroup",
+		&armpolicy.DefinitionsClientListByManagementGroupOptions{Filter: nil,
 			Top: nil,
 		})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("PolicyDefinition.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

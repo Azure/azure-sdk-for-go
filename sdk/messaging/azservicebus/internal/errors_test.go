@@ -7,10 +7,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
+	"net/http"
 	"reflect"
 	"testing"
 
-	"github.com/Azure/go-amqp"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -76,94 +79,210 @@ func TestErrNotFound_Error(t *testing.T) {
 	assert.False(t, IsErrNotFound(otherErr))
 }
 
-func Test_isPermanentNetError(t *testing.T) {
-	require.False(t, isPermanentNetError(&permanentNetError{
-		temp: true,
-	}))
+func Test_recoveryKind(t *testing.T) {
+	t.Run("link", func(t *testing.T) {
+		linkErrorCodes := []string{
+			string(amqp.ErrorDetachForced),
+		}
 
-	require.False(t, isPermanentNetError(&permanentNetError{
-		timeout: true,
-	}))
+		for _, code := range linkErrorCodes {
+			t.Run(code, func(t *testing.T) {
+				rk := GetRecoveryKind(&amqp.Error{Condition: amqp.ErrorCondition(code)})
+				require.EqualValues(t, RecoveryKindLink, rk, fmt.Sprintf("requires link recovery: %s", code))
+			})
+		}
 
-	require.False(t, isPermanentNetError(errors.New("not a net error")))
+		t.Run("sentinel errors", func(t *testing.T) {
+			rk := GetRecoveryKind(amqp.ErrLinkClosed)
+			require.EqualValues(t, RecoveryKindLink, rk)
 
-	require.True(t, isPermanentNetError(&permanentNetError{}))
+			rk = GetRecoveryKind(amqp.ErrSessionClosed)
+			require.EqualValues(t, RecoveryKindConn, rk)
+		})
+	})
+
+	t.Run("connection", func(t *testing.T) {
+		codes := []string{
+			string(amqp.ErrorConnectionForced),
+			string(amqp.ErrorInternalError),
+		}
+
+		for _, code := range codes {
+			t.Run(code, func(t *testing.T) {
+				rk := GetRecoveryKind(&amqp.Error{Condition: amqp.ErrorCondition(code)})
+				require.EqualValues(t, RecoveryKindConn, rk, fmt.Sprintf("requires connection recovery: %s", code))
+			})
+		}
+
+		t.Run("sentinel errors", func(t *testing.T) {
+			rk := GetRecoveryKind(&amqp.ConnectionError{})
+			require.EqualValues(t, RecoveryKindConn, rk)
+		})
+	})
+
+	t.Run("nonretriable", func(t *testing.T) {
+		codes := []string{
+			string(amqp.ErrorUnauthorizedAccess),
+			string(amqp.ErrorNotFound),
+			string(amqp.ErrorMessageSizeExceeded),
+		}
+
+		for _, code := range codes {
+			t.Run(code, func(t *testing.T) {
+				rk := GetRecoveryKind(&amqp.Error{Condition: amqp.ErrorCondition(code)})
+				require.EqualValues(t, RecoveryKindFatal, rk, fmt.Sprintf("cannot be recovered: %s", code))
+			})
+		}
+	})
+
+	t.Run("none", func(t *testing.T) {
+		codes := []string{
+			string("com.microsoft:operation-cancelled"),
+			string("com.microsoft:server-busy"),
+			string("com.microsoft:timeout"),
+		}
+
+		for _, code := range codes {
+			t.Run(code, func(t *testing.T) {
+				rk := GetRecoveryKind(&amqp.Error{Condition: amqp.ErrorCondition(code)})
+				require.EqualValues(t, RecoveryKindNone, rk, fmt.Sprintf("no recovery needed: %s", code))
+			})
+		}
+	})
 }
 
-func Test_isRetryableAMQPError(t *testing.T) {
-	ctx := context.Background()
-
-	retryableCodes := []string{
-		string(amqp.ErrorInternalError),
-		string(errorServerBusy),
-		string(errorTimeout),
-		string(errorOperationCancelled),
-		"client.sender:not-enough-link-credit",
-		string(amqp.ErrorUnauthorizedAccess),
-		string(amqp.ErrorDetachForced),
-		string(amqp.ErrorConnectionForced),
-		string(amqp.ErrorTransferLimitExceeded),
-		"amqp: connection closed",
-		"unexpected frame",
-		string(amqp.ErrorNotFound),
+func Test_IsNonRetriable(t *testing.T) {
+	errs := []error{
+		context.Canceled,
+		context.DeadlineExceeded,
+		NewErrNonRetriable("any message"),
+		fmt.Errorf("wrapped: %w", context.Canceled),
+		fmt.Errorf("wrapped: %w", context.DeadlineExceeded),
+		fmt.Errorf("wrapped: %w", NewErrNonRetriable("any message")),
 	}
 
-	for _, code := range retryableCodes {
-		require.True(t, isRetryableAMQPError(ctx, &amqp.Error{
-			Condition: amqp.ErrorCondition(code),
-		}))
+	for _, err := range errs {
+		require.EqualValues(t, RecoveryKindFatal, GetRecoveryKind(err))
+	}
+}
 
-		// it works equally well if the error is just in the String().
-		// Need to narrow this down some more to see where the errors
-		// might not be getting converted properly.
-		require.True(t, isRetryableAMQPError(ctx, errors.New(code)))
+func Test_ServiceBusError_NoRecoveryNeeded(t *testing.T) {
+	var tempErrors = []error{
+		&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:server-busy")},
+		&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:timeout")},
+		&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:operation-cancelled")},
+		errors.New("link is currently draining"), // not yet exposed from go-amqp
+		// simple timeouts from the mgmt link
+		RPCError{Resp: &RPCResponse{Code: 408}},
+		RPCError{Resp: &RPCResponse{Code: 503}},
+		RPCError{Resp: &RPCResponse{Code: 500}},
 	}
 
-	require.False(t, isRetryableAMQPError(ctx, errors.New("some non-amqp related error")))
+	for i, err := range tempErrors {
+		rk := GetRecoveryKind(err)
+		require.EqualValues(t, RecoveryKindNone, rk, fmt.Sprintf("[%d] %v", i, err))
+	}
 }
 
-func Test_shouldRecreateLink(t *testing.T) {
-	require.False(t, shouldRecreateLink(nil))
+func Test_ServiceBusError_ConnectionRecoveryNeeded(t *testing.T) {
+	var connErrors = []error{
+		&amqp.Error{Condition: amqp.ErrorConnectionForced},
+		&amqp.Error{Condition: amqp.ErrorInternalError},
+		&amqp.ConnectionError{},
+		amqp.ErrSessionClosed,
+		io.EOF,
+		fakeNetError{temp: true},
+		fakeNetError{timeout: true},
+		fakeNetError{temp: false, timeout: false},
+		errors.New("*frames.PerformTransfer: didn't find channel 10 in sessionsByRemoteChannel"),
+	}
 
-	require.True(t, shouldRecreateLink(&amqp.DetachError{}))
+	for i, err := range connErrors {
+		rk := GetRecoveryKind(err)
+		require.EqualValues(t, RecoveryKindConn, rk, fmt.Sprintf("[%d] %v", i, err))
+	}
 
-	// going to treat these as "connection troubles" and throw them into the
-	// connection recovery scenario instead.
-	require.False(t, shouldRecreateLink(amqp.ErrLinkClosed))
-	require.False(t, shouldRecreateLink(amqp.ErrSessionClosed))
+	// unknown errors will just result in a connection recovery
+	rk := GetRecoveryKind(errors.New("Some unknown error"))
+	require.EqualValues(t, RecoveryKindConn, rk, "some unknown error")
 }
 
-func Test_shouldRecreateConnection(t *testing.T) {
-	ctx := context.Background()
+func Test_ServiceBusError_LinkRecoveryNeeded(t *testing.T) {
+	var linkErrors = []error{
+		amqp.ErrLinkClosed,
+		&amqp.DetachError{},
+		&amqp.Error{Condition: amqp.ErrorDetachForced},
+		&amqp.Error{Condition: amqp.ErrorTransferLimitExceeded},
+		// this can happen when we're recovering the link - the client gets closed and the old link is still being
+		// used by this instance of the client. It needs to recover and attempt it again.
+		RPCError{Resp: &RPCResponse{Code: 401}},
+	}
 
-	require.False(t, shouldRecreateConnection(ctx, nil))
-	require.True(t, shouldRecreateConnection(ctx, &permanentNetError{}))
-	require.True(t, shouldRecreateConnection(ctx, fmt.Errorf("%w", &permanentNetError{})))
-
-	require.False(t, shouldRecreateLink(amqp.ErrLinkClosed))
-	require.False(t, shouldRecreateLink(fmt.Errorf("wrapped: %w", amqp.ErrLinkClosed)))
-
-	require.False(t, shouldRecreateLink(amqp.ErrSessionClosed))
-	require.False(t, shouldRecreateLink(fmt.Errorf("wrapped: %w", amqp.ErrSessionClosed)))
+	for i, err := range linkErrors {
+		rk := GetRecoveryKind(err)
+		require.EqualValues(t, RecoveryKindLink, rk, fmt.Sprintf("[%d] %v", i, err))
+	}
 }
 
-// TODO: while testing it appeared there were some errors that were getting string-ized
-// We want to eliminate these. 'stress.go' reproduces most of these as you disconnect
-// and reconnect.
-func Test_stringErrorsToEliminate(t *testing.T) {
-	require.True(t, shouldRecreateLink(errors.New("detach frame link detached")))
-	require.True(t, isRetryableAMQPError(context.Background(), errors.New("amqp: connection closed")))
-	require.True(t, IsCancelError(errors.New("context canceled")))
+func Test_ServiceBusError_Fatal(t *testing.T) {
+	var fatalConditions = []amqp.ErrorCondition{
+		amqp.ErrorMessageSizeExceeded,
+		amqp.ErrorUnauthorizedAccess,
+		amqp.ErrorNotFound,
+		amqp.ErrorNotAllowed,
+		amqp.ErrorCondition("com.microsoft:entity-disabled"),
+		amqp.ErrorCondition("com.microsoft:session-cannot-be-locked"),
+		amqp.ErrorCondition("com.microsoft:message-lock-lost"),
+	}
+
+	for i, cond := range fatalConditions {
+		rk := GetRecoveryKind(&amqp.Error{Condition: cond})
+		require.EqualValues(t, RecoveryKindFatal, rk, fmt.Sprintf("[%d] %s", i, cond))
+	}
+
+	require.Equal(t, RecoveryKindFatal, GetRecoveryKind(RPCError{Resp: &RPCResponse{Code: http.StatusNotFound}}))
+	require.Equal(t, RecoveryKindFatal, GetRecoveryKind(RPCError{Resp: &RPCResponse{Code: RPCResponseCodeLockLost}}))
 }
 
-func Test_IsCancelError(t *testing.T) {
-	require.False(t, IsCancelError(nil))
-	require.False(t, IsCancelError(errors.New("not a cancel error")))
+func Test_IsLockLostError(t *testing.T) {
+	require.True(t, isLockLostError(RPCError{Resp: &RPCResponse{Code: RPCResponseCodeLockLost}}))
+	require.True(t, isLockLostError(&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:message-lock-lost")}))
 
-	require.True(t, IsCancelError(errors.New("context canceled")))
+	require.True(t, isLockLostError(RPCError{Resp: &RPCResponse{Code: RPCResponseCodeLockLost}}))
+}
 
-	require.True(t, IsCancelError(context.Canceled))
-	require.True(t, IsCancelError(context.DeadlineExceeded))
-	require.True(t, IsCancelError(fmt.Errorf("wrapped: %w", context.Canceled)))
-	require.True(t, IsCancelError(fmt.Errorf("wrapped: %w", context.DeadlineExceeded)))
+func Test_TransformError(t *testing.T) {
+	var asExportedErr *exported.Error
+
+	err := TransformError(RPCError{Resp: &RPCResponse{Code: RPCResponseCodeLockLost}})
+	require.ErrorAs(t, err, &asExportedErr)
+	require.Equal(t, exported.CodeLockLost, asExportedErr.Code)
+
+	// sanity check, an RPCError but it's not a azservicebus.Code type error.
+	err = TransformError(RPCError{Resp: &RPCResponse{Code: http.StatusNotFound}})
+	require.False(t, errors.As(err, &asExportedErr))
+
+	err = TransformError(&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:message-lock-lost")})
+	require.ErrorAs(t, err, &asExportedErr)
+	require.Equal(t, exported.CodeLockLost, asExportedErr.Code)
+
+	// sanity check, an RPCError but it's not a azservicebus.Code type error.
+	err = TransformError(&amqp.Error{Condition: amqp.ErrorNotFound})
+	require.False(t, errors.As(err, &asExportedErr))
+
+	err = TransformError(amqp.ErrLinkClosed)
+	require.ErrorAs(t, err, &asExportedErr)
+	require.Equal(t, exported.CodeConnectionLost, asExportedErr.Code)
+
+	err = TransformError(&amqp.ConnectionError{})
+	require.ErrorAs(t, err, &asExportedErr)
+	require.Equal(t, exported.CodeConnectionLost, asExportedErr.Code)
+
+	// don't double wrap an already wrapped error
+	alreadyWrappedErr := &exported.Error{Code: exported.CodeConnectionLost}
+	err = TransformError(alreadyWrappedErr)
+	require.Equal(t, alreadyWrappedErr, err)
+
+	// and it's okay, for convenience, to pass a nil.
+	require.Nil(t, TransformError(nil))
 }

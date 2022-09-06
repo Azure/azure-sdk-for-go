@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,24 +8,20 @@
 
 package armconsumption
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
-// AggregatedCostGetByManagementGroupOptions contains the optional parameters for the AggregatedCost.GetByManagementGroup method.
-type AggregatedCostGetByManagementGroupOptions struct {
-	// May be used to filter aggregated cost by properties/usageStart (Utc time), properties/usageEnd (Utc time). The filter supports 'eq', 'lt', 'gt', 'le',
-	// 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon
-	// (:).
+// AggregatedCostClientGetByManagementGroupOptions contains the optional parameters for the AggregatedCostClient.GetByManagementGroup
+// method.
+type AggregatedCostClientGetByManagementGroupOptions struct {
+	// May be used to filter aggregated cost by properties/usageStart (Utc time), properties/usageEnd (Utc time). The filter supports
+	// 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support
+	// 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
 	Filter *string
 }
 
-// AggregatedCostGetForBillingPeriodByManagementGroupOptions contains the optional parameters for the AggregatedCost.GetForBillingPeriodByManagementGroup
+// AggregatedCostClientGetForBillingPeriodByManagementGroupOptions contains the optional parameters for the AggregatedCostClient.GetForBillingPeriodByManagementGroup
 // method.
-type AggregatedCostGetForBillingPeriodByManagementGroupOptions struct {
+type AggregatedCostClientGetForBillingPeriodByManagementGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -40,50 +36,38 @@ type Amount struct {
 
 // AmountWithExchangeRate - The amount with exchange rate.
 type AmountWithExchangeRate struct {
-	Amount
+	// READ-ONLY; Amount currency.
+	Currency *string `json:"currency,omitempty" azure:"ro"`
+
 	// READ-ONLY; The exchange rate.
 	ExchangeRate *float64 `json:"exchangeRate,omitempty" azure:"ro"`
 
 	// READ-ONLY; The exchange rate month.
 	ExchangeRateMonth *int32 `json:"exchangeRateMonth,omitempty" azure:"ro"`
+
+	// READ-ONLY; Amount.
+	Value *float64 `json:"value,omitempty" azure:"ro"`
 }
 
 // Balance - A balance resource.
 type Balance struct {
-	Resource
 	// The properties of the balance.
 	Properties *BalanceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Balance.
-func (b Balance) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", b.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; The etag for the resource.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type Balance.
-func (b *Balance) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &b.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := b.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The full qualified ARM ID of an event.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID that uniquely identifies an event.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource tags.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // BalanceProperties - The properties of the balance.
@@ -134,27 +118,6 @@ type BalanceProperties struct {
 	Utilized *float64 `json:"utilized,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type BalanceProperties.
-func (b BalanceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "adjustmentDetails", b.AdjustmentDetails)
-	populate(objectMap, "adjustments", b.Adjustments)
-	populate(objectMap, "azureMarketplaceServiceCharges", b.AzureMarketplaceServiceCharges)
-	populate(objectMap, "beginningBalance", b.BeginningBalance)
-	populate(objectMap, "billingFrequency", b.BillingFrequency)
-	populate(objectMap, "chargesBilledSeparately", b.ChargesBilledSeparately)
-	populate(objectMap, "currency", b.Currency)
-	populate(objectMap, "endingBalance", b.EndingBalance)
-	populate(objectMap, "newPurchases", b.NewPurchases)
-	populate(objectMap, "newPurchasesDetails", b.NewPurchasesDetails)
-	populate(objectMap, "priceHidden", b.PriceHidden)
-	populate(objectMap, "serviceOverage", b.ServiceOverage)
-	populate(objectMap, "totalOverage", b.TotalOverage)
-	populate(objectMap, "totalUsage", b.TotalUsage)
-	populate(objectMap, "utilized", b.Utilized)
-	return json.Marshal(objectMap)
-}
-
 type BalancePropertiesAdjustmentDetailsItem struct {
 	// READ-ONLY; the name of new adjustment.
 	Name *string `json:"name,omitempty" azure:"ro"`
@@ -171,21 +134,34 @@ type BalancePropertiesNewPurchasesDetailsItem struct {
 	Value *float64 `json:"value,omitempty" azure:"ro"`
 }
 
-// BalancesGetByBillingAccountOptions contains the optional parameters for the Balances.GetByBillingAccount method.
-type BalancesGetByBillingAccountOptions struct {
+// BalancesClientGetByBillingAccountOptions contains the optional parameters for the BalancesClient.GetByBillingAccount method.
+type BalancesClientGetByBillingAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BalancesGetForBillingPeriodByBillingAccountOptions contains the optional parameters for the Balances.GetForBillingPeriodByBillingAccount method.
-type BalancesGetForBillingPeriodByBillingAccountOptions struct {
+// BalancesClientGetForBillingPeriodByBillingAccountOptions contains the optional parameters for the BalancesClient.GetForBillingPeriodByBillingAccount
+// method.
+type BalancesClientGetForBillingPeriodByBillingAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
 // Budget - A budget resource.
 type Budget struct {
-	ProxyResource
+	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
+	// the latest version or not.
+	ETag *string `json:"eTag,omitempty"`
+
 	// The properties of the budget.
 	Properties *BudgetProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // BudgetComparisonExpression - The comparison expression to be used in the budgets.
@@ -200,15 +176,6 @@ type BudgetComparisonExpression struct {
 	Values []*string `json:"values,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type BudgetComparisonExpression.
-func (b BudgetComparisonExpression) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "name", b.Name)
-	populate(objectMap, "operator", b.Operator)
-	populate(objectMap, "values", b.Values)
-	return json.Marshal(objectMap)
-}
-
 // BudgetFilter - May be used to filter budgets by resource group, resource, or meter.
 type BudgetFilter struct {
 	// The logical "AND" expression. Must have at least 2 items.
@@ -217,21 +184,8 @@ type BudgetFilter struct {
 	// Has comparison expression for a dimension
 	Dimensions *BudgetComparisonExpression `json:"dimensions,omitempty"`
 
-	// The logical "NOT" expression.
-	Not *BudgetFilterProperties `json:"not,omitempty"`
-
 	// Has comparison expression for a tag
 	Tags *BudgetComparisonExpression `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BudgetFilter.
-func (b BudgetFilter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "and", b.And)
-	populate(objectMap, "dimensions", b.Dimensions)
-	populate(objectMap, "not", b.Not)
-	populate(objectMap, "tags", b.Tags)
-	return json.Marshal(objectMap)
 }
 
 // BudgetFilterProperties - The Dimensions or Tags to filter a budget by.
@@ -251,13 +205,14 @@ type BudgetProperties struct {
 	// REQUIRED; The category of the budget, whether the budget tracks cost or usage.
 	Category *CategoryType `json:"category,omitempty"`
 
-	// REQUIRED; The time covered by a budget. Tracking of the amount will be reset based on the time grain. BillingMonth, BillingQuarter, and BillingAnnual
-	// are only supported by WD customers
+	// REQUIRED; The time covered by a budget. Tracking of the amount will be reset based on the time grain. BillingMonth, BillingQuarter,
+	// and BillingAnnual are only supported by WD customers
 	TimeGrain *TimeGrainType `json:"timeGrain,omitempty"`
 
-	// REQUIRED; Has start and end date of the budget. The start date must be first of the month and should be less than the end date. Budget start date must
-	// be on or after June 1, 2017. Future start date should not
-	// be more than twelve months. Past start date should be selected within the timegrain period. There are no restrictions on the end date.
+	// REQUIRED; Has start and end date of the budget. The start date must be first of the month and should be less than the end
+	// date. Budget start date must be on or after June 1, 2017. Future start date should not
+	// be more than twelve months. Past start date should be selected within the timegrain period. There are no restrictions on
+	// the end date.
 	TimePeriod *BudgetTimePeriod `json:"timePeriod,omitempty"`
 
 	// May be used to filter budgets by user-specified dimensions and/or tags.
@@ -273,20 +228,6 @@ type BudgetProperties struct {
 	ForecastSpend *ForecastSpend `json:"forecastSpend,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type BudgetProperties.
-func (b BudgetProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "amount", b.Amount)
-	populate(objectMap, "category", b.Category)
-	populate(objectMap, "currentSpend", b.CurrentSpend)
-	populate(objectMap, "filter", b.Filter)
-	populate(objectMap, "forecastSpend", b.ForecastSpend)
-	populate(objectMap, "notifications", b.Notifications)
-	populate(objectMap, "timeGrain", b.TimeGrain)
-	populate(objectMap, "timePeriod", b.TimePeriod)
-	return json.Marshal(objectMap)
-}
-
 // BudgetTimePeriod - The start and end date for a budget.
 type BudgetTimePeriod struct {
 	// REQUIRED; The start date for the budget.
@@ -296,54 +237,23 @@ type BudgetTimePeriod struct {
 	EndDate *time.Time `json:"endDate,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type BudgetTimePeriod.
-func (b BudgetTimePeriod) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endDate", b.EndDate)
-	populateTimeRFC3339(objectMap, "startDate", b.StartDate)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BudgetTimePeriod.
-func (b *BudgetTimePeriod) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endDate":
-			err = unpopulateTimeRFC3339(val, &b.EndDate)
-			delete(rawMsg, key)
-		case "startDate":
-			err = unpopulateTimeRFC3339(val, &b.StartDate)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// BudgetsCreateOrUpdateOptions contains the optional parameters for the Budgets.CreateOrUpdate method.
-type BudgetsCreateOrUpdateOptions struct {
+// BudgetsClientCreateOrUpdateOptions contains the optional parameters for the BudgetsClient.CreateOrUpdate method.
+type BudgetsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BudgetsDeleteOptions contains the optional parameters for the Budgets.Delete method.
-type BudgetsDeleteOptions struct {
+// BudgetsClientDeleteOptions contains the optional parameters for the BudgetsClient.Delete method.
+type BudgetsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BudgetsGetOptions contains the optional parameters for the Budgets.Get method.
-type BudgetsGetOptions struct {
+// BudgetsClientGetOptions contains the optional parameters for the BudgetsClient.Get method.
+type BudgetsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BudgetsListOptions contains the optional parameters for the Budgets.List method.
-type BudgetsListOptions struct {
+// BudgetsClientListOptions contains the optional parameters for the BudgetsClient.List method.
+type BudgetsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -354,14 +264,6 @@ type BudgetsListResult struct {
 
 	// READ-ONLY; The list of budgets.
 	Value []*Budget `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BudgetsListResult.
-func (b BudgetsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", b.NextLink)
-	populate(objectMap, "value", b.Value)
-	return json.Marshal(objectMap)
 }
 
 // ChargeSummaryClassification provides polymorphic access to related types.
@@ -375,56 +277,37 @@ type ChargeSummaryClassification interface {
 
 // ChargeSummary - A charge summary resource.
 type ChargeSummary struct {
-	Resource
 	// REQUIRED; Specifies the kind of charge summary.
 	Kind *ChargeSummaryKind `json:"kind,omitempty"`
+
+	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
+	// the latest version or not.
+	ETag *string `json:"eTag,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // GetChargeSummary implements the ChargeSummaryClassification interface for type ChargeSummary.
 func (c *ChargeSummary) GetChargeSummary() *ChargeSummary { return c }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ChargeSummary.
-func (c *ChargeSummary) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return c.unmarshalInternal(rawMsg)
-}
-
-func (c ChargeSummary) marshalInternal(objectMap map[string]interface{}, discValue ChargeSummaryKind) {
-	c.Resource.marshalInternal(objectMap)
-	c.Kind = &discValue
-	objectMap["kind"] = c.Kind
-}
-
-func (c *ChargeSummary) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &c.Kind)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := c.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// ChargesListOptions contains the optional parameters for the Charges.List method.
-type ChargesListOptions struct {
-	// May be used to group charges for billingAccount scope by properties/billingProfileId, properties/invoiceSectionId, properties/customerId (specific for
-	// Partner Led), or for billingProfile scope by properties/invoiceSectionId.
+// ChargesClientListOptions contains the optional parameters for the ChargesClient.List method.
+type ChargesClientListOptions struct {
+	// May be used to group charges for billingAccount scope by properties/billingProfileId, properties/invoiceSectionId, properties/customerId
+	// (specific for Partner Led), or for billingProfile scope by
+	// properties/invoiceSectionId.
 	Apply *string
 	// End date
 	EndDate *string
-	// May be used to filter charges by properties/usageEnd (Utc time), properties/usageStart (Utc time). The filter supports 'eq', 'lt', 'gt', 'le', 'ge',
-	// and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
+	// May be used to filter charges by properties/usageEnd (Utc time), properties/usageStart (Utc time). The filter supports
+	// 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne',
+	// 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
 	Filter *string
 	// Start date
 	StartDate *string
@@ -434,33 +317,6 @@ type ChargesListOptions struct {
 type ChargesListResult struct {
 	// READ-ONLY; The list of charge summary
 	Value []ChargeSummaryClassification `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ChargesListResult.
-func (c ChargesListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ChargesListResult.
-func (c *ChargesListResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "value":
-			c.Value, err = unmarshalChargeSummaryClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // CreditBalanceSummary - Summary of credit balances.
@@ -477,40 +333,23 @@ type CreditBalanceSummary struct {
 
 // CreditSummary - A credit summary resource.
 type CreditSummary struct {
-	Resource
 	// The properties of the credit summary.
 	Properties *CreditSummaryProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type CreditSummary.
-func (c CreditSummary) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; The etag for the resource.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type CreditSummary.
-func (c *CreditSummary) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &c.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := c.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The full qualified ARM ID of an event.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID that uniquely identifies an event.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource tags.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // CreditSummaryProperties - The properties of the credit summary.
@@ -540,8 +379,8 @@ type CreditSummaryProperties struct {
 	Reseller *Reseller `json:"reseller,omitempty" azure:"ro"`
 }
 
-// CreditsGetOptions contains the optional parameters for the Credits.Get method.
-type CreditsGetOptions struct {
+// CreditsClientGetOptions contains the optional parameters for the CreditsClient.Get method.
+type CreditsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -572,23 +411,17 @@ type ErrorDetails struct {
 	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
-// ErrorResponse - Error response indicates that the service is not able to process the incoming request. The reason is provided in the error message.
+// ErrorResponse - Error response indicates that the service is not able to process the incoming request. The reason is provided
+// in the error message.
 // Some Error responses:
-// * 429 TooManyRequests - Request is throttled. Retry after waiting for the time specified in the "x-ms-ratelimit-microsoft.consumption-retry-after" header.
+// * 429 TooManyRequests - Request is throttled. Retry after waiting for the time specified in the "x-ms-ratelimit-microsoft.consumption-retry-after"
+// header.
 //
-//
-// * 503 ServiceUnavailable - Service is temporarily unavailable. Retry after waiting for the time specified in the "Retry-After" header.
-// Implements the error and azcore.HTTPResponse interfaces.
+// * 503 ServiceUnavailable - Service is temporarily unavailable. Retry after waiting for the time specified in the "Retry-After"
+// header.
 type ErrorResponse struct {
-	raw string
 	// The details of the error.
-	InnerError *ErrorDetails `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetails `json:"error,omitempty"`
 }
 
 // EventProperties - The event properties.
@@ -605,11 +438,12 @@ type EventProperties struct {
 	// READ-ONLY; The billing currency of the event.
 	BillingCurrency *string `json:"billingCurrency,omitempty" azure:"ro"`
 
-	// READ-ONLY; The display name of the billing profile for which the event happened. The property is only available for billing account of type MicrosoftCustomerAgreement.
+	// READ-ONLY; The display name of the billing profile for which the event happened. The property is only available for billing
+	// account of type MicrosoftCustomerAgreement.
 	BillingProfileDisplayName *string `json:"billingProfileDisplayName,omitempty" azure:"ro"`
 
-	// READ-ONLY; The ID that uniquely identifies the billing profile for which the event happened. The property is only available for billing account of type
-	// MicrosoftCustomerAgreement.
+	// READ-ONLY; The ID that uniquely identifies the billing profile for which the event happened. The property is only available
+	// for billing account of type MicrosoftCustomerAgreement.
 	BillingProfileID *string `json:"billingProfileId,omitempty" azure:"ro"`
 
 	// READ-ONLY; Amount of canceled credit.
@@ -642,7 +476,8 @@ type EventProperties struct {
 	// READ-ONLY; The eTag for the resource.
 	ETag *string `json:"eTag,omitempty" azure:"ro"`
 
-	// READ-ONLY; The number which uniquely identifies the invoice on which the event was billed. This will be empty for unbilled events.
+	// READ-ONLY; The number which uniquely identifies the invoice on which the event was billed. This will be empty for unbilled
+	// events.
 	InvoiceNumber *string `json:"invoiceNumber,omitempty" azure:"ro"`
 
 	// READ-ONLY; The ID that uniquely identifies the lot for which the event happened.
@@ -664,157 +499,23 @@ type EventProperties struct {
 	TransactionDate *time.Time `json:"transactionDate,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EventProperties.
-func (e EventProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "adjustments", e.Adjustments)
-	populate(objectMap, "adjustmentsInBillingCurrency", e.AdjustmentsInBillingCurrency)
-	populate(objectMap, "billingCurrency", e.BillingCurrency)
-	populate(objectMap, "billingProfileDisplayName", e.BillingProfileDisplayName)
-	populate(objectMap, "billingProfileId", e.BillingProfileID)
-	populate(objectMap, "canceledCredit", e.CanceledCredit)
-	populate(objectMap, "charges", e.Charges)
-	populate(objectMap, "chargesInBillingCurrency", e.ChargesInBillingCurrency)
-	populate(objectMap, "closedBalance", e.ClosedBalance)
-	populate(objectMap, "closedBalanceInBillingCurrency", e.ClosedBalanceInBillingCurrency)
-	populate(objectMap, "creditCurrency", e.CreditCurrency)
-	populate(objectMap, "creditExpired", e.CreditExpired)
-	populate(objectMap, "creditExpiredInBillingCurrency", e.CreditExpiredInBillingCurrency)
-	populate(objectMap, "description", e.Description)
-	populate(objectMap, "eTag", e.ETag)
-	populate(objectMap, "eventType", e.EventType)
-	populate(objectMap, "invoiceNumber", e.InvoiceNumber)
-	populate(objectMap, "lotId", e.LotID)
-	populate(objectMap, "lotSource", e.LotSource)
-	populate(objectMap, "newCredit", e.NewCredit)
-	populate(objectMap, "newCreditInBillingCurrency", e.NewCreditInBillingCurrency)
-	populate(objectMap, "reseller", e.Reseller)
-	populateTimeRFC3339(objectMap, "transactionDate", e.TransactionDate)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EventProperties.
-func (e *EventProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "adjustments":
-			err = unpopulate(val, &e.Adjustments)
-			delete(rawMsg, key)
-		case "adjustmentsInBillingCurrency":
-			err = unpopulate(val, &e.AdjustmentsInBillingCurrency)
-			delete(rawMsg, key)
-		case "billingCurrency":
-			err = unpopulate(val, &e.BillingCurrency)
-			delete(rawMsg, key)
-		case "billingProfileDisplayName":
-			err = unpopulate(val, &e.BillingProfileDisplayName)
-			delete(rawMsg, key)
-		case "billingProfileId":
-			err = unpopulate(val, &e.BillingProfileID)
-			delete(rawMsg, key)
-		case "canceledCredit":
-			err = unpopulate(val, &e.CanceledCredit)
-			delete(rawMsg, key)
-		case "charges":
-			err = unpopulate(val, &e.Charges)
-			delete(rawMsg, key)
-		case "chargesInBillingCurrency":
-			err = unpopulate(val, &e.ChargesInBillingCurrency)
-			delete(rawMsg, key)
-		case "closedBalance":
-			err = unpopulate(val, &e.ClosedBalance)
-			delete(rawMsg, key)
-		case "closedBalanceInBillingCurrency":
-			err = unpopulate(val, &e.ClosedBalanceInBillingCurrency)
-			delete(rawMsg, key)
-		case "creditCurrency":
-			err = unpopulate(val, &e.CreditCurrency)
-			delete(rawMsg, key)
-		case "creditExpired":
-			err = unpopulate(val, &e.CreditExpired)
-			delete(rawMsg, key)
-		case "creditExpiredInBillingCurrency":
-			err = unpopulate(val, &e.CreditExpiredInBillingCurrency)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &e.Description)
-			delete(rawMsg, key)
-		case "eTag":
-			err = unpopulate(val, &e.ETag)
-			delete(rawMsg, key)
-		case "eventType":
-			err = unpopulate(val, &e.EventType)
-			delete(rawMsg, key)
-		case "invoiceNumber":
-			err = unpopulate(val, &e.InvoiceNumber)
-			delete(rawMsg, key)
-		case "lotId":
-			err = unpopulate(val, &e.LotID)
-			delete(rawMsg, key)
-		case "lotSource":
-			err = unpopulate(val, &e.LotSource)
-			delete(rawMsg, key)
-		case "newCredit":
-			err = unpopulate(val, &e.NewCredit)
-			delete(rawMsg, key)
-		case "newCreditInBillingCurrency":
-			err = unpopulate(val, &e.NewCreditInBillingCurrency)
-			delete(rawMsg, key)
-		case "reseller":
-			err = unpopulate(val, &e.Reseller)
-			delete(rawMsg, key)
-		case "transactionDate":
-			err = unpopulateTimeRFC3339(val, &e.TransactionDate)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // EventSummary - An event summary resource.
 type EventSummary struct {
-	Resource
+	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
+	// the latest version or not.
+	ETag *string `json:"eTag,omitempty"`
+
 	// The event properties.
 	Properties *EventProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type EventSummary.
-func (e EventSummary) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	e.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", e.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type EventSummary.
-func (e *EventSummary) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &e.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := e.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Events - Result of listing event summary.
@@ -826,30 +527,23 @@ type Events struct {
 	Value []*EventSummary `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Events.
-func (e Events) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
-}
-
-// EventsListByBillingAccountOptions contains the optional parameters for the Events.ListByBillingAccount method.
-type EventsListByBillingAccountOptions struct {
-	// May be used to filter the events by lotId, lotSource etc. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support
-	// 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
+// EventsClientListByBillingAccountOptions contains the optional parameters for the EventsClient.ListByBillingAccount method.
+type EventsClientListByBillingAccountOptions struct {
+	// May be used to filter the events by lotId, lotSource etc. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'.
+	// It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value
+	// pair string where key and value is separated by a colon (:).
 	Filter *string
 }
 
-// EventsListByBillingProfileOptions contains the optional parameters for the Events.ListByBillingProfile method.
-type EventsListByBillingProfileOptions struct {
+// EventsClientListByBillingProfileOptions contains the optional parameters for the EventsClient.ListByBillingProfile method.
+type EventsClientListByBillingProfileOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ForecastSpend - The forecasted cost which is being tracked for a budget.
 type ForecastSpend struct {
-	// READ-ONLY; The forecasted cost for the total time period which is being tracked by the budget. This value is only provided if the budget contains a forecast
-	// alert type.
+	// READ-ONLY; The forecasted cost for the total time period which is being tracked by the budget. This value is only provided
+	// if the budget contains a forecast alert type.
 	Amount *float64 `json:"amount,omitempty" azure:"ro"`
 
 	// READ-ONLY; The unit of measure for the budget amount.
@@ -865,61 +559,50 @@ type HighCasedErrorDetails struct {
 	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
-// HighCasedErrorResponse - Error response indicates that the service is not able to process the incoming request. The reason is provided in the error message.
+// HighCasedErrorResponse - Error response indicates that the service is not able to process the incoming request. The reason
+// is provided in the error message.
 // Some Error responses:
-// * 429 TooManyRequests - Request is throttled. Retry after waiting for the time specified in the "x-ms-ratelimit-microsoft.consumption-retry-after" header.
+// * 429 TooManyRequests - Request is throttled. Retry after waiting for the time specified in the "x-ms-ratelimit-microsoft.consumption-retry-after"
+// header.
 //
-//
-// * 503 ServiceUnavailable - Service is temporarily unavailable. Retry after waiting for the time specified in the "Retry-After" header.
-// Implements the error and azcore.HTTPResponse interfaces.
+// * 503 ServiceUnavailable - Service is temporarily unavailable. Retry after waiting for the time specified in the "Retry-After"
+// header.
 type HighCasedErrorResponse struct {
-	raw string
 	// The details of the error.
-	InnerError *HighCasedErrorDetails `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type HighCasedErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e HighCasedErrorResponse) Error() string {
-	return e.raw
+	Error *HighCasedErrorDetails `json:"error,omitempty"`
 }
 
 // LegacyChargeSummary - Legacy charge summary.
 type LegacyChargeSummary struct {
-	ChargeSummary
+	// REQUIRED; Specifies the kind of charge summary.
+	Kind *ChargeSummaryKind `json:"kind,omitempty"`
+
 	// REQUIRED; Properties for legacy charge summary
 	Properties *LegacyChargeSummaryProperties `json:"properties,omitempty"`
+
+	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
+	// the latest version or not.
+	ETag *string `json:"eTag,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LegacyChargeSummary.
-func (l LegacyChargeSummary) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	l.ChargeSummary.marshalInternal(objectMap, ChargeSummaryKindLegacy)
-	populate(objectMap, "properties", l.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type LegacyChargeSummary.
-func (l *LegacyChargeSummary) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetChargeSummary implements the ChargeSummaryClassification interface for type LegacyChargeSummary.
+func (l *LegacyChargeSummary) GetChargeSummary() *ChargeSummary {
+	return &ChargeSummary{
+		Kind: l.Kind,
+		ID:   l.ID,
+		Name: l.Name,
+		Type: l.Type,
+		ETag: l.ETag,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &l.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := l.ChargeSummary.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // LegacyChargeSummaryProperties - The properties of legacy charge summary.
@@ -948,44 +631,62 @@ type LegacyChargeSummaryProperties struct {
 
 // LegacyReservationRecommendation - Legacy reservation recommendation.
 type LegacyReservationRecommendation struct {
-	ReservationRecommendation
+	// REQUIRED; Specifies the kind of reservation recommendation.
+	Kind *ReservationRecommendationKind `json:"kind,omitempty"`
+
 	// REQUIRED; Properties for legacy reservation recommendation
-	Properties *LegacyReservationRecommendationProperties `json:"properties,omitempty"`
+	Properties LegacyReservationRecommendationPropertiesClassification `json:"properties,omitempty"`
+
+	// READ-ONLY; The etag for the resource.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; The full qualified ARM ID of an event.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource location
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID that uniquely identifies an event.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource sku
+	SKU *string `json:"sku,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource tags.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LegacyReservationRecommendation.
-func (l LegacyReservationRecommendation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	l.ReservationRecommendation.marshalInternal(objectMap, ReservationRecommendationKindLegacy)
-	populate(objectMap, "properties", l.Properties)
-	return json.Marshal(objectMap)
+// GetReservationRecommendation implements the ReservationRecommendationClassification interface for type LegacyReservationRecommendation.
+func (l *LegacyReservationRecommendation) GetReservationRecommendation() *ReservationRecommendation {
+	return &ReservationRecommendation{
+		Kind:     l.Kind,
+		ID:       l.ID,
+		Name:     l.Name,
+		Type:     l.Type,
+		Etag:     l.Etag,
+		Tags:     l.Tags,
+		Location: l.Location,
+		SKU:      l.SKU,
+	}
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type LegacyReservationRecommendation.
-func (l *LegacyReservationRecommendation) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &l.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := l.ReservationRecommendation.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+// LegacyReservationRecommendationPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetLegacyReservationRecommendationProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *LegacyReservationRecommendationProperties, *LegacySharedScopeReservationRecommendationProperties, *LegacySingleScopeReservationRecommendationProperties
+type LegacyReservationRecommendationPropertiesClassification interface {
+	// GetLegacyReservationRecommendationProperties returns the LegacyReservationRecommendationProperties content of the underlying type.
+	GetLegacyReservationRecommendationProperties() *LegacyReservationRecommendationProperties
 }
 
 // LegacyReservationRecommendationProperties - The properties of the reservation recommendation.
 type LegacyReservationRecommendationProperties struct {
+	// REQUIRED; Shared or single recommendation.
+	Scope *string `json:"scope,omitempty"`
+
 	// READ-ONLY; The total amount of cost without reserved instances.
 	CostWithNoReservedInstances *float64 `json:"costWithNoReservedInstances,omitempty" azure:"ro"`
 
@@ -1022,9 +723,6 @@ type LegacyReservationRecommendationProperties struct {
 	// READ-ONLY; List of sku properties
 	SKUProperties []*SKUProperty `json:"skuProperties,omitempty" azure:"ro"`
 
-	// READ-ONLY; Shared or single recommendation.
-	Scope *string `json:"scope,omitempty" azure:"ro"`
-
 	// READ-ONLY; RI recommendations in one or three year terms.
 	Term *string `json:"term,omitempty" azure:"ro"`
 
@@ -1032,92 +730,28 @@ type LegacyReservationRecommendationProperties struct {
 	TotalCostWithReservedInstances *float64 `json:"totalCostWithReservedInstances,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LegacyReservationRecommendationProperties.
-func (l LegacyReservationRecommendationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "costWithNoReservedInstances", l.CostWithNoReservedInstances)
-	populateTimeRFC3339(objectMap, "firstUsageDate", l.FirstUsageDate)
-	populate(objectMap, "instanceFlexibilityGroup", l.InstanceFlexibilityGroup)
-	populate(objectMap, "instanceFlexibilityRatio", l.InstanceFlexibilityRatio)
-	populate(objectMap, "lookBackPeriod", l.LookBackPeriod)
-	populate(objectMap, "meterId", l.MeterID)
-	populate(objectMap, "netSavings", l.NetSavings)
-	populate(objectMap, "normalizedSize", l.NormalizedSize)
-	populate(objectMap, "recommendedQuantity", l.RecommendedQuantity)
-	populate(objectMap, "recommendedQuantityNormalized", l.RecommendedQuantityNormalized)
-	populate(objectMap, "resourceType", l.ResourceType)
-	populate(objectMap, "skuProperties", l.SKUProperties)
-	populate(objectMap, "scope", l.Scope)
-	populate(objectMap, "term", l.Term)
-	populate(objectMap, "totalCostWithReservedInstances", l.TotalCostWithReservedInstances)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type LegacyReservationRecommendationProperties.
-func (l *LegacyReservationRecommendationProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "costWithNoReservedInstances":
-			err = unpopulate(val, &l.CostWithNoReservedInstances)
-			delete(rawMsg, key)
-		case "firstUsageDate":
-			err = unpopulateTimeRFC3339(val, &l.FirstUsageDate)
-			delete(rawMsg, key)
-		case "instanceFlexibilityGroup":
-			err = unpopulate(val, &l.InstanceFlexibilityGroup)
-			delete(rawMsg, key)
-		case "instanceFlexibilityRatio":
-			err = unpopulate(val, &l.InstanceFlexibilityRatio)
-			delete(rawMsg, key)
-		case "lookBackPeriod":
-			err = unpopulate(val, &l.LookBackPeriod)
-			delete(rawMsg, key)
-		case "meterId":
-			err = unpopulate(val, &l.MeterID)
-			delete(rawMsg, key)
-		case "netSavings":
-			err = unpopulate(val, &l.NetSavings)
-			delete(rawMsg, key)
-		case "normalizedSize":
-			err = unpopulate(val, &l.NormalizedSize)
-			delete(rawMsg, key)
-		case "recommendedQuantity":
-			err = unpopulate(val, &l.RecommendedQuantity)
-			delete(rawMsg, key)
-		case "recommendedQuantityNormalized":
-			err = unpopulate(val, &l.RecommendedQuantityNormalized)
-			delete(rawMsg, key)
-		case "resourceType":
-			err = unpopulate(val, &l.ResourceType)
-			delete(rawMsg, key)
-		case "skuProperties":
-			err = unpopulate(val, &l.SKUProperties)
-			delete(rawMsg, key)
-		case "scope":
-			err = unpopulate(val, &l.Scope)
-			delete(rawMsg, key)
-		case "term":
-			err = unpopulate(val, &l.Term)
-			delete(rawMsg, key)
-		case "totalCostWithReservedInstances":
-			err = unpopulate(val, &l.TotalCostWithReservedInstances)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+// GetLegacyReservationRecommendationProperties implements the LegacyReservationRecommendationPropertiesClassification interface
+// for type LegacyReservationRecommendationProperties.
+func (l *LegacyReservationRecommendationProperties) GetLegacyReservationRecommendationProperties() *LegacyReservationRecommendationProperties {
+	return l
 }
 
 // LegacyReservationTransaction - Legacy Reservation transaction resource.
 type LegacyReservationTransaction struct {
-	ReservationTransaction
+	// The properties of a legacy reservation transaction.
+	Properties *LegacyReservationTransactionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource tags.
+	Tags []*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // LegacyReservationTransactionProperties - The properties of a legacy reservation transaction.
@@ -1136,6 +770,9 @@ type LegacyReservationTransactionProperties struct {
 
 	// READ-ONLY; The billing frequency, which can be either one-time or recurring.
 	BillingFrequency *string `json:"billingFrequency,omitempty" azure:"ro"`
+
+	// READ-ONLY; The billing month(yyyyMMdd), on which the event initiated.
+	BillingMonth *int32 `json:"billingMonth,omitempty" azure:"ro"`
 
 	// READ-ONLY; The cost center of this department if it is a department and a cost center is provided.
 	CostCenter *string `json:"costCenter,omitempty" azure:"ro"`
@@ -1158,6 +795,12 @@ type LegacyReservationTransactionProperties struct {
 	// READ-ONLY; The type of the transaction (Purchase, Cancel, etc.)
 	EventType *string `json:"eventType,omitempty" azure:"ro"`
 
+	// READ-ONLY; The monetary commitment amount at the enrollment scope.
+	MonetaryCommitment *float64 `json:"monetaryCommitment,omitempty" azure:"ro"`
+
+	// READ-ONLY; The overage amount at the enrollment scope.
+	Overage *float64 `json:"overage,omitempty" azure:"ro"`
+
 	// READ-ONLY; The purchasing enrollment.
 	PurchasingEnrollment *string `json:"purchasingEnrollment,omitempty" azure:"ro"`
 
@@ -1173,8 +816,8 @@ type LegacyReservationTransactionProperties struct {
 	// READ-ONLY; The region of the transaction.
 	Region *string `json:"region,omitempty" azure:"ro"`
 
-	// READ-ONLY; The reservation order ID is the identifier for a reservation purchase. Each reservation order ID represents a single purchase transaction.
-	// A reservation order contains reservations. The reservation
+	// READ-ONLY; The reservation order ID is the identifier for a reservation purchase. Each reservation order ID represents
+	// a single purchase transaction. A reservation order contains reservations. The reservation
 	// order specifies the VM size and region for the reservations.
 	ReservationOrderID *string `json:"reservationOrderId,omitempty" azure:"ro"`
 
@@ -1185,145 +828,185 @@ type LegacyReservationTransactionProperties struct {
 	Term *string `json:"term,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LegacyReservationTransactionProperties.
-func (l LegacyReservationTransactionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accountName", l.AccountName)
-	populate(objectMap, "accountOwnerEmail", l.AccountOwnerEmail)
-	populate(objectMap, "amount", l.Amount)
-	populate(objectMap, "armSkuName", l.ArmSKUName)
-	populate(objectMap, "billingFrequency", l.BillingFrequency)
-	populate(objectMap, "costCenter", l.CostCenter)
-	populate(objectMap, "currency", l.Currency)
-	populate(objectMap, "currentEnrollment", l.CurrentEnrollment)
-	populate(objectMap, "departmentName", l.DepartmentName)
-	populate(objectMap, "description", l.Description)
-	populateTimeRFC3339(objectMap, "eventDate", l.EventDate)
-	populate(objectMap, "eventType", l.EventType)
-	populate(objectMap, "purchasingEnrollment", l.PurchasingEnrollment)
-	populate(objectMap, "purchasingSubscriptionGuid", l.PurchasingSubscriptionGUID)
-	populate(objectMap, "purchasingSubscriptionName", l.PurchasingSubscriptionName)
-	populate(objectMap, "quantity", l.Quantity)
-	populate(objectMap, "region", l.Region)
-	populate(objectMap, "reservationOrderId", l.ReservationOrderID)
-	populate(objectMap, "reservationOrderName", l.ReservationOrderName)
-	populate(objectMap, "term", l.Term)
-	return json.Marshal(objectMap)
+// LegacySharedScopeReservationRecommendationProperties - The properties of the legacy reservation recommendation for shared
+// scope.
+type LegacySharedScopeReservationRecommendationProperties struct {
+	// REQUIRED; Shared or single recommendation.
+	Scope *string `json:"scope,omitempty"`
+
+	// READ-ONLY; The total amount of cost without reserved instances.
+	CostWithNoReservedInstances *float64 `json:"costWithNoReservedInstances,omitempty" azure:"ro"`
+
+	// READ-ONLY; The usage date for looking back.
+	FirstUsageDate *time.Time `json:"firstUsageDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; The instance Flexibility Group.
+	InstanceFlexibilityGroup *string `json:"instanceFlexibilityGroup,omitempty" azure:"ro"`
+
+	// READ-ONLY; The instance Flexibility Ratio.
+	InstanceFlexibilityRatio *float32 `json:"instanceFlexibilityRatio,omitempty" azure:"ro"`
+
+	// READ-ONLY; The number of days of usage to look back for recommendation.
+	LookBackPeriod *string `json:"lookBackPeriod,omitempty" azure:"ro"`
+
+	// READ-ONLY; The meter id (GUID)
+	MeterID *string `json:"meterId,omitempty" azure:"ro"`
+
+	// READ-ONLY; Total estimated savings with reserved instances.
+	NetSavings *float64 `json:"netSavings,omitempty" azure:"ro"`
+
+	// READ-ONLY; The normalized Size.
+	NormalizedSize *string `json:"normalizedSize,omitempty" azure:"ro"`
+
+	// READ-ONLY; Recommended quality for reserved instances.
+	RecommendedQuantity *float64 `json:"recommendedQuantity,omitempty" azure:"ro"`
+
+	// READ-ONLY; The recommended Quantity Normalized.
+	RecommendedQuantityNormalized *float32 `json:"recommendedQuantityNormalized,omitempty" azure:"ro"`
+
+	// READ-ONLY; The azure resource type.
+	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of sku properties
+	SKUProperties []*SKUProperty `json:"skuProperties,omitempty" azure:"ro"`
+
+	// READ-ONLY; RI recommendations in one or three year terms.
+	Term *string `json:"term,omitempty" azure:"ro"`
+
+	// READ-ONLY; The total amount of cost with reserved instances.
+	TotalCostWithReservedInstances *float64 `json:"totalCostWithReservedInstances,omitempty" azure:"ro"`
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type LegacyReservationTransactionProperties.
-func (l *LegacyReservationTransactionProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetLegacyReservationRecommendationProperties implements the LegacyReservationRecommendationPropertiesClassification interface
+// for type LegacySharedScopeReservationRecommendationProperties.
+func (l *LegacySharedScopeReservationRecommendationProperties) GetLegacyReservationRecommendationProperties() *LegacyReservationRecommendationProperties {
+	return &LegacyReservationRecommendationProperties{
+		LookBackPeriod:                 l.LookBackPeriod,
+		InstanceFlexibilityRatio:       l.InstanceFlexibilityRatio,
+		InstanceFlexibilityGroup:       l.InstanceFlexibilityGroup,
+		NormalizedSize:                 l.NormalizedSize,
+		RecommendedQuantityNormalized:  l.RecommendedQuantityNormalized,
+		MeterID:                        l.MeterID,
+		ResourceType:                   l.ResourceType,
+		Term:                           l.Term,
+		CostWithNoReservedInstances:    l.CostWithNoReservedInstances,
+		RecommendedQuantity:            l.RecommendedQuantity,
+		TotalCostWithReservedInstances: l.TotalCostWithReservedInstances,
+		NetSavings:                     l.NetSavings,
+		FirstUsageDate:                 l.FirstUsageDate,
+		Scope:                          l.Scope,
+		SKUProperties:                  l.SKUProperties,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "accountName":
-			err = unpopulate(val, &l.AccountName)
-			delete(rawMsg, key)
-		case "accountOwnerEmail":
-			err = unpopulate(val, &l.AccountOwnerEmail)
-			delete(rawMsg, key)
-		case "amount":
-			err = unpopulate(val, &l.Amount)
-			delete(rawMsg, key)
-		case "armSkuName":
-			err = unpopulate(val, &l.ArmSKUName)
-			delete(rawMsg, key)
-		case "billingFrequency":
-			err = unpopulate(val, &l.BillingFrequency)
-			delete(rawMsg, key)
-		case "costCenter":
-			err = unpopulate(val, &l.CostCenter)
-			delete(rawMsg, key)
-		case "currency":
-			err = unpopulate(val, &l.Currency)
-			delete(rawMsg, key)
-		case "currentEnrollment":
-			err = unpopulate(val, &l.CurrentEnrollment)
-			delete(rawMsg, key)
-		case "departmentName":
-			err = unpopulate(val, &l.DepartmentName)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &l.Description)
-			delete(rawMsg, key)
-		case "eventDate":
-			err = unpopulateTimeRFC3339(val, &l.EventDate)
-			delete(rawMsg, key)
-		case "eventType":
-			err = unpopulate(val, &l.EventType)
-			delete(rawMsg, key)
-		case "purchasingEnrollment":
-			err = unpopulate(val, &l.PurchasingEnrollment)
-			delete(rawMsg, key)
-		case "purchasingSubscriptionGuid":
-			err = unpopulate(val, &l.PurchasingSubscriptionGUID)
-			delete(rawMsg, key)
-		case "purchasingSubscriptionName":
-			err = unpopulate(val, &l.PurchasingSubscriptionName)
-			delete(rawMsg, key)
-		case "quantity":
-			err = unpopulate(val, &l.Quantity)
-			delete(rawMsg, key)
-		case "region":
-			err = unpopulate(val, &l.Region)
-			delete(rawMsg, key)
-		case "reservationOrderId":
-			err = unpopulate(val, &l.ReservationOrderID)
-			delete(rawMsg, key)
-		case "reservationOrderName":
-			err = unpopulate(val, &l.ReservationOrderName)
-			delete(rawMsg, key)
-		case "term":
-			err = unpopulate(val, &l.Term)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
+}
+
+// LegacySingleScopeReservationRecommendationProperties - The properties of the legacy reservation recommendation for single
+// scope.
+type LegacySingleScopeReservationRecommendationProperties struct {
+	// REQUIRED; Shared or single recommendation.
+	Scope *string `json:"scope,omitempty"`
+
+	// READ-ONLY; The total amount of cost without reserved instances.
+	CostWithNoReservedInstances *float64 `json:"costWithNoReservedInstances,omitempty" azure:"ro"`
+
+	// READ-ONLY; The usage date for looking back.
+	FirstUsageDate *time.Time `json:"firstUsageDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; The instance Flexibility Group.
+	InstanceFlexibilityGroup *string `json:"instanceFlexibilityGroup,omitempty" azure:"ro"`
+
+	// READ-ONLY; The instance Flexibility Ratio.
+	InstanceFlexibilityRatio *float32 `json:"instanceFlexibilityRatio,omitempty" azure:"ro"`
+
+	// READ-ONLY; The number of days of usage to look back for recommendation.
+	LookBackPeriod *string `json:"lookBackPeriod,omitempty" azure:"ro"`
+
+	// READ-ONLY; The meter id (GUID)
+	MeterID *string `json:"meterId,omitempty" azure:"ro"`
+
+	// READ-ONLY; Total estimated savings with reserved instances.
+	NetSavings *float64 `json:"netSavings,omitempty" azure:"ro"`
+
+	// READ-ONLY; The normalized Size.
+	NormalizedSize *string `json:"normalizedSize,omitempty" azure:"ro"`
+
+	// READ-ONLY; Recommended quality for reserved instances.
+	RecommendedQuantity *float64 `json:"recommendedQuantity,omitempty" azure:"ro"`
+
+	// READ-ONLY; The recommended Quantity Normalized.
+	RecommendedQuantityNormalized *float32 `json:"recommendedQuantityNormalized,omitempty" azure:"ro"`
+
+	// READ-ONLY; The azure resource type.
+	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of sku properties
+	SKUProperties []*SKUProperty `json:"skuProperties,omitempty" azure:"ro"`
+
+	// READ-ONLY; Subscription id associated with single scoped recommendation.
+	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
+
+	// READ-ONLY; RI recommendations in one or three year terms.
+	Term *string `json:"term,omitempty" azure:"ro"`
+
+	// READ-ONLY; The total amount of cost with reserved instances.
+	TotalCostWithReservedInstances *float64 `json:"totalCostWithReservedInstances,omitempty" azure:"ro"`
+}
+
+// GetLegacyReservationRecommendationProperties implements the LegacyReservationRecommendationPropertiesClassification interface
+// for type LegacySingleScopeReservationRecommendationProperties.
+func (l *LegacySingleScopeReservationRecommendationProperties) GetLegacyReservationRecommendationProperties() *LegacyReservationRecommendationProperties {
+	return &LegacyReservationRecommendationProperties{
+		LookBackPeriod:                 l.LookBackPeriod,
+		InstanceFlexibilityRatio:       l.InstanceFlexibilityRatio,
+		InstanceFlexibilityGroup:       l.InstanceFlexibilityGroup,
+		NormalizedSize:                 l.NormalizedSize,
+		RecommendedQuantityNormalized:  l.RecommendedQuantityNormalized,
+		MeterID:                        l.MeterID,
+		ResourceType:                   l.ResourceType,
+		Term:                           l.Term,
+		CostWithNoReservedInstances:    l.CostWithNoReservedInstances,
+		RecommendedQuantity:            l.RecommendedQuantity,
+		TotalCostWithReservedInstances: l.TotalCostWithReservedInstances,
+		NetSavings:                     l.NetSavings,
+		FirstUsageDate:                 l.FirstUsageDate,
+		Scope:                          l.Scope,
+		SKUProperties:                  l.SKUProperties,
 	}
-	return nil
 }
 
 // LegacyUsageDetail - Legacy usage detail.
 type LegacyUsageDetail struct {
-	UsageDetail
+	// REQUIRED; Specifies the kind of usage details.
+	Kind *UsageDetailsKind `json:"kind,omitempty"`
+
 	// REQUIRED; Properties for legacy usage details
 	Properties *LegacyUsageDetailProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The etag for the resource.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; The full qualified ARM ID of an event.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID that uniquely identifies an event.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource tags.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LegacyUsageDetail.
-func (l LegacyUsageDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	l.UsageDetail.marshalInternal(objectMap, UsageDetailsKindLegacy)
-	populate(objectMap, "properties", l.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type LegacyUsageDetail.
-func (l *LegacyUsageDetail) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetUsageDetail implements the UsageDetailClassification interface for type LegacyUsageDetail.
+func (l *LegacyUsageDetail) GetUsageDetail() *UsageDetail {
+	return &UsageDetail{
+		Kind: l.Kind,
+		ID:   l.ID,
+		Name: l.Name,
+		Type: l.Type,
+		Etag: l.Etag,
+		Tags: l.Tags,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &l.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := l.UsageDetail.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // LegacyUsageDetailProperties - The properties of the legacy usage detail.
@@ -1334,10 +1017,16 @@ type LegacyUsageDetailProperties struct {
 	// READ-ONLY; Account Owner Id.
 	AccountOwnerID *string `json:"accountOwnerId,omitempty" azure:"ro"`
 
-	// READ-ONLY; Additional details of this usage item. By default this is not populated, unless it's specified in $expand. Use this field to get usage line
-	// item specific details such as the actual VM Size
+	// READ-ONLY; Additional details of this usage item. By default this is not populated, unless it's specified in $expand. Use
+	// this field to get usage line item specific details such as the actual VM Size
 	// (ServiceType) or the ratio in which the reservation discount is applied.
 	AdditionalInfo *string `json:"additionalInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; Unique identifier for the applicable benefit.
+	BenefitID *string `json:"benefitId,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the applicable benefit.
+	BenefitName *string `json:"benefitName,omitempty" azure:"ro"`
 
 	// READ-ONLY; Billing Account identifier.
 	BillingAccountID *string `json:"billingAccountId,omitempty" azure:"ro"`
@@ -1363,8 +1052,8 @@ type LegacyUsageDetailProperties struct {
 	// READ-ONLY; Indicates a charge represents credits, usage, a Marketplace purchase, a reservation fee, or a refund.
 	ChargeType *string `json:"chargeType,omitempty" azure:"ro"`
 
-	// READ-ONLY; Consumed service name. Name of the azure resource provider that emits the usage or was purchased. This value is not provided for marketplace
-	// usage.
+	// READ-ONLY; Consumed service name. Name of the azure resource provider that emits the usage or was purchased. This value
+	// is not provided for marketplace usage.
 	ConsumedService *string `json:"consumedService,omitempty" azure:"ro"`
 
 	// READ-ONLY; The amount of cost before tax.
@@ -1379,8 +1068,8 @@ type LegacyUsageDetailProperties struct {
 	// READ-ONLY; Effective Price that's charged for the usage.
 	EffectivePrice *float64 `json:"effectivePrice,omitempty" azure:"ro"`
 
-	// READ-ONLY; Indicates how frequently this charge will occur. OneTime for purchases which only happen once, Monthly for fees which recur every month, and
-	// UsageBased for charges based on how much a service is used.
+	// READ-ONLY; Indicates how frequently this charge will occur. OneTime for purchases which only happen once, Monthly for fees
+	// which recur every month, and UsageBased for charges based on how much a service is used.
 	Frequency *string `json:"frequency,omitempty" azure:"ro"`
 
 	// READ-ONLY; Invoice Section Name.
@@ -1392,8 +1081,8 @@ type LegacyUsageDetailProperties struct {
 	// READ-ONLY; The details about the meter. By default this is not populated, unless it's specified in $expand.
 	MeterDetails *MeterDetailsResponse `json:"meterDetails,omitempty" azure:"ro"`
 
-	// READ-ONLY; The meter id (GUID). Not available for marketplace. For reserved instance this represents the primary meter for which the reservation was
-	// purchased. For the actual VM Size for which the reservation is
+	// READ-ONLY; The meter id (GUID). Not available for marketplace. For reserved instance this represents the primary meter
+	// for which the reservation was purchased. For the actual VM Size for which the reservation is
 	// purchased see productOrderName.
 	MeterID *string `json:"meterId,omitempty" azure:"ro"`
 
@@ -1433,8 +1122,8 @@ type LegacyUsageDetailProperties struct {
 	// READ-ONLY; ARM resource id of the reservation. Only applies to records relevant to reservations.
 	ReservationID *string `json:"reservationId,omitempty" azure:"ro"`
 
-	// READ-ONLY; User provided display name of the reservation. Last known name for a particular day is populated in the daily data. Only applies to records
-	// relevant to reservations.
+	// READ-ONLY; User provided display name of the reservation. Last known name for a particular day is populated in the daily
+	// data. Only applies to records relevant to reservations.
 	ReservationName *string `json:"reservationName,omitempty" azure:"ro"`
 
 	// READ-ONLY; Resource Group Name.
@@ -1461,210 +1150,12 @@ type LegacyUsageDetailProperties struct {
 	// READ-ONLY; Subscription name.
 	SubscriptionName *string `json:"subscriptionName,omitempty" azure:"ro"`
 
-	// READ-ONLY; Term (in months). 1 month for monthly recurring purchase. 12 months for a 1 year reservation. 36 months for a 3 year reservation.
+	// READ-ONLY; Term (in months). 1 month for monthly recurring purchase. 12 months for a 1 year reservation. 36 months for
+	// a 3 year reservation.
 	Term *string `json:"term,omitempty" azure:"ro"`
 
 	// READ-ONLY; Unit Price is the price applicable to you. (your EA or other contract price).
 	UnitPrice *float64 `json:"unitPrice,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LegacyUsageDetailProperties.
-func (l LegacyUsageDetailProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accountName", l.AccountName)
-	populate(objectMap, "accountOwnerId", l.AccountOwnerID)
-	populate(objectMap, "additionalInfo", l.AdditionalInfo)
-	populate(objectMap, "billingAccountId", l.BillingAccountID)
-	populate(objectMap, "billingAccountName", l.BillingAccountName)
-	populate(objectMap, "billingCurrency", l.BillingCurrency)
-	populateTimeRFC3339(objectMap, "billingPeriodEndDate", l.BillingPeriodEndDate)
-	populateTimeRFC3339(objectMap, "billingPeriodStartDate", l.BillingPeriodStartDate)
-	populate(objectMap, "billingProfileId", l.BillingProfileID)
-	populate(objectMap, "billingProfileName", l.BillingProfileName)
-	populate(objectMap, "chargeType", l.ChargeType)
-	populate(objectMap, "consumedService", l.ConsumedService)
-	populate(objectMap, "cost", l.Cost)
-	populate(objectMap, "costCenter", l.CostCenter)
-	populateTimeRFC3339(objectMap, "date", l.Date)
-	populate(objectMap, "effectivePrice", l.EffectivePrice)
-	populate(objectMap, "frequency", l.Frequency)
-	populate(objectMap, "invoiceSection", l.InvoiceSection)
-	populate(objectMap, "isAzureCreditEligible", l.IsAzureCreditEligible)
-	populate(objectMap, "meterDetails", l.MeterDetails)
-	populate(objectMap, "meterId", l.MeterID)
-	populate(objectMap, "offerId", l.OfferID)
-	populate(objectMap, "partNumber", l.PartNumber)
-	populate(objectMap, "payGPrice", l.PayGPrice)
-	populate(objectMap, "planName", l.PlanName)
-	populate(objectMap, "pricingModel", l.PricingModel)
-	populate(objectMap, "product", l.Product)
-	populate(objectMap, "productOrderId", l.ProductOrderID)
-	populate(objectMap, "productOrderName", l.ProductOrderName)
-	populate(objectMap, "publisherName", l.PublisherName)
-	populate(objectMap, "publisherType", l.PublisherType)
-	populate(objectMap, "quantity", l.Quantity)
-	populate(objectMap, "reservationId", l.ReservationID)
-	populate(objectMap, "reservationName", l.ReservationName)
-	populate(objectMap, "resourceGroup", l.ResourceGroup)
-	populate(objectMap, "resourceId", l.ResourceID)
-	populate(objectMap, "resourceLocation", l.ResourceLocation)
-	populate(objectMap, "resourceName", l.ResourceName)
-	populate(objectMap, "serviceInfo1", l.ServiceInfo1)
-	populate(objectMap, "serviceInfo2", l.ServiceInfo2)
-	populate(objectMap, "subscriptionId", l.SubscriptionID)
-	populate(objectMap, "subscriptionName", l.SubscriptionName)
-	populate(objectMap, "term", l.Term)
-	populate(objectMap, "unitPrice", l.UnitPrice)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type LegacyUsageDetailProperties.
-func (l *LegacyUsageDetailProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "accountName":
-			err = unpopulate(val, &l.AccountName)
-			delete(rawMsg, key)
-		case "accountOwnerId":
-			err = unpopulate(val, &l.AccountOwnerID)
-			delete(rawMsg, key)
-		case "additionalInfo":
-			err = unpopulate(val, &l.AdditionalInfo)
-			delete(rawMsg, key)
-		case "billingAccountId":
-			err = unpopulate(val, &l.BillingAccountID)
-			delete(rawMsg, key)
-		case "billingAccountName":
-			err = unpopulate(val, &l.BillingAccountName)
-			delete(rawMsg, key)
-		case "billingCurrency":
-			err = unpopulate(val, &l.BillingCurrency)
-			delete(rawMsg, key)
-		case "billingPeriodEndDate":
-			err = unpopulateTimeRFC3339(val, &l.BillingPeriodEndDate)
-			delete(rawMsg, key)
-		case "billingPeriodStartDate":
-			err = unpopulateTimeRFC3339(val, &l.BillingPeriodStartDate)
-			delete(rawMsg, key)
-		case "billingProfileId":
-			err = unpopulate(val, &l.BillingProfileID)
-			delete(rawMsg, key)
-		case "billingProfileName":
-			err = unpopulate(val, &l.BillingProfileName)
-			delete(rawMsg, key)
-		case "chargeType":
-			err = unpopulate(val, &l.ChargeType)
-			delete(rawMsg, key)
-		case "consumedService":
-			err = unpopulate(val, &l.ConsumedService)
-			delete(rawMsg, key)
-		case "cost":
-			err = unpopulate(val, &l.Cost)
-			delete(rawMsg, key)
-		case "costCenter":
-			err = unpopulate(val, &l.CostCenter)
-			delete(rawMsg, key)
-		case "date":
-			err = unpopulateTimeRFC3339(val, &l.Date)
-			delete(rawMsg, key)
-		case "effectivePrice":
-			err = unpopulate(val, &l.EffectivePrice)
-			delete(rawMsg, key)
-		case "frequency":
-			err = unpopulate(val, &l.Frequency)
-			delete(rawMsg, key)
-		case "invoiceSection":
-			err = unpopulate(val, &l.InvoiceSection)
-			delete(rawMsg, key)
-		case "isAzureCreditEligible":
-			err = unpopulate(val, &l.IsAzureCreditEligible)
-			delete(rawMsg, key)
-		case "meterDetails":
-			err = unpopulate(val, &l.MeterDetails)
-			delete(rawMsg, key)
-		case "meterId":
-			err = unpopulate(val, &l.MeterID)
-			delete(rawMsg, key)
-		case "offerId":
-			err = unpopulate(val, &l.OfferID)
-			delete(rawMsg, key)
-		case "partNumber":
-			err = unpopulate(val, &l.PartNumber)
-			delete(rawMsg, key)
-		case "payGPrice":
-			err = unpopulate(val, &l.PayGPrice)
-			delete(rawMsg, key)
-		case "planName":
-			err = unpopulate(val, &l.PlanName)
-			delete(rawMsg, key)
-		case "pricingModel":
-			err = unpopulate(val, &l.PricingModel)
-			delete(rawMsg, key)
-		case "product":
-			err = unpopulate(val, &l.Product)
-			delete(rawMsg, key)
-		case "productOrderId":
-			err = unpopulate(val, &l.ProductOrderID)
-			delete(rawMsg, key)
-		case "productOrderName":
-			err = unpopulate(val, &l.ProductOrderName)
-			delete(rawMsg, key)
-		case "publisherName":
-			err = unpopulate(val, &l.PublisherName)
-			delete(rawMsg, key)
-		case "publisherType":
-			err = unpopulate(val, &l.PublisherType)
-			delete(rawMsg, key)
-		case "quantity":
-			err = unpopulate(val, &l.Quantity)
-			delete(rawMsg, key)
-		case "reservationId":
-			err = unpopulate(val, &l.ReservationID)
-			delete(rawMsg, key)
-		case "reservationName":
-			err = unpopulate(val, &l.ReservationName)
-			delete(rawMsg, key)
-		case "resourceGroup":
-			err = unpopulate(val, &l.ResourceGroup)
-			delete(rawMsg, key)
-		case "resourceId":
-			err = unpopulate(val, &l.ResourceID)
-			delete(rawMsg, key)
-		case "resourceLocation":
-			err = unpopulate(val, &l.ResourceLocation)
-			delete(rawMsg, key)
-		case "resourceName":
-			err = unpopulate(val, &l.ResourceName)
-			delete(rawMsg, key)
-		case "serviceInfo1":
-			err = unpopulate(val, &l.ServiceInfo1)
-			delete(rawMsg, key)
-		case "serviceInfo2":
-			err = unpopulate(val, &l.ServiceInfo2)
-			delete(rawMsg, key)
-		case "subscriptionId":
-			err = unpopulate(val, &l.SubscriptionID)
-			delete(rawMsg, key)
-		case "subscriptionName":
-			err = unpopulate(val, &l.SubscriptionName)
-			delete(rawMsg, key)
-		case "term":
-			err = unpopulate(val, &l.Term)
-			delete(rawMsg, key)
-		case "unitPrice":
-			err = unpopulate(val, &l.UnitPrice)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // LotProperties - The lot properties.
@@ -1693,7 +1184,8 @@ type LotProperties struct {
 	// READ-ONLY; The original amount of a lot in billing currency.
 	OriginalAmountInBillingCurrency *AmountWithExchangeRate `json:"originalAmountInBillingCurrency,omitempty" azure:"ro"`
 
-	// READ-ONLY; The po number of the invoice on which the lot was added. This property is not available for ConsumptionCommitment lots.
+	// READ-ONLY; The po number of the invoice on which the lot was added. This property is not available for ConsumptionCommitment
+	// lots.
 	PoNumber *string `json:"poNumber,omitempty" azure:"ro"`
 
 	// READ-ONLY; The date when the lot was added.
@@ -1712,121 +1204,23 @@ type LotProperties struct {
 	Status *Status `json:"status,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LotProperties.
-func (l LotProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "billingCurrency", l.BillingCurrency)
-	populate(objectMap, "closedBalance", l.ClosedBalance)
-	populate(objectMap, "closedBalanceInBillingCurrency", l.ClosedBalanceInBillingCurrency)
-	populate(objectMap, "creditCurrency", l.CreditCurrency)
-	populate(objectMap, "eTag", l.ETag)
-	populateTimeRFC3339(objectMap, "expirationDate", l.ExpirationDate)
-	populate(objectMap, "originalAmount", l.OriginalAmount)
-	populate(objectMap, "originalAmountInBillingCurrency", l.OriginalAmountInBillingCurrency)
-	populate(objectMap, "poNumber", l.PoNumber)
-	populateTimeRFC3339(objectMap, "purchasedDate", l.PurchasedDate)
-	populate(objectMap, "reseller", l.Reseller)
-	populate(objectMap, "source", l.Source)
-	populateTimeRFC3339(objectMap, "startDate", l.StartDate)
-	populate(objectMap, "status", l.Status)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type LotProperties.
-func (l *LotProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "billingCurrency":
-			err = unpopulate(val, &l.BillingCurrency)
-			delete(rawMsg, key)
-		case "closedBalance":
-			err = unpopulate(val, &l.ClosedBalance)
-			delete(rawMsg, key)
-		case "closedBalanceInBillingCurrency":
-			err = unpopulate(val, &l.ClosedBalanceInBillingCurrency)
-			delete(rawMsg, key)
-		case "creditCurrency":
-			err = unpopulate(val, &l.CreditCurrency)
-			delete(rawMsg, key)
-		case "eTag":
-			err = unpopulate(val, &l.ETag)
-			delete(rawMsg, key)
-		case "expirationDate":
-			err = unpopulateTimeRFC3339(val, &l.ExpirationDate)
-			delete(rawMsg, key)
-		case "originalAmount":
-			err = unpopulate(val, &l.OriginalAmount)
-			delete(rawMsg, key)
-		case "originalAmountInBillingCurrency":
-			err = unpopulate(val, &l.OriginalAmountInBillingCurrency)
-			delete(rawMsg, key)
-		case "poNumber":
-			err = unpopulate(val, &l.PoNumber)
-			delete(rawMsg, key)
-		case "purchasedDate":
-			err = unpopulateTimeRFC3339(val, &l.PurchasedDate)
-			delete(rawMsg, key)
-		case "reseller":
-			err = unpopulate(val, &l.Reseller)
-			delete(rawMsg, key)
-		case "source":
-			err = unpopulate(val, &l.Source)
-			delete(rawMsg, key)
-		case "startDate":
-			err = unpopulateTimeRFC3339(val, &l.StartDate)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &l.Status)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // LotSummary - A lot summary resource.
 type LotSummary struct {
-	Resource
+	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
+	// the latest version or not.
+	ETag *string `json:"eTag,omitempty"`
+
 	// The lot properties.
 	Properties *LotProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type LotSummary.
-func (l LotSummary) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	l.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", l.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type LotSummary.
-func (l *LotSummary) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &l.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := l.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Lots - Result of listing lot summary.
@@ -1838,24 +1232,25 @@ type Lots struct {
 	Value []*LotSummary `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Lots.
-func (l Lots) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
-// LotsListByBillingAccountOptions contains the optional parameters for the Lots.ListByBillingAccount method.
-type LotsListByBillingAccountOptions struct {
-	// May be used to filter the lots by Status, Source etc. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne',
-	// 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
+// LotsClientListByBillingAccountOptions contains the optional parameters for the LotsClient.ListByBillingAccount method.
+type LotsClientListByBillingAccountOptions struct {
+	// May be used to filter the lots by Status, Source etc. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does
+	// not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair
+	// string where key and value is separated by a colon (:).
 	Filter *string
 }
 
-// LotsListByBillingProfileOptions contains the optional parameters for the Lots.ListByBillingProfile method.
-type LotsListByBillingProfileOptions struct {
+// LotsClientListByBillingProfileOptions contains the optional parameters for the LotsClient.ListByBillingProfile method.
+type LotsClientListByBillingProfileOptions struct {
 	// placeholder for future optional parameters
+}
+
+// LotsClientListByCustomerOptions contains the optional parameters for the LotsClient.ListByCustomer method.
+type LotsClientListByCustomerOptions struct {
+	// May be used to filter the lots by Status, Source etc. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. Tag
+	// filter is a key value pair string where key and value is separated by a colon
+	// (:).
+	Filter *string
 }
 
 // ManagementGroupAggregatedCostProperties - The properties of the Management Group Aggregated Cost.
@@ -1891,143 +1286,46 @@ type ManagementGroupAggregatedCostProperties struct {
 	UsageStart *time.Time `json:"usageStart,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ManagementGroupAggregatedCostProperties.
-func (m ManagementGroupAggregatedCostProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "azureCharges", m.AzureCharges)
-	populate(objectMap, "billingPeriodId", m.BillingPeriodID)
-	populate(objectMap, "chargesBilledSeparately", m.ChargesBilledSeparately)
-	populate(objectMap, "children", m.Children)
-	populate(objectMap, "currency", m.Currency)
-	populate(objectMap, "excludedSubscriptions", m.ExcludedSubscriptions)
-	populate(objectMap, "includedSubscriptions", m.IncludedSubscriptions)
-	populate(objectMap, "marketplaceCharges", m.MarketplaceCharges)
-	populateTimeRFC3339(objectMap, "usageEnd", m.UsageEnd)
-	populateTimeRFC3339(objectMap, "usageStart", m.UsageStart)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ManagementGroupAggregatedCostProperties.
-func (m *ManagementGroupAggregatedCostProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "azureCharges":
-			err = unpopulate(val, &m.AzureCharges)
-			delete(rawMsg, key)
-		case "billingPeriodId":
-			err = unpopulate(val, &m.BillingPeriodID)
-			delete(rawMsg, key)
-		case "chargesBilledSeparately":
-			err = unpopulate(val, &m.ChargesBilledSeparately)
-			delete(rawMsg, key)
-		case "children":
-			err = unpopulate(val, &m.Children)
-			delete(rawMsg, key)
-		case "currency":
-			err = unpopulate(val, &m.Currency)
-			delete(rawMsg, key)
-		case "excludedSubscriptions":
-			err = unpopulate(val, &m.ExcludedSubscriptions)
-			delete(rawMsg, key)
-		case "includedSubscriptions":
-			err = unpopulate(val, &m.IncludedSubscriptions)
-			delete(rawMsg, key)
-		case "marketplaceCharges":
-			err = unpopulate(val, &m.MarketplaceCharges)
-			delete(rawMsg, key)
-		case "usageEnd":
-			err = unpopulateTimeRFC3339(val, &m.UsageEnd)
-			delete(rawMsg, key)
-		case "usageStart":
-			err = unpopulateTimeRFC3339(val, &m.UsageStart)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ManagementGroupAggregatedCostResult - A management group aggregated cost resource.
 type ManagementGroupAggregatedCostResult struct {
-	Resource
 	// The properties of the Management Group Aggregated Cost.
 	Properties *ManagementGroupAggregatedCostProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ManagementGroupAggregatedCostResult.
-func (m ManagementGroupAggregatedCostResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	m.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", m.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; The etag for the resource.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ManagementGroupAggregatedCostResult.
-func (m *ManagementGroupAggregatedCostResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := m.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The full qualified ARM ID of an event.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID that uniquely identifies an event.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource tags.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Marketplace - A marketplace resource.
 type Marketplace struct {
-	Resource
 	// The properties of the marketplace usage detail.
 	Properties *MarketplaceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Marketplace.
-func (m Marketplace) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	m.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", m.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; The etag for the resource.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type Marketplace.
-func (m *Marketplace) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := m.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The full qualified ARM ID of an event.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID that uniquely identifies an event.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource tags.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MarketplaceProperties - The properties of the marketplace usage detail.
@@ -2111,160 +1409,28 @@ type MarketplaceProperties struct {
 	UsageStart *time.Time `json:"usageStart,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MarketplaceProperties.
-func (m MarketplaceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accountName", m.AccountName)
-	populate(objectMap, "additionalInfo", m.AdditionalInfo)
-	populate(objectMap, "additionalProperties", m.AdditionalProperties)
-	populate(objectMap, "billingPeriodId", m.BillingPeriodID)
-	populate(objectMap, "consumedQuantity", m.ConsumedQuantity)
-	populate(objectMap, "consumedService", m.ConsumedService)
-	populate(objectMap, "costCenter", m.CostCenter)
-	populate(objectMap, "currency", m.Currency)
-	populate(objectMap, "departmentName", m.DepartmentName)
-	populate(objectMap, "instanceId", m.InstanceID)
-	populate(objectMap, "instanceName", m.InstanceName)
-	populate(objectMap, "isEstimated", m.IsEstimated)
-	populate(objectMap, "isRecurringCharge", m.IsRecurringCharge)
-	populate(objectMap, "meterId", m.MeterID)
-	populate(objectMap, "offerName", m.OfferName)
-	populate(objectMap, "orderNumber", m.OrderNumber)
-	populate(objectMap, "planName", m.PlanName)
-	populate(objectMap, "pretaxCost", m.PretaxCost)
-	populate(objectMap, "publisherName", m.PublisherName)
-	populate(objectMap, "resourceGroup", m.ResourceGroup)
-	populate(objectMap, "resourceRate", m.ResourceRate)
-	populate(objectMap, "subscriptionGuid", m.SubscriptionGUID)
-	populate(objectMap, "subscriptionName", m.SubscriptionName)
-	populate(objectMap, "unitOfMeasure", m.UnitOfMeasure)
-	populateTimeRFC3339(objectMap, "usageEnd", m.UsageEnd)
-	populateTimeRFC3339(objectMap, "usageStart", m.UsageStart)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MarketplaceProperties.
-func (m *MarketplaceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "accountName":
-			err = unpopulate(val, &m.AccountName)
-			delete(rawMsg, key)
-		case "additionalInfo":
-			err = unpopulate(val, &m.AdditionalInfo)
-			delete(rawMsg, key)
-		case "additionalProperties":
-			err = unpopulate(val, &m.AdditionalProperties)
-			delete(rawMsg, key)
-		case "billingPeriodId":
-			err = unpopulate(val, &m.BillingPeriodID)
-			delete(rawMsg, key)
-		case "consumedQuantity":
-			err = unpopulate(val, &m.ConsumedQuantity)
-			delete(rawMsg, key)
-		case "consumedService":
-			err = unpopulate(val, &m.ConsumedService)
-			delete(rawMsg, key)
-		case "costCenter":
-			err = unpopulate(val, &m.CostCenter)
-			delete(rawMsg, key)
-		case "currency":
-			err = unpopulate(val, &m.Currency)
-			delete(rawMsg, key)
-		case "departmentName":
-			err = unpopulate(val, &m.DepartmentName)
-			delete(rawMsg, key)
-		case "instanceId":
-			err = unpopulate(val, &m.InstanceID)
-			delete(rawMsg, key)
-		case "instanceName":
-			err = unpopulate(val, &m.InstanceName)
-			delete(rawMsg, key)
-		case "isEstimated":
-			err = unpopulate(val, &m.IsEstimated)
-			delete(rawMsg, key)
-		case "isRecurringCharge":
-			err = unpopulate(val, &m.IsRecurringCharge)
-			delete(rawMsg, key)
-		case "meterId":
-			err = unpopulate(val, &m.MeterID)
-			delete(rawMsg, key)
-		case "offerName":
-			err = unpopulate(val, &m.OfferName)
-			delete(rawMsg, key)
-		case "orderNumber":
-			err = unpopulate(val, &m.OrderNumber)
-			delete(rawMsg, key)
-		case "planName":
-			err = unpopulate(val, &m.PlanName)
-			delete(rawMsg, key)
-		case "pretaxCost":
-			err = unpopulate(val, &m.PretaxCost)
-			delete(rawMsg, key)
-		case "publisherName":
-			err = unpopulate(val, &m.PublisherName)
-			delete(rawMsg, key)
-		case "resourceGroup":
-			err = unpopulate(val, &m.ResourceGroup)
-			delete(rawMsg, key)
-		case "resourceRate":
-			err = unpopulate(val, &m.ResourceRate)
-			delete(rawMsg, key)
-		case "subscriptionGuid":
-			err = unpopulate(val, &m.SubscriptionGUID)
-			delete(rawMsg, key)
-		case "subscriptionName":
-			err = unpopulate(val, &m.SubscriptionName)
-			delete(rawMsg, key)
-		case "unitOfMeasure":
-			err = unpopulate(val, &m.UnitOfMeasure)
-			delete(rawMsg, key)
-		case "usageEnd":
-			err = unpopulateTimeRFC3339(val, &m.UsageEnd)
-			delete(rawMsg, key)
-		case "usageStart":
-			err = unpopulateTimeRFC3339(val, &m.UsageStart)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// MarketplacesListOptions contains the optional parameters for the Marketplaces.List method.
-type MarketplacesListOptions struct {
-	// May be used to filter marketplaces by properties/usageEnd (Utc time), properties/usageStart (Utc time), properties/resourceGroup, properties/instanceName
-	// or properties/instanceId. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'.
+// MarketplacesClientListOptions contains the optional parameters for the MarketplacesClient.List method.
+type MarketplacesClientListOptions struct {
+	// May be used to filter marketplaces by properties/usageEnd (Utc time), properties/usageStart (Utc time), properties/resourceGroup,
+	// properties/instanceName or properties/instanceId. The filter supports
+	// 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'.
 	Filter *string
-	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink
-	// element will include a skiptoken parameter that specifies a starting point to use for subsequent calls.
+	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
+	// the value of the nextLink element will include a skiptoken parameter that
+	// specifies a starting point to use for subsequent calls.
 	Skiptoken *string
 	// May be used to limit the number of results to the most recent N marketplaces.
 	Top *int32
 }
 
-// MarketplacesListResult - Result of listing marketplaces. It contains a list of available marketplaces in reverse chronological order by billing period.
+// MarketplacesListResult - Result of listing marketplaces. It contains a list of available marketplaces in reverse chronological
+// order by billing period.
 type MarketplacesListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; The list of marketplaces.
 	Value []*Marketplace `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MarketplacesListResult.
-func (m MarketplacesListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
 }
 
 // MeterDetails - The properties of the meter detail.
@@ -2317,40 +1483,35 @@ type MeterDetailsResponse struct {
 
 // ModernChargeSummary - Modern charge summary.
 type ModernChargeSummary struct {
-	ChargeSummary
+	// REQUIRED; Specifies the kind of charge summary.
+	Kind *ChargeSummaryKind `json:"kind,omitempty"`
+
 	// REQUIRED; Properties for modern charge summary
 	Properties *ModernChargeSummaryProperties `json:"properties,omitempty"`
+
+	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
+	// the latest version or not.
+	ETag *string `json:"eTag,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ModernChargeSummary.
-func (m ModernChargeSummary) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	m.ChargeSummary.marshalInternal(objectMap, ChargeSummaryKindModern)
-	populate(objectMap, "properties", m.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ModernChargeSummary.
-func (m *ModernChargeSummary) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetChargeSummary implements the ChargeSummaryClassification interface for type ModernChargeSummary.
+func (m *ModernChargeSummary) GetChargeSummary() *ChargeSummary {
+	return &ChargeSummary{
+		Kind: m.Kind,
+		ID:   m.ID,
+		Name: m.Name,
+		Type: m.Type,
+		ETag: m.ETag,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := m.ChargeSummary.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // ModernChargeSummaryProperties - The properties of modern charge summary.
@@ -2391,40 +1552,46 @@ type ModernChargeSummaryProperties struct {
 
 // ModernReservationRecommendation - Modern reservation recommendation.
 type ModernReservationRecommendation struct {
-	ReservationRecommendation
+	// REQUIRED; Specifies the kind of reservation recommendation.
+	Kind *ReservationRecommendationKind `json:"kind,omitempty"`
+
 	// REQUIRED; Properties for modern reservation recommendation
 	Properties *ModernReservationRecommendationProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The etag for the resource.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; The full qualified ARM ID of an event.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource location
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID that uniquely identifies an event.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource sku
+	SKU *string `json:"sku,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource tags.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ModernReservationRecommendation.
-func (m ModernReservationRecommendation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	m.ReservationRecommendation.marshalInternal(objectMap, ReservationRecommendationKindModern)
-	populate(objectMap, "properties", m.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ModernReservationRecommendation.
-func (m *ModernReservationRecommendation) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetReservationRecommendation implements the ReservationRecommendationClassification interface for type ModernReservationRecommendation.
+func (m *ModernReservationRecommendation) GetReservationRecommendation() *ReservationRecommendation {
+	return &ReservationRecommendation{
+		Kind:     m.Kind,
+		ID:       m.ID,
+		Name:     m.Name,
+		Type:     m.Type,
+		Etag:     m.Etag,
+		Tags:     m.Tags,
+		Location: m.Location,
+		SKU:      m.SKU,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := m.ReservationRecommendation.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // ModernReservationRecommendationProperties - The properties of the reservation recommendation.
@@ -2478,106 +1645,22 @@ type ModernReservationRecommendationProperties struct {
 	TotalCostWithReservedInstances *Amount `json:"totalCostWithReservedInstances,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ModernReservationRecommendationProperties.
-func (m ModernReservationRecommendationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "costWithNoReservedInstances", m.CostWithNoReservedInstances)
-	populateTimeRFC3339(objectMap, "firstUsageDate", m.FirstUsageDate)
-	populate(objectMap, "instanceFlexibilityGroup", m.InstanceFlexibilityGroup)
-	populate(objectMap, "instanceFlexibilityRatio", m.InstanceFlexibilityRatio)
-	populate(objectMap, "location", m.Location)
-	populate(objectMap, "lookBackPeriod", m.LookBackPeriod)
-	populate(objectMap, "meterId", m.MeterID)
-	populate(objectMap, "netSavings", m.NetSavings)
-	populate(objectMap, "normalizedSize", m.NormalizedSize)
-	populate(objectMap, "recommendedQuantity", m.RecommendedQuantity)
-	populate(objectMap, "recommendedQuantityNormalized", m.RecommendedQuantityNormalized)
-	populate(objectMap, "skuName", m.SKUName)
-	populate(objectMap, "skuProperties", m.SKUProperties)
-	populate(objectMap, "scope", m.Scope)
-	populate(objectMap, "term", m.Term)
-	populate(objectMap, "totalCostWithReservedInstances", m.TotalCostWithReservedInstances)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ModernReservationRecommendationProperties.
-func (m *ModernReservationRecommendationProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "costWithNoReservedInstances":
-			err = unpopulate(val, &m.CostWithNoReservedInstances)
-			delete(rawMsg, key)
-		case "firstUsageDate":
-			err = unpopulateTimeRFC3339(val, &m.FirstUsageDate)
-			delete(rawMsg, key)
-		case "instanceFlexibilityGroup":
-			err = unpopulate(val, &m.InstanceFlexibilityGroup)
-			delete(rawMsg, key)
-		case "instanceFlexibilityRatio":
-			err = unpopulate(val, &m.InstanceFlexibilityRatio)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &m.Location)
-			delete(rawMsg, key)
-		case "lookBackPeriod":
-			err = unpopulate(val, &m.LookBackPeriod)
-			delete(rawMsg, key)
-		case "meterId":
-			err = unpopulate(val, &m.MeterID)
-			delete(rawMsg, key)
-		case "netSavings":
-			err = unpopulate(val, &m.NetSavings)
-			delete(rawMsg, key)
-		case "normalizedSize":
-			err = unpopulate(val, &m.NormalizedSize)
-			delete(rawMsg, key)
-		case "recommendedQuantity":
-			err = unpopulate(val, &m.RecommendedQuantity)
-			delete(rawMsg, key)
-		case "recommendedQuantityNormalized":
-			err = unpopulate(val, &m.RecommendedQuantityNormalized)
-			delete(rawMsg, key)
-		case "skuName":
-			err = unpopulate(val, &m.SKUName)
-			delete(rawMsg, key)
-		case "skuProperties":
-			err = unpopulate(val, &m.SKUProperties)
-			delete(rawMsg, key)
-		case "scope":
-			err = unpopulate(val, &m.Scope)
-			delete(rawMsg, key)
-		case "term":
-			err = unpopulate(val, &m.Term)
-			delete(rawMsg, key)
-		case "totalCostWithReservedInstances":
-			err = unpopulate(val, &m.TotalCostWithReservedInstances)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ModernReservationTransaction - Modern Reservation transaction resource.
 type ModernReservationTransaction struct {
-	ReservationTransactionResource
 	// REQUIRED; The properties of a modern reservation transaction.
 	Properties *ModernReservationTransactionProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ModernReservationTransaction.
-func (m ModernReservationTransaction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	m.ReservationTransactionResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", m.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource tags.
+	Tags []*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ModernReservationTransactionProperties - The properties of a modern reservation transaction.
@@ -2633,8 +1716,8 @@ type ModernReservationTransactionProperties struct {
 	// READ-ONLY; The region of the transaction.
 	Region *string `json:"region,omitempty" azure:"ro"`
 
-	// READ-ONLY; The reservation order ID is the identifier for a reservation purchase. Each reservation order ID represents a single purchase transaction.
-	// A reservation order contains reservations. The reservation
+	// READ-ONLY; The reservation order ID is the identifier for a reservation purchase. Each reservation order ID represents
+	// a single purchase transaction. A reservation order contains reservations. The reservation
 	// order specifies the VM size and region for the reservations.
 	ReservationOrderID *string `json:"reservationOrderId,omitempty" azure:"ro"`
 
@@ -2643,109 +1726,6 @@ type ModernReservationTransactionProperties struct {
 
 	// READ-ONLY; This is the term of the transaction.
 	Term *string `json:"term,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ModernReservationTransactionProperties.
-func (m ModernReservationTransactionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "amount", m.Amount)
-	populate(objectMap, "armSkuName", m.ArmSKUName)
-	populate(objectMap, "billingFrequency", m.BillingFrequency)
-	populate(objectMap, "billingProfileId", m.BillingProfileID)
-	populate(objectMap, "billingProfileName", m.BillingProfileName)
-	populate(objectMap, "currency", m.Currency)
-	populate(objectMap, "description", m.Description)
-	populateTimeRFC3339(objectMap, "eventDate", m.EventDate)
-	populate(objectMap, "eventType", m.EventType)
-	populate(objectMap, "invoice", m.Invoice)
-	populate(objectMap, "invoiceId", m.InvoiceID)
-	populate(objectMap, "invoiceSectionId", m.InvoiceSectionID)
-	populate(objectMap, "invoiceSectionName", m.InvoiceSectionName)
-	populate(objectMap, "purchasingSubscriptionGuid", m.PurchasingSubscriptionGUID)
-	populate(objectMap, "purchasingSubscriptionName", m.PurchasingSubscriptionName)
-	populate(objectMap, "quantity", m.Quantity)
-	populate(objectMap, "region", m.Region)
-	populate(objectMap, "reservationOrderId", m.ReservationOrderID)
-	populate(objectMap, "reservationOrderName", m.ReservationOrderName)
-	populate(objectMap, "term", m.Term)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ModernReservationTransactionProperties.
-func (m *ModernReservationTransactionProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "amount":
-			err = unpopulate(val, &m.Amount)
-			delete(rawMsg, key)
-		case "armSkuName":
-			err = unpopulate(val, &m.ArmSKUName)
-			delete(rawMsg, key)
-		case "billingFrequency":
-			err = unpopulate(val, &m.BillingFrequency)
-			delete(rawMsg, key)
-		case "billingProfileId":
-			err = unpopulate(val, &m.BillingProfileID)
-			delete(rawMsg, key)
-		case "billingProfileName":
-			err = unpopulate(val, &m.BillingProfileName)
-			delete(rawMsg, key)
-		case "currency":
-			err = unpopulate(val, &m.Currency)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &m.Description)
-			delete(rawMsg, key)
-		case "eventDate":
-			err = unpopulateTimeRFC3339(val, &m.EventDate)
-			delete(rawMsg, key)
-		case "eventType":
-			err = unpopulate(val, &m.EventType)
-			delete(rawMsg, key)
-		case "invoice":
-			err = unpopulate(val, &m.Invoice)
-			delete(rawMsg, key)
-		case "invoiceId":
-			err = unpopulate(val, &m.InvoiceID)
-			delete(rawMsg, key)
-		case "invoiceSectionId":
-			err = unpopulate(val, &m.InvoiceSectionID)
-			delete(rawMsg, key)
-		case "invoiceSectionName":
-			err = unpopulate(val, &m.InvoiceSectionName)
-			delete(rawMsg, key)
-		case "purchasingSubscriptionGuid":
-			err = unpopulate(val, &m.PurchasingSubscriptionGUID)
-			delete(rawMsg, key)
-		case "purchasingSubscriptionName":
-			err = unpopulate(val, &m.PurchasingSubscriptionName)
-			delete(rawMsg, key)
-		case "quantity":
-			err = unpopulate(val, &m.Quantity)
-			delete(rawMsg, key)
-		case "region":
-			err = unpopulate(val, &m.Region)
-			delete(rawMsg, key)
-		case "reservationOrderId":
-			err = unpopulate(val, &m.ReservationOrderID)
-			delete(rawMsg, key)
-		case "reservationOrderName":
-			err = unpopulate(val, &m.ReservationOrderName)
-			delete(rawMsg, key)
-		case "term":
-			err = unpopulate(val, &m.Term)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ModernReservationTransactionsListResult - Result of listing reservation recommendations.
@@ -2757,56 +1737,46 @@ type ModernReservationTransactionsListResult struct {
 	Value []*ModernReservationTransaction `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ModernReservationTransactionsListResult.
-func (m ModernReservationTransactionsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
-}
-
 // ModernUsageDetail - Modern usage detail.
 type ModernUsageDetail struct {
-	UsageDetail
+	// REQUIRED; Specifies the kind of usage details.
+	Kind *UsageDetailsKind `json:"kind,omitempty"`
+
 	// REQUIRED; Properties for modern usage details
 	Properties *ModernUsageDetailProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The etag for the resource.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; The full qualified ARM ID of an event.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID that uniquely identifies an event.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource tags.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ModernUsageDetail.
-func (m ModernUsageDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	m.UsageDetail.marshalInternal(objectMap, UsageDetailsKindModern)
-	populate(objectMap, "properties", m.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ModernUsageDetail.
-func (m *ModernUsageDetail) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetUsageDetail implements the UsageDetailClassification interface for type ModernUsageDetail.
+func (m *ModernUsageDetail) GetUsageDetail() *UsageDetail {
+	return &UsageDetail{
+		Kind: m.Kind,
+		ID:   m.ID,
+		Name: m.Name,
+		Type: m.Type,
+		Etag: m.Etag,
+		Tags: m.Tags,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &m.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := m.UsageDetail.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // ModernUsageDetailProperties - The properties of the usage detail.
 type ModernUsageDetailProperties struct {
-	// READ-ONLY; Additional details of this usage item. Use this field to get usage line item specific details such as the actual VM Size (ServiceType) or
-	// the ratio in which the reservation discount is applied.
+	// READ-ONLY; Additional details of this usage item. Use this field to get usage line item specific details such as the actual
+	// VM Size (ServiceType) or the ratio in which the reservation discount is applied.
 	AdditionalInfo *string `json:"additionalInfo,omitempty" azure:"ro"`
 
 	// READ-ONLY; Unique identifier for the applicable benefit.
@@ -2830,21 +1800,21 @@ type ModernUsageDetailProperties struct {
 	// READ-ONLY; Billing Period Start Date as in the invoice.
 	BillingPeriodStartDate *time.Time `json:"billingPeriodStartDate,omitempty" azure:"ro"`
 
-	// READ-ONLY; Identifier for the billing profile that groups costs across invoices in the a singular billing currency across across the customers who have
-	// onboarded the Microsoft customer agreement and the
+	// READ-ONLY; Identifier for the billing profile that groups costs across invoices in the a singular billing currency across
+	// across the customers who have onboarded the Microsoft customer agreement and the
 	// customers in CSP who have made entitlement purchases like SaaS, Marketplace, RI, etc.
 	BillingProfileID *string `json:"billingProfileId,omitempty" azure:"ro"`
 
-	// READ-ONLY; Name of the billing profile that groups costs across invoices in the a singular billing currency across across the customers who have onboarded
-	// the Microsoft customer agreement and the customers in
+	// READ-ONLY; Name of the billing profile that groups costs across invoices in the a singular billing currency across across
+	// the customers who have onboarded the Microsoft customer agreement and the customers in
 	// CSP who have made entitlement purchases like SaaS, Marketplace, RI, etc.
 	BillingProfileName *string `json:"billingProfileName,omitempty" azure:"ro"`
 
 	// READ-ONLY; Indicates a charge represents credits, usage, a Marketplace purchase, a reservation fee, or a refund.
 	ChargeType *string `json:"chargeType,omitempty" azure:"ro"`
 
-	// READ-ONLY; Consumed service name. Name of the azure resource provider that emits the usage or was purchased. This value is not provided for marketplace
-	// usage.
+	// READ-ONLY; Consumed service name. Name of the azure resource provider that emits the usage or was purchased. This value
+	// is not provided for marketplace usage.
 	ConsumedService *string `json:"consumedService,omitempty" azure:"ro"`
 
 	// READ-ONLY; Name for Cost Allocation Rule.
@@ -2883,8 +1853,8 @@ type ModernUsageDetailProperties struct {
 	// READ-ONLY; Exchange Rate from pricing currency to billing currency.
 	ExchangeRatePricingToBilling *float64 `json:"exchangeRatePricingToBilling,omitempty" azure:"ro"`
 
-	// READ-ONLY; Indicates how frequently this charge will occur. OneTime for purchases which only happen once, Monthly for fees which recur every month, and
-	// UsageBased for charges based on how much a service is used.
+	// READ-ONLY; Indicates how frequently this charge will occur. OneTime for purchases which only happen once, Monthly for fees
+	// which recur every month, and UsageBased for charges based on how much a service is used.
 	Frequency *string `json:"frequency,omitempty" azure:"ro"`
 
 	// READ-ONLY; Instance Name.
@@ -2893,10 +1863,12 @@ type ModernUsageDetailProperties struct {
 	// READ-ONLY; Invoice ID as on the invoice where the specific transaction appears.
 	InvoiceID *string `json:"invoiceId,omitempty" azure:"ro"`
 
-	// READ-ONLY; Identifier of the project that is being charged in the invoice. Not applicable for Microsoft Customer Agreements onboarded by partners.
+	// READ-ONLY; Identifier of the project that is being charged in the invoice. Not applicable for Microsoft Customer Agreements
+	// onboarded by partners.
 	InvoiceSectionID *string `json:"invoiceSectionId,omitempty" azure:"ro"`
 
-	// READ-ONLY; Name of the project that is being charged in the invoice. Not applicable for Microsoft Customer Agreements onboarded by partners.
+	// READ-ONLY; Name of the project that is being charged in the invoice. Not applicable for Microsoft Customer Agreements onboarded
+	// by partners.
 	InvoiceSectionName *string `json:"invoiceSectionName,omitempty" azure:"ro"`
 
 	// READ-ONLY; Determines if the cost is eligible to be paid for using Azure credits.
@@ -2908,8 +1880,8 @@ type ModernUsageDetailProperties struct {
 	// READ-ONLY; Identifies the top-level service for the usage.
 	MeterCategory *string `json:"meterCategory,omitempty" azure:"ro"`
 
-	// READ-ONLY; The meter id (GUID). Not available for marketplace. For reserved instance this represents the primary meter for which the reservation was
-	// purchased. For the actual VM Size for which the reservation is
+	// READ-ONLY; The meter id (GUID). Not available for marketplace. For reserved instance this represents the primary meter
+	// for which the reservation was purchased. For the actual VM Size for which the reservation is
 	// purchased see productOrderName.
 	MeterID *string `json:"meterId,omitempty" azure:"ro"`
 
@@ -2952,15 +1924,16 @@ type ModernUsageDetailProperties struct {
 	// READ-ONLY; Identifier that indicates how the meter is priced
 	PricingModel *PricingModelType `json:"pricingModel,omitempty" azure:"ro"`
 
-	// READ-ONLY; Name of the product that has accrued charges by consumption or purchase as listed in the invoice. Not available for Marketplace.
+	// READ-ONLY; Name of the product that has accrued charges by consumption or purchase as listed in the invoice. Not available
+	// for Marketplace.
 	Product *string `json:"product,omitempty" azure:"ro"`
 
-	// READ-ONLY; Identifier for the product that has accrued charges by consumption or purchase . This is the concatenated key of productId and SkuId in partner
-	// center.
+	// READ-ONLY; Identifier for the product that has accrued charges by consumption or purchase . This is the concatenated key
+	// of productId and SkuId in partner center.
 	ProductIdentifier *string `json:"productIdentifier,omitempty" azure:"ro"`
 
-	// READ-ONLY; The identifier for the asset or Azure plan name that the subscription belongs to. For example: Azure Plan. For reservations this is the Reservation
-	// Order ID.
+	// READ-ONLY; The identifier for the asset or Azure plan name that the subscription belongs to. For example: Azure Plan. For
+	// reservations this is the Reservation Order ID.
 	ProductOrderID *string `json:"productOrderId,omitempty" azure:"ro"`
 
 	// READ-ONLY; Product Order Name. For reservations this is the SKU that was purchased.
@@ -2990,8 +1963,8 @@ type ModernUsageDetailProperties struct {
 	// READ-ONLY; ARM resource id of the reservation. Only applies to records relevant to reservations.
 	ReservationID *string `json:"reservationId,omitempty" azure:"ro"`
 
-	// READ-ONLY; User provided display name of the reservation. Last known name for a particular day is populated in the daily data. Only applies to records
-	// relevant to reservations.
+	// READ-ONLY; User provided display name of the reservation. Last known name for a particular day is populated in the daily
+	// data. Only applies to records relevant to reservations.
 	ReservationName *string `json:"reservationName,omitempty" azure:"ro"`
 
 	// READ-ONLY; Name of the Azure resource group used for cohesive lifecycle management of resources.
@@ -3012,11 +1985,12 @@ type ModernUsageDetailProperties struct {
 	// READ-ONLY; Legacy field with optional service-specific metadata.
 	ServiceInfo2 *string `json:"serviceInfo2,omitempty" azure:"ro"`
 
-	// READ-ONLY; End date for the period when the service usage was rated for charges. The prices for Azure services are determined based on the rating period.
+	// READ-ONLY; End date for the period when the service usage was rated for charges. The prices for Azure services are determined
+	// based on the rating period.
 	ServicePeriodEndDate *time.Time `json:"servicePeriodEndDate,omitempty" azure:"ro"`
 
-	// READ-ONLY; Start date for the rating period when the service usage was rated for charges. The prices for Azure services are determined for the rating
-	// period.
+	// READ-ONLY; Start date for the rating period when the service usage was rated for charges. The prices for Azure services
+	// are determined for the rating period.
 	ServicePeriodStartDate *time.Time `json:"servicePeriodStartDate,omitempty" azure:"ro"`
 
 	// READ-ONLY; Unique Microsoft generated identifier for the Azure Subscription.
@@ -3025,8 +1999,8 @@ type ModernUsageDetailProperties struct {
 	// READ-ONLY; Name of the Azure Subscription.
 	SubscriptionName *string `json:"subscriptionName,omitempty" azure:"ro"`
 
-	// READ-ONLY; Term (in months). Displays the term for the validity of the offer. For example. In case of reserved instances it displays 12 months for yearly
-	// term of reserved instance. For one time purchases or
+	// READ-ONLY; Term (in months). Displays the term for the validity of the offer. For example. In case of reserved instances
+	// it displays 12 months for yearly term of reserved instance. For one time purchases or
 	// recurring purchases, the terms displays 1 month; This is not applicable for Azure consumption.
 	Term *string `json:"term,omitempty" azure:"ro"`
 
@@ -3037,321 +2011,10 @@ type ModernUsageDetailProperties struct {
 	UnitPrice *float64 `json:"unitPrice,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ModernUsageDetailProperties.
-func (m ModernUsageDetailProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", m.AdditionalInfo)
-	populate(objectMap, "benefitId", m.BenefitID)
-	populate(objectMap, "benefitName", m.BenefitName)
-	populate(objectMap, "billingAccountId", m.BillingAccountID)
-	populate(objectMap, "billingAccountName", m.BillingAccountName)
-	populate(objectMap, "billingCurrencyCode", m.BillingCurrencyCode)
-	populateTimeRFC3339(objectMap, "billingPeriodEndDate", m.BillingPeriodEndDate)
-	populateTimeRFC3339(objectMap, "billingPeriodStartDate", m.BillingPeriodStartDate)
-	populate(objectMap, "billingProfileId", m.BillingProfileID)
-	populate(objectMap, "billingProfileName", m.BillingProfileName)
-	populate(objectMap, "chargeType", m.ChargeType)
-	populate(objectMap, "consumedService", m.ConsumedService)
-	populate(objectMap, "costAllocationRuleName", m.CostAllocationRuleName)
-	populate(objectMap, "costCenter", m.CostCenter)
-	populate(objectMap, "costInBillingCurrency", m.CostInBillingCurrency)
-	populate(objectMap, "costInPricingCurrency", m.CostInPricingCurrency)
-	populate(objectMap, "costInUSD", m.CostInUSD)
-	populate(objectMap, "customerName", m.CustomerName)
-	populate(objectMap, "customerTenantId", m.CustomerTenantID)
-	populateTimeRFC3339(objectMap, "date", m.Date)
-	populate(objectMap, "effectivePrice", m.EffectivePrice)
-	populate(objectMap, "exchangeRate", m.ExchangeRate)
-	populateTimeRFC3339(objectMap, "exchangeRateDate", m.ExchangeRateDate)
-	populate(objectMap, "exchangeRatePricingToBilling", m.ExchangeRatePricingToBilling)
-	populate(objectMap, "frequency", m.Frequency)
-	populate(objectMap, "instanceName", m.InstanceName)
-	populate(objectMap, "invoiceId", m.InvoiceID)
-	populate(objectMap, "invoiceSectionId", m.InvoiceSectionID)
-	populate(objectMap, "invoiceSectionName", m.InvoiceSectionName)
-	populate(objectMap, "isAzureCreditEligible", m.IsAzureCreditEligible)
-	populate(objectMap, "marketPrice", m.MarketPrice)
-	populate(objectMap, "meterCategory", m.MeterCategory)
-	populate(objectMap, "meterId", m.MeterID)
-	populate(objectMap, "meterName", m.MeterName)
-	populate(objectMap, "meterRegion", m.MeterRegion)
-	populate(objectMap, "meterSubCategory", m.MeterSubCategory)
-	populate(objectMap, "partnerEarnedCreditApplied", m.PartnerEarnedCreditApplied)
-	populate(objectMap, "partnerEarnedCreditRate", m.PartnerEarnedCreditRate)
-	populate(objectMap, "partnerName", m.PartnerName)
-	populate(objectMap, "partnerTenantId", m.PartnerTenantID)
-	populate(objectMap, "payGPrice", m.PayGPrice)
-	populate(objectMap, "paygCostInBillingCurrency", m.PaygCostInBillingCurrency)
-	populate(objectMap, "paygCostInUSD", m.PaygCostInUSD)
-	populate(objectMap, "previousInvoiceId", m.PreviousInvoiceID)
-	populate(objectMap, "pricingCurrencyCode", m.PricingCurrencyCode)
-	populate(objectMap, "pricingModel", m.PricingModel)
-	populate(objectMap, "product", m.Product)
-	populate(objectMap, "productIdentifier", m.ProductIdentifier)
-	populate(objectMap, "productOrderId", m.ProductOrderID)
-	populate(objectMap, "productOrderName", m.ProductOrderName)
-	populate(objectMap, "provider", m.Provider)
-	populate(objectMap, "publisherId", m.PublisherID)
-	populate(objectMap, "publisherName", m.PublisherName)
-	populate(objectMap, "publisherType", m.PublisherType)
-	populate(objectMap, "quantity", m.Quantity)
-	populate(objectMap, "resellerMpnId", m.ResellerMpnID)
-	populate(objectMap, "resellerName", m.ResellerName)
-	populate(objectMap, "reservationId", m.ReservationID)
-	populate(objectMap, "reservationName", m.ReservationName)
-	populate(objectMap, "resourceGroup", m.ResourceGroup)
-	populate(objectMap, "resourceLocation", m.ResourceLocation)
-	populate(objectMap, "resourceLocationNormalized", m.ResourceLocationNormalized)
-	populate(objectMap, "serviceFamily", m.ServiceFamily)
-	populate(objectMap, "serviceInfo1", m.ServiceInfo1)
-	populate(objectMap, "serviceInfo2", m.ServiceInfo2)
-	populateTimeRFC3339(objectMap, "servicePeriodEndDate", m.ServicePeriodEndDate)
-	populateTimeRFC3339(objectMap, "servicePeriodStartDate", m.ServicePeriodStartDate)
-	populate(objectMap, "subscriptionGuid", m.SubscriptionGUID)
-	populate(objectMap, "subscriptionName", m.SubscriptionName)
-	populate(objectMap, "term", m.Term)
-	populate(objectMap, "unitOfMeasure", m.UnitOfMeasure)
-	populate(objectMap, "unitPrice", m.UnitPrice)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ModernUsageDetailProperties.
-func (m *ModernUsageDetailProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "additionalInfo":
-			err = unpopulate(val, &m.AdditionalInfo)
-			delete(rawMsg, key)
-		case "benefitId":
-			err = unpopulate(val, &m.BenefitID)
-			delete(rawMsg, key)
-		case "benefitName":
-			err = unpopulate(val, &m.BenefitName)
-			delete(rawMsg, key)
-		case "billingAccountId":
-			err = unpopulate(val, &m.BillingAccountID)
-			delete(rawMsg, key)
-		case "billingAccountName":
-			err = unpopulate(val, &m.BillingAccountName)
-			delete(rawMsg, key)
-		case "billingCurrencyCode":
-			err = unpopulate(val, &m.BillingCurrencyCode)
-			delete(rawMsg, key)
-		case "billingPeriodEndDate":
-			err = unpopulateTimeRFC3339(val, &m.BillingPeriodEndDate)
-			delete(rawMsg, key)
-		case "billingPeriodStartDate":
-			err = unpopulateTimeRFC3339(val, &m.BillingPeriodStartDate)
-			delete(rawMsg, key)
-		case "billingProfileId":
-			err = unpopulate(val, &m.BillingProfileID)
-			delete(rawMsg, key)
-		case "billingProfileName":
-			err = unpopulate(val, &m.BillingProfileName)
-			delete(rawMsg, key)
-		case "chargeType":
-			err = unpopulate(val, &m.ChargeType)
-			delete(rawMsg, key)
-		case "consumedService":
-			err = unpopulate(val, &m.ConsumedService)
-			delete(rawMsg, key)
-		case "costAllocationRuleName":
-			err = unpopulate(val, &m.CostAllocationRuleName)
-			delete(rawMsg, key)
-		case "costCenter":
-			err = unpopulate(val, &m.CostCenter)
-			delete(rawMsg, key)
-		case "costInBillingCurrency":
-			err = unpopulate(val, &m.CostInBillingCurrency)
-			delete(rawMsg, key)
-		case "costInPricingCurrency":
-			err = unpopulate(val, &m.CostInPricingCurrency)
-			delete(rawMsg, key)
-		case "costInUSD":
-			err = unpopulate(val, &m.CostInUSD)
-			delete(rawMsg, key)
-		case "customerName":
-			err = unpopulate(val, &m.CustomerName)
-			delete(rawMsg, key)
-		case "customerTenantId":
-			err = unpopulate(val, &m.CustomerTenantID)
-			delete(rawMsg, key)
-		case "date":
-			err = unpopulateTimeRFC3339(val, &m.Date)
-			delete(rawMsg, key)
-		case "effectivePrice":
-			err = unpopulate(val, &m.EffectivePrice)
-			delete(rawMsg, key)
-		case "exchangeRate":
-			err = unpopulate(val, &m.ExchangeRate)
-			delete(rawMsg, key)
-		case "exchangeRateDate":
-			err = unpopulateTimeRFC3339(val, &m.ExchangeRateDate)
-			delete(rawMsg, key)
-		case "exchangeRatePricingToBilling":
-			err = unpopulate(val, &m.ExchangeRatePricingToBilling)
-			delete(rawMsg, key)
-		case "frequency":
-			err = unpopulate(val, &m.Frequency)
-			delete(rawMsg, key)
-		case "instanceName":
-			err = unpopulate(val, &m.InstanceName)
-			delete(rawMsg, key)
-		case "invoiceId":
-			err = unpopulate(val, &m.InvoiceID)
-			delete(rawMsg, key)
-		case "invoiceSectionId":
-			err = unpopulate(val, &m.InvoiceSectionID)
-			delete(rawMsg, key)
-		case "invoiceSectionName":
-			err = unpopulate(val, &m.InvoiceSectionName)
-			delete(rawMsg, key)
-		case "isAzureCreditEligible":
-			err = unpopulate(val, &m.IsAzureCreditEligible)
-			delete(rawMsg, key)
-		case "marketPrice":
-			err = unpopulate(val, &m.MarketPrice)
-			delete(rawMsg, key)
-		case "meterCategory":
-			err = unpopulate(val, &m.MeterCategory)
-			delete(rawMsg, key)
-		case "meterId":
-			err = unpopulate(val, &m.MeterID)
-			delete(rawMsg, key)
-		case "meterName":
-			err = unpopulate(val, &m.MeterName)
-			delete(rawMsg, key)
-		case "meterRegion":
-			err = unpopulate(val, &m.MeterRegion)
-			delete(rawMsg, key)
-		case "meterSubCategory":
-			err = unpopulate(val, &m.MeterSubCategory)
-			delete(rawMsg, key)
-		case "partnerEarnedCreditApplied":
-			err = unpopulate(val, &m.PartnerEarnedCreditApplied)
-			delete(rawMsg, key)
-		case "partnerEarnedCreditRate":
-			err = unpopulate(val, &m.PartnerEarnedCreditRate)
-			delete(rawMsg, key)
-		case "partnerName":
-			err = unpopulate(val, &m.PartnerName)
-			delete(rawMsg, key)
-		case "partnerTenantId":
-			err = unpopulate(val, &m.PartnerTenantID)
-			delete(rawMsg, key)
-		case "payGPrice":
-			err = unpopulate(val, &m.PayGPrice)
-			delete(rawMsg, key)
-		case "paygCostInBillingCurrency":
-			err = unpopulate(val, &m.PaygCostInBillingCurrency)
-			delete(rawMsg, key)
-		case "paygCostInUSD":
-			err = unpopulate(val, &m.PaygCostInUSD)
-			delete(rawMsg, key)
-		case "previousInvoiceId":
-			err = unpopulate(val, &m.PreviousInvoiceID)
-			delete(rawMsg, key)
-		case "pricingCurrencyCode":
-			err = unpopulate(val, &m.PricingCurrencyCode)
-			delete(rawMsg, key)
-		case "pricingModel":
-			err = unpopulate(val, &m.PricingModel)
-			delete(rawMsg, key)
-		case "product":
-			err = unpopulate(val, &m.Product)
-			delete(rawMsg, key)
-		case "productIdentifier":
-			err = unpopulate(val, &m.ProductIdentifier)
-			delete(rawMsg, key)
-		case "productOrderId":
-			err = unpopulate(val, &m.ProductOrderID)
-			delete(rawMsg, key)
-		case "productOrderName":
-			err = unpopulate(val, &m.ProductOrderName)
-			delete(rawMsg, key)
-		case "provider":
-			err = unpopulate(val, &m.Provider)
-			delete(rawMsg, key)
-		case "publisherId":
-			err = unpopulate(val, &m.PublisherID)
-			delete(rawMsg, key)
-		case "publisherName":
-			err = unpopulate(val, &m.PublisherName)
-			delete(rawMsg, key)
-		case "publisherType":
-			err = unpopulate(val, &m.PublisherType)
-			delete(rawMsg, key)
-		case "quantity":
-			err = unpopulate(val, &m.Quantity)
-			delete(rawMsg, key)
-		case "resellerMpnId":
-			err = unpopulate(val, &m.ResellerMpnID)
-			delete(rawMsg, key)
-		case "resellerName":
-			err = unpopulate(val, &m.ResellerName)
-			delete(rawMsg, key)
-		case "reservationId":
-			err = unpopulate(val, &m.ReservationID)
-			delete(rawMsg, key)
-		case "reservationName":
-			err = unpopulate(val, &m.ReservationName)
-			delete(rawMsg, key)
-		case "resourceGroup":
-			err = unpopulate(val, &m.ResourceGroup)
-			delete(rawMsg, key)
-		case "resourceLocation":
-			err = unpopulate(val, &m.ResourceLocation)
-			delete(rawMsg, key)
-		case "resourceLocationNormalized":
-			err = unpopulate(val, &m.ResourceLocationNormalized)
-			delete(rawMsg, key)
-		case "serviceFamily":
-			err = unpopulate(val, &m.ServiceFamily)
-			delete(rawMsg, key)
-		case "serviceInfo1":
-			err = unpopulate(val, &m.ServiceInfo1)
-			delete(rawMsg, key)
-		case "serviceInfo2":
-			err = unpopulate(val, &m.ServiceInfo2)
-			delete(rawMsg, key)
-		case "servicePeriodEndDate":
-			err = unpopulateTimeRFC3339(val, &m.ServicePeriodEndDate)
-			delete(rawMsg, key)
-		case "servicePeriodStartDate":
-			err = unpopulateTimeRFC3339(val, &m.ServicePeriodStartDate)
-			delete(rawMsg, key)
-		case "subscriptionGuid":
-			err = unpopulate(val, &m.SubscriptionGUID)
-			delete(rawMsg, key)
-		case "subscriptionName":
-			err = unpopulate(val, &m.SubscriptionName)
-			delete(rawMsg, key)
-		case "term":
-			err = unpopulate(val, &m.Term)
-			delete(rawMsg, key)
-		case "unitOfMeasure":
-			err = unpopulate(val, &m.UnitOfMeasure)
-			delete(rawMsg, key)
-		case "unitPrice":
-			err = unpopulate(val, &m.UnitPrice)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // Notification - The notification associated with a budget.
 type Notification struct {
-	// REQUIRED; Email addresses to send the budget notification to when the threshold is exceeded. Must have at least one contact email or contact group specified
-	// at the Subscription or Resource Group scopes. All
+	// REQUIRED; Email addresses to send the budget notification to when the threshold is exceeded. Must have at least one contact
+	// email or contact group specified at the Subscription or Resource Group scopes. All
 	// other scopes must have at least one contact email specified.
 	ContactEmails []*string `json:"contactEmails,omitempty"`
 
@@ -3361,32 +2024,22 @@ type Notification struct {
 	// REQUIRED; The comparison operator.
 	Operator *OperatorType `json:"operator,omitempty"`
 
-	// REQUIRED; Threshold value associated with a notification. Notification is sent when the cost exceeded the threshold. It is always percent and has to
-	// be between 0 and 1000.
+	// REQUIRED; Threshold value associated with a notification. Notification is sent when the cost exceeded the threshold. It
+	// is always percent and has to be between 0 and 1000.
 	Threshold *float64 `json:"threshold,omitempty"`
 
-	// Action groups to send the budget notification to when the threshold is exceeded. Must be provided as a fully qualified Azure resource id. Only supported
-	// at Subscription or Resource Group scopes.
+	// Action groups to send the budget notification to when the threshold is exceeded. Must be provided as a fully qualified
+	// Azure resource id. Only supported at Subscription or Resource Group scopes.
 	ContactGroups []*string `json:"contactGroups,omitempty"`
 
 	// Contact roles to send the budget notification to when the threshold is exceeded.
 	ContactRoles []*string `json:"contactRoles,omitempty"`
 
+	// Language in which the recipient will receive the notification
+	Locale *CultureCode `json:"locale,omitempty"`
+
 	// The type of threshold
 	ThresholdType *ThresholdType `json:"thresholdType,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Notification.
-func (n Notification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "contactEmails", n.ContactEmails)
-	populate(objectMap, "contactGroups", n.ContactGroups)
-	populate(objectMap, "contactRoles", n.ContactRoles)
-	populate(objectMap, "enabled", n.Enabled)
-	populate(objectMap, "operator", n.Operator)
-	populate(objectMap, "threshold", n.Threshold)
-	populate(objectMap, "thresholdType", n.ThresholdType)
-	return json.Marshal(objectMap)
 }
 
 // Operation - A Consumption REST API operation.
@@ -3416,7 +2069,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - Result of listing consumption operations. It contains a list of operations and a URL link to get the next set of results.
+// OperationListResult - Result of listing consumption operations. It contains a list of operations and a URL link to get
+// the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -3425,36 +2079,33 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PriceSheetGetByBillingPeriodOptions contains the optional parameters for the PriceSheet.GetByBillingPeriod method.
-type PriceSheetGetByBillingPeriodOptions struct {
-	// May be used to expand the properties/meterDetails within a price sheet. By default, these fields are not included when returning price sheet.
+// PriceSheetClientGetByBillingPeriodOptions contains the optional parameters for the PriceSheetClient.GetByBillingPeriod
+// method.
+type PriceSheetClientGetByBillingPeriodOptions struct {
+	// May be used to expand the properties/meterDetails within a price sheet. By default, these fields are not included when
+	// returning price sheet.
 	Expand *string
-	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink
-	// element will include a skiptoken parameter that specifies a starting point to use for subsequent calls.
+	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
+	// the value of the nextLink element will include a skiptoken parameter that
+	// specifies a starting point to use for subsequent calls.
 	Skiptoken *string
 	// May be used to limit the number of results to the top N results.
 	Top *int32
 }
 
-// PriceSheetGetOptions contains the optional parameters for the PriceSheet.Get method.
-type PriceSheetGetOptions struct {
-	// May be used to expand the properties/meterDetails within a price sheet. By default, these fields are not included when returning price sheet.
+// PriceSheetClientGetOptions contains the optional parameters for the PriceSheetClient.Get method.
+type PriceSheetClientGetOptions struct {
+	// May be used to expand the properties/meterDetails within a price sheet. By default, these fields are not included when
+	// returning price sheet.
 	Expand *string
-	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink
-	// element will include a skiptoken parameter that specifies a starting point to use for subsequent calls.
+	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
+	// the value of the nextLink element will include a skiptoken parameter that
+	// specifies a starting point to use for subsequent calls.
 	Skiptoken *string
 	// May be used to limit the number of results to the top N results.
 	Top *int32
@@ -3470,15 +2121,6 @@ type PriceSheetModel struct {
 
 	// READ-ONLY; Price sheet
 	Pricesheets []*PriceSheetProperties `json:"pricesheets,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PriceSheetModel.
-func (p PriceSheetModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "download", p.Download)
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "pricesheets", p.Pricesheets)
-	return json.Marshal(objectMap)
 }
 
 // PriceSheetProperties - The properties of the price sheet.
@@ -3513,45 +2155,29 @@ type PriceSheetProperties struct {
 
 // PriceSheetResult - An pricesheet resource.
 type PriceSheetResult struct {
-	Resource
 	// price sheet result. It contains the pricesheet associated with billing period
 	Properties *PriceSheetModel `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PriceSheetResult.
-func (p PriceSheetResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; The etag for the resource.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type PriceSheetResult.
-func (p *PriceSheetResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &p.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := p.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The full qualified ARM ID of an event.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID that uniquely identifies an event.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource tags.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ProxyResource - The Resource model definition.
 type ProxyResource struct {
-	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating the latest version or not.
+	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
+	// the latest version or not.
 	ETag *string `json:"eTag,omitempty"`
 
 	// READ-ONLY; Resource Id.
@@ -3575,40 +2201,23 @@ type Reseller struct {
 
 // ReservationDetail - reservation detail resource.
 type ReservationDetail struct {
-	Resource
 	// The properties of the reservation detail.
 	Properties *ReservationDetailProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ReservationDetail.
-func (r ReservationDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; The etag for the resource.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReservationDetail.
-func (r *ReservationDetail) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &r.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := r.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The full qualified ARM ID of an event.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID that uniquely identifies an event.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource tags.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ReservationDetailProperties - The properties of the reservation detail.
@@ -3625,18 +2234,18 @@ type ReservationDetailProperties struct {
 	// READ-ONLY; The reservation kind.
 	Kind *string `json:"kind,omitempty" azure:"ro"`
 
-	// READ-ONLY; The reservation ID is the identifier of a reservation within a reservation order. Each reservation is the grouping for applying the benefit
-	// scope and also specifies the number of instances to which
+	// READ-ONLY; The reservation ID is the identifier of a reservation within a reservation order. Each reservation is the grouping
+	// for applying the benefit scope and also specifies the number of instances to which
 	// the reservation benefit can be applied to.
 	ReservationID *string `json:"reservationId,omitempty" azure:"ro"`
 
-	// READ-ONLY; The reservation order ID is the identifier for a reservation purchase. Each reservation order ID represents a single purchase transaction.
-	// A reservation order contains reservations. The reservation
+	// READ-ONLY; The reservation order ID is the identifier for a reservation purchase. Each reservation order ID represents
+	// a single purchase transaction. A reservation order contains reservations. The reservation
 	// order specifies the VM size and region for the reservations.
 	ReservationOrderID *string `json:"reservationOrderId,omitempty" azure:"ro"`
 
-	// READ-ONLY; This is the total hours reserved for the day. E.g. if reservation for 1 instance was made on 1 PM, this will be 11 hours for that day and
-	// 24 hours from subsequent days.
+	// READ-ONLY; This is the total hours reserved for the day. E.g. if reservation for 1 instance was made on 1 PM, this will
+	// be 11 hours for that day and 24 hours from subsequent days.
 	ReservedHours *float64 `json:"reservedHours,omitempty" azure:"ro"`
 
 	// READ-ONLY; This is the ARM Sku name. It can be used to join with the serviceType field in additional info in usage records.
@@ -3652,73 +2261,6 @@ type ReservationDetailProperties struct {
 	UsedHours *float64 `json:"usedHours,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReservationDetailProperties.
-func (r ReservationDetailProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "instanceFlexibilityGroup", r.InstanceFlexibilityGroup)
-	populate(objectMap, "instanceFlexibilityRatio", r.InstanceFlexibilityRatio)
-	populate(objectMap, "instanceId", r.InstanceID)
-	populate(objectMap, "kind", r.Kind)
-	populate(objectMap, "reservationId", r.ReservationID)
-	populate(objectMap, "reservationOrderId", r.ReservationOrderID)
-	populate(objectMap, "reservedHours", r.ReservedHours)
-	populate(objectMap, "skuName", r.SKUName)
-	populate(objectMap, "totalReservedQuantity", r.TotalReservedQuantity)
-	populateTimeRFC3339(objectMap, "usageDate", r.UsageDate)
-	populate(objectMap, "usedHours", r.UsedHours)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReservationDetailProperties.
-func (r *ReservationDetailProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceFlexibilityGroup":
-			err = unpopulate(val, &r.InstanceFlexibilityGroup)
-			delete(rawMsg, key)
-		case "instanceFlexibilityRatio":
-			err = unpopulate(val, &r.InstanceFlexibilityRatio)
-			delete(rawMsg, key)
-		case "instanceId":
-			err = unpopulate(val, &r.InstanceID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &r.Kind)
-			delete(rawMsg, key)
-		case "reservationId":
-			err = unpopulate(val, &r.ReservationID)
-			delete(rawMsg, key)
-		case "reservationOrderId":
-			err = unpopulate(val, &r.ReservationOrderID)
-			delete(rawMsg, key)
-		case "reservedHours":
-			err = unpopulate(val, &r.ReservedHours)
-			delete(rawMsg, key)
-		case "skuName":
-			err = unpopulate(val, &r.SKUName)
-			delete(rawMsg, key)
-		case "totalReservedQuantity":
-			err = unpopulate(val, &r.TotalReservedQuantity)
-			delete(rawMsg, key)
-		case "usageDate":
-			err = unpopulateTimeRFC3339(val, &r.UsageDate)
-			delete(rawMsg, key)
-		case "usedHours":
-			err = unpopulate(val, &r.UsedHours)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ReservationDetailsListResult - Result of listing reservation details.
 type ReservationDetailsListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
@@ -3726,14 +2268,6 @@ type ReservationDetailsListResult struct {
 
 	// READ-ONLY; The list of reservation details.
 	Value []*ReservationDetail `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ReservationDetailsListResult.
-func (r ReservationDetailsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // ReservationRecommendationClassification provides polymorphic access to related types.
@@ -3747,52 +2281,34 @@ type ReservationRecommendationClassification interface {
 
 // ReservationRecommendation - A reservation recommendation resource.
 type ReservationRecommendation struct {
-	Resource
-	ResourceAttributes
 	// REQUIRED; Specifies the kind of reservation recommendation.
 	Kind *ReservationRecommendationKind `json:"kind,omitempty"`
+
+	// READ-ONLY; The etag for the resource.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; The full qualified ARM ID of an event.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource location
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID that uniquely identifies an event.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource sku
+	SKU *string `json:"sku,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource tags.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // GetReservationRecommendation implements the ReservationRecommendationClassification interface for type ReservationRecommendation.
 func (r *ReservationRecommendation) GetReservationRecommendation() *ReservationRecommendation {
 	return r
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReservationRecommendation.
-func (r *ReservationRecommendation) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
-func (r ReservationRecommendation) marshalInternal(objectMap map[string]interface{}, discValue ReservationRecommendationKind) {
-	r.Resource.marshalInternal(objectMap)
-	r.ResourceAttributes.marshalInternal(objectMap)
-	r.Kind = &discValue
-	objectMap["kind"] = r.Kind
-}
-
-func (r *ReservationRecommendation) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &r.Kind)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := r.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	if err := r.ResourceAttributes.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // ReservationRecommendationDetailsCalculatedSavingsProperties - Details of estimated savings.
@@ -3819,14 +2335,14 @@ type ReservationRecommendationDetailsCalculatedSavingsProperties struct {
 	TotalReservationCost *float32 `json:"totalReservationCost,omitempty" azure:"ro"`
 }
 
-// ReservationRecommendationDetailsGetOptions contains the optional parameters for the ReservationRecommendationDetails.Get method.
-type ReservationRecommendationDetailsGetOptions struct {
+// ReservationRecommendationDetailsClientGetOptions contains the optional parameters for the ReservationRecommendationDetailsClient.Get
+// method.
+type ReservationRecommendationDetailsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ReservationRecommendationDetailsModel - Reservation recommendation details.
 type ReservationRecommendationDetailsModel struct {
-	Resource
 	// Resource Location.
 	Location *string `json:"location,omitempty"`
 
@@ -3835,45 +2351,21 @@ type ReservationRecommendationDetailsModel struct {
 
 	// Resource sku
 	SKU *string `json:"sku,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ReservationRecommendationDetailsModel.
-func (r ReservationRecommendationDetailsModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.Resource.marshalInternal(objectMap)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "properties", r.Properties)
-	populate(objectMap, "sku", r.SKU)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; The etag for the resource.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReservationRecommendationDetailsModel.
-func (r *ReservationRecommendationDetailsModel) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "location":
-			err = unpopulate(val, &r.Location)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &r.Properties)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, &r.SKU)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := r.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The full qualified ARM ID of an event.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID that uniquely identifies an event.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource tags.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ReservationRecommendationDetailsProperties - The properties of the reservation recommendation.
@@ -3918,18 +2410,6 @@ type ReservationRecommendationDetailsResourceProperties struct {
 	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReservationRecommendationDetailsResourceProperties.
-func (r ReservationRecommendationDetailsResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appliedScopes", r.AppliedScopes)
-	populate(objectMap, "onDemandRate", r.OnDemandRate)
-	populate(objectMap, "product", r.Product)
-	populate(objectMap, "region", r.Region)
-	populate(objectMap, "reservationRate", r.ReservationRate)
-	populate(objectMap, "resourceType", r.ResourceType)
-	return json.Marshal(objectMap)
-}
-
 // ReservationRecommendationDetailsSavingsProperties - Details of the estimated savings.
 type ReservationRecommendationDetailsSavingsProperties struct {
 	// List of calculated savings.
@@ -3951,19 +2431,8 @@ type ReservationRecommendationDetailsSavingsProperties struct {
 	UnitOfMeasure *string `json:"unitOfMeasure,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReservationRecommendationDetailsSavingsProperties.
-func (r ReservationRecommendationDetailsSavingsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "calculatedSavings", r.CalculatedSavings)
-	populate(objectMap, "lookBackPeriod", r.LookBackPeriod)
-	populate(objectMap, "recommendedQuantity", r.RecommendedQuantity)
-	populate(objectMap, "reservationOrderTerm", r.ReservationOrderTerm)
-	populate(objectMap, "savingsType", r.SavingsType)
-	populate(objectMap, "unitOfMeasure", r.UnitOfMeasure)
-	return json.Marshal(objectMap)
-}
-
-// ReservationRecommendationDetailsUsageProperties - Details about historical usage data that has been used for computing the recommendation.
+// ReservationRecommendationDetailsUsageProperties - Details about historical usage data that has been used for computing
+// the recommendation.
 type ReservationRecommendationDetailsUsageProperties struct {
 	// READ-ONLY; The first usage date used for looking back for computing the recommendation.
 	FirstConsumptionDate *string `json:"firstConsumptionDate,omitempty" azure:"ro"`
@@ -3974,30 +2443,24 @@ type ReservationRecommendationDetailsUsageProperties struct {
 	// READ-ONLY; What the usage data values represent ex: virtual machine instance.
 	LookBackUnitType *string `json:"lookBackUnitType,omitempty" azure:"ro"`
 
-	// READ-ONLY; The breakdown of historical resource usage. The values are in the order of usage between the firstConsumptionDate and the lastConsumptionDate.
+	// READ-ONLY; The breakdown of historical resource usage. The values are in the order of usage between the firstConsumptionDate
+	// and the lastConsumptionDate.
 	UsageData []*float32 `json:"usageData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The grain of the values represented in the usage data ex: hourly.
 	UsageGrain *string `json:"usageGrain,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReservationRecommendationDetailsUsageProperties.
-func (r ReservationRecommendationDetailsUsageProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "firstConsumptionDate", r.FirstConsumptionDate)
-	populate(objectMap, "lastConsumptionDate", r.LastConsumptionDate)
-	populate(objectMap, "lookBackUnitType", r.LookBackUnitType)
-	populate(objectMap, "usageData", r.UsageData)
-	populate(objectMap, "usageGrain", r.UsageGrain)
-	return json.Marshal(objectMap)
-}
-
-// ReservationRecommendationsListOptions contains the optional parameters for the ReservationRecommendations.List method.
-type ReservationRecommendationsListOptions struct {
-	// May be used to filter reservationRecommendations by: properties/scope with allowed values ['Single', 'Shared'] and default value 'Single'; properties/resourceType
-	// with allowed values ['VirtualMachines', 'SQLDatabases', 'PostgreSQL', 'ManagedDisk', 'MySQL', 'RedHat', 'MariaDB', 'RedisCache', 'CosmosDB', 'SqlDataWarehouse',
-	// 'SUSELinux', 'AppService', 'BlockBlob', 'AzureDataExplorer', 'VMwareCloudSimple'] and default value 'VirtualMachines'; and properties/lookBackPeriod
-	// with allowed values ['Last7Days', 'Last30Days', 'Last60Days'] and default value 'Last7Days'.
+// ReservationRecommendationsClientListOptions contains the optional parameters for the ReservationRecommendationsClient.List
+// method.
+type ReservationRecommendationsClientListOptions struct {
+	// May be used to filter reservationRecommendations by: properties/scope with allowed values ['Single', 'Shared'] and default
+	// value 'Single'; properties/resourceType with allowed values
+	// ['VirtualMachines', 'SQLDatabases', 'PostgreSQL', 'ManagedDisk', 'MySQL', 'RedHat', 'MariaDB', 'RedisCache', 'CosmosDB',
+	// 'SqlDataWarehouse', 'SUSELinux', 'AppService', 'BlockBlob',
+	// 'AzureDataExplorer', 'VMwareCloudSimple'] and default value 'VirtualMachines'; and properties/lookBackPeriod with allowed
+	// values ['Last7Days', 'Last30Days', 'Last60Days'] and default value
+	// 'Last7Days'.
 	Filter *string
 }
 
@@ -4013,41 +2476,6 @@ type ReservationRecommendationsListResult struct {
 	Value []ReservationRecommendationClassification `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReservationRecommendationsListResult.
-func (r ReservationRecommendationsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "previousLink", r.PreviousLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReservationRecommendationsListResult.
-func (r *ReservationRecommendationsListResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, &r.NextLink)
-			delete(rawMsg, key)
-		case "previousLink":
-			err = unpopulate(val, &r.PreviousLink)
-			delete(rawMsg, key)
-		case "value":
-			r.Value, err = unmarshalReservationRecommendationClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ReservationSummariesListResult - Result of listing reservation summaries.
 type ReservationSummariesListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
@@ -4057,50 +2485,25 @@ type ReservationSummariesListResult struct {
 	Value []*ReservationSummary `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReservationSummariesListResult.
-func (r ReservationSummariesListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
 // ReservationSummary - reservation summary resource.
 type ReservationSummary struct {
-	Resource
 	// The properties of the reservation summary.
 	Properties *ReservationSummaryProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ReservationSummary.
-func (r ReservationSummary) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; The etag for the resource.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReservationSummary.
-func (r *ReservationSummary) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &r.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := r.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The full qualified ARM ID of an event.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID that uniquely identifies an event.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource tags.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ReservationSummaryProperties - The properties of the reservation summary.
@@ -4111,13 +2514,13 @@ type ReservationSummaryProperties struct {
 	// READ-ONLY; The reservation kind.
 	Kind *string `json:"kind,omitempty" azure:"ro"`
 
-	// READ-ONLY; This is the maximum hourly utilization in the usage time (day or month). E.g. if usage record corresponds to 12/10/2017 and on that for hour
-	// 4 and 5, utilization was 100%, this field will return 100%
+	// READ-ONLY; This is the maximum hourly utilization in the usage time (day or month). E.g. if usage record corresponds to
+	// 12/10/2017 and on that for hour 4 and 5, utilization was 100%, this field will return 100%
 	// for that day.
 	MaxUtilizationPercentage *float64 `json:"maxUtilizationPercentage,omitempty" azure:"ro"`
 
-	// READ-ONLY; This is the minimum hourly utilization in the usage time (day or month). E.g. if usage record corresponds to 12/10/2017 and on that for hour
-	// 4 and 5, utilization was 10%, this field will return 10%
+	// READ-ONLY; This is the minimum hourly utilization in the usage time (day or month). E.g. if usage record corresponds to
+	// 12/10/2017 and on that for hour 4 and 5, utilization was 10%, this field will return 10%
 	// for that day
 	MinUtilizationPercentage *float64 `json:"minUtilizationPercentage,omitempty" azure:"ro"`
 
@@ -4127,18 +2530,18 @@ type ReservationSummaryProperties struct {
 	// READ-ONLY; This is the remaining quantity for the reservationId.
 	RemainingQuantity *float64 `json:"remainingQuantity,omitempty" azure:"ro"`
 
-	// READ-ONLY; The reservation ID is the identifier of a reservation within a reservation order. Each reservation is the grouping for applying the benefit
-	// scope and also specifies the number of instances to which
+	// READ-ONLY; The reservation ID is the identifier of a reservation within a reservation order. Each reservation is the grouping
+	// for applying the benefit scope and also specifies the number of instances to which
 	// the reservation benefit can be applied to.
 	ReservationID *string `json:"reservationId,omitempty" azure:"ro"`
 
-	// READ-ONLY; The reservation order ID is the identifier for a reservation purchase. Each reservation order ID represents a single purchase transaction.
-	// A reservation order contains reservations. The reservation
+	// READ-ONLY; The reservation order ID is the identifier for a reservation purchase. Each reservation order ID represents
+	// a single purchase transaction. A reservation order contains reservations. The reservation
 	// order specifies the VM size and region for the reservations.
 	ReservationOrderID *string `json:"reservationOrderId,omitempty" azure:"ro"`
 
-	// READ-ONLY; This is the total hours reserved. E.g. if reservation for 1 instance was made on 1 PM, this will be 11 hours for that day and 24 hours from
-	// subsequent days
+	// READ-ONLY; This is the total hours reserved. E.g. if reservation for 1 instance was made on 1 PM, this will be 11 hours
+	// for that day and 24 hours from subsequent days
 	ReservedHours *float64 `json:"reservedHours,omitempty" azure:"ro"`
 
 	// READ-ONLY; This is the ARM Sku name. It can be used to join with the serviceType field in additional info in usage records.
@@ -4160,106 +2563,22 @@ type ReservationSummaryProperties struct {
 	UtilizedPercentage *float64 `json:"utilizedPercentage,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReservationSummaryProperties.
-func (r ReservationSummaryProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "avgUtilizationPercentage", r.AvgUtilizationPercentage)
-	populate(objectMap, "kind", r.Kind)
-	populate(objectMap, "maxUtilizationPercentage", r.MaxUtilizationPercentage)
-	populate(objectMap, "minUtilizationPercentage", r.MinUtilizationPercentage)
-	populate(objectMap, "purchasedQuantity", r.PurchasedQuantity)
-	populate(objectMap, "remainingQuantity", r.RemainingQuantity)
-	populate(objectMap, "reservationId", r.ReservationID)
-	populate(objectMap, "reservationOrderId", r.ReservationOrderID)
-	populate(objectMap, "reservedHours", r.ReservedHours)
-	populate(objectMap, "skuName", r.SKUName)
-	populate(objectMap, "totalReservedQuantity", r.TotalReservedQuantity)
-	populateTimeRFC3339(objectMap, "usageDate", r.UsageDate)
-	populate(objectMap, "usedHours", r.UsedHours)
-	populate(objectMap, "usedQuantity", r.UsedQuantity)
-	populate(objectMap, "utilizedPercentage", r.UtilizedPercentage)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReservationSummaryProperties.
-func (r *ReservationSummaryProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "avgUtilizationPercentage":
-			err = unpopulate(val, &r.AvgUtilizationPercentage)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &r.Kind)
-			delete(rawMsg, key)
-		case "maxUtilizationPercentage":
-			err = unpopulate(val, &r.MaxUtilizationPercentage)
-			delete(rawMsg, key)
-		case "minUtilizationPercentage":
-			err = unpopulate(val, &r.MinUtilizationPercentage)
-			delete(rawMsg, key)
-		case "purchasedQuantity":
-			err = unpopulate(val, &r.PurchasedQuantity)
-			delete(rawMsg, key)
-		case "remainingQuantity":
-			err = unpopulate(val, &r.RemainingQuantity)
-			delete(rawMsg, key)
-		case "reservationId":
-			err = unpopulate(val, &r.ReservationID)
-			delete(rawMsg, key)
-		case "reservationOrderId":
-			err = unpopulate(val, &r.ReservationOrderID)
-			delete(rawMsg, key)
-		case "reservedHours":
-			err = unpopulate(val, &r.ReservedHours)
-			delete(rawMsg, key)
-		case "skuName":
-			err = unpopulate(val, &r.SKUName)
-			delete(rawMsg, key)
-		case "totalReservedQuantity":
-			err = unpopulate(val, &r.TotalReservedQuantity)
-			delete(rawMsg, key)
-		case "usageDate":
-			err = unpopulateTimeRFC3339(val, &r.UsageDate)
-			delete(rawMsg, key)
-		case "usedHours":
-			err = unpopulate(val, &r.UsedHours)
-			delete(rawMsg, key)
-		case "usedQuantity":
-			err = unpopulate(val, &r.UsedQuantity)
-			delete(rawMsg, key)
-		case "utilizedPercentage":
-			err = unpopulate(val, &r.UtilizedPercentage)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ReservationTransaction - Reservation transaction resource.
 type ReservationTransaction struct {
-	ReservationTransactionResource
 	// The properties of a legacy reservation transaction.
 	Properties *LegacyReservationTransactionProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ReservationTransaction.
-func (r ReservationTransaction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (r ReservationTransaction) marshalInternal(objectMap map[string]interface{}) {
-	r.ReservationTransactionResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource tags.
+	Tags []*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ReservationTransactionResource - The Resource model definition.
@@ -4277,29 +2596,18 @@ type ReservationTransactionResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReservationTransactionResource.
-func (r ReservationTransactionResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r ReservationTransactionResource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-}
-
-// ReservationTransactionsListByBillingProfileOptions contains the optional parameters for the ReservationTransactions.ListByBillingProfile method.
-type ReservationTransactionsListByBillingProfileOptions struct {
-	// Filter reservation transactions by date range. The properties/EventDate for start date and end date. The filter supports 'le' and 'ge'
+// ReservationTransactionsClientListByBillingProfileOptions contains the optional parameters for the ReservationTransactionsClient.ListByBillingProfile
+// method.
+type ReservationTransactionsClientListByBillingProfileOptions struct {
+	// Filter reservation transactions by date range. The properties/EventDate for start date and end date. The filter supports
+	// 'le' and 'ge'
 	Filter *string
 }
 
-// ReservationTransactionsListOptions contains the optional parameters for the ReservationTransactions.List method.
-type ReservationTransactionsListOptions struct {
-	// Filter reservation transactions by date range. The properties/EventDate for start date and end date. The filter supports 'le' and 'ge'
+// ReservationTransactionsClientListOptions contains the optional parameters for the ReservationTransactionsClient.List method.
+type ReservationTransactionsClientListOptions struct {
+	// Filter reservation transactions by date range. The properties/EventDate for start date and end date. The filter supports
+	// 'le' and 'ge'
 	Filter *string
 }
 
@@ -4312,31 +2620,24 @@ type ReservationTransactionsListResult struct {
 	Value []*ReservationTransaction `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReservationTransactionsListResult.
-func (r ReservationTransactionsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
-// ReservationsDetailsListByReservationOrderAndReservationOptions contains the optional parameters for the ReservationsDetails.ListByReservationOrderAndReservation
+// ReservationsDetailsClientListByReservationOrderAndReservationOptions contains the optional parameters for the ReservationsDetailsClient.ListByReservationOrderAndReservation
 // method.
-type ReservationsDetailsListByReservationOrderAndReservationOptions struct {
+type ReservationsDetailsClientListByReservationOrderAndReservationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReservationsDetailsListByReservationOrderOptions contains the optional parameters for the ReservationsDetails.ListByReservationOrder method.
-type ReservationsDetailsListByReservationOrderOptions struct {
+// ReservationsDetailsClientListByReservationOrderOptions contains the optional parameters for the ReservationsDetailsClient.ListByReservationOrder
+// method.
+type ReservationsDetailsClientListByReservationOrderOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReservationsDetailsListOptions contains the optional parameters for the ReservationsDetails.List method.
-type ReservationsDetailsListOptions struct {
+// ReservationsDetailsClientListOptions contains the optional parameters for the ReservationsDetailsClient.List method.
+type ReservationsDetailsClientListOptions struct {
 	// End date. Only applicable when querying with billing profile
 	EndDate *string
-	// Filter reservation details by date range. The properties/UsageDate for start date and end date. The filter supports 'le' and 'ge'. Not applicable when
-	// querying with billing profile
+	// Filter reservation details by date range. The properties/UsageDate for start date and end date. The filter supports 'le'
+	// and 'ge'. Not applicable when querying with billing profile
 	Filter *string
 	// Reservation Id GUID. Only valid if reservationOrderId is also provided. Filter to a specific reservation
 	ReservationID *string
@@ -4346,25 +2647,26 @@ type ReservationsDetailsListOptions struct {
 	StartDate *string
 }
 
-// ReservationsSummariesListByReservationOrderAndReservationOptions contains the optional parameters for the ReservationsSummaries.ListByReservationOrderAndReservation
+// ReservationsSummariesClientListByReservationOrderAndReservationOptions contains the optional parameters for the ReservationsSummariesClient.ListByReservationOrderAndReservation
 // method.
-type ReservationsSummariesListByReservationOrderAndReservationOptions struct {
+type ReservationsSummariesClientListByReservationOrderAndReservationOptions struct {
 	// Required only for daily grain. The properties/UsageDate for start date and end date. The filter supports 'le' and 'ge'
 	Filter *string
 }
 
-// ReservationsSummariesListByReservationOrderOptions contains the optional parameters for the ReservationsSummaries.ListByReservationOrder method.
-type ReservationsSummariesListByReservationOrderOptions struct {
+// ReservationsSummariesClientListByReservationOrderOptions contains the optional parameters for the ReservationsSummariesClient.ListByReservationOrder
+// method.
+type ReservationsSummariesClientListByReservationOrderOptions struct {
 	// Required only for daily grain. The properties/UsageDate for start date and end date. The filter supports 'le' and 'ge'
 	Filter *string
 }
 
-// ReservationsSummariesListOptions contains the optional parameters for the ReservationsSummaries.List method.
-type ReservationsSummariesListOptions struct {
+// ReservationsSummariesClientListOptions contains the optional parameters for the ReservationsSummariesClient.List method.
+type ReservationsSummariesClientListOptions struct {
 	// End date. Only applicable when querying with billing profile
 	EndDate *string
-	// Required only for daily grain. The properties/UsageDate for start date and end date. The filter supports 'le' and 'ge'. Not applicable when querying
-	// with billing profile
+	// Required only for daily grain. The properties/UsageDate for start date and end date. The filter supports 'le' and 'ge'.
+	// Not applicable when querying with billing profile
 	Filter *string
 	// Reservation Id GUID. Only valid if reservationOrderId is also provided. Filter to a specific reservation
 	ReservationID *string
@@ -4392,57 +2694,6 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Resource.
-func (r *Resource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "etag", r.Etag)
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-}
-
-func (r *Resource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &r.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &r.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &r.Tags)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &r.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ResourceAttributes - The Resource model definition.
 type ResourceAttributes struct {
 	// READ-ONLY; Resource location
@@ -4450,38 +2701,6 @@ type ResourceAttributes struct {
 
 	// READ-ONLY; Resource sku
 	SKU *string `json:"sku,omitempty" azure:"ro"`
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceAttributes.
-func (r *ResourceAttributes) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
-func (r ResourceAttributes) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "sku", r.SKU)
-}
-
-func (r *ResourceAttributes) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "location":
-			err = unpopulate(val, &r.Location)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, &r.SKU)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // SKUProperty - The Sku property
@@ -4502,14 +2721,6 @@ type Tag struct {
 	Value []*string `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Tag.
-func (t Tag) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "key", t.Key)
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
-}
-
 // TagProperties - The properties of the tag.
 type TagProperties struct {
 	// A list of Tag.
@@ -4522,25 +2733,28 @@ type TagProperties struct {
 	PreviousLink *string `json:"previousLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TagProperties.
-func (t TagProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", t.NextLink)
-	populate(objectMap, "previousLink", t.PreviousLink)
-	populate(objectMap, "tags", t.Tags)
-	return json.Marshal(objectMap)
-}
-
-// TagsGetOptions contains the optional parameters for the Tags.Get method.
-type TagsGetOptions struct {
+// TagsClientGetOptions contains the optional parameters for the TagsClient.Get method.
+type TagsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
 // TagsResult - A resource listing all tags.
 type TagsResult struct {
-	ProxyResource
+	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
+	// the latest version or not.
+	ETag *string `json:"eTag,omitempty"`
+
 	// The properties of the tag.
 	Properties *TagProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // UsageDetailClassification provides polymorphic access to related types.
@@ -4554,119 +2768,55 @@ type UsageDetailClassification interface {
 
 // UsageDetail - An usage detail resource.
 type UsageDetail struct {
-	Resource
 	// REQUIRED; Specifies the kind of usage details.
 	Kind *UsageDetailsKind `json:"kind,omitempty"`
+
+	// READ-ONLY; The etag for the resource.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; The full qualified ARM ID of an event.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID that uniquely identifies an event.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource tags.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // GetUsageDetail implements the UsageDetailClassification interface for type UsageDetail.
 func (u *UsageDetail) GetUsageDetail() *UsageDetail { return u }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type UsageDetail.
-func (u *UsageDetail) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return u.unmarshalInternal(rawMsg)
-}
-
-func (u UsageDetail) marshalInternal(objectMap map[string]interface{}, discValue UsageDetailsKind) {
-	u.Resource.marshalInternal(objectMap)
-	u.Kind = &discValue
-	objectMap["kind"] = u.Kind
-}
-
-func (u *UsageDetail) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &u.Kind)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := u.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// UsageDetailsListOptions contains the optional parameters for the UsageDetails.List method.
-type UsageDetailsListOptions struct {
-	// May be used to expand the properties/additionalInfo or properties/meterDetails within a list of usage details. By default, these fields are not included
-	// when listing usage details.
+// UsageDetailsClientListOptions contains the optional parameters for the UsageDetailsClient.List method.
+type UsageDetailsClientListOptions struct {
+	// May be used to expand the properties/additionalInfo or properties/meterDetails within a list of usage details. By default,
+	// these fields are not included when listing usage details.
 	Expand *string
-	// May be used to filter usageDetails by properties/resourceGroup, properties/resourceName, properties/resourceId, properties/chargeType, properties/reservationId,
-	// properties/publisherType or tags. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag
-	// filter is a key value pair string where key and value is separated by a colon (:). PublisherType Filter accepts two values azure and marketplace and
-	// it is currently supported for Web Direct Offer Type
+	// May be used to filter usageDetails by properties/resourceGroup, properties/resourceName, properties/resourceId, properties/chargeType,
+	// properties/reservationId, properties/publisherType or tags. The
+	// filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter
+	// is a key value pair string where key and value is separated by a colon (:).
+	// PublisherType Filter accepts two values azure and marketplace and it is currently supported for Web Direct Offer Type
 	Filter *string
 	// Allows to select different type of cost/usage records.
 	Metric *Metrictype
-	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink
-	// element will include a skiptoken parameter that specifies a starting point to use for subsequent calls.
+	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
+	// the value of the nextLink element will include a skiptoken parameter that
+	// specifies a starting point to use for subsequent calls.
 	Skiptoken *string
 	// May be used to limit the number of results to the most recent N usageDetails.
 	Top *int32
 }
 
-// UsageDetailsListResult - Result of listing usage details. It contains a list of available usage details in reverse chronological order by billing period.
+// UsageDetailsListResult - Result of listing usage details. It contains a list of available usage details in reverse chronological
+// order by billing period.
 type UsageDetailsListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; The list of usage details.
 	Value []UsageDetailClassification `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UsageDetailsListResult.
-func (u UsageDetailsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", u.NextLink)
-	populate(objectMap, "value", u.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type UsageDetailsListResult.
-func (u *UsageDetailsListResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, &u.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			u.Value, err = unmarshalUsageDetailClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

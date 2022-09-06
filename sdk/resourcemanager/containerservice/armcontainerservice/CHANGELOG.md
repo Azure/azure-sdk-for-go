@@ -1,15 +1,37 @@
 # Release History
 
-## 0.2.1 (2021-11-16)
+## 2.1.0 (2022-08-25)
+### Features Added
 
-- Add example
+- New const `OSSKUWindows2019`
+- New const `OSSKUWindows2022`
 
-## 0.2.0 (2021-10-29)
 
+## 2.0.0 (2022-07-22)
 ### Breaking Changes
 
-- `arm.Connection` has been removed in `github.com/Azure/azure-sdk-for-go/sdk/azcore/v0.20.0`
-- The parameters of `NewXXXClient` has been changed from `(con *arm.Connection, subscriptionID string)` to `(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions)`
+- Struct `ManagedClusterSecurityProfileAzureDefender` has been removed
+- Field `AzureDefender` of struct `ManagedClusterSecurityProfile` has been removed
 
-## 0.1.0 (2021-10-08)
-- To better align with the Azure SDK guidelines (https://azure.github.io/azure-sdk/general_introduction.html), we have decided to change the module path to "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice". Therefore, we are deprecating the old module path (which is "github.com/Azure/azure-sdk-for-go/sdk/containerservice/armcontainerservice") to avoid confusion.
+### Features Added
+
+- New const `KeyVaultNetworkAccessTypesPrivate`
+- New const `NetworkPluginNone`
+- New const `KeyVaultNetworkAccessTypesPublic`
+- New function `PossibleKeyVaultNetworkAccessTypesValues() []KeyVaultNetworkAccessTypes`
+- New struct `AzureKeyVaultKms`
+- New struct `ManagedClusterSecurityProfileDefender`
+- New struct `ManagedClusterSecurityProfileDefenderSecurityMonitoring`
+- New field `HostGroupID` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `HostGroupID` in struct `ManagedClusterAgentPoolProfile`
+- New field `AzureKeyVaultKms` in struct `ManagedClusterSecurityProfile`
+- New field `Defender` in struct `ManagedClusterSecurityProfile`
+
+
+## 1.0.0 (2022-05-16)
+
+The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.
+
+To migrate the existing applications to the latest version, please refer to [Migration Guide](https://aka.ms/azsdk/go/mgmt/migration).
+
+To learn more, please refer to our documentation [Quick Start](https://aka.ms/azsdk/go/mgmt).

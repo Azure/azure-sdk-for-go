@@ -35,7 +35,7 @@ type NamespacesClientAPI interface {
 	ListAllComplete(ctx context.Context) (result notificationhubs.NamespaceListResultIterator, err error)
 	ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string) (result notificationhubs.SharedAccessAuthorizationRuleListResultPage, err error)
 	ListAuthorizationRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result notificationhubs.SharedAccessAuthorizationRuleListResultIterator, err error)
-	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result notificationhubs.SharedAccessAuthorizationRuleListResult, err error)
+	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result notificationhubs.ResourceListKeys, err error)
 	Patch(ctx context.Context, resourceGroupName string, namespaceName string, parameters notificationhubs.NamespacePatchParameters) (result notificationhubs.NamespaceResource, err error)
 	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters notificationhubs.PolicykeyResource) (result notificationhubs.ResourceListKeys, err error)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package armcustomerlockbox
 
 const (
-	module  = "armcustomerlockbox"
-	version = "v0.1.0"
+	moduleName    = "armcustomerlockbox"
+	moduleVersion = "v0.5.0"
 )
 
 // Status - The status of the request.
@@ -53,9 +53,4 @@ func PossibleStatusValues() []Status {
 		StatusRevoking,
 		StatusUnknown,
 	}
-}
-
-// ToPtr returns a *Status pointing to the current value.
-func (c Status) ToPtr() *Status {
-	return &c
 }

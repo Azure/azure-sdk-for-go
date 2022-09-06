@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,178 +12,219 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital"
 )
 
-// x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/ContactProfileGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/ContactProfileGet.json
 func ExampleContactProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armorbital.NewContactProfilesClient("<subscription-id>", cred, nil)
+	client, err := armorbital.NewContactProfilesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<contact-profile-name>",
+		"rg1",
+		"AQUA_DIRECTPLAYBACK_WITH_UPLINK",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("ContactProfile.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/ContactProfileCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/ContactProfileCreate.json
 func ExampleContactProfilesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armorbital.NewContactProfilesClient("<subscription-id>", cred, nil)
+	client, err := armorbital.NewContactProfilesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<contact-profile-name>",
+		"rg1",
+		"AQUA_DIRECTPLAYBACK_WITH_UPLINK",
 		armorbital.ContactProfile{
-			TrackedResource: armorbital.TrackedResource{
-				Location: to.StringPtr("<location>"),
-			},
-			Properties: &armorbital.ContactProfilesProperties{
-				AutoTrackingConfiguration: armorbital.AutoTrackingConfigurationXBand.ToPtr(),
+			Location: to.Ptr("westus"),
+			Properties: &armorbital.ContactProfileProperties{
+				AutoTrackingConfiguration: to.Ptr(armorbital.AutoTrackingConfigurationXBand),
+				EventHubURI:               to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.EventHub/namespaces/orbitalppewestus2-ns/eventhubs/telemetry-hub/"),
 				Links: []*armorbital.ContactProfileLink{
 					{
+						Name: to.Ptr("RHCP_UL"),
 						Channels: []*armorbital.ContactProfileLinkChannel{
 							{
-								BandwidthMHz:              to.Float32Ptr(0.036),
-								CenterFrequencyMHz:        to.Float32Ptr(2106.4063),
-								DecodingConfiguration:     to.StringPtr("<decoding-configuration>"),
-								DemodulationConfiguration: to.StringPtr("<demodulation-configuration>"),
-								EncodingConfiguration:     to.StringPtr("<encoding-configuration>"),
+								Name:                      to.Ptr("channel1"),
+								BandwidthMHz:              to.Ptr[float32](0.036),
+								CenterFrequencyMHz:        to.Ptr[float32](2106.4063),
+								DecodingConfiguration:     to.Ptr("na"),
+								DemodulationConfiguration: to.Ptr("na"),
+								EncodingConfiguration:     to.Ptr("AQUA_CMD_CCSDS"),
 								EndPoint: &armorbital.EndPoint{
-									EndPointName: to.StringPtr("<end-point-name>"),
-									IPAddress:    to.StringPtr("<ipaddress>"),
-									Port:         to.StringPtr("<port>"),
-									Protocol:     armorbital.ProtocolTCP.ToPtr(),
+									EndPointName: to.Ptr("AQUA_command"),
+									IPAddress:    to.Ptr("10.0.1.0"),
+									Port:         to.Ptr("4000"),
+									Protocol:     to.Ptr(armorbital.ProtocolTCP),
 								},
-								ModulationConfiguration: to.StringPtr("<modulation-configuration>"),
+								ModulationConfiguration: to.Ptr("AQUA_UPLINK_BPSK"),
 							}},
-						Direction:           armorbital.DirectionUplink.ToPtr(),
-						EirpdBW:             to.Float32Ptr(45),
-						GainOverTemperature: to.Float32Ptr(0),
-						Polarization:        armorbital.PolarizationRHCP.ToPtr(),
+						Direction:           to.Ptr(armorbital.DirectionUplink),
+						EirpdBW:             to.Ptr[float32](45),
+						GainOverTemperature: to.Ptr[float32](0),
+						Polarization:        to.Ptr(armorbital.PolarizationRHCP),
 					},
 					{
+						Name: to.Ptr("RHCP_DL"),
 						Channels: []*armorbital.ContactProfileLinkChannel{
 							{
-								BandwidthMHz:              to.Float32Ptr(150),
-								CenterFrequencyMHz:        to.Float32Ptr(8160),
-								DecodingConfiguration:     to.StringPtr("<decoding-configuration>"),
-								DemodulationConfiguration: to.StringPtr("<demodulation-configuration>"),
-								EncodingConfiguration:     to.StringPtr("<encoding-configuration>"),
+								Name:                      to.Ptr("channel1"),
+								BandwidthMHz:              to.Ptr[float32](150),
+								CenterFrequencyMHz:        to.Ptr[float32](8160),
+								DecodingConfiguration:     to.Ptr("AQUA_DIRECTPLAYBACK_CCSDS"),
+								DemodulationConfiguration: to.Ptr("AQUA_DOWNLINK_QPSK"),
+								EncodingConfiguration:     to.Ptr("na"),
 								EndPoint: &armorbital.EndPoint{
-									EndPointName: to.StringPtr("<end-point-name>"),
-									IPAddress:    to.StringPtr("<ipaddress>"),
-									Port:         to.StringPtr("<port>"),
-									Protocol:     armorbital.ProtocolTCP.ToPtr(),
+									EndPointName: to.Ptr("AQUA_directplayback"),
+									IPAddress:    to.Ptr("10.0.2.0"),
+									Port:         to.Ptr("4000"),
+									Protocol:     to.Ptr(armorbital.ProtocolTCP),
 								},
-								ModulationConfiguration: to.StringPtr("<modulation-configuration>"),
+								ModulationConfiguration: to.Ptr("na"),
 							}},
-						Direction:           armorbital.DirectionDownlink.ToPtr(),
-						EirpdBW:             to.Float32Ptr(0),
-						GainOverTemperature: to.Float32Ptr(25),
-						Polarization:        armorbital.PolarizationRHCP.ToPtr(),
+						Direction:           to.Ptr(armorbital.DirectionDownlink),
+						EirpdBW:             to.Ptr[float32](0),
+						GainOverTemperature: to.Ptr[float32](25),
+						Polarization:        to.Ptr(armorbital.PolarizationRHCP),
 					}},
-				MinimumElevationDegrees:      to.Float32Ptr(10),
-				MinimumViableContactDuration: to.StringPtr("<minimum-viable-contact-duration>"),
+				MinimumElevationDegrees:      to.Ptr[float32](10),
+				MinimumViableContactDuration: to.Ptr("PT1M"),
+				NetworkConfiguration: &armorbital.ContactProfilesPropertiesNetworkConfiguration{
+					SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnetName"),
+				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("ContactProfile.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/ContactProfileDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/ContactProfileDelete.json
 func ExampleContactProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armorbital.NewContactProfilesClient("<subscription-id>", cred, nil)
+	client, err := armorbital.NewContactProfilesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<contact-profile-name>",
+		"rg1",
+		"AQUA_DIRECTPLAYBACK_WITH_UPLINK",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/ContactProfileUpdateTag.json
-func ExampleContactProfilesClient_UpdateTags() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/ContactProfileUpdateTag.json
+func ExampleContactProfilesClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armorbital.NewContactProfilesClient("<subscription-id>", cred, nil)
-	res, err := client.UpdateTags(ctx,
-		"<resource-group-name>",
-		"<contact-profile-name>",
+	client, err := armorbital.NewContactProfilesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginUpdateTags(ctx,
+		"rg1",
+		"AQUA_DIRECTPLAYBACK_WITH_UPLINK",
 		armorbital.TagsObject{
 			Tags: map[string]*string{
-				"tag1": to.StringPtr("value1"),
-				"tag2": to.StringPtr("value2"),
+				"tag1": to.Ptr("value1"),
+				"tag2": to.Ptr("value2"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("ContactProfile.ID: %s\n", *res.ID)
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/ContactProfilesBySubscriptionList.json
-func ExampleContactProfilesClient_ListBySubscription() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/ContactProfilesBySubscriptionList.json
+func ExampleContactProfilesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armorbital.NewContactProfilesClient("<subscription-id>", cred, nil)
-	_, err = client.ListBySubscription(ctx,
-		nil)
+	client, err := armorbital.NewContactProfilesClient("subid", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListBySubscriptionPager(&armorbital.ContactProfilesClientListBySubscriptionOptions{Skiptoken: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
 }
 
-// x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/ContactProfilesByResourceGroupList.json
-func ExampleContactProfilesClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/ContactProfilesByResourceGroupList.json
+func ExampleContactProfilesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armorbital.NewContactProfilesClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
-		"<resource-group-name>",
-		nil)
+	client, err := armorbital.NewContactProfilesClient("subid", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("rg1",
+		&armorbital.ContactProfilesClientListOptions{Skiptoken: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
 }

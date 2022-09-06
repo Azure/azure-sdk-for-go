@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,180 +12,193 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis"
 )
 
-// x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/fhirservices/FhirServices_List.json
-func ExampleFhirServicesClient_ListByWorkspace() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/fhirservices/FhirServices_List.json
+func ExampleFhirServicesClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhealthcareapis.NewFhirServicesClient("<subscription-id>", cred, nil)
-	pager := client.ListByWorkspace("<resource-group-name>",
-		"<workspace-name>",
+	client, err := armhealthcareapis.NewFhirServicesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByWorkspacePager("testRG",
+		"workspace1",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("FhirService.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/fhirservices/FhirServices_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/fhirservices/FhirServices_Get.json
 func ExampleFhirServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhealthcareapis.NewFhirServicesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewFhirServicesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<fhir-service-name>",
+		"testRG",
+		"workspace1",
+		"fhirservices1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("FhirService.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/fhirservices/FhirServices_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/fhirservices/FhirServices_Create.json
 func ExampleFhirServicesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhealthcareapis.NewFhirServicesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewFhirServicesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<fhir-service-name>",
+		"testRG",
+		"workspace1",
+		"fhirservice1",
 		armhealthcareapis.FhirService{
-			ServiceManagedIdentity: armhealthcareapis.ServiceManagedIdentity{
-				Identity: &armhealthcareapis.ServiceManagedIdentityIdentity{
-					Type: armhealthcareapis.ManagedServiceIdentityTypeSystemAssigned.ToPtr(),
-				},
+			Identity: &armhealthcareapis.ServiceManagedIdentityIdentity{
+				Type: to.Ptr(armhealthcareapis.ServiceManagedIdentityTypeSystemAssigned),
 			},
-			TaggedResource: armhealthcareapis.TaggedResource{
-				LocationBasedResource: armhealthcareapis.LocationBasedResource{
-					Location: to.StringPtr("<location>"),
-				},
-				ResourceTags: armhealthcareapis.ResourceTags{
-					Tags: map[string]*string{
-						"additionalProp1": to.StringPtr("string"),
-						"additionalProp2": to.StringPtr("string"),
-						"additionalProp3": to.StringPtr("string"),
-					},
-				},
+			Location: to.Ptr("westus"),
+			Tags: map[string]*string{
+				"additionalProp1": to.Ptr("string"),
+				"additionalProp2": to.Ptr("string"),
+				"additionalProp3": to.Ptr("string"),
 			},
-			Kind: armhealthcareapis.FhirServiceKindFhirR4.ToPtr(),
+			Kind: to.Ptr(armhealthcareapis.FhirServiceKindFhirR4),
 			Properties: &armhealthcareapis.FhirServiceProperties{
 				AccessPolicies: []*armhealthcareapis.FhirServiceAccessPolicyEntry{
 					{
-						ObjectID: to.StringPtr("<object-id>"),
+						ObjectID: to.Ptr("c487e7d1-3210-41a3-8ccc-e9372b78da47"),
 					},
 					{
-						ObjectID: to.StringPtr("<object-id>"),
+						ObjectID: to.Ptr("5b307da8-43d4-492b-8b66-b0294ade872f"),
 					}},
 				AcrConfiguration: &armhealthcareapis.FhirServiceAcrConfiguration{
 					LoginServers: []*string{
-						to.StringPtr("test1.azurecr.io")},
+						to.Ptr("test1.azurecr.io")},
 				},
 				AuthenticationConfiguration: &armhealthcareapis.FhirServiceAuthenticationConfiguration{
-					Audience:          to.StringPtr("<audience>"),
-					Authority:         to.StringPtr("<authority>"),
-					SmartProxyEnabled: to.BoolPtr(true),
+					Audience:          to.Ptr("https://azurehealthcareapis.com"),
+					Authority:         to.Ptr("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc"),
+					SmartProxyEnabled: to.Ptr(true),
 				},
 				CorsConfiguration: &armhealthcareapis.FhirServiceCorsConfiguration{
-					AllowCredentials: to.BoolPtr(false),
+					AllowCredentials: to.Ptr(false),
 					Headers: []*string{
-						to.StringPtr("*")},
-					MaxAge: to.Int32Ptr(1440),
+						to.Ptr("*")},
+					MaxAge: to.Ptr[int32](1440),
 					Methods: []*string{
-						to.StringPtr("DELETE"),
-						to.StringPtr("GET"),
-						to.StringPtr("OPTIONS"),
-						to.StringPtr("PATCH"),
-						to.StringPtr("POST"),
-						to.StringPtr("PUT")},
+						to.Ptr("DELETE"),
+						to.Ptr("GET"),
+						to.Ptr("OPTIONS"),
+						to.Ptr("PATCH"),
+						to.Ptr("POST"),
+						to.Ptr("PUT")},
 					Origins: []*string{
-						to.StringPtr("*")},
+						to.Ptr("*")},
 				},
 				ExportConfiguration: &armhealthcareapis.FhirServiceExportConfiguration{
-					StorageAccountName: to.StringPtr("<storage-account-name>"),
+					StorageAccountName: to.Ptr("existingStorageAccount"),
+				},
+				ImportConfiguration: &armhealthcareapis.FhirServiceImportConfiguration{
+					Enabled:              to.Ptr(false),
+					InitialImportMode:    to.Ptr(false),
+					IntegrationDataStore: to.Ptr("existingStorageAccount"),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("FhirService.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/fhirservices/FhirServices_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/fhirservices/FhirServices_Patch.json
 func ExampleFhirServicesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhealthcareapis.NewFhirServicesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewFhirServicesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<fhir-service-name>",
-		"<workspace-name>",
+		"testRG",
+		"fhirservice1",
+		"workspace1",
 		armhealthcareapis.FhirServicePatchResource{
-			ResourceTags: armhealthcareapis.ResourceTags{
-				Tags: map[string]*string{
-					"tagKey": to.StringPtr("tagValue"),
-				},
+			Tags: map[string]*string{
+				"tagKey": to.Ptr("tagValue"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("FhirService.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2021-06-01-preview/examples/fhirservices/FhirServices_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/fhirservices/FhirServices_Delete.json
 func ExampleFhirServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhealthcareapis.NewFhirServicesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewFhirServicesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<fhir-service-name>",
-		"<workspace-name>",
+		"testRG",
+		"fhirservice1",
+		"workspace1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }

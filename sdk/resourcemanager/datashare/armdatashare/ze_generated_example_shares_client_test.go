@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,147 +12,179 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare"
 )
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Shares_ListSynchronizationDetails.json
-func ExampleSharesClient_ListSynchronizationDetails() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Shares_ListSynchronizationDetails.json
+func ExampleSharesClient_NewListSynchronizationDetailsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewSharesClient("<subscription-id>", cred, nil)
-	pager := client.ListSynchronizationDetails("<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
+	client, err := armdatashare.NewSharesClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListSynchronizationDetailsPager("SampleResourceGroup",
+		"Account1",
+		"Share1",
 		armdatashare.ShareSynchronization{
-			SynchronizationID: to.StringPtr("<synchronization-id>"),
+			SynchronizationID: to.Ptr("7d0536a6-3fa5-43de-b152-3d07c4f6b2bb"),
 		},
-		&armdatashare.SharesListSynchronizationDetailsOptions{SkipToken: nil,
+		&armdatashare.SharesClientListSynchronizationDetailsOptions{SkipToken: nil,
 			Filter:  nil,
 			Orderby: nil,
 		})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Shares_ListSynchronizations.json
-func ExampleSharesClient_ListSynchronizations() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Shares_ListSynchronizations.json
+func ExampleSharesClient_NewListSynchronizationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewSharesClient("<subscription-id>", cred, nil)
-	pager := client.ListSynchronizations("<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
-		&armdatashare.SharesListSynchronizationsOptions{SkipToken: nil,
+	client, err := armdatashare.NewSharesClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListSynchronizationsPager("SampleResourceGroup",
+		"Account1",
+		"Share1",
+		&armdatashare.SharesClientListSynchronizationsOptions{SkipToken: nil,
 			Filter:  nil,
 			Orderby: nil,
 		})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Shares_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Shares_Get.json
 func ExampleSharesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewSharesClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewSharesClient("12345678-1234-1234-12345678abc", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"Share1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Share.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Shares_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Shares_Create.json
 func ExampleSharesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewSharesClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewSharesClient("12345678-1234-1234-12345678abc", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"Share1",
 		armdatashare.Share{
 			Properties: &armdatashare.ShareProperties{
-				Description: to.StringPtr("<description>"),
-				ShareKind:   armdatashare.ShareKindCopyBased.ToPtr(),
-				Terms:       to.StringPtr("<terms>"),
+				Description: to.Ptr("share description"),
+				ShareKind:   to.Ptr(armdatashare.ShareKindCopyBased),
+				Terms:       to.Ptr("Confidential"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Share.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Shares_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Shares_Delete.json
 func ExampleSharesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewSharesClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewSharesClient("12345678-1234-1234-12345678abc", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"Share1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Shares_ListByAccount.json
-func ExampleSharesClient_ListByAccount() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/Shares_ListByAccount.json
+func ExampleSharesClient_NewListByAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewSharesClient("<subscription-id>", cred, nil)
-	pager := client.ListByAccount("<resource-group-name>",
-		"<account-name>",
-		&armdatashare.SharesListByAccountOptions{SkipToken: nil,
+	client, err := armdatashare.NewSharesClient("12345678-1234-1234-12345678abc", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByAccountPager("SampleResourceGroup",
+		"Account1",
+		&armdatashare.SharesClientListByAccountOptions{SkipToken: nil,
 			Filter:  nil,
 			Orderby: nil,
 		})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Share.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

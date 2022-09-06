@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,42 +26,64 @@ import (
 // APIOperationClient contains the methods for the APIOperation group.
 // Don't use this type directly, use NewAPIOperationClient() instead.
 type APIOperationClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAPIOperationClient creates a new instance of APIOperationClient with the specified values.
-func NewAPIOperationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APIOperationClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewAPIOperationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIOperationClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &APIOperationClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &APIOperationClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // CreateOrUpdate - Creates a new operation in the API or updates an existing one.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIOperationClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, parameters OperationContract, options *APIOperationCreateOrUpdateOptions) (APIOperationCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// operationID - Operation identifier within an API. Must be unique in the current API Management service instance.
+// parameters - Create parameters.
+// options - APIOperationClientCreateOrUpdateOptions contains the optional parameters for the APIOperationClient.CreateOrUpdate
+// method.
+func (client *APIOperationClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, parameters OperationContract, options *APIOperationClientCreateOrUpdateOptions) (APIOperationClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, parameters, options)
 	if err != nil {
-		return APIOperationCreateOrUpdateResponse{}, err
+		return APIOperationClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APIOperationCreateOrUpdateResponse{}, err
+		return APIOperationClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return APIOperationCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return APIOperationClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *APIOperationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, parameters OperationContract, options *APIOperationCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *APIOperationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, parameters OperationContract, options *APIOperationClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -83,7 +105,7 @@ func (client *APIOperationClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -91,56 +113,52 @@ func (client *APIOperationClient) createOrUpdateCreateRequest(ctx context.Contex
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *APIOperationClient) createOrUpdateHandleResponse(resp *http.Response) (APIOperationCreateOrUpdateResponse, error) {
-	result := APIOperationCreateOrUpdateResponse{RawResponse: resp}
+func (client *APIOperationClient) createOrUpdateHandleResponse(resp *http.Response) (APIOperationClientCreateOrUpdateResponse, error) {
+	result := APIOperationClientCreateOrUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationContract); err != nil {
-		return APIOperationCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return APIOperationClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *APIOperationClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes the specified operation in the API.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIOperationClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, ifMatch string, options *APIOperationDeleteOptions) (APIOperationDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// operationID - Operation identifier within an API. Must be unique in the current API Management service instance.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// options - APIOperationClientDeleteOptions contains the optional parameters for the APIOperationClient.Delete method.
+func (client *APIOperationClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, ifMatch string, options *APIOperationClientDeleteOptions) (APIOperationClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, ifMatch, options)
 	if err != nil {
-		return APIOperationDeleteResponse{}, err
+		return APIOperationClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APIOperationDeleteResponse{}, err
+		return APIOperationClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return APIOperationDeleteResponse{}, client.deleteHandleError(resp)
+		return APIOperationClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return APIOperationDeleteResponse{RawResponse: resp}, nil
+	return APIOperationClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *APIOperationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, ifMatch string, options *APIOperationDeleteOptions) (*policy.Request, error) {
+func (client *APIOperationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, ifMatch string, options *APIOperationClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -162,50 +180,44 @@ func (client *APIOperationClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *APIOperationClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the details of the API Operation specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIOperationClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, options *APIOperationGetOptions) (APIOperationGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// operationID - Operation identifier within an API. Must be unique in the current API Management service instance.
+// options - APIOperationClientGetOptions contains the optional parameters for the APIOperationClient.Get method.
+func (client *APIOperationClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, options *APIOperationClientGetOptions) (APIOperationClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, options)
 	if err != nil {
-		return APIOperationGetResponse{}, err
+		return APIOperationClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APIOperationGetResponse{}, err
+		return APIOperationClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return APIOperationGetResponse{}, client.getHandleError(resp)
+		return APIOperationClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *APIOperationClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, options *APIOperationGetOptions) (*policy.Request, error) {
+func (client *APIOperationClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, options *APIOperationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -227,58 +239,55 @@ func (client *APIOperationClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *APIOperationClient) getHandleResponse(resp *http.Response) (APIOperationGetResponse, error) {
-	result := APIOperationGetResponse{RawResponse: resp}
+func (client *APIOperationClient) getHandleResponse(resp *http.Response) (APIOperationClientGetResponse, error) {
+	result := APIOperationClientGetResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationContract); err != nil {
-		return APIOperationGetResponse{}, runtime.NewResponseError(err, resp)
+		return APIOperationClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *APIOperationClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetEntityTag - Gets the entity state (Etag) version of the API operation specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIOperationClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, options *APIOperationGetEntityTagOptions) (APIOperationGetEntityTagResponse, error) {
+// Generated from API version 2021-08-01
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// operationID - Operation identifier within an API. Must be unique in the current API Management service instance.
+// options - APIOperationClientGetEntityTagOptions contains the optional parameters for the APIOperationClient.GetEntityTag
+// method.
+func (client *APIOperationClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, options *APIOperationClientGetEntityTagOptions) (APIOperationClientGetEntityTagResponse, error) {
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, options)
 	if err != nil {
-		return APIOperationGetEntityTagResponse{}, err
+		return APIOperationClientGetEntityTagResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APIOperationGetEntityTagResponse{}, err
+		return APIOperationClientGetEntityTagResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return APIOperationClientGetEntityTagResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *APIOperationClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, options *APIOperationGetEntityTagOptions) (*policy.Request, error) {
+func (client *APIOperationClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, options *APIOperationClientGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -300,45 +309,65 @@ func (client *APIOperationClient) getEntityTagCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *APIOperationClient) getEntityTagHandleResponse(resp *http.Response) (APIOperationGetEntityTagResponse, error) {
-	result := APIOperationGetEntityTagResponse{RawResponse: resp}
+func (client *APIOperationClient) getEntityTagHandleResponse(resp *http.Response) (APIOperationClientGetEntityTagResponse, error) {
+	result := APIOperationClientGetEntityTagResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
-	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
-// ListByAPI - Lists a collection of the operations for the specified API.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIOperationClient) ListByAPI(resourceGroupName string, serviceName string, apiID string, options *APIOperationListByAPIOptions) *APIOperationListByAPIPager {
-	return &APIOperationListByAPIPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
+// NewListByAPIPager - Lists a collection of the operations for the specified API.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// options - APIOperationClientListByAPIOptions contains the optional parameters for the APIOperationClient.ListByAPI method.
+func (client *APIOperationClient) NewListByAPIPager(resourceGroupName string, serviceName string, apiID string, options *APIOperationClientListByAPIOptions) *runtime.Pager[APIOperationClientListByAPIResponse] {
+	return runtime.NewPager(runtime.PagingHandler[APIOperationClientListByAPIResponse]{
+		More: func(page APIOperationClientListByAPIResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp APIOperationListByAPIResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OperationCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *APIOperationClientListByAPIResponse) (APIOperationClientListByAPIResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return APIOperationClientListByAPIResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return APIOperationClientListByAPIResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return APIOperationClientListByAPIResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByAPIHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByAPICreateRequest creates the ListByAPI request.
-func (client *APIOperationClient) listByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APIOperationListByAPIOptions) (*policy.Request, error) {
+func (client *APIOperationClient) listByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APIOperationClientListByAPIOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -356,7 +385,7 @@ func (client *APIOperationClient) listByAPICreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -375,51 +404,48 @@ func (client *APIOperationClient) listByAPICreateRequest(ctx context.Context, re
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByAPIHandleResponse handles the ListByAPI response.
-func (client *APIOperationClient) listByAPIHandleResponse(resp *http.Response) (APIOperationListByAPIResponse, error) {
-	result := APIOperationListByAPIResponse{RawResponse: resp}
+func (client *APIOperationClient) listByAPIHandleResponse(resp *http.Response) (APIOperationClientListByAPIResponse, error) {
+	result := APIOperationClientListByAPIResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationCollection); err != nil {
-		return APIOperationListByAPIResponse{}, runtime.NewResponseError(err, resp)
+		return APIOperationClientListByAPIResponse{}, err
 	}
 	return result, nil
 }
 
-// listByAPIHandleError handles the ListByAPI error response.
-func (client *APIOperationClient) listByAPIHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates the details of the operation in the API specified by its identifier.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *APIOperationClient) Update(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, ifMatch string, parameters OperationUpdateContract, options *APIOperationUpdateOptions) (APIOperationUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
+// ;rev=n as a suffix where n is the revision number.
+// operationID - Operation identifier within an API. Must be unique in the current API Management service instance.
+// ifMatch - ETag of the Entity. ETag should match the current entity state from the header response of the GET request or
+// it should be * for unconditional update.
+// parameters - API Operation Update parameters.
+// options - APIOperationClientUpdateOptions contains the optional parameters for the APIOperationClient.Update method.
+func (client *APIOperationClient) Update(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, ifMatch string, parameters OperationUpdateContract, options *APIOperationClientUpdateOptions) (APIOperationClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, ifMatch, parameters, options)
 	if err != nil {
-		return APIOperationUpdateResponse{}, err
+		return APIOperationClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return APIOperationUpdateResponse{}, err
+		return APIOperationClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return APIOperationUpdateResponse{}, client.updateHandleError(resp)
+		return APIOperationClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *APIOperationClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, ifMatch string, parameters OperationUpdateContract, options *APIOperationUpdateOptions) (*policy.Request, error) {
+func (client *APIOperationClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, ifMatch string, parameters OperationUpdateContract, options *APIOperationClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -441,39 +467,26 @@ func (client *APIOperationClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *APIOperationClient) updateHandleResponse(resp *http.Response) (APIOperationUpdateResponse, error) {
-	result := APIOperationUpdateResponse{RawResponse: resp}
+func (client *APIOperationClient) updateHandleResponse(resp *http.Response) (APIOperationClientUpdateResponse, error) {
+	result := APIOperationClientUpdateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationContract); err != nil {
-		return APIOperationUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return APIOperationClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *APIOperationClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

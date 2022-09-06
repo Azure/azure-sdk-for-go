@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armcustomerlockbox
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,75 +25,75 @@ import (
 // GetClient contains the methods for the Get group.
 // Don't use this type directly, use NewGetClient() instead.
 type GetClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewGetClient creates a new instance of GetClient with the specified values.
-func NewGetClient(credential azcore.TokenCredential, options *arm.ClientOptions) *GetClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewGetClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*GetClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &GetClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &GetClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
 // TenantOptedIn - Get Customer Lockbox request
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *GetClient) TenantOptedIn(ctx context.Context, tenantID string, options *GetTenantOptedInOptions) (GetTenantOptedInResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-02-28-preview
+// tenantID - The Azure tenant ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+// options - GetClientTenantOptedInOptions contains the optional parameters for the GetClient.TenantOptedIn method.
+func (client *GetClient) TenantOptedIn(ctx context.Context, tenantID string, options *GetClientTenantOptedInOptions) (GetClientTenantOptedInResponse, error) {
 	req, err := client.tenantOptedInCreateRequest(ctx, tenantID, options)
 	if err != nil {
-		return GetTenantOptedInResponse{}, err
+		return GetClientTenantOptedInResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return GetTenantOptedInResponse{}, err
+		return GetClientTenantOptedInResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return GetTenantOptedInResponse{}, client.tenantOptedInHandleError(resp)
+		return GetClientTenantOptedInResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.tenantOptedInHandleResponse(resp)
 }
 
 // tenantOptedInCreateRequest creates the TenantOptedIn request.
-func (client *GetClient) tenantOptedInCreateRequest(ctx context.Context, tenantID string, options *GetTenantOptedInOptions) (*policy.Request, error) {
+func (client *GetClient) tenantOptedInCreateRequest(ctx context.Context, tenantID string, options *GetClientTenantOptedInOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.CustomerLockbox/tenantOptedIn/{tenantId}"
 	if tenantID == "" {
 		return nil, errors.New("parameter tenantID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tenantId}", url.PathEscape(tenantID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-02-28-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // tenantOptedInHandleResponse handles the TenantOptedIn response.
-func (client *GetClient) tenantOptedInHandleResponse(resp *http.Response) (GetTenantOptedInResponse, error) {
-	result := GetTenantOptedInResponse{RawResponse: resp}
+func (client *GetClient) tenantOptedInHandleResponse(resp *http.Response) (GetClientTenantOptedInResponse, error) {
+	result := GetClientTenantOptedInResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TenantOptInResponse); err != nil {
-		return GetTenantOptedInResponse{}, runtime.NewResponseError(err, resp)
+		return GetClientTenantOptedInResponse{}, err
 	}
 	return result, nil
-}
-
-// tenantOptedInHandleError handles the TenantOptedIn error response.
-func (client *GetClient) tenantOptedInHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

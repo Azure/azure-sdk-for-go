@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package armservicefabric
 
 const (
-	module  = "armservicefabric"
-	version = "v0.2.1"
+	moduleName    = "armservicefabric"
+	moduleVersion = "v1.0.0"
 )
 
 // AddOnFeatures - Available cluster add-on features
@@ -33,16 +33,12 @@ func PossibleAddOnFeaturesValues() []AddOnFeatures {
 	}
 }
 
-// ToPtr returns a *AddOnFeatures pointing to the current value.
-func (c AddOnFeatures) ToPtr() *AddOnFeatures {
-	return &c
-}
-
 // ArmServicePackageActivationMode - The activation Mode of the service package
 type ArmServicePackageActivationMode string
 
 const (
-	// ArmServicePackageActivationModeExclusiveProcess - Indicates the application package activation mode will use exclusive process.
+	// ArmServicePackageActivationModeExclusiveProcess - Indicates the application package activation mode will use exclusive
+	// process.
 	ArmServicePackageActivationModeExclusiveProcess ArmServicePackageActivationMode = "ExclusiveProcess"
 	// ArmServicePackageActivationModeSharedProcess - Indicates the application package activation mode will use shared process.
 	ArmServicePackageActivationModeSharedProcess ArmServicePackageActivationMode = "SharedProcess"
@@ -56,19 +52,15 @@ func PossibleArmServicePackageActivationModeValues() []ArmServicePackageActivati
 	}
 }
 
-// ToPtr returns a *ArmServicePackageActivationMode pointing to the current value.
-func (c ArmServicePackageActivationMode) ToPtr() *ArmServicePackageActivationMode {
-	return &c
-}
-
 // ArmUpgradeFailureAction - The activation Mode of the service package
 type ArmUpgradeFailureAction string
 
 const (
-	// ArmUpgradeFailureActionManual - Indicates that a manual repair will need to be performed by the administrator if the upgrade fails. Service Fabric will
-	// not proceed to the next upgrade domain automatically.
+	// ArmUpgradeFailureActionManual - Indicates that a manual repair will need to be performed by the administrator if the upgrade
+	// fails. Service Fabric will not proceed to the next upgrade domain automatically.
 	ArmUpgradeFailureActionManual ArmUpgradeFailureAction = "Manual"
-	// ArmUpgradeFailureActionRollback - Indicates that a rollback of the upgrade will be performed by Service Fabric if the upgrade fails.
+	// ArmUpgradeFailureActionRollback - Indicates that a rollback of the upgrade will be performed by Service Fabric if the upgrade
+	// fails.
 	ArmUpgradeFailureActionRollback ArmUpgradeFailureAction = "Rollback"
 )
 
@@ -78,11 +70,6 @@ func PossibleArmUpgradeFailureActionValues() []ArmUpgradeFailureAction {
 		ArmUpgradeFailureActionManual,
 		ArmUpgradeFailureActionRollback,
 	}
-}
-
-// ToPtr returns a *ArmUpgradeFailureAction pointing to the current value.
-func (c ArmUpgradeFailureAction) ToPtr() *ArmUpgradeFailureAction {
-	return &c
 }
 
 // ClusterEnvironment - Cluster operating system, the default will be Windows
@@ -101,25 +88,21 @@ func PossibleClusterEnvironmentValues() []ClusterEnvironment {
 	}
 }
 
-// ToPtr returns a *ClusterEnvironment pointing to the current value.
-func (c ClusterEnvironment) ToPtr() *ClusterEnvironment {
-	return &c
-}
-
 // ClusterState - The current state of the cluster.
-// * WaitingForNodes - Indicates that the cluster resource is created and the resource provider is waiting for Service Fabric VM extension to boot up and
-// report to it.
-// * Deploying - Indicates that the Service Fabric runtime is being installed on the VMs. Cluster resource will be in this state until the cluster boots
-// up and system services are up.
-// * BaselineUpgrade - Indicates that the cluster is upgrading to establishes the cluster version. This upgrade is automatically initiated when the cluster
-// boots up for the first time.
+// * WaitingForNodes - Indicates that the cluster resource is created and the resource provider is waiting for Service Fabric
+// VM extension to boot up and report to it.
+// * Deploying - Indicates that the Service Fabric runtime is being installed on the VMs. Cluster resource will be in this
+// state until the cluster boots up and system services are up.
+// * BaselineUpgrade - Indicates that the cluster is upgrading to establishes the cluster version. This upgrade is automatically
+// initiated when the cluster boots up for the first time.
 // * UpdatingUserConfiguration - Indicates that the cluster is being upgraded with the user provided configuration.
 // * UpdatingUserCertificate - Indicates that the cluster is being upgraded with the user provided certificate.
-// * UpdatingInfrastructure - Indicates that the cluster is being upgraded with the latest Service Fabric runtime version. This happens only when the upgradeMode
-// is set to 'Automatic'.
-// * EnforcingClusterVersion - Indicates that cluster is on a different version than expected and the cluster is being upgraded to the expected version.
-// * UpgradeServiceUnreachable - Indicates that the system service in the cluster is no longer polling the Resource Provider. Clusters in this state cannot
-// be managed by the Resource Provider.
+// * UpdatingInfrastructure - Indicates that the cluster is being upgraded with the latest Service Fabric runtime version.
+// This happens only when the upgradeMode is set to 'Automatic'.
+// * EnforcingClusterVersion - Indicates that cluster is on a different version than expected and the cluster is being upgraded
+// to the expected version.
+// * UpgradeServiceUnreachable - Indicates that the system service in the cluster is no longer polling the Resource Provider.
+// Clusters in this state cannot be managed by the Resource Provider.
 // * AutoScale - Indicates that the ReliabilityLevel of the cluster is being adjusted.
 // * Ready - Indicates that the cluster is in a stable state.
 type ClusterState string
@@ -153,20 +136,19 @@ func PossibleClusterStateValues() []ClusterState {
 	}
 }
 
-// ToPtr returns a *ClusterState pointing to the current value.
-func (c ClusterState) ToPtr() *ClusterState {
-	return &c
-}
-
-// ClusterUpgradeCadence - Indicates when new cluster runtime version upgrades will be applied after they are released. By default is Wave0.
+// ClusterUpgradeCadence - Indicates when new cluster runtime version upgrades will be applied after they are released. By
+// default is Wave0.
 type ClusterUpgradeCadence string
 
 const (
-	// ClusterUpgradeCadenceWave0 - Cluster upgrade starts immediately after a new version is rolled out. Recommended for Test/Dev clusters.
+	// ClusterUpgradeCadenceWave0 - Cluster upgrade starts immediately after a new version is rolled out. Recommended for Test/Dev
+	// clusters.
 	ClusterUpgradeCadenceWave0 ClusterUpgradeCadence = "Wave0"
-	// ClusterUpgradeCadenceWave1 - Cluster upgrade starts 7 days after a new version is rolled out. Recommended for Pre-prod clusters.
+	// ClusterUpgradeCadenceWave1 - Cluster upgrade starts 7 days after a new version is rolled out. Recommended for Pre-prod
+	// clusters.
 	ClusterUpgradeCadenceWave1 ClusterUpgradeCadence = "Wave1"
-	// ClusterUpgradeCadenceWave2 - Cluster upgrade starts 14 days after a new version is rolled out. Recommended for Production clusters.
+	// ClusterUpgradeCadenceWave2 - Cluster upgrade starts 14 days after a new version is rolled out. Recommended for Production
+	// clusters.
 	ClusterUpgradeCadenceWave2 ClusterUpgradeCadence = "Wave2"
 )
 
@@ -179,16 +161,26 @@ func PossibleClusterUpgradeCadenceValues() []ClusterUpgradeCadence {
 	}
 }
 
-// ToPtr returns a *ClusterUpgradeCadence pointing to the current value.
-func (c ClusterUpgradeCadence) ToPtr() *ClusterUpgradeCadence {
-	return &c
+type ClusterVersionsEnvironment string
+
+const (
+	ClusterVersionsEnvironmentLinux   ClusterVersionsEnvironment = "Linux"
+	ClusterVersionsEnvironmentWindows ClusterVersionsEnvironment = "Windows"
+)
+
+// PossibleClusterVersionsEnvironmentValues returns the possible values for the ClusterVersionsEnvironment const type.
+func PossibleClusterVersionsEnvironmentValues() []ClusterVersionsEnvironment {
+	return []ClusterVersionsEnvironment{
+		ClusterVersionsEnvironmentLinux,
+		ClusterVersionsEnvironmentWindows,
+	}
 }
 
 // DurabilityLevel - The durability level of the node type. Learn about DurabilityLevel [https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity].
 // * Bronze - No privileges. This is the default.
 // * Silver - The infrastructure jobs can be paused for a duration of 10 minutes per UD.
-// * Gold - The infrastructure jobs can be paused for a duration of 2 hours per UD. Gold durability can be enabled only on full node VM skus like D15_V2,
-// G5 etc.
+// * Gold - The infrastructure jobs can be paused for a duration of 2 hours per UD. Gold durability can be enabled only on
+// full node VM skus like D15_V2, G5 etc.
 type DurabilityLevel string
 
 const (
@@ -206,31 +198,6 @@ func PossibleDurabilityLevelValues() []DurabilityLevel {
 	}
 }
 
-// ToPtr returns a *DurabilityLevel pointing to the current value.
-func (c DurabilityLevel) ToPtr() *DurabilityLevel {
-	return &c
-}
-
-type Enum14 string
-
-const (
-	Enum14Linux   Enum14 = "Linux"
-	Enum14Windows Enum14 = "Windows"
-)
-
-// PossibleEnum14Values returns the possible values for the Enum14 const type.
-func PossibleEnum14Values() []Enum14 {
-	return []Enum14{
-		Enum14Linux,
-		Enum14Windows,
-	}
-}
-
-// ToPtr returns a *Enum14 pointing to the current value.
-func (c Enum14) ToPtr() *Enum14 {
-	return &c
-}
-
 // ManagedIdentityType - The type of managed identity for the resource.
 type ManagedIdentityType string
 
@@ -239,7 +206,8 @@ const (
 	ManagedIdentityTypeSystemAssigned ManagedIdentityType = "SystemAssigned"
 	// ManagedIdentityTypeUserAssigned - Indicates that user assigned identity is associated with the resource.
 	ManagedIdentityTypeUserAssigned ManagedIdentityType = "UserAssigned"
-	// ManagedIdentityTypeSystemAssignedUserAssigned - Indicates that both system assigned and user assigned identity are associated with the resource.
+	// ManagedIdentityTypeSystemAssignedUserAssigned - Indicates that both system assigned and user assigned identity are associated
+	// with the resource.
 	ManagedIdentityTypeSystemAssignedUserAssigned ManagedIdentityType = "SystemAssigned, UserAssigned"
 	// ManagedIdentityTypeNone - Indicates that no identity is associated with the resource.
 	ManagedIdentityTypeNone ManagedIdentityType = "None"
@@ -253,11 +221,6 @@ func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
 		ManagedIdentityTypeSystemAssignedUserAssigned,
 		ManagedIdentityTypeNone,
 	}
-}
-
-// ToPtr returns a *ManagedIdentityType pointing to the current value.
-func (c ManagedIdentityType) ToPtr() *ManagedIdentityType {
-	return &c
 }
 
 // MoveCost - Specifies the move cost for the service.
@@ -284,11 +247,6 @@ func PossibleMoveCostValues() []MoveCost {
 	}
 }
 
-// ToPtr returns a *MoveCost pointing to the current value.
-func (c MoveCost) ToPtr() *MoveCost {
-	return &c
-}
-
 // NotificationCategory - The category of notification.
 type NotificationCategory string
 
@@ -304,20 +262,16 @@ func PossibleNotificationCategoryValues() []NotificationCategory {
 	}
 }
 
-// ToPtr returns a *NotificationCategory pointing to the current value.
-func (c NotificationCategory) ToPtr() *NotificationCategory {
-	return &c
-}
-
-// NotificationChannel - The notification channel indicates the type of receivers subscribed to the notification, either user or subscription.
+// NotificationChannel - The notification channel indicates the type of receivers subscribed to the notification, either user
+// or subscription.
 type NotificationChannel string
 
 const (
-	// NotificationChannelEmailSubscription - For subscription receivers. In this case, the parameter receivers should be a list of roles of the subscription
-	// for the cluster (eg. Owner, AccountAdmin, etc) that will receive the notifications.
+	// NotificationChannelEmailSubscription - For subscription receivers. In this case, the parameter receivers should be a list
+	// of roles of the subscription for the cluster (eg. Owner, AccountAdmin, etc) that will receive the notifications.
 	NotificationChannelEmailSubscription NotificationChannel = "EmailSubscription"
-	// NotificationChannelEmailUser - For email user receivers. In this case, the parameter receivers should be a list of email addresses that will receive
-	// the notifications.
+	// NotificationChannelEmailUser - For email user receivers. In this case, the parameter receivers should be a list of email
+	// addresses that will receive the notifications.
 	NotificationChannelEmailUser NotificationChannel = "EmailUser"
 )
 
@@ -327,11 +281,6 @@ func PossibleNotificationChannelValues() []NotificationChannel {
 		NotificationChannelEmailSubscription,
 		NotificationChannelEmailUser,
 	}
-}
-
-// ToPtr returns a *NotificationChannel pointing to the current value.
-func (c NotificationChannel) ToPtr() *NotificationChannel {
-	return &c
 }
 
 // NotificationLevel - The level of notification.
@@ -352,23 +301,21 @@ func PossibleNotificationLevelValues() []NotificationLevel {
 	}
 }
 
-// ToPtr returns a *NotificationLevel pointing to the current value.
-func (c NotificationLevel) ToPtr() *NotificationLevel {
-	return &c
-}
-
 // PartitionScheme - Enumerates the ways that a service can be partitioned.
 type PartitionScheme string
 
 const (
-	// PartitionSchemeInvalid - Indicates the partition kind is invalid. All Service Fabric enumerations have the invalid type. The value is zero.
+	// PartitionSchemeInvalid - Indicates the partition kind is invalid. All Service Fabric enumerations have the invalid type.
+	// The value is zero.
 	PartitionSchemeInvalid PartitionScheme = "Invalid"
-	// PartitionSchemeNamed - Indicates that the partition is based on string names, and is a NamedPartitionSchemeDescription object. The value is 3
+	// PartitionSchemeNamed - Indicates that the partition is based on string names, and is a NamedPartitionSchemeDescription
+	// object. The value is 3
 	PartitionSchemeNamed PartitionScheme = "Named"
-	// PartitionSchemeSingleton - Indicates that the partition is based on string names, and is a SingletonPartitionSchemeDescription object, The value is 1.
+	// PartitionSchemeSingleton - Indicates that the partition is based on string names, and is a SingletonPartitionSchemeDescription
+	// object, The value is 1.
 	PartitionSchemeSingleton PartitionScheme = "Singleton"
-	// PartitionSchemeUniformInt64Range - Indicates that the partition is based on Int64 key ranges, and is a UniformInt64RangePartitionSchemeDescription object.
-	// The value is 2.
+	// PartitionSchemeUniformInt64Range - Indicates that the partition is based on Int64 key ranges, and is a UniformInt64RangePartitionSchemeDescription
+	// object. The value is 2.
 	PartitionSchemeUniformInt64Range PartitionScheme = "UniformInt64Range"
 )
 
@@ -380,11 +327,6 @@ func PossiblePartitionSchemeValues() []PartitionScheme {
 		PartitionSchemeSingleton,
 		PartitionSchemeUniformInt64Range,
 	}
-}
-
-// ToPtr returns a *PartitionScheme pointing to the current value.
-func (c PartitionScheme) ToPtr() *PartitionScheme {
-	return &c
 }
 
 // ProvisioningState - The provisioning state of the cluster resource.
@@ -405,11 +347,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
 }
 
 // ReliabilityLevel - The reliability level sets the replica set size of system services. Learn about ReliabilityLevel [https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity].
@@ -439,24 +376,22 @@ func PossibleReliabilityLevelValues() []ReliabilityLevel {
 	}
 }
 
-// ToPtr returns a *ReliabilityLevel pointing to the current value.
-func (c ReliabilityLevel) ToPtr() *ReliabilityLevel {
-	return &c
-}
-
-// RollingUpgradeMode - The mode used to monitor health during a rolling upgrade. The values are UnmonitoredAuto, UnmonitoredManual, and Monitored.
+// RollingUpgradeMode - The mode used to monitor health during a rolling upgrade. The values are UnmonitoredAuto, UnmonitoredManual,
+// and Monitored.
 type RollingUpgradeMode string
 
 const (
-	// RollingUpgradeModeInvalid - Indicates the upgrade mode is invalid. All Service Fabric enumerations have the invalid type. The value is zero.
+	// RollingUpgradeModeInvalid - Indicates the upgrade mode is invalid. All Service Fabric enumerations have the invalid type.
+	// The value is zero.
 	RollingUpgradeModeInvalid RollingUpgradeMode = "Invalid"
-	// RollingUpgradeModeMonitored - The upgrade will stop after completing each upgrade domain and automatically monitor health before proceeding. The value
-	// is 3
+	// RollingUpgradeModeMonitored - The upgrade will stop after completing each upgrade domain and automatically monitor health
+	// before proceeding. The value is 3
 	RollingUpgradeModeMonitored RollingUpgradeMode = "Monitored"
-	// RollingUpgradeModeUnmonitoredAuto - The upgrade will proceed automatically without performing any health monitoring. The value is 1
+	// RollingUpgradeModeUnmonitoredAuto - The upgrade will proceed automatically without performing any health monitoring. The
+	// value is 1
 	RollingUpgradeModeUnmonitoredAuto RollingUpgradeMode = "UnmonitoredAuto"
-	// RollingUpgradeModeUnmonitoredManual - The upgrade will stop after completing each upgrade domain, giving the opportunity to manually monitor health before
-	// proceeding. The value is 2
+	// RollingUpgradeModeUnmonitoredManual - The upgrade will stop after completing each upgrade domain, giving the opportunity
+	// to manually monitor health before proceeding. The value is 2
 	RollingUpgradeModeUnmonitoredManual RollingUpgradeMode = "UnmonitoredManual"
 )
 
@@ -470,25 +405,22 @@ func PossibleRollingUpgradeModeValues() []RollingUpgradeMode {
 	}
 }
 
-// ToPtr returns a *RollingUpgradeMode pointing to the current value.
-func (c RollingUpgradeMode) ToPtr() *RollingUpgradeMode {
-	return &c
-}
-
 // ServiceCorrelationScheme - The service correlation scheme.
 type ServiceCorrelationScheme string
 
 const (
-	// ServiceCorrelationSchemeAffinity - Indicates that this service has an affinity relationship with another service. Provided for backwards compatibility,
-	// consider preferring the Aligned or NonAlignedAffinity options. The value is 1.
+	// ServiceCorrelationSchemeAffinity - Indicates that this service has an affinity relationship with another service. Provided
+	// for backwards compatibility, consider preferring the Aligned or NonAlignedAffinity options. The value is 1.
 	ServiceCorrelationSchemeAffinity ServiceCorrelationScheme = "Affinity"
-	// ServiceCorrelationSchemeAlignedAffinity - Aligned affinity ensures that the primaries of the partitions of the affinitized services are collocated on
-	// the same nodes. This is the default and is the same as selecting the Affinity scheme. The value is 2.
+	// ServiceCorrelationSchemeAlignedAffinity - Aligned affinity ensures that the primaries of the partitions of the affinitized
+	// services are collocated on the same nodes. This is the default and is the same as selecting the Affinity scheme. The value
+	// is 2.
 	ServiceCorrelationSchemeAlignedAffinity ServiceCorrelationScheme = "AlignedAffinity"
 	// ServiceCorrelationSchemeInvalid - An invalid correlation scheme. Cannot be used. The value is zero.
 	ServiceCorrelationSchemeInvalid ServiceCorrelationScheme = "Invalid"
-	// ServiceCorrelationSchemeNonAlignedAffinity - Non-Aligned affinity guarantees that all replicas of each service will be placed on the same nodes. Unlike
-	// Aligned Affinity, this does not guarantee that replicas of particular role will be collocated. The value is 3.
+	// ServiceCorrelationSchemeNonAlignedAffinity - Non-Aligned affinity guarantees that all replicas of each service will be
+	// placed on the same nodes. Unlike Aligned Affinity, this does not guarantee that replicas of particular role will be collocated.
+	// The value is 3.
 	ServiceCorrelationSchemeNonAlignedAffinity ServiceCorrelationScheme = "NonAlignedAffinity"
 )
 
@@ -502,18 +434,15 @@ func PossibleServiceCorrelationSchemeValues() []ServiceCorrelationScheme {
 	}
 }
 
-// ToPtr returns a *ServiceCorrelationScheme pointing to the current value.
-func (c ServiceCorrelationScheme) ToPtr() *ServiceCorrelationScheme {
-	return &c
-}
-
 // ServiceKind - The kind of service (Stateless or Stateful).
 type ServiceKind string
 
 const (
-	// ServiceKindInvalid - Indicates the service kind is invalid. All Service Fabric enumerations have the invalid type. The value is zero.
+	// ServiceKindInvalid - Indicates the service kind is invalid. All Service Fabric enumerations have the invalid type. The
+	// value is zero.
 	ServiceKindInvalid ServiceKind = "Invalid"
-	// ServiceKindStateful - Uses Service Fabric to make its state or part of its state highly available and reliable. The value is 2.
+	// ServiceKindStateful - Uses Service Fabric to make its state or part of its state highly available and reliable. The value
+	// is 2.
 	ServiceKindStateful ServiceKind = "Stateful"
 	// ServiceKindStateless - Does not use Service Fabric to make its state highly available or reliable. The value is 1.
 	ServiceKindStateless ServiceKind = "Stateless"
@@ -528,13 +457,8 @@ func PossibleServiceKindValues() []ServiceKind {
 	}
 }
 
-// ToPtr returns a *ServiceKind pointing to the current value.
-func (c ServiceKind) ToPtr() *ServiceKind {
-	return &c
-}
-
-// ServiceLoadMetricWeight - Determines the metric weight relative to the other metrics that are configured for this service. During runtime, if two metrics
-// end up in conflict, the Cluster Resource Manager prefers the metric with
+// ServiceLoadMetricWeight - Determines the metric weight relative to the other metrics that are configured for this service.
+// During runtime, if two metrics end up in conflict, the Cluster Resource Manager prefers the metric with
 // the higher weight.
 type ServiceLoadMetricWeight string
 
@@ -559,33 +483,30 @@ func PossibleServiceLoadMetricWeightValues() []ServiceLoadMetricWeight {
 	}
 }
 
-// ToPtr returns a *ServiceLoadMetricWeight pointing to the current value.
-func (c ServiceLoadMetricWeight) ToPtr() *ServiceLoadMetricWeight {
-	return &c
-}
-
 // ServicePlacementPolicyType - The type of placement policy for a service fabric service. Following are the possible values.
 type ServicePlacementPolicyType string
 
 const (
-	// ServicePlacementPolicyTypeInvalid - Indicates the type of the placement policy is invalid. All Service Fabric enumerations have the invalid type. The
-	// value is zero.
+	// ServicePlacementPolicyTypeInvalid - Indicates the type of the placement policy is invalid. All Service Fabric enumerations
+	// have the invalid type. The value is zero.
 	ServicePlacementPolicyTypeInvalid ServicePlacementPolicyType = "Invalid"
 	// ServicePlacementPolicyTypeInvalidDomain - Indicates that the ServicePlacementPolicyDescription is of type ServicePlacementInvalidDomainPolicyDescription,
 	// which indicates that a particular fault or upgrade domain cannot be used for placement of this service. The value is 1.
 	ServicePlacementPolicyTypeInvalidDomain ServicePlacementPolicyType = "InvalidDomain"
 	// ServicePlacementPolicyTypeNonPartiallyPlaceService - Indicates that the ServicePlacementPolicyDescription is of type ServicePlacementNonPartiallyPlaceServicePolicyDescription,
-	// which indicates that if possible all replicas of a particular partition of the service should be placed atomically. The value is 5.
+	// which indicates that if possible all replicas of a particular partition of the service should be placed atomically. The
+	// value is 5.
 	ServicePlacementPolicyTypeNonPartiallyPlaceService ServicePlacementPolicyType = "NonPartiallyPlaceService"
 	// ServicePlacementPolicyTypePreferredPrimaryDomain - Indicates that the ServicePlacementPolicyDescription is of type ServicePlacementPreferPrimaryDomainPolicyDescription,
-	// which indicates that if possible the Primary replica for the partitions of the service should be located in a particular domain as an optimization. The
-	// value is 3.
+	// which indicates that if possible the Primary replica for the partitions of the service should be located in a particular
+	// domain as an optimization. The value is 3.
 	ServicePlacementPolicyTypePreferredPrimaryDomain ServicePlacementPolicyType = "PreferredPrimaryDomain"
 	// ServicePlacementPolicyTypeRequiredDomain - Indicates that the ServicePlacementPolicyDescription is of type ServicePlacementRequireDomainDistributionPolicyDescription
 	// indicating that the replicas of the service must be placed in a specific domain. The value is 2.
 	ServicePlacementPolicyTypeRequiredDomain ServicePlacementPolicyType = "RequiredDomain"
-	// ServicePlacementPolicyTypeRequiredDomainDistribution - Indicates that the ServicePlacementPolicyDescription is of type ServicePlacementRequireDomainDistributionPolicyDescription,
-	// indicating that the system will disallow placement of any two replicas from the same partition in the same domain at any time. The value is 4.
+	// ServicePlacementPolicyTypeRequiredDomainDistribution - Indicates that the ServicePlacementPolicyDescription is of type
+	// ServicePlacementRequireDomainDistributionPolicyDescription, indicating that the system will disallow placement of any two
+	// replicas from the same partition in the same domain at any time. The value is 4.
 	ServicePlacementPolicyTypeRequiredDomainDistribution ServicePlacementPolicyType = "RequiredDomainDistribution"
 )
 
@@ -601,23 +522,19 @@ func PossibleServicePlacementPolicyTypeValues() []ServicePlacementPolicyType {
 	}
 }
 
-// ToPtr returns a *ServicePlacementPolicyType pointing to the current value.
-func (c ServicePlacementPolicyType) ToPtr() *ServicePlacementPolicyType {
-	return &c
-}
-
-// SfZonalUpgradeMode - This property controls the logical grouping of VMs in upgrade domains (UDs). This property can't be modified if a node type with
-// multiple Availability Zones is already present in the cluster.
+// SfZonalUpgradeMode - This property controls the logical grouping of VMs in upgrade domains (UDs). This property can't be
+// modified if a node type with multiple Availability Zones is already present in the cluster.
 type SfZonalUpgradeMode string
 
 const (
-	// SfZonalUpgradeModeHierarchical - If this value is omitted or set to Hierarchical, VMs are grouped to reflect the zonal distribution in up to 15 UDs.
-	// Each of the three zones has five UDs. This ensures that the zones are updated one at a time, moving to next zone only after completing five UDs within
-	// the first zone. This update process is safer for the cluster and the user application.
+	// SfZonalUpgradeModeHierarchical - If this value is omitted or set to Hierarchical, VMs are grouped to reflect the zonal
+	// distribution in up to 15 UDs. Each of the three zones has five UDs. This ensures that the zones are updated one at a time,
+	// moving to next zone only after completing five UDs within the first zone. This update process is safer for the cluster
+	// and the user application.
 	SfZonalUpgradeModeHierarchical SfZonalUpgradeMode = "Hierarchical"
-	// SfZonalUpgradeModeParallel - VMs under the node type are grouped into UDs and ignore the zone info in five UDs. This setting causes UDs across all zones
-	// to be upgraded at the same time. This deployment mode is faster for upgrades, we don't recommend it because it goes against the SDP guidelines, which
-	// state that the updates should be applied to one zone at a time.
+	// SfZonalUpgradeModeParallel - VMs under the node type are grouped into UDs and ignore the zone info in five UDs. This setting
+	// causes UDs across all zones to be upgraded at the same time. This deployment mode is faster for upgrades, we don't recommend
+	// it because it goes against the SDP guidelines, which state that the updates should be applied to one zone at a time.
 	SfZonalUpgradeModeParallel SfZonalUpgradeMode = "Parallel"
 )
 
@@ -627,11 +544,6 @@ func PossibleSfZonalUpgradeModeValues() []SfZonalUpgradeMode {
 		SfZonalUpgradeModeHierarchical,
 		SfZonalUpgradeModeParallel,
 	}
-}
-
-// ToPtr returns a *SfZonalUpgradeMode pointing to the current value.
-func (c SfZonalUpgradeMode) ToPtr() *SfZonalUpgradeMode {
-	return &c
 }
 
 // StoreName - The local certificate store location.
@@ -662,20 +574,15 @@ func PossibleStoreNameValues() []StoreName {
 	}
 }
 
-// ToPtr returns a *StoreName pointing to the current value.
-func (c StoreName) ToPtr() *StoreName {
-	return &c
-}
-
 // UpgradeMode - The upgrade mode of the cluster when new Service Fabric runtime version is available.
 type UpgradeMode string
 
 const (
-	// UpgradeModeAutomatic - The cluster will be automatically upgraded to the latest Service Fabric runtime version, **upgradeWave** will determine when the
-	// upgrade starts after the new version becomes available.
+	// UpgradeModeAutomatic - The cluster will be automatically upgraded to the latest Service Fabric runtime version, **upgradeWave**
+	// will determine when the upgrade starts after the new version becomes available.
 	UpgradeModeAutomatic UpgradeMode = "Automatic"
-	// UpgradeModeManual - The cluster will not be automatically upgraded to the latest Service Fabric runtime version. The cluster is upgraded by setting the
-	// **clusterCodeVersion** property in the cluster resource.
+	// UpgradeModeManual - The cluster will not be automatically upgraded to the latest Service Fabric runtime version. The cluster
+	// is upgraded by setting the **clusterCodeVersion** property in the cluster resource.
 	UpgradeModeManual UpgradeMode = "Manual"
 )
 
@@ -687,18 +594,14 @@ func PossibleUpgradeModeValues() []UpgradeMode {
 	}
 }
 
-// ToPtr returns a *UpgradeMode pointing to the current value.
-func (c UpgradeMode) ToPtr() *UpgradeMode {
-	return &c
-}
-
-// VmssZonalUpgradeMode - This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with multiple Availability
-// Zones is added.
+// VmssZonalUpgradeMode - This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node
+// type with multiple Availability Zones is added.
 type VmssZonalUpgradeMode string
 
 const (
-	// VmssZonalUpgradeModeHierarchical - VMs are grouped to reflect the zonal distribution in up to 15 UDs. Each of the three zones has five UDs. This ensures
-	// that the zones are updated one at a time, moving to next zone only after completing five UDs within the first zone.
+	// VmssZonalUpgradeModeHierarchical - VMs are grouped to reflect the zonal distribution in up to 15 UDs. Each of the three
+	// zones has five UDs. This ensures that the zones are updated one at a time, moving to next zone only after completing five
+	// UDs within the first zone.
 	VmssZonalUpgradeModeHierarchical VmssZonalUpgradeMode = "Hierarchical"
 	// VmssZonalUpgradeModeParallel - Updates will happen in all Availability Zones at once for the virtual machine scale sets.
 	VmssZonalUpgradeModeParallel VmssZonalUpgradeMode = "Parallel"
@@ -710,9 +613,4 @@ func PossibleVmssZonalUpgradeModeValues() []VmssZonalUpgradeMode {
 		VmssZonalUpgradeModeHierarchical,
 		VmssZonalUpgradeModeParallel,
 	}
-}
-
-// ToPtr returns a *VmssZonalUpgradeMode pointing to the current value.
-func (c VmssZonalUpgradeMode) ToPtr() *VmssZonalUpgradeMode {
-	return &c
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -16,42 +16,28 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview"
 )
 
-// x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/PrivateLinkResources_ListByAccount.json
-func ExamplePrivateLinkResourcesClient_ListByAccount() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/PrivateLinkResources_ListByAccount.json
+func ExamplePrivateLinkResourcesClient_NewListByAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpurview.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
-	pager := client.ListByAccount("<resource-group-name>",
-		"<account-name>",
+	client, err := armpurview.NewPrivateLinkResourcesClient("12345678-1234-1234-12345678abc", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByAccountPager("SampleResourceGroup",
+		"account1",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("PrivateLinkResource.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
-}
-
-// x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/PrivateLinkResources_GetByGroupId.json
-func ExamplePrivateLinkResourcesClient_GetByGroupID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armpurview.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
-	res, err := client.GetByGroupID(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<group-id>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("PrivateLinkResource.ID: %s\n", *res.ID)
 }

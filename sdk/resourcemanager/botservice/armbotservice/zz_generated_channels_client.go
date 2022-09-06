@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armbotservice
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,60 @@ import (
 // ChannelsClient contains the methods for the Channels group.
 // Don't use this type directly, use NewChannelsClient() instead.
 type ChannelsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewChannelsClient creates a new instance of ChannelsClient with the specified values.
-func NewChannelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ChannelsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Azure Subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewChannelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ChannelsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &ChannelsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &ChannelsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // Create - Creates a Channel registration for a Bot Service
-// If the operation fails it returns the *Error error type.
-func (client *ChannelsClient) Create(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, parameters BotChannel, options *ChannelsCreateOptions) (ChannelsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
+// resourceGroupName - The name of the Bot resource group in the user subscription.
+// resourceName - The name of the Bot resource.
+// channelName - The name of the Channel resource.
+// parameters - The parameters to provide for the created bot.
+// options - ChannelsClientCreateOptions contains the optional parameters for the ChannelsClient.Create method.
+func (client *ChannelsClient) Create(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, parameters BotChannel, options *ChannelsClientCreateOptions) (ChannelsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, resourceName, channelName, parameters, options)
 	if err != nil {
-		return ChannelsCreateResponse{}, err
+		return ChannelsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ChannelsCreateResponse{}, err
+		return ChannelsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ChannelsCreateResponse{}, client.createHandleError(resp)
+		return ChannelsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *ChannelsClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, parameters BotChannel, options *ChannelsCreateOptions) (*policy.Request, error) {
+func (client *ChannelsClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, parameters BotChannel, options *ChannelsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/channels/{channelName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -78,58 +96,50 @@ func (client *ChannelsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createHandleResponse handles the Create response.
-func (client *ChannelsClient) createHandleResponse(resp *http.Response) (ChannelsCreateResponse, error) {
-	result := ChannelsCreateResponse{RawResponse: resp}
+func (client *ChannelsClient) createHandleResponse(resp *http.Response) (ChannelsClientCreateResponse, error) {
+	result := ChannelsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BotChannel); err != nil {
-		return ChannelsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return ChannelsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *ChannelsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a Channel registration from a Bot Service
-// If the operation fails it returns the *Error error type.
-func (client *ChannelsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, channelName string, options *ChannelsDeleteOptions) (ChannelsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
+// resourceGroupName - The name of the Bot resource group in the user subscription.
+// resourceName - The name of the Bot resource.
+// channelName - The name of the Bot resource.
+// options - ChannelsClientDeleteOptions contains the optional parameters for the ChannelsClient.Delete method.
+func (client *ChannelsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, channelName string, options *ChannelsClientDeleteOptions) (ChannelsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, channelName, options)
 	if err != nil {
-		return ChannelsDeleteResponse{}, err
+		return ChannelsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ChannelsDeleteResponse{}, err
+		return ChannelsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ChannelsDeleteResponse{}, client.deleteHandleError(resp)
+		return ChannelsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ChannelsDeleteResponse{RawResponse: resp}, nil
+	return ChannelsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ChannelsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, channelName string, options *ChannelsDeleteOptions) (*policy.Request, error) {
+func (client *ChannelsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, channelName string, options *ChannelsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/channels/{channelName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -147,49 +157,41 @@ func (client *ChannelsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ChannelsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Returns a BotService Channel registration specified by the parameters.
-// If the operation fails it returns the *Error error type.
-func (client *ChannelsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, channelName string, options *ChannelsGetOptions) (ChannelsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
+// resourceGroupName - The name of the Bot resource group in the user subscription.
+// resourceName - The name of the Bot resource.
+// channelName - The name of the Bot resource.
+// options - ChannelsClientGetOptions contains the optional parameters for the ChannelsClient.Get method.
+func (client *ChannelsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, channelName string, options *ChannelsClientGetOptions) (ChannelsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, channelName, options)
 	if err != nil {
-		return ChannelsGetResponse{}, err
+		return ChannelsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ChannelsGetResponse{}, err
+		return ChannelsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ChannelsGetResponse{}, client.getHandleError(resp)
+		return ChannelsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ChannelsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, channelName string, options *ChannelsGetOptions) (*policy.Request, error) {
+func (client *ChannelsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, channelName string, options *ChannelsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/channels/{channelName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -207,55 +209,63 @@ func (client *ChannelsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ChannelsClient) getHandleResponse(resp *http.Response) (ChannelsGetResponse, error) {
-	result := ChannelsGetResponse{RawResponse: resp}
+func (client *ChannelsClient) getHandleResponse(resp *http.Response) (ChannelsClientGetResponse, error) {
+	result := ChannelsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BotChannel); err != nil {
-		return ChannelsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ChannelsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ChannelsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByResourceGroup - Returns all the Channel registrations of a particular BotService resource
-// If the operation fails it returns the *Error error type.
-func (client *ChannelsClient) ListByResourceGroup(resourceGroupName string, resourceName string, options *ChannelsListByResourceGroupOptions) *ChannelsListByResourceGroupPager {
-	return &ChannelsListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, resourceName, options)
+// NewListByResourceGroupPager - Returns all the Channel registrations of a particular BotService resource
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
+// resourceGroupName - The name of the Bot resource group in the user subscription.
+// resourceName - The name of the Bot resource.
+// options - ChannelsClientListByResourceGroupOptions contains the optional parameters for the ChannelsClient.ListByResourceGroup
+// method.
+func (client *ChannelsClient) NewListByResourceGroupPager(resourceGroupName string, resourceName string, options *ChannelsClientListByResourceGroupOptions) *runtime.Pager[ChannelsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ChannelsClientListByResourceGroupResponse]{
+		More: func(page ChannelsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ChannelsListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ChannelResponseList.NextLink)
+		Fetcher: func(ctx context.Context, page *ChannelsClientListByResourceGroupResponse) (ChannelsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, resourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ChannelsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ChannelsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ChannelsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ChannelsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ChannelsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ChannelsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ChannelsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/channels"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -269,58 +279,50 @@ func (client *ChannelsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ChannelsClient) listByResourceGroupHandleResponse(resp *http.Response) (ChannelsListByResourceGroupResponse, error) {
-	result := ChannelsListByResourceGroupResponse{RawResponse: resp}
+func (client *ChannelsClient) listByResourceGroupHandleResponse(resp *http.Response) (ChannelsClientListByResourceGroupResponse, error) {
+	result := ChannelsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ChannelResponseList); err != nil {
-		return ChannelsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ChannelsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *ChannelsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListWithKeys - Lists a Channel registration for a Bot Service including secrets
-// If the operation fails it returns the *Error error type.
-func (client *ChannelsClient) ListWithKeys(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, options *ChannelsListWithKeysOptions) (ChannelsListWithKeysResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
+// resourceGroupName - The name of the Bot resource group in the user subscription.
+// resourceName - The name of the Bot resource.
+// channelName - The name of the Channel resource.
+// options - ChannelsClientListWithKeysOptions contains the optional parameters for the ChannelsClient.ListWithKeys method.
+func (client *ChannelsClient) ListWithKeys(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, options *ChannelsClientListWithKeysOptions) (ChannelsClientListWithKeysResponse, error) {
 	req, err := client.listWithKeysCreateRequest(ctx, resourceGroupName, resourceName, channelName, options)
 	if err != nil {
-		return ChannelsListWithKeysResponse{}, err
+		return ChannelsClientListWithKeysResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ChannelsListWithKeysResponse{}, err
+		return ChannelsClientListWithKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ChannelsListWithKeysResponse{}, client.listWithKeysHandleError(resp)
+		return ChannelsClientListWithKeysResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listWithKeysHandleResponse(resp)
 }
 
 // listWithKeysCreateRequest creates the ListWithKeys request.
-func (client *ChannelsClient) listWithKeysCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, options *ChannelsListWithKeysOptions) (*policy.Request, error) {
+func (client *ChannelsClient) listWithKeysCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, options *ChannelsClientListWithKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/channels/{channelName}/listChannelWithKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -338,58 +340,51 @@ func (client *ChannelsClient) listWithKeysCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listWithKeysHandleResponse handles the ListWithKeys response.
-func (client *ChannelsClient) listWithKeysHandleResponse(resp *http.Response) (ChannelsListWithKeysResponse, error) {
-	result := ChannelsListWithKeysResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.BotChannel); err != nil {
-		return ChannelsListWithKeysResponse{}, runtime.NewResponseError(err, resp)
+func (client *ChannelsClient) listWithKeysHandleResponse(resp *http.Response) (ChannelsClientListWithKeysResponse, error) {
+	result := ChannelsClientListWithKeysResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListChannelWithKeysResponse); err != nil {
+		return ChannelsClientListWithKeysResponse{}, err
 	}
 	return result, nil
 }
 
-// listWithKeysHandleError handles the ListWithKeys error response.
-func (client *ChannelsClient) listWithKeysHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates a Channel registration for a Bot Service
-// If the operation fails it returns the *Error error type.
-func (client *ChannelsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, parameters BotChannel, options *ChannelsUpdateOptions) (ChannelsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
+// resourceGroupName - The name of the Bot resource group in the user subscription.
+// resourceName - The name of the Bot resource.
+// channelName - The name of the Channel resource.
+// parameters - The parameters to provide for the created bot.
+// options - ChannelsClientUpdateOptions contains the optional parameters for the ChannelsClient.Update method.
+func (client *ChannelsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, parameters BotChannel, options *ChannelsClientUpdateOptions) (ChannelsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, channelName, parameters, options)
 	if err != nil {
-		return ChannelsUpdateResponse{}, err
+		return ChannelsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ChannelsUpdateResponse{}, err
+		return ChannelsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ChannelsUpdateResponse{}, client.updateHandleError(resp)
+		return ChannelsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ChannelsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, parameters BotChannel, options *ChannelsUpdateOptions) (*policy.Request, error) {
+func (client *ChannelsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, parameters BotChannel, options *ChannelsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/channels/{channelName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -407,35 +402,22 @@ func (client *ChannelsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ChannelsClient) updateHandleResponse(resp *http.Response) (ChannelsUpdateResponse, error) {
-	result := ChannelsUpdateResponse{RawResponse: resp}
+func (client *ChannelsClient) updateHandleResponse(resp *http.Response) (ChannelsClientUpdateResponse, error) {
+	result := ChannelsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BotChannel); err != nil {
-		return ChannelsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ChannelsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ChannelsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

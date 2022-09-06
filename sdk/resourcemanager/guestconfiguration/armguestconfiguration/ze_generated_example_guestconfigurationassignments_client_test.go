@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,129 +17,163 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration"
 )
 
-// x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/createOrUpdateGuestConfigurationAssignment.json
-func ExampleGuestConfigurationAssignmentsClient_CreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/createOrUpdateGuestConfigurationAssignment.json
+func ExampleAssignmentsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armguestconfiguration.NewAssignmentsClient("mySubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<guest-configuration-assignment-name>",
-		"<resource-group-name>",
-		"<vm-name>",
-		armguestconfiguration.GuestConfigurationAssignment{
-			ProxyResource: armguestconfiguration.ProxyResource{
-				Resource: armguestconfiguration.Resource{
-					Name:     to.StringPtr("<name>"),
-					Location: to.StringPtr("<location>"),
-				},
-			},
-			Properties: &armguestconfiguration.GuestConfigurationAssignmentProperties{
-				Context: to.StringPtr("<context>"),
-				GuestConfiguration: &armguestconfiguration.GuestConfigurationNavigation{
-					Name:           to.StringPtr("<name>"),
-					AssignmentType: armguestconfiguration.AssignmentTypeApplyAndAutoCorrect.ToPtr(),
+		"NotInstalledApplicationForWindows",
+		"myResourceGroupName",
+		"myVMName",
+		armguestconfiguration.Assignment{
+			Name:     to.Ptr("NotInstalledApplicationForWindows"),
+			Location: to.Ptr("westcentralus"),
+			Properties: &armguestconfiguration.AssignmentProperties{
+				Context: to.Ptr("Azure policy"),
+				GuestConfiguration: &armguestconfiguration.Navigation{
+					Name:           to.Ptr("NotInstalledApplicationForWindows"),
+					AssignmentType: to.Ptr(armguestconfiguration.AssignmentTypeApplyAndAutoCorrect),
 					ConfigurationParameter: []*armguestconfiguration.ConfigurationParameter{
 						{
-							Name:  to.StringPtr("<name>"),
-							Value: to.StringPtr("<value>"),
+							Name:  to.Ptr("[InstalledApplication]NotInstalledApplicationResource1;Name"),
+							Value: to.Ptr("NotePad,sql"),
 						}},
-					ContentHash: to.StringPtr("<content-hash>"),
-					ContentURI:  to.StringPtr("<content-uri>"),
-					Version:     to.StringPtr("<version>"),
+					ContentHash: to.Ptr("123contenthash"),
+					ContentURI:  to.Ptr("https://thisisfake/pacakge"),
+					Version:     to.Ptr("1.*"),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("GuestConfigurationAssignment.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/getGuestConfigurationAssignment.json
-func ExampleGuestConfigurationAssignmentsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/getGuestConfigurationAssignment.json
+func ExampleAssignmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armguestconfiguration.NewAssignmentsClient("mySubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<guest-configuration-assignment-name>",
-		"<vm-name>",
+		"myResourceGroupName",
+		"SecureProtocol",
+		"myVMName",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("GuestConfigurationAssignment.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/deleteGuestConfigurationAssignment.json
-func ExampleGuestConfigurationAssignmentsClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/deleteGuestConfigurationAssignment.json
+func ExampleAssignmentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armguestconfiguration.NewAssignmentsClient("mySubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<guest-configuration-assignment-name>",
-		"<vm-name>",
+		"myResourceGroupName",
+		"SecureProtocol",
+		"myVMName",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/listSubGuestConfigurationAssignments.json
-func ExampleGuestConfigurationAssignmentsClient_SubscriptionList() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/listSubGuestConfigurationAssignments.json
+func ExampleAssignmentsClient_NewSubscriptionListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationAssignmentsClient("<subscription-id>", cred, nil)
-	_, err = client.SubscriptionList(ctx,
-		nil)
+	client, err := armguestconfiguration.NewAssignmentsClient("mySubscriptionId", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewSubscriptionListPager(nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
 }
 
-// x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/listRGGuestConfigurationAssignments.json
-func ExampleGuestConfigurationAssignmentsClient_RGList() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/listRGGuestConfigurationAssignments.json
+func ExampleAssignmentsClient_NewRGListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationAssignmentsClient("<subscription-id>", cred, nil)
-	_, err = client.RGList(ctx,
-		"<resource-group-name>",
-		nil)
+	client, err := armguestconfiguration.NewAssignmentsClient("mySubscriptionId", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewRGListPager("myResourceGroupName",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
 }
 
-// x-ms-original-file: specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/listGuestConfigurationAssignments.json
-func ExampleGuestConfigurationAssignmentsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/listGuestConfigurationAssignments.json
+func ExampleAssignmentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armguestconfiguration.NewGuestConfigurationAssignmentsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		nil)
+	client, err := armguestconfiguration.NewAssignmentsClient("mySubscriptionId", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("myResourceGroupName",
+		"myVMName",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
 }

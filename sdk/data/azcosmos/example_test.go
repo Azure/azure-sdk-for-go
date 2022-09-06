@@ -8,12 +8,36 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"os"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
 )
+
+func ExampleNewClient() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	// Obtain a TokenCredential for the current environment
+	// Alternatively, you could use any of the other credential types
+	// For example, azidentity.NewClientSecretCredential("tenantId", "clientId", "clientSecret")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azcosmos.NewClient(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(client)
+}
 
 func ExampleNewClientWithKey() {
 	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
@@ -33,6 +57,20 @@ func ExampleNewClientWithKey() {
 	}
 
 	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(client)
+}
+
+func ExampleNewClientFromConnectionString() {
+	connectionString, ok := os.LookupEnv("AZURE_COSMOS_CONNECTION_STRING")
+	if !ok {
+		panic("AZURE_COSMOS_CONNECTION_STRING could not be found")
+	}
+
+	client, err := azcosmos.NewClientFromConnectionString(connectionString, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -64,7 +102,9 @@ func ExampleClient_CreateDatabase() {
 	databaseProperties := azcosmos.DatabaseProperties{ID: "databaseName"}
 	databaseResponse, err := client.CreateDatabase(context.Background(), databaseProperties, nil)
 	if err != nil {
-		panic(err)
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
 	}
 
 	fmt.Printf("Database created. ActivityId %s", databaseResponse.ActivityID)
@@ -107,7 +147,9 @@ func ExampleDatabaseClient_CreateContainer() {
 
 	resp, err := database.CreateContainer(context.Background(), properties, &azcosmos.CreateContainerOptions{ThroughputProperties: &throughput})
 	if err != nil {
-		panic(err)
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
 	}
 
 	fmt.Printf("Container created. ActivityId %s", resp.ActivityID)
@@ -154,7 +196,9 @@ func ExampleContainerClient_ReplaceThroughput() {
 	newScale := azcosmos.NewManualThroughputProperties(500)
 	replaceThroughputResponse, err := container.ReplaceThroughput(context.Background(), newScale, nil)
 	if err != nil {
-		panic(err)
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
 	}
 
 	fmt.Printf("Throughput updated. ActivityId %s", replaceThroughputResponse.ActivityID)
@@ -202,7 +246,9 @@ func ExampleContainerClient_Replace() {
 	// Replace container properties
 	replaceResponse, err := container.Replace(context.Background(), *containerResponse.ContainerProperties, nil)
 	if err != nil {
-		panic(err)
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
 	}
 
 	fmt.Printf("Container updated. ActivityId %s", replaceResponse.ActivityID)
@@ -249,7 +295,9 @@ func ExampleContainerClient_CreateItem() {
 
 	itemResponse, err := container.CreateItem(context.Background(), pk, marshalled, nil)
 	if err != nil {
-		panic(err)
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
 	}
 
 	fmt.Printf("Item created. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
@@ -286,7 +334,9 @@ func ExampleContainerClient_ReadItem() {
 	id := "anId"
 	itemResponse, err := container.ReadItem(context.Background(), pk, id, nil)
 	if err != nil {
-		panic(err)
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
 	}
 
 	var itemResponseBody map[string]string
@@ -347,7 +397,9 @@ func ExampleContainerClient_ReplaceItem() {
 
 	itemResponse, err = container.ReplaceItem(context.Background(), pk, id, marshalledReplace, nil)
 	if err != nil {
-		panic(err)
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
 	}
 
 	fmt.Printf("Item replaced. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
@@ -384,7 +436,9 @@ func ExampleContainerClient_DeleteItem() {
 	id := "anId"
 	itemResponse, err := container.DeleteItem(context.Background(), pk, id, nil)
 	if err != nil {
-		panic(err)
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
 	}
 
 	fmt.Printf("Item deleted. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
@@ -440,7 +494,9 @@ func ExampleContainerClient_ReadItem_sessionConsistency() {
 	// In another client, maintain the session by passing the session token
 	itemResponse, err = container.ReadItem(context.Background(), pk, id, &azcosmos.ItemOptions{SessionToken: itemSessionToken})
 	if err != nil {
-		panic(err)
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
 	}
 
 	fmt.Printf("Item read. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
@@ -501,12 +557,192 @@ func ExampleContainerClient_ReplaceItem_optimisticConcurrency() {
 		// Replace with Etag
 		etag := itemResponse.ETag
 		itemResponse, err = container.ReplaceItem(context.Background(), pk, id, marshalledReplace, &azcosmos.ItemOptions{IfMatchEtag: &etag})
-		var httpErr azcore.HTTPResponse
+		var responseErr *azcore.ResponseError
 
-		return (errors.As(err, &httpErr) && itemResponse.RawResponse.StatusCode == 412), err
+		return (errors.As(err, &responseErr) && responseErr.StatusCode == 412), err
 	})
 	if err != nil {
 		panic(err)
+	}
+}
+
+func ExampleContainerClient_NewQueryItemsPager() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
+
+	cred, err := azcosmos.NewKeyCredential(key)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	container, err := client.NewContainer("databaseName", "aContainer")
+	if err != nil {
+		panic(err)
+	}
+
+	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
+
+	queryPager := container.NewQueryItemsPager("select * from docs c", pk, nil)
+	for queryPager.More() {
+		queryResponse, err := queryPager.NextPage(context.Background())
+		if err != nil {
+			var responseErr *azcore.ResponseError
+			errors.As(err, &responseErr)
+			panic(responseErr)
+		}
+
+		for _, item := range queryResponse.Items {
+			var itemResponseBody map[string]interface{}
+			err = json.Unmarshal(item, &itemResponseBody)
+			if err != nil {
+				panic(err)
+			}
+		}
+
+		fmt.Printf("Query page received with %v items. ActivityId %s consuming %v RU", len(queryResponse.Items), queryResponse.ActivityID, queryResponse.RequestCharge)
+	}
+}
+
+// Azure Cosmos DB supports queries with parameters expressed by the familiar @ notation.
+// Parameterized SQL provides robust handling and escaping of user input, and prevents accidental exposure of data through SQL injection.
+func ExampleContainerClient_NewQueryItemsPager_parametrizedQueries() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
+
+	cred, err := azcosmos.NewKeyCredential(key)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	container, err := client.NewContainer("databaseName", "aContainer")
+	if err != nil {
+		panic(err)
+	}
+
+	opt := &azcosmos.QueryOptions{
+		QueryParameters: []azcosmos.QueryParameter{
+			{"@value", "2"},
+		},
+	}
+
+	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
+
+	queryPager := container.NewQueryItemsPager("select * from docs c where c.value = @value", pk, opt)
+	for queryPager.More() {
+		queryResponse, err := queryPager.NextPage(context.Background())
+		if err != nil {
+			var responseErr *azcore.ResponseError
+			errors.As(err, &responseErr)
+			panic(responseErr)
+		}
+
+		for _, item := range queryResponse.Items {
+			var itemResponseBody map[string]interface{}
+			err = json.Unmarshal(item, &itemResponseBody)
+			if err != nil {
+				panic(err)
+			}
+		}
+
+		fmt.Printf("Query page received with %v items. ActivityId %s consuming %v RU", len(queryResponse.Items), queryResponse.ActivityID, queryResponse.RequestCharge)
+	}
+}
+
+func ExampleContainerClient_NewTransactionalBatch() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
+
+	cred, err := azcosmos.NewKeyCredential(key)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	container, err := client.NewContainer("databaseName", "aContainer")
+	if err != nil {
+		panic(err)
+	}
+
+	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
+
+	batch := container.NewTransactionalBatch(pk)
+
+	item := map[string]string{
+		"id":             "anId",
+		"value":          "2",
+		"myPartitionKey": "newPartitionKey",
+	}
+
+	marshalledItem, err := json.Marshal(item)
+	if err != nil {
+		panic(err)
+	}
+
+	batch.CreateItem(marshalledItem, nil)
+	batch.ReadItem("anIdThatExists", nil)
+	batch.DeleteItem("yetAnotherExistingId", nil)
+
+	batchResponse, err := container.ExecuteTransactionalBatch(context.Background(), batch, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	if batchResponse.Success {
+		// Transaction succeeded
+		// We can inspect the individual operation results
+		for index, operation := range batchResponse.OperationResults {
+			fmt.Printf("Operation %v completed with status code %v consumed %v RU", index, operation.StatusCode, operation.RequestCharge)
+			if index == 1 {
+				// Read operation would have body available
+				var itemResponseBody map[string]string
+				err = json.Unmarshal(operation.ResourceBody, &itemResponseBody)
+				if err != nil {
+					panic(err)
+				}
+			}
+		}
+	} else {
+		// Transaction failed, look for the offending operation
+		for index, operation := range batchResponse.OperationResults {
+			if operation.StatusCode != http.StatusFailedDependency {
+				fmt.Printf("Transaction failed due to operation %v which failed with status code %v", index, operation.StatusCode)
+			}
+		}
 	}
 }
 

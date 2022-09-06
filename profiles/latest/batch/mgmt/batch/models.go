@@ -12,7 +12,7 @@ package batch
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2021-06-01/batch"
+	original "github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2022-01-01/batch"
 )
 
 const (
@@ -128,6 +128,13 @@ type DiskEncryptionTarget = original.DiskEncryptionTarget
 const (
 	DiskEncryptionTargetOsDisk        DiskEncryptionTarget = original.DiskEncryptionTargetOsDisk
 	DiskEncryptionTargetTemporaryDisk DiskEncryptionTarget = original.DiskEncryptionTargetTemporaryDisk
+)
+
+type DynamicVNetAssignmentScope = original.DynamicVNetAssignmentScope
+
+const (
+	DynamicVNetAssignmentScopeJob  DynamicVNetAssignmentScope = original.DynamicVNetAssignmentScopeJob
+	DynamicVNetAssignmentScopeNone DynamicVNetAssignmentScope = original.DynamicVNetAssignmentScopeNone
 )
 
 type ElevationLevel = original.ElevationLevel
@@ -324,6 +331,11 @@ type ContainerRegistry = original.ContainerRegistry
 type DataDisk = original.DataDisk
 type DeleteCertificateError = original.DeleteCertificateError
 type DeploymentConfiguration = original.DeploymentConfiguration
+type DetectorListResult = original.DetectorListResult
+type DetectorListResultIterator = original.DetectorListResultIterator
+type DetectorListResultPage = original.DetectorListResultPage
+type DetectorResponse = original.DetectorResponse
+type DetectorResponseProperties = original.DetectorResponseProperties
 type DiffDiskSettings = original.DiffDiskSettings
 type DiskEncryptionConfiguration = original.DiskEncryptionConfiguration
 type EncryptionProperties = original.EncryptionProperties
@@ -444,6 +456,12 @@ func NewCertificateClient(subscriptionID string) CertificateClient {
 }
 func NewCertificateClientWithBaseURI(baseURI string, subscriptionID string) CertificateClient {
 	return original.NewCertificateClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDetectorListResultIterator(page DetectorListResultPage) DetectorListResultIterator {
+	return original.NewDetectorListResultIterator(page)
+}
+func NewDetectorListResultPage(cur DetectorListResult, getNextPage func(context.Context, DetectorListResult) (DetectorListResult, error)) DetectorListResultPage {
+	return original.NewDetectorListResultPage(cur, getNextPage)
 }
 func NewListApplicationPackagesResultIterator(page ListApplicationPackagesResultPage) ListApplicationPackagesResultIterator {
 	return original.NewListApplicationPackagesResultIterator(page)
@@ -576,6 +594,9 @@ func PossibleDiffDiskPlacementValues() []DiffDiskPlacement {
 }
 func PossibleDiskEncryptionTargetValues() []DiskEncryptionTarget {
 	return original.PossibleDiskEncryptionTargetValues()
+}
+func PossibleDynamicVNetAssignmentScopeValues() []DynamicVNetAssignmentScope {
+	return original.PossibleDynamicVNetAssignmentScopeValues()
 }
 func PossibleElevationLevelValues() []ElevationLevel {
 	return original.PossibleElevationLevelValues()

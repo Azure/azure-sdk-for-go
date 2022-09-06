@@ -1,21 +1,30 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 2.0.0-beta.1 (2022-05-24)
+### Breaking Changes
+
+- Type of `Encryption.KeySource` has been changed from `*string` to `*KeySource`
 
 ### Features Added
 
-### Breaking Changes
+- New const `TLSVersionOne2`
+- New const `KeySourceMicrosoftKeyVault`
+- New const `TLSVersionOne1`
+- New const `PublicNetworkAccessDisabled`
+- New const `TLSVersionOne0`
+- New const `PublicNetworkAccessSecuredByPerimeter`
+- New const `PublicNetworkAccessEnabled`
+- New function `PossibleKeySourceValues() []KeySource`
+- New function `PossiblePublicNetworkAccessValues() []PublicNetworkAccess`
+- New function `PossibleTLSVersionValues() []TLSVersion`
+- New field `MinimumTLSVersion` in struct `SBNamespaceProperties`
+- New field `PublicNetworkAccess` in struct `SBNamespaceProperties`
 
-### Bugs Fixed
 
-### Other Changes
+## 1.0.0 (2022-05-17)
 
-## 0.2.0 (2021-10-29)
+The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.
 
-### Breaking Changes
+To migrate the existing applications to the latest version, please refer to [Migration Guide](https://aka.ms/azsdk/go/mgmt/migration).
 
-- `arm.Connection` has been removed in `github.com/Azure/azure-sdk-for-go/sdk/azcore/v0.20.0`
-- The parameters of `NewXXXClient` has been changed from `(con *arm.Connection, subscriptionID string)` to `(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions)`
-
-## 0.1.0 (2021-10-08)
-- To better align with the Azure SDK guidelines (https://azure.github.io/azure-sdk/general_introduction.html), we have decided to change the module path to "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus". Therefore, we are deprecating the old module path (which is "github.com/Azure/azure-sdk-for-go/sdk/servicebus/armservicebus") to avoid confusion.
+To learn more, please refer to our documentation [Quick Start](https://aka.ms/azsdk/go/mgmt).

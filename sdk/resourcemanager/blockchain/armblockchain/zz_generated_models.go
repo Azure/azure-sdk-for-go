@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armblockchain
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // APIKey - API key payload which is exposed in the request/response of the resource provider.
 type APIKey struct {
@@ -30,205 +25,6 @@ type APIKeyCollection struct {
 	Keys []*APIKey `json:"keys,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type APIKeyCollection.
-func (a APIKeyCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "keys", a.Keys)
-	return json.Marshal(objectMap)
-}
-
-// BlockchainMember - Payload of the blockchain member which is exposed in the request/response of the resource provider.
-type BlockchainMember struct {
-	TrackedResource
-	// Gets or sets the blockchain member properties.
-	Properties *BlockchainMemberProperties `json:"properties,omitempty"`
-
-	// Gets or sets the blockchain member Sku.
-	SKU *SKU `json:"sku,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BlockchainMember.
-func (b BlockchainMember) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", b.Properties)
-	populate(objectMap, "sku", b.SKU)
-	return json.Marshal(objectMap)
-}
-
-// BlockchainMemberCollection - Collection of the blockchain member payload which is exposed in the request/response of the resource provider.
-type BlockchainMemberCollection struct {
-	// Gets or sets the URL, that the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// Gets or sets the collection of blockchain members.
-	Value []*BlockchainMember `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BlockchainMemberCollection.
-func (b BlockchainMemberCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", b.NextLink)
-	populate(objectMap, "value", b.Value)
-	return json.Marshal(objectMap)
-}
-
-// BlockchainMemberNodesSKU - Payload of the blockchain member nodes Sku for a blockchain member.
-type BlockchainMemberNodesSKU struct {
-	// Gets or sets the nodes capacity.
-	Capacity *int32 `json:"capacity,omitempty"`
-}
-
-// BlockchainMemberOperationResultsGetOptions contains the optional parameters for the BlockchainMemberOperationResults.Get method.
-type BlockchainMemberOperationResultsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BlockchainMemberProperties - Payload of the blockchain member properties for a blockchain member.
-type BlockchainMemberProperties struct {
-	// Gets or sets the consortium for the blockchain member.
-	Consortium *string `json:"consortium,omitempty"`
-
-	// Sets the managed consortium management account password.
-	ConsortiumManagementAccountPassword *string `json:"consortiumManagementAccountPassword,omitempty"`
-
-	// Gets the display name of the member in the consortium.
-	ConsortiumMemberDisplayName *string `json:"consortiumMemberDisplayName,omitempty"`
-
-	// Gets the role of the member in the consortium.
-	ConsortiumRole *string `json:"consortiumRole,omitempty"`
-
-	// Gets or sets firewall rules
-	FirewallRules []*FirewallRule `json:"firewallRules,omitempty"`
-
-	// Sets the basic auth password of the blockchain member.
-	Password *string `json:"password,omitempty"`
-
-	// Gets or sets the blockchain protocol.
-	Protocol *BlockchainProtocol `json:"protocol,omitempty"`
-
-	// Gets or sets the blockchain validator nodes Sku.
-	ValidatorNodesSKU *BlockchainMemberNodesSKU `json:"validatorNodesSku,omitempty"`
-
-	// READ-ONLY; Gets the managed consortium management account address.
-	ConsortiumManagementAccountAddress *string `json:"consortiumManagementAccountAddress,omitempty" azure:"ro"`
-
-	// READ-ONLY; Gets the dns endpoint of the blockchain member.
-	DNS *string `json:"dns,omitempty" azure:"ro"`
-
-	// READ-ONLY; Gets or sets the blockchain member provision state.
-	ProvisioningState *BlockchainMemberProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; Gets the public key of the blockchain member (default transaction node).
-	PublicKey *string `json:"publicKey,omitempty" azure:"ro"`
-
-	// READ-ONLY; Gets the Ethereum root contract address of the blockchain.
-	RootContractAddress *string `json:"rootContractAddress,omitempty" azure:"ro"`
-
-	// READ-ONLY; Gets the auth user name of the blockchain member.
-	UserName *string `json:"userName,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BlockchainMemberProperties.
-func (b BlockchainMemberProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "consortium", b.Consortium)
-	populate(objectMap, "consortiumManagementAccountAddress", b.ConsortiumManagementAccountAddress)
-	populate(objectMap, "consortiumManagementAccountPassword", b.ConsortiumManagementAccountPassword)
-	populate(objectMap, "consortiumMemberDisplayName", b.ConsortiumMemberDisplayName)
-	populate(objectMap, "consortiumRole", b.ConsortiumRole)
-	populate(objectMap, "dns", b.DNS)
-	populate(objectMap, "firewallRules", b.FirewallRules)
-	populate(objectMap, "password", b.Password)
-	populate(objectMap, "protocol", b.Protocol)
-	populate(objectMap, "provisioningState", b.ProvisioningState)
-	populate(objectMap, "publicKey", b.PublicKey)
-	populate(objectMap, "rootContractAddress", b.RootContractAddress)
-	populate(objectMap, "userName", b.UserName)
-	populate(objectMap, "validatorNodesSku", b.ValidatorNodesSKU)
-	return json.Marshal(objectMap)
-}
-
-// BlockchainMemberPropertiesUpdate - Update the payload of the blockchain member properties for a blockchain member.
-type BlockchainMemberPropertiesUpdate struct {
-	TransactionNodePropertiesUpdate
-	// Sets the managed consortium management account password.
-	ConsortiumManagementAccountPassword *string `json:"consortiumManagementAccountPassword,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BlockchainMemberPropertiesUpdate.
-func (b BlockchainMemberPropertiesUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.TransactionNodePropertiesUpdate.marshalInternal(objectMap)
-	populate(objectMap, "consortiumManagementAccountPassword", b.ConsortiumManagementAccountPassword)
-	return json.Marshal(objectMap)
-}
-
-// BlockchainMemberUpdate - Update the payload of the blockchain member which is exposed in the request/response of the resource provider.
-type BlockchainMemberUpdate struct {
-	// Gets or sets the blockchain member update properties.
-	Properties *BlockchainMemberPropertiesUpdate `json:"properties,omitempty"`
-
-	// Tags of the service which is a list of key value pairs that describes the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BlockchainMemberUpdate.
-func (b BlockchainMemberUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", b.Properties)
-	populate(objectMap, "tags", b.Tags)
-	return json.Marshal(objectMap)
-}
-
-// BlockchainMembersBeginCreateOptions contains the optional parameters for the BlockchainMembers.BeginCreate method.
-type BlockchainMembersBeginCreateOptions struct {
-	// Payload to create a blockchain member.
-	BlockchainMember *BlockchainMember
-}
-
-// BlockchainMembersBeginDeleteOptions contains the optional parameters for the BlockchainMembers.BeginDelete method.
-type BlockchainMembersBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BlockchainMembersGetOptions contains the optional parameters for the BlockchainMembers.Get method.
-type BlockchainMembersGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BlockchainMembersListAPIKeysOptions contains the optional parameters for the BlockchainMembers.ListAPIKeys method.
-type BlockchainMembersListAPIKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BlockchainMembersListAllOptions contains the optional parameters for the BlockchainMembers.ListAll method.
-type BlockchainMembersListAllOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BlockchainMembersListConsortiumMembersOptions contains the optional parameters for the BlockchainMembers.ListConsortiumMembers method.
-type BlockchainMembersListConsortiumMembersOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BlockchainMembersListOptions contains the optional parameters for the BlockchainMembers.List method.
-type BlockchainMembersListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BlockchainMembersListRegenerateAPIKeysOptions contains the optional parameters for the BlockchainMembers.ListRegenerateAPIKeys method.
-type BlockchainMembersListRegenerateAPIKeysOptions struct {
-	// api key to be regenerate
-	APIKey *APIKey
-}
-
-// BlockchainMembersUpdateOptions contains the optional parameters for the BlockchainMembers.Update method.
-type BlockchainMembersUpdateOptions struct {
-	// Payload to update the blockchain member.
-	BlockchainMember *BlockchainMemberUpdate
-}
-
 // Consortium payload
 type Consortium struct {
 	// Gets or sets the blockchain member name.
@@ -242,13 +38,6 @@ type Consortium struct {
 type ConsortiumCollection struct {
 	// Gets or sets the collection of consortiums.
 	Value []*Consortium `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ConsortiumCollection.
-func (c ConsortiumCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // ConsortiumMember - Consortium approval
@@ -275,72 +64,14 @@ type ConsortiumMember struct {
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConsortiumMember.
-func (c ConsortiumMember) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "dateModified", c.DateModified)
-	populate(objectMap, "displayName", c.DisplayName)
-	populateTimeRFC3339(objectMap, "joinDate", c.JoinDate)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "role", c.Role)
-	populate(objectMap, "status", c.Status)
-	populate(objectMap, "subscriptionId", c.SubscriptionID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ConsortiumMember.
-func (c *ConsortiumMember) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "dateModified":
-			err = unpopulateTimeRFC3339(val, &c.DateModified)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &c.DisplayName)
-			delete(rawMsg, key)
-		case "joinDate":
-			err = unpopulateTimeRFC3339(val, &c.JoinDate)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &c.Name)
-			delete(rawMsg, key)
-		case "role":
-			err = unpopulate(val, &c.Role)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &c.Status)
-			delete(rawMsg, key)
-		case "subscriptionId":
-			err = unpopulate(val, &c.SubscriptionID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ConsortiumMemberCollection - Collection of consortium payload.
 type ConsortiumMemberCollection struct {
-	// Gets or sets the URL, that the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	// Gets or sets the URL, that the client should use to fetch the next page (per server side paging). It's null for now, added
+	// for future use.
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// Gets or sets the collection of consortiums.
 	Value []*ConsortiumMember `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ConsortiumMemberCollection.
-func (c ConsortiumMemberCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // FirewallRule - Ip range for firewall rules
@@ -355,15 +86,181 @@ type FirewallRule struct {
 	StartIPAddress *string `json:"startIpAddress,omitempty"`
 }
 
-// LocationsCheckNameAvailabilityOptions contains the optional parameters for the Locations.CheckNameAvailability method.
-type LocationsCheckNameAvailabilityOptions struct {
+// LocationsClientCheckNameAvailabilityOptions contains the optional parameters for the LocationsClient.CheckNameAvailability
+// method.
+type LocationsClientCheckNameAvailabilityOptions struct {
 	// Name availability request payload.
 	NameAvailabilityRequest *NameAvailabilityRequest
 }
 
-// LocationsListConsortiumsOptions contains the optional parameters for the Locations.ListConsortiums method.
-type LocationsListConsortiumsOptions struct {
+// LocationsClientListConsortiumsOptions contains the optional parameters for the LocationsClient.ListConsortiums method.
+type LocationsClientListConsortiumsOptions struct {
 	// placeholder for future optional parameters
+}
+
+// Member - Payload of the blockchain member which is exposed in the request/response of the resource provider.
+type Member struct {
+	// The GEO location of the blockchain service.
+	Location *string `json:"location,omitempty"`
+
+	// Gets or sets the blockchain member properties.
+	Properties *MemberProperties `json:"properties,omitempty"`
+
+	// Gets or sets the blockchain member Sku.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Tags of the service which is a list of key value pairs that describes the resource.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the service - e.g. "Microsoft.Blockchain"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MemberCollection - Collection of the blockchain member payload which is exposed in the request/response of the resource
+// provider.
+type MemberCollection struct {
+	// Gets or sets the URL, that the client should use to fetch the next page (per server side paging). It's null for now, added
+	// for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Gets or sets the collection of blockchain members.
+	Value []*Member `json:"value,omitempty"`
+}
+
+// MemberNodesSKU - Payload of the blockchain member nodes Sku for a blockchain member.
+type MemberNodesSKU struct {
+	// Gets or sets the nodes capacity.
+	Capacity *int32 `json:"capacity,omitempty"`
+}
+
+// MemberOperationResultsClientGetOptions contains the optional parameters for the MemberOperationResultsClient.Get method.
+type MemberOperationResultsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MemberProperties - Payload of the blockchain member properties for a blockchain member.
+type MemberProperties struct {
+	// Gets or sets the consortium for the blockchain member.
+	Consortium *string `json:"consortium,omitempty"`
+
+	// Sets the managed consortium management account password.
+	ConsortiumManagementAccountPassword *string `json:"consortiumManagementAccountPassword,omitempty"`
+
+	// Gets the display name of the member in the consortium.
+	ConsortiumMemberDisplayName *string `json:"consortiumMemberDisplayName,omitempty"`
+
+	// Gets the role of the member in the consortium.
+	ConsortiumRole *string `json:"consortiumRole,omitempty"`
+
+	// Gets or sets firewall rules
+	FirewallRules []*FirewallRule `json:"firewallRules,omitempty"`
+
+	// Sets the basic auth password of the blockchain member.
+	Password *string `json:"password,omitempty"`
+
+	// Gets or sets the blockchain protocol.
+	Protocol *BlockchainProtocol `json:"protocol,omitempty"`
+
+	// Gets or sets the blockchain validator nodes Sku.
+	ValidatorNodesSKU *MemberNodesSKU `json:"validatorNodesSku,omitempty"`
+
+	// READ-ONLY; Gets the managed consortium management account address.
+	ConsortiumManagementAccountAddress *string `json:"consortiumManagementAccountAddress,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the dns endpoint of the blockchain member.
+	DNS *string `json:"dns,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets or sets the blockchain member provision state.
+	ProvisioningState *BlockchainMemberProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the public key of the blockchain member (default transaction node).
+	PublicKey *string `json:"publicKey,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the Ethereum root contract address of the blockchain.
+	RootContractAddress *string `json:"rootContractAddress,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the auth user name of the blockchain member.
+	UserName *string `json:"userName,omitempty" azure:"ro"`
+}
+
+// MemberPropertiesUpdate - Update the payload of the blockchain member properties for a blockchain member.
+type MemberPropertiesUpdate struct {
+	// Sets the managed consortium management account password.
+	ConsortiumManagementAccountPassword *string `json:"consortiumManagementAccountPassword,omitempty"`
+
+	// Gets or sets the firewall rules.
+	FirewallRules []*FirewallRule `json:"firewallRules,omitempty"`
+
+	// Sets the transaction node dns endpoint basic auth password.
+	Password *string `json:"password,omitempty"`
+}
+
+// MemberUpdate - Update the payload of the blockchain member which is exposed in the request/response of the resource provider.
+type MemberUpdate struct {
+	// Gets or sets the blockchain member update properties.
+	Properties *MemberPropertiesUpdate `json:"properties,omitempty"`
+
+	// Tags of the service which is a list of key value pairs that describes the resource.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// MembersClientBeginCreateOptions contains the optional parameters for the MembersClient.BeginCreate method.
+type MembersClientBeginCreateOptions struct {
+	// Payload to create a blockchain member.
+	BlockchainMember *Member
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MembersClientBeginDeleteOptions contains the optional parameters for the MembersClient.BeginDelete method.
+type MembersClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MembersClientGetOptions contains the optional parameters for the MembersClient.Get method.
+type MembersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MembersClientListAPIKeysOptions contains the optional parameters for the MembersClient.ListAPIKeys method.
+type MembersClientListAPIKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MembersClientListAllOptions contains the optional parameters for the MembersClient.ListAll method.
+type MembersClientListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MembersClientListConsortiumMembersOptions contains the optional parameters for the MembersClient.ListConsortiumMembers
+// method.
+type MembersClientListConsortiumMembersOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MembersClientListOptions contains the optional parameters for the MembersClient.List method.
+type MembersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MembersClientListRegenerateAPIKeysOptions contains the optional parameters for the MembersClient.ListRegenerateAPIKeys
+// method.
+type MembersClientListRegenerateAPIKeysOptions struct {
+	// api key to be regenerate
+	APIKey *APIKey
+}
+
+// MembersClientUpdateOptions contains the optional parameters for the MembersClient.Update method.
+type MembersClientUpdateOptions struct {
+	// Payload to update the blockchain member.
+	BlockchainMember *MemberUpdate
 }
 
 // NameAvailability - Name availability payload which is exposed in the response of the resource provider.
@@ -399,43 +296,8 @@ type OperationResult struct {
 	StartTime *time.Time `json:"startTime,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationResult.
-func (o OperationResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", o.EndTime)
-	populate(objectMap, "name", o.Name)
-	populateTimeRFC3339(objectMap, "startTime", o.StartTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OperationResult.
-func (o *OperationResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &o.EndTime)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &o.Name)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &o.StartTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -449,19 +311,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the service - e.g. "Microsoft.Blockchain"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
 }
 
 // ResourceProviderOperation - Operation payload which is exposed in the response of the resource provider.
@@ -479,21 +328,15 @@ type ResourceProviderOperation struct {
 	Origin *string `json:"origin,omitempty"`
 }
 
-// ResourceProviderOperationCollection - Collection of operation payload which is exposed in the response of the resource provider.
+// ResourceProviderOperationCollection - Collection of operation payload which is exposed in the response of the resource
+// provider.
 type ResourceProviderOperationCollection struct {
-	// Gets or sets the URL, that the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	// Gets or sets the URL, that the client should use to fetch the next page (per server side paging). It's null for now, added
+	// for future use.
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// Gets or sets the collection of operations.
 	Value []*ResourceProviderOperation `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceProviderOperationCollection.
-func (r ResourceProviderOperationCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // ResourceProviderOperationDisplay - Operation display payload which is exposed in the response of the resource provider.
@@ -520,25 +363,10 @@ type ResourceTypeSKU struct {
 	SKUs []*SKUSetting `json:"skus,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceTypeSKU.
-func (r ResourceTypeSKU) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "resourceType", r.ResourceType)
-	populate(objectMap, "skus", r.SKUs)
-	return json.Marshal(objectMap)
-}
-
 // ResourceTypeSKUCollection - Collection of the resource type Sku.
 type ResourceTypeSKUCollection struct {
 	// Gets or sets the collection of resource type Sku.
 	Value []*ResourceTypeSKU `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceTypeSKUCollection.
-func (r ResourceTypeSKUCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // SKU - Blockchain member Sku in payload
@@ -565,78 +393,56 @@ type SKUSetting struct {
 	Tier *string `json:"tier,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SKUSetting.
-func (s SKUSetting) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "locations", s.Locations)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "requiredFeatures", s.RequiredFeatures)
-	populate(objectMap, "tier", s.Tier)
-	return json.Marshal(objectMap)
-}
-
-// SKUsListOptions contains the optional parameters for the SKUs.List method.
-type SKUsListOptions struct {
+// SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
+type SKUsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // TrackedResource - The resource model definition for a top level resource.
 type TrackedResource struct {
-	Resource
 	// The GEO location of the blockchain service.
 	Location *string `json:"location,omitempty"`
 
 	// Tags of the service which is a list of key value pairs that describes the resource.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; Fully qualified resource Id of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "tags", t.Tags)
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the service - e.g. "Microsoft.Blockchain"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // TransactionNode - Payload of the transaction node which is the request/response of the resource provider.
 type TransactionNode struct {
-	Resource
 	// Gets or sets the transaction node location.
 	Location *string `json:"location,omitempty"`
 
 	// Gets or sets the blockchain member properties.
 	Properties *TransactionNodeProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the service - e.g. "Microsoft.Blockchain"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TransactionNode.
-func (t TransactionNode) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
-}
-
-// TransactionNodeCollection - Collection of transaction node payload which is exposed in the request/response of the resource provider.
+// TransactionNodeCollection - Collection of transaction node payload which is exposed in the request/response of the resource
+// provider.
 type TransactionNodeCollection struct {
-	// Gets or sets the URL, that the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	// Gets or sets the URL, that the client should use to fetch the next page (per server side paging). It's null for now, added
+	// for future use.
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// Gets or sets the collection of transaction nodes.
 	Value []*TransactionNode `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TransactionNodeCollection.
-func (t TransactionNodeCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", t.NextLink)
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
 }
 
 // TransactionNodeProperties - Payload of transaction node properties payload in the transaction node payload.
@@ -660,18 +466,6 @@ type TransactionNodeProperties struct {
 	UserName *string `json:"userName,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TransactionNodeProperties.
-func (t TransactionNodeProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dns", t.DNS)
-	populate(objectMap, "firewallRules", t.FirewallRules)
-	populate(objectMap, "password", t.Password)
-	populate(objectMap, "provisioningState", t.ProvisioningState)
-	populate(objectMap, "publicKey", t.PublicKey)
-	populate(objectMap, "userName", t.UserName)
-	return json.Marshal(objectMap)
-}
-
 // TransactionNodePropertiesUpdate - Update the payload of the transaction node properties in the transaction node payload.
 type TransactionNodePropertiesUpdate struct {
 	// Gets or sets the firewall rules.
@@ -681,82 +475,50 @@ type TransactionNodePropertiesUpdate struct {
 	Password *string `json:"password,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TransactionNodePropertiesUpdate.
-func (t TransactionNodePropertiesUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TransactionNodePropertiesUpdate) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "firewallRules", t.FirewallRules)
-	populate(objectMap, "password", t.Password)
-}
-
 // TransactionNodeUpdate - Update the transaction node payload which is exposed in the request/response of the resource provider.
 type TransactionNodeUpdate struct {
 	// Gets or sets the transaction node update properties.
 	Properties *TransactionNodePropertiesUpdate `json:"properties,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TransactionNodeUpdate.
-func (t TransactionNodeUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
-}
-
-// TransactionNodesBeginCreateOptions contains the optional parameters for the TransactionNodes.BeginCreate method.
-type TransactionNodesBeginCreateOptions struct {
+// TransactionNodesClientBeginCreateOptions contains the optional parameters for the TransactionNodesClient.BeginCreate method.
+type TransactionNodesClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 	// Payload to create the transaction node.
 	TransactionNode *TransactionNode
 }
 
-// TransactionNodesBeginDeleteOptions contains the optional parameters for the TransactionNodes.BeginDelete method.
-type TransactionNodesBeginDeleteOptions struct {
+// TransactionNodesClientBeginDeleteOptions contains the optional parameters for the TransactionNodesClient.BeginDelete method.
+type TransactionNodesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TransactionNodesClientGetOptions contains the optional parameters for the TransactionNodesClient.Get method.
+type TransactionNodesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TransactionNodesGetOptions contains the optional parameters for the TransactionNodes.Get method.
-type TransactionNodesGetOptions struct {
+// TransactionNodesClientListAPIKeysOptions contains the optional parameters for the TransactionNodesClient.ListAPIKeys method.
+type TransactionNodesClientListAPIKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TransactionNodesListAPIKeysOptions contains the optional parameters for the TransactionNodes.ListAPIKeys method.
-type TransactionNodesListAPIKeysOptions struct {
+// TransactionNodesClientListOptions contains the optional parameters for the TransactionNodesClient.List method.
+type TransactionNodesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TransactionNodesListOptions contains the optional parameters for the TransactionNodes.List method.
-type TransactionNodesListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TransactionNodesListRegenerateAPIKeysOptions contains the optional parameters for the TransactionNodes.ListRegenerateAPIKeys method.
-type TransactionNodesListRegenerateAPIKeysOptions struct {
+// TransactionNodesClientListRegenerateAPIKeysOptions contains the optional parameters for the TransactionNodesClient.ListRegenerateAPIKeys
+// method.
+type TransactionNodesClientListRegenerateAPIKeysOptions struct {
 	// api key to be regenerated
 	APIKey *APIKey
 }
 
-// TransactionNodesUpdateOptions contains the optional parameters for the TransactionNodes.Update method.
-type TransactionNodesUpdateOptions struct {
+// TransactionNodesClientUpdateOptions contains the optional parameters for the TransactionNodesClient.Update method.
+type TransactionNodesClientUpdateOptions struct {
 	// Payload to create the transaction node.
 	TransactionNode *TransactionNodeUpdate
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

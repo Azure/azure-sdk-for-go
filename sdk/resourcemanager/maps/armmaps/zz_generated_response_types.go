@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,184 +8,82 @@
 
 package armmaps
 
-import "net/http"
-
-// AccountsCreateOrUpdateResponse contains the response from method Accounts.CreateOrUpdate.
-type AccountsCreateOrUpdateResponse struct {
-	AccountsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// AccountsClientCreateOrUpdateResponse contains the response from method AccountsClient.CreateOrUpdate.
+type AccountsClientCreateOrUpdateResponse struct {
+	Account
 }
 
-// AccountsCreateOrUpdateResult contains the result from method Accounts.CreateOrUpdate.
-type AccountsCreateOrUpdateResult struct {
-	MapsAccount
+// AccountsClientDeleteResponse contains the response from method AccountsClient.Delete.
+type AccountsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// AccountsDeleteResponse contains the response from method Accounts.Delete.
-type AccountsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// AccountsClientGetResponse contains the response from method AccountsClient.Get.
+type AccountsClientGetResponse struct {
+	Account
 }
 
-// AccountsGetResponse contains the response from method Accounts.Get.
-type AccountsGetResponse struct {
-	AccountsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// AccountsClientListByResourceGroupResponse contains the response from method AccountsClient.ListByResourceGroup.
+type AccountsClientListByResourceGroupResponse struct {
+	Accounts
 }
 
-// AccountsGetResult contains the result from method Accounts.Get.
-type AccountsGetResult struct {
-	MapsAccount
+// AccountsClientListBySubscriptionResponse contains the response from method AccountsClient.ListBySubscription.
+type AccountsClientListBySubscriptionResponse struct {
+	Accounts
 }
 
-// AccountsListByResourceGroupResponse contains the response from method Accounts.ListByResourceGroup.
-type AccountsListByResourceGroupResponse struct {
-	AccountsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// AccountsClientListKeysResponse contains the response from method AccountsClient.ListKeys.
+type AccountsClientListKeysResponse struct {
+	AccountKeys
 }
 
-// AccountsListByResourceGroupResult contains the result from method Accounts.ListByResourceGroup.
-type AccountsListByResourceGroupResult struct {
-	MapsAccounts
+// AccountsClientListSasResponse contains the response from method AccountsClient.ListSas.
+type AccountsClientListSasResponse struct {
+	AccountSasToken
 }
 
-// AccountsListBySubscriptionResponse contains the response from method Accounts.ListBySubscription.
-type AccountsListBySubscriptionResponse struct {
-	AccountsListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// AccountsClientRegenerateKeysResponse contains the response from method AccountsClient.RegenerateKeys.
+type AccountsClientRegenerateKeysResponse struct {
+	AccountKeys
 }
 
-// AccountsListBySubscriptionResult contains the result from method Accounts.ListBySubscription.
-type AccountsListBySubscriptionResult struct {
-	MapsAccounts
+// AccountsClientUpdateResponse contains the response from method AccountsClient.Update.
+type AccountsClientUpdateResponse struct {
+	Account
 }
 
-// AccountsListKeysResponse contains the response from method Accounts.ListKeys.
-type AccountsListKeysResponse struct {
-	AccountsListKeysResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ClientListOperationsResponse contains the response from method Client.ListOperations.
+type ClientListOperationsResponse struct {
+	Operations
 }
 
-// AccountsListKeysResult contains the result from method Accounts.ListKeys.
-type AccountsListKeysResult struct {
-	MapsAccountKeys
+// ClientListSubscriptionOperationsResponse contains the response from method Client.ListSubscriptionOperations.
+type ClientListSubscriptionOperationsResponse struct {
+	Operations
 }
 
-// AccountsListSasResponse contains the response from method Accounts.ListSas.
-type AccountsListSasResponse struct {
-	AccountsListSasResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AccountsListSasResult contains the result from method Accounts.ListSas.
-type AccountsListSasResult struct {
-	MapsAccountSasToken
-}
-
-// AccountsRegenerateKeysResponse contains the response from method Accounts.RegenerateKeys.
-type AccountsRegenerateKeysResponse struct {
-	AccountsRegenerateKeysResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AccountsRegenerateKeysResult contains the result from method Accounts.RegenerateKeys.
-type AccountsRegenerateKeysResult struct {
-	MapsAccountKeys
-}
-
-// AccountsUpdateResponse contains the response from method Accounts.Update.
-type AccountsUpdateResponse struct {
-	AccountsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AccountsUpdateResult contains the result from method Accounts.Update.
-type AccountsUpdateResult struct {
-	MapsAccount
-}
-
-// CreatorsCreateOrUpdateResponse contains the response from method Creators.CreateOrUpdate.
-type CreatorsCreateOrUpdateResponse struct {
-	CreatorsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CreatorsCreateOrUpdateResult contains the result from method Creators.CreateOrUpdate.
-type CreatorsCreateOrUpdateResult struct {
+// CreatorsClientCreateOrUpdateResponse contains the response from method CreatorsClient.CreateOrUpdate.
+type CreatorsClientCreateOrUpdateResponse struct {
 	Creator
 }
 
-// CreatorsDeleteResponse contains the response from method Creators.Delete.
-type CreatorsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// CreatorsClientDeleteResponse contains the response from method CreatorsClient.Delete.
+type CreatorsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// CreatorsGetResponse contains the response from method Creators.Get.
-type CreatorsGetResponse struct {
-	CreatorsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CreatorsGetResult contains the result from method Creators.Get.
-type CreatorsGetResult struct {
+// CreatorsClientGetResponse contains the response from method CreatorsClient.Get.
+type CreatorsClientGetResponse struct {
 	Creator
 }
 
-// CreatorsListByAccountResponse contains the response from method Creators.ListByAccount.
-type CreatorsListByAccountResponse struct {
-	CreatorsListByAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CreatorsListByAccountResult contains the result from method Creators.ListByAccount.
-type CreatorsListByAccountResult struct {
+// CreatorsClientListByAccountResponse contains the response from method CreatorsClient.ListByAccount.
+type CreatorsClientListByAccountResponse struct {
 	CreatorList
 }
 
-// CreatorsUpdateResponse contains the response from method Creators.Update.
-type CreatorsUpdateResponse struct {
-	CreatorsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CreatorsUpdateResult contains the result from method Creators.Update.
-type CreatorsUpdateResult struct {
+// CreatorsClientUpdateResponse contains the response from method CreatorsClient.Update.
+type CreatorsClientUpdateResponse struct {
 	Creator
-}
-
-// MapsListOperationsResponse contains the response from method Maps.ListOperations.
-type MapsListOperationsResponse struct {
-	MapsListOperationsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MapsListOperationsResult contains the result from method Maps.ListOperations.
-type MapsListOperationsResult struct {
-	MapsOperations
-}
-
-// MapsListSubscriptionOperationsResponse contains the response from method Maps.ListSubscriptionOperations.
-type MapsListSubscriptionOperationsResponse struct {
-	MapsListSubscriptionOperationsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MapsListSubscriptionOperationsResult contains the result from method Maps.ListSubscriptionOperations.
-type MapsListSubscriptionOperationsResult struct {
-	MapsOperations
 }

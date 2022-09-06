@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armtemplatespecs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,61 @@ import (
 // TemplateSpecVersionsClient contains the methods for the TemplateSpecVersions group.
 // Don't use this type directly, use NewTemplateSpecVersionsClient() instead.
 type TemplateSpecVersionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewTemplateSpecVersionsClient creates a new instance of TemplateSpecVersionsClient with the specified values.
-func NewTemplateSpecVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *TemplateSpecVersionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Subscription Id which forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewTemplateSpecVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TemplateSpecVersionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &TemplateSpecVersionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &TemplateSpecVersionsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a Template Spec version.
-// If the operation fails it returns the *TemplateSpecsError error type.
-func (client *TemplateSpecVersionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, templateSpecName string, templateSpecVersion string, templateSpecVersionModel TemplateSpecVersion, options *TemplateSpecVersionsCreateOrUpdateOptions) (TemplateSpecVersionsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// templateSpecName - Name of the Template Spec.
+// templateSpecVersion - The version of the Template Spec.
+// templateSpecVersionModel - Template Spec Version supplied to the operation.
+// options - TemplateSpecVersionsClientCreateOrUpdateOptions contains the optional parameters for the TemplateSpecVersionsClient.CreateOrUpdate
+// method.
+func (client *TemplateSpecVersionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, templateSpecName string, templateSpecVersion string, templateSpecVersionModel TemplateSpecVersion, options *TemplateSpecVersionsClientCreateOrUpdateOptions) (TemplateSpecVersionsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, templateSpecName, templateSpecVersion, templateSpecVersionModel, options)
 	if err != nil {
-		return TemplateSpecVersionsCreateOrUpdateResponse{}, err
+		return TemplateSpecVersionsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TemplateSpecVersionsCreateOrUpdateResponse{}, err
+		return TemplateSpecVersionsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return TemplateSpecVersionsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return TemplateSpecVersionsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *TemplateSpecVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, templateSpecName string, templateSpecVersion string, templateSpecVersionModel TemplateSpecVersion, options *TemplateSpecVersionsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *TemplateSpecVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, templateSpecName string, templateSpecVersion string, templateSpecVersionModel TemplateSpecVersion, options *TemplateSpecVersionsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/templateSpecs/{templateSpecName}/versions/{templateSpecVersion}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,58 +97,51 @@ func (client *TemplateSpecVersionsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, errors.New("parameter templateSpecVersion cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{templateSpecVersion}", url.PathEscape(templateSpecVersion))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, templateSpecVersionModel)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *TemplateSpecVersionsClient) createOrUpdateHandleResponse(resp *http.Response) (TemplateSpecVersionsCreateOrUpdateResponse, error) {
-	result := TemplateSpecVersionsCreateOrUpdateResponse{RawResponse: resp}
+func (client *TemplateSpecVersionsClient) createOrUpdateHandleResponse(resp *http.Response) (TemplateSpecVersionsClientCreateOrUpdateResponse, error) {
+	result := TemplateSpecVersionsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TemplateSpecVersion); err != nil {
-		return TemplateSpecVersionsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return TemplateSpecVersionsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *TemplateSpecVersionsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := TemplateSpecsError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a specific version from a Template Spec. When operation completes, status code 200 returned without content.
-// If the operation fails it returns the *TemplateSpecsError error type.
-func (client *TemplateSpecVersionsClient) Delete(ctx context.Context, resourceGroupName string, templateSpecName string, templateSpecVersion string, options *TemplateSpecVersionsDeleteOptions) (TemplateSpecVersionsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// templateSpecName - Name of the Template Spec.
+// templateSpecVersion - The version of the Template Spec.
+// options - TemplateSpecVersionsClientDeleteOptions contains the optional parameters for the TemplateSpecVersionsClient.Delete
+// method.
+func (client *TemplateSpecVersionsClient) Delete(ctx context.Context, resourceGroupName string, templateSpecName string, templateSpecVersion string, options *TemplateSpecVersionsClientDeleteOptions) (TemplateSpecVersionsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, templateSpecName, templateSpecVersion, options)
 	if err != nil {
-		return TemplateSpecVersionsDeleteResponse{}, err
+		return TemplateSpecVersionsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TemplateSpecVersionsDeleteResponse{}, err
+		return TemplateSpecVersionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return TemplateSpecVersionsDeleteResponse{}, client.deleteHandleError(resp)
+		return TemplateSpecVersionsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return TemplateSpecVersionsDeleteResponse{RawResponse: resp}, nil
+	return TemplateSpecVersionsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *TemplateSpecVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, templateSpecName string, templateSpecVersion string, options *TemplateSpecVersionsDeleteOptions) (*policy.Request, error) {
+func (client *TemplateSpecVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, templateSpecName string, templateSpecVersion string, options *TemplateSpecVersionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/templateSpecs/{templateSpecName}/versions/{templateSpecVersion}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -147,49 +159,42 @@ func (client *TemplateSpecVersionsClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter templateSpecVersion cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{templateSpecVersion}", url.PathEscape(templateSpecVersion))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *TemplateSpecVersionsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := TemplateSpecsError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a Template Spec version from a specific Template Spec.
-// If the operation fails it returns the *TemplateSpecsError error type.
-func (client *TemplateSpecVersionsClient) Get(ctx context.Context, resourceGroupName string, templateSpecName string, templateSpecVersion string, options *TemplateSpecVersionsGetOptions) (TemplateSpecVersionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// templateSpecName - Name of the Template Spec.
+// templateSpecVersion - The version of the Template Spec.
+// options - TemplateSpecVersionsClientGetOptions contains the optional parameters for the TemplateSpecVersionsClient.Get
+// method.
+func (client *TemplateSpecVersionsClient) Get(ctx context.Context, resourceGroupName string, templateSpecName string, templateSpecVersion string, options *TemplateSpecVersionsClientGetOptions) (TemplateSpecVersionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, templateSpecName, templateSpecVersion, options)
 	if err != nil {
-		return TemplateSpecVersionsGetResponse{}, err
+		return TemplateSpecVersionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TemplateSpecVersionsGetResponse{}, err
+		return TemplateSpecVersionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TemplateSpecVersionsGetResponse{}, client.getHandleError(resp)
+		return TemplateSpecVersionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TemplateSpecVersionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, templateSpecName string, templateSpecVersion string, options *TemplateSpecVersionsGetOptions) (*policy.Request, error) {
+func (client *TemplateSpecVersionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, templateSpecName string, templateSpecVersion string, options *TemplateSpecVersionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/templateSpecs/{templateSpecName}/versions/{templateSpecVersion}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -207,55 +212,116 @@ func (client *TemplateSpecVersionsClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter templateSpecVersion cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{templateSpecVersion}", url.PathEscape(templateSpecVersion))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *TemplateSpecVersionsClient) getHandleResponse(resp *http.Response) (TemplateSpecVersionsGetResponse, error) {
-	result := TemplateSpecVersionsGetResponse{RawResponse: resp}
+func (client *TemplateSpecVersionsClient) getHandleResponse(resp *http.Response) (TemplateSpecVersionsClientGetResponse, error) {
+	result := TemplateSpecVersionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TemplateSpecVersion); err != nil {
-		return TemplateSpecVersionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return TemplateSpecVersionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *TemplateSpecVersionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
+// GetBuiltIn - Gets a Template Spec version from a specific built-in Template Spec.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// templateSpecName - Name of the Template Spec.
+// templateSpecVersion - The version of the Template Spec.
+// options - TemplateSpecVersionsClientGetBuiltInOptions contains the optional parameters for the TemplateSpecVersionsClient.GetBuiltIn
+// method.
+func (client *TemplateSpecVersionsClient) GetBuiltIn(ctx context.Context, templateSpecName string, templateSpecVersion string, options *TemplateSpecVersionsClientGetBuiltInOptions) (TemplateSpecVersionsClientGetBuiltInResponse, error) {
+	req, err := client.getBuiltInCreateRequest(ctx, templateSpecName, templateSpecVersion, options)
 	if err != nil {
-		return runtime.NewResponseError(err, resp)
+		return TemplateSpecVersionsClientGetBuiltInResponse{}, err
 	}
-	errType := TemplateSpecsError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return TemplateSpecVersionsClientGetBuiltInResponse{}, err
 	}
-	return runtime.NewResponseError(&errType, resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return TemplateSpecVersionsClientGetBuiltInResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.getBuiltInHandleResponse(resp)
 }
 
-// List - Lists all the Template Spec versions in the specified Template Spec.
-// If the operation fails it returns the *TemplateSpecsError error type.
-func (client *TemplateSpecVersionsClient) List(resourceGroupName string, templateSpecName string, options *TemplateSpecVersionsListOptions) *TemplateSpecVersionsListPager {
-	return &TemplateSpecVersionsListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, templateSpecName, options)
-		},
-		advancer: func(ctx context.Context, resp TemplateSpecVersionsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.TemplateSpecVersionsListResult.NextLink)
-		},
+// getBuiltInCreateRequest creates the GetBuiltIn request.
+func (client *TemplateSpecVersionsClient) getBuiltInCreateRequest(ctx context.Context, templateSpecName string, templateSpecVersion string, options *TemplateSpecVersionsClientGetBuiltInOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Resources/builtInTemplateSpecs/{templateSpecName}/versions/{templateSpecVersion}"
+	if templateSpecName == "" {
+		return nil, errors.New("parameter templateSpecName cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{templateSpecName}", url.PathEscape(templateSpecName))
+	if templateSpecVersion == "" {
+		return nil, errors.New("parameter templateSpecVersion cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{templateSpecVersion}", url.PathEscape(templateSpecVersion))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getBuiltInHandleResponse handles the GetBuiltIn response.
+func (client *TemplateSpecVersionsClient) getBuiltInHandleResponse(resp *http.Response) (TemplateSpecVersionsClientGetBuiltInResponse, error) {
+	result := TemplateSpecVersionsClientGetBuiltInResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TemplateSpecVersion); err != nil {
+		return TemplateSpecVersionsClientGetBuiltInResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Lists all the Template Spec versions in the specified Template Spec.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// templateSpecName - Name of the Template Spec.
+// options - TemplateSpecVersionsClientListOptions contains the optional parameters for the TemplateSpecVersionsClient.List
+// method.
+func (client *TemplateSpecVersionsClient) NewListPager(resourceGroupName string, templateSpecName string, options *TemplateSpecVersionsClientListOptions) *runtime.Pager[TemplateSpecVersionsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[TemplateSpecVersionsClientListResponse]{
+		More: func(page TemplateSpecVersionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *TemplateSpecVersionsClientListResponse) (TemplateSpecVersionsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, templateSpecName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TemplateSpecVersionsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TemplateSpecVersionsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TemplateSpecVersionsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *TemplateSpecVersionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, templateSpecName string, options *TemplateSpecVersionsListOptions) (*policy.Request, error) {
+func (client *TemplateSpecVersionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, templateSpecName string, options *TemplateSpecVersionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/templateSpecs/{templateSpecName}/versions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -269,58 +335,112 @@ func (client *TemplateSpecVersionsClient) listCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter templateSpecName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{templateSpecName}", url.PathEscape(templateSpecName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *TemplateSpecVersionsClient) listHandleResponse(resp *http.Response) (TemplateSpecVersionsListResponse, error) {
-	result := TemplateSpecVersionsListResponse{RawResponse: resp}
+func (client *TemplateSpecVersionsClient) listHandleResponse(resp *http.Response) (TemplateSpecVersionsClientListResponse, error) {
+	result := TemplateSpecVersionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TemplateSpecVersionsListResult); err != nil {
-		return TemplateSpecVersionsListResponse{}, runtime.NewResponseError(err, resp)
+		return TemplateSpecVersionsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *TemplateSpecVersionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
+// NewListBuiltInsPager - Lists all the Template Spec versions in the specified built-in Template Spec.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// templateSpecName - Name of the Template Spec.
+// options - TemplateSpecVersionsClientListBuiltInsOptions contains the optional parameters for the TemplateSpecVersionsClient.ListBuiltIns
+// method.
+func (client *TemplateSpecVersionsClient) NewListBuiltInsPager(templateSpecName string, options *TemplateSpecVersionsClientListBuiltInsOptions) *runtime.Pager[TemplateSpecVersionsClientListBuiltInsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[TemplateSpecVersionsClientListBuiltInsResponse]{
+		More: func(page TemplateSpecVersionsClientListBuiltInsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *TemplateSpecVersionsClientListBuiltInsResponse) (TemplateSpecVersionsClientListBuiltInsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBuiltInsCreateRequest(ctx, templateSpecName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TemplateSpecVersionsClientListBuiltInsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TemplateSpecVersionsClientListBuiltInsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TemplateSpecVersionsClientListBuiltInsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBuiltInsHandleResponse(resp)
+		},
+	})
+}
+
+// listBuiltInsCreateRequest creates the ListBuiltIns request.
+func (client *TemplateSpecVersionsClient) listBuiltInsCreateRequest(ctx context.Context, templateSpecName string, options *TemplateSpecVersionsClientListBuiltInsOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Resources/builtInTemplateSpecs/{templateSpecName}/versions"
+	if templateSpecName == "" {
+		return nil, errors.New("parameter templateSpecName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{templateSpecName}", url.PathEscape(templateSpecName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
-		return runtime.NewResponseError(err, resp)
+		return nil, err
 	}
-	errType := TemplateSpecsError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listBuiltInsHandleResponse handles the ListBuiltIns response.
+func (client *TemplateSpecVersionsClient) listBuiltInsHandleResponse(resp *http.Response) (TemplateSpecVersionsClientListBuiltInsResponse, error) {
+	result := TemplateSpecVersionsClientListBuiltInsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TemplateSpecVersionsListResult); err != nil {
+		return TemplateSpecVersionsClientListBuiltInsResponse{}, err
 	}
-	return runtime.NewResponseError(&errType, resp)
+	return result, nil
 }
 
 // Update - Updates Template Spec Version tags with specified values.
-// If the operation fails it returns the *TemplateSpecsError error type.
-func (client *TemplateSpecVersionsClient) Update(ctx context.Context, resourceGroupName string, templateSpecName string, templateSpecVersion string, options *TemplateSpecVersionsUpdateOptions) (TemplateSpecVersionsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// templateSpecName - Name of the Template Spec.
+// templateSpecVersion - The version of the Template Spec.
+// options - TemplateSpecVersionsClientUpdateOptions contains the optional parameters for the TemplateSpecVersionsClient.Update
+// method.
+func (client *TemplateSpecVersionsClient) Update(ctx context.Context, resourceGroupName string, templateSpecName string, templateSpecVersion string, options *TemplateSpecVersionsClientUpdateOptions) (TemplateSpecVersionsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, templateSpecName, templateSpecVersion, options)
 	if err != nil {
-		return TemplateSpecVersionsUpdateResponse{}, err
+		return TemplateSpecVersionsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TemplateSpecVersionsUpdateResponse{}, err
+		return TemplateSpecVersionsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TemplateSpecVersionsUpdateResponse{}, client.updateHandleError(resp)
+		return TemplateSpecVersionsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *TemplateSpecVersionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, templateSpecName string, templateSpecVersion string, options *TemplateSpecVersionsUpdateOptions) (*policy.Request, error) {
+func (client *TemplateSpecVersionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, templateSpecName string, templateSpecVersion string, options *TemplateSpecVersionsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/templateSpecs/{templateSpecName}/versions/{templateSpecVersion}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -338,14 +458,14 @@ func (client *TemplateSpecVersionsClient) updateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter templateSpecVersion cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{templateSpecVersion}", url.PathEscape(templateSpecVersion))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.TemplateSpecVersionUpdateModel != nil {
 		return req, runtime.MarshalAsJSON(req, *options.TemplateSpecVersionUpdateModel)
 	}
@@ -353,23 +473,10 @@ func (client *TemplateSpecVersionsClient) updateCreateRequest(ctx context.Contex
 }
 
 // updateHandleResponse handles the Update response.
-func (client *TemplateSpecVersionsClient) updateHandleResponse(resp *http.Response) (TemplateSpecVersionsUpdateResponse, error) {
-	result := TemplateSpecVersionsUpdateResponse{RawResponse: resp}
+func (client *TemplateSpecVersionsClient) updateHandleResponse(resp *http.Response) (TemplateSpecVersionsClientUpdateResponse, error) {
+	result := TemplateSpecVersionsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TemplateSpecVersion); err != nil {
-		return TemplateSpecVersionsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return TemplateSpecVersionsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *TemplateSpecVersionsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := TemplateSpecsError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

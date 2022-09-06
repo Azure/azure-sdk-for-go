@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armlogic
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,42 +26,61 @@ import (
 // IntegrationAccountAgreementsClient contains the methods for the IntegrationAccountAgreements group.
 // Don't use this type directly, use NewIntegrationAccountAgreementsClient() instead.
 type IntegrationAccountAgreementsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewIntegrationAccountAgreementsClient creates a new instance of IntegrationAccountAgreementsClient with the specified values.
-func NewIntegrationAccountAgreementsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationAccountAgreementsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription id.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewIntegrationAccountAgreementsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IntegrationAccountAgreementsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &IntegrationAccountAgreementsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &IntegrationAccountAgreementsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates an integration account agreement.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountAgreementsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string, agreement IntegrationAccountAgreement, options *IntegrationAccountAgreementsCreateOrUpdateOptions) (IntegrationAccountAgreementsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// agreementName - The integration account agreement name.
+// agreement - The integration account agreement.
+// options - IntegrationAccountAgreementsClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountAgreementsClient.CreateOrUpdate
+// method.
+func (client *IntegrationAccountAgreementsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string, agreement IntegrationAccountAgreement, options *IntegrationAccountAgreementsClientCreateOrUpdateOptions) (IntegrationAccountAgreementsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, integrationAccountName, agreementName, agreement, options)
 	if err != nil {
-		return IntegrationAccountAgreementsCreateOrUpdateResponse{}, err
+		return IntegrationAccountAgreementsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationAccountAgreementsCreateOrUpdateResponse{}, err
+		return IntegrationAccountAgreementsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return IntegrationAccountAgreementsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return IntegrationAccountAgreementsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *IntegrationAccountAgreementsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string, agreement IntegrationAccountAgreement, options *IntegrationAccountAgreementsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *IntegrationAccountAgreementsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string, agreement IntegrationAccountAgreement, options *IntegrationAccountAgreementsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/agreements/{agreementName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,58 +98,51 @@ func (client *IntegrationAccountAgreementsClient) createOrUpdateCreateRequest(ct
 		return nil, errors.New("parameter agreementName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agreementName}", url.PathEscape(agreementName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, agreement)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *IntegrationAccountAgreementsClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountAgreementsCreateOrUpdateResponse, error) {
-	result := IntegrationAccountAgreementsCreateOrUpdateResponse{RawResponse: resp}
+func (client *IntegrationAccountAgreementsClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountAgreementsClientCreateOrUpdateResponse, error) {
+	result := IntegrationAccountAgreementsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountAgreement); err != nil {
-		return IntegrationAccountAgreementsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationAccountAgreementsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *IntegrationAccountAgreementsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes an integration account agreement.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountAgreementsClient) Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string, options *IntegrationAccountAgreementsDeleteOptions) (IntegrationAccountAgreementsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// agreementName - The integration account agreement name.
+// options - IntegrationAccountAgreementsClientDeleteOptions contains the optional parameters for the IntegrationAccountAgreementsClient.Delete
+// method.
+func (client *IntegrationAccountAgreementsClient) Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string, options *IntegrationAccountAgreementsClientDeleteOptions) (IntegrationAccountAgreementsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, integrationAccountName, agreementName, options)
 	if err != nil {
-		return IntegrationAccountAgreementsDeleteResponse{}, err
+		return IntegrationAccountAgreementsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationAccountAgreementsDeleteResponse{}, err
+		return IntegrationAccountAgreementsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return IntegrationAccountAgreementsDeleteResponse{}, client.deleteHandleError(resp)
+		return IntegrationAccountAgreementsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return IntegrationAccountAgreementsDeleteResponse{RawResponse: resp}, nil
+	return IntegrationAccountAgreementsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IntegrationAccountAgreementsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string, options *IntegrationAccountAgreementsDeleteOptions) (*policy.Request, error) {
+func (client *IntegrationAccountAgreementsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string, options *IntegrationAccountAgreementsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/agreements/{agreementName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -148,49 +160,42 @@ func (client *IntegrationAccountAgreementsClient) deleteCreateRequest(ctx contex
 		return nil, errors.New("parameter agreementName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agreementName}", url.PathEscape(agreementName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *IntegrationAccountAgreementsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets an integration account agreement.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountAgreementsClient) Get(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string, options *IntegrationAccountAgreementsGetOptions) (IntegrationAccountAgreementsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// agreementName - The integration account agreement name.
+// options - IntegrationAccountAgreementsClientGetOptions contains the optional parameters for the IntegrationAccountAgreementsClient.Get
+// method.
+func (client *IntegrationAccountAgreementsClient) Get(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string, options *IntegrationAccountAgreementsClientGetOptions) (IntegrationAccountAgreementsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, integrationAccountName, agreementName, options)
 	if err != nil {
-		return IntegrationAccountAgreementsGetResponse{}, err
+		return IntegrationAccountAgreementsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationAccountAgreementsGetResponse{}, err
+		return IntegrationAccountAgreementsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationAccountAgreementsGetResponse{}, client.getHandleError(resp)
+		return IntegrationAccountAgreementsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IntegrationAccountAgreementsClient) getCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string, options *IntegrationAccountAgreementsGetOptions) (*policy.Request, error) {
+func (client *IntegrationAccountAgreementsClient) getCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string, options *IntegrationAccountAgreementsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/agreements/{agreementName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -208,55 +213,63 @@ func (client *IntegrationAccountAgreementsClient) getCreateRequest(ctx context.C
 		return nil, errors.New("parameter agreementName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agreementName}", url.PathEscape(agreementName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *IntegrationAccountAgreementsClient) getHandleResponse(resp *http.Response) (IntegrationAccountAgreementsGetResponse, error) {
-	result := IntegrationAccountAgreementsGetResponse{RawResponse: resp}
+func (client *IntegrationAccountAgreementsClient) getHandleResponse(resp *http.Response) (IntegrationAccountAgreementsClientGetResponse, error) {
+	result := IntegrationAccountAgreementsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountAgreement); err != nil {
-		return IntegrationAccountAgreementsGetResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationAccountAgreementsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *IntegrationAccountAgreementsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Gets a list of integration account agreements.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountAgreementsClient) List(resourceGroupName string, integrationAccountName string, options *IntegrationAccountAgreementsListOptions) *IntegrationAccountAgreementsListPager {
-	return &IntegrationAccountAgreementsListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, integrationAccountName, options)
+// NewListPager - Gets a list of integration account agreements.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// options - IntegrationAccountAgreementsClientListOptions contains the optional parameters for the IntegrationAccountAgreementsClient.List
+// method.
+func (client *IntegrationAccountAgreementsClient) NewListPager(resourceGroupName string, integrationAccountName string, options *IntegrationAccountAgreementsClientListOptions) *runtime.Pager[IntegrationAccountAgreementsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[IntegrationAccountAgreementsClientListResponse]{
+		More: func(page IntegrationAccountAgreementsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp IntegrationAccountAgreementsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.IntegrationAccountAgreementListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *IntegrationAccountAgreementsClientListResponse) (IntegrationAccountAgreementsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, integrationAccountName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return IntegrationAccountAgreementsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return IntegrationAccountAgreementsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return IntegrationAccountAgreementsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *IntegrationAccountAgreementsClient) listCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, options *IntegrationAccountAgreementsListOptions) (*policy.Request, error) {
+func (client *IntegrationAccountAgreementsClient) listCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, options *IntegrationAccountAgreementsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/agreements"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -270,7 +283,7 @@ func (client *IntegrationAccountAgreementsClient) listCreateRequest(ctx context.
 		return nil, errors.New("parameter integrationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationAccountName}", url.PathEscape(integrationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -283,51 +296,44 @@ func (client *IntegrationAccountAgreementsClient) listCreateRequest(ctx context.
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *IntegrationAccountAgreementsClient) listHandleResponse(resp *http.Response) (IntegrationAccountAgreementsListResponse, error) {
-	result := IntegrationAccountAgreementsListResponse{RawResponse: resp}
+func (client *IntegrationAccountAgreementsClient) listHandleResponse(resp *http.Response) (IntegrationAccountAgreementsClientListResponse, error) {
+	result := IntegrationAccountAgreementsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountAgreementListResult); err != nil {
-		return IntegrationAccountAgreementsListResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationAccountAgreementsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *IntegrationAccountAgreementsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListContentCallbackURL - Get the content callback url.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *IntegrationAccountAgreementsClient) ListContentCallbackURL(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string, listContentCallbackURL GetCallbackURLParameters, options *IntegrationAccountAgreementsListContentCallbackURLOptions) (IntegrationAccountAgreementsListContentCallbackURLResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
+// resourceGroupName - The resource group name.
+// integrationAccountName - The integration account name.
+// agreementName - The integration account agreement name.
+// options - IntegrationAccountAgreementsClientListContentCallbackURLOptions contains the optional parameters for the IntegrationAccountAgreementsClient.ListContentCallbackURL
+// method.
+func (client *IntegrationAccountAgreementsClient) ListContentCallbackURL(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string, listContentCallbackURL GetCallbackURLParameters, options *IntegrationAccountAgreementsClientListContentCallbackURLOptions) (IntegrationAccountAgreementsClientListContentCallbackURLResponse, error) {
 	req, err := client.listContentCallbackURLCreateRequest(ctx, resourceGroupName, integrationAccountName, agreementName, listContentCallbackURL, options)
 	if err != nil {
-		return IntegrationAccountAgreementsListContentCallbackURLResponse{}, err
+		return IntegrationAccountAgreementsClientListContentCallbackURLResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IntegrationAccountAgreementsListContentCallbackURLResponse{}, err
+		return IntegrationAccountAgreementsClientListContentCallbackURLResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IntegrationAccountAgreementsListContentCallbackURLResponse{}, client.listContentCallbackURLHandleError(resp)
+		return IntegrationAccountAgreementsClientListContentCallbackURLResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listContentCallbackURLHandleResponse(resp)
 }
 
 // listContentCallbackURLCreateRequest creates the ListContentCallbackURL request.
-func (client *IntegrationAccountAgreementsClient) listContentCallbackURLCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string, listContentCallbackURL GetCallbackURLParameters, options *IntegrationAccountAgreementsListContentCallbackURLOptions) (*policy.Request, error) {
+func (client *IntegrationAccountAgreementsClient) listContentCallbackURLCreateRequest(ctx context.Context, resourceGroupName string, integrationAccountName string, agreementName string, listContentCallbackURL GetCallbackURLParameters, options *IntegrationAccountAgreementsClientListContentCallbackURLOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/agreements/{agreementName}/listContentCallbackUrl"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -345,35 +351,22 @@ func (client *IntegrationAccountAgreementsClient) listContentCallbackURLCreateRe
 		return nil, errors.New("parameter agreementName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agreementName}", url.PathEscape(agreementName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, listContentCallbackURL)
 }
 
 // listContentCallbackURLHandleResponse handles the ListContentCallbackURL response.
-func (client *IntegrationAccountAgreementsClient) listContentCallbackURLHandleResponse(resp *http.Response) (IntegrationAccountAgreementsListContentCallbackURLResponse, error) {
-	result := IntegrationAccountAgreementsListContentCallbackURLResponse{RawResponse: resp}
+func (client *IntegrationAccountAgreementsClient) listContentCallbackURLHandleResponse(resp *http.Response) (IntegrationAccountAgreementsClientListContentCallbackURLResponse, error) {
+	result := IntegrationAccountAgreementsClientListContentCallbackURLResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerCallbackURL); err != nil {
-		return IntegrationAccountAgreementsListContentCallbackURLResponse{}, runtime.NewResponseError(err, resp)
+		return IntegrationAccountAgreementsClientListContentCallbackURLResponse{}, err
 	}
 	return result, nil
-}
-
-// listContentCallbackURLHandleError handles the ListContentCallbackURL error response.
-func (client *IntegrationAccountAgreementsClient) listContentCallbackURLHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

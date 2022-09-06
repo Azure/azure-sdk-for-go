@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,98 +25,112 @@ import (
 // ResourceLinksClient contains the methods for the ResourceLinks group.
 // Don't use this type directly, use NewResourceLinksClient() instead.
 type ResourceLinksClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewResourceLinksClient creates a new instance of ResourceLinksClient with the specified values.
-func NewResourceLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ResourceLinksClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewResourceLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceLinksClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &ResourceLinksClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &ResourceLinksClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a resource link between the specified resources.
-// If the operation fails it returns a generic error.
-func (client *ResourceLinksClient) CreateOrUpdate(ctx context.Context, linkID string, parameters ResourceLink, options *ResourceLinksCreateOrUpdateOptions) (ResourceLinksCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-09-01
+// linkID - The fully qualified ID of the resource link. Use the format,
+// /subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/{provider-namespace}/{resource-type}/{resource-name}/Microsoft.Resources/links/{link-name}.
+// For example,
+// /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite/Microsoft.Resources/links/myLink
+// parameters - Parameters for creating or updating a resource link.
+// options - ResourceLinksClientCreateOrUpdateOptions contains the optional parameters for the ResourceLinksClient.CreateOrUpdate
+// method.
+func (client *ResourceLinksClient) CreateOrUpdate(ctx context.Context, linkID string, parameters ResourceLink, options *ResourceLinksClientCreateOrUpdateOptions) (ResourceLinksClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, linkID, parameters, options)
 	if err != nil {
-		return ResourceLinksCreateOrUpdateResponse{}, err
+		return ResourceLinksClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ResourceLinksCreateOrUpdateResponse{}, err
+		return ResourceLinksClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ResourceLinksCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ResourceLinksClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ResourceLinksClient) createOrUpdateCreateRequest(ctx context.Context, linkID string, parameters ResourceLink, options *ResourceLinksCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ResourceLinksClient) createOrUpdateCreateRequest(ctx context.Context, linkID string, parameters ResourceLink, options *ResourceLinksClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{linkId}"
 	urlPath = strings.ReplaceAll(urlPath, "{linkId}", linkID)
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ResourceLinksClient) createOrUpdateHandleResponse(resp *http.Response) (ResourceLinksCreateOrUpdateResponse, error) {
-	result := ResourceLinksCreateOrUpdateResponse{RawResponse: resp}
+func (client *ResourceLinksClient) createOrUpdateHandleResponse(resp *http.Response) (ResourceLinksClientCreateOrUpdateResponse, error) {
+	result := ResourceLinksClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceLink); err != nil {
-		return ResourceLinksCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ResourceLinksClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ResourceLinksClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Delete - Deletes a resource link with the specified ID.
-// If the operation fails it returns a generic error.
-func (client *ResourceLinksClient) Delete(ctx context.Context, linkID string, options *ResourceLinksDeleteOptions) (ResourceLinksDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-09-01
+// linkID - The fully qualified ID of the resource link. Use the format,
+// /subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/{provider-namespace}/{resource-type}/{resource-name}/Microsoft.Resources/links/{link-name}.
+// For example,
+// /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite/Microsoft.Resources/links/myLink
+// options - ResourceLinksClientDeleteOptions contains the optional parameters for the ResourceLinksClient.Delete method.
+func (client *ResourceLinksClient) Delete(ctx context.Context, linkID string, options *ResourceLinksClientDeleteOptions) (ResourceLinksClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, linkID, options)
 	if err != nil {
-		return ResourceLinksDeleteResponse{}, err
+		return ResourceLinksClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ResourceLinksDeleteResponse{}, err
+		return ResourceLinksClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ResourceLinksDeleteResponse{}, client.deleteHandleError(resp)
+		return ResourceLinksClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ResourceLinksDeleteResponse{RawResponse: resp}, nil
+	return ResourceLinksClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ResourceLinksClient) deleteCreateRequest(ctx context.Context, linkID string, options *ResourceLinksDeleteOptions) (*policy.Request, error) {
+func (client *ResourceLinksClient) deleteCreateRequest(ctx context.Context, linkID string, options *ResourceLinksClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{linkId}"
 	urlPath = strings.ReplaceAll(urlPath, "{linkId}", linkID)
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -125,90 +140,91 @@ func (client *ResourceLinksClient) deleteCreateRequest(ctx context.Context, link
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ResourceLinksClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets a resource link with the specified ID.
-// If the operation fails it returns a generic error.
-func (client *ResourceLinksClient) Get(ctx context.Context, linkID string, options *ResourceLinksGetOptions) (ResourceLinksGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-09-01
+// linkID - The fully qualified Id of the resource link. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite/Microsoft.Resources/links/myLink
+// options - ResourceLinksClientGetOptions contains the optional parameters for the ResourceLinksClient.Get method.
+func (client *ResourceLinksClient) Get(ctx context.Context, linkID string, options *ResourceLinksClientGetOptions) (ResourceLinksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, linkID, options)
 	if err != nil {
-		return ResourceLinksGetResponse{}, err
+		return ResourceLinksClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ResourceLinksGetResponse{}, err
+		return ResourceLinksClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ResourceLinksGetResponse{}, client.getHandleError(resp)
+		return ResourceLinksClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ResourceLinksClient) getCreateRequest(ctx context.Context, linkID string, options *ResourceLinksGetOptions) (*policy.Request, error) {
+func (client *ResourceLinksClient) getCreateRequest(ctx context.Context, linkID string, options *ResourceLinksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{linkId}"
 	urlPath = strings.ReplaceAll(urlPath, "{linkId}", linkID)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ResourceLinksClient) getHandleResponse(resp *http.Response) (ResourceLinksGetResponse, error) {
-	result := ResourceLinksGetResponse{RawResponse: resp}
+func (client *ResourceLinksClient) getHandleResponse(resp *http.Response) (ResourceLinksClientGetResponse, error) {
+	result := ResourceLinksClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceLink); err != nil {
-		return ResourceLinksGetResponse{}, runtime.NewResponseError(err, resp)
+		return ResourceLinksClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ResourceLinksClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListAtSourceScope - Gets a list of resource links at and below the specified source scope.
-// If the operation fails it returns a generic error.
-func (client *ResourceLinksClient) ListAtSourceScope(scope string, options *ResourceLinksListAtSourceScopeOptions) *ResourceLinksListAtSourceScopePager {
-	return &ResourceLinksListAtSourceScopePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAtSourceScopeCreateRequest(ctx, scope, options)
+// NewListAtSourceScopePager - Gets a list of resource links at and below the specified source scope.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-09-01
+// scope - The fully qualified ID of the scope for getting the resource links. For example, to list resource links at and
+// under a resource group, set the scope to
+// /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup.
+// options - ResourceLinksClientListAtSourceScopeOptions contains the optional parameters for the ResourceLinksClient.ListAtSourceScope
+// method.
+func (client *ResourceLinksClient) NewListAtSourceScopePager(scope string, options *ResourceLinksClientListAtSourceScopeOptions) *runtime.Pager[ResourceLinksClientListAtSourceScopeResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ResourceLinksClientListAtSourceScopeResponse]{
+		More: func(page ResourceLinksClientListAtSourceScopeResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ResourceLinksListAtSourceScopeResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceLinkResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ResourceLinksClientListAtSourceScopeResponse) (ResourceLinksClientListAtSourceScopeResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAtSourceScopeCreateRequest(ctx, scope, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ResourceLinksClientListAtSourceScopeResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ResourceLinksClientListAtSourceScopeResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ResourceLinksClientListAtSourceScopeResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAtSourceScopeHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAtSourceScopeCreateRequest creates the ListAtSourceScope request.
-func (client *ResourceLinksClient) listAtSourceScopeCreateRequest(ctx context.Context, scope string, options *ResourceLinksListAtSourceScopeOptions) (*policy.Request, error) {
+func (client *ResourceLinksClient) listAtSourceScopeCreateRequest(ctx context.Context, scope string, options *ResourceLinksClientListAtSourceScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/links"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -218,53 +234,60 @@ func (client *ResourceLinksClient) listAtSourceScopeCreateRequest(ctx context.Co
 	}
 	reqQP.Set("api-version", "2016-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listAtSourceScopeHandleResponse handles the ListAtSourceScope response.
-func (client *ResourceLinksClient) listAtSourceScopeHandleResponse(resp *http.Response) (ResourceLinksListAtSourceScopeResponse, error) {
-	result := ResourceLinksListAtSourceScopeResponse{RawResponse: resp}
+func (client *ResourceLinksClient) listAtSourceScopeHandleResponse(resp *http.Response) (ResourceLinksClientListAtSourceScopeResponse, error) {
+	result := ResourceLinksClientListAtSourceScopeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceLinkResult); err != nil {
-		return ResourceLinksListAtSourceScopeResponse{}, runtime.NewResponseError(err, resp)
+		return ResourceLinksClientListAtSourceScopeResponse{}, err
 	}
 	return result, nil
 }
 
-// listAtSourceScopeHandleError handles the ListAtSourceScope error response.
-func (client *ResourceLinksClient) listAtSourceScopeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListAtSubscription - Gets all the linked resources for the subscription.
-// If the operation fails it returns a generic error.
-func (client *ResourceLinksClient) ListAtSubscription(options *ResourceLinksListAtSubscriptionOptions) *ResourceLinksListAtSubscriptionPager {
-	return &ResourceLinksListAtSubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listAtSubscriptionCreateRequest(ctx, options)
+// NewListAtSubscriptionPager - Gets all the linked resources for the subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-09-01
+// options - ResourceLinksClientListAtSubscriptionOptions contains the optional parameters for the ResourceLinksClient.ListAtSubscription
+// method.
+func (client *ResourceLinksClient) NewListAtSubscriptionPager(options *ResourceLinksClientListAtSubscriptionOptions) *runtime.Pager[ResourceLinksClientListAtSubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ResourceLinksClientListAtSubscriptionResponse]{
+		More: func(page ResourceLinksClientListAtSubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ResourceLinksListAtSubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceLinkResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ResourceLinksClientListAtSubscriptionResponse) (ResourceLinksClientListAtSubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listAtSubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ResourceLinksClientListAtSubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ResourceLinksClientListAtSubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ResourceLinksClientListAtSubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAtSubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listAtSubscriptionCreateRequest creates the ListAtSubscription request.
-func (client *ResourceLinksClient) listAtSubscriptionCreateRequest(ctx context.Context, options *ResourceLinksListAtSubscriptionOptions) (*policy.Request, error) {
+func (client *ResourceLinksClient) listAtSubscriptionCreateRequest(ctx context.Context, options *ResourceLinksClientListAtSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/links"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -274,27 +297,15 @@ func (client *ResourceLinksClient) listAtSubscriptionCreateRequest(ctx context.C
 	}
 	reqQP.Set("api-version", "2016-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listAtSubscriptionHandleResponse handles the ListAtSubscription response.
-func (client *ResourceLinksClient) listAtSubscriptionHandleResponse(resp *http.Response) (ResourceLinksListAtSubscriptionResponse, error) {
-	result := ResourceLinksListAtSubscriptionResponse{RawResponse: resp}
+func (client *ResourceLinksClient) listAtSubscriptionHandleResponse(resp *http.Response) (ResourceLinksClientListAtSubscriptionResponse, error) {
+	result := ResourceLinksClientListAtSubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceLinkResult); err != nil {
-		return ResourceLinksListAtSubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return ResourceLinksClientListAtSubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// listAtSubscriptionHandleError handles the ListAtSubscription error response.
-func (client *ResourceLinksClient) listAtSubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

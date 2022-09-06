@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armconsumption
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,45 +25,75 @@ import (
 // EventsClient contains the methods for the Events group.
 // Don't use this type directly, use NewEventsClient() instead.
 type EventsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewEventsClient creates a new instance of EventsClient with the specified values.
-func NewEventsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *EventsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewEventsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*EventsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &EventsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &EventsClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
-// ListByBillingAccount - Lists the events that decrements Azure credits or Microsoft Azure consumption commitment for a billing account or a billing profile
-// for a given start and end date.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *EventsClient) ListByBillingAccount(billingAccountID string, options *EventsListByBillingAccountOptions) *EventsListByBillingAccountPager {
-	return &EventsListByBillingAccountPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByBillingAccountCreateRequest(ctx, billingAccountID, options)
+// NewListByBillingAccountPager - Lists the events that decrements Azure credits or Microsoft Azure consumption commitment
+// for a billing account or a billing profile for a given start and end date.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
+// billingAccountID - BillingAccount ID
+// options - EventsClientListByBillingAccountOptions contains the optional parameters for the EventsClient.ListByBillingAccount
+// method.
+func (client *EventsClient) NewListByBillingAccountPager(billingAccountID string, options *EventsClientListByBillingAccountOptions) *runtime.Pager[EventsClientListByBillingAccountResponse] {
+	return runtime.NewPager(runtime.PagingHandler[EventsClientListByBillingAccountResponse]{
+		More: func(page EventsClientListByBillingAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EventsListByBillingAccountResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.Events.NextLink)
+		Fetcher: func(ctx context.Context, page *EventsClientListByBillingAccountResponse) (EventsClientListByBillingAccountResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByBillingAccountCreateRequest(ctx, billingAccountID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EventsClientListByBillingAccountResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EventsClientListByBillingAccountResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EventsClientListByBillingAccountResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByBillingAccountHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByBillingAccountCreateRequest creates the ListByBillingAccount request.
-func (client *EventsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountID string, options *EventsListByBillingAccountOptions) (*policy.Request, error) {
+func (client *EventsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountID string, options *EventsClientListByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.Consumption/events"
 	if billingAccountID == "" {
 		return nil, errors.New("parameter billingAccountID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -73,49 +103,59 @@ func (client *EventsClient) listByBillingAccountCreateRequest(ctx context.Contex
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBillingAccountHandleResponse handles the ListByBillingAccount response.
-func (client *EventsClient) listByBillingAccountHandleResponse(resp *http.Response) (EventsListByBillingAccountResponse, error) {
-	result := EventsListByBillingAccountResponse{RawResponse: resp}
+func (client *EventsClient) listByBillingAccountHandleResponse(resp *http.Response) (EventsClientListByBillingAccountResponse, error) {
+	result := EventsClientListByBillingAccountResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Events); err != nil {
-		return EventsListByBillingAccountResponse{}, runtime.NewResponseError(err, resp)
+		return EventsClientListByBillingAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// listByBillingAccountHandleError handles the ListByBillingAccount error response.
-func (client *EventsClient) listByBillingAccountHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByBillingProfile - Lists the events that decrements Azure credits or Microsoft Azure consumption commitment for a billing account or a billing profile
-// for a given start and end date.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *EventsClient) ListByBillingProfile(billingAccountID string, billingProfileID string, startDate string, endDate string, options *EventsListByBillingProfileOptions) *EventsListByBillingProfilePager {
-	return &EventsListByBillingProfilePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByBillingProfileCreateRequest(ctx, billingAccountID, billingProfileID, startDate, endDate, options)
+// NewListByBillingProfilePager - Lists the events that decrements Azure credits or Microsoft Azure consumption commitment
+// for a billing account or a billing profile for a given start and end date.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
+// billingAccountID - BillingAccount ID
+// billingProfileID - Azure Billing Profile ID.
+// startDate - Start date
+// endDate - End date
+// options - EventsClientListByBillingProfileOptions contains the optional parameters for the EventsClient.ListByBillingProfile
+// method.
+func (client *EventsClient) NewListByBillingProfilePager(billingAccountID string, billingProfileID string, startDate string, endDate string, options *EventsClientListByBillingProfileOptions) *runtime.Pager[EventsClientListByBillingProfileResponse] {
+	return runtime.NewPager(runtime.PagingHandler[EventsClientListByBillingProfileResponse]{
+		More: func(page EventsClientListByBillingProfileResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp EventsListByBillingProfileResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.Events.NextLink)
+		Fetcher: func(ctx context.Context, page *EventsClientListByBillingProfileResponse) (EventsClientListByBillingProfileResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByBillingProfileCreateRequest(ctx, billingAccountID, billingProfileID, startDate, endDate, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return EventsClientListByBillingProfileResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return EventsClientListByBillingProfileResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EventsClientListByBillingProfileResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByBillingProfileHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByBillingProfileCreateRequest creates the ListByBillingProfile request.
-func (client *EventsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountID string, billingProfileID string, startDate string, endDate string, options *EventsListByBillingProfileOptions) (*policy.Request, error) {
+func (client *EventsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountID string, billingProfileID string, startDate string, endDate string, options *EventsClientListByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.Consumption/events"
 	if billingAccountID == "" {
 		return nil, errors.New("parameter billingAccountID cannot be empty")
@@ -125,7 +165,7 @@ func (client *EventsClient) listByBillingProfileCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter billingProfileID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingProfileId}", url.PathEscape(billingProfileID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -134,28 +174,15 @@ func (client *EventsClient) listByBillingProfileCreateRequest(ctx context.Contex
 	reqQP.Set("startDate", startDate)
 	reqQP.Set("endDate", endDate)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBillingProfileHandleResponse handles the ListByBillingProfile response.
-func (client *EventsClient) listByBillingProfileHandleResponse(resp *http.Response) (EventsListByBillingProfileResponse, error) {
-	result := EventsListByBillingProfileResponse{RawResponse: resp}
+func (client *EventsClient) listByBillingProfileHandleResponse(resp *http.Response) (EventsClientListByBillingProfileResponse, error) {
+	result := EventsClientListByBillingProfileResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Events); err != nil {
-		return EventsListByBillingProfileResponse{}, runtime.NewResponseError(err, resp)
+		return EventsClientListByBillingProfileResponse{}, err
 	}
 	return result, nil
-}
-
-// listByBillingProfileHandleError handles the ListByBillingProfile error response.
-func (client *EventsClient) listByBillingProfileHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

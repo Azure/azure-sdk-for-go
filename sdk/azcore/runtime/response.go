@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -13,31 +13,22 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
 
 // Payload reads and returns the response body or an error.
 // On a successful read, the response body is cached.
+// Subsequent reads will access the cached value.
 func Payload(resp *http.Response) ([]byte, error) {
-	// r.Body won't be a nopClosingBytesReader if downloading was skipped
-	if buf, ok := resp.Body.(*nopClosingBytesReader); ok {
-		return buf.Bytes(), nil
-	}
-	bytesBody, err := ioutil.ReadAll(resp.Body)
-	resp.Body.Close()
-	if err != nil {
-		return nil, err
-	}
-	resp.Body = &nopClosingBytesReader{s: bytesBody, i: 0}
-	return bytesBody, nil
+	return exported.Payload(resp)
 }
 
 // HasStatusCode returns true if the Response's status code is one of the specified values.
 func HasStatusCode(resp *http.Response, statusCodes ...int) bool {
-	return shared.HasStatusCode(resp, statusCodes...)
+	return exported.HasStatusCode(resp, statusCodes...)
 }
 
 // UnmarshalAsByteArray will base-64 decode the received payload and place the result into the value pointed to by v.
@@ -94,7 +85,7 @@ func UnmarshalAsXML(resp *http.Response, v interface{}) error {
 // Drain reads the response body to completion then closes it.  The bytes read are discarded.
 func Drain(resp *http.Response) {
 	if resp != nil && resp.Body != nil {
-		_, _ = io.Copy(ioutil.Discard, resp.Body)
+		_, _ = io.Copy(io.Discard, resp.Body)
 		resp.Body.Close()
 	}
 }
@@ -108,7 +99,7 @@ func removeBOM(resp *http.Response) error {
 	// UTF8
 	trimmed := bytes.TrimPrefix(payload, []byte("\xef\xbb\xbf"))
 	if len(trimmed) < len(payload) {
-		resp.Body.(*nopClosingBytesReader).Set(trimmed)
+		resp.Body.(shared.BytesSetter).Set(trimmed)
 	}
 	return nil
 }

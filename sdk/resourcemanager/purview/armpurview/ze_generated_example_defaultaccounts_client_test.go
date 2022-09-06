@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,59 +17,72 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview"
 )
 
-// x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/DefaultAccounts_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/DefaultAccounts_Get.json
 func ExampleDefaultAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpurview.NewDefaultAccountsClient(cred, nil)
-	_, err = client.Get(ctx,
-		"<scope-tenant-id>",
-		armpurview.ScopeTypeTenant,
-		&armpurview.DefaultAccountsGetOptions{Scope: to.StringPtr("<scope>")})
+	client, err := armpurview.NewDefaultAccountsClient(cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
 	}
+	res, err := client.Get(ctx,
+		"11733A4E-BA84-46FF-91D1-AFF1A3215A90",
+		armpurview.ScopeTypeTenant,
+		&armpurview.DefaultAccountsClientGetOptions{Scope: to.Ptr("11733A4E-BA84-46FF-91D1-AFF1A3215A90")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/DefaultAccounts_Set.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/DefaultAccounts_Set.json
 func ExampleDefaultAccountsClient_Set() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpurview.NewDefaultAccountsClient(cred, nil)
-	_, err = client.Set(ctx,
+	client, err := armpurview.NewDefaultAccountsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.Set(ctx,
 		armpurview.DefaultAccountPayload{
-			AccountName:       to.StringPtr("<account-name>"),
-			ResourceGroupName: to.StringPtr("<resource-group-name>"),
-			Scope:             to.StringPtr("<scope>"),
-			ScopeTenantID:     to.StringPtr("<scope-tenant-id>"),
-			ScopeType:         armpurview.ScopeTypeTenant.ToPtr(),
-			SubscriptionID:    to.StringPtr("<subscription-id>"),
+			AccountName:       to.Ptr("myDefaultAccount"),
+			ResourceGroupName: to.Ptr("rg-1"),
+			Scope:             to.Ptr("11733A4E-BA84-46FF-91D1-AFF1A3215A90"),
+			ScopeTenantID:     to.Ptr("11733A4E-BA84-46FF-91D1-AFF1A3215A90"),
+			ScopeType:         to.Ptr(armpurview.ScopeTypeTenant),
+			SubscriptionID:    to.Ptr("12345678-1234-1234-12345678aaa"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/DefaultAccounts_Remove.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/DefaultAccounts_Remove.json
 func ExampleDefaultAccountsClient_Remove() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpurview.NewDefaultAccountsClient(cred, nil)
-	_, err = client.Remove(ctx,
-		"<scope-tenant-id>",
-		armpurview.ScopeTypeTenant,
-		&armpurview.DefaultAccountsRemoveOptions{Scope: to.StringPtr("<scope>")})
+	client, err := armpurview.NewDefaultAccountsClient(cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = client.Remove(ctx,
+		"11733A4E-BA84-46FF-91D1-AFF1A3215A90",
+		armpurview.ScopeTypeTenant,
+		&armpurview.DefaultAccountsClientRemoveOptions{Scope: to.Ptr("11733A4E-BA84-46FF-91D1-AFF1A3215A90")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }

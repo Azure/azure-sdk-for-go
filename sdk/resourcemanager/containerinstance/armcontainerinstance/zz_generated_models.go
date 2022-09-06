@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armcontainerinstance
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AzureFileVolume - The properties of the Azure File volume. Azure File shares are mounted as volumes.
 type AzureFileVolume struct {
@@ -46,14 +41,6 @@ type CachedImagesListResult struct {
 
 	// The list of cached images.
 	Value []*CachedImages `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CachedImagesListResult.
-func (c CachedImagesListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // Capabilities - The regional capabilities.
@@ -98,26 +85,10 @@ type CapabilitiesListResult struct {
 	Value []*Capabilities `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CapabilitiesListResult.
-func (c CapabilitiesListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
 // CloudError - An error response from the Container Instance service.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// An error response from the Container Instance service.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response from the Container Instance service.
@@ -133,16 +104,6 @@ type CloudErrorBody struct {
 
 	// The target of the particular error. For example, the name of the property in error.
 	Target *string `json:"target,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CloudErrorBody.
-func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", c.Code)
-	populate(objectMap, "details", c.Details)
-	populate(objectMap, "message", c.Message)
-	populate(objectMap, "target", c.Target)
-	return json.Marshal(objectMap)
 }
 
 type Components10Wh5UdSchemasContainergroupidentityPropertiesUserassignedidentitiesAdditionalproperties struct {
@@ -177,13 +138,6 @@ type ContainerExec struct {
 	Command []*string `json:"command,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ContainerExec.
-func (c ContainerExec) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "command", c.Command)
-	return json.Marshal(objectMap)
-}
-
 // ContainerExecRequest - The container exec request.
 type ContainerExecRequest struct {
 	// The command to be executed.
@@ -213,21 +167,29 @@ type ContainerExecResponse struct {
 
 // ContainerGroup - A container group.
 type ContainerGroup struct {
-	Resource
 	// REQUIRED; The container group properties
 	Properties *ContainerGroupProperties `json:"properties,omitempty"`
 
 	// The identity of the container group, if configured.
 	Identity *ContainerGroupIdentity `json:"identity,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ContainerGroup.
-func (c ContainerGroup) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
-	populate(objectMap, "identity", c.Identity)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// The zones for the container group.
+	Zones []*string `json:"zones,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ContainerGroupDiagnostics - Container group diagnostic information.
@@ -238,30 +200,23 @@ type ContainerGroupDiagnostics struct {
 
 // ContainerGroupIdentity - Identity for the container group.
 type ContainerGroupIdentity struct {
-	// The type of identity used for the container group. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of
-	// user assigned identities. The type 'None' will
+	// The type of identity used for the container group. The type 'SystemAssigned, UserAssigned' includes both an implicitly
+	// created identity and a set of user assigned identities. The type 'None' will
 	// remove any identities from the container group.
 	Type *ResourceIdentityType `json:"type,omitempty"`
 
-	// The list of user identities associated with the container group. The user identity dictionary key references will be ARM resource ids in the form:
+	// The list of user identities associated with the container group. The user identity dictionary key references will be ARM
+	// resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*Components10Wh5UdSchemasContainergroupidentityPropertiesUserassignedidentitiesAdditionalproperties `json:"userAssignedIdentities,omitempty"`
 
-	// READ-ONLY; The principal id of the container group identity. This property will only be provided for a system assigned identity.
+	// READ-ONLY; The principal id of the container group identity. This property will only be provided for a system assigned
+	// identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 
-	// READ-ONLY; The tenant id associated with the container group. This property will only be provided for a system assigned identity.
+	// READ-ONLY; The tenant id associated with the container group. This property will only be provided for a system assigned
+	// identity.
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ContainerGroupIdentity.
-func (c ContainerGroupIdentity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "principalId", c.PrincipalID)
-	populate(objectMap, "tenantId", c.TenantID)
-	populate(objectMap, "type", c.Type)
-	populate(objectMap, "userAssignedIdentities", c.UserAssignedIdentities)
-	return json.Marshal(objectMap)
 }
 
 // ContainerGroupListResult - The container group list response that contains the container group properties.
@@ -271,14 +226,6 @@ type ContainerGroupListResult struct {
 
 	// The list of container groups.
 	Value []*ContainerGroup `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ContainerGroupListResult.
-func (c ContainerGroupListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // ContainerGroupProperties - The container group properties
@@ -329,26 +276,6 @@ type ContainerGroupProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ContainerGroupProperties.
-func (c ContainerGroupProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "containers", c.Containers)
-	populate(objectMap, "dnsConfig", c.DNSConfig)
-	populate(objectMap, "diagnostics", c.Diagnostics)
-	populate(objectMap, "encryptionProperties", c.EncryptionProperties)
-	populate(objectMap, "ipAddress", c.IPAddress)
-	populate(objectMap, "imageRegistryCredentials", c.ImageRegistryCredentials)
-	populate(objectMap, "initContainers", c.InitContainers)
-	populate(objectMap, "instanceView", c.InstanceView)
-	populate(objectMap, "osType", c.OSType)
-	populate(objectMap, "provisioningState", c.ProvisioningState)
-	populate(objectMap, "restartPolicy", c.RestartPolicy)
-	populate(objectMap, "sku", c.SKU)
-	populate(objectMap, "subnetIds", c.SubnetIDs)
-	populate(objectMap, "volumes", c.Volumes)
-	return json.Marshal(objectMap)
-}
-
 // ContainerGroupPropertiesInstanceView - The instance view of the container group. Only valid in response.
 type ContainerGroupPropertiesInstanceView struct {
 	// READ-ONLY; The events of this container group.
@@ -356,14 +283,6 @@ type ContainerGroupPropertiesInstanceView struct {
 
 	// READ-ONLY; The state of the container group. Only valid in response.
 	State *string `json:"state,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ContainerGroupPropertiesInstanceView.
-func (c ContainerGroupPropertiesInstanceView) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "events", c.Events)
-	populate(objectMap, "state", c.State)
-	return json.Marshal(objectMap)
 }
 
 // ContainerGroupSubnetID - Container group subnet information.
@@ -375,54 +294,60 @@ type ContainerGroupSubnetID struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// ContainerGroupsBeginCreateOrUpdateOptions contains the optional parameters for the ContainerGroups.BeginCreateOrUpdate method.
-type ContainerGroupsBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContainerGroupsBeginDeleteOptions contains the optional parameters for the ContainerGroups.BeginDelete method.
-type ContainerGroupsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContainerGroupsBeginRestartOptions contains the optional parameters for the ContainerGroups.BeginRestart method.
-type ContainerGroupsBeginRestartOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContainerGroupsBeginStartOptions contains the optional parameters for the ContainerGroups.BeginStart method.
-type ContainerGroupsBeginStartOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContainerGroupsGetOptions contains the optional parameters for the ContainerGroups.Get method.
-type ContainerGroupsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContainerGroupsGetOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the ContainerGroups.GetOutboundNetworkDependenciesEndpoints
+// ContainerGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ContainerGroupsClient.BeginCreateOrUpdate
 // method.
-type ContainerGroupsGetOutboundNetworkDependenciesEndpointsOptions struct {
+type ContainerGroupsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ContainerGroupsClientBeginDeleteOptions contains the optional parameters for the ContainerGroupsClient.BeginDelete method.
+type ContainerGroupsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ContainerGroupsClientBeginRestartOptions contains the optional parameters for the ContainerGroupsClient.BeginRestart method.
+type ContainerGroupsClientBeginRestartOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ContainerGroupsClientBeginStartOptions contains the optional parameters for the ContainerGroupsClient.BeginStart method.
+type ContainerGroupsClientBeginStartOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ContainerGroupsClientGetOptions contains the optional parameters for the ContainerGroupsClient.Get method.
+type ContainerGroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerGroupsListByResourceGroupOptions contains the optional parameters for the ContainerGroups.ListByResourceGroup method.
-type ContainerGroupsListByResourceGroupOptions struct {
+// ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the ContainerGroupsClient.GetOutboundNetworkDependenciesEndpoints
+// method.
+type ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerGroupsListOptions contains the optional parameters for the ContainerGroups.List method.
-type ContainerGroupsListOptions struct {
+// ContainerGroupsClientListByResourceGroupOptions contains the optional parameters for the ContainerGroupsClient.ListByResourceGroup
+// method.
+type ContainerGroupsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerGroupsStopOptions contains the optional parameters for the ContainerGroups.Stop method.
-type ContainerGroupsStopOptions struct {
+// ContainerGroupsClientListOptions contains the optional parameters for the ContainerGroupsClient.List method.
+type ContainerGroupsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerGroupsUpdateOptions contains the optional parameters for the ContainerGroups.Update method.
-type ContainerGroupsUpdateOptions struct {
+// ContainerGroupsClientStopOptions contains the optional parameters for the ContainerGroupsClient.Stop method.
+type ContainerGroupsClientStopOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerGroupsClientUpdateOptions contains the optional parameters for the ContainerGroupsClient.Update method.
+type ContainerGroupsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -439,16 +364,6 @@ type ContainerHTTPGet struct {
 
 	// The scheme.
 	Scheme *Scheme `json:"scheme,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ContainerHTTPGet.
-func (c ContainerHTTPGet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "httpHeaders", c.HTTPHeaders)
-	populate(objectMap, "path", c.Path)
-	populate(objectMap, "port", c.Port)
-	populate(objectMap, "scheme", c.Scheme)
-	return json.Marshal(objectMap)
 }
 
 // ContainerPort - The port exposed on the container instance.
@@ -514,21 +429,6 @@ type ContainerProperties struct {
 	InstanceView *ContainerPropertiesInstanceView `json:"instanceView,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ContainerProperties.
-func (c ContainerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "command", c.Command)
-	populate(objectMap, "environmentVariables", c.EnvironmentVariables)
-	populate(objectMap, "image", c.Image)
-	populate(objectMap, "instanceView", c.InstanceView)
-	populate(objectMap, "livenessProbe", c.LivenessProbe)
-	populate(objectMap, "ports", c.Ports)
-	populate(objectMap, "readinessProbe", c.ReadinessProbe)
-	populate(objectMap, "resources", c.Resources)
-	populate(objectMap, "volumeMounts", c.VolumeMounts)
-	return json.Marshal(objectMap)
-}
-
 // ContainerPropertiesInstanceView - The instance view of the container instance. Only valid in response.
 type ContainerPropertiesInstanceView struct {
 	// READ-ONLY; Current container instance state.
@@ -542,16 +442,6 @@ type ContainerPropertiesInstanceView struct {
 
 	// READ-ONLY; The number of times that the container instance has been restarted.
 	RestartCount *int32 `json:"restartCount,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ContainerPropertiesInstanceView.
-func (c ContainerPropertiesInstanceView) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "currentState", c.CurrentState)
-	populate(objectMap, "events", c.Events)
-	populate(objectMap, "previousState", c.PreviousState)
-	populate(objectMap, "restartCount", c.RestartCount)
-	return json.Marshal(objectMap)
 }
 
 // ContainerState - The container instance state.
@@ -572,62 +462,20 @@ type ContainerState struct {
 	State *string `json:"state,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ContainerState.
-func (c ContainerState) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "detailStatus", c.DetailStatus)
-	populate(objectMap, "exitCode", c.ExitCode)
-	populateTimeRFC3339(objectMap, "finishTime", c.FinishTime)
-	populateTimeRFC3339(objectMap, "startTime", c.StartTime)
-	populate(objectMap, "state", c.State)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ContainerState.
-func (c *ContainerState) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "detailStatus":
-			err = unpopulate(val, &c.DetailStatus)
-			delete(rawMsg, key)
-		case "exitCode":
-			err = unpopulate(val, &c.ExitCode)
-			delete(rawMsg, key)
-		case "finishTime":
-			err = unpopulateTimeRFC3339(val, &c.FinishTime)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &c.StartTime)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, &c.State)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// ContainersAttachOptions contains the optional parameters for the Containers.Attach method.
-type ContainersAttachOptions struct {
+// ContainersClientAttachOptions contains the optional parameters for the ContainersClient.Attach method.
+type ContainersClientAttachOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainersExecuteCommandOptions contains the optional parameters for the Containers.ExecuteCommand method.
-type ContainersExecuteCommandOptions struct {
+// ContainersClientExecuteCommandOptions contains the optional parameters for the ContainersClient.ExecuteCommand method.
+type ContainersClientExecuteCommandOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainersListLogsOptions contains the optional parameters for the Containers.ListLogs method.
-type ContainersListLogsOptions struct {
-	// The number of lines to show from the tail of the container instance log. If not provided, all available logs are shown up to 4mb.
+// ContainersClientListLogsOptions contains the optional parameters for the ContainersClient.ListLogs method.
+type ContainersClientListLogsOptions struct {
+	// The number of lines to show from the tail of the container instance log. If not provided, all available logs are shown
+	// up to 4mb.
 	Tail *int32
 	// If true, adds a timestamp at the beginning of every line of log output. If not provided, defaults to false.
 	Timestamps *bool
@@ -643,15 +491,6 @@ type DNSConfiguration struct {
 
 	// The DNS search domains for hostname lookup in the container group.
 	SearchDomains *string `json:"searchDomains,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DNSConfiguration.
-func (d DNSConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nameServers", d.NameServers)
-	populate(objectMap, "options", d.Options)
-	populate(objectMap, "searchDomains", d.SearchDomains)
-	return json.Marshal(objectMap)
 }
 
 // EncryptionProperties - The container group encryption properties.
@@ -699,60 +538,13 @@ type Event struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Event.
-func (e Event) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "count", e.Count)
-	populateTimeRFC3339(objectMap, "firstTimestamp", e.FirstTimestamp)
-	populateTimeRFC3339(objectMap, "lastTimestamp", e.LastTimestamp)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "name", e.Name)
-	populate(objectMap, "type", e.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Event.
-func (e *Event) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "count":
-			err = unpopulate(val, &e.Count)
-			delete(rawMsg, key)
-		case "firstTimestamp":
-			err = unpopulateTimeRFC3339(val, &e.FirstTimestamp)
-			delete(rawMsg, key)
-		case "lastTimestamp":
-			err = unpopulateTimeRFC3339(val, &e.LastTimestamp)
-			delete(rawMsg, key)
-		case "message":
-			err = unpopulate(val, &e.Message)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &e.Name)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &e.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // GitRepoVolume - Represents a volume that is populated with the contents of a git repository
 type GitRepoVolume struct {
 	// REQUIRED; Repository URL
 	Repository *string `json:"repository,omitempty"`
 
-	// Target directory name. Must not contain or start with '..'. If '.' is supplied, the volume directory will be the git repository. Otherwise, if specified,
-	// the volume will contain the git repository in
+	// Target directory name. Must not contain or start with '..'. If '.' is supplied, the volume directory will be the git repository.
+	// Otherwise, if specified, the volume will contain the git repository in
 	// the subdirectory with the given name.
 	Directory *string `json:"directory,omitempty"`
 
@@ -789,22 +581,14 @@ type IPAddress struct {
 	// The Dns name label for the IP.
 	DNSNameLabel *string `json:"dnsNameLabel,omitempty"`
 
+	// The value representing the security enum.
+	DNSNameLabelReusePolicy *AutoGeneratedDomainNameLabelScope `json:"dnsNameLabelReusePolicy,omitempty"`
+
 	// The IP exposed to the public internet.
 	IP *string `json:"ip,omitempty"`
 
 	// READ-ONLY; The FQDN for the IP.
 	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IPAddress.
-func (i IPAddress) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dnsNameLabel", i.DNSNameLabel)
-	populate(objectMap, "fqdn", i.Fqdn)
-	populate(objectMap, "ip", i.IP)
-	populate(objectMap, "ports", i.Ports)
-	populate(objectMap, "type", i.Type)
-	return json.Marshal(objectMap)
 }
 
 // ImageRegistryCredential - Image registry credential.
@@ -852,17 +636,6 @@ type InitContainerPropertiesDefinition struct {
 	InstanceView *InitContainerPropertiesDefinitionInstanceView `json:"instanceView,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InitContainerPropertiesDefinition.
-func (i InitContainerPropertiesDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "command", i.Command)
-	populate(objectMap, "environmentVariables", i.EnvironmentVariables)
-	populate(objectMap, "image", i.Image)
-	populate(objectMap, "instanceView", i.InstanceView)
-	populate(objectMap, "volumeMounts", i.VolumeMounts)
-	return json.Marshal(objectMap)
-}
-
 // InitContainerPropertiesDefinitionInstanceView - The instance view of the init container. Only valid in response.
 type InitContainerPropertiesDefinitionInstanceView struct {
 	// READ-ONLY; The current state of the init container.
@@ -878,28 +651,18 @@ type InitContainerPropertiesDefinitionInstanceView struct {
 	RestartCount *int32 `json:"restartCount,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InitContainerPropertiesDefinitionInstanceView.
-func (i InitContainerPropertiesDefinitionInstanceView) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "currentState", i.CurrentState)
-	populate(objectMap, "events", i.Events)
-	populate(objectMap, "previousState", i.PreviousState)
-	populate(objectMap, "restartCount", i.RestartCount)
-	return json.Marshal(objectMap)
-}
-
-// LocationListCachedImagesOptions contains the optional parameters for the Location.ListCachedImages method.
-type LocationListCachedImagesOptions struct {
+// LocationClientListCachedImagesOptions contains the optional parameters for the LocationClient.ListCachedImages method.
+type LocationClientListCachedImagesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocationListCapabilitiesOptions contains the optional parameters for the Location.ListCapabilities method.
-type LocationListCapabilitiesOptions struct {
+// LocationClientListCapabilitiesOptions contains the optional parameters for the LocationClient.ListCapabilities method.
+type LocationClientListCapabilitiesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LocationListUsageOptions contains the optional parameters for the Location.ListUsage method.
-type LocationListUsageOptions struct {
+// LocationClientListUsageOptions contains the optional parameters for the LocationClient.ListUsage method.
+type LocationClientListUsageOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -921,17 +684,6 @@ type LogAnalytics struct {
 	WorkspaceResourceID *string `json:"workspaceResourceId,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LogAnalytics.
-func (l LogAnalytics) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "logType", l.LogType)
-	populate(objectMap, "metadata", l.Metadata)
-	populate(objectMap, "workspaceId", l.WorkspaceID)
-	populate(objectMap, "workspaceKey", l.WorkspaceKey)
-	populate(objectMap, "workspaceResourceId", l.WorkspaceResourceID)
-	return json.Marshal(objectMap)
-}
-
 // Logs - The logs.
 type Logs struct {
 	// The content of the log.
@@ -950,7 +702,7 @@ type Operation struct {
 	Origin *ContainerInstanceOperationsOrigin `json:"origin,omitempty"`
 
 	// The additional properties.
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties interface{} `json:"properties,omitempty"`
 }
 
 // OperationDisplay - The display information of the operation.
@@ -977,16 +729,8 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1018,22 +762,6 @@ type Resource struct {
 
 	// READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-	populate(objectMap, "zones", r.Zones)
 }
 
 // ResourceLimits - The resource limits.
@@ -1090,13 +818,6 @@ type UsageListResult struct {
 	Value []*Usage `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UsageListResult.
-func (u UsageListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", u.Value)
-	return json.Marshal(objectMap)
-}
-
 // UsageName - The name object of the resource
 type UsageName struct {
 	// READ-ONLY; The localized name of the resource
@@ -1115,24 +836,13 @@ type Volume struct {
 	AzureFile *AzureFileVolume `json:"azureFile,omitempty"`
 
 	// The empty directory volume.
-	EmptyDir map[string]interface{} `json:"emptyDir,omitempty"`
+	EmptyDir interface{} `json:"emptyDir,omitempty"`
 
 	// The git repo volume.
 	GitRepo *GitRepoVolume `json:"gitRepo,omitempty"`
 
 	// The secret volume.
 	Secret map[string]*string `json:"secret,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Volume.
-func (v Volume) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "azureFile", v.AzureFile)
-	populate(objectMap, "emptyDir", v.EmptyDir)
-	populate(objectMap, "gitRepo", v.GitRepo)
-	populate(objectMap, "name", v.Name)
-	populate(objectMap, "secret", v.Secret)
-	return json.Marshal(objectMap)
 }
 
 // VolumeMount - The properties of the volume mount.
@@ -1145,21 +855,4 @@ type VolumeMount struct {
 
 	// The flag indicating whether the volume mount is read-only.
 	ReadOnly *bool `json:"readOnly,omitempty"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

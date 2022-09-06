@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,47 @@
 
 package armhybridcompute
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
+
+// AgentConfiguration - Configurable properties that the user can set locally via the azcmagent config command, or remotely
+// via ARM.
+type AgentConfiguration struct {
+	// READ-ONLY; Array of extensions that are allowed to be installed or updated.
+	ExtensionsAllowList []*ConfigurationExtension `json:"extensionsAllowList,omitempty" azure:"ro"`
+
+	// READ-ONLY; Array of extensions that are blocked (cannot be installed or updated)
+	ExtensionsBlockList []*ConfigurationExtension `json:"extensionsBlockList,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specifies whether the extension service is enabled or disabled.
+	ExtensionsEnabled *string `json:"extensionsEnabled,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specified whether the guest configuration service is enabled or disabled.
+	GuestConfigurationEnabled *string `json:"guestConfigurationEnabled,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specifies the list of ports that the agent will be able to listen on.
+	IncomingConnectionsPorts []*string `json:"incomingConnectionsPorts,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of service names which should not use the specified proxy server.
+	ProxyBypass []*string `json:"proxyBypass,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specifies the URL of the proxy to be used.
+	ProxyURL *string `json:"proxyUrl,omitempty" azure:"ro"`
+}
+
+// CloudMetadata - The metadata of the cloud environment (Azure/GCP/AWS/OCI…).
+type CloudMetadata struct {
+	// READ-ONLY; Specifies the cloud provider (Azure/AWS/GCP…).
+	Provider *string `json:"provider,omitempty" azure:"ro"`
+}
+
+// ConfigurationExtension - Describes properties that can identify extensions.
+type ConfigurationExtension struct {
+	// READ-ONLY; Publisher of the extension.
+	Publisher *string `json:"publisher,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the extension.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
 
 type ConnectionDetail struct {
 	// READ-ONLY; The private endpoint connection group id
@@ -35,7 +70,7 @@ type ConnectionDetail struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -59,105 +94,17 @@ type ErrorDetail struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // ExtensionTargetProperties - Describes the Machine Extension Target Version Properties
 type ExtensionTargetProperties struct {
 	// Properties for the specified Extension to Upgrade.
 	TargetVersion *string `json:"targetVersion,omitempty"`
-}
-
-// HybridComputeManagementClientBeginUpgradeExtensionsOptions contains the optional parameters for the HybridComputeManagementClient.BeginUpgradeExtensions
-// method.
-type HybridComputeManagementClientBeginUpgradeExtensionsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// HybridComputePrivateLinkScope - An Azure Arc PrivateLinkScope definition.
-type HybridComputePrivateLinkScope struct {
-	PrivateLinkScopesResource
-	// Properties that define a Azure Arc PrivateLinkScope resource.
-	Properties *HybridComputePrivateLinkScopeProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HybridComputePrivateLinkScope.
-func (h HybridComputePrivateLinkScope) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	h.PrivateLinkScopesResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", h.Properties)
-	populate(objectMap, "systemData", h.SystemData)
-	return json.Marshal(objectMap)
-}
-
-// HybridComputePrivateLinkScopeListResult - Describes the list of Azure Arc PrivateLinkScope resources.
-type HybridComputePrivateLinkScopeListResult struct {
-	// REQUIRED; List of Azure Arc PrivateLinkScope definitions.
-	Value []*HybridComputePrivateLinkScope `json:"value,omitempty"`
-
-	// The URI to get the next set of Azure Arc PrivateLinkScope definitions if too many PrivateLinkScopes where returned in the result set.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HybridComputePrivateLinkScopeListResult.
-func (h HybridComputePrivateLinkScopeListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", h.NextLink)
-	populate(objectMap, "value", h.Value)
-	return json.Marshal(objectMap)
-}
-
-// HybridComputePrivateLinkScopeProperties - Properties that define a Azure Arc PrivateLinkScope resource.
-type HybridComputePrivateLinkScopeProperties struct {
-	// Indicates whether machines associated with the private link scope can also use public Azure Arc service endpoints.
-	PublicNetworkAccess *PublicNetworkAccessType `json:"publicNetworkAccess,omitempty"`
-
-	// READ-ONLY; The collection of associated Private Endpoint Connections.
-	PrivateEndpointConnections []*PrivateEndpointConnectionDataModel `json:"privateEndpointConnections,omitempty" azure:"ro"`
-
-	// READ-ONLY; The Guid id of the private link scope.
-	PrivateLinkScopeID *string `json:"privateLinkScopeId,omitempty" azure:"ro"`
-
-	// READ-ONLY; Current state of this PrivateLinkScope: whether or not is has been provisioned within the resource group it is defined. Users cannot change
-	// this value but are able to read from it. Values will include
-	// Provisioning ,Succeeded, Canceled and Failed.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HybridComputePrivateLinkScopeProperties.
-func (h HybridComputePrivateLinkScopeProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "privateEndpointConnections", h.PrivateEndpointConnections)
-	populate(objectMap, "privateLinkScopeId", h.PrivateLinkScopeID)
-	populate(objectMap, "provisioningState", h.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", h.PublicNetworkAccess)
-	return json.Marshal(objectMap)
 }
 
 // Identity for the resource.
@@ -189,44 +136,53 @@ type LocationData struct {
 
 // Machine - Describes a hybrid machine.
 type Machine struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// Identity for the resource.
 	Identity *Identity `json:"identity,omitempty"`
 
 	// Hybrid Compute Machine properties
 	Properties *MachineProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Machine.
-func (m Machine) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	m.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "identity", m.Identity)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "systemData", m.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MachineExtension - Describes a Machine Extension.
 type MachineExtension struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// Describes Machine Extension Properties.
 	Properties *MachineExtensionProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type MachineExtension.
-func (m MachineExtension) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	m.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "systemData", m.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // MachineExtensionInstanceView - Describes the Machine Extension Instance View.
@@ -262,55 +218,15 @@ type MachineExtensionInstanceViewStatus struct {
 	Time *time.Time `json:"time,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MachineExtensionInstanceViewStatus.
-func (m MachineExtensionInstanceViewStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", m.Code)
-	populate(objectMap, "displayStatus", m.DisplayStatus)
-	populate(objectMap, "level", m.Level)
-	populate(objectMap, "message", m.Message)
-	populateTimeRFC3339(objectMap, "time", m.Time)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MachineExtensionInstanceViewStatus.
-func (m *MachineExtensionInstanceViewStatus) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "code":
-			err = unpopulate(val, &m.Code)
-			delete(rawMsg, key)
-		case "displayStatus":
-			err = unpopulate(val, &m.DisplayStatus)
-			delete(rawMsg, key)
-		case "level":
-			err = unpopulate(val, &m.Level)
-			delete(rawMsg, key)
-		case "message":
-			err = unpopulate(val, &m.Message)
-			delete(rawMsg, key)
-		case "time":
-			err = unpopulateTimeRFC3339(val, &m.Time)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MachineExtensionProperties - Describes the properties of a Machine Extension.
 type MachineExtensionProperties struct {
-	// Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not
-	// upgrade minor versions unless redeployed, even
+	// Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed,
+	// however, the extension will not upgrade minor versions unless redeployed, even
 	// with this property set to true.
 	AutoUpgradeMinorVersion *bool `json:"autoUpgradeMinorVersion,omitempty"`
+
+	// Indicates whether the extension should be automatically upgraded by the platform if there is a newer version available.
+	EnableAutomaticUpgrade *bool `json:"enableAutomaticUpgrade,omitempty"`
 
 	// How the extension handler should be forced to update even if the extension configuration has not changed.
 	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
@@ -319,13 +235,13 @@ type MachineExtensionProperties struct {
 	InstanceView *MachineExtensionInstanceView `json:"instanceView,omitempty"`
 
 	// The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
-	ProtectedSettings map[string]interface{} `json:"protectedSettings,omitempty"`
+	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
 
 	// The name of the extension handler publisher.
 	Publisher *string `json:"publisher,omitempty"`
 
 	// Json formatted public settings for the extension.
-	Settings map[string]interface{} `json:"settings,omitempty"`
+	Settings interface{} `json:"settings,omitempty"`
 
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
 	Type *string `json:"type,omitempty"`
@@ -339,23 +255,17 @@ type MachineExtensionProperties struct {
 
 // MachineExtensionUpdate - Describes a Machine Extension Update.
 type MachineExtensionUpdate struct {
-	ResourceUpdate
 	// Describes Machine Extension Update Properties.
 	Properties *MachineExtensionUpdateProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type MachineExtensionUpdate.
-func (m MachineExtensionUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	m.ResourceUpdate.marshalInternal(objectMap)
-	populate(objectMap, "properties", m.Properties)
-	return json.Marshal(objectMap)
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // MachineExtensionUpdateProperties - Describes the properties of a Machine Extension.
 type MachineExtensionUpdateProperties struct {
-	// Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not
-	// upgrade minor versions unless redeployed, even
+	// Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed,
+	// however, the extension will not upgrade minor versions unless redeployed, even
 	// with this property set to true.
 	AutoUpgradeMinorVersion *bool `json:"autoUpgradeMinorVersion,omitempty"`
 
@@ -363,13 +273,13 @@ type MachineExtensionUpdateProperties struct {
 	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
 
 	// The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
-	ProtectedSettings map[string]interface{} `json:"protectedSettings,omitempty"`
+	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
 
 	// The name of the extension handler publisher.
 	Publisher *string `json:"publisher,omitempty"`
 
 	// Json formatted public settings for the extension.
-	Settings map[string]interface{} `json:"settings,omitempty"`
+	Settings interface{} `json:"settings,omitempty"`
 
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
 	Type *string `json:"type,omitempty"`
@@ -384,35 +294,34 @@ type MachineExtensionUpgrade struct {
 	ExtensionTargets map[string]*ExtensionTargetProperties `json:"extensionTargets,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MachineExtensionUpgrade.
-func (m MachineExtensionUpgrade) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "extensionTargets", m.ExtensionTargets)
-	return json.Marshal(objectMap)
+// MachineExtensionsClientBeginCreateOrUpdateOptions contains the optional parameters for the MachineExtensionsClient.BeginCreateOrUpdate
+// method.
+type MachineExtensionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// MachineExtensionsBeginCreateOrUpdateOptions contains the optional parameters for the MachineExtensions.BeginCreateOrUpdate method.
-type MachineExtensionsBeginCreateOrUpdateOptions struct {
+// MachineExtensionsClientBeginDeleteOptions contains the optional parameters for the MachineExtensionsClient.BeginDelete
+// method.
+type MachineExtensionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MachineExtensionsClientBeginUpdateOptions contains the optional parameters for the MachineExtensionsClient.BeginUpdate
+// method.
+type MachineExtensionsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MachineExtensionsClientGetOptions contains the optional parameters for the MachineExtensionsClient.Get method.
+type MachineExtensionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MachineExtensionsBeginDeleteOptions contains the optional parameters for the MachineExtensions.BeginDelete method.
-type MachineExtensionsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MachineExtensionsBeginUpdateOptions contains the optional parameters for the MachineExtensions.BeginUpdate method.
-type MachineExtensionsBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MachineExtensionsGetOptions contains the optional parameters for the MachineExtensions.Get method.
-type MachineExtensionsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MachineExtensionsListOptions contains the optional parameters for the MachineExtensions.List method.
-type MachineExtensionsListOptions struct {
+// MachineExtensionsClientListOptions contains the optional parameters for the MachineExtensionsClient.List method.
+type MachineExtensionsClientListOptions struct {
 	// The expand expression to apply on the operation.
 	Expand *string
 }
@@ -426,14 +335,6 @@ type MachineExtensionsListResult struct {
 	Value []*MachineExtension `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MachineExtensionsListResult.
-func (m MachineExtensionsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
-}
-
 // MachineListResult - The List hybrid machine operation response.
 type MachineListResult struct {
 	// REQUIRED; The list of hybrid machines.
@@ -443,18 +344,13 @@ type MachineListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MachineListResult.
-func (m MachineListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
-}
-
 // MachineProperties - Describes the properties of a hybrid machine.
 type MachineProperties struct {
 	// Public Key that the client provides to be used during initial resource onboarding
 	ClientPublicKey *string `json:"clientPublicKey,omitempty"`
+
+	// The metadata of the cloud environment (Azure/GCP/AWS/OCI…).
+	CloudMetadata *CloudMetadata `json:"cloudMetadata,omitempty"`
 
 	// Machine Extensions information
 	Extensions []*MachineExtensionInstanceView `json:"extensions,omitempty"`
@@ -477,11 +373,17 @@ type MachineProperties struct {
 	// The resource id of the private link scope this machine is assigned to, if any.
 	PrivateLinkScopeResourceID *string `json:"privateLinkScopeResourceId,omitempty"`
 
+	// Statuses of dependent services that are reported back to ARM.
+	ServiceStatuses *ServiceStatuses `json:"serviceStatuses,omitempty"`
+
 	// Specifies the hybrid machine unique ID.
 	VMID *string `json:"vmId,omitempty"`
 
 	// READ-ONLY; Specifies the AD fully qualified display name.
 	AdFqdn *string `json:"adFqdn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Configurable properties that the user can set locally via the azcmagent config command, or remotely via ARM.
+	AgentConfiguration *AgentConfiguration `json:"agentConfiguration,omitempty" azure:"ro"`
 
 	// READ-ONLY; The hybrid machine agent full version.
 	AgentVersion *string `json:"agentVersion,omitempty" azure:"ro"`
@@ -526,146 +428,23 @@ type MachineProperties struct {
 	VMUUID *string `json:"vmUuid,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MachineProperties.
-func (m MachineProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "adFqdn", m.AdFqdn)
-	populate(objectMap, "agentVersion", m.AgentVersion)
-	populate(objectMap, "clientPublicKey", m.ClientPublicKey)
-	populate(objectMap, "dnsFqdn", m.DNSFqdn)
-	populate(objectMap, "detectedProperties", m.DetectedProperties)
-	populate(objectMap, "displayName", m.DisplayName)
-	populate(objectMap, "domainName", m.DomainName)
-	populate(objectMap, "errorDetails", m.ErrorDetails)
-	populate(objectMap, "extensions", m.Extensions)
-	populateTimeRFC3339(objectMap, "lastStatusChange", m.LastStatusChange)
-	populate(objectMap, "locationData", m.LocationData)
-	populate(objectMap, "machineFqdn", m.MachineFqdn)
-	populate(objectMap, "mssqlDiscovered", m.MssqlDiscovered)
-	populate(objectMap, "osName", m.OSName)
-	populate(objectMap, "osProfile", m.OSProfile)
-	populate(objectMap, "osSku", m.OSSKU)
-	populate(objectMap, "osType", m.OSType)
-	populate(objectMap, "osVersion", m.OSVersion)
-	populate(objectMap, "parentClusterResourceId", m.ParentClusterResourceID)
-	populate(objectMap, "privateLinkScopeResourceId", m.PrivateLinkScopeResourceID)
-	populate(objectMap, "provisioningState", m.ProvisioningState)
-	populate(objectMap, "status", m.Status)
-	populate(objectMap, "vmId", m.VMID)
-	populate(objectMap, "vmUuid", m.VMUUID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MachineProperties.
-func (m *MachineProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "adFqdn":
-			err = unpopulate(val, &m.AdFqdn)
-			delete(rawMsg, key)
-		case "agentVersion":
-			err = unpopulate(val, &m.AgentVersion)
-			delete(rawMsg, key)
-		case "clientPublicKey":
-			err = unpopulate(val, &m.ClientPublicKey)
-			delete(rawMsg, key)
-		case "dnsFqdn":
-			err = unpopulate(val, &m.DNSFqdn)
-			delete(rawMsg, key)
-		case "detectedProperties":
-			err = unpopulate(val, &m.DetectedProperties)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &m.DisplayName)
-			delete(rawMsg, key)
-		case "domainName":
-			err = unpopulate(val, &m.DomainName)
-			delete(rawMsg, key)
-		case "errorDetails":
-			err = unpopulate(val, &m.ErrorDetails)
-			delete(rawMsg, key)
-		case "extensions":
-			err = unpopulate(val, &m.Extensions)
-			delete(rawMsg, key)
-		case "lastStatusChange":
-			err = unpopulateTimeRFC3339(val, &m.LastStatusChange)
-			delete(rawMsg, key)
-		case "locationData":
-			err = unpopulate(val, &m.LocationData)
-			delete(rawMsg, key)
-		case "machineFqdn":
-			err = unpopulate(val, &m.MachineFqdn)
-			delete(rawMsg, key)
-		case "mssqlDiscovered":
-			err = unpopulate(val, &m.MssqlDiscovered)
-			delete(rawMsg, key)
-		case "osName":
-			err = unpopulate(val, &m.OSName)
-			delete(rawMsg, key)
-		case "osProfile":
-			err = unpopulate(val, &m.OSProfile)
-			delete(rawMsg, key)
-		case "osSku":
-			err = unpopulate(val, &m.OSSKU)
-			delete(rawMsg, key)
-		case "osType":
-			err = unpopulate(val, &m.OSType)
-			delete(rawMsg, key)
-		case "osVersion":
-			err = unpopulate(val, &m.OSVersion)
-			delete(rawMsg, key)
-		case "parentClusterResourceId":
-			err = unpopulate(val, &m.ParentClusterResourceID)
-			delete(rawMsg, key)
-		case "privateLinkScopeResourceId":
-			err = unpopulate(val, &m.PrivateLinkScopeResourceID)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &m.ProvisioningState)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &m.Status)
-			delete(rawMsg, key)
-		case "vmId":
-			err = unpopulate(val, &m.VMID)
-			delete(rawMsg, key)
-		case "vmUuid":
-			err = unpopulate(val, &m.VMUUID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MachineUpdate - Describes a hybrid machine Update.
 type MachineUpdate struct {
-	ResourceUpdate
 	// Identity for the resource.
 	Identity *Identity `json:"identity,omitempty"`
 
 	// Hybrid Compute Machine properties
 	Properties *MachineUpdateProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type MachineUpdate.
-func (m MachineUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	m.ResourceUpdate.marshalInternal(objectMap)
-	populate(objectMap, "identity", m.Identity)
-	populate(objectMap, "properties", m.Properties)
-	return json.Marshal(objectMap)
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // MachineUpdateProperties - Describes the ARM updatable properties of a hybrid machine.
 type MachineUpdateProperties struct {
+	// The metadata of the cloud environment (Azure/GCP/AWS/OCI…).
+	CloudMetadata *CloudMetadata `json:"cloudMetadata,omitempty"`
+
 	// Metadata pertaining to the geographic location of the resource.
 	LocationData *LocationData `json:"locationData,omitempty"`
 
@@ -679,35 +458,42 @@ type MachineUpdateProperties struct {
 	PrivateLinkScopeResourceID *string `json:"privateLinkScopeResourceId,omitempty"`
 }
 
-// MachinesCreateOrUpdateOptions contains the optional parameters for the Machines.CreateOrUpdate method.
-type MachinesCreateOrUpdateOptions struct {
+// MachinesClientCreateOrUpdateOptions contains the optional parameters for the MachinesClient.CreateOrUpdate method.
+type MachinesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MachinesDeleteOptions contains the optional parameters for the Machines.Delete method.
-type MachinesDeleteOptions struct {
+// MachinesClientDeleteOptions contains the optional parameters for the MachinesClient.Delete method.
+type MachinesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MachinesGetOptions contains the optional parameters for the Machines.Get method.
-type MachinesGetOptions struct {
+// MachinesClientGetOptions contains the optional parameters for the MachinesClient.Get method.
+type MachinesClientGetOptions struct {
 	// The expand expression to apply on the operation.
 	Expand *InstanceViewTypes
 }
 
-// MachinesListByResourceGroupOptions contains the optional parameters for the Machines.ListByResourceGroup method.
-type MachinesListByResourceGroupOptions struct {
+// MachinesClientListByResourceGroupOptions contains the optional parameters for the MachinesClient.ListByResourceGroup method.
+type MachinesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MachinesListBySubscriptionOptions contains the optional parameters for the Machines.ListBySubscription method.
-type MachinesListBySubscriptionOptions struct {
+// MachinesClientListBySubscriptionOptions contains the optional parameters for the MachinesClient.ListBySubscription method.
+type MachinesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MachinesUpdateOptions contains the optional parameters for the Machines.Update method.
-type MachinesUpdateOptions struct {
+// MachinesClientUpdateOptions contains the optional parameters for the MachinesClient.Update method.
+type MachinesClientUpdateOptions struct {
 	// placeholder for future optional parameters
+}
+
+// ManagementClientBeginUpgradeExtensionsOptions contains the optional parameters for the ManagementClient.BeginUpgradeExtensions
+// method.
+type ManagementClientBeginUpgradeExtensionsOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // OSProfile - Specifies the operating system settings for the hybrid machine.
@@ -740,17 +526,13 @@ type OperationListResult struct {
 	Value []*OperationValue `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationValue - Describes the properties of a Compute Operation value.
 type OperationValue struct {
 	// Display properties
 	Display *OperationValueDisplay `json:"display,omitempty"`
+
+	// READ-ONLY; This property indicates if the operation is an action or a data action
+	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the compute operation.
 	Name *string `json:"name,omitempty" azure:"ro"`
@@ -774,34 +556,36 @@ type OperationValueDisplay struct {
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PatchSettings - Specifies the patch settings.
 type PatchSettings struct {
 	// Specifies the assessment mode.
-	AssessmentMode *string `json:"assessmentMode,omitempty"`
+	AssessmentMode *AssessmentModeTypes `json:"assessmentMode,omitempty"`
+
+	// Specifies the patch mode.
+	PatchMode *PatchModeTypes `json:"patchMode,omitempty"`
 }
 
 // PrivateEndpointConnection - A private endpoint connection
 type PrivateEndpointConnection struct {
-	ProxyResource
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnection.
-func (p PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "systemData", p.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateEndpointConnectionDataModel - The Data Model for a Private Endpoint Connection associated with a Private Link Scope
@@ -828,14 +612,6 @@ type PrivateEndpointConnectionListResult struct {
 	Value []*PrivateEndpointConnection `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionListResult.
-func (p PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateEndpointConnectionProperties - Properties of a private endpoint connection.
 type PrivateEndpointConnectionProperties struct {
 	// Private endpoint which the connection belongs to.
@@ -844,27 +620,36 @@ type PrivateEndpointConnectionProperties struct {
 	// Connection state of the private endpoint connection.
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionStateProperty `json:"privateLinkServiceConnectionState,omitempty"`
 
+	// READ-ONLY; List of group IDs.
+	GroupIDs []*string `json:"groupIds,omitempty" azure:"ro"`
+
 	// READ-ONLY; State of the private endpoint connection.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// PrivateEndpointConnectionsBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnections.BeginCreateOrUpdate method.
-type PrivateEndpointConnectionsBeginCreateOrUpdateOptions struct {
+// PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
+// method.
+type PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnections.BeginDelete method.
-type PrivateEndpointConnectionsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsGetOptions contains the optional parameters for the PrivateEndpointConnections.Get method.
-type PrivateEndpointConnectionsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsListByPrivateLinkScopeOptions contains the optional parameters for the PrivateEndpointConnections.ListByPrivateLinkScope method.
-type PrivateEndpointConnectionsListByPrivateLinkScopeOptions struct {
+// PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByPrivateLinkScope
+// method.
+type PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -876,21 +661,20 @@ type PrivateEndpointProperty struct {
 
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
-	ProxyResource
 	// Resource properties.
 	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system meta data relating to this resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResource.
-func (p PrivateLinkResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "systemData", p.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
@@ -900,14 +684,6 @@ type PrivateLinkResourceListResult struct {
 
 	// READ-ONLY; Array of results.
 	Value []*PrivateLinkResource `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceListResult.
-func (p PrivateLinkResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
@@ -922,23 +698,66 @@ type PrivateLinkResourceProperties struct {
 	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
-func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupId", p.GroupID)
-	populate(objectMap, "requiredMembers", p.RequiredMembers)
-	populate(objectMap, "requiredZoneNames", p.RequiredZoneNames)
-	return json.Marshal(objectMap)
-}
-
-// PrivateLinkResourcesGetOptions contains the optional parameters for the PrivateLinkResources.Get method.
-type PrivateLinkResourcesGetOptions struct {
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesListByPrivateLinkScopeOptions contains the optional parameters for the PrivateLinkResources.ListByPrivateLinkScope method.
-type PrivateLinkResourcesListByPrivateLinkScopeOptions struct {
+// PrivateLinkResourcesClientListByPrivateLinkScopeOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByPrivateLinkScope
+// method.
+type PrivateLinkResourcesClientListByPrivateLinkScopeOptions struct {
 	// placeholder for future optional parameters
+}
+
+// PrivateLinkScope - An Azure Arc PrivateLinkScope definition.
+type PrivateLinkScope struct {
+	// REQUIRED; Resource location
+	Location *string `json:"location,omitempty"`
+
+	// Properties that define a Azure Arc PrivateLinkScope resource.
+	Properties *PrivateLinkScopeProperties `json:"properties,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// PrivateLinkScopeListResult - Describes the list of Azure Arc PrivateLinkScope resources.
+type PrivateLinkScopeListResult struct {
+	// REQUIRED; List of Azure Arc PrivateLinkScope definitions.
+	Value []*PrivateLinkScope `json:"value,omitempty"`
+
+	// The URI to get the next set of Azure Arc PrivateLinkScope definitions if too many PrivateLinkScopes where returned in the
+	// result set.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// PrivateLinkScopeProperties - Properties that define a Azure Arc PrivateLinkScope resource.
+type PrivateLinkScopeProperties struct {
+	// Indicates whether machines associated with the private link scope can also use public Azure Arc service endpoints.
+	PublicNetworkAccess *PublicNetworkAccessType `json:"publicNetworkAccess,omitempty"`
+
+	// READ-ONLY; The collection of associated Private Endpoint Connections.
+	PrivateEndpointConnections []*PrivateEndpointConnectionDataModel `json:"privateEndpointConnections,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Guid id of the private link scope.
+	PrivateLinkScopeID *string `json:"privateLinkScopeId,omitempty" azure:"ro"`
+
+	// READ-ONLY; Current state of this PrivateLinkScope: whether or not is has been provisioned within the resource group it
+	// is defined. Users cannot change this value but are able to read from it. Values will include
+	// Provisioning ,Succeeded, Canceled and Failed.
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 type PrivateLinkScopeValidationDetails struct {
@@ -952,47 +771,49 @@ type PrivateLinkScopeValidationDetails struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkScopeValidationDetails.
-func (p PrivateLinkScopeValidationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "connectionDetails", p.ConnectionDetails)
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "publicNetworkAccess", p.PublicNetworkAccess)
-	return json.Marshal(objectMap)
+// PrivateLinkScopesClientBeginDeleteOptions contains the optional parameters for the PrivateLinkScopesClient.BeginDelete
+// method.
+type PrivateLinkScopesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// PrivateLinkScopesBeginDeleteOptions contains the optional parameters for the PrivateLinkScopes.BeginDelete method.
-type PrivateLinkScopesBeginDeleteOptions struct {
+// PrivateLinkScopesClientCreateOrUpdateOptions contains the optional parameters for the PrivateLinkScopesClient.CreateOrUpdate
+// method.
+type PrivateLinkScopesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkScopesCreateOrUpdateOptions contains the optional parameters for the PrivateLinkScopes.CreateOrUpdate method.
-type PrivateLinkScopesCreateOrUpdateOptions struct {
+// PrivateLinkScopesClientGetOptions contains the optional parameters for the PrivateLinkScopesClient.Get method.
+type PrivateLinkScopesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkScopesGetOptions contains the optional parameters for the PrivateLinkScopes.Get method.
-type PrivateLinkScopesGetOptions struct {
+// PrivateLinkScopesClientGetValidationDetailsForMachineOptions contains the optional parameters for the PrivateLinkScopesClient.GetValidationDetailsForMachine
+// method.
+type PrivateLinkScopesClientGetValidationDetailsForMachineOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkScopesGetValidationDetailsForMachineOptions contains the optional parameters for the PrivateLinkScopes.GetValidationDetailsForMachine method.
-type PrivateLinkScopesGetValidationDetailsForMachineOptions struct {
+// PrivateLinkScopesClientGetValidationDetailsOptions contains the optional parameters for the PrivateLinkScopesClient.GetValidationDetails
+// method.
+type PrivateLinkScopesClientGetValidationDetailsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkScopesGetValidationDetailsOptions contains the optional parameters for the PrivateLinkScopes.GetValidationDetails method.
-type PrivateLinkScopesGetValidationDetailsOptions struct {
+// PrivateLinkScopesClientListByResourceGroupOptions contains the optional parameters for the PrivateLinkScopesClient.ListByResourceGroup
+// method.
+type PrivateLinkScopesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkScopesListByResourceGroupOptions contains the optional parameters for the PrivateLinkScopes.ListByResourceGroup method.
-type PrivateLinkScopesListByResourceGroupOptions struct {
+// PrivateLinkScopesClientListOptions contains the optional parameters for the PrivateLinkScopesClient.List method.
+type PrivateLinkScopesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkScopesListOptions contains the optional parameters for the PrivateLinkScopes.List method.
-type PrivateLinkScopesListOptions struct {
+// PrivateLinkScopesClientUpdateTagsOptions contains the optional parameters for the PrivateLinkScopesClient.UpdateTags method.
+type PrivateLinkScopesClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1014,26 +835,6 @@ type PrivateLinkScopesResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkScopesResource.
-func (p PrivateLinkScopesResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (p PrivateLinkScopesResource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "location", p.Location)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "tags", p.Tags)
-	populate(objectMap, "type", p.Type)
-}
-
-// PrivateLinkScopesUpdateTagsOptions contains the optional parameters for the PrivateLinkScopes.UpdateTags method.
-type PrivateLinkScopesUpdateTagsOptions struct {
-	// placeholder for future optional parameters
-}
-
 // PrivateLinkServiceConnectionStateProperty - State of the private endpoint connection.
 type PrivateLinkServiceConnectionStateProperty struct {
 	// REQUIRED; The private link service connection description.
@@ -1046,13 +847,17 @@ type PrivateLinkServiceConnectionStateProperty struct {
 	ActionsRequired *string `json:"actionsRequired,omitempty" azure:"ro"`
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
@@ -1067,34 +872,28 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
 // ResourceUpdate - The Update Resource model definition.
 type ResourceUpdate struct {
 	// Resource tags
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceUpdate.
-func (r ResourceUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
+// ServiceStatus - Describes the status and behavior of a service.
+type ServiceStatus struct {
+	// The behavior of the service when the Arc-enabled machine starts up.
+	StartupType *string `json:"startupType,omitempty"`
+
+	// The current status of the service.
+	Status *string `json:"status,omitempty"`
 }
 
-func (r ResourceUpdate) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "tags", r.Tags)
+// ServiceStatuses - Reports the state and behavior of dependent services.
+type ServiceStatuses struct {
+	// The state of the extension service on the Arc-enabled machine.
+	ExtensionService *ServiceStatus `json:"extensionService,omitempty"`
+
+	// The state of the guest configuration service on the Arc-enabled machine.
+	GuestConfigurationService *ServiceStatus `json:"guestConfigurationService,omitempty"`
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -1118,102 +917,28 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// TagsResource - A container holding only the Tags for a resource, allowing the user to update the tags on a PrivateLinkScope instance.
+// TagsResource - A container holding only the Tags for a resource, allowing the user to update the tags on a PrivateLinkScope
+// instance.
 type TagsResource struct {
 	// Resource tags
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TagsResource.
-func (t TagsResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", t.Tags)
-	return json.Marshal(objectMap)
-}
-
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "tags", t.Tags)
-}
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
 
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }

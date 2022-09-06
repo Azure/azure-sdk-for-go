@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -8,13 +11,13 @@ import (
 	"context"
 	"errors"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
 	"regexp"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
@@ -22,31 +25,27 @@ import (
 )
 
 const (
+	azureAuthorityHost         = "AZURE_AUTHORITY_HOST"
+	azureClientID              = "AZURE_CLIENT_ID"
+	azureRegionalAuthorityName = "AZURE_REGIONAL_AUTHORITY_NAME"
+
 	organizationsTenantID   = "organizations"
 	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
 	defaultSuffix           = "/.default"
 	tenantIDValidationErr   = "invalid tenantID. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names"
 )
 
-const azureAuthorityHost = "AZURE_AUTHORITY_HOST"
-
-// AuthorityHost is the base URL for Azure Active Directory
-type AuthorityHost string
-
-const (
-	// AzureChina is a global constant to use in order to access the Azure China cloud.
-	AzureChina AuthorityHost = "https://login.chinacloudapi.cn/"
-	// AzureGovernment is a global constant to use in order to access the Azure Government cloud.
-	AzureGovernment AuthorityHost = "https://login.microsoftonline.us/"
-	// AzurePublicCloud is a global constant to use in order to access the Azure public cloud.
-	AzurePublicCloud AuthorityHost = "https://login.microsoftonline.com/"
-)
-
-// setAuthorityHost initializes the authority host for credentials.
-func setAuthorityHost(authorityHost AuthorityHost) (string, error) {
-	host := string(authorityHost)
+// setAuthorityHost initializes the authority host for credentials. Precedence is:
+// 1. cloud.Configuration.ActiveDirectoryAuthorityHost value set by user
+// 2. value of AZURE_AUTHORITY_HOST
+// 3. default: Azure Public Cloud
+func setAuthorityHost(cc cloud.Configuration) (string, error) {
+	host := cc.ActiveDirectoryAuthorityHost
 	if host == "" {
-		host = string(AzurePublicCloud)
+		if len(cc.Services) > 0 {
+			return "", errors.New("missing ActiveDirectoryAuthorityHost for specified cloud")
+		}
+		host = cloud.AzurePublic.ActiveDirectoryAuthorityHost
 		if envAuthorityHost := os.Getenv(azureAuthorityHost); envAuthorityHost != "" {
 			host = envAuthorityHost
 		}
@@ -94,7 +93,7 @@ func (p pipelineAdapter) Do(r *http.Request) (*http.Response, error) {
 		if rsc, ok := r.Body.(io.ReadSeekCloser); ok {
 			body = rsc
 		} else {
-			b, err := ioutil.ReadAll(r.Body)
+			b, err := io.ReadAll(r.Body)
 			if err != nil {
 				return nil, err
 			}

@@ -12,7 +12,7 @@ package compute
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-07-01/compute"
+	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-12-01/compute"
 )
 
 const (
@@ -34,6 +34,20 @@ const (
 	AggregatedReplicationStateFailed     AggregatedReplicationState = original.AggregatedReplicationStateFailed
 	AggregatedReplicationStateInProgress AggregatedReplicationState = original.AggregatedReplicationStateInProgress
 	AggregatedReplicationStateUnknown    AggregatedReplicationState = original.AggregatedReplicationStateUnknown
+)
+
+type Architecture = original.Architecture
+
+const (
+	ArchitectureArm64 Architecture = original.ArchitectureArm64
+	ArchitectureX64   Architecture = original.ArchitectureX64
+)
+
+type ArchitectureTypes = original.ArchitectureTypes
+
+const (
+	ArchitectureTypesArm64 ArchitectureTypes = original.ArchitectureTypesArm64
+	ArchitectureTypesX64   ArchitectureTypes = original.ArchitectureTypesX64
 )
 
 type AvailabilitySetSkuTypes = original.AvailabilitySetSkuTypes
@@ -77,12 +91,27 @@ const (
 	ComponentNamesMicrosoftWindowsShellSetup ComponentNames = original.ComponentNamesMicrosoftWindowsShellSetup
 )
 
+type ConfidentialVMEncryptionType = original.ConfidentialVMEncryptionType
+
+const (
+	ConfidentialVMEncryptionTypeEncryptedVMGuestStateOnlyWithPmk ConfidentialVMEncryptionType = original.ConfidentialVMEncryptionTypeEncryptedVMGuestStateOnlyWithPmk
+	ConfidentialVMEncryptionTypeEncryptedWithCmk                 ConfidentialVMEncryptionType = original.ConfidentialVMEncryptionTypeEncryptedWithCmk
+	ConfidentialVMEncryptionTypeEncryptedWithPmk                 ConfidentialVMEncryptionType = original.ConfidentialVMEncryptionTypeEncryptedWithPmk
+)
+
 type ConsistencyModeTypes = original.ConsistencyModeTypes
 
 const (
 	ConsistencyModeTypesApplicationConsistent ConsistencyModeTypes = original.ConsistencyModeTypesApplicationConsistent
 	ConsistencyModeTypesCrashConsistent       ConsistencyModeTypes = original.ConsistencyModeTypesCrashConsistent
 	ConsistencyModeTypesFileSystemConsistent  ConsistencyModeTypes = original.ConsistencyModeTypesFileSystemConsistent
+)
+
+type DataAccessAuthMode = original.DataAccessAuthMode
+
+const (
+	DataAccessAuthModeAzureActiveDirectory DataAccessAuthMode = original.DataAccessAuthModeAzureActiveDirectory
+	DataAccessAuthModeNone                 DataAccessAuthMode = original.DataAccessAuthModeNone
 )
 
 type DedicatedHostLicenseTypes = original.DedicatedHostLicenseTypes
@@ -116,14 +145,16 @@ const (
 type DiskCreateOption = original.DiskCreateOption
 
 const (
-	DiskCreateOptionAttach    DiskCreateOption = original.DiskCreateOptionAttach
-	DiskCreateOptionCopy      DiskCreateOption = original.DiskCreateOptionCopy
-	DiskCreateOptionCopyStart DiskCreateOption = original.DiskCreateOptionCopyStart
-	DiskCreateOptionEmpty     DiskCreateOption = original.DiskCreateOptionEmpty
-	DiskCreateOptionFromImage DiskCreateOption = original.DiskCreateOptionFromImage
-	DiskCreateOptionImport    DiskCreateOption = original.DiskCreateOptionImport
-	DiskCreateOptionRestore   DiskCreateOption = original.DiskCreateOptionRestore
-	DiskCreateOptionUpload    DiskCreateOption = original.DiskCreateOptionUpload
+	DiskCreateOptionAttach               DiskCreateOption = original.DiskCreateOptionAttach
+	DiskCreateOptionCopy                 DiskCreateOption = original.DiskCreateOptionCopy
+	DiskCreateOptionCopyStart            DiskCreateOption = original.DiskCreateOptionCopyStart
+	DiskCreateOptionEmpty                DiskCreateOption = original.DiskCreateOptionEmpty
+	DiskCreateOptionFromImage            DiskCreateOption = original.DiskCreateOptionFromImage
+	DiskCreateOptionImport               DiskCreateOption = original.DiskCreateOptionImport
+	DiskCreateOptionImportSecure         DiskCreateOption = original.DiskCreateOptionImportSecure
+	DiskCreateOptionRestore              DiskCreateOption = original.DiskCreateOptionRestore
+	DiskCreateOptionUpload               DiskCreateOption = original.DiskCreateOptionUpload
+	DiskCreateOptionUploadPreparedSecure DiskCreateOption = original.DiskCreateOptionUploadPreparedSecure
 )
 
 type DiskCreateOptionTypes = original.DiskCreateOptionTypes
@@ -157,6 +188,7 @@ const (
 type DiskEncryptionSetType = original.DiskEncryptionSetType
 
 const (
+	DiskEncryptionSetTypeConfidentialVMEncryptedWithCustomerKey      DiskEncryptionSetType = original.DiskEncryptionSetTypeConfidentialVMEncryptedWithCustomerKey
 	DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey             DiskEncryptionSetType = original.DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey
 	DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys DiskEncryptionSetType = original.DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys
 )
@@ -164,7 +196,10 @@ const (
 type DiskSecurityTypes = original.DiskSecurityTypes
 
 const (
-	DiskSecurityTypesTrustedLaunch DiskSecurityTypes = original.DiskSecurityTypesTrustedLaunch
+	DiskSecurityTypesConfidentialVMDiskEncryptedWithCustomerKey             DiskSecurityTypes = original.DiskSecurityTypesConfidentialVMDiskEncryptedWithCustomerKey
+	DiskSecurityTypesConfidentialVMDiskEncryptedWithPlatformKey             DiskSecurityTypes = original.DiskSecurityTypesConfidentialVMDiskEncryptedWithPlatformKey
+	DiskSecurityTypesConfidentialVMVMGuestStateOnlyEncryptedWithPlatformKey DiskSecurityTypes = original.DiskSecurityTypesConfidentialVMVMGuestStateOnlyEncryptedWithPlatformKey
+	DiskSecurityTypesTrustedLaunch                                          DiskSecurityTypes = original.DiskSecurityTypesTrustedLaunch
 )
 
 type DiskState = original.DiskState
@@ -234,6 +269,19 @@ type ExtendedLocationTypes = original.ExtendedLocationTypes
 
 const (
 	ExtendedLocationTypesEdgeZone ExtendedLocationTypes = original.ExtendedLocationTypesEdgeZone
+)
+
+type GalleryExpandParams = original.GalleryExpandParams
+
+const (
+	GalleryExpandParamsSharingProfileGroups GalleryExpandParams = original.GalleryExpandParamsSharingProfileGroups
+)
+
+type GalleryExtendedLocationType = original.GalleryExtendedLocationType
+
+const (
+	GalleryExtendedLocationTypeEdgeZone GalleryExtendedLocationType = original.GalleryExtendedLocationTypeEdgeZone
+	GalleryExtendedLocationTypeUnknown  GalleryExtendedLocationType = original.GalleryExtendedLocationTypeUnknown
 )
 
 type GallerySharingPermissionTypes = original.GallerySharingPermissionTypes
@@ -525,6 +573,14 @@ const (
 	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
 )
 
+type RepairAction = original.RepairAction
+
+const (
+	RepairActionReimage RepairAction = original.RepairActionReimage
+	RepairActionReplace RepairAction = original.RepairActionReplace
+	RepairActionRestart RepairAction = original.RepairActionRestart
+)
+
 type ReplicationMode = original.ReplicationMode
 
 const (
@@ -584,6 +640,12 @@ const (
 	RestorePointCollectionExpandOptionsRestorePoints RestorePointCollectionExpandOptions = original.RestorePointCollectionExpandOptionsRestorePoints
 )
 
+type RestorePointExpandOptions = original.RestorePointExpandOptions
+
+const (
+	RestorePointExpandOptionsInstanceView RestorePointExpandOptions = original.RestorePointExpandOptionsInstanceView
+)
+
 type RollingUpgradeActionType = original.RollingUpgradeActionType
 
 const (
@@ -600,10 +662,18 @@ const (
 	RollingUpgradeStatusCodeRollingForward RollingUpgradeStatusCode = original.RollingUpgradeStatusCodeRollingForward
 )
 
+type SecurityEncryptionTypes = original.SecurityEncryptionTypes
+
+const (
+	SecurityEncryptionTypesDiskWithVMGuestState SecurityEncryptionTypes = original.SecurityEncryptionTypesDiskWithVMGuestState
+	SecurityEncryptionTypesVMGuestStateOnly     SecurityEncryptionTypes = original.SecurityEncryptionTypesVMGuestStateOnly
+)
+
 type SecurityTypes = original.SecurityTypes
 
 const (
-	SecurityTypesTrustedLaunch SecurityTypes = original.SecurityTypesTrustedLaunch
+	SecurityTypesConfidentialVM SecurityTypes = original.SecurityTypesConfidentialVM
+	SecurityTypesTrustedLaunch  SecurityTypes = original.SecurityTypesTrustedLaunch
 )
 
 type SelectPermissions = original.SelectPermissions
@@ -629,15 +699,26 @@ type SharingProfileGroupTypes = original.SharingProfileGroupTypes
 
 const (
 	SharingProfileGroupTypesAADTenants    SharingProfileGroupTypes = original.SharingProfileGroupTypesAADTenants
+	SharingProfileGroupTypesCommunity     SharingProfileGroupTypes = original.SharingProfileGroupTypesCommunity
 	SharingProfileGroupTypesSubscriptions SharingProfileGroupTypes = original.SharingProfileGroupTypesSubscriptions
+)
+
+type SharingState = original.SharingState
+
+const (
+	SharingStateFailed     SharingState = original.SharingStateFailed
+	SharingStateInProgress SharingState = original.SharingStateInProgress
+	SharingStateSucceeded  SharingState = original.SharingStateSucceeded
+	SharingStateUnknown    SharingState = original.SharingStateUnknown
 )
 
 type SharingUpdateOperationTypes = original.SharingUpdateOperationTypes
 
 const (
-	SharingUpdateOperationTypesAdd    SharingUpdateOperationTypes = original.SharingUpdateOperationTypesAdd
-	SharingUpdateOperationTypesRemove SharingUpdateOperationTypes = original.SharingUpdateOperationTypesRemove
-	SharingUpdateOperationTypesReset  SharingUpdateOperationTypes = original.SharingUpdateOperationTypesReset
+	SharingUpdateOperationTypesAdd             SharingUpdateOperationTypes = original.SharingUpdateOperationTypesAdd
+	SharingUpdateOperationTypesEnableCommunity SharingUpdateOperationTypes = original.SharingUpdateOperationTypesEnableCommunity
+	SharingUpdateOperationTypesRemove          SharingUpdateOperationTypes = original.SharingUpdateOperationTypesRemove
+	SharingUpdateOperationTypesReset           SharingUpdateOperationTypes = original.SharingUpdateOperationTypesReset
 )
 
 type SnapshotStorageAccountTypes = original.SnapshotStorageAccountTypes
@@ -1067,6 +1148,7 @@ type CommunityGalleryImageVersion = original.CommunityGalleryImageVersion
 type CommunityGalleryImageVersionProperties = original.CommunityGalleryImageVersionProperties
 type CommunityGalleryImageVersionsClient = original.CommunityGalleryImageVersionsClient
 type CommunityGalleryImagesClient = original.CommunityGalleryImagesClient
+type CommunityGalleryInfo = original.CommunityGalleryInfo
 type CreationData = original.CreationData
 type DataDisk = original.DataDisk
 type DataDiskImage = original.DataDiskImage
@@ -1092,6 +1174,7 @@ type DedicatedHostUpdate = original.DedicatedHostUpdate
 type DedicatedHostsClient = original.DedicatedHostsClient
 type DedicatedHostsCreateOrUpdateFuture = original.DedicatedHostsCreateOrUpdateFuture
 type DedicatedHostsDeleteFuture = original.DedicatedHostsDeleteFuture
+type DedicatedHostsRestartFuture = original.DedicatedHostsRestartFuture
 type DedicatedHostsUpdateFuture = original.DedicatedHostsUpdateFuture
 type DiagnosticsProfile = original.DiagnosticsProfile
 type DiffDiskSettings = original.DiffDiskSettings
@@ -1131,10 +1214,12 @@ type DiskProperties = original.DiskProperties
 type DiskRestorePoint = original.DiskRestorePoint
 type DiskRestorePointClient = original.DiskRestorePointClient
 type DiskRestorePointGrantAccessFuture = original.DiskRestorePointGrantAccessFuture
+type DiskRestorePointInstanceView = original.DiskRestorePointInstanceView
 type DiskRestorePointList = original.DiskRestorePointList
 type DiskRestorePointListIterator = original.DiskRestorePointListIterator
 type DiskRestorePointListPage = original.DiskRestorePointListPage
 type DiskRestorePointProperties = original.DiskRestorePointProperties
+type DiskRestorePointReplicationStatus = original.DiskRestorePointReplicationStatus
 type DiskRestorePointRevokeAccessFuture = original.DiskRestorePointRevokeAccessFuture
 type DiskSecurityProfile = original.DiskSecurityProfile
 type DiskSku = original.DiskSku
@@ -1185,6 +1270,7 @@ type GalleryArtifactSource = original.GalleryArtifactSource
 type GalleryArtifactVersionSource = original.GalleryArtifactVersionSource
 type GalleryDataDiskImage = original.GalleryDataDiskImage
 type GalleryDiskImage = original.GalleryDiskImage
+type GalleryExtendedLocation = original.GalleryExtendedLocation
 type GalleryIdentifier = original.GalleryIdentifier
 type GalleryImage = original.GalleryImage
 type GalleryImageFeature = original.GalleryImageFeature
@@ -1217,6 +1303,7 @@ type GalleryOSDiskImage = original.GalleryOSDiskImage
 type GalleryProperties = original.GalleryProperties
 type GallerySharingProfileClient = original.GallerySharingProfileClient
 type GallerySharingProfileUpdateFuture = original.GallerySharingProfileUpdateFuture
+type GalleryTargetExtendedLocation = original.GalleryTargetExtendedLocation
 type GalleryUpdate = original.GalleryUpdate
 type GrantAccessData = original.GrantAccessData
 type HardwareProfile = original.HardwareProfile
@@ -1274,6 +1361,7 @@ type NetworkProfile = original.NetworkProfile
 type OSDisk = original.OSDisk
 type OSDiskImage = original.OSDiskImage
 type OSDiskImageEncryption = original.OSDiskImageEncryption
+type OSDiskImageSecurityProfile = original.OSDiskImageSecurityProfile
 type OSFamily = original.OSFamily
 type OSFamilyListResult = original.OSFamilyListResult
 type OSFamilyListResultIterator = original.OSFamilyListResultIterator
@@ -1324,6 +1412,7 @@ type ReadCloser = original.ReadCloser
 type RecommendedMachineConfiguration = original.RecommendedMachineConfiguration
 type RecoveryWalkResponse = original.RecoveryWalkResponse
 type RegionalReplicationStatus = original.RegionalReplicationStatus
+type RegionalSharingStatus = original.RegionalSharingStatus
 type ReplicationStatus = original.ReplicationStatus
 type RequestRateByIntervalInput = original.RequestRateByIntervalInput
 type Resource = original.Resource
@@ -1354,8 +1443,8 @@ type RestorePointCollectionSourceProperties = original.RestorePointCollectionSou
 type RestorePointCollectionUpdate = original.RestorePointCollectionUpdate
 type RestorePointCollectionsClient = original.RestorePointCollectionsClient
 type RestorePointCollectionsDeleteFuture = original.RestorePointCollectionsDeleteFuture
+type RestorePointInstanceView = original.RestorePointInstanceView
 type RestorePointProperties = original.RestorePointProperties
-type RestorePointProvisioningDetails = original.RestorePointProvisioningDetails
 type RestorePointSourceMetadata = original.RestorePointSourceMetadata
 type RestorePointSourceVMDataDisk = original.RestorePointSourceVMDataDisk
 type RestorePointSourceVMOSDisk = original.RestorePointSourceVMOSDisk
@@ -1421,6 +1510,7 @@ type SharedGalleryListIterator = original.SharedGalleryListIterator
 type SharedGalleryListPage = original.SharedGalleryListPage
 type SharingProfile = original.SharingProfile
 type SharingProfileGroup = original.SharingProfileGroup
+type SharingStatus = original.SharingStatus
 type SharingUpdate = original.SharingUpdate
 type Sku = original.Sku
 type Snapshot = original.Snapshot
@@ -1465,6 +1555,7 @@ type UsageClient = original.UsageClient
 type UsageName = original.UsageName
 type UserArtifactManage = original.UserArtifactManage
 type UserArtifactSource = original.UserArtifactSource
+type VMDiskSecurityProfile = original.VMDiskSecurityProfile
 type VMGalleryApplication = original.VMGalleryApplication
 type VMScaleSetConvertToSinglePlacementGroupInput = original.VMScaleSetConvertToSinglePlacementGroupInput
 type VMSizeProperties = original.VMSizeProperties
@@ -1542,6 +1633,7 @@ type VirtualMachineScaleSetExtensionsClient = original.VirtualMachineScaleSetExt
 type VirtualMachineScaleSetExtensionsCreateOrUpdateFuture = original.VirtualMachineScaleSetExtensionsCreateOrUpdateFuture
 type VirtualMachineScaleSetExtensionsDeleteFuture = original.VirtualMachineScaleSetExtensionsDeleteFuture
 type VirtualMachineScaleSetExtensionsUpdateFuture = original.VirtualMachineScaleSetExtensionsUpdateFuture
+type VirtualMachineScaleSetHardwareProfile = original.VirtualMachineScaleSetHardwareProfile
 type VirtualMachineScaleSetIPConfiguration = original.VirtualMachineScaleSetIPConfiguration
 type VirtualMachineScaleSetIPConfigurationProperties = original.VirtualMachineScaleSetIPConfigurationProperties
 type VirtualMachineScaleSetIPTag = original.VirtualMachineScaleSetIPTag
@@ -2224,6 +2316,12 @@ func PossibleAccessLevelValues() []AccessLevel {
 func PossibleAggregatedReplicationStateValues() []AggregatedReplicationState {
 	return original.PossibleAggregatedReplicationStateValues()
 }
+func PossibleArchitectureTypesValues() []ArchitectureTypes {
+	return original.PossibleArchitectureTypesValues()
+}
+func PossibleArchitectureValues() []Architecture {
+	return original.PossibleArchitectureValues()
+}
 func PossibleAvailabilitySetSkuTypesValues() []AvailabilitySetSkuTypes {
 	return original.PossibleAvailabilitySetSkuTypesValues()
 }
@@ -2242,8 +2340,14 @@ func PossibleCloudServiceUpgradeModeValues() []CloudServiceUpgradeMode {
 func PossibleComponentNamesValues() []ComponentNames {
 	return original.PossibleComponentNamesValues()
 }
+func PossibleConfidentialVMEncryptionTypeValues() []ConfidentialVMEncryptionType {
+	return original.PossibleConfidentialVMEncryptionTypeValues()
+}
 func PossibleConsistencyModeTypesValues() []ConsistencyModeTypes {
 	return original.PossibleConsistencyModeTypesValues()
+}
+func PossibleDataAccessAuthModeValues() []DataAccessAuthMode {
+	return original.PossibleDataAccessAuthModeValues()
 }
 func PossibleDedicatedHostLicenseTypesValues() []DedicatedHostLicenseTypes {
 	return original.PossibleDedicatedHostLicenseTypesValues()
@@ -2301,6 +2405,12 @@ func PossibleExtendedLocationTypeValues() []ExtendedLocationType {
 }
 func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	return original.PossibleExtendedLocationTypesValues()
+}
+func PossibleGalleryExpandParamsValues() []GalleryExpandParams {
+	return original.PossibleGalleryExpandParamsValues()
+}
+func PossibleGalleryExtendedLocationTypeValues() []GalleryExtendedLocationType {
+	return original.PossibleGalleryExtendedLocationTypeValues()
 }
 func PossibleGallerySharingPermissionTypesValues() []GallerySharingPermissionTypes {
 	return original.PossibleGallerySharingPermissionTypesValues()
@@ -2413,6 +2523,9 @@ func PossiblePublicIPAllocationMethodValues() []PublicIPAllocationMethod {
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return original.PossiblePublicNetworkAccessValues()
 }
+func PossibleRepairActionValues() []RepairAction {
+	return original.PossibleRepairActionValues()
+}
 func PossibleReplicationModeValues() []ReplicationMode {
 	return original.PossibleReplicationModeValues()
 }
@@ -2437,11 +2550,17 @@ func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
 func PossibleRestorePointCollectionExpandOptionsValues() []RestorePointCollectionExpandOptions {
 	return original.PossibleRestorePointCollectionExpandOptionsValues()
 }
+func PossibleRestorePointExpandOptionsValues() []RestorePointExpandOptions {
+	return original.PossibleRestorePointExpandOptionsValues()
+}
 func PossibleRollingUpgradeActionTypeValues() []RollingUpgradeActionType {
 	return original.PossibleRollingUpgradeActionTypeValues()
 }
 func PossibleRollingUpgradeStatusCodeValues() []RollingUpgradeStatusCode {
 	return original.PossibleRollingUpgradeStatusCodeValues()
+}
+func PossibleSecurityEncryptionTypesValues() []SecurityEncryptionTypes {
+	return original.PossibleSecurityEncryptionTypesValues()
 }
 func PossibleSecurityTypesValues() []SecurityTypes {
 	return original.PossibleSecurityTypesValues()
@@ -2457,6 +2576,9 @@ func PossibleSharedToValuesValues() []SharedToValues {
 }
 func PossibleSharingProfileGroupTypesValues() []SharingProfileGroupTypes {
 	return original.PossibleSharingProfileGroupTypesValues()
+}
+func PossibleSharingStateValues() []SharingState {
+	return original.PossibleSharingStateValues()
 }
 func PossibleSharingUpdateOperationTypesValues() []SharingUpdateOperationTypes {
 	return original.PossibleSharingUpdateOperationTypesValues()

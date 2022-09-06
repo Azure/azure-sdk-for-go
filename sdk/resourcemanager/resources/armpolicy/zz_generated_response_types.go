@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,466 +8,207 @@
 
 package armpolicy
 
-import "net/http"
-
-// DataPolicyManifestsGetByPolicyModeResponse contains the response from method DataPolicyManifests.GetByPolicyMode.
-type DataPolicyManifestsGetByPolicyModeResponse struct {
-	DataPolicyManifestsGetByPolicyModeResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// AssignmentsClientCreateByIDResponse contains the response from method AssignmentsClient.CreateByID.
+type AssignmentsClientCreateByIDResponse struct {
+	Assignment
 }
 
-// DataPolicyManifestsGetByPolicyModeResult contains the result from method DataPolicyManifests.GetByPolicyMode.
-type DataPolicyManifestsGetByPolicyModeResult struct {
+// AssignmentsClientCreateResponse contains the response from method AssignmentsClient.Create.
+type AssignmentsClientCreateResponse struct {
+	Assignment
+}
+
+// AssignmentsClientDeleteByIDResponse contains the response from method AssignmentsClient.DeleteByID.
+type AssignmentsClientDeleteByIDResponse struct {
+	Assignment
+}
+
+// AssignmentsClientDeleteResponse contains the response from method AssignmentsClient.Delete.
+type AssignmentsClientDeleteResponse struct {
+	Assignment
+}
+
+// AssignmentsClientGetByIDResponse contains the response from method AssignmentsClient.GetByID.
+type AssignmentsClientGetByIDResponse struct {
+	Assignment
+}
+
+// AssignmentsClientGetResponse contains the response from method AssignmentsClient.Get.
+type AssignmentsClientGetResponse struct {
+	Assignment
+}
+
+// AssignmentsClientListForManagementGroupResponse contains the response from method AssignmentsClient.ListForManagementGroup.
+type AssignmentsClientListForManagementGroupResponse struct {
+	AssignmentListResult
+}
+
+// AssignmentsClientListForResourceGroupResponse contains the response from method AssignmentsClient.ListForResourceGroup.
+type AssignmentsClientListForResourceGroupResponse struct {
+	AssignmentListResult
+}
+
+// AssignmentsClientListForResourceResponse contains the response from method AssignmentsClient.ListForResource.
+type AssignmentsClientListForResourceResponse struct {
+	AssignmentListResult
+}
+
+// AssignmentsClientListResponse contains the response from method AssignmentsClient.List.
+type AssignmentsClientListResponse struct {
+	AssignmentListResult
+}
+
+// AssignmentsClientUpdateByIDResponse contains the response from method AssignmentsClient.UpdateByID.
+type AssignmentsClientUpdateByIDResponse struct {
+	Assignment
+}
+
+// AssignmentsClientUpdateResponse contains the response from method AssignmentsClient.Update.
+type AssignmentsClientUpdateResponse struct {
+	Assignment
+}
+
+// DataPolicyManifestsClientGetByPolicyModeResponse contains the response from method DataPolicyManifestsClient.GetByPolicyMode.
+type DataPolicyManifestsClientGetByPolicyModeResponse struct {
 	DataPolicyManifest
 }
 
-// DataPolicyManifestsListResponse contains the response from method DataPolicyManifests.List.
-type DataPolicyManifestsListResponse struct {
-	DataPolicyManifestsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DataPolicyManifestsListResult contains the result from method DataPolicyManifests.List.
-type DataPolicyManifestsListResult struct {
+// DataPolicyManifestsClientListResponse contains the response from method DataPolicyManifestsClient.List.
+type DataPolicyManifestsClientListResponse struct {
 	DataPolicyManifestListResult
 }
 
-// PolicyAssignmentsCreateByIDResponse contains the response from method PolicyAssignments.CreateByID.
-type PolicyAssignmentsCreateByIDResponse struct {
-	PolicyAssignmentsCreateByIDResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// DefinitionsClientCreateOrUpdateAtManagementGroupResponse contains the response from method DefinitionsClient.CreateOrUpdateAtManagementGroup.
+type DefinitionsClientCreateOrUpdateAtManagementGroupResponse struct {
+	Definition
 }
 
-// PolicyAssignmentsCreateByIDResult contains the result from method PolicyAssignments.CreateByID.
-type PolicyAssignmentsCreateByIDResult struct {
-	PolicyAssignment
+// DefinitionsClientCreateOrUpdateResponse contains the response from method DefinitionsClient.CreateOrUpdate.
+type DefinitionsClientCreateOrUpdateResponse struct {
+	Definition
 }
 
-// PolicyAssignmentsCreateResponse contains the response from method PolicyAssignments.Create.
-type PolicyAssignmentsCreateResponse struct {
-	PolicyAssignmentsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// DefinitionsClientDeleteAtManagementGroupResponse contains the response from method DefinitionsClient.DeleteAtManagementGroup.
+type DefinitionsClientDeleteAtManagementGroupResponse struct {
+	// placeholder for future response values
 }
 
-// PolicyAssignmentsCreateResult contains the result from method PolicyAssignments.Create.
-type PolicyAssignmentsCreateResult struct {
-	PolicyAssignment
+// DefinitionsClientDeleteResponse contains the response from method DefinitionsClient.Delete.
+type DefinitionsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PolicyAssignmentsDeleteByIDResponse contains the response from method PolicyAssignments.DeleteByID.
-type PolicyAssignmentsDeleteByIDResponse struct {
-	PolicyAssignmentsDeleteByIDResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// DefinitionsClientGetAtManagementGroupResponse contains the response from method DefinitionsClient.GetAtManagementGroup.
+type DefinitionsClientGetAtManagementGroupResponse struct {
+	Definition
 }
 
-// PolicyAssignmentsDeleteByIDResult contains the result from method PolicyAssignments.DeleteByID.
-type PolicyAssignmentsDeleteByIDResult struct {
-	PolicyAssignment
+// DefinitionsClientGetBuiltInResponse contains the response from method DefinitionsClient.GetBuiltIn.
+type DefinitionsClientGetBuiltInResponse struct {
+	Definition
 }
 
-// PolicyAssignmentsDeleteResponse contains the response from method PolicyAssignments.Delete.
-type PolicyAssignmentsDeleteResponse struct {
-	PolicyAssignmentsDeleteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// DefinitionsClientGetResponse contains the response from method DefinitionsClient.Get.
+type DefinitionsClientGetResponse struct {
+	Definition
 }
 
-// PolicyAssignmentsDeleteResult contains the result from method PolicyAssignments.Delete.
-type PolicyAssignmentsDeleteResult struct {
-	PolicyAssignment
+// DefinitionsClientListBuiltInResponse contains the response from method DefinitionsClient.ListBuiltIn.
+type DefinitionsClientListBuiltInResponse struct {
+	DefinitionListResult
 }
 
-// PolicyAssignmentsGetByIDResponse contains the response from method PolicyAssignments.GetByID.
-type PolicyAssignmentsGetByIDResponse struct {
-	PolicyAssignmentsGetByIDResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// DefinitionsClientListByManagementGroupResponse contains the response from method DefinitionsClient.ListByManagementGroup.
+type DefinitionsClientListByManagementGroupResponse struct {
+	DefinitionListResult
 }
 
-// PolicyAssignmentsGetByIDResult contains the result from method PolicyAssignments.GetByID.
-type PolicyAssignmentsGetByIDResult struct {
-	PolicyAssignment
+// DefinitionsClientListResponse contains the response from method DefinitionsClient.List.
+type DefinitionsClientListResponse struct {
+	DefinitionListResult
 }
 
-// PolicyAssignmentsGetResponse contains the response from method PolicyAssignments.Get.
-type PolicyAssignmentsGetResponse struct {
-	PolicyAssignmentsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ExemptionsClientCreateOrUpdateResponse contains the response from method ExemptionsClient.CreateOrUpdate.
+type ExemptionsClientCreateOrUpdateResponse struct {
+	Exemption
 }
 
-// PolicyAssignmentsGetResult contains the result from method PolicyAssignments.Get.
-type PolicyAssignmentsGetResult struct {
-	PolicyAssignment
+// ExemptionsClientDeleteResponse contains the response from method ExemptionsClient.Delete.
+type ExemptionsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PolicyAssignmentsListForManagementGroupResponse contains the response from method PolicyAssignments.ListForManagementGroup.
-type PolicyAssignmentsListForManagementGroupResponse struct {
-	PolicyAssignmentsListForManagementGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ExemptionsClientGetResponse contains the response from method ExemptionsClient.Get.
+type ExemptionsClientGetResponse struct {
+	Exemption
 }
 
-// PolicyAssignmentsListForManagementGroupResult contains the result from method PolicyAssignments.ListForManagementGroup.
-type PolicyAssignmentsListForManagementGroupResult struct {
-	PolicyAssignmentListResult
+// ExemptionsClientListForManagementGroupResponse contains the response from method ExemptionsClient.ListForManagementGroup.
+type ExemptionsClientListForManagementGroupResponse struct {
+	ExemptionListResult
 }
 
-// PolicyAssignmentsListForResourceGroupResponse contains the response from method PolicyAssignments.ListForResourceGroup.
-type PolicyAssignmentsListForResourceGroupResponse struct {
-	PolicyAssignmentsListForResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ExemptionsClientListForResourceGroupResponse contains the response from method ExemptionsClient.ListForResourceGroup.
+type ExemptionsClientListForResourceGroupResponse struct {
+	ExemptionListResult
 }
 
-// PolicyAssignmentsListForResourceGroupResult contains the result from method PolicyAssignments.ListForResourceGroup.
-type PolicyAssignmentsListForResourceGroupResult struct {
-	PolicyAssignmentListResult
+// ExemptionsClientListForResourceResponse contains the response from method ExemptionsClient.ListForResource.
+type ExemptionsClientListForResourceResponse struct {
+	ExemptionListResult
 }
 
-// PolicyAssignmentsListForResourceResponse contains the response from method PolicyAssignments.ListForResource.
-type PolicyAssignmentsListForResourceResponse struct {
-	PolicyAssignmentsListForResourceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ExemptionsClientListResponse contains the response from method ExemptionsClient.List.
+type ExemptionsClientListResponse struct {
+	ExemptionListResult
 }
 
-// PolicyAssignmentsListForResourceResult contains the result from method PolicyAssignments.ListForResource.
-type PolicyAssignmentsListForResourceResult struct {
-	PolicyAssignmentListResult
+// SetDefinitionsClientCreateOrUpdateAtManagementGroupResponse contains the response from method SetDefinitionsClient.CreateOrUpdateAtManagementGroup.
+type SetDefinitionsClientCreateOrUpdateAtManagementGroupResponse struct {
+	SetDefinition
 }
 
-// PolicyAssignmentsListResponse contains the response from method PolicyAssignments.List.
-type PolicyAssignmentsListResponse struct {
-	PolicyAssignmentsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// SetDefinitionsClientCreateOrUpdateResponse contains the response from method SetDefinitionsClient.CreateOrUpdate.
+type SetDefinitionsClientCreateOrUpdateResponse struct {
+	SetDefinition
 }
 
-// PolicyAssignmentsListResult contains the result from method PolicyAssignments.List.
-type PolicyAssignmentsListResult struct {
-	PolicyAssignmentListResult
+// SetDefinitionsClientDeleteAtManagementGroupResponse contains the response from method SetDefinitionsClient.DeleteAtManagementGroup.
+type SetDefinitionsClientDeleteAtManagementGroupResponse struct {
+	// placeholder for future response values
 }
 
-// PolicyAssignmentsUpdateByIDResponse contains the response from method PolicyAssignments.UpdateByID.
-type PolicyAssignmentsUpdateByIDResponse struct {
-	PolicyAssignmentsUpdateByIDResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// SetDefinitionsClientDeleteResponse contains the response from method SetDefinitionsClient.Delete.
+type SetDefinitionsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PolicyAssignmentsUpdateByIDResult contains the result from method PolicyAssignments.UpdateByID.
-type PolicyAssignmentsUpdateByIDResult struct {
-	PolicyAssignment
+// SetDefinitionsClientGetAtManagementGroupResponse contains the response from method SetDefinitionsClient.GetAtManagementGroup.
+type SetDefinitionsClientGetAtManagementGroupResponse struct {
+	SetDefinition
 }
 
-// PolicyAssignmentsUpdateResponse contains the response from method PolicyAssignments.Update.
-type PolicyAssignmentsUpdateResponse struct {
-	PolicyAssignmentsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// SetDefinitionsClientGetBuiltInResponse contains the response from method SetDefinitionsClient.GetBuiltIn.
+type SetDefinitionsClientGetBuiltInResponse struct {
+	SetDefinition
 }
 
-// PolicyAssignmentsUpdateResult contains the result from method PolicyAssignments.Update.
-type PolicyAssignmentsUpdateResult struct {
-	PolicyAssignment
+// SetDefinitionsClientGetResponse contains the response from method SetDefinitionsClient.Get.
+type SetDefinitionsClientGetResponse struct {
+	SetDefinition
 }
 
-// PolicyDefinitionsCreateOrUpdateAtManagementGroupResponse contains the response from method PolicyDefinitions.CreateOrUpdateAtManagementGroup.
-type PolicyDefinitionsCreateOrUpdateAtManagementGroupResponse struct {
-	PolicyDefinitionsCreateOrUpdateAtManagementGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// SetDefinitionsClientListBuiltInResponse contains the response from method SetDefinitionsClient.ListBuiltIn.
+type SetDefinitionsClientListBuiltInResponse struct {
+	SetDefinitionListResult
 }
 
-// PolicyDefinitionsCreateOrUpdateAtManagementGroupResult contains the result from method PolicyDefinitions.CreateOrUpdateAtManagementGroup.
-type PolicyDefinitionsCreateOrUpdateAtManagementGroupResult struct {
-	PolicyDefinition
+// SetDefinitionsClientListByManagementGroupResponse contains the response from method SetDefinitionsClient.ListByManagementGroup.
+type SetDefinitionsClientListByManagementGroupResponse struct {
+	SetDefinitionListResult
 }
 
-// PolicyDefinitionsCreateOrUpdateResponse contains the response from method PolicyDefinitions.CreateOrUpdate.
-type PolicyDefinitionsCreateOrUpdateResponse struct {
-	PolicyDefinitionsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicyDefinitionsCreateOrUpdateResult contains the result from method PolicyDefinitions.CreateOrUpdate.
-type PolicyDefinitionsCreateOrUpdateResult struct {
-	PolicyDefinition
-}
-
-// PolicyDefinitionsDeleteAtManagementGroupResponse contains the response from method PolicyDefinitions.DeleteAtManagementGroup.
-type PolicyDefinitionsDeleteAtManagementGroupResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicyDefinitionsDeleteResponse contains the response from method PolicyDefinitions.Delete.
-type PolicyDefinitionsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicyDefinitionsGetAtManagementGroupResponse contains the response from method PolicyDefinitions.GetAtManagementGroup.
-type PolicyDefinitionsGetAtManagementGroupResponse struct {
-	PolicyDefinitionsGetAtManagementGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicyDefinitionsGetAtManagementGroupResult contains the result from method PolicyDefinitions.GetAtManagementGroup.
-type PolicyDefinitionsGetAtManagementGroupResult struct {
-	PolicyDefinition
-}
-
-// PolicyDefinitionsGetBuiltInResponse contains the response from method PolicyDefinitions.GetBuiltIn.
-type PolicyDefinitionsGetBuiltInResponse struct {
-	PolicyDefinitionsGetBuiltInResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicyDefinitionsGetBuiltInResult contains the result from method PolicyDefinitions.GetBuiltIn.
-type PolicyDefinitionsGetBuiltInResult struct {
-	PolicyDefinition
-}
-
-// PolicyDefinitionsGetResponse contains the response from method PolicyDefinitions.Get.
-type PolicyDefinitionsGetResponse struct {
-	PolicyDefinitionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicyDefinitionsGetResult contains the result from method PolicyDefinitions.Get.
-type PolicyDefinitionsGetResult struct {
-	PolicyDefinition
-}
-
-// PolicyDefinitionsListBuiltInResponse contains the response from method PolicyDefinitions.ListBuiltIn.
-type PolicyDefinitionsListBuiltInResponse struct {
-	PolicyDefinitionsListBuiltInResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicyDefinitionsListBuiltInResult contains the result from method PolicyDefinitions.ListBuiltIn.
-type PolicyDefinitionsListBuiltInResult struct {
-	PolicyDefinitionListResult
-}
-
-// PolicyDefinitionsListByManagementGroupResponse contains the response from method PolicyDefinitions.ListByManagementGroup.
-type PolicyDefinitionsListByManagementGroupResponse struct {
-	PolicyDefinitionsListByManagementGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicyDefinitionsListByManagementGroupResult contains the result from method PolicyDefinitions.ListByManagementGroup.
-type PolicyDefinitionsListByManagementGroupResult struct {
-	PolicyDefinitionListResult
-}
-
-// PolicyDefinitionsListResponse contains the response from method PolicyDefinitions.List.
-type PolicyDefinitionsListResponse struct {
-	PolicyDefinitionsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicyDefinitionsListResult contains the result from method PolicyDefinitions.List.
-type PolicyDefinitionsListResult struct {
-	PolicyDefinitionListResult
-}
-
-// PolicyExemptionsCreateOrUpdateResponse contains the response from method PolicyExemptions.CreateOrUpdate.
-type PolicyExemptionsCreateOrUpdateResponse struct {
-	PolicyExemptionsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicyExemptionsCreateOrUpdateResult contains the result from method PolicyExemptions.CreateOrUpdate.
-type PolicyExemptionsCreateOrUpdateResult struct {
-	PolicyExemption
-}
-
-// PolicyExemptionsDeleteResponse contains the response from method PolicyExemptions.Delete.
-type PolicyExemptionsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicyExemptionsGetResponse contains the response from method PolicyExemptions.Get.
-type PolicyExemptionsGetResponse struct {
-	PolicyExemptionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicyExemptionsGetResult contains the result from method PolicyExemptions.Get.
-type PolicyExemptionsGetResult struct {
-	PolicyExemption
-}
-
-// PolicyExemptionsListForManagementGroupResponse contains the response from method PolicyExemptions.ListForManagementGroup.
-type PolicyExemptionsListForManagementGroupResponse struct {
-	PolicyExemptionsListForManagementGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicyExemptionsListForManagementGroupResult contains the result from method PolicyExemptions.ListForManagementGroup.
-type PolicyExemptionsListForManagementGroupResult struct {
-	PolicyExemptionListResult
-}
-
-// PolicyExemptionsListForResourceGroupResponse contains the response from method PolicyExemptions.ListForResourceGroup.
-type PolicyExemptionsListForResourceGroupResponse struct {
-	PolicyExemptionsListForResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicyExemptionsListForResourceGroupResult contains the result from method PolicyExemptions.ListForResourceGroup.
-type PolicyExemptionsListForResourceGroupResult struct {
-	PolicyExemptionListResult
-}
-
-// PolicyExemptionsListForResourceResponse contains the response from method PolicyExemptions.ListForResource.
-type PolicyExemptionsListForResourceResponse struct {
-	PolicyExemptionsListForResourceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicyExemptionsListForResourceResult contains the result from method PolicyExemptions.ListForResource.
-type PolicyExemptionsListForResourceResult struct {
-	PolicyExemptionListResult
-}
-
-// PolicyExemptionsListResponse contains the response from method PolicyExemptions.List.
-type PolicyExemptionsListResponse struct {
-	PolicyExemptionsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicyExemptionsListResult contains the result from method PolicyExemptions.List.
-type PolicyExemptionsListResult struct {
-	PolicyExemptionListResult
-}
-
-// PolicySetDefinitionsCreateOrUpdateAtManagementGroupResponse contains the response from method PolicySetDefinitions.CreateOrUpdateAtManagementGroup.
-type PolicySetDefinitionsCreateOrUpdateAtManagementGroupResponse struct {
-	PolicySetDefinitionsCreateOrUpdateAtManagementGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicySetDefinitionsCreateOrUpdateAtManagementGroupResult contains the result from method PolicySetDefinitions.CreateOrUpdateAtManagementGroup.
-type PolicySetDefinitionsCreateOrUpdateAtManagementGroupResult struct {
-	PolicySetDefinition
-}
-
-// PolicySetDefinitionsCreateOrUpdateResponse contains the response from method PolicySetDefinitions.CreateOrUpdate.
-type PolicySetDefinitionsCreateOrUpdateResponse struct {
-	PolicySetDefinitionsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicySetDefinitionsCreateOrUpdateResult contains the result from method PolicySetDefinitions.CreateOrUpdate.
-type PolicySetDefinitionsCreateOrUpdateResult struct {
-	PolicySetDefinition
-}
-
-// PolicySetDefinitionsDeleteAtManagementGroupResponse contains the response from method PolicySetDefinitions.DeleteAtManagementGroup.
-type PolicySetDefinitionsDeleteAtManagementGroupResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicySetDefinitionsDeleteResponse contains the response from method PolicySetDefinitions.Delete.
-type PolicySetDefinitionsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicySetDefinitionsGetAtManagementGroupResponse contains the response from method PolicySetDefinitions.GetAtManagementGroup.
-type PolicySetDefinitionsGetAtManagementGroupResponse struct {
-	PolicySetDefinitionsGetAtManagementGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicySetDefinitionsGetAtManagementGroupResult contains the result from method PolicySetDefinitions.GetAtManagementGroup.
-type PolicySetDefinitionsGetAtManagementGroupResult struct {
-	PolicySetDefinition
-}
-
-// PolicySetDefinitionsGetBuiltInResponse contains the response from method PolicySetDefinitions.GetBuiltIn.
-type PolicySetDefinitionsGetBuiltInResponse struct {
-	PolicySetDefinitionsGetBuiltInResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicySetDefinitionsGetBuiltInResult contains the result from method PolicySetDefinitions.GetBuiltIn.
-type PolicySetDefinitionsGetBuiltInResult struct {
-	PolicySetDefinition
-}
-
-// PolicySetDefinitionsGetResponse contains the response from method PolicySetDefinitions.Get.
-type PolicySetDefinitionsGetResponse struct {
-	PolicySetDefinitionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicySetDefinitionsGetResult contains the result from method PolicySetDefinitions.Get.
-type PolicySetDefinitionsGetResult struct {
-	PolicySetDefinition
-}
-
-// PolicySetDefinitionsListBuiltInResponse contains the response from method PolicySetDefinitions.ListBuiltIn.
-type PolicySetDefinitionsListBuiltInResponse struct {
-	PolicySetDefinitionsListBuiltInResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicySetDefinitionsListBuiltInResult contains the result from method PolicySetDefinitions.ListBuiltIn.
-type PolicySetDefinitionsListBuiltInResult struct {
-	PolicySetDefinitionListResult
-}
-
-// PolicySetDefinitionsListByManagementGroupResponse contains the response from method PolicySetDefinitions.ListByManagementGroup.
-type PolicySetDefinitionsListByManagementGroupResponse struct {
-	PolicySetDefinitionsListByManagementGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicySetDefinitionsListByManagementGroupResult contains the result from method PolicySetDefinitions.ListByManagementGroup.
-type PolicySetDefinitionsListByManagementGroupResult struct {
-	PolicySetDefinitionListResult
-}
-
-// PolicySetDefinitionsListResponse contains the response from method PolicySetDefinitions.List.
-type PolicySetDefinitionsListResponse struct {
-	PolicySetDefinitionsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PolicySetDefinitionsListResult contains the result from method PolicySetDefinitions.List.
-type PolicySetDefinitionsListResult struct {
-	PolicySetDefinitionListResult
+// SetDefinitionsClientListResponse contains the response from method SetDefinitionsClient.List.
+type SetDefinitionsClientListResponse struct {
+	SetDefinitionListResult
 }

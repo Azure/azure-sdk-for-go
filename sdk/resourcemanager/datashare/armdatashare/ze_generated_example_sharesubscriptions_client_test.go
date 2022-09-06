@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,209 +19,261 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datashare/armdatashare"
 )
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_CancelSynchronization.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_CancelSynchronization.json
 func ExampleShareSubscriptionsClient_BeginCancelSynchronization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewShareSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewShareSubscriptionsClient("12345678-1234-1234-12345678abc", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCancelSynchronization(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-subscription-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"ShareSubscription1",
 		armdatashare.ShareSubscriptionSynchronization{
-			SynchronizationID: to.StringPtr("<synchronization-id>"),
+			SynchronizationID: to.Ptr("7d0536a6-3fa5-43de-b152-3d07c4f6b2bb"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_ListSourceShareSynchronizationSettings.json
-func ExampleShareSubscriptionsClient_ListSourceShareSynchronizationSettings() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_ListSourceShareSynchronizationSettings.json
+func ExampleShareSubscriptionsClient_NewListSourceShareSynchronizationSettingsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewShareSubscriptionsClient("<subscription-id>", cred, nil)
-	pager := client.ListSourceShareSynchronizationSettings("<resource-group-name>",
-		"<account-name>",
-		"<share-subscription-name>",
-		&armdatashare.ShareSubscriptionsListSourceShareSynchronizationSettingsOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armdatashare.NewShareSubscriptionsClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListSourceShareSynchronizationSettingsPager("SampleResourceGroup",
+		"Account1",
+		"ShareSub1",
+		&armdatashare.ShareSubscriptionsClientListSourceShareSynchronizationSettingsOptions{SkipToken: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_ListSynchronizationDetails.json
-func ExampleShareSubscriptionsClient_ListSynchronizationDetails() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_ListSynchronizationDetails.json
+func ExampleShareSubscriptionsClient_NewListSynchronizationDetailsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewShareSubscriptionsClient("<subscription-id>", cred, nil)
-	pager := client.ListSynchronizationDetails("<resource-group-name>",
-		"<account-name>",
-		"<share-subscription-name>",
+	client, err := armdatashare.NewShareSubscriptionsClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListSynchronizationDetailsPager("SampleResourceGroup",
+		"Account1",
+		"ShareSub1",
 		armdatashare.ShareSubscriptionSynchronization{
-			SynchronizationID: to.StringPtr("<synchronization-id>"),
+			SynchronizationID: to.Ptr("7d0536a6-3fa5-43de-b152-3d07c4f6b2bb"),
 		},
-		&armdatashare.ShareSubscriptionsListSynchronizationDetailsOptions{SkipToken: nil,
+		&armdatashare.ShareSubscriptionsClientListSynchronizationDetailsOptions{SkipToken: nil,
 			Filter:  nil,
 			Orderby: nil,
 		})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_ListSynchronizations.json
-func ExampleShareSubscriptionsClient_ListSynchronizations() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_ListSynchronizations.json
+func ExampleShareSubscriptionsClient_NewListSynchronizationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewShareSubscriptionsClient("<subscription-id>", cred, nil)
-	pager := client.ListSynchronizations("<resource-group-name>",
-		"<account-name>",
-		"<share-subscription-name>",
-		&armdatashare.ShareSubscriptionsListSynchronizationsOptions{SkipToken: nil,
+	client, err := armdatashare.NewShareSubscriptionsClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListSynchronizationsPager("SampleResourceGroup",
+		"Account1",
+		"ShareSub1",
+		&armdatashare.ShareSubscriptionsClientListSynchronizationsOptions{SkipToken: nil,
 			Filter:  nil,
 			Orderby: nil,
 		})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_Synchronize.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_Synchronize.json
 func ExampleShareSubscriptionsClient_BeginSynchronize() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewShareSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewShareSubscriptionsClient("12345678-1234-1234-12345678abc", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginSynchronize(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-subscription-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"ShareSubscription1",
 		armdatashare.Synchronize{
-			SynchronizationMode: armdatashare.SynchronizationModeIncremental.ToPtr(),
+			SynchronizationMode: to.Ptr(armdatashare.SynchronizationModeIncremental),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_Get.json
 func ExampleShareSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewShareSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewShareSubscriptionsClient("12345678-1234-1234-12345678abc", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-subscription-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"ShareSubscription1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("ShareSubscription.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_Create.json
 func ExampleShareSubscriptionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewShareSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewShareSubscriptionsClient("12345678-1234-1234-12345678abc", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-subscription-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"ShareSubscription1",
 		armdatashare.ShareSubscription{
 			Properties: &armdatashare.ShareSubscriptionProperties{
-				ExpirationDate:      to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.5785265Z"); return t }()),
-				InvitationID:        to.StringPtr("<invitation-id>"),
-				SourceShareLocation: to.StringPtr("<source-share-location>"),
+				ExpirationDate:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.5785265Z"); return t }()),
+				InvitationID:        to.Ptr("12345678-1234-1234-12345678abd"),
+				SourceShareLocation: to.Ptr("eastus2"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("ShareSubscription.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_Delete.json
 func ExampleShareSubscriptionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewShareSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewShareSubscriptionsClient("12345678-1234-1234-12345678abc", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-subscription-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"ShareSubscription1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_ListByAccount.json
-func ExampleShareSubscriptionsClient_ListByAccount() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datashare/resource-manager/Microsoft.DataShare/stable/2020-09-01/examples/ShareSubscriptions_ListByAccount.json
+func ExampleShareSubscriptionsClient_NewListByAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatashare.NewShareSubscriptionsClient("<subscription-id>", cred, nil)
-	pager := client.ListByAccount("<resource-group-name>",
-		"<account-name>",
-		&armdatashare.ShareSubscriptionsListByAccountOptions{SkipToken: nil,
+	client, err := armdatashare.NewShareSubscriptionsClient("12345678-1234-1234-12345678abc", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByAccountPager("SampleResourceGroup",
+		"Account1",
+		&armdatashare.ShareSubscriptionsClientListByAccountOptions{SkipToken: nil,
 			Filter:  nil,
 			Orderby: nil,
 		})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ShareSubscription.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

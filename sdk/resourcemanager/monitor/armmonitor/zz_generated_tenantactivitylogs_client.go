@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,10 +10,10 @@ package armmonitor
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -22,43 +22,71 @@ import (
 // TenantActivityLogsClient contains the methods for the TenantActivityLogs group.
 // Don't use this type directly, use NewTenantActivityLogsClient() instead.
 type TenantActivityLogsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewTenantActivityLogsClient creates a new instance of TenantActivityLogsClient with the specified values.
-func NewTenantActivityLogsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *TenantActivityLogsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewTenantActivityLogsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantActivityLogsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &TenantActivityLogsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &TenantActivityLogsClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
-// List - Gets the Activity Logs for the Tenant. Everything that is applicable to the API to get the Activity Logs for the subscription is applicable to
-// this API (the parameters, $filter, etc.). One thing to
-// point out here is that this API does not retrieve the logs at the individual subscription of the tenant but only surfaces the logs that were generated
-// at the tenant level.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TenantActivityLogsClient) List(options *TenantActivityLogsListOptions) *TenantActivityLogsListPager {
-	return &TenantActivityLogsListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+// NewListPager - Gets the Activity Logs for the Tenant. Everything that is applicable to the API to get the Activity Logs
+// for the subscription is applicable to this API (the parameters, $filter, etc.). One thing to
+// point out here is that this API does not retrieve the logs at the individual subscription of the tenant but only surfaces
+// the logs that were generated at the tenant level.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-04-01
+// options - TenantActivityLogsClientListOptions contains the optional parameters for the TenantActivityLogsClient.List method.
+func (client *TenantActivityLogsClient) NewListPager(options *TenantActivityLogsClientListOptions) *runtime.Pager[TenantActivityLogsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[TenantActivityLogsClientListResponse]{
+		More: func(page TenantActivityLogsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp TenantActivityLogsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.EventDataCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *TenantActivityLogsClientListResponse) (TenantActivityLogsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return TenantActivityLogsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return TenantActivityLogsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return TenantActivityLogsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *TenantActivityLogsClient) listCreateRequest(ctx context.Context, options *TenantActivityLogsListOptions) (*policy.Request, error) {
+func (client *TenantActivityLogsClient) listCreateRequest(ctx context.Context, options *TenantActivityLogsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Insights/eventtypes/management/values"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -71,28 +99,15 @@ func (client *TenantActivityLogsClient) listCreateRequest(ctx context.Context, o
 		reqQP.Set("$select", *options.Select)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *TenantActivityLogsClient) listHandleResponse(resp *http.Response) (TenantActivityLogsListResponse, error) {
-	result := TenantActivityLogsListResponse{RawResponse: resp}
+func (client *TenantActivityLogsClient) listHandleResponse(resp *http.Response) (TenantActivityLogsClientListResponse, error) {
+	result := TenantActivityLogsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventDataCollection); err != nil {
-		return TenantActivityLogsListResponse{}, runtime.NewResponseError(err, resp)
+		return TenantActivityLogsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *TenantActivityLogsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -1,14 +1,131 @@
 # Release History
 
-## 0.12.1 (Unreleased)
+## 1.2.0-beta.3 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+* `ClientCertificateCredential` sends only the leaf cert for SNI authentication
 
 ### Other Changes
+
+## 1.2.0-beta.2 (2022-08-10)
+
+### Features Added
+* Added `ClientAssertionCredential` to enable applications to authenticate
+  with custom client assertions
+
+### Other Changes
+* Updated AuthenticationFailedError with links to TROUBLESHOOTING.md for relevant errors
+* Upgraded `microsoft-authentication-library-for-go` requirement to v0.6.0
+
+## 1.2.0-beta.1 (2022-06-07)
+
+### Features Added
+* `EnvironmentCredential` reads certificate passwords from `AZURE_CLIENT_CERTIFICATE_PASSWORD`
+  ([#17099](https://github.com/Azure/azure-sdk-for-go/pull/17099))
+
+## 1.1.0 (2022-06-07)
+
+### Features Added
+* `ClientCertificateCredential` and `ClientSecretCredential` support ESTS-R. First-party
+  applications can set environment variable `AZURE_REGIONAL_AUTHORITY_NAME` with a
+  region name.
+  ([#15605](https://github.com/Azure/azure-sdk-for-go/issues/15605))
+
+## 1.0.1 (2022-06-07)
+
+### Other Changes
+* Upgrade `microsoft-authentication-library-for-go` requirement to v0.5.1
+  ([#18176](https://github.com/Azure/azure-sdk-for-go/issues/18176))
+
+## 1.0.0 (2022-05-12)
+
+### Features Added
+* `DefaultAzureCredential` reads environment variable `AZURE_CLIENT_ID` for the
+  client ID of a user-assigned managed identity
+  ([#17293](https://github.com/Azure/azure-sdk-for-go/pull/17293))
+
+### Breaking Changes
+* Removed `AuthorizationCodeCredential`. Use `InteractiveBrowserCredential` instead
+  to authenticate a user with the authorization code flow.
+* Instances of `AuthenticationFailedError` are now returned by pointer.
+* `GetToken()` returns `azcore.AccessToken` by value
+
+### Bugs Fixed
+* `AzureCLICredential` panics after receiving an unexpected error type
+  ([#17490](https://github.com/Azure/azure-sdk-for-go/issues/17490))
+
+### Other Changes
+* `GetToken()` returns an error when the caller specifies no scope
+* Updated to the latest versions of `golang.org/x/crypto`, `azcore` and `internal`
+
+## 0.14.0 (2022-04-05)
+
+### Breaking Changes
+* This module now requires Go 1.18
+* Removed `AuthorityHost`. Credentials are now configured for sovereign or private
+  clouds with the API in `azcore/cloud`, for example:
+  ```go
+  // before
+  opts := azidentity.ClientSecretCredentialOptions{AuthorityHost: azidentity.AzureGovernment}
+  cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, secret, &opts)
+
+  // after
+  import "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+
+  opts := azidentity.ClientSecretCredentialOptions{}
+  opts.Cloud = cloud.AzureGovernment
+  cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, secret, &opts)
+  ```
+
+## 0.13.2 (2022-03-08)
+
+### Bugs Fixed
+* Prevented a data race in `DefaultAzureCredential` and `ChainedTokenCredential`
+  ([#17144](https://github.com/Azure/azure-sdk-for-go/issues/17144))
+
+### Other Changes
+* Upgraded App Service managed identity version from 2017-09-01 to 2019-08-01
+  ([#17086](https://github.com/Azure/azure-sdk-for-go/pull/17086))
+
+## 0.13.1 (2022-02-08)
+
+### Features Added
+* `EnvironmentCredential` supports certificate SNI authentication when
+  `AZURE_CLIENT_SEND_CERTIFICATE_CHAIN` is "true".
+  ([#16851](https://github.com/Azure/azure-sdk-for-go/pull/16851))
+
+### Bugs Fixed
+* `ManagedIdentityCredential.GetToken()` now returns an error when configured for
+   a user assigned identity in Azure Cloud Shell (which doesn't support such identities)
+   ([#16946](https://github.com/Azure/azure-sdk-for-go/pull/16946))
+
+### Other Changes
+* `NewDefaultAzureCredential()` logs non-fatal errors. These errors are also included in the
+  error returned by `DefaultAzureCredential.GetToken()` when it's unable to acquire a token
+  from any source. ([#15923](https://github.com/Azure/azure-sdk-for-go/issues/15923))
+
+## 0.13.0 (2022-01-11)
+
+### Breaking Changes
+* Replaced `AuthenticationFailedError.RawResponse()` with a field having the same name
+* Unexported `CredentialUnavailableError`
+* Instances of `ChainedTokenCredential` will now skip looping through the list of source credentials and re-use the first successful credential on subsequent calls to `GetToken`.
+  * If `ChainedTokenCredentialOptions.RetrySources` is true, `ChainedTokenCredential` will continue to try all of the originally provided credentials each time the `GetToken` method is called.
+  * `ChainedTokenCredential.successfulCredential` will contain a reference to the last successful credential.
+  * `DefaultAzureCredenial` will also re-use the first successful credential on subsequent calls to `GetToken`.
+  * `DefaultAzureCredential.chain.successfulCredential` will also contain a reference to the last successful credential.
+
+### Other Changes
+* `ManagedIdentityCredential` no longer probes IMDS before requesting a token
+  from it. Also, an error response from IMDS no longer disables a credential
+  instance. Following an error, a credential instance will continue to send
+  requests to IMDS as necessary.
+* Adopted MSAL for user and service principal authentication
+* Updated `azcore` requirement to 0.21.0
 
 ## 0.12.0 (2021-11-02)
 ### Breaking Changes

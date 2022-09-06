@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,41 +8,18 @@
 
 package armresourcegraph
 
-import "net/http"
-
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ClientResourcesHistoryResponse contains the response from method Client.ResourcesHistory.
+type ClientResourcesHistoryResponse struct {
+	// Anything
+	Interface interface{}
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
-	OperationListResult
-}
-
-// ResourceGraphClientResourcesHistoryResponse contains the response from method ResourceGraphClient.ResourcesHistory.
-type ResourceGraphClientResourcesHistoryResponse struct {
-	ResourceGraphClientResourcesHistoryResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ResourceGraphClientResourcesHistoryResult contains the result from method ResourceGraphClient.ResourcesHistory.
-type ResourceGraphClientResourcesHistoryResult struct {
-	// Any object
-	Object map[string]interface{}
-}
-
-// ResourceGraphClientResourcesResponse contains the response from method ResourceGraphClient.Resources.
-type ResourceGraphClientResourcesResponse struct {
-	ResourceGraphClientResourcesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ResourceGraphClientResourcesResult contains the result from method ResourceGraphClient.Resources.
-type ResourceGraphClientResourcesResult struct {
+// ClientResourcesResponse contains the response from method Client.Resources.
+type ClientResourcesResponse struct {
 	QueryResponse
+}
+
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
+	OperationListResult
 }

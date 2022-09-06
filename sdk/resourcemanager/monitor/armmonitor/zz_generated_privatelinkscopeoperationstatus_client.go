@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,42 +25,59 @@ import (
 // PrivateLinkScopeOperationStatusClient contains the methods for the PrivateLinkScopeOperationStatus group.
 // Don't use this type directly, use NewPrivateLinkScopeOperationStatusClient() instead.
 type PrivateLinkScopeOperationStatusClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateLinkScopeOperationStatusClient creates a new instance of PrivateLinkScopeOperationStatusClient with the specified values.
-func NewPrivateLinkScopeOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkScopeOperationStatusClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewPrivateLinkScopeOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkScopeOperationStatusClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &PrivateLinkScopeOperationStatusClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &PrivateLinkScopeOperationStatusClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // Get - Get the status of an azure asynchronous operation associated with a private link scope operation.
-// If the operation fails it returns a generic error.
-func (client *PrivateLinkScopeOperationStatusClient) Get(ctx context.Context, asyncOperationID string, resourceGroupName string, options *PrivateLinkScopeOperationStatusGetOptions) (PrivateLinkScopeOperationStatusGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-17-preview
+// asyncOperationID - The operation Id.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - PrivateLinkScopeOperationStatusClientGetOptions contains the optional parameters for the PrivateLinkScopeOperationStatusClient.Get
+// method.
+func (client *PrivateLinkScopeOperationStatusClient) Get(ctx context.Context, asyncOperationID string, resourceGroupName string, options *PrivateLinkScopeOperationStatusClientGetOptions) (PrivateLinkScopeOperationStatusClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, asyncOperationID, resourceGroupName, options)
 	if err != nil {
-		return PrivateLinkScopeOperationStatusGetResponse{}, err
+		return PrivateLinkScopeOperationStatusClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateLinkScopeOperationStatusGetResponse{}, err
+		return PrivateLinkScopeOperationStatusClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateLinkScopeOperationStatusGetResponse{}, client.getHandleError(resp)
+		return PrivateLinkScopeOperationStatusClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateLinkScopeOperationStatusClient) getCreateRequest(ctx context.Context, asyncOperationID string, resourceGroupName string, options *PrivateLinkScopeOperationStatusGetOptions) (*policy.Request, error) {
+func (client *PrivateLinkScopeOperationStatusClient) getCreateRequest(ctx context.Context, asyncOperationID string, resourceGroupName string, options *PrivateLinkScopeOperationStatusClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/privateLinkScopeOperationStatuses/{asyncOperationId}"
 	if asyncOperationID == "" {
 		return nil, errors.New("parameter asyncOperationID cannot be empty")
@@ -73,34 +91,22 @@ func (client *PrivateLinkScopeOperationStatusClient) getCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-10-17-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateLinkScopeOperationStatusClient) getHandleResponse(resp *http.Response) (PrivateLinkScopeOperationStatusGetResponse, error) {
-	result := PrivateLinkScopeOperationStatusGetResponse{RawResponse: resp}
+func (client *PrivateLinkScopeOperationStatusClient) getHandleResponse(resp *http.Response) (PrivateLinkScopeOperationStatusClientGetResponse, error) {
+	result := PrivateLinkScopeOperationStatusClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {
-		return PrivateLinkScopeOperationStatusGetResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkScopeOperationStatusClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *PrivateLinkScopeOperationStatusClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

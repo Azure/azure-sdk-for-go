@@ -5,8 +5,8 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/6acc7e2e59b3777da22e417149d0c71d05054bff/specification/blueprint/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/6acc7e2e59b3777da22e417149d0c71d05054bff/specification/blueprint/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/blueprint/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/blueprint/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.1.0
+module-version: 0.5.0
 ```

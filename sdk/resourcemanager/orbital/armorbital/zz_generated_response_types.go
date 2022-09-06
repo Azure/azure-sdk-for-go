@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,511 +8,107 @@
 
 package armorbital
 
-import (
-	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"net/http"
-	"time"
-)
-
-// AvailableGroundStationsGetResponse contains the response from method AvailableGroundStations.Get.
-type AvailableGroundStationsGetResponse struct {
-	AvailableGroundStationsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AvailableGroundStationsGetResult contains the result from method AvailableGroundStations.Get.
-type AvailableGroundStationsGetResult struct {
+// AvailableGroundStationsClientGetResponse contains the response from method AvailableGroundStationsClient.Get.
+type AvailableGroundStationsClientGetResponse struct {
 	AvailableGroundStation
 }
 
-// AvailableGroundStationsListByCapabilityResponse contains the response from method AvailableGroundStations.ListByCapability.
-type AvailableGroundStationsListByCapabilityResponse struct {
-	AvailableGroundStationsListByCapabilityResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AvailableGroundStationsListByCapabilityResult contains the result from method AvailableGroundStations.ListByCapability.
-type AvailableGroundStationsListByCapabilityResult struct {
+// AvailableGroundStationsClientListByCapabilityResponse contains the response from method AvailableGroundStationsClient.ListByCapability.
+type AvailableGroundStationsClientListByCapabilityResponse struct {
 	AvailableGroundStationListResult
 }
 
-// ContactProfilesCreateOrUpdatePollerResponse contains the response from method ContactProfiles.CreateOrUpdate.
-type ContactProfilesCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ContactProfilesCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ContactProfilesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ContactProfilesCreateOrUpdateResponse, error) {
-	respType := ContactProfilesCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ContactProfile)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ContactProfilesCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *ContactProfilesCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ContactProfilesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ContactProfilesClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &ContactProfilesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// ContactProfilesCreateOrUpdateResponse contains the response from method ContactProfiles.CreateOrUpdate.
-type ContactProfilesCreateOrUpdateResponse struct {
-	ContactProfilesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContactProfilesCreateOrUpdateResult contains the result from method ContactProfiles.CreateOrUpdate.
-type ContactProfilesCreateOrUpdateResult struct {
+// ContactProfilesClientCreateOrUpdateResponse contains the response from method ContactProfilesClient.CreateOrUpdate.
+type ContactProfilesClientCreateOrUpdateResponse struct {
 	ContactProfile
 }
 
-// ContactProfilesDeletePollerResponse contains the response from method ContactProfiles.Delete.
-type ContactProfilesDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ContactProfilesDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ContactProfilesClientDeleteResponse contains the response from method ContactProfilesClient.Delete.
+type ContactProfilesClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ContactProfilesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ContactProfilesDeleteResponse, error) {
-	respType := ContactProfilesDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ContactProfilesDeletePollerResponse from the provided client and resume token.
-func (l *ContactProfilesDeletePollerResponse) Resume(ctx context.Context, client *ContactProfilesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ContactProfilesClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &ContactProfilesDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// ContactProfilesDeleteResponse contains the response from method ContactProfiles.Delete.
-type ContactProfilesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContactProfilesGetResponse contains the response from method ContactProfiles.Get.
-type ContactProfilesGetResponse struct {
-	ContactProfilesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContactProfilesGetResult contains the result from method ContactProfiles.Get.
-type ContactProfilesGetResult struct {
+// ContactProfilesClientGetResponse contains the response from method ContactProfilesClient.Get.
+type ContactProfilesClientGetResponse struct {
 	ContactProfile
 }
 
-// ContactProfilesListBySubscriptionResponse contains the response from method ContactProfiles.ListBySubscription.
-type ContactProfilesListBySubscriptionResponse struct {
-	ContactProfilesListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContactProfilesListBySubscriptionResult contains the result from method ContactProfiles.ListBySubscription.
-type ContactProfilesListBySubscriptionResult struct {
+// ContactProfilesClientListBySubscriptionResponse contains the response from method ContactProfilesClient.ListBySubscription.
+type ContactProfilesClientListBySubscriptionResponse struct {
 	ContactProfileListResult
 }
 
-// ContactProfilesListResponse contains the response from method ContactProfiles.List.
-type ContactProfilesListResponse struct {
-	ContactProfilesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContactProfilesListResult contains the result from method ContactProfiles.List.
-type ContactProfilesListResult struct {
+// ContactProfilesClientListResponse contains the response from method ContactProfilesClient.List.
+type ContactProfilesClientListResponse struct {
 	ContactProfileListResult
 }
 
-// ContactProfilesUpdateTagsResponse contains the response from method ContactProfiles.UpdateTags.
-type ContactProfilesUpdateTagsResponse struct {
-	ContactProfilesUpdateTagsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContactProfilesUpdateTagsResult contains the result from method ContactProfiles.UpdateTags.
-type ContactProfilesUpdateTagsResult struct {
+// ContactProfilesClientUpdateTagsResponse contains the response from method ContactProfilesClient.UpdateTags.
+type ContactProfilesClientUpdateTagsResponse struct {
 	ContactProfile
 }
 
-// ContactsCreatePollerResponse contains the response from method Contacts.Create.
-type ContactsCreatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ContactsCreatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ContactsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ContactsCreateResponse, error) {
-	respType := ContactsCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Contact)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ContactsCreatePollerResponse from the provided client and resume token.
-func (l *ContactsCreatePollerResponse) Resume(ctx context.Context, client *ContactsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ContactsClient.Create", token, client.pl, client.createHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &ContactsCreatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// ContactsCreateResponse contains the response from method Contacts.Create.
-type ContactsCreateResponse struct {
-	ContactsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContactsCreateResult contains the result from method Contacts.Create.
-type ContactsCreateResult struct {
+// ContactsClientCreateResponse contains the response from method ContactsClient.Create.
+type ContactsClientCreateResponse struct {
 	Contact
 }
 
-// ContactsDeletePollerResponse contains the response from method Contacts.Delete.
-type ContactsDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ContactsDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ContactsClientDeleteResponse contains the response from method ContactsClient.Delete.
+type ContactsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ContactsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ContactsDeleteResponse, error) {
-	respType := ContactsDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ContactsDeletePollerResponse from the provided client and resume token.
-func (l *ContactsDeletePollerResponse) Resume(ctx context.Context, client *ContactsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ContactsClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &ContactsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// ContactsDeleteResponse contains the response from method Contacts.Delete.
-type ContactsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContactsGetResponse contains the response from method Contacts.Get.
-type ContactsGetResponse struct {
-	ContactsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContactsGetResult contains the result from method Contacts.Get.
-type ContactsGetResult struct {
+// ContactsClientGetResponse contains the response from method ContactsClient.Get.
+type ContactsClientGetResponse struct {
 	Contact
 }
 
-// ContactsListResponse contains the response from method Contacts.List.
-type ContactsListResponse struct {
-	ContactsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ContactsListResult contains the result from method Contacts.List.
-type ContactsListResult struct {
+// ContactsClientListResponse contains the response from method ContactsClient.List.
+type ContactsClientListResponse struct {
 	ContactListResult
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// SpacecraftsCreateOrUpdatePollerResponse contains the response from method Spacecrafts.CreateOrUpdate.
-type SpacecraftsCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SpacecraftsCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// OperationsResultsClientGetResponse contains the response from method OperationsResultsClient.Get.
+type OperationsResultsClientGetResponse struct {
+	OperationResult
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SpacecraftsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SpacecraftsCreateOrUpdateResponse, error) {
-	respType := SpacecraftsCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Spacecraft)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SpacecraftsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *SpacecraftsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *SpacecraftsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SpacecraftsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SpacecraftsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SpacecraftsCreateOrUpdateResponse contains the response from method Spacecrafts.CreateOrUpdate.
-type SpacecraftsCreateOrUpdateResponse struct {
-	SpacecraftsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SpacecraftsCreateOrUpdateResult contains the result from method Spacecrafts.CreateOrUpdate.
-type SpacecraftsCreateOrUpdateResult struct {
+// SpacecraftsClientCreateOrUpdateResponse contains the response from method SpacecraftsClient.CreateOrUpdate.
+type SpacecraftsClientCreateOrUpdateResponse struct {
 	Spacecraft
 }
 
-// SpacecraftsDeletePollerResponse contains the response from method Spacecrafts.Delete.
-type SpacecraftsDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SpacecraftsDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// SpacecraftsClientDeleteResponse contains the response from method SpacecraftsClient.Delete.
+type SpacecraftsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SpacecraftsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SpacecraftsDeleteResponse, error) {
-	respType := SpacecraftsDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SpacecraftsDeletePollerResponse from the provided client and resume token.
-func (l *SpacecraftsDeletePollerResponse) Resume(ctx context.Context, client *SpacecraftsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SpacecraftsClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SpacecraftsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SpacecraftsDeleteResponse contains the response from method Spacecrafts.Delete.
-type SpacecraftsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SpacecraftsGetResponse contains the response from method Spacecrafts.Get.
-type SpacecraftsGetResponse struct {
-	SpacecraftsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SpacecraftsGetResult contains the result from method Spacecrafts.Get.
-type SpacecraftsGetResult struct {
+// SpacecraftsClientGetResponse contains the response from method SpacecraftsClient.Get.
+type SpacecraftsClientGetResponse struct {
 	Spacecraft
 }
 
-// SpacecraftsListAvailableContactsPollerResponse contains the response from method Spacecrafts.ListAvailableContacts.
-type SpacecraftsListAvailableContactsPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *SpacecraftsListAvailableContactsPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l SpacecraftsListAvailableContactsPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SpacecraftsListAvailableContactsResponse, error) {
-	respType := SpacecraftsListAvailableContactsResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AvailableContactsListResult)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a SpacecraftsListAvailableContactsPollerResponse from the provided client and resume token.
-func (l *SpacecraftsListAvailableContactsPollerResponse) Resume(ctx context.Context, client *SpacecraftsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("SpacecraftsClient.ListAvailableContacts", token, client.pl, client.listAvailableContactsHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &SpacecraftsListAvailableContactsPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// SpacecraftsListAvailableContactsResponse contains the response from method Spacecrafts.ListAvailableContacts.
-type SpacecraftsListAvailableContactsResponse struct {
-	SpacecraftsListAvailableContactsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SpacecraftsListAvailableContactsResult contains the result from method Spacecrafts.ListAvailableContacts.
-type SpacecraftsListAvailableContactsResult struct {
+// SpacecraftsClientListAvailableContactsResponse contains the response from method SpacecraftsClient.ListAvailableContacts.
+type SpacecraftsClientListAvailableContactsResponse struct {
 	AvailableContactsListResult
 }
 
-// SpacecraftsListBySubscriptionResponse contains the response from method Spacecrafts.ListBySubscription.
-type SpacecraftsListBySubscriptionResponse struct {
-	SpacecraftsListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SpacecraftsListBySubscriptionResult contains the result from method Spacecrafts.ListBySubscription.
-type SpacecraftsListBySubscriptionResult struct {
+// SpacecraftsClientListBySubscriptionResponse contains the response from method SpacecraftsClient.ListBySubscription.
+type SpacecraftsClientListBySubscriptionResponse struct {
 	SpacecraftListResult
 }
 
-// SpacecraftsListResponse contains the response from method Spacecrafts.List.
-type SpacecraftsListResponse struct {
-	SpacecraftsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SpacecraftsListResult contains the result from method Spacecrafts.List.
-type SpacecraftsListResult struct {
+// SpacecraftsClientListResponse contains the response from method SpacecraftsClient.List.
+type SpacecraftsClientListResponse struct {
 	SpacecraftListResult
 }
 
-// SpacecraftsUpdateTagsResponse contains the response from method Spacecrafts.UpdateTags.
-type SpacecraftsUpdateTagsResponse struct {
-	SpacecraftsUpdateTagsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SpacecraftsUpdateTagsResult contains the result from method Spacecrafts.UpdateTags.
-type SpacecraftsUpdateTagsResult struct {
+// SpacecraftsClientUpdateTagsResponse contains the response from method SpacecraftsClient.UpdateTags.
+type SpacecraftsClientUpdateTagsResponse struct {
 	Spacecraft
 }

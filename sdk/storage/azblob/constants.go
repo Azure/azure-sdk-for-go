@@ -1,35 +1,66 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package azblob
 
-//nolint
-const (
-	SASVersion = "2019-12-12"
-
-	headerAuthorization           = "Authorization"
-	headerXmsDate                 = "x-ms-date"
-	headerContentLength           = "Content-Length"
-	headerContentEncoding         = "Content-Encoding"
-	headerContentLanguage         = "Content-Language"
-	headerContentType             = "Content-Type"
-	headerContentMD5              = "Content-MD5"
-	headerIfModifiedSince         = "If-Modified-Since"
-	headerIfMatch                 = "If-Match"
-	headerIfNoneMatch             = "If-None-Match"
-	headerIfUnmodifiedSince       = "If-Unmodified-Since"
-	headerRange                   = "Range"
-	headerDate                    = "Date"
-	headerXmsVersion              = "x-ms-version"
-	headerAcceptCharset           = "Accept-Charset"
-	headerDataServiceVersion      = "DataServiceVersion"
-	headerMaxDataServiceVersion   = "MaxDataServiceVersion"
-	headerContentTransferEncoding = "Content-Transfer-Encoding"
-
-	etagOData = "odata.etag"
-	rfc3339   = "2006-01-02T15:04:05.9999999Z"
-	timestamp = "Timestamp"
-	etag      = "ETag"
-
-	tokenScope = "https://storage.azure.com/.default"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
+
+// PublicAccessType defines values for AccessType - private (default) or blob or container
+type PublicAccessType = generated.PublicAccessType
+
+const (
+	PublicAccessTypeBlob      PublicAccessType = generated.PublicAccessTypeBlob
+	PublicAccessTypeContainer PublicAccessType = generated.PublicAccessTypeContainer
+)
+
+// PossiblePublicAccessTypeValues returns the possible values for the PublicAccessType const type.
+func PossiblePublicAccessTypeValues() []PublicAccessType {
+	return generated.PossiblePublicAccessTypeValues()
+}
+
+// DeleteSnapshotsOptionType defines values for DeleteSnapshotsOptionType
+type DeleteSnapshotsOptionType = generated.DeleteSnapshotsOptionType
+
+const (
+	DeleteSnapshotsOptionTypeInclude DeleteSnapshotsOptionType = generated.DeleteSnapshotsOptionTypeInclude
+	DeleteSnapshotsOptionTypeOnly    DeleteSnapshotsOptionType = generated.DeleteSnapshotsOptionTypeOnly
+)
+
+// PossibleDeleteSnapshotsOptionTypeValues returns the possible values for the DeleteSnapshotsOptionType const type.
+func PossibleDeleteSnapshotsOptionTypeValues() []DeleteSnapshotsOptionType {
+	return generated.PossibleDeleteSnapshotsOptionTypeValues()
+}
+
+const (
+	ListBlobsIncludeItemCopy                ListBlobsIncludeItem = "copy"
+	ListBlobsIncludeItemDeleted             ListBlobsIncludeItem = "deleted"
+	ListBlobsIncludeItemMetadata            ListBlobsIncludeItem = "metadata"
+	ListBlobsIncludeItemSnapshots           ListBlobsIncludeItem = "snapshots"
+	ListBlobsIncludeItemUncommittedblobs    ListBlobsIncludeItem = "uncommittedblobs"
+	ListBlobsIncludeItemVersions            ListBlobsIncludeItem = "versions"
+	ListBlobsIncludeItemTags                ListBlobsIncludeItem = "tags"
+	ListBlobsIncludeItemImmutabilitypolicy  ListBlobsIncludeItem = "immutabilitypolicy"
+	ListBlobsIncludeItemLegalhold           ListBlobsIncludeItem = "legalhold"
+	ListBlobsIncludeItemDeletedwithversions ListBlobsIncludeItem = "deletedwithversions"
+)
+
+// PossibleListBlobsIncludeItemValues returns the possible values for the ListBlobsIncludeItem const type.
+func PossibleListBlobsIncludeItemValues() []ListBlobsIncludeItem {
+	return []ListBlobsIncludeItem{
+		ListBlobsIncludeItemCopy,
+		ListBlobsIncludeItemDeleted,
+		ListBlobsIncludeItemMetadata,
+		ListBlobsIncludeItemSnapshots,
+		ListBlobsIncludeItemUncommittedblobs,
+		ListBlobsIncludeItemVersions,
+		ListBlobsIncludeItemTags,
+		ListBlobsIncludeItemImmutabilitypolicy,
+		ListBlobsIncludeItemLegalhold,
+		ListBlobsIncludeItemDeletedwithversions,
+	}
+}

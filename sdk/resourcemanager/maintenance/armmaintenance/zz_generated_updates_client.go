@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armmaintenance
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,68 @@ import (
 // UpdatesClient contains the methods for the Updates group.
 // Don't use this type directly, use NewUpdatesClient() instead.
 type UpdatesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewUpdatesClient creates a new instance of UpdatesClient with the specified values.
-func NewUpdatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UpdatesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewUpdatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UpdatesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &UpdatesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &UpdatesClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
-// List - Get updates to resources.
-// If the operation fails it returns the *MaintenanceError error type.
-func (client *UpdatesClient) List(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, options *UpdatesListOptions) (UpdatesListResponse, error) {
-	req, err := client.listCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, options)
-	if err != nil {
-		return UpdatesListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return UpdatesListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return UpdatesListResponse{}, client.listHandleError(resp)
-	}
-	return client.listHandleResponse(resp)
+// NewListPager - Get updates to resources.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
+// resourceGroupName - Resource group name
+// providerName - Resource provider name
+// resourceType - Resource type
+// resourceName - Resource identifier
+// options - UpdatesClientListOptions contains the optional parameters for the UpdatesClient.List method.
+func (client *UpdatesClient) NewListPager(resourceGroupName string, providerName string, resourceType string, resourceName string, options *UpdatesClientListOptions) *runtime.Pager[UpdatesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[UpdatesClientListResponse]{
+		More: func(page UpdatesClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *UpdatesClientListResponse) (UpdatesClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, options)
+			if err != nil {
+				return UpdatesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return UpdatesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return UpdatesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *UpdatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, options *UpdatesListOptions) (*policy.Request, error) {
+func (client *UpdatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceType string, resourceName string, options *UpdatesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/updates"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,58 +108,60 @@ func (client *UpdatesClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *UpdatesClient) listHandleResponse(resp *http.Response) (UpdatesListResponse, error) {
-	result := UpdatesListResponse{RawResponse: resp}
+func (client *UpdatesClient) listHandleResponse(resp *http.Response) (UpdatesClientListResponse, error) {
+	result := UpdatesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListUpdatesResult); err != nil {
-		return UpdatesListResponse{}, runtime.NewResponseError(err, resp)
+		return UpdatesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *UpdatesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MaintenanceError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListParent - Get updates to resources.
-// If the operation fails it returns the *MaintenanceError error type.
-func (client *UpdatesClient) ListParent(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *UpdatesListParentOptions) (UpdatesListParentResponse, error) {
-	req, err := client.listParentCreateRequest(ctx, resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName, options)
-	if err != nil {
-		return UpdatesListParentResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return UpdatesListParentResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return UpdatesListParentResponse{}, client.listParentHandleError(resp)
-	}
-	return client.listParentHandleResponse(resp)
+// NewListParentPager - Get updates to resources.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
+// resourceGroupName - Resource group name
+// providerName - Resource provider name
+// resourceParentType - Resource parent type
+// resourceParentName - Resource parent identifier
+// resourceType - Resource type
+// resourceName - Resource identifier
+// options - UpdatesClientListParentOptions contains the optional parameters for the UpdatesClient.ListParent method.
+func (client *UpdatesClient) NewListParentPager(resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *UpdatesClientListParentOptions) *runtime.Pager[UpdatesClientListParentResponse] {
+	return runtime.NewPager(runtime.PagingHandler[UpdatesClientListParentResponse]{
+		More: func(page UpdatesClientListParentResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *UpdatesClientListParentResponse) (UpdatesClientListParentResponse, error) {
+			req, err := client.listParentCreateRequest(ctx, resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName, options)
+			if err != nil {
+				return UpdatesClientListParentResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return UpdatesClientListParentResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return UpdatesClientListParentResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listParentHandleResponse(resp)
+		},
+	})
 }
 
 // listParentCreateRequest creates the ListParent request.
-func (client *UpdatesClient) listParentCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *UpdatesListParentOptions) (*policy.Request, error) {
+func (client *UpdatesClient) listParentCreateRequest(ctx context.Context, resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *UpdatesClientListParentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/updates"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -163,35 +191,22 @@ func (client *UpdatesClient) listParentCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listParentHandleResponse handles the ListParent response.
-func (client *UpdatesClient) listParentHandleResponse(resp *http.Response) (UpdatesListParentResponse, error) {
-	result := UpdatesListParentResponse{RawResponse: resp}
+func (client *UpdatesClient) listParentHandleResponse(resp *http.Response) (UpdatesClientListParentResponse, error) {
+	result := UpdatesClientListParentResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListUpdatesResult); err != nil {
-		return UpdatesListParentResponse{}, runtime.NewResponseError(err, resp)
+		return UpdatesClientListParentResponse{}, err
 	}
 	return result, nil
-}
-
-// listParentHandleError handles the ListParent error response.
-func (client *UpdatesClient) listParentHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MaintenanceError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

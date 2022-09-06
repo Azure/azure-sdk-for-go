@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,12 +9,13 @@
 package armanalysisservices
 
 const (
-	module  = "armanalysisservices"
-	version = "v0.1.0"
+	moduleName    = "armanalysisservices"
+	moduleVersion = "v1.0.0"
 )
 
 // ConnectionMode - How the read-write server's participation in the query pool is controlled.
-// It can have the following values: * readOnly - indicates that the read-write server is intended not to participate in query operations
+// It can have the following values: * readOnly - indicates that the read-write server is intended not to participate in query
+// operations
 // * all - indicates that the read-write server can participate in query operations
 // Specifying readOnly when capacity is 1 results in error.
 type ConnectionMode string
@@ -30,11 +31,6 @@ func PossibleConnectionModeValues() []ConnectionMode {
 		ConnectionModeAll,
 		ConnectionModeReadOnly,
 	}
-}
-
-// ToPtr returns a *ConnectionMode pointing to the current value.
-func (c ConnectionMode) ToPtr() *ConnectionMode {
-	return &c
 }
 
 // ManagedMode - The managed mode of the server (0 = not managed, 1 = managed).
@@ -53,12 +49,8 @@ func PossibleManagedModeValues() []ManagedMode {
 	}
 }
 
-// ToPtr returns a *ManagedMode pointing to the current value.
-func (c ManagedMode) ToPtr() *ManagedMode {
-	return &c
-}
-
-// ProvisioningState - The current deployment state of Analysis Services resource. The provisioningState is to indicate states for resource provisioning.
+// ProvisioningState - The current deployment state of Analysis Services resource. The provisioningState is to indicate states
+// for resource provisioning.
 type ProvisioningState string
 
 const (
@@ -94,11 +86,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // SKUTier - The name of the Azure pricing tier to which the SKU applies.
 type SKUTier string
 
@@ -117,11 +104,6 @@ func PossibleSKUTierValues() []SKUTier {
 	}
 }
 
-// ToPtr returns a *SKUTier pointing to the current value.
-func (c SKUTier) ToPtr() *SKUTier {
-	return &c
-}
-
 // ServerMonitorMode - The server monitor mode for AS server
 type ServerMonitorMode int32
 
@@ -136,11 +118,6 @@ func PossibleServerMonitorModeValues() []ServerMonitorMode {
 		ServerMonitorModeZero,
 		ServerMonitorModeOne,
 	}
-}
-
-// ToPtr returns a *ServerMonitorMode pointing to the current value.
-func (c ServerMonitorMode) ToPtr() *ServerMonitorMode {
-	return &c
 }
 
 // State - The current state of Analysis Services resource. The state is to indicate more states outside of resource provisioning.
@@ -177,9 +154,4 @@ func PossibleStateValues() []State {
 		StateSuspending,
 		StateUpdating,
 	}
-}
-
-// ToPtr returns a *State pointing to the current value.
-func (c State) ToPtr() *State {
-	return &c
 }

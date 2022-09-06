@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,167 +12,185 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deploymentmanager/armdeploymentmanager"
 )
 
-// x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/rollout_createorupdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/rollout_createorupdate.json
 func ExampleRolloutsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdeploymentmanager.NewRolloutsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewRolloutsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<rollout-name>",
-		&armdeploymentmanager.RolloutsBeginCreateOrUpdateOptions{RolloutRequest: &armdeploymentmanager.RolloutRequest{
-			TrackedResource: armdeploymentmanager.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+		"myResourceGroup",
+		"myRollout",
+		&armdeploymentmanager.RolloutsClientBeginCreateOrUpdateOptions{RolloutRequest: &armdeploymentmanager.RolloutRequest{
+			Location: to.Ptr("centralus"),
+			Tags:     map[string]*string{},
 			Identity: &armdeploymentmanager.Identity{
-				Type: to.StringPtr("<type>"),
+				Type: to.Ptr("userAssigned"),
 				IdentityIDs: []*string{
-					to.StringPtr("/subscriptions/caac1590-e859-444f-a9e0-62091c0f5929/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userassignedidentities/myuseridentity")},
+					to.Ptr("/subscriptions/caac1590-e859-444f-a9e0-62091c0f5929/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userassignedidentities/myuseridentity")},
 			},
 			Properties: &armdeploymentmanager.RolloutRequestProperties{
-				ArtifactSourceID: to.StringPtr("<artifact-source-id>"),
-				BuildVersion:     to.StringPtr("<build-version>"),
+				ArtifactSourceID: to.Ptr("/subscriptions/caac1590-e859-444f-a9e0-62091c0f5929/resourceGroups/myResourceGroup/Microsoft.DeploymentManager/artifactSources/myArtifactSource"),
+				BuildVersion:     to.Ptr("1.0.0.1"),
 				StepGroups: []*armdeploymentmanager.StepGroup{
 					{
-						Name:               to.StringPtr("<name>"),
-						DeploymentTargetID: to.StringPtr("<deployment-target-id>"),
+						Name:               to.Ptr("FirstRegion"),
+						DeploymentTargetID: to.Ptr("Microsoft.DeploymentManager/serviceTopologies/myTopology/services/myService/serviceUnits/myServiceUnit1'"),
 						PostDeploymentSteps: []*armdeploymentmanager.PrePostStep{
 							{
-								StepID: to.StringPtr("<step-id>"),
+								StepID: to.Ptr("Microsoft.DeploymentManager/steps/postDeployStep1"),
 							}},
 						PreDeploymentSteps: []*armdeploymentmanager.PrePostStep{
 							{
-								StepID: to.StringPtr("<step-id>"),
+								StepID: to.Ptr("Microsoft.DeploymentManager/steps/preDeployStep1"),
 							},
 							{
-								StepID: to.StringPtr("<step-id>"),
+								StepID: to.Ptr("Microsoft.DeploymentManager/steps/preDeployStep2"),
 							}},
 					},
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("SecondRegion"),
 						DependsOnStepGroups: []*string{
-							to.StringPtr("FirstRegion")},
-						DeploymentTargetID: to.StringPtr("<deployment-target-id>"),
+							to.Ptr("FirstRegion")},
+						DeploymentTargetID: to.Ptr("Microsoft.DeploymentManager/serviceTopologies/myTopology/services/myService/serviceUnits/myServiceUnit2'"),
 						PostDeploymentSteps: []*armdeploymentmanager.PrePostStep{
 							{
-								StepID: to.StringPtr("<step-id>"),
+								StepID: to.Ptr("Microsoft.DeploymentManager/steps/postDeployStep5"),
 							}},
 						PreDeploymentSteps: []*armdeploymentmanager.PrePostStep{
 							{
-								StepID: to.StringPtr("<step-id>"),
+								StepID: to.Ptr("Microsoft.DeploymentManager/steps/preDeployStep3"),
 							},
 							{
-								StepID: to.StringPtr("<step-id>"),
+								StepID: to.Ptr("Microsoft.DeploymentManager/steps/preDeployStep4"),
 							}},
 					}},
-				TargetServiceTopologyID: to.StringPtr("<target-service-topology-id>"),
+				TargetServiceTopologyID: to.Ptr("/subscriptions/caac1590-e859-444f-a9e0-62091c0f5929/resourceGroups/myResourceGroup/Microsoft.DeploymentManager/serviceTopologies/myTopology"),
 			},
 		},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("RolloutRequest.ID: %s\n", *res.ID)
 }
 
-// x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/rollout_get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/rollout_get.json
 func ExampleRolloutsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdeploymentmanager.NewRolloutsClient("<subscription-id>", cred, nil)
-	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<rollout-name>",
-		&armdeploymentmanager.RolloutsGetOptions{RetryAttempt: nil})
+	client, err := armdeploymentmanager.NewRolloutsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
 	}
-	log.Printf("Rollout.ID: %s\n", *res.ID)
+	res, err := client.Get(ctx,
+		"myResourceGroup",
+		"myRollout",
+		&armdeploymentmanager.RolloutsClientGetOptions{RetryAttempt: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/rollout_delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/rollout_delete.json
 func ExampleRolloutsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdeploymentmanager.NewRolloutsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewRolloutsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<rollout-name>",
+		"myResourceGroup",
+		"myRollout",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/rollout_post_cancel.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/rollout_post_cancel.json
 func ExampleRolloutsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdeploymentmanager.NewRolloutsClient("<subscription-id>", cred, nil)
+	client, err := armdeploymentmanager.NewRolloutsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Cancel(ctx,
-		"<resource-group-name>",
-		"<rollout-name>",
+		"myResourceGroup",
+		"myRollout",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Rollout.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/rollout_post_restart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/rollout_post_restart.json
 func ExampleRolloutsClient_Restart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdeploymentmanager.NewRolloutsClient("<subscription-id>", cred, nil)
-	res, err := client.Restart(ctx,
-		"<resource-group-name>",
-		"<rollout-name>",
-		&armdeploymentmanager.RolloutsRestartOptions{SkipSucceeded: to.BoolPtr(true)})
+	client, err := armdeploymentmanager.NewRolloutsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
 	}
-	log.Printf("Rollout.ID: %s\n", *res.ID)
+	res, err := client.Restart(ctx,
+		"myResourceGroup",
+		"myRollout",
+		&armdeploymentmanager.RolloutsClientRestartOptions{SkipSucceeded: to.Ptr(true)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/rollouts_list.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deploymentmanager/resource-manager/Microsoft.DeploymentManager/preview/2019-11-01-preview/examples/rollouts_list.json
 func ExampleRolloutsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdeploymentmanager.NewRolloutsClient("<subscription-id>", cred, nil)
-	_, err = client.List(ctx,
-		"<resource-group-name>",
+	client, err := armdeploymentmanager.NewRolloutsClient("caac1590-e859-444f-a9e0-62091c0f5929", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.List(ctx,
+		"myResourceGroup",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }

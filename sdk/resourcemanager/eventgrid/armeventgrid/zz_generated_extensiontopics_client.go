@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,74 +25,80 @@ import (
 // ExtensionTopicsClient contains the methods for the ExtensionTopics group.
 // Don't use this type directly, use NewExtensionTopicsClient() instead.
 type ExtensionTopicsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewExtensionTopicsClient creates a new instance of ExtensionTopicsClient with the specified values.
-func NewExtensionTopicsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ExtensionTopicsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewExtensionTopicsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ExtensionTopicsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &ExtensionTopicsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &ExtensionTopicsClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
 // Get - Get the properties of an extension topic.
-// If the operation fails it returns a generic error.
-func (client *ExtensionTopicsClient) Get(ctx context.Context, scope string, options *ExtensionTopicsGetOptions) (ExtensionTopicsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-15
+// scope - The identifier of the resource to which extension topic is queried. The scope can be a subscription, or a resource
+// group, or a top level resource belonging to a resource provider namespace. For
+// example, use '/subscriptions/{subscriptionId}/' for a subscription, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}'
+// for a resource group, and
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+// for Azure resource.
+// options - ExtensionTopicsClientGetOptions contains the optional parameters for the ExtensionTopicsClient.Get method.
+func (client *ExtensionTopicsClient) Get(ctx context.Context, scope string, options *ExtensionTopicsClientGetOptions) (ExtensionTopicsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, options)
 	if err != nil {
-		return ExtensionTopicsGetResponse{}, err
+		return ExtensionTopicsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExtensionTopicsGetResponse{}, err
+		return ExtensionTopicsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExtensionTopicsGetResponse{}, client.getHandleError(resp)
+		return ExtensionTopicsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ExtensionTopicsClient) getCreateRequest(ctx context.Context, scope string, options *ExtensionTopicsGetOptions) (*policy.Request, error) {
+func (client *ExtensionTopicsClient) getCreateRequest(ctx context.Context, scope string, options *ExtensionTopicsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.EventGrid/extensionTopics/default"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(scope))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-06-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExtensionTopicsClient) getHandleResponse(resp *http.Response) (ExtensionTopicsGetResponse, error) {
-	result := ExtensionTopicsGetResponse{RawResponse: resp}
+func (client *ExtensionTopicsClient) getHandleResponse(resp *http.Response) (ExtensionTopicsClientGetResponse, error) {
+	result := ExtensionTopicsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionTopic); err != nil {
-		return ExtensionTopicsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ExtensionTopicsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *ExtensionTopicsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

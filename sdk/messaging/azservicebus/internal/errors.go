@@ -9,40 +9,230 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"net/http"
 	"reflect"
 	"strings"
-	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/rpc"
-	"github.com/Azure/go-amqp"
-	"github.com/devigned/tab"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 )
 
-type NonRetriable interface {
-	error
-	NonRetriable()
+type errNonRetriable struct {
+	Message string
 }
 
-// IsNonRetriable indicates an error is fatal. Typically, this means
-// the connection or link has been closed.
-func IsNonRetriable(err error) bool {
-	var nonRetriable NonRetriable
-	return errors.As(err, &nonRetriable)
+func NewErrNonRetriable(message string) error {
+	return errNonRetriable{Message: message}
 }
 
-// Error Conditions
-const (
-	// Service Bus Errors
-	errorServerBusy         amqp.ErrorCondition = "com.microsoft:server-busy"
-	errorTimeout            amqp.ErrorCondition = "com.microsoft:timeout"
-	errorOperationCancelled amqp.ErrorCondition = "com.microsoft:operation-cancelled"
-	errorContainerClose     amqp.ErrorCondition = "com.microsoft:container-close"
-)
+func (e errNonRetriable) Error() string { return e.Message }
+
+// RecoveryKind dictates what kind of recovery is possible. Used with
+// GetRecoveryKind().
+type RecoveryKind string
 
 const (
-	amqpRetryDefaultTimes int           = 3
-	amqpRetryDefaultDelay time.Duration = time.Second
+	RecoveryKindNone  RecoveryKind = ""
+	RecoveryKindFatal RecoveryKind = "fatal"
+	RecoveryKindLink  RecoveryKind = "link"
+	RecoveryKindConn  RecoveryKind = "connection"
 )
+
+func IsFatalSBError(err error) bool {
+	return GetRecoveryKind(err) == RecoveryKindFatal
+}
+
+// TransformError will create a proper error type that users
+// can potentially inspect.
+// If the error is actionable then it'll be of type exported.Error which
+// has a 'Code' field that can be used programatically.
+// If it's not actionable or if it's nil it'll just be returned.
+func TransformError(err error) error {
+	if err == nil {
+		return nil
+	}
+
+	_, ok := err.(*exported.Error)
+
+	if ok {
+		// it's already been wrapped.
+		return err
+	}
+
+	if isLockLostError(err) {
+		return exported.NewError(exported.CodeLockLost, err)
+	}
+
+	rk := GetRecoveryKind(err)
+
+	switch rk {
+	case RecoveryKindLink:
+		// note that we could give back a more differentiated error code
+		// here but it's probably best to just give the customer the simplest
+		// recovery mechanism possible.
+		return exported.NewError(exported.CodeConnectionLost, err)
+	case RecoveryKindConn:
+		return exported.NewError(exported.CodeConnectionLost, err)
+	default:
+		// isn't one of our specifically called out cases so we'll just return it.
+		return err
+	}
+}
+
+func IsDetachError(err error) bool {
+	var de *amqp.DetachError
+	return errors.As(err, &de)
+}
+
+func IsCancelError(err error) bool {
+	if err == nil {
+		return false
+	}
+
+	if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+		return true
+	}
+
+	if err.Error() == "context canceled" { // go-amqp is returning this when I cancel
+		return true
+	}
+
+	return false
+}
+
+func IsDrainingError(err error) bool {
+	// TODO: we should be able to identify these errors programatically
+	return strings.Contains(err.Error(), "link is currently draining")
+}
+
+const errorConditionLockLost = amqp.ErrorCondition("com.microsoft:message-lock-lost")
+
+var amqpConditionsToRecoveryKind = map[amqp.ErrorCondition]RecoveryKind{
+	// no recovery needed, these are temporary errors.
+	amqp.ErrorCondition("com.microsoft:server-busy"):         RecoveryKindNone,
+	amqp.ErrorCondition("com.microsoft:timeout"):             RecoveryKindNone,
+	amqp.ErrorCondition("com.microsoft:operation-cancelled"): RecoveryKindNone,
+
+	// Link recovery needed
+	amqp.ErrorDetachForced:          RecoveryKindLink, // "amqp:link:detach-forced"
+	amqp.ErrorTransferLimitExceeded: RecoveryKindLink, // "amqp:link:transfer-limit-exceeded"
+
+	// Connection recovery needed
+	amqp.ErrorConnectionForced: RecoveryKindConn, // "amqp:connection:forced"
+	amqp.ErrorInternalError:    RecoveryKindConn, // "amqp:internal-error"
+
+	// No recovery possible - this operation is non retriable.
+	amqp.ErrorMessageSizeExceeded:                                 RecoveryKindFatal, // "amqp:link:message-size-exceeded"
+	amqp.ErrorUnauthorizedAccess:                                  RecoveryKindFatal, // creds are bad
+	amqp.ErrorNotFound:                                            RecoveryKindFatal, // "amqp:not-found"
+	amqp.ErrorNotAllowed:                                          RecoveryKindFatal, // "amqp:not-allowed"
+	amqp.ErrorCondition("com.microsoft:entity-disabled"):          RecoveryKindFatal, // entity is disabled in the portal
+	amqp.ErrorCondition("com.microsoft:session-cannot-be-locked"): RecoveryKindFatal,
+	errorConditionLockLost:                                        RecoveryKindFatal,
+}
+
+// GetRecoveryKindForSession determines the recovery type for session-based links.
+func GetRecoveryKindForSession(err error) RecoveryKind {
+	// when a session is detached there's a delay before we can reacquire the
+	// lock. So a lock lost on a session _is_ retryable.
+	if isLockLostError(err) {
+		return RecoveryKindLink
+	}
+
+	return GetRecoveryKind(err)
+}
+
+// GetRecoveryKind determines the recovery type for non-session based links.
+func GetRecoveryKind(err error) RecoveryKind {
+	if err == nil {
+		return RecoveryKindNone
+	}
+
+	if IsCancelError(err) {
+		return RecoveryKindFatal
+	}
+
+	var netErr net.Error
+
+	// these are errors that can flow from the go-amqp connection to
+	// us. There's work underway to improve this but for now we can handle
+	// these as "catastrophic" errors and reset everything.
+	if errors.Is(err, io.EOF) || errors.As(err, &netErr) {
+		return RecoveryKindConn
+	}
+
+	var errNonRetriable errNonRetriable
+
+	if errors.As(err, &errNonRetriable) {
+		return RecoveryKindFatal
+	}
+
+	// check the "special" AMQP errors that aren't condition-based.
+	if errors.Is(err, amqp.ErrLinkClosed) ||
+		IsDetachError(err) {
+		return RecoveryKindLink
+	}
+
+	var connErr *amqp.ConnectionError
+
+	if errors.As(err, &connErr) ||
+		// session closures appear to leak through when the connection itself is going down.
+		errors.Is(err, amqp.ErrSessionClosed) {
+		return RecoveryKindConn
+	}
+
+	if IsDrainingError(err) {
+		// temporary, operation should just be retryable since drain will
+		// eventually complete.
+		return RecoveryKindNone
+	}
+
+	// then it's _probably_ an actual *amqp.Error, in which case we bucket it by
+	// the 'condition'.
+	var amqpError *amqp.Error
+
+	if errors.As(err, &amqpError) {
+		recoveryKind, ok := amqpConditionsToRecoveryKind[amqpError.Condition]
+
+		if ok {
+			return recoveryKind
+		}
+	}
+
+	var rpcErr RPCError
+
+	if errors.As(err, &rpcErr) {
+		// Described more here:
+		// https://www.oasis-open.org/committees/download.php/54441/AMQP%20Management%20v1.0%20WD09
+		// > Unsuccessful operations MUST NOT result in a statusCode in the 2xx range as defined in Section 10.2 of [RFC2616]
+		// RFC2616 is the specification for HTTP.
+		code := rpcErr.RPCCode()
+
+		if code == http.StatusNotFound || code == RPCResponseCodeLockLost {
+			return RecoveryKindFatal
+		}
+
+		// this can happen when we're recovering the link - the client gets closed and the old link is still being
+		// used by this instance of the client. It needs to recover and attempt it again.
+		if code == http.StatusUnauthorized {
+			return RecoveryKindLink
+		}
+
+		// simple timeouts
+		if rpcErr.Resp.Code == http.StatusRequestTimeout || rpcErr.Resp.Code == http.StatusServiceUnavailable ||
+			// internal server errors are worth retrying (they will typically lead
+			// to a more actionable error). A simple example of this is when you're
+			// in the middle of an operation and the link is detached. Sometimes you'll get
+			// the detached event immediately, but sometimes you'll get an intermediate 500
+			// indicating your original operation was cancelled.
+			rpcErr.Resp.Code == http.StatusInternalServerError {
+			return RecoveryKindNone
+		}
+	}
+
+	// this is some error type we've never seen - recover the entire connection.
+	return RecoveryKindConn
+}
 
 type (
 	// ErrMissingField indicates that an expected property was missing from an AMQP message. This should only be
@@ -62,7 +252,7 @@ type (
 	}
 
 	// ErrAMQP indicates that the server communicated an AMQP error with a particular
-	ErrAMQP rpc.Response
+	ErrAMQP RPCResponse
 
 	// ErrNoMessages is returned when an operation returned no messages. It is not indicative that there will not be
 	// more messages in the future.
@@ -125,121 +315,22 @@ func (e ErrConnectionClosed) Error() string {
 	return fmt.Sprintf("the connection has been closed: %s", string(e))
 }
 
-// Leveraging @serbrech's fine work from go-shuttle:
-// https://github.com/Azure/go-shuttle/blob/ea882947109ade9b34d4d69642fdf7aec4570fee/common/errorhandling/recovery.go
+func isLockLostError(err error) bool {
+	var rpcErr RPCError
 
-var retryableAMQPConditions = map[string]bool{
-	string(amqp.ErrorInternalError):         true,
-	string(errorServerBusy):                 true, // "com.microsoft:server-busy"
-	string(errorTimeout):                    true, // "com.microsoft:timeout"
-	string(errorOperationCancelled):         true, // "com.microsoft:operation-cancelled"
-	"client.sender:not-enough-link-credit":  true,
-	string(amqp.ErrorUnauthorizedAccess):    true,
-	string(amqp.ErrorDetachForced):          true,
-	string(amqp.ErrorConnectionForced):      true,
-	string(amqp.ErrorTransferLimitExceeded): true,
-	"amqp: connection closed":               true,
-	"unexpected frame":                      true,
-	string(amqp.ErrorNotFound):              true,
-}
+	// this is the error you get if you settle on the management$ link
+	// with an expired locktoken.
+	if errors.As(err, &rpcErr) && rpcErr.Resp.Code == RPCResponseCodeLockLost {
+		return true
+	}
 
-func isRetryableAMQPError(ctxForLogging context.Context, err error) bool {
 	var amqpErr *amqp.Error
-	var isAMQPError = errors.As(err, &amqpErr)
 
-	if isAMQPError {
-		_, ok := retryableAMQPConditions[string(amqpErr.Condition)]
-		return ok
-	}
-
-	// TODO: there is a bug somewhere that seems to be errorString'ing errors. Need to track that down.
-	// In the meantime, try string matching instead
-	for condition := range retryableAMQPConditions {
-		if strings.Contains(err.Error(), condition) {
-			tab.For(ctxForLogging).Error(fmt.Errorf("error needed to be matched by a string matcher, rather than by type: %w", err))
-			return true
-		}
-	}
-
-	return false
-}
-
-func isPermanentNetError(err error) bool {
-	var netErr net.Error
-
-	if errors.As(err, &netErr) {
-		temp := netErr.Temporary()
-		timeout := netErr.Timeout()
-		return !temp && !timeout
-	}
-
-	return false
-}
-
-func isEOF(err error) bool {
-	return errors.Is(err, io.EOF)
-}
-
-func shouldRecreateLink(err error) bool {
-	if err == nil {
-		return false
-	}
-
-	var detachError *amqp.DetachError
-
-	return errors.As(err, &detachError) ||
-		// TODO: proper error types needs to happen
-		strings.Contains(err.Error(), "detach frame link detached")
-}
-
-func shouldRecreateConnection(ctxForLogging context.Context, err error) bool {
-	if err == nil {
-		return false
-	}
-
-	shouldRecreate := isPermanentNetError(err) ||
-		isRetryableAMQPError(ctxForLogging, err) ||
-		isEOF(err) ||
-		// these are distinct from a detach and probably indicate something
-		// wrong with the connection itself, rather than just the link
-		errors.Is(err, amqp.ErrSessionClosed) ||
-		errors.Is(err, amqp.ErrLinkClosed)
-
-	return shouldRecreate
-}
-
-func IsCancelError(err error) bool {
-	if err == nil {
-		return false
-	}
-
-	if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
-		return true
-	}
-
-	if err.Error() == "context canceled" { // go-amqp is returning this when I cancel
+	// this is the error you get if you settle on the actual receiver link you
+	// got the message on with an expired locktoken.
+	if errors.As(err, &amqpErr) && amqpErr.Condition == errorConditionLockLost {
 		return true
 	}
 
 	return false
-}
-
-func IsDrainingError(err error) bool {
-	// TODO: we should be able to identify these errors programatically
-	return strings.Contains(err.Error(), "link is currently draining")
-}
-
-// IsSessionLockedError checks to see if this is the "you tried to get a session that was already locked"
-// error.
-func IsSessionLockedError(err error) bool {
-	var amqpError *amqp.Error
-
-	if !errors.As(err, &amqpError) {
-		return false
-	}
-
-	// Example:
-	//{Condition: com.microsoft:session-cannot-be-locked, Description: The requested session 'session-1' cannot be accepted. It may be locked by another receiver.
-
-	return amqpError.Condition == "com.microsoft:session-cannot-be-locked"
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armservicelinker
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AuthInfoBaseClassification provides polymorphic access to related types.
 // Call the interface's GetAuthInfoBase() method to access the common type.
@@ -34,39 +29,97 @@ type AuthInfoBase struct {
 // GetAuthInfoBase implements the AuthInfoBaseClassification interface for type AuthInfoBase.
 func (a *AuthInfoBase) GetAuthInfoBase() *AuthInfoBase { return a }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AuthInfoBase.
-func (a *AuthInfoBase) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return a.unmarshalInternal(rawMsg)
+// AzureKeyVaultProperties - The resource properties when type is Azure Key Vault
+type AzureKeyVaultProperties struct {
+	// REQUIRED; The azure resource type.
+	Type *AzureResourceType `json:"type,omitempty"`
+
+	// True if connect via Kubernetes CSI Driver.
+	ConnectAsKubernetesCsiDriver *bool `json:"connectAsKubernetesCsiDriver,omitempty"`
 }
 
-func (a AuthInfoBase) marshalInternal(objectMap map[string]interface{}, discValue AuthType) {
-	a.AuthType = &discValue
-	objectMap["authType"] = a.AuthType
+// GetAzureResourcePropertiesBase implements the AzureResourcePropertiesBaseClassification interface for type AzureKeyVaultProperties.
+func (a *AzureKeyVaultProperties) GetAzureResourcePropertiesBase() *AzureResourcePropertiesBase {
+	return &AzureResourcePropertiesBase{
+		Type: a.Type,
+	}
 }
 
-func (a *AuthInfoBase) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "authType":
-			err = unpopulate(val, &a.AuthType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
+// AzureResource - The azure resource info when target service type is AzureResource
+type AzureResource struct {
+	// REQUIRED; The target service type.
+	Type *TargetServiceType `json:"type,omitempty"`
+
+	// The Id of azure resource.
+	ID *string `json:"id,omitempty"`
+
+	// The azure resource connection related properties.
+	ResourceProperties AzureResourcePropertiesBaseClassification `json:"resourceProperties,omitempty"`
+}
+
+// GetTargetServiceBase implements the TargetServiceBaseClassification interface for type AzureResource.
+func (a *AzureResource) GetTargetServiceBase() *TargetServiceBase {
+	return &TargetServiceBase{
+		Type: a.Type,
 	}
-	return nil
+}
+
+// AzureResourcePropertiesBaseClassification provides polymorphic access to related types.
+// Call the interface's GetAzureResourcePropertiesBase() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureKeyVaultProperties, *AzureResourcePropertiesBase
+type AzureResourcePropertiesBaseClassification interface {
+	// GetAzureResourcePropertiesBase returns the AzureResourcePropertiesBase content of the underlying type.
+	GetAzureResourcePropertiesBase() *AzureResourcePropertiesBase
+}
+
+// AzureResourcePropertiesBase - The azure resource properties
+type AzureResourcePropertiesBase struct {
+	// REQUIRED; The azure resource type.
+	Type *AzureResourceType `json:"type,omitempty"`
+}
+
+// GetAzureResourcePropertiesBase implements the AzureResourcePropertiesBaseClassification interface for type AzureResourcePropertiesBase.
+func (a *AzureResourcePropertiesBase) GetAzureResourcePropertiesBase() *AzureResourcePropertiesBase {
+	return a
+}
+
+// ConfluentBootstrapServer - The service properties when target service type is ConfluentBootstrapServer
+type ConfluentBootstrapServer struct {
+	// REQUIRED; The target service type.
+	Type *TargetServiceType `json:"type,omitempty"`
+
+	// The endpoint of service.
+	Endpoint *string `json:"endpoint,omitempty"`
+}
+
+// GetTargetServiceBase implements the TargetServiceBaseClassification interface for type ConfluentBootstrapServer.
+func (c *ConfluentBootstrapServer) GetTargetServiceBase() *TargetServiceBase {
+	return &TargetServiceBase{
+		Type: c.Type,
+	}
+}
+
+// ConfluentSchemaRegistry - The service properties when target service type is ConfluentSchemaRegistry
+type ConfluentSchemaRegistry struct {
+	// REQUIRED; The target service type.
+	Type *TargetServiceType `json:"type,omitempty"`
+
+	// The endpoint of service.
+	Endpoint *string `json:"endpoint,omitempty"`
+}
+
+// GetTargetServiceBase implements the TargetServiceBaseClassification interface for type ConfluentSchemaRegistry.
+func (c *ConfluentSchemaRegistry) GetTargetServiceBase() *TargetServiceBase {
+	return &TargetServiceBase{
+		Type: c.Type,
+	}
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -90,54 +143,87 @@ type ErrorDetail struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+// KeyVaultSecretReferenceSecretInfo - The secret info when type is keyVaultSecretReference. It's for scenario that user provides
+// a secret stored in user's keyvault and source is Azure Kubernetes. The key Vault's resource id is linked to
+// secretStore.keyVaultId.
+type KeyVaultSecretReferenceSecretInfo struct {
+	// REQUIRED; The secret type.
+	SecretType *SecretType `json:"secretType,omitempty"`
+
+	// Name of the Key Vault secret.
+	Name *string `json:"name,omitempty"`
+
+	// Version of the Key Vault secret.
+	Version *string `json:"version,omitempty"`
 }
 
-// LinkerBeginCreateOrUpdateOptions contains the optional parameters for the Linker.BeginCreateOrUpdate method.
-type LinkerBeginCreateOrUpdateOptions struct {
+// GetSecretInfoBase implements the SecretInfoBaseClassification interface for type KeyVaultSecretReferenceSecretInfo.
+func (k *KeyVaultSecretReferenceSecretInfo) GetSecretInfoBase() *SecretInfoBase {
+	return &SecretInfoBase{
+		SecretType: k.SecretType,
+	}
+}
+
+// KeyVaultSecretURISecretInfo - The secret info when type is keyVaultSecretUri. It's for scenario that user provides a secret
+// stored in user's keyvault and source is Web App, Spring Cloud or Container App.
+type KeyVaultSecretURISecretInfo struct {
+	// REQUIRED; The secret type.
+	SecretType *SecretType `json:"secretType,omitempty"`
+
+	// URI to the keyvault secret
+	Value *string `json:"value,omitempty"`
+}
+
+// GetSecretInfoBase implements the SecretInfoBaseClassification interface for type KeyVaultSecretURISecretInfo.
+func (k *KeyVaultSecretURISecretInfo) GetSecretInfoBase() *SecretInfoBase {
+	return &SecretInfoBase{
+		SecretType: k.SecretType,
+	}
+}
+
+// LinkerClientBeginCreateOrUpdateOptions contains the optional parameters for the LinkerClient.BeginCreateOrUpdate method.
+type LinkerClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// LinkerClientBeginDeleteOptions contains the optional parameters for the LinkerClient.BeginDelete method.
+type LinkerClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// LinkerClientBeginUpdateOptions contains the optional parameters for the LinkerClient.BeginUpdate method.
+type LinkerClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// LinkerClientBeginValidateOptions contains the optional parameters for the LinkerClient.BeginValidate method.
+type LinkerClientBeginValidateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// LinkerClientGetOptions contains the optional parameters for the LinkerClient.Get method.
+type LinkerClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LinkerBeginDeleteOptions contains the optional parameters for the Linker.BeginDelete method.
-type LinkerBeginDeleteOptions struct {
+// LinkerClientListConfigurationsOptions contains the optional parameters for the LinkerClient.ListConfigurations method.
+type LinkerClientListConfigurationsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LinkerBeginUpdateOptions contains the optional parameters for the Linker.BeginUpdate method.
-type LinkerBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// LinkerBeginValidateOptions contains the optional parameters for the Linker.BeginValidate method.
-type LinkerBeginValidateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// LinkerGetOptions contains the optional parameters for the Linker.Get method.
-type LinkerGetOptions struct {
+// LinkerClientListOptions contains the optional parameters for the LinkerClient.List method.
+type LinkerClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -150,35 +236,10 @@ type LinkerList struct {
 	Value []*LinkerResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LinkerList.
-func (l LinkerList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
-// LinkerListConfigurationsOptions contains the optional parameters for the Linker.ListConfigurations method.
-type LinkerListConfigurationsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// LinkerListOptions contains the optional parameters for the Linker.List method.
-type LinkerListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // LinkerPatch - A linker to be updated.
 type LinkerPatch struct {
 	// Linker properties
 	Properties *LinkerProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LinkerPatch.
-func (l LinkerPatch) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", l.Properties)
-	return json.Marshal(objectMap)
 }
 
 // LinkerProperties - The properties of the linker.
@@ -189,60 +250,38 @@ type LinkerProperties struct {
 	// The application client type
 	ClientType *ClientType `json:"clientType,omitempty"`
 
-	// The resource Id of target service.
-	TargetID *string `json:"targetId,omitempty"`
+	// connection scope in source service.
+	Scope *string `json:"scope,omitempty"`
+
+	// An option to store secret value in secure place
+	SecretStore *SecretStore `json:"secretStore,omitempty"`
+
+	// The target service properties
+	TargetService TargetServiceBaseClassification `json:"targetService,omitempty"`
+
+	// The VNet solution.
+	VNetSolution *VNetSolution `json:"vNetSolution,omitempty"`
 
 	// READ-ONLY; The provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LinkerProperties.
-func (l LinkerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authInfo", l.AuthInfo)
-	populate(objectMap, "clientType", l.ClientType)
-	populate(objectMap, "provisioningState", l.ProvisioningState)
-	populate(objectMap, "targetId", l.TargetID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type LinkerProperties.
-func (l *LinkerProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "authInfo":
-			l.AuthInfo, err = unmarshalAuthInfoBaseClassification(val)
-			delete(rawMsg, key)
-		case "clientType":
-			err = unpopulate(val, &l.ClientType)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &l.ProvisioningState)
-			delete(rawMsg, key)
-		case "targetId":
-			err = unpopulate(val, &l.TargetID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // LinkerResource - Linker of source and target resource
 type LinkerResource struct {
-	ProxyResource
 	// REQUIRED; The properties of the linker.
 	Properties *LinkerProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; The system data.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
@@ -253,13 +292,16 @@ type Operation struct {
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
 
-	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane operations.
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
 	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
 
-	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
 	Origin *Origin `json:"origin,omitempty" azure:"ro"`
 }
 
@@ -268,18 +310,21 @@ type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string `json:"description,omitempty" azure:"ro"`
 
-	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual Machine", "Restart Virtual
-	// Machine".
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string `json:"operation,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft Compute".
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string `json:"provider,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job Schedule Collections".
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -288,22 +333,22 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
@@ -320,52 +365,52 @@ type Resource struct {
 
 // SecretAuthInfo - The authentication info when authType is secret
 type SecretAuthInfo struct {
-	AuthInfoBase
+	// REQUIRED; The authentication type.
+	AuthType *AuthType `json:"authType,omitempty"`
+
 	// Username or account name for secret auth.
 	Name *string `json:"name,omitempty"`
 
-	// Password or account key for secret auth.
-	Secret *string `json:"secret,omitempty"`
+	// Password or key vault secret for secret auth.
+	SecretInfo SecretInfoBaseClassification `json:"secretInfo,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SecretAuthInfo.
-func (s SecretAuthInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.AuthInfoBase.marshalInternal(objectMap, AuthTypeSecret)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "secret", s.Secret)
-	return json.Marshal(objectMap)
+// GetAuthInfoBase implements the AuthInfoBaseClassification interface for type SecretAuthInfo.
+func (s *SecretAuthInfo) GetAuthInfoBase() *AuthInfoBase {
+	return &AuthInfoBase{
+		AuthType: s.AuthType,
+	}
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SecretAuthInfo.
-func (s *SecretAuthInfo) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "name":
-			err = unpopulate(val, &s.Name)
-			delete(rawMsg, key)
-		case "secret":
-			err = unpopulate(val, &s.Secret)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.AuthInfoBase.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+// SecretInfoBaseClassification provides polymorphic access to related types.
+// Call the interface's GetSecretInfoBase() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *KeyVaultSecretReferenceSecretInfo, *KeyVaultSecretURISecretInfo, *SecretInfoBase, *ValueSecretInfo
+type SecretInfoBaseClassification interface {
+	// GetSecretInfoBase returns the SecretInfoBase content of the underlying type.
+	GetSecretInfoBase() *SecretInfoBase
+}
+
+// SecretInfoBase - The secret info
+type SecretInfoBase struct {
+	// REQUIRED; The secret type.
+	SecretType *SecretType `json:"secretType,omitempty"`
+}
+
+// GetSecretInfoBase implements the SecretInfoBaseClassification interface for type SecretInfoBase.
+func (s *SecretInfoBase) GetSecretInfoBase() *SecretInfoBase { return s }
+
+// SecretStore - An option to store secret value in secure place
+type SecretStore struct {
+	// The key vault id to store secret
+	KeyVaultID *string `json:"keyVaultId,omitempty"`
 }
 
 // ServicePrincipalCertificateAuthInfo - The authentication info when authType is servicePrincipal certificate
 type ServicePrincipalCertificateAuthInfo struct {
-	AuthInfoBase
+	// REQUIRED; The authentication type.
+	AuthType *AuthType `json:"authType,omitempty"`
+
 	// REQUIRED; ServicePrincipal certificate for servicePrincipal auth.
 	Certificate *string `json:"certificate,omitempty"`
 
@@ -376,48 +421,18 @@ type ServicePrincipalCertificateAuthInfo struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServicePrincipalCertificateAuthInfo.
-func (s ServicePrincipalCertificateAuthInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.AuthInfoBase.marshalInternal(objectMap, AuthTypeServicePrincipalCertificate)
-	populate(objectMap, "certificate", s.Certificate)
-	populate(objectMap, "clientId", s.ClientID)
-	populate(objectMap, "principalId", s.PrincipalID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServicePrincipalCertificateAuthInfo.
-func (s *ServicePrincipalCertificateAuthInfo) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetAuthInfoBase implements the AuthInfoBaseClassification interface for type ServicePrincipalCertificateAuthInfo.
+func (s *ServicePrincipalCertificateAuthInfo) GetAuthInfoBase() *AuthInfoBase {
+	return &AuthInfoBase{
+		AuthType: s.AuthType,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "certificate":
-			err = unpopulate(val, &s.Certificate)
-			delete(rawMsg, key)
-		case "clientId":
-			err = unpopulate(val, &s.ClientID)
-			delete(rawMsg, key)
-		case "principalId":
-			err = unpopulate(val, &s.PrincipalID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.AuthInfoBase.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // ServicePrincipalSecretAuthInfo - The authentication info when authType is servicePrincipal secret
 type ServicePrincipalSecretAuthInfo struct {
-	AuthInfoBase
+	// REQUIRED; The authentication type.
+	AuthType *AuthType `json:"authType,omitempty"`
+
 	// REQUIRED; ServicePrincipal application clientId for servicePrincipal auth.
 	ClientID *string `json:"clientId,omitempty"`
 
@@ -428,43 +443,11 @@ type ServicePrincipalSecretAuthInfo struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServicePrincipalSecretAuthInfo.
-func (s ServicePrincipalSecretAuthInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.AuthInfoBase.marshalInternal(objectMap, AuthTypeServicePrincipalSecret)
-	populate(objectMap, "clientId", s.ClientID)
-	populate(objectMap, "principalId", s.PrincipalID)
-	populate(objectMap, "secret", s.Secret)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServicePrincipalSecretAuthInfo.
-func (s *ServicePrincipalSecretAuthInfo) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetAuthInfoBase implements the AuthInfoBaseClassification interface for type ServicePrincipalSecretAuthInfo.
+func (s *ServicePrincipalSecretAuthInfo) GetAuthInfoBase() *AuthInfoBase {
+	return &AuthInfoBase{
+		AuthType: s.AuthType,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "clientId":
-			err = unpopulate(val, &s.ClientID)
-			delete(rawMsg, key)
-		case "principalId":
-			err = unpopulate(val, &s.PrincipalID)
-			delete(rawMsg, key)
-		case "secret":
-			err = unpopulate(val, &s.Secret)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.AuthInfoBase.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // SourceConfiguration - A configuration item for source resource
@@ -482,23 +465,17 @@ type SourceConfigurationResult struct {
 	Configurations []*SourceConfiguration `json:"configurations,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SourceConfigurationResult.
-func (s SourceConfigurationResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "configurations", s.Configurations)
-	return json.Marshal(objectMap)
-}
-
 // SystemAssignedIdentityAuthInfo - The authentication info when authType is systemAssignedIdentity
 type SystemAssignedIdentityAuthInfo struct {
-	AuthInfoBase
+	// REQUIRED; The authentication type.
+	AuthType *AuthType `json:"authType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemAssignedIdentityAuthInfo.
-func (s SystemAssignedIdentityAuthInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.AuthInfoBase.marshalInternal(objectMap, AuthTypeSystemAssignedIdentity)
-	return json.Marshal(objectMap)
+// GetAuthInfoBase implements the AuthInfoBaseClassification interface for type SystemAssignedIdentityAuthInfo.
+func (s *SystemAssignedIdentityAuthInfo) GetAuthInfoBase() *AuthInfoBase {
+	return &AuthInfoBase{
+		AuthType: s.AuthType,
+	}
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -522,96 +499,59 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
+// TargetServiceBaseClassification provides polymorphic access to related types.
+// Call the interface's GetTargetServiceBase() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureResource, *ConfluentBootstrapServer, *ConfluentSchemaRegistry, *TargetServiceBase
+type TargetServiceBaseClassification interface {
+	// GetTargetServiceBase returns the TargetServiceBase content of the underlying type.
+	GetTargetServiceBase() *TargetServiceBase
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+// TargetServiceBase - The target service properties
+type TargetServiceBase struct {
+	// REQUIRED; The target service type.
+	Type *TargetServiceType `json:"type,omitempty"`
 }
+
+// GetTargetServiceBase implements the TargetServiceBaseClassification interface for type TargetServiceBase.
+func (t *TargetServiceBase) GetTargetServiceBase() *TargetServiceBase { return t }
 
 // UserAssignedIdentityAuthInfo - The authentication info when authType is userAssignedIdentity
 type UserAssignedIdentityAuthInfo struct {
-	AuthInfoBase
-	// REQUIRED; Client Id for userAssignedIdentity.
+	// REQUIRED; The authentication type.
+	AuthType *AuthType `json:"authType,omitempty"`
+
+	// Client Id for userAssignedIdentity.
 	ClientID *string `json:"clientId,omitempty"`
 
-	// REQUIRED; Subscription id for userAssignedIdentity.
+	// Subscription id for userAssignedIdentity.
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UserAssignedIdentityAuthInfo.
-func (u UserAssignedIdentityAuthInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	u.AuthInfoBase.marshalInternal(objectMap, AuthTypeUserAssignedIdentity)
-	populate(objectMap, "clientId", u.ClientID)
-	populate(objectMap, "subscriptionId", u.SubscriptionID)
-	return json.Marshal(objectMap)
+// GetAuthInfoBase implements the AuthInfoBaseClassification interface for type UserAssignedIdentityAuthInfo.
+func (u *UserAssignedIdentityAuthInfo) GetAuthInfoBase() *AuthInfoBase {
+	return &AuthInfoBase{
+		AuthType: u.AuthType,
+	}
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type UserAssignedIdentityAuthInfo.
-func (u *UserAssignedIdentityAuthInfo) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "clientId":
-			err = unpopulate(val, &u.ClientID)
-			delete(rawMsg, key)
-		case "subscriptionId":
-			err = unpopulate(val, &u.SubscriptionID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := u.AuthInfoBase.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+// VNetSolution - The VNet solution for linker
+type VNetSolution struct {
+	// Type of VNet solution.
+	Type *VNetSolutionType `json:"type,omitempty"`
+}
+
+// ValidateOperationResult - The validation operation result for a linker.
+type ValidateOperationResult struct {
+	// The validation result detail.
+	Properties *ValidateResult `json:"properties,omitempty"`
+
+	// Validated linker id.
+	ResourceID *string `json:"resourceId,omitempty"`
+
+	// Validation operation status.
+	Status *string `json:"status,omitempty"`
 }
 
 // ValidateResult - The validation result for a linker.
@@ -619,14 +559,11 @@ type ValidateResult struct {
 	// The authentication type.
 	AuthType *AuthType `json:"authType,omitempty"`
 
-	// Specifies if the linker is healthy.
-	LinkerStatus *LinkerStatus `json:"linkerStatus,omitempty"`
+	// A boolean value indicating whether the connection is available or not
+	IsConnectionAvailable *bool `json:"isConnectionAvailable,omitempty"`
 
 	// The linker name.
-	Name *string `json:"name,omitempty"`
-
-	// The reason of the error.
-	Reason *string `json:"reason,omitempty"`
+	LinkerName *string `json:"linkerName,omitempty"`
 
 	// The end time of the validation report.
 	ReportEndTimeUTC *time.Time `json:"reportEndTimeUtc,omitempty"`
@@ -634,74 +571,46 @@ type ValidateResult struct {
 	// The start time of the validation report.
 	ReportStartTimeUTC *time.Time `json:"reportStartTimeUtc,omitempty"`
 
+	// The resource id of the linker source application.
+	SourceID *string `json:"sourceId,omitempty"`
+
 	// The resource Id of target service.
 	TargetID *string `json:"targetId,omitempty"`
+
+	// The detail of validation result
+	ValidationDetail []*ValidationResultItem `json:"validationDetail,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ValidateResult.
-func (v ValidateResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authType", v.AuthType)
-	populate(objectMap, "linkerStatus", v.LinkerStatus)
-	populate(objectMap, "name", v.Name)
-	populate(objectMap, "reason", v.Reason)
-	populateTimeRFC3339(objectMap, "reportEndTimeUtc", v.ReportEndTimeUTC)
-	populateTimeRFC3339(objectMap, "reportStartTimeUtc", v.ReportStartTimeUTC)
-	populate(objectMap, "targetId", v.TargetID)
-	return json.Marshal(objectMap)
+// ValidationResultItem - The validation item for a linker.
+type ValidationResultItem struct {
+	// The display name of validation item
+	Description *string `json:"description,omitempty"`
+
+	// The error code of validation result
+	ErrorCode *string `json:"errorCode,omitempty"`
+
+	// The error message of validation result
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+
+	// The validation item name.
+	Name *string `json:"name,omitempty"`
+
+	// The result of validation
+	Result *ValidationResultStatus `json:"result,omitempty"`
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ValidateResult.
-func (v *ValidateResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "authType":
-			err = unpopulate(val, &v.AuthType)
-			delete(rawMsg, key)
-		case "linkerStatus":
-			err = unpopulate(val, &v.LinkerStatus)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &v.Name)
-			delete(rawMsg, key)
-		case "reason":
-			err = unpopulate(val, &v.Reason)
-			delete(rawMsg, key)
-		case "reportEndTimeUtc":
-			err = unpopulateTimeRFC3339(val, &v.ReportEndTimeUTC)
-			delete(rawMsg, key)
-		case "reportStartTimeUtc":
-			err = unpopulateTimeRFC3339(val, &v.ReportStartTimeUTC)
-			delete(rawMsg, key)
-		case "targetId":
-			err = unpopulate(val, &v.TargetID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+// ValueSecretInfo - The secret info when type is rawValue. It's for scenarios that user input the secret.
+type ValueSecretInfo struct {
+	// REQUIRED; The secret type.
+	SecretType *SecretType `json:"secretType,omitempty"`
+
+	// The actual value of the secret.
+	Value *string `json:"value,omitempty"`
 }
 
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
+// GetSecretInfoBase implements the SecretInfoBaseClassification interface for type ValueSecretInfo.
+func (v *ValueSecretInfo) GetSecretInfoBase() *SecretInfoBase {
+	return &SecretInfoBase{
+		SecretType: v.SecretType,
 	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

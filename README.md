@@ -9,10 +9,14 @@ This repository is for active development of the Azure SDK for Go. For consumers
 * [Code Samples for Azure Go SDK](https://github.com/azure-samples/azure-sdk-for-go-samples)
 * [Azure REST API Docs](https://docs.microsoft.com/rest/api/)
 * [General Azure Docs](https://docs.microsoft.com/azure)
+* [Share your feedback to our Azure SDK](https://www.surveymonkey.com/r/FWPGFGG)
 
 ## Getting Started
 
 To get started with a library, see the README.md file located in the library's project folder.  You can find these library folders grouped by service in the `/sdk` directory.
+
+> NOTE: Go **1.18** or later is required.
+
 ## Packages available
 
 Each service might have a number of libraries available from each of the following categories:
@@ -68,8 +72,9 @@ Azure provides several other packages for using services from Go, listed below. 
 ## Samples
 
 More code samples for using the management library for Go SDK can be found in the following locations
+- [Go SDK Code Samples Repo(New version)](https://aka.ms/azsdk/go/mgmt/samples)
 - [Go SDK Code Samples Repo](https://github.com/azure-samples/azure-sdk-for-go-samples)
-- Example files under each package. For example, examples for Network packages can be [found here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/network/armnetwork/example_networkinterfaces_test.go)
+- Example files under each package. For example, examples for Network packages can be [found here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/network/armnetwork/loadbalancernetworkinterfaces_client_example_test.go)
 
 ## Reporting security issues and security bugs
 
@@ -91,3 +96,8 @@ Slack](https://gophers.slack.com/). Sign up
 
 See [CONTRIBUTING.md](https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md).
 
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+## Trademarks
+
+This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft trademarks or logos is subject to and must follow [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/legal/intellectualproperty/trademarks/usage/general). Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship. Any use of third-party trademarks or logos are subject to those third-party's policies.

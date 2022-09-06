@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,43 +25,61 @@ import (
 // AutomationsClient contains the methods for the Automations group.
 // Don't use this type directly, use NewAutomationsClient() instead.
 type AutomationsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAutomationsClient creates a new instance of AutomationsClient with the specified values.
-func NewAutomationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AutomationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Azure subscription ID
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewAutomationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AutomationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &AutomationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &AutomationsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
-// CreateOrUpdate - Creates or updates a security automation. If a security automation is already created and a subsequent request is issued for the same
-// automation id, then it will be updated.
-// If the operation fails it returns the *CloudError error type.
-func (client *AutomationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationName string, automation Automation, options *AutomationsCreateOrUpdateOptions) (AutomationsCreateOrUpdateResponse, error) {
+// CreateOrUpdate - Creates or updates a security automation. If a security automation is already created and a subsequent
+// request is issued for the same automation id, then it will be updated.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-01-01-preview
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// automationName - The security automation name.
+// automation - The security automation resource
+// options - AutomationsClientCreateOrUpdateOptions contains the optional parameters for the AutomationsClient.CreateOrUpdate
+// method.
+func (client *AutomationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationName string, automation Automation, options *AutomationsClientCreateOrUpdateOptions) (AutomationsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, automationName, automation, options)
 	if err != nil {
-		return AutomationsCreateOrUpdateResponse{}, err
+		return AutomationsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AutomationsCreateOrUpdateResponse{}, err
+		return AutomationsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return AutomationsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return AutomationsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AutomationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationName string, automation Automation, options *AutomationsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AutomationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationName string, automation Automation, options *AutomationsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -75,58 +93,49 @@ func (client *AutomationsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter automationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationName}", url.PathEscape(automationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, automation)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AutomationsClient) createOrUpdateHandleResponse(resp *http.Response) (AutomationsCreateOrUpdateResponse, error) {
-	result := AutomationsCreateOrUpdateResponse{RawResponse: resp}
+func (client *AutomationsClient) createOrUpdateHandleResponse(resp *http.Response) (AutomationsClientCreateOrUpdateResponse, error) {
+	result := AutomationsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Automation); err != nil {
-		return AutomationsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return AutomationsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *AutomationsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Deletes a security automation.
-// If the operation fails it returns the *CloudError error type.
-func (client *AutomationsClient) Delete(ctx context.Context, resourceGroupName string, automationName string, options *AutomationsDeleteOptions) (AutomationsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-01-01-preview
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// automationName - The security automation name.
+// options - AutomationsClientDeleteOptions contains the optional parameters for the AutomationsClient.Delete method.
+func (client *AutomationsClient) Delete(ctx context.Context, resourceGroupName string, automationName string, options *AutomationsClientDeleteOptions) (AutomationsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationName, options)
 	if err != nil {
-		return AutomationsDeleteResponse{}, err
+		return AutomationsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AutomationsDeleteResponse{}, err
+		return AutomationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return AutomationsDeleteResponse{}, client.deleteHandleError(resp)
+		return AutomationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AutomationsDeleteResponse{RawResponse: resp}, nil
+	return AutomationsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AutomationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationName string, options *AutomationsDeleteOptions) (*policy.Request, error) {
+func (client *AutomationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationName string, options *AutomationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,49 +149,40 @@ func (client *AutomationsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter automationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationName}", url.PathEscape(automationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AutomationsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Retrieves information about the model of a security automation.
-// If the operation fails it returns the *CloudError error type.
-func (client *AutomationsClient) Get(ctx context.Context, resourceGroupName string, automationName string, options *AutomationsGetOptions) (AutomationsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-01-01-preview
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// automationName - The security automation name.
+// options - AutomationsClientGetOptions contains the optional parameters for the AutomationsClient.Get method.
+func (client *AutomationsClient) Get(ctx context.Context, resourceGroupName string, automationName string, options *AutomationsClientGetOptions) (AutomationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationName, options)
 	if err != nil {
-		return AutomationsGetResponse{}, err
+		return AutomationsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AutomationsGetResponse{}, err
+		return AutomationsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AutomationsGetResponse{}, client.getHandleError(resp)
+		return AutomationsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AutomationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationName string, options *AutomationsGetOptions) (*policy.Request, error) {
+func (client *AutomationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationName string, options *AutomationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -196,111 +196,123 @@ func (client *AutomationsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter automationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationName}", url.PathEscape(automationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AutomationsClient) getHandleResponse(resp *http.Response) (AutomationsGetResponse, error) {
-	result := AutomationsGetResponse{RawResponse: resp}
+func (client *AutomationsClient) getHandleResponse(resp *http.Response) (AutomationsClientGetResponse, error) {
+	result := AutomationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Automation); err != nil {
-		return AutomationsGetResponse{}, runtime.NewResponseError(err, resp)
+		return AutomationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AutomationsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Lists all the security automations in the specified subscription. Use the 'nextLink' property in the response to get the next page of security
-// automations for the specified subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *AutomationsClient) List(options *AutomationsListOptions) *AutomationsListPager {
-	return &AutomationsListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+// NewListPager - Lists all the security automations in the specified subscription. Use the 'nextLink' property in the response
+// to get the next page of security automations for the specified subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-01-01-preview
+// options - AutomationsClientListOptions contains the optional parameters for the AutomationsClient.List method.
+func (client *AutomationsClient) NewListPager(options *AutomationsClientListOptions) *runtime.Pager[AutomationsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AutomationsClientListResponse]{
+		More: func(page AutomationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AutomationsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AutomationList.NextLink)
+		Fetcher: func(ctx context.Context, page *AutomationsClientListResponse) (AutomationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AutomationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AutomationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AutomationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AutomationsClient) listCreateRequest(ctx context.Context, options *AutomationsListOptions) (*policy.Request, error) {
+func (client *AutomationsClient) listCreateRequest(ctx context.Context, options *AutomationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/automations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AutomationsClient) listHandleResponse(resp *http.Response) (AutomationsListResponse, error) {
-	result := AutomationsListResponse{RawResponse: resp}
+func (client *AutomationsClient) listHandleResponse(resp *http.Response) (AutomationsClientListResponse, error) {
+	result := AutomationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationList); err != nil {
-		return AutomationsListResponse{}, runtime.NewResponseError(err, resp)
+		return AutomationsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *AutomationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByResourceGroup - Lists all the security automations in the specified resource group. Use the 'nextLink' property in the response to get the next
-// page of security automations for the specified resource group.
-// If the operation fails it returns the *CloudError error type.
-func (client *AutomationsClient) ListByResourceGroup(resourceGroupName string, options *AutomationsListByResourceGroupOptions) *AutomationsListByResourceGroupPager {
-	return &AutomationsListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+// NewListByResourceGroupPager - Lists all the security automations in the specified resource group. Use the 'nextLink' property
+// in the response to get the next page of security automations for the specified resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-01-01-preview
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// options - AutomationsClientListByResourceGroupOptions contains the optional parameters for the AutomationsClient.ListByResourceGroup
+// method.
+func (client *AutomationsClient) NewListByResourceGroupPager(resourceGroupName string, options *AutomationsClientListByResourceGroupOptions) *runtime.Pager[AutomationsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AutomationsClientListByResourceGroupResponse]{
+		More: func(page AutomationsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AutomationsListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AutomationList.NextLink)
+		Fetcher: func(ctx context.Context, page *AutomationsClientListByResourceGroupResponse) (AutomationsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AutomationsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AutomationsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AutomationsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AutomationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AutomationsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *AutomationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AutomationsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -310,58 +322,50 @@ func (client *AutomationsClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AutomationsClient) listByResourceGroupHandleResponse(resp *http.Response) (AutomationsListByResourceGroupResponse, error) {
-	result := AutomationsListByResourceGroupResponse{RawResponse: resp}
+func (client *AutomationsClient) listByResourceGroupHandleResponse(resp *http.Response) (AutomationsClientListByResourceGroupResponse, error) {
+	result := AutomationsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationList); err != nil {
-		return AutomationsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return AutomationsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *AutomationsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Validate - Validates the security automation model before create or update. Any validation errors are returned to the client.
-// If the operation fails it returns the *CloudError error type.
-func (client *AutomationsClient) Validate(ctx context.Context, resourceGroupName string, automationName string, automation Automation, options *AutomationsValidateOptions) (AutomationsValidateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-01-01-preview
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// automationName - The security automation name.
+// automation - The security automation resource
+// options - AutomationsClientValidateOptions contains the optional parameters for the AutomationsClient.Validate method.
+func (client *AutomationsClient) Validate(ctx context.Context, resourceGroupName string, automationName string, automation Automation, options *AutomationsClientValidateOptions) (AutomationsClientValidateResponse, error) {
 	req, err := client.validateCreateRequest(ctx, resourceGroupName, automationName, automation, options)
 	if err != nil {
-		return AutomationsValidateResponse{}, err
+		return AutomationsClientValidateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AutomationsValidateResponse{}, err
+		return AutomationsClientValidateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AutomationsValidateResponse{}, client.validateHandleError(resp)
+		return AutomationsClientValidateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.validateHandleResponse(resp)
 }
 
 // validateCreateRequest creates the Validate request.
-func (client *AutomationsClient) validateCreateRequest(ctx context.Context, resourceGroupName string, automationName string, automation Automation, options *AutomationsValidateOptions) (*policy.Request, error) {
+func (client *AutomationsClient) validateCreateRequest(ctx context.Context, resourceGroupName string, automationName string, automation Automation, options *AutomationsClientValidateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}/validate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -375,35 +379,22 @@ func (client *AutomationsClient) validateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter automationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationName}", url.PathEscape(automationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, automation)
 }
 
 // validateHandleResponse handles the Validate response.
-func (client *AutomationsClient) validateHandleResponse(resp *http.Response) (AutomationsValidateResponse, error) {
-	result := AutomationsValidateResponse{RawResponse: resp}
+func (client *AutomationsClient) validateHandleResponse(resp *http.Response) (AutomationsClientValidateResponse, error) {
+	result := AutomationsClientValidateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationValidationStatus); err != nil {
-		return AutomationsValidateResponse{}, runtime.NewResponseError(err, resp)
+		return AutomationsClientValidateResponse{}, err
 	}
 	return result, nil
-}
-
-// validateHandleError handles the Validate error response.
-func (client *AutomationsClient) validateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

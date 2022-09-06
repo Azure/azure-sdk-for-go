@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package armdatalakeanalytics
 
 const (
-	module  = "armdatalakeanalytics"
-	version = "v0.2.1"
+	moduleName    = "armdatalakeanalytics"
+	moduleVersion = "v0.6.0"
 )
 
 // AADObjectType - The type of AAD object the object identifier refers to.
@@ -31,12 +31,8 @@ func PossibleAADObjectTypeValues() []AADObjectType {
 	}
 }
 
-// ToPtr returns a *AADObjectType pointing to the current value.
-func (c AADObjectType) ToPtr() *AADObjectType {
-	return &c
-}
-
-// CheckNameAvailabilityParametersType - The resource type. Note: This should not be set by the user, as the constant value is Microsoft.DataLakeAnalytics/accounts
+// CheckNameAvailabilityParametersType - The resource type. Note: This should not be set by the user, as the constant value
+// is Microsoft.DataLakeAnalytics/accounts
 type CheckNameAvailabilityParametersType string
 
 const (
@@ -48,11 +44,6 @@ func PossibleCheckNameAvailabilityParametersTypeValues() []CheckNameAvailability
 	return []CheckNameAvailabilityParametersType{
 		CheckNameAvailabilityParametersTypeMicrosoftDataLakeAnalyticsAccounts,
 	}
-}
-
-// ToPtr returns a *CheckNameAvailabilityParametersType pointing to the current value.
-func (c CheckNameAvailabilityParametersType) ToPtr() *CheckNameAvailabilityParametersType {
-	return &c
 }
 
 // DataLakeAnalyticsAccountState - The state of the Data Lake Analytics account.
@@ -69,11 +60,6 @@ func PossibleDataLakeAnalyticsAccountStateValues() []DataLakeAnalyticsAccountSta
 		DataLakeAnalyticsAccountStateActive,
 		DataLakeAnalyticsAccountStateSuspended,
 	}
-}
-
-// ToPtr returns a *DataLakeAnalyticsAccountState pointing to the current value.
-func (c DataLakeAnalyticsAccountState) ToPtr() *DataLakeAnalyticsAccountState {
-	return &c
 }
 
 // DataLakeAnalyticsAccountStatus - The provisioning status of the Data Lake Analytics account.
@@ -110,11 +96,6 @@ func PossibleDataLakeAnalyticsAccountStatusValues() []DataLakeAnalyticsAccountSt
 	}
 }
 
-// ToPtr returns a *DataLakeAnalyticsAccountStatus pointing to the current value.
-func (c DataLakeAnalyticsAccountStatus) ToPtr() *DataLakeAnalyticsAccountStatus {
-	return &c
-}
-
 // DebugDataAccessLevel - The current state of the DebugDataAccessLevel for this account.
 type DebugDataAccessLevel string
 
@@ -133,13 +114,8 @@ func PossibleDebugDataAccessLevelValues() []DebugDataAccessLevel {
 	}
 }
 
-// ToPtr returns a *DebugDataAccessLevel pointing to the current value.
-func (c DebugDataAccessLevel) ToPtr() *DebugDataAccessLevel {
-	return &c
-}
-
-// FirewallAllowAzureIPsState - The current state of allowing or disallowing IPs originating within Azure through the firewall. If the firewall is disabled,
-// this is not enforced.
+// FirewallAllowAzureIPsState - The current state of allowing or disallowing IPs originating within Azure through the firewall.
+// If the firewall is disabled, this is not enforced.
 type FirewallAllowAzureIPsState string
 
 const (
@@ -153,11 +129,6 @@ func PossibleFirewallAllowAzureIPsStateValues() []FirewallAllowAzureIPsState {
 		FirewallAllowAzureIPsStateEnabled,
 		FirewallAllowAzureIPsStateDisabled,
 	}
-}
-
-// ToPtr returns a *FirewallAllowAzureIPsState pointing to the current value.
-func (c FirewallAllowAzureIPsState) ToPtr() *FirewallAllowAzureIPsState {
-	return &c
 }
 
 // FirewallState - The current state of the IP address firewall for this account.
@@ -174,11 +145,6 @@ func PossibleFirewallStateValues() []FirewallState {
 		FirewallStateEnabled,
 		FirewallStateDisabled,
 	}
-}
-
-// ToPtr returns a *FirewallState pointing to the current value.
-func (c FirewallState) ToPtr() *FirewallState {
-	return &c
 }
 
 // NestedResourceProvisioningState - The current state of the NestedResourceProvisioning for this account.
@@ -199,11 +165,6 @@ func PossibleNestedResourceProvisioningStateValues() []NestedResourceProvisionin
 	}
 }
 
-// ToPtr returns a *NestedResourceProvisioningState pointing to the current value.
-func (c NestedResourceProvisioningState) ToPtr() *NestedResourceProvisioningState {
-	return &c
-}
-
 // OperationOrigin - The intended executor of the operation.
 type OperationOrigin string
 
@@ -220,11 +181,6 @@ func PossibleOperationOriginValues() []OperationOrigin {
 		OperationOriginUser,
 		OperationOriginUserSystem,
 	}
-}
-
-// ToPtr returns a *OperationOrigin pointing to the current value.
-func (c OperationOrigin) ToPtr() *OperationOrigin {
-	return &c
 }
 
 // SubscriptionState - The subscription state.
@@ -247,11 +203,6 @@ func PossibleSubscriptionStateValues() []SubscriptionState {
 		SubscriptionStateUnregistered,
 		SubscriptionStateWarned,
 	}
-}
-
-// ToPtr returns a *SubscriptionState pointing to the current value.
-func (c SubscriptionState) ToPtr() *SubscriptionState {
-	return &c
 }
 
 // TierType - The commitment tier for the next month.
@@ -284,11 +235,6 @@ func PossibleTierTypeValues() []TierType {
 	}
 }
 
-// ToPtr returns a *TierType pointing to the current value.
-func (c TierType) ToPtr() *TierType {
-	return &c
-}
-
 // VirtualNetworkRuleState - The current state of the VirtualNetworkRule for this account.
 type VirtualNetworkRuleState string
 
@@ -305,9 +251,4 @@ func PossibleVirtualNetworkRuleStateValues() []VirtualNetworkRuleState {
 		VirtualNetworkRuleStateNetworkSourceDeleted,
 		VirtualNetworkRuleStateFailed,
 	}
-}
-
-// ToPtr returns a *VirtualNetworkRuleState pointing to the current value.
-func (c VirtualNetworkRuleState) ToPtr() *VirtualNetworkRuleState {
-	return &c
 }

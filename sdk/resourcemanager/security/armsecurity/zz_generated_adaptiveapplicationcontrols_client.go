@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,170 +26,168 @@ import (
 // AdaptiveApplicationControlsClient contains the methods for the AdaptiveApplicationControls group.
 // Don't use this type directly, use NewAdaptiveApplicationControlsClient() instead.
 type AdaptiveApplicationControlsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
-	ascLocation    string
+	pl             runtime.Pipeline
 }
 
 // NewAdaptiveApplicationControlsClient creates a new instance of AdaptiveApplicationControlsClient with the specified values.
-func NewAdaptiveApplicationControlsClient(subscriptionID string, ascLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *AdaptiveApplicationControlsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Azure subscription ID
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewAdaptiveApplicationControlsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AdaptiveApplicationControlsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &AdaptiveApplicationControlsClient{subscriptionID: subscriptionID, ascLocation: ascLocation, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &AdaptiveApplicationControlsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // Delete - Delete an application control machine group
-// If the operation fails it returns the *CloudError error type.
-func (client *AdaptiveApplicationControlsClient) Delete(ctx context.Context, groupName string, options *AdaptiveApplicationControlsDeleteOptions) (AdaptiveApplicationControlsDeleteResponse, error) {
-	req, err := client.deleteCreateRequest(ctx, groupName, options)
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
+// ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
+// groupName - Name of an application control machine group
+// options - AdaptiveApplicationControlsClientDeleteOptions contains the optional parameters for the AdaptiveApplicationControlsClient.Delete
+// method.
+func (client *AdaptiveApplicationControlsClient) Delete(ctx context.Context, ascLocation string, groupName string, options *AdaptiveApplicationControlsClientDeleteOptions) (AdaptiveApplicationControlsClientDeleteResponse, error) {
+	req, err := client.deleteCreateRequest(ctx, ascLocation, groupName, options)
 	if err != nil {
-		return AdaptiveApplicationControlsDeleteResponse{}, err
+		return AdaptiveApplicationControlsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AdaptiveApplicationControlsDeleteResponse{}, err
+		return AdaptiveApplicationControlsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return AdaptiveApplicationControlsDeleteResponse{}, client.deleteHandleError(resp)
+		return AdaptiveApplicationControlsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AdaptiveApplicationControlsDeleteResponse{RawResponse: resp}, nil
+	return AdaptiveApplicationControlsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AdaptiveApplicationControlsClient) deleteCreateRequest(ctx context.Context, groupName string, options *AdaptiveApplicationControlsDeleteOptions) (*policy.Request, error) {
+func (client *AdaptiveApplicationControlsClient) deleteCreateRequest(ctx context.Context, ascLocation string, groupName string, options *AdaptiveApplicationControlsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/applicationWhitelistings/{groupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if client.ascLocation == "" {
-		return nil, errors.New("parameter client.ascLocation cannot be empty")
+	if ascLocation == "" {
+		return nil, errors.New("parameter ascLocation cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(client.ascLocation))
+	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
 	if groupName == "" {
 		return nil, errors.New("parameter groupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *AdaptiveApplicationControlsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets an application control VM/server group.
-// If the operation fails it returns the *CloudError error type.
-func (client *AdaptiveApplicationControlsClient) Get(ctx context.Context, groupName string, options *AdaptiveApplicationControlsGetOptions) (AdaptiveApplicationControlsGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, groupName, options)
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
+// ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
+// groupName - Name of an application control machine group
+// options - AdaptiveApplicationControlsClientGetOptions contains the optional parameters for the AdaptiveApplicationControlsClient.Get
+// method.
+func (client *AdaptiveApplicationControlsClient) Get(ctx context.Context, ascLocation string, groupName string, options *AdaptiveApplicationControlsClientGetOptions) (AdaptiveApplicationControlsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, ascLocation, groupName, options)
 	if err != nil {
-		return AdaptiveApplicationControlsGetResponse{}, err
+		return AdaptiveApplicationControlsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AdaptiveApplicationControlsGetResponse{}, err
+		return AdaptiveApplicationControlsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AdaptiveApplicationControlsGetResponse{}, client.getHandleError(resp)
+		return AdaptiveApplicationControlsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AdaptiveApplicationControlsClient) getCreateRequest(ctx context.Context, groupName string, options *AdaptiveApplicationControlsGetOptions) (*policy.Request, error) {
+func (client *AdaptiveApplicationControlsClient) getCreateRequest(ctx context.Context, ascLocation string, groupName string, options *AdaptiveApplicationControlsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/applicationWhitelistings/{groupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if client.ascLocation == "" {
-		return nil, errors.New("parameter client.ascLocation cannot be empty")
+	if ascLocation == "" {
+		return nil, errors.New("parameter ascLocation cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(client.ascLocation))
+	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
 	if groupName == "" {
 		return nil, errors.New("parameter groupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AdaptiveApplicationControlsClient) getHandleResponse(resp *http.Response) (AdaptiveApplicationControlsGetResponse, error) {
-	result := AdaptiveApplicationControlsGetResponse{RawResponse: resp}
+func (client *AdaptiveApplicationControlsClient) getHandleResponse(resp *http.Response) (AdaptiveApplicationControlsClientGetResponse, error) {
+	result := AdaptiveApplicationControlsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdaptiveApplicationControlGroup); err != nil {
-		return AdaptiveApplicationControlsGetResponse{}, runtime.NewResponseError(err, resp)
+		return AdaptiveApplicationControlsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *AdaptiveApplicationControlsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - Gets a list of application control machine groups for the subscription.
-// If the operation fails it returns the *CloudError error type.
-func (client *AdaptiveApplicationControlsClient) List(ctx context.Context, options *AdaptiveApplicationControlsListOptions) (AdaptiveApplicationControlsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
+// options - AdaptiveApplicationControlsClientListOptions contains the optional parameters for the AdaptiveApplicationControlsClient.List
+// method.
+func (client *AdaptiveApplicationControlsClient) List(ctx context.Context, options *AdaptiveApplicationControlsClientListOptions) (AdaptiveApplicationControlsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
-		return AdaptiveApplicationControlsListResponse{}, err
+		return AdaptiveApplicationControlsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AdaptiveApplicationControlsListResponse{}, err
+		return AdaptiveApplicationControlsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AdaptiveApplicationControlsListResponse{}, client.listHandleError(resp)
+		return AdaptiveApplicationControlsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *AdaptiveApplicationControlsClient) listCreateRequest(ctx context.Context, options *AdaptiveApplicationControlsListOptions) (*policy.Request, error) {
+func (client *AdaptiveApplicationControlsClient) listCreateRequest(ctx context.Context, options *AdaptiveApplicationControlsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applicationWhitelistings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -202,93 +200,72 @@ func (client *AdaptiveApplicationControlsClient) listCreateRequest(ctx context.C
 		reqQP.Set("summary", strconv.FormatBool(*options.Summary))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AdaptiveApplicationControlsClient) listHandleResponse(resp *http.Response) (AdaptiveApplicationControlsListResponse, error) {
-	result := AdaptiveApplicationControlsListResponse{RawResponse: resp}
+func (client *AdaptiveApplicationControlsClient) listHandleResponse(resp *http.Response) (AdaptiveApplicationControlsClientListResponse, error) {
+	result := AdaptiveApplicationControlsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdaptiveApplicationControlGroups); err != nil {
-		return AdaptiveApplicationControlsListResponse{}, runtime.NewResponseError(err, resp)
+		return AdaptiveApplicationControlsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *AdaptiveApplicationControlsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Put - Update an application control machine group
-// If the operation fails it returns the *CloudError error type.
-func (client *AdaptiveApplicationControlsClient) Put(ctx context.Context, groupName string, body AdaptiveApplicationControlGroup, options *AdaptiveApplicationControlsPutOptions) (AdaptiveApplicationControlsPutResponse, error) {
-	req, err := client.putCreateRequest(ctx, groupName, body, options)
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
+// ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
+// groupName - Name of an application control machine group
+// options - AdaptiveApplicationControlsClientPutOptions contains the optional parameters for the AdaptiveApplicationControlsClient.Put
+// method.
+func (client *AdaptiveApplicationControlsClient) Put(ctx context.Context, ascLocation string, groupName string, body AdaptiveApplicationControlGroup, options *AdaptiveApplicationControlsClientPutOptions) (AdaptiveApplicationControlsClientPutResponse, error) {
+	req, err := client.putCreateRequest(ctx, ascLocation, groupName, body, options)
 	if err != nil {
-		return AdaptiveApplicationControlsPutResponse{}, err
+		return AdaptiveApplicationControlsClientPutResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AdaptiveApplicationControlsPutResponse{}, err
+		return AdaptiveApplicationControlsClientPutResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AdaptiveApplicationControlsPutResponse{}, client.putHandleError(resp)
+		return AdaptiveApplicationControlsClientPutResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.putHandleResponse(resp)
 }
 
 // putCreateRequest creates the Put request.
-func (client *AdaptiveApplicationControlsClient) putCreateRequest(ctx context.Context, groupName string, body AdaptiveApplicationControlGroup, options *AdaptiveApplicationControlsPutOptions) (*policy.Request, error) {
+func (client *AdaptiveApplicationControlsClient) putCreateRequest(ctx context.Context, ascLocation string, groupName string, body AdaptiveApplicationControlGroup, options *AdaptiveApplicationControlsClientPutOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/applicationWhitelistings/{groupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if client.ascLocation == "" {
-		return nil, errors.New("parameter client.ascLocation cannot be empty")
+	if ascLocation == "" {
+		return nil, errors.New("parameter ascLocation cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(client.ascLocation))
+	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
 	if groupName == "" {
 		return nil, errors.New("parameter groupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // putHandleResponse handles the Put response.
-func (client *AdaptiveApplicationControlsClient) putHandleResponse(resp *http.Response) (AdaptiveApplicationControlsPutResponse, error) {
-	result := AdaptiveApplicationControlsPutResponse{RawResponse: resp}
+func (client *AdaptiveApplicationControlsClient) putHandleResponse(resp *http.Response) (AdaptiveApplicationControlsClientPutResponse, error) {
+	result := AdaptiveApplicationControlsClientPutResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdaptiveApplicationControlGroup); err != nil {
-		return AdaptiveApplicationControlsPutResponse{}, runtime.NewResponseError(err, resp)
+		return AdaptiveApplicationControlsClientPutResponse{}, err
 	}
 	return result, nil
-}
-
-// putHandleError handles the Put error response.
-func (client *AdaptiveApplicationControlsClient) putHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

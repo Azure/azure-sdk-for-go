@@ -1,20 +1,19 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright 2017 Microsoft Corporation. All rights reserved.
 // Use of this source code is governed by an MIT
 // license that can be found in the LICENSE file.
 
 /*
-
 Package aztables can access an Azure Storage or CosmosDB account.
 
 The aztables package is capable of:
-	- Creating, deleting, and listing tables in an account
-	- Creating, deleting, updating, and querying entities in a table account
-	- Creating Shared Access Signatures for authentication
+  - Creating, deleting, and listing tables in an account
+  - Creating, deleting, updating, and querying entities in a table account
+  - Creating Shared Access Signatures for authentication
 
-Creating the Client
+# Creating the Client
 
 The Azure Data Tables library allows you to interact with two types of resources:
 * the tables in your account
@@ -28,14 +27,13 @@ URL and a credential that allows you to access the account.
 	serviceClient, err := aztables.NewServiceClient("https://<my_account_name>.table.core.windows.net/", cred, nil)
 	handle(err)
 
-
-Types of Credentials
+# Types of Credentials
 
 The clients support different forms of authentication. The aztables library supports
 any of the `azcore.TokenCredential` interfaces, authorization via a Connection String,
 or authorization with a Shared Access Signature token.
 
-Using a Shared Key
+# Using a Shared Key
 
 To use an account shared key (aka account key or access key), provide the key as a string.
 This can be found in your storage account in the Azure Portal under the "Access Keys" section.
@@ -74,8 +72,7 @@ ServiceClient.GetAccountSASToken or Client.GetTableSASToken() functions.
 	sasService, err := aztables.NewServiceClient(sasUrl, azcore.AnonymousCredential(), nil)
 	handle(err)
 
-
-Key Concepts
+# Key Concepts
 
 Common uses of the Table service included:
 * Storing TBs of structured data capable of serving web scale applications
@@ -93,13 +90,14 @@ through the use of a dedicated client object.
 
 Two different clients are provided to interact with the various components of the Table Service:
 1. **`ServiceClient`** -
-    * Get and set account setting
-    * Query, create, and delete tables within the account.
-    * Get a `Client` to access a specific table using the `NewClient` method.
+  - Get and set account setting
+  - Query, create, and delete tables within the account.
+  - Get a `Client` to access a specific table using the `NewClient` method.
+
 2. **`Client`** -
-    * Interacts with a specific table (which need not exist yet).
-    * Create, delete, query, and upsert entities within the specified table.
-    * Create or delete the specified table itself.
+  - Interacts with a specific table (which need not exist yet).
+  - Create, delete, query, and upsert entities within the specified table.
+  - Create or delete the specified table itself.
 
 Entities are similar to rows. An entity has a PartitionKey, a RowKey, and a set of properties.
 A property is a name value pair, similar to a column. Every entity in a table does not need to
@@ -122,7 +120,7 @@ ensure proper round-trip serialization of all properties.
 		}
 	}
 
-More Examples
+# More Examples
 
 The following sections provide several code snippets covering some of the most common Table tasks, including:
 
@@ -130,8 +128,7 @@ The following sections provide several code snippets covering some of the most c
 * Creating entities
 * Querying entities
 
-
-Creating a Table
+# Creating a Table
 
 Create a table in your account and get a `Client` to perform operations on the newly created table:
 
@@ -182,8 +179,8 @@ Querying entities
 	filter := "PartitionKey eq 'markers' or RowKey eq 'id-001'"
 	options := &ListEntitiesOptions{
 		Filter: &filter,
-		Select: to.StringPtr("RowKey,Value,Product,Available"),
-		Top: to.Int32Ptr(15),
+		Select: to.Ptr("RowKey,Value,Product,Available"),
+		Top: to.Ptr(int32(((15),
 	}
 
 	pager := client.List(options)

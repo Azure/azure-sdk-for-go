@@ -1,0 +1,31 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "http://host.docker.internal:8080/",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":method": "POST",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "0",
+        "fakestoragelocation": "https://fakeaccount.blob.core.windows.net",
+        "User-Agent": "Go-http-client/2.0"
+      },
+      "RequestBody": null,
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "192",
+        "Content-Type": "text/html; charset=utf-8",
+        "Date": "Thu, 17 Feb 2022 20:48:44 GMT",
+        "Server": "nginx/1.21.1"
+      },
+      "ResponseBody": [
+        "\u003C!DOCTYPE HTML PUBLIC \u0022-//W3C//DTD HTML 3.2 Final//EN\u0022\u003E\n",
+        "\u003Ctitle\u003E400 Bad Request\u003C/title\u003E\n",
+        "\u003Ch1\u003EBad Request\u003C/h1\u003E\n",
+        "\u003Cp\u003EThe browser (or proxy) sent a request that this server could not understand.\u003C/p\u003E\n"
+      ]
+    }
+  ],
+  "Variables": {}
+}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,128 +14,146 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization/v2"
 )
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/Application_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/Application_Get.json
 func ExampleApplicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewApplicationsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<application-group-name>",
-		"<application-name>",
+		"resourceGroup1",
+		"applicationGroup1",
+		"application1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Application.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/Application_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/Application_Create.json
 func ExampleApplicationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewApplicationsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<application-group-name>",
-		"<application-name>",
+		"resourceGroup1",
+		"applicationGroup1",
+		"application1",
 		armdesktopvirtualization.Application{
 			Properties: &armdesktopvirtualization.ApplicationProperties{
-				Description:          to.StringPtr("<description>"),
-				CommandLineArguments: to.StringPtr("<command-line-arguments>"),
-				CommandLineSetting:   armdesktopvirtualization.CommandLineSettingAllow.ToPtr(),
-				FilePath:             to.StringPtr("<file-path>"),
-				FriendlyName:         to.StringPtr("<friendly-name>"),
-				IconIndex:            to.Int32Ptr(1),
-				IconPath:             to.StringPtr("<icon-path>"),
-				ShowInPortal:         to.BoolPtr(true),
+				Description:          to.Ptr("des1"),
+				CommandLineArguments: to.Ptr("arguments"),
+				CommandLineSetting:   to.Ptr(armdesktopvirtualization.CommandLineSettingAllow),
+				FilePath:             to.Ptr("path"),
+				FriendlyName:         to.Ptr("friendly"),
+				IconIndex:            to.Ptr[int32](1),
+				IconPath:             to.Ptr("icon"),
+				ShowInPortal:         to.Ptr(true),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Application.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/Application_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/Application_Delete.json
 func ExampleApplicationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewApplicationsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<application-group-name>",
-		"<application-name>",
+		"resourceGroup1",
+		"applicationGroup1",
+		"application1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/Application_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/Application_Update.json
 func ExampleApplicationsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewApplicationsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<application-group-name>",
-		"<application-name>",
-		&armdesktopvirtualization.ApplicationsUpdateOptions{Application: &armdesktopvirtualization.ApplicationPatch{
+		"resourceGroup1",
+		"applicationGroup1",
+		"application1",
+		&armdesktopvirtualization.ApplicationsClientUpdateOptions{Application: &armdesktopvirtualization.ApplicationPatch{
 			Properties: &armdesktopvirtualization.ApplicationPatchProperties{
-				Description:              to.StringPtr("<description>"),
-				ApplicationType:          armdesktopvirtualization.RemoteApplicationTypeInBuilt.ToPtr(),
-				CommandLineArguments:     to.StringPtr("<command-line-arguments>"),
-				CommandLineSetting:       armdesktopvirtualization.CommandLineSettingAllow.ToPtr(),
-				FilePath:                 to.StringPtr("<file-path>"),
-				FriendlyName:             to.StringPtr("<friendly-name>"),
-				IconIndex:                to.Int32Ptr(1),
-				IconPath:                 to.StringPtr("<icon-path>"),
-				MsixPackageApplicationID: to.StringPtr("<msix-package-application-id>"),
-				MsixPackageFamilyName:    to.StringPtr("<msix-package-family-name>"),
-				ShowInPortal:             to.BoolPtr(true),
+				Description:          to.Ptr("des1"),
+				ApplicationType:      to.Ptr(armdesktopvirtualization.RemoteApplicationTypeInBuilt),
+				CommandLineArguments: to.Ptr("arguments"),
+				CommandLineSetting:   to.Ptr(armdesktopvirtualization.CommandLineSettingAllow),
+				FilePath:             to.Ptr("path"),
+				FriendlyName:         to.Ptr("friendly"),
+				IconIndex:            to.Ptr[int32](1),
+				IconPath:             to.Ptr("icon"),
+				ShowInPortal:         to.Ptr(true),
 			},
 		},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Application.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/Application_List.json
-func ExampleApplicationsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/Application_List.json
+func ExampleApplicationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdesktopvirtualization.NewApplicationsClient("<subscription-id>", cred, nil)
-	pager := client.List("<resource-group-name>",
-		"<application-group-name>",
+	client, err := armdesktopvirtualization.NewApplicationsClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("resourceGroup1",
+		"applicationGroup1",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Application.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

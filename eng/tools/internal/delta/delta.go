@@ -65,6 +65,12 @@ func GetExports(lhs, rhs exports.Content) Content {
 		}
 	}
 
+	for n, v := range rhs.TypeAliases {
+		if _, ok := lhs.TypeAliases[n]; !ok {
+			nc.TypeAliases[n] = v
+		}
+	}
+
 	for n, v := range rhs.Funcs {
 		if _, ok := lhs.Funcs[n]; !ok {
 			nc.Funcs[n] = v
@@ -186,6 +192,25 @@ func GetConstTypeChanges(lhs, rhs exports.Content) map[string]Signature {
 			cc[rhsKey] = Signature{
 				From: lhs.Consts[rhsKey].Type,
 				To:   rhsValue.Type,
+			}
+		}
+	}
+	return cc
+}
+
+// GetTypeAliasTypeChanges returns a collection of simple type where the underlaying type has changed.
+// Key is the simple type name, value contains the type change information.
+func GetTypeAliasTypeChanges(lhs, rhs exports.Content) map[string]Signature {
+	cc := map[string]Signature{}
+
+	for rhsKey, rhsValue := range rhs.TypeAliases {
+		if _, ok := lhs.TypeAliases[rhsKey]; !ok {
+			continue
+		}
+		if lhs.TypeAliases[rhsKey].UnderlayingType != rhsValue.UnderlayingType {
+			cc[rhsKey] = Signature{
+				From: lhs.TypeAliases[rhsKey].UnderlayingType,
+				To:   rhsValue.UnderlayingType,
 			}
 		}
 	}

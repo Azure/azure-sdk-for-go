@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package armstoragesync
 
 const (
-	module  = "armstoragesync"
-	version = "v0.1.0"
+	moduleName    = "armstoragesync"
+	moduleVersion = "v1.0.0"
 )
 
 // ChangeDetectionMode - Change Detection Mode. Applies to a directory specified in directoryPath parameter.
@@ -29,11 +29,6 @@ func PossibleChangeDetectionModeValues() []ChangeDetectionMode {
 	}
 }
 
-// ToPtr returns a *ChangeDetectionMode pointing to the current value.
-func (c ChangeDetectionMode) ToPtr() *ChangeDetectionMode {
-	return &c
-}
-
 // CloudEndpointChangeEnumerationActivityState - State of change enumeration activity
 type CloudEndpointChangeEnumerationActivityState string
 
@@ -48,11 +43,6 @@ func PossibleCloudEndpointChangeEnumerationActivityStateValues() []CloudEndpoint
 		CloudEndpointChangeEnumerationActivityStateEnumerationInProgress,
 		CloudEndpointChangeEnumerationActivityStateInitialEnumerationInProgress,
 	}
-}
-
-// ToPtr returns a *CloudEndpointChangeEnumerationActivityState pointing to the current value.
-func (c CloudEndpointChangeEnumerationActivityState) ToPtr() *CloudEndpointChangeEnumerationActivityState {
-	return &c
 }
 
 // CloudEndpointChangeEnumerationTotalCountsState - State of the total counts of change enumeration activity
@@ -71,9 +61,24 @@ func PossibleCloudEndpointChangeEnumerationTotalCountsStateValues() []CloudEndpo
 	}
 }
 
-// ToPtr returns a *CloudEndpointChangeEnumerationTotalCountsState pointing to the current value.
-func (c CloudEndpointChangeEnumerationTotalCountsState) ToPtr() *CloudEndpointChangeEnumerationTotalCountsState {
-	return &c
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
 }
 
 // FeatureStatus - Type of the Feature Status
@@ -92,11 +97,6 @@ func PossibleFeatureStatusValues() []FeatureStatus {
 	}
 }
 
-// ToPtr returns a *FeatureStatus pointing to the current value.
-func (c FeatureStatus) ToPtr() *FeatureStatus {
-	return &c
-}
-
 // IncomingTrafficPolicy - Type of the Incoming Traffic Policy
 type IncomingTrafficPolicy string
 
@@ -111,11 +111,6 @@ func PossibleIncomingTrafficPolicyValues() []IncomingTrafficPolicy {
 		IncomingTrafficPolicyAllowAllTraffic,
 		IncomingTrafficPolicyAllowVirtualNetworksOnly,
 	}
-}
-
-// ToPtr returns a *IncomingTrafficPolicy pointing to the current value.
-func (c IncomingTrafficPolicy) ToPtr() *IncomingTrafficPolicy {
-	return &c
 }
 
 // InitialDownloadPolicy - Policy for how namespace and files are recalled during FastDr
@@ -136,11 +131,6 @@ func PossibleInitialDownloadPolicyValues() []InitialDownloadPolicy {
 	}
 }
 
-// ToPtr returns a *InitialDownloadPolicy pointing to the current value.
-func (c InitialDownloadPolicy) ToPtr() *InitialDownloadPolicy {
-	return &c
-}
-
 // InitialUploadPolicy - Policy for how the initial upload sync session is performed.
 type InitialUploadPolicy string
 
@@ -157,12 +147,8 @@ func PossibleInitialUploadPolicyValues() []InitialUploadPolicy {
 	}
 }
 
-// ToPtr returns a *InitialUploadPolicy pointing to the current value.
-func (c InitialUploadPolicy) ToPtr() *InitialUploadPolicy {
-	return &c
-}
-
-// LocalCacheMode - Policy for enabling follow-the-sun business models: link local cache to cloud behavior to pre-populate before local access.
+// LocalCacheMode - Policy for enabling follow-the-sun business models: link local cache to cloud behavior to pre-populate
+// before local access.
 type LocalCacheMode string
 
 const (
@@ -178,13 +164,8 @@ func PossibleLocalCacheModeValues() []LocalCacheMode {
 	}
 }
 
-// ToPtr returns a *LocalCacheMode pointing to the current value.
-func (c LocalCacheMode) ToPtr() *LocalCacheMode {
-	return &c
-}
-
-// NameAvailabilityReason - Gets the reason that a Storage Sync Service name could not be used. The Reason element is only returned if NameAvailable is
-// false.
+// NameAvailabilityReason - Gets the reason that a Storage Sync Service name could not be used. The Reason element is only
+// returned if NameAvailable is false.
 type NameAvailabilityReason string
 
 const (
@@ -198,11 +179,6 @@ func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
 		NameAvailabilityReasonInvalid,
 		NameAvailabilityReasonAlreadyExists,
 	}
-}
-
-// ToPtr returns a *NameAvailabilityReason pointing to the current value.
-func (c NameAvailabilityReason) ToPtr() *NameAvailabilityReason {
-	return &c
 }
 
 // OperationDirection - Type of the Operation Direction
@@ -221,11 +197,6 @@ func PossibleOperationDirectionValues() []OperationDirection {
 		OperationDirectionDo,
 		OperationDirectionUndo,
 	}
-}
-
-// ToPtr returns a *OperationDirection pointing to the current value.
-func (c OperationDirection) ToPtr() *OperationDirection {
-	return &c
 }
 
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
@@ -248,11 +219,6 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 	}
 }
 
-// ToPtr returns a *PrivateEndpointConnectionProvisioningState pointing to the current value.
-func (c PrivateEndpointConnectionProvisioningState) ToPtr() *PrivateEndpointConnectionProvisioningState {
-	return &c
-}
-
 // PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
 type PrivateEndpointServiceConnectionStatus string
 
@@ -269,11 +235,6 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 		PrivateEndpointServiceConnectionStatusPending,
 		PrivateEndpointServiceConnectionStatusRejected,
 	}
-}
-
-// ToPtr returns a *PrivateEndpointServiceConnectionStatus pointing to the current value.
-func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceConnectionStatus {
-	return &c
 }
 
 // ProgressType - Type of the ProgressType
@@ -298,11 +259,6 @@ func PossibleProgressTypeValues() []ProgressType {
 	}
 }
 
-// ToPtr returns a *ProgressType pointing to the current value.
-func (c ProgressType) ToPtr() *ProgressType {
-	return &c
-}
-
 // Reason - State of Azure Subscription
 type Reason string
 
@@ -325,11 +281,6 @@ func PossibleReasonValues() []Reason {
 	}
 }
 
-// ToPtr returns a *Reason pointing to the current value.
-func (c Reason) ToPtr() *Reason {
-	return &c
-}
-
 // RegisteredServerAgentVersionStatus - Type of the registered server agent version status
 type RegisteredServerAgentVersionStatus string
 
@@ -350,11 +301,6 @@ func PossibleRegisteredServerAgentVersionStatusValues() []RegisteredServerAgentV
 	}
 }
 
-// ToPtr returns a *RegisteredServerAgentVersionStatus pointing to the current value.
-func (c RegisteredServerAgentVersionStatus) ToPtr() *RegisteredServerAgentVersionStatus {
-	return &c
-}
-
 // ServerEndpointHealthState - Type of the server endpoint health state
 type ServerEndpointHealthState string
 
@@ -371,11 +317,6 @@ func PossibleServerEndpointHealthStateValues() []ServerEndpointHealthState {
 		ServerEndpointHealthStateHealthy,
 		ServerEndpointHealthStateUnavailable,
 	}
-}
-
-// ToPtr returns a *ServerEndpointHealthState pointing to the current value.
-func (c ServerEndpointHealthState) ToPtr() *ServerEndpointHealthState {
-	return &c
 }
 
 // ServerEndpointOfflineDataTransferState - Type of the Health state
@@ -398,11 +339,6 @@ func PossibleServerEndpointOfflineDataTransferStateValues() []ServerEndpointOffl
 	}
 }
 
-// ToPtr returns a *ServerEndpointOfflineDataTransferState pointing to the current value.
-func (c ServerEndpointOfflineDataTransferState) ToPtr() *ServerEndpointOfflineDataTransferState {
-	return &c
-}
-
 // ServerEndpointSyncActivityState - Type of the sync activity state
 type ServerEndpointSyncActivityState string
 
@@ -419,11 +355,6 @@ func PossibleServerEndpointSyncActivityStateValues() []ServerEndpointSyncActivit
 		ServerEndpointSyncActivityStateUpload,
 		ServerEndpointSyncActivityStateUploadAndDownload,
 	}
-}
-
-// ToPtr returns a *ServerEndpointSyncActivityState pointing to the current value.
-func (c ServerEndpointSyncActivityState) ToPtr() *ServerEndpointSyncActivityState {
-	return &c
 }
 
 // ServerEndpointSyncMode - Sync mode for the server endpoint.
@@ -448,11 +379,6 @@ func PossibleServerEndpointSyncModeValues() []ServerEndpointSyncMode {
 	}
 }
 
-// ToPtr returns a *ServerEndpointSyncMode pointing to the current value.
-func (c ServerEndpointSyncMode) ToPtr() *ServerEndpointSyncMode {
-	return &c
-}
-
 // WorkflowStatus - Type of the Workflow Status
 type WorkflowStatus string
 
@@ -473,9 +399,4 @@ func PossibleWorkflowStatusValues() []WorkflowStatus {
 		WorkflowStatusFailed,
 		WorkflowStatusSucceeded,
 	}
-}
-
-// ToPtr returns a *WorkflowStatus pointing to the current value.
-func (c WorkflowStatus) ToPtr() *WorkflowStatus {
-	return &c
 }

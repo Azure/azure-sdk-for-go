@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armhybridnetwork
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,46 +25,59 @@ import (
 // VendorsClient contains the methods for the Vendors group.
 // Don't use this type directly, use NewVendorsClient() instead.
 type VendorsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewVendorsClient creates a new instance of VendorsClient with the specified values.
-func NewVendorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VendorsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewVendorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VendorsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &VendorsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &VendorsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a vendor.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VendorsClient) BeginCreateOrUpdate(ctx context.Context, vendorName string, options *VendorsBeginCreateOrUpdateOptions) (VendorsCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, vendorName, options)
-	if err != nil {
-		return VendorsCreateOrUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
+// vendorName - The name of the vendor.
+// options - VendorsClientBeginCreateOrUpdateOptions contains the optional parameters for the VendorsClient.BeginCreateOrUpdate
+// method.
+func (client *VendorsClient) BeginCreateOrUpdate(ctx context.Context, vendorName string, options *VendorsClientBeginCreateOrUpdateOptions) (*runtime.Poller[VendorsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, vendorName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VendorsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[VendorsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VendorsCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VendorsClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return VendorsCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &VendorsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a vendor.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VendorsClient) createOrUpdate(ctx context.Context, vendorName string, options *VendorsBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
+func (client *VendorsClient) createOrUpdate(ctx context.Context, vendorName string, options *VendorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, vendorName, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +87,13 @@ func (client *VendorsClient) createOrUpdate(ctx context.Context, vendorName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VendorsClient) createOrUpdateCreateRequest(ctx context.Context, vendorName string, options *VendorsBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *VendorsClient) createOrUpdateCreateRequest(ctx context.Context, vendorName string, options *VendorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/vendors/{vendorName}"
 	if vendorName == "" {
 		return nil, errors.New("parameter vendorName cannot be empty")
@@ -90,56 +103,43 @@ func (client *VendorsClient) createOrUpdateCreateRequest(ctx context.Context, ve
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
 	return req, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *VendorsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes the specified vendor.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VendorsClient) BeginDelete(ctx context.Context, vendorName string, options *VendorsBeginDeleteOptions) (VendorsDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, vendorName, options)
-	if err != nil {
-		return VendorsDeletePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
+// vendorName - The name of the vendor.
+// options - VendorsClientBeginDeleteOptions contains the optional parameters for the VendorsClient.BeginDelete method.
+func (client *VendorsClient) BeginDelete(ctx context.Context, vendorName string, options *VendorsClientBeginDeleteOptions) (*runtime.Poller[VendorsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, vendorName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VendorsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[VendorsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VendorsDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VendorsClient.Delete", "location", resp, client.pl, client.deleteHandleError)
-	if err != nil {
-		return VendorsDeletePollerResponse{}, err
-	}
-	result.Poller = &VendorsDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified vendor.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VendorsClient) deleteOperation(ctx context.Context, vendorName string, options *VendorsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
+func (client *VendorsClient) deleteOperation(ctx context.Context, vendorName string, options *VendorsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, vendorName, options)
 	if err != nil {
 		return nil, err
@@ -149,13 +149,13 @@ func (client *VendorsClient) deleteOperation(ctx context.Context, vendorName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *VendorsClient) deleteCreateRequest(ctx context.Context, vendorName string, options *VendorsBeginDeleteOptions) (*policy.Request, error) {
+func (client *VendorsClient) deleteCreateRequest(ctx context.Context, vendorName string, options *VendorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/vendors/{vendorName}"
 	if vendorName == "" {
 		return nil, errors.New("parameter vendorName cannot be empty")
@@ -165,49 +165,39 @@ func (client *VendorsClient) deleteCreateRequest(ctx context.Context, vendorName
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *VendorsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets information about the specified vendor.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VendorsClient) Get(ctx context.Context, vendorName string, options *VendorsGetOptions) (VendorsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
+// vendorName - The name of the vendor.
+// options - VendorsClientGetOptions contains the optional parameters for the VendorsClient.Get method.
+func (client *VendorsClient) Get(ctx context.Context, vendorName string, options *VendorsClientGetOptions) (VendorsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, vendorName, options)
 	if err != nil {
-		return VendorsGetResponse{}, err
+		return VendorsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VendorsGetResponse{}, err
+		return VendorsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VendorsGetResponse{}, client.getHandleError(resp)
+		return VendorsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VendorsClient) getCreateRequest(ctx context.Context, vendorName string, options *VendorsGetOptions) (*policy.Request, error) {
+func (client *VendorsClient) getCreateRequest(ctx context.Context, vendorName string, options *VendorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/vendors/{vendorName}"
 	if vendorName == "" {
 		return nil, errors.New("parameter vendorName cannot be empty")
@@ -217,89 +207,82 @@ func (client *VendorsClient) getCreateRequest(ctx context.Context, vendorName st
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *VendorsClient) getHandleResponse(resp *http.Response) (VendorsGetResponse, error) {
-	result := VendorsGetResponse{RawResponse: resp}
+func (client *VendorsClient) getHandleResponse(resp *http.Response) (VendorsClientGetResponse, error) {
+	result := VendorsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Vendor); err != nil {
-		return VendorsGetResponse{}, runtime.NewResponseError(err, resp)
+		return VendorsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *VendorsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListBySubscription - Lists all the vendors in a subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *VendorsClient) ListBySubscription(options *VendorsListBySubscriptionOptions) *VendorsListBySubscriptionPager {
-	return &VendorsListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+// NewListBySubscriptionPager - Lists all the vendors in a subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
+// options - VendorsClientListBySubscriptionOptions contains the optional parameters for the VendorsClient.ListBySubscription
+// method.
+func (client *VendorsClient) NewListBySubscriptionPager(options *VendorsClientListBySubscriptionOptions) *runtime.Pager[VendorsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[VendorsClientListBySubscriptionResponse]{
+		More: func(page VendorsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp VendorsListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.VendorListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *VendorsClientListBySubscriptionResponse) (VendorsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return VendorsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return VendorsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return VendorsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *VendorsClient) listBySubscriptionCreateRequest(ctx context.Context, options *VendorsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *VendorsClient) listBySubscriptionCreateRequest(ctx context.Context, options *VendorsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/vendors"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *VendorsClient) listBySubscriptionHandleResponse(resp *http.Response) (VendorsListBySubscriptionResponse, error) {
-	result := VendorsListBySubscriptionResponse{RawResponse: resp}
+func (client *VendorsClient) listBySubscriptionHandleResponse(resp *http.Response) (VendorsClientListBySubscriptionResponse, error) {
+	result := VendorsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VendorListResult); err != nil {
-		return VendorsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return VendorsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *VendorsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

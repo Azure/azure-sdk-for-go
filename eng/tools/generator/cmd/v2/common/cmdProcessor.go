@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"log"
 	"os/exec"
+	"regexp"
+	"strings"
 )
 
 // execute `go generate` command and fetch result
@@ -23,7 +25,7 @@ func ExecuteGoGenerate(path string) error {
 
 // execute `pwsh Invoke-MgmtTestgen` command and fetch result
 func ExecuteExampleGenerate(path, packagePath string) error {
-	cmd := exec.Command("pwsh", "../../../../eng/scripts/Invoke-MgmtTestGen.ps1", "-skipBuild", "-cleanGenerated", "-format", "-tidy", "-generateExample", packagePath)
+	cmd := exec.Command("pwsh", "../../../../eng/scripts/Invoke-MgmtTestgen.ps1", "-skipBuild", "-cleanGenerated", "-format", "-tidy", "-generateExample", packagePath)
 	cmd.Dir = path
 	output, err := cmd.CombinedOutput()
 	log.Printf("Result of `pwsh Invoke-MgmtTestgen` execution: \n%s", string(output))
@@ -48,6 +50,60 @@ func ExecuteGoimports(path string) error {
 	log.Printf("Result of `goimports` execution: \n%s", string(output))
 	if err != nil {
 		return fmt.Errorf("failed to execute `goimports` '%s': %+v", string(output), err)
+	}
+	return nil
+}
+
+func ExecuteGitPush(path, remoteName, branchName string) (string, error) {
+	refName := fmt.Sprintf(branchName + ":" + branchName)
+	cmd := exec.Command("git", "push", remoteName, refName)
+	cmd.Dir = path
+	msg, err := cmd.CombinedOutput()
+	if err != nil {
+		return string(msg), err
+	}
+	return "", nil
+}
+
+func ExecuteCreatePullRequest(path, repoOwner, repoName, prOwner, prBranch, prTitle, prBody, authToken string) (string, error) {
+	cmd := exec.Command("pwsh", "./eng/common/scripts/Submit-PullRequest.ps1", "-RepoOwner", repoOwner, "-RepoName", repoName, "-BaseBranch", "main", "-PROwner", prOwner, "-PRBranch", prBranch, "-AuthToken", authToken, "-PRTitle", prTitle, "-PRBody", prBody)
+	cmd.Dir = path
+	output, err := cmd.CombinedOutput()
+	log.Printf("Result of `pwsh Submit-PullRequest` execution: \n%s", string(output))
+	if err != nil {
+		return "", fmt.Errorf("failed to execute `pwsh Submit-PullRequest` '%s': %+v", string(output), err)
+	}
+
+	match := regexp.MustCompile(`html_url[ ]*:.*`).FindString(string(output))
+	_, after, _ := strings.Cut(match, ":")
+	index := strings.Index(after, "https")
+	return after[index:], nil
+}
+
+func ExecuteAddIssueComment(path, repoOwner, repoName, issueNumber, comment, authToken string) error {
+	cmd := exec.Command("pwsh", "./eng/common/scripts/Add-IssueComment.ps1", "-RepoOwner", repoOwner, "-RepoName", repoName, "-IssueNumber", issueNumber, "-Comment", comment, "-AuthToken", authToken)
+	cmd.Dir = path
+	output, err := cmd.CombinedOutput()
+	log.Printf("Result of `pwsh Add-IssueComment` execution: \n%s", string(output))
+	if err != nil {
+		return fmt.Errorf("failed to execute `pwsh Add-IssueComment` '%s': %+v", string(output), err)
+	}
+	return nil
+}
+
+func ExecuteAddIssueLabels(path, repoOwner, repoName, issueNumber, authToken string, labels []string) error {
+	var l string
+	if len(labels) == 1 {
+		l = labels[0]
+	} else {
+		l = strings.Join(labels, ",")
+	}
+	cmd := exec.Command("pwsh", "./eng/common/scripts/Add-IssueLabels.ps1", "-RepoOwner", repoOwner, "-RepoName", repoName, "-IssueNumber", issueNumber, "-Labels", l, "-AuthToken", authToken)
+	cmd.Dir = path
+	output, err := cmd.CombinedOutput()
+	log.Printf("Result of `pwsh Add-IssueLabels` execution: \n%s", string(output))
+	if err != nil {
+		return fmt.Errorf("failed to execute `pwsh Add-IssueLabels` '%s': %+v", string(output), err)
 	}
 	return nil
 }

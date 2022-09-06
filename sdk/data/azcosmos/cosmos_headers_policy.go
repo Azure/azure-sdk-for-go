@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
 type headerPolicies struct {
@@ -16,6 +17,7 @@ type headerPolicies struct {
 type headerOptionsOverride struct {
 	enableContentResponseOnWrite *bool
 	partitionKey                 *PartitionKey
+	correlatedActivityId         *uuid.UUID
 }
 
 func (p *headerPolicies) Do(req *policy.Request) (*http.Response, error) {
@@ -34,6 +36,10 @@ func (p *headerPolicies) Do(req *policy.Request) (*http.Response, error) {
 					return nil, err
 				}
 				req.Raw().Header.Add(cosmosHeaderPartitionKey, string(pkAsString))
+			}
+
+			if o.headerOptionsOverride.correlatedActivityId != nil {
+				req.Raw().Header.Add(cosmosHeaderCorrelatedActivityId, (*o.headerOptionsOverride.correlatedActivityId).String())
 			}
 		}
 

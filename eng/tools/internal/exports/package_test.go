@@ -49,6 +49,31 @@ func Test_Constants(t *testing.T) {
 	}
 }
 
+func Test_TypeAliases(t *testing.T) {
+	if l := len(exp.TypeAliases); l != 2 {
+		t.Logf("wrong number of type aliases, got %v", l)
+		t.Fail()
+	}
+
+	tests := []struct {
+		cn string
+		exports.TypeAlias
+	}{
+		{"DayOfWeek", exports.TypeAlias{UnderlayingType: "string"}},
+		{"KeyType", exports.TypeAlias{UnderlayingType: "string"}},
+	}
+
+	for _, test := range tests {
+		t.Run(test.cn, func(t *testing.T) {
+			c := exp.TypeAliases[test.cn]
+			if c.UnderlayingType != test.UnderlayingType {
+				t.Logf("mismatched underlaying type, %s != %s", c.UnderlayingType, test.UnderlayingType)
+				t.Fail()
+			}
+		})
+	}
+}
+
 func Test_Funcs(t *testing.T) {
 	if l := len(exp.Funcs); l != 21 {
 		t.Logf("wrong number of funcs, got %v", l)

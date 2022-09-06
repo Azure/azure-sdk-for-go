@@ -9,7 +9,7 @@
 
 package networkapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2021-05-01/network/networkapi"
+import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2021-08-01/network/networkapi"
 
 type ApplicationGatewayPrivateEndpointConnectionsClientAPI = original.ApplicationGatewayPrivateEndpointConnectionsClientAPI
 type ApplicationGatewayPrivateLinkResourcesClientAPI = original.ApplicationGatewayPrivateLinkResourcesClientAPI
@@ -25,6 +25,7 @@ type AzureFirewallsClientAPI = original.AzureFirewallsClientAPI
 type BaseClientAPI = original.BaseClientAPI
 type BastionHostsClientAPI = original.BastionHostsClientAPI
 type BgpServiceCommunitiesClientAPI = original.BgpServiceCommunitiesClientAPI
+type ConfigurationPolicyGroupsClientAPI = original.ConfigurationPolicyGroupsClientAPI
 type ConnectionMonitorsClientAPI = original.ConnectionMonitorsClientAPI
 type CustomIPPrefixesClientAPI = original.CustomIPPrefixesClientAPI
 type DdosCustomPoliciesClientAPI = original.DdosCustomPoliciesClientAPI
@@ -40,6 +41,7 @@ type ExpressRouteCrossConnectionPeeringsClientAPI = original.ExpressRouteCrossCo
 type ExpressRouteCrossConnectionsClientAPI = original.ExpressRouteCrossConnectionsClientAPI
 type ExpressRouteGatewaysClientAPI = original.ExpressRouteGatewaysClientAPI
 type ExpressRouteLinksClientAPI = original.ExpressRouteLinksClientAPI
+type ExpressRoutePortAuthorizationsClientAPI = original.ExpressRoutePortAuthorizationsClientAPI
 type ExpressRoutePortsClientAPI = original.ExpressRoutePortsClientAPI
 type ExpressRoutePortsLocationsClientAPI = original.ExpressRoutePortsLocationsClientAPI
 type ExpressRouteServiceProvidersClientAPI = original.ExpressRouteServiceProvidersClientAPI

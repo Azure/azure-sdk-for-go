@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,42 +25,62 @@ import (
 // DatabaseTablesClient contains the methods for the DatabaseTables group.
 // Don't use this type directly, use NewDatabaseTablesClient() instead.
 type DatabaseTablesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDatabaseTablesClient creates a new instance of DatabaseTablesClient with the specified values.
-func NewDatabaseTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabaseTablesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewDatabaseTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseTablesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &DatabaseTablesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &DatabaseTablesClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // Get - Get database table
-// If the operation fails it returns a generic error.
-func (client *DatabaseTablesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, options *DatabaseTablesGetOptions) (DatabaseTablesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// schemaName - The name of the schema.
+// tableName - The name of the table.
+// options - DatabaseTablesClientGetOptions contains the optional parameters for the DatabaseTablesClient.Get method.
+func (client *DatabaseTablesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, options *DatabaseTablesClientGetOptions) (DatabaseTablesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, schemaName, tableName, options)
 	if err != nil {
-		return DatabaseTablesGetResponse{}, err
+		return DatabaseTablesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseTablesGetResponse{}, err
+		return DatabaseTablesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseTablesGetResponse{}, client.getHandleError(resp)
+		return DatabaseTablesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DatabaseTablesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, options *DatabaseTablesGetOptions) (*policy.Request, error) {
+func (client *DatabaseTablesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, options *DatabaseTablesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -85,54 +106,66 @@ func (client *DatabaseTablesClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabaseTablesClient) getHandleResponse(resp *http.Response) (DatabaseTablesGetResponse, error) {
-	result := DatabaseTablesGetResponse{RawResponse: resp}
+func (client *DatabaseTablesClient) getHandleResponse(resp *http.Response) (DatabaseTablesClientGetResponse, error) {
+	result := DatabaseTablesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseTable); err != nil {
-		return DatabaseTablesGetResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseTablesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DatabaseTablesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListBySchema - List database tables
-// If the operation fails it returns a generic error.
-func (client *DatabaseTablesClient) ListBySchema(resourceGroupName string, serverName string, databaseName string, schemaName string, options *DatabaseTablesListBySchemaOptions) *DatabaseTablesListBySchemaPager {
-	return &DatabaseTablesListBySchemaPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySchemaCreateRequest(ctx, resourceGroupName, serverName, databaseName, schemaName, options)
+// NewListBySchemaPager - List database tables
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// schemaName - The name of the schema.
+// options - DatabaseTablesClientListBySchemaOptions contains the optional parameters for the DatabaseTablesClient.ListBySchema
+// method.
+func (client *DatabaseTablesClient) NewListBySchemaPager(resourceGroupName string, serverName string, databaseName string, schemaName string, options *DatabaseTablesClientListBySchemaOptions) *runtime.Pager[DatabaseTablesClientListBySchemaResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DatabaseTablesClientListBySchemaResponse]{
+		More: func(page DatabaseTablesClientListBySchemaResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp DatabaseTablesListBySchemaResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DatabaseTableListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *DatabaseTablesClientListBySchemaResponse) (DatabaseTablesClientListBySchemaResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySchemaCreateRequest(ctx, resourceGroupName, serverName, databaseName, schemaName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return DatabaseTablesClientListBySchemaResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return DatabaseTablesClientListBySchemaResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DatabaseTablesClientListBySchemaResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySchemaHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySchemaCreateRequest creates the ListBySchema request.
-func (client *DatabaseTablesClient) listBySchemaCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, options *DatabaseTablesListBySchemaOptions) (*policy.Request, error) {
+func (client *DatabaseTablesClient) listBySchemaCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, options *DatabaseTablesClientListBySchemaOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -154,7 +187,7 @@ func (client *DatabaseTablesClient) listBySchemaCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -164,27 +197,15 @@ func (client *DatabaseTablesClient) listBySchemaCreateRequest(ctx context.Contex
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySchemaHandleResponse handles the ListBySchema response.
-func (client *DatabaseTablesClient) listBySchemaHandleResponse(resp *http.Response) (DatabaseTablesListBySchemaResponse, error) {
-	result := DatabaseTablesListBySchemaResponse{RawResponse: resp}
+func (client *DatabaseTablesClient) listBySchemaHandleResponse(resp *http.Response) (DatabaseTablesClientListBySchemaResponse, error) {
+	result := DatabaseTablesClientListBySchemaResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseTableListResult); err != nil {
-		return DatabaseTablesListBySchemaResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseTablesClientListBySchemaResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySchemaHandleError handles the ListBySchema error response.
-func (client *DatabaseTablesClient) listBySchemaHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

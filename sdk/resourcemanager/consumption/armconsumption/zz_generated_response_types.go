@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,358 +8,157 @@
 
 package armconsumption
 
-import "net/http"
-
-// AggregatedCostGetByManagementGroupResponse contains the response from method AggregatedCost.GetByManagementGroup.
-type AggregatedCostGetByManagementGroupResponse struct {
-	AggregatedCostGetByManagementGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AggregatedCostGetByManagementGroupResult contains the result from method AggregatedCost.GetByManagementGroup.
-type AggregatedCostGetByManagementGroupResult struct {
+// AggregatedCostClientGetByManagementGroupResponse contains the response from method AggregatedCostClient.GetByManagementGroup.
+type AggregatedCostClientGetByManagementGroupResponse struct {
 	ManagementGroupAggregatedCostResult
 }
 
-// AggregatedCostGetForBillingPeriodByManagementGroupResponse contains the response from method AggregatedCost.GetForBillingPeriodByManagementGroup.
-type AggregatedCostGetForBillingPeriodByManagementGroupResponse struct {
-	AggregatedCostGetForBillingPeriodByManagementGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AggregatedCostGetForBillingPeriodByManagementGroupResult contains the result from method AggregatedCost.GetForBillingPeriodByManagementGroup.
-type AggregatedCostGetForBillingPeriodByManagementGroupResult struct {
+// AggregatedCostClientGetForBillingPeriodByManagementGroupResponse contains the response from method AggregatedCostClient.GetForBillingPeriodByManagementGroup.
+type AggregatedCostClientGetForBillingPeriodByManagementGroupResponse struct {
 	ManagementGroupAggregatedCostResult
 }
 
-// BalancesGetByBillingAccountResponse contains the response from method Balances.GetByBillingAccount.
-type BalancesGetByBillingAccountResponse struct {
-	BalancesGetByBillingAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BalancesGetByBillingAccountResult contains the result from method Balances.GetByBillingAccount.
-type BalancesGetByBillingAccountResult struct {
+// BalancesClientGetByBillingAccountResponse contains the response from method BalancesClient.GetByBillingAccount.
+type BalancesClientGetByBillingAccountResponse struct {
 	Balance
 }
 
-// BalancesGetForBillingPeriodByBillingAccountResponse contains the response from method Balances.GetForBillingPeriodByBillingAccount.
-type BalancesGetForBillingPeriodByBillingAccountResponse struct {
-	BalancesGetForBillingPeriodByBillingAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BalancesGetForBillingPeriodByBillingAccountResult contains the result from method Balances.GetForBillingPeriodByBillingAccount.
-type BalancesGetForBillingPeriodByBillingAccountResult struct {
+// BalancesClientGetForBillingPeriodByBillingAccountResponse contains the response from method BalancesClient.GetForBillingPeriodByBillingAccount.
+type BalancesClientGetForBillingPeriodByBillingAccountResponse struct {
 	Balance
 }
 
-// BudgetsCreateOrUpdateResponse contains the response from method Budgets.CreateOrUpdate.
-type BudgetsCreateOrUpdateResponse struct {
-	BudgetsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BudgetsCreateOrUpdateResult contains the result from method Budgets.CreateOrUpdate.
-type BudgetsCreateOrUpdateResult struct {
+// BudgetsClientCreateOrUpdateResponse contains the response from method BudgetsClient.CreateOrUpdate.
+type BudgetsClientCreateOrUpdateResponse struct {
 	Budget
 }
 
-// BudgetsDeleteResponse contains the response from method Budgets.Delete.
-type BudgetsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// BudgetsClientDeleteResponse contains the response from method BudgetsClient.Delete.
+type BudgetsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// BudgetsGetResponse contains the response from method Budgets.Get.
-type BudgetsGetResponse struct {
-	BudgetsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BudgetsGetResult contains the result from method Budgets.Get.
-type BudgetsGetResult struct {
+// BudgetsClientGetResponse contains the response from method BudgetsClient.Get.
+type BudgetsClientGetResponse struct {
 	Budget
 }
 
-// BudgetsListResponse contains the response from method Budgets.List.
-type BudgetsListResponse struct {
-	BudgetsListResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BudgetsListResultEnvelope contains the result from method Budgets.List.
-type BudgetsListResultEnvelope struct {
+// BudgetsClientListResponse contains the response from method BudgetsClient.List.
+type BudgetsClientListResponse struct {
 	BudgetsListResult
 }
 
-// ChargesListResponse contains the response from method Charges.List.
-type ChargesListResponse struct {
-	ChargesListResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ChargesListResultEnvelope contains the result from method Charges.List.
-type ChargesListResultEnvelope struct {
+// ChargesClientListResponse contains the response from method ChargesClient.List.
+type ChargesClientListResponse struct {
 	ChargesListResult
 }
 
-// CreditsGetResponse contains the response from method Credits.Get.
-type CreditsGetResponse struct {
-	CreditsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CreditsGetResult contains the result from method Credits.Get.
-type CreditsGetResult struct {
+// CreditsClientGetResponse contains the response from method CreditsClient.Get.
+type CreditsClientGetResponse struct {
 	CreditSummary
 }
 
-// EventsListByBillingAccountResponse contains the response from method Events.ListByBillingAccount.
-type EventsListByBillingAccountResponse struct {
-	EventsListByBillingAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EventsListByBillingAccountResult contains the result from method Events.ListByBillingAccount.
-type EventsListByBillingAccountResult struct {
+// EventsClientListByBillingAccountResponse contains the response from method EventsClient.ListByBillingAccount.
+type EventsClientListByBillingAccountResponse struct {
 	Events
 }
 
-// EventsListByBillingProfileResponse contains the response from method Events.ListByBillingProfile.
-type EventsListByBillingProfileResponse struct {
-	EventsListByBillingProfileResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EventsListByBillingProfileResult contains the result from method Events.ListByBillingProfile.
-type EventsListByBillingProfileResult struct {
+// EventsClientListByBillingProfileResponse contains the response from method EventsClient.ListByBillingProfile.
+type EventsClientListByBillingProfileResponse struct {
 	Events
 }
 
-// LotsListByBillingAccountResponse contains the response from method Lots.ListByBillingAccount.
-type LotsListByBillingAccountResponse struct {
-	LotsListByBillingAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// LotsListByBillingAccountResult contains the result from method Lots.ListByBillingAccount.
-type LotsListByBillingAccountResult struct {
+// LotsClientListByBillingAccountResponse contains the response from method LotsClient.ListByBillingAccount.
+type LotsClientListByBillingAccountResponse struct {
 	Lots
 }
 
-// LotsListByBillingProfileResponse contains the response from method Lots.ListByBillingProfile.
-type LotsListByBillingProfileResponse struct {
-	LotsListByBillingProfileResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// LotsListByBillingProfileResult contains the result from method Lots.ListByBillingProfile.
-type LotsListByBillingProfileResult struct {
+// LotsClientListByBillingProfileResponse contains the response from method LotsClient.ListByBillingProfile.
+type LotsClientListByBillingProfileResponse struct {
 	Lots
 }
 
-// MarketplacesListResponse contains the response from method Marketplaces.List.
-type MarketplacesListResponse struct {
-	MarketplacesListResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// LotsClientListByCustomerResponse contains the response from method LotsClient.ListByCustomer.
+type LotsClientListByCustomerResponse struct {
+	Lots
 }
 
-// MarketplacesListResultEnvelope contains the result from method Marketplaces.List.
-type MarketplacesListResultEnvelope struct {
+// MarketplacesClientListResponse contains the response from method MarketplacesClient.List.
+type MarketplacesClientListResponse struct {
 	MarketplacesListResult
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PriceSheetGetByBillingPeriodResponse contains the response from method PriceSheet.GetByBillingPeriod.
-type PriceSheetGetByBillingPeriodResponse struct {
-	PriceSheetGetByBillingPeriodResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PriceSheetGetByBillingPeriodResult contains the result from method PriceSheet.GetByBillingPeriod.
-type PriceSheetGetByBillingPeriodResult struct {
+// PriceSheetClientGetByBillingPeriodResponse contains the response from method PriceSheetClient.GetByBillingPeriod.
+type PriceSheetClientGetByBillingPeriodResponse struct {
 	PriceSheetResult
 }
 
-// PriceSheetGetResponse contains the response from method PriceSheet.Get.
-type PriceSheetGetResponse struct {
-	PriceSheetGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PriceSheetGetResult contains the result from method PriceSheet.Get.
-type PriceSheetGetResult struct {
+// PriceSheetClientGetResponse contains the response from method PriceSheetClient.Get.
+type PriceSheetClientGetResponse struct {
 	PriceSheetResult
 }
 
-// ReservationRecommendationDetailsGetResponse contains the response from method ReservationRecommendationDetails.Get.
-type ReservationRecommendationDetailsGetResponse struct {
-	ReservationRecommendationDetailsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ReservationRecommendationDetailsGetResult contains the result from method ReservationRecommendationDetails.Get.
-type ReservationRecommendationDetailsGetResult struct {
+// ReservationRecommendationDetailsClientGetResponse contains the response from method ReservationRecommendationDetailsClient.Get.
+type ReservationRecommendationDetailsClientGetResponse struct {
 	ReservationRecommendationDetailsModel
 }
 
-// ReservationRecommendationsListResponse contains the response from method ReservationRecommendations.List.
-type ReservationRecommendationsListResponse struct {
-	ReservationRecommendationsListResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ReservationRecommendationsListResultEnvelope contains the result from method ReservationRecommendations.List.
-type ReservationRecommendationsListResultEnvelope struct {
+// ReservationRecommendationsClientListResponse contains the response from method ReservationRecommendationsClient.List.
+type ReservationRecommendationsClientListResponse struct {
 	ReservationRecommendationsListResult
 }
 
-// ReservationTransactionsListByBillingProfileResponse contains the response from method ReservationTransactions.ListByBillingProfile.
-type ReservationTransactionsListByBillingProfileResponse struct {
-	ReservationTransactionsListByBillingProfileResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ReservationTransactionsListByBillingProfileResult contains the result from method ReservationTransactions.ListByBillingProfile.
-type ReservationTransactionsListByBillingProfileResult struct {
+// ReservationTransactionsClientListByBillingProfileResponse contains the response from method ReservationTransactionsClient.ListByBillingProfile.
+type ReservationTransactionsClientListByBillingProfileResponse struct {
 	ModernReservationTransactionsListResult
 }
 
-// ReservationTransactionsListResponse contains the response from method ReservationTransactions.List.
-type ReservationTransactionsListResponse struct {
-	ReservationTransactionsListResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ReservationTransactionsListResultEnvelope contains the result from method ReservationTransactions.List.
-type ReservationTransactionsListResultEnvelope struct {
+// ReservationTransactionsClientListResponse contains the response from method ReservationTransactionsClient.List.
+type ReservationTransactionsClientListResponse struct {
 	ReservationTransactionsListResult
 }
 
-// ReservationsDetailsListByReservationOrderAndReservationResponse contains the response from method ReservationsDetails.ListByReservationOrderAndReservation.
-type ReservationsDetailsListByReservationOrderAndReservationResponse struct {
-	ReservationsDetailsListByReservationOrderAndReservationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ReservationsDetailsListByReservationOrderAndReservationResult contains the result from method ReservationsDetails.ListByReservationOrderAndReservation.
-type ReservationsDetailsListByReservationOrderAndReservationResult struct {
+// ReservationsDetailsClientListByReservationOrderAndReservationResponse contains the response from method ReservationsDetailsClient.ListByReservationOrderAndReservation.
+type ReservationsDetailsClientListByReservationOrderAndReservationResponse struct {
 	ReservationDetailsListResult
 }
 
-// ReservationsDetailsListByReservationOrderResponse contains the response from method ReservationsDetails.ListByReservationOrder.
-type ReservationsDetailsListByReservationOrderResponse struct {
-	ReservationsDetailsListByReservationOrderResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ReservationsDetailsListByReservationOrderResult contains the result from method ReservationsDetails.ListByReservationOrder.
-type ReservationsDetailsListByReservationOrderResult struct {
+// ReservationsDetailsClientListByReservationOrderResponse contains the response from method ReservationsDetailsClient.ListByReservationOrder.
+type ReservationsDetailsClientListByReservationOrderResponse struct {
 	ReservationDetailsListResult
 }
 
-// ReservationsDetailsListResponse contains the response from method ReservationsDetails.List.
-type ReservationsDetailsListResponse struct {
-	ReservationsDetailsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ReservationsDetailsListResult contains the result from method ReservationsDetails.List.
-type ReservationsDetailsListResult struct {
+// ReservationsDetailsClientListResponse contains the response from method ReservationsDetailsClient.List.
+type ReservationsDetailsClientListResponse struct {
 	ReservationDetailsListResult
 }
 
-// ReservationsSummariesListByReservationOrderAndReservationResponse contains the response from method ReservationsSummaries.ListByReservationOrderAndReservation.
-type ReservationsSummariesListByReservationOrderAndReservationResponse struct {
-	ReservationsSummariesListByReservationOrderAndReservationResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ReservationsSummariesListByReservationOrderAndReservationResult contains the result from method ReservationsSummaries.ListByReservationOrderAndReservation.
-type ReservationsSummariesListByReservationOrderAndReservationResult struct {
+// ReservationsSummariesClientListByReservationOrderAndReservationResponse contains the response from method ReservationsSummariesClient.ListByReservationOrderAndReservation.
+type ReservationsSummariesClientListByReservationOrderAndReservationResponse struct {
 	ReservationSummariesListResult
 }
 
-// ReservationsSummariesListByReservationOrderResponse contains the response from method ReservationsSummaries.ListByReservationOrder.
-type ReservationsSummariesListByReservationOrderResponse struct {
-	ReservationsSummariesListByReservationOrderResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ReservationsSummariesListByReservationOrderResult contains the result from method ReservationsSummaries.ListByReservationOrder.
-type ReservationsSummariesListByReservationOrderResult struct {
+// ReservationsSummariesClientListByReservationOrderResponse contains the response from method ReservationsSummariesClient.ListByReservationOrder.
+type ReservationsSummariesClientListByReservationOrderResponse struct {
 	ReservationSummariesListResult
 }
 
-// ReservationsSummariesListResponse contains the response from method ReservationsSummaries.List.
-type ReservationsSummariesListResponse struct {
-	ReservationsSummariesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ReservationsSummariesListResult contains the result from method ReservationsSummaries.List.
-type ReservationsSummariesListResult struct {
+// ReservationsSummariesClientListResponse contains the response from method ReservationsSummariesClient.List.
+type ReservationsSummariesClientListResponse struct {
 	ReservationSummariesListResult
 }
 
-// TagsGetResponse contains the response from method Tags.Get.
-type TagsGetResponse struct {
-	TagsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TagsGetResult contains the result from method Tags.Get.
-type TagsGetResult struct {
+// TagsClientGetResponse contains the response from method TagsClient.Get.
+type TagsClientGetResponse struct {
 	TagsResult
 }
 
-// UsageDetailsListResponse contains the response from method UsageDetails.List.
-type UsageDetailsListResponse struct {
-	UsageDetailsListResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// UsageDetailsListResultEnvelope contains the result from method UsageDetails.List.
-type UsageDetailsListResultEnvelope struct {
+// UsageDetailsClientListResponse contains the response from method UsageDetailsClient.List.
+type UsageDetailsClientListResponse struct {
 	UsageDetailsListResult
 }

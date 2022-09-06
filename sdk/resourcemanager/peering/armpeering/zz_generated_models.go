@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,11 +8,16 @@
 
 package armpeering
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-)
+import "time"
+
+// BandwidthOffer - The properties that define a peering bandwidth offer.
+type BandwidthOffer struct {
+	// The name of the bandwidth offer.
+	OfferName *string `json:"offerName,omitempty"`
+
+	// The value of the bandwidth offer in Mbps.
+	ValueInMbps *int32 `json:"valueInMbps,omitempty"`
+}
 
 // BgpSession - The properties that define a BGP session.
 type BgpSession struct {
@@ -24,6 +29,12 @@ type BgpSession struct {
 
 	// The maximum number of prefixes advertised over the IPv6 session.
 	MaxPrefixesAdvertisedV6 *int32 `json:"maxPrefixesAdvertisedV6,omitempty"`
+
+	// The IPv4 session address on Microsoft's end.
+	MicrosoftSessionIPv4Address *string `json:"microsoftSessionIPv4Address,omitempty"`
+
+	// The IPv6 session address on Microsoft's end.
+	MicrosoftSessionIPv6Address *string `json:"microsoftSessionIPv6Address,omitempty"`
 
 	// The IPv4 session address on peer's end.
 	PeerSessionIPv4Address *string `json:"peerSessionIPv4Address,omitempty"`
@@ -37,12 +48,6 @@ type BgpSession struct {
 	// The IPv6 prefix that contains both ends' IPv6 addresses.
 	SessionPrefixV6 *string `json:"sessionPrefixV6,omitempty"`
 
-	// READ-ONLY; The IPv4 session address on Microsoft's end.
-	MicrosoftSessionIPv4Address *string `json:"microsoftSessionIPv4Address,omitempty" azure:"ro"`
-
-	// READ-ONLY; The IPv6 session address on Microsoft's end.
-	MicrosoftSessionIPv6Address *string `json:"microsoftSessionIPv6Address,omitempty" azure:"ro"`
-
 	// READ-ONLY; The state of the IPv4 session.
 	SessionStateV4 *SessionStateV4 `json:"sessionStateV4,omitempty" azure:"ro"`
 
@@ -50,30 +55,143 @@ type BgpSession struct {
 	SessionStateV6 *SessionStateV6 `json:"sessionStateV6,omitempty" azure:"ro"`
 }
 
+// CdnPeeringPrefix - The CDN peering prefix
+type CdnPeeringPrefix struct {
+	// The properties that define a cdn peering prefix.
+	Properties *CdnPeeringPrefixProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// CdnPeeringPrefixListResult - The paginated list of CDN peering prefixes.
+type CdnPeeringPrefixListResult struct {
+	// The link to fetch the next page of CDN peering prefixes.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of CDN peering prefixes.
+	Value []*CdnPeeringPrefix `json:"value,omitempty"`
+}
+
+// CdnPeeringPrefixProperties - The properties that define a CDN peering prefix
+type CdnPeeringPrefixProperties struct {
+	// READ-ONLY; The Azure region.
+	AzureRegion *string `json:"azureRegion,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Azure service.
+	AzureService *string `json:"azureService,omitempty" azure:"ro"`
+
+	// READ-ONLY; The BGP Community
+	BgpCommunity *string `json:"bgpCommunity,omitempty" azure:"ro"`
+
+	// READ-ONLY; The flag that indicates whether or not this is the primary region.
+	IsPrimaryRegion *bool `json:"isPrimaryRegion,omitempty" azure:"ro"`
+
+	// READ-ONLY; The prefix.
+	Prefix *string `json:"prefix,omitempty" azure:"ro"`
+}
+
+// CdnPeeringPrefixesClientListOptions contains the optional parameters for the CdnPeeringPrefixesClient.List method.
+type CdnPeeringPrefixesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CheckServiceProviderAvailabilityInput - Class for CheckServiceProviderAvailabilityInput
 type CheckServiceProviderAvailabilityInput struct {
-	// Gets or sets the PeeringServiceLocation
+	// Gets or sets the peering service location.
 	PeeringServiceLocation *string `json:"peeringServiceLocation,omitempty"`
 
-	// Gets or sets the PeeringServiceProvider
+	// Gets or sets the peering service provider.
 	PeeringServiceProvider *string `json:"peeringServiceProvider,omitempty"`
 }
 
-// ContactInfo - The contact information of the peer.
-type ContactInfo struct {
-	// The list of email addresses.
-	Emails []*string `json:"emails,omitempty"`
+// ConnectionMonitorTest - The Connection Monitor Test class.
+type ConnectionMonitorTest struct {
+	// The properties that define a Connection Monitor Test.
+	Properties *ConnectionMonitorTestProperties `json:"properties,omitempty"`
 
-	// The list of contact numbers.
-	Phone []*string `json:"phone,omitempty"`
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ContactInfo.
-func (c ContactInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "emails", c.Emails)
-	populate(objectMap, "phone", c.Phone)
-	return json.Marshal(objectMap)
+// ConnectionMonitorTestListResult - The paginated list of [T].
+type ConnectionMonitorTestListResult struct {
+	// The link to fetch the next page of [T].
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of [T].
+	Value []*ConnectionMonitorTest `json:"value,omitempty"`
+}
+
+// ConnectionMonitorTestProperties - The properties that define a Connection Monitor Test.
+type ConnectionMonitorTestProperties struct {
+	// The Connection Monitor test destination
+	Destination *string `json:"destination,omitempty"`
+
+	// The Connection Monitor test destination port
+	DestinationPort *int32 `json:"destinationPort,omitempty"`
+
+	// The Connection Monitor test source agent
+	SourceAgent *string `json:"sourceAgent,omitempty"`
+
+	// The Connection Monitor test frequency in seconds
+	TestFrequencyInSec *int32 `json:"testFrequencyInSec,omitempty"`
+
+	// READ-ONLY; The flag that indicates if the Connection Monitor test is successful or not.
+	IsTestSuccessful *bool `json:"isTestSuccessful,omitempty" azure:"ro"`
+
+	// READ-ONLY; The path representing the Connection Monitor test.
+	Path []*string `json:"path,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// ConnectionMonitorTestsClientCreateOrUpdateOptions contains the optional parameters for the ConnectionMonitorTestsClient.CreateOrUpdate
+// method.
+type ConnectionMonitorTestsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectionMonitorTestsClientDeleteOptions contains the optional parameters for the ConnectionMonitorTestsClient.Delete
+// method.
+type ConnectionMonitorTestsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectionMonitorTestsClientGetOptions contains the optional parameters for the ConnectionMonitorTestsClient.Get method.
+type ConnectionMonitorTestsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectionMonitorTestsClientListByPeeringServiceOptions contains the optional parameters for the ConnectionMonitorTestsClient.ListByPeeringService
+// method.
+type ConnectionMonitorTestsClientListByPeeringServiceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContactDetail - The contact detail class.
+type ContactDetail struct {
+	// The e-mail address of the contact.
+	Email *string `json:"email,omitempty"`
+
+	// The phone number of the contact.
+	Phone *string `json:"phone,omitempty"`
+
+	// The role of the contact.
+	Role *Role `json:"role,omitempty"`
 }
 
 // DirectConnection - The properties that define a direct connection.
@@ -90,9 +208,6 @@ type DirectConnection struct {
 	// The PeeringDB.com ID of the facility at which the connection has to be set up.
 	PeeringDBFacilityID *int32 `json:"peeringDBFacilityId,omitempty"`
 
-	// The bandwidth that is actually provisioned.
-	ProvisionedBandwidthInMbps *int32 `json:"provisionedBandwidthInMbps,omitempty"`
-
 	// The field indicating if Microsoft provides session ip addresses.
 	SessionAddressProvider *SessionAddressProvider `json:"sessionAddressProvider,omitempty"`
 
@@ -101,6 +216,15 @@ type DirectConnection struct {
 
 	// READ-ONLY; The state of the connection.
 	ConnectionState *ConnectionState `json:"connectionState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error message related to the connection state, if any.
+	ErrorMessage *string `json:"errorMessage,omitempty" azure:"ro"`
+
+	// READ-ONLY; The ID used within Microsoft's peering provisioning system to track the connection
+	MicrosoftTrackingID *string `json:"microsoftTrackingId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The bandwidth that is actually provisioned.
+	ProvisionedBandwidthInMbps *int32 `json:"provisionedBandwidthInMbps,omitempty" azure:"ro"`
 }
 
 // DirectPeeringFacility - The properties that define a direct peering facility.
@@ -118,10 +242,8 @@ type DirectPeeringFacility struct {
 	PeeringDBFacilityLink *string `json:"peeringDBFacilityLink,omitempty"`
 }
 
-// ErrorResponse - The error response that indicates why an operation has failed.
-// Implements the error and azcore.HTTPResponse interfaces.
-type ErrorResponse struct {
-	raw string
+// ErrorDetail - The error detail that describes why an operation has failed.
+type ErrorDetail struct {
 	// READ-ONLY; The error code.
 	Code *string `json:"code,omitempty" azure:"ro"`
 
@@ -129,10 +251,10 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+// ErrorResponse - The error response that indicates why an operation has failed.
+type ErrorResponse struct {
+	// The error detail that describes why an operation has failed.
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // ExchangeConnection - The properties that define an exchange connection.
@@ -148,6 +270,9 @@ type ExchangeConnection struct {
 
 	// READ-ONLY; The state of the connection.
 	ConnectionState *ConnectionState `json:"connectionState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error message related to the connection state, if any.
+	ErrorMessage *string `json:"errorMessage,omitempty" azure:"ro"`
 }
 
 // ExchangePeeringFacility - The properties that define an exchange peering facility.
@@ -177,9 +302,150 @@ type ExchangePeeringFacility struct {
 	PeeringDBFacilityLink *string `json:"peeringDBFacilityLink,omitempty"`
 }
 
-// LegacyPeeringsListOptions contains the optional parameters for the LegacyPeerings.List method.
-type LegacyPeeringsListOptions struct {
+// LegacyPeeringsClientListOptions contains the optional parameters for the LegacyPeeringsClient.List method.
+type LegacyPeeringsClientListOptions struct {
+	// The ASN number associated with a legacy peering.
+	Asn *int32
+}
+
+// ListResult - The paginated list of peerings.
+type ListResult struct {
+	// The link to fetch the next page of peerings.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of peerings.
+	Value []*Peering `json:"value,omitempty"`
+}
+
+// Location - Peering location is where connectivity could be established to the Microsoft Cloud Edge.
+type Location struct {
+	// The kind of peering that the peering location supports.
+	Kind *Kind `json:"kind,omitempty"`
+
+	// The properties that define a peering location.
+	Properties *LocationProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// LocationListResult - The paginated list of peering locations.
+type LocationListResult struct {
+	// The link to fetch the next page of peering locations.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of peering locations.
+	Value []*Location `json:"value,omitempty"`
+}
+
+// LocationProperties - The properties that define a peering location.
+type LocationProperties struct {
+	// The Azure region associated with the peering location.
+	AzureRegion *string `json:"azureRegion,omitempty"`
+
+	// The country in which the peering location exists.
+	Country *string `json:"country,omitempty"`
+
+	// The properties that define a direct peering location.
+	Direct *LocationPropertiesDirect `json:"direct,omitempty"`
+
+	// The properties that define an exchange peering location.
+	Exchange *LocationPropertiesExchange `json:"exchange,omitempty"`
+
+	// The name of the peering location.
+	PeeringLocation *string `json:"peeringLocation,omitempty"`
+}
+
+// LocationPropertiesDirect - The properties that define a direct peering location.
+type LocationPropertiesDirect struct {
+	// The list of bandwidth offers available at the peering location.
+	BandwidthOffers []*BandwidthOffer `json:"bandwidthOffers,omitempty"`
+
+	// The list of direct peering facilities at the peering location.
+	PeeringFacilities []*DirectPeeringFacility `json:"peeringFacilities,omitempty"`
+}
+
+// LocationPropertiesExchange - The properties that define an exchange peering location.
+type LocationPropertiesExchange struct {
+	// The list of exchange peering facilities at the peering location.
+	PeeringFacilities []*ExchangePeeringFacility `json:"peeringFacilities,omitempty"`
+}
+
+// LocationsClientListOptions contains the optional parameters for the LocationsClient.List method.
+type LocationsClientListOptions struct {
+	// The type of direct peering.
+	DirectPeeringType *PeeringLocationsDirectPeeringType
+}
+
+// LogAnalyticsWorkspaceProperties - The properties that define a Log Analytics Workspace.
+type LogAnalyticsWorkspaceProperties struct {
+	// READ-ONLY; The list of connected agents.
+	ConnectedAgents []*string `json:"connectedAgents,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Workspace Key.
+	Key *string `json:"key,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Workspace ID.
+	WorkspaceID *string `json:"workspaceID,omitempty" azure:"ro"`
+}
+
+// LookingGlassClientInvokeOptions contains the optional parameters for the LookingGlassClient.Invoke method.
+type LookingGlassClientInvokeOptions struct {
 	// placeholder for future optional parameters
+}
+
+// LookingGlassOutput - Looking glass output model
+type LookingGlassOutput struct {
+	// Invoked command
+	Command *Command `json:"command,omitempty"`
+
+	// Output of the command
+	Output *string `json:"output,omitempty"`
+}
+
+// ManagementClientCheckServiceProviderAvailabilityOptions contains the optional parameters for the ManagementClient.CheckServiceProviderAvailability
+// method.
+type ManagementClientCheckServiceProviderAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MetricDimension - Dimensions of the metric.
+type MetricDimension struct {
+	// READ-ONLY; Localized friendly display name of the dimension.
+	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the dimension.
+	Name *string `json:"name,omitempty" azure:"ro"`
+}
+
+// MetricSpecification - Specifications of the Metrics for Azure Monitoring.
+type MetricSpecification struct {
+	// READ-ONLY; Aggregation type will be set to one of the values: Average, Minimum, Maximum, Total, Count.
+	AggregationType *string `json:"aggregationType,omitempty" azure:"ro"`
+
+	// READ-ONLY; Dimensions of the metric.
+	Dimensions []*MetricDimension `json:"dimensions,omitempty" azure:"ro"`
+
+	// READ-ONLY; Localized friendly description of the metric.
+	DisplayDescription *string `json:"displayDescription,omitempty" azure:"ro"`
+
+	// READ-ONLY; Localized friendly display name of the metric.
+	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the metric.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Supported time grain types for the metric.
+	SupportedTimeGrainTypes []*string `json:"supportedTimeGrainTypes,omitempty" azure:"ro"`
+
+	// READ-ONLY; Unit that makes sense for the metric.
+	Unit *string `json:"unit,omitempty" azure:"ro"`
 }
 
 // Operation - The peering API operation.
@@ -192,6 +458,9 @@ type Operation struct {
 
 	// READ-ONLY; The name of the operation.
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The properties of the operation.
+	Properties *OperationProperties `json:"properties,omitempty" azure:"ro"`
 }
 
 // OperationDisplayInfo - The information related to the operation.
@@ -218,32 +487,30 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
+// OperationProperties - The properties of the operation.
+type OperationProperties struct {
+	// READ-ONLY; Service specification payload.
+	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty" azure:"ro"`
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PeerAsn - The essential information related to the peer's ASN.
 type PeerAsn struct {
-	Resource
 	// The properties that define a peer's ASN.
 	Properties *PeerAsnProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PeerAsn.
-func (p PeerAsn) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PeerAsnListResult - The paginated list of peer ASNs.
@@ -255,52 +522,46 @@ type PeerAsnListResult struct {
 	Value []*PeerAsn `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PeerAsnListResult.
-func (p PeerAsnListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PeerAsnProperties - The properties that define a peer's ASN.
 type PeerAsnProperties struct {
 	// The Autonomous System Number (ASN) of the peer.
 	PeerAsn *int32 `json:"peerAsn,omitempty"`
 
-	// The contact information of the peer.
-	PeerContactInfo *ContactInfo `json:"peerContactInfo,omitempty"`
+	// The contact details of the peer.
+	PeerContactDetail []*ContactDetail `json:"peerContactDetail,omitempty"`
 
 	// The name of the peer.
 	PeerName *string `json:"peerName,omitempty"`
 
-	// The validation state of the ASN associated with the peer.
-	ValidationState *ValidationState `json:"validationState,omitempty"`
+	// READ-ONLY; The error message for the validation state
+	ErrorMessage *string `json:"errorMessage,omitempty" azure:"ro"`
+
+	// READ-ONLY; The validation state of the ASN associated with the peer.
+	ValidationState *ValidationState `json:"validationState,omitempty" azure:"ro"`
 }
 
-// PeerAsnsCreateOrUpdateOptions contains the optional parameters for the PeerAsns.CreateOrUpdate method.
-type PeerAsnsCreateOrUpdateOptions struct {
+// PeerAsnsClientCreateOrUpdateOptions contains the optional parameters for the PeerAsnsClient.CreateOrUpdate method.
+type PeerAsnsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PeerAsnsDeleteOptions contains the optional parameters for the PeerAsns.Delete method.
-type PeerAsnsDeleteOptions struct {
+// PeerAsnsClientDeleteOptions contains the optional parameters for the PeerAsnsClient.Delete method.
+type PeerAsnsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PeerAsnsGetOptions contains the optional parameters for the PeerAsns.Get method.
-type PeerAsnsGetOptions struct {
+// PeerAsnsClientGetOptions contains the optional parameters for the PeerAsnsClient.Get method.
+type PeerAsnsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PeerAsnsListBySubscriptionOptions contains the optional parameters for the PeerAsns.ListBySubscription method.
-type PeerAsnsListBySubscriptionOptions struct {
+// PeerAsnsClientListBySubscriptionOptions contains the optional parameters for the PeerAsnsClient.ListBySubscription method.
+type PeerAsnsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
 // Peering is a logical representation of a set of connections to the Microsoft Cloud Edge at a location.
 type Peering struct {
-	Resource
 	// REQUIRED; The kind of the peering.
 	Kind *Kind `json:"kind,omitempty"`
 
@@ -308,156 +569,84 @@ type Peering struct {
 	Location *string `json:"location,omitempty"`
 
 	// REQUIRED; The SKU that defines the tier and kind of the peering.
-	SKU *PeeringSKU `json:"sku,omitempty"`
+	SKU *SKU `json:"sku,omitempty"`
 
 	// The properties that define a peering.
-	Properties *PeeringProperties `json:"properties,omitempty"`
+	Properties *Properties `json:"properties,omitempty"`
 
 	// The resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Peering.
-func (p Peering) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "kind", p.Kind)
-	populate(objectMap, "location", p.Location)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "sku", p.SKU)
-	populate(objectMap, "tags", p.Tags)
-	return json.Marshal(objectMap)
-}
-
-// PeeringBandwidthOffer - The properties that define a peering bandwidth offer.
-type PeeringBandwidthOffer struct {
-	// The name of the bandwidth offer.
-	OfferName *string `json:"offerName,omitempty"`
-
-	// The value of the bandwidth offer in Mbps.
-	ValueInMbps *int32 `json:"valueInMbps,omitempty"`
-}
-
-// PeeringListResult - The paginated list of peerings.
-type PeeringListResult struct {
-	// The link to fetch the next page of peerings.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// The list of peerings.
-	Value []*Peering `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PeeringListResult.
-func (p PeeringListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// PeeringLocation - Peering location is where connectivity could be established to the Microsoft Cloud Edge.
-type PeeringLocation struct {
-	Resource
-	// The kind of peering that the peering location supports.
-	Kind *Kind `json:"kind,omitempty"`
-
-	// The properties that define a peering location.
-	Properties *PeeringLocationProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PeeringLocation.
-func (p PeeringLocation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "kind", p.Kind)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
-}
-
-// PeeringLocationListResult - The paginated list of peering locations.
-type PeeringLocationListResult struct {
-	// The link to fetch the next page of peering locations.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// The list of peering locations.
-	Value []*PeeringLocation `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PeeringLocationListResult.
-func (p PeeringLocationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// PeeringLocationProperties - The properties that define a peering location.
-type PeeringLocationProperties struct {
-	// The Azure region associated with the peering location.
-	AzureRegion *string `json:"azureRegion,omitempty"`
-
-	// The country in which the peering location exists.
-	Country *string `json:"country,omitempty"`
-
-	// The properties that define a direct peering location.
-	Direct *PeeringLocationPropertiesDirect `json:"direct,omitempty"`
-
-	// The properties that define an exchange peering location.
-	Exchange *PeeringLocationPropertiesExchange `json:"exchange,omitempty"`
-
-	// The name of the peering location.
-	PeeringLocation *string `json:"peeringLocation,omitempty"`
-}
-
-// PeeringLocationPropertiesDirect - The properties that define a direct peering location.
-type PeeringLocationPropertiesDirect struct {
-	// The list of bandwidth offers available at the peering location.
-	BandwidthOffers []*PeeringBandwidthOffer `json:"bandwidthOffers,omitempty"`
-
-	// The list of direct peering facilities at the peering location.
-	PeeringFacilities []*DirectPeeringFacility `json:"peeringFacilities,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PeeringLocationPropertiesDirect.
-func (p PeeringLocationPropertiesDirect) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "bandwidthOffers", p.BandwidthOffers)
-	populate(objectMap, "peeringFacilities", p.PeeringFacilities)
-	return json.Marshal(objectMap)
-}
-
-// PeeringLocationPropertiesExchange - The properties that define an exchange peering location.
-type PeeringLocationPropertiesExchange struct {
-	// The list of exchange peering facilities at the peering location.
-	PeeringFacilities []*ExchangePeeringFacility `json:"peeringFacilities,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PeeringLocationPropertiesExchange.
-func (p PeeringLocationPropertiesExchange) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "peeringFacilities", p.PeeringFacilities)
-	return json.Marshal(objectMap)
-}
-
-// PeeringLocationsListOptions contains the optional parameters for the PeeringLocations.List method.
-type PeeringLocationsListOptions struct {
-	// The type of direct peering.
-	DirectPeeringType *Enum15
-}
-
-// PeeringManagementClientCheckServiceProviderAvailabilityOptions contains the optional parameters for the PeeringManagementClient.CheckServiceProviderAvailability
-// method.
-type PeeringManagementClientCheckServiceProviderAvailabilityOptions struct {
+// PeeringsClientCreateOrUpdateOptions contains the optional parameters for the PeeringsClient.CreateOrUpdate method.
+type PeeringsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PeeringProperties - The properties that define connectivity to the Microsoft Cloud Edge.
-type PeeringProperties struct {
+// PeeringsClientDeleteOptions contains the optional parameters for the PeeringsClient.Delete method.
+type PeeringsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PeeringsClientGetOptions contains the optional parameters for the PeeringsClient.Get method.
+type PeeringsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PeeringsClientListByResourceGroupOptions contains the optional parameters for the PeeringsClient.ListByResourceGroup method.
+type PeeringsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PeeringsClientListBySubscriptionOptions contains the optional parameters for the PeeringsClient.ListBySubscription method.
+type PeeringsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PeeringsClientUpdateOptions contains the optional parameters for the PeeringsClient.Update method.
+type PeeringsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrefixesClientCreateOrUpdateOptions contains the optional parameters for the PrefixesClient.CreateOrUpdate method.
+type PrefixesClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrefixesClientDeleteOptions contains the optional parameters for the PrefixesClient.Delete method.
+type PrefixesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrefixesClientGetOptions contains the optional parameters for the PrefixesClient.Get method.
+type PrefixesClientGetOptions struct {
+	// The properties to be expanded.
+	Expand *string
+}
+
+// PrefixesClientListByPeeringServiceOptions contains the optional parameters for the PrefixesClient.ListByPeeringService
+// method.
+type PrefixesClientListByPeeringServiceOptions struct {
+	// The properties to be expanded.
+	Expand *string
+}
+
+// Properties - The properties that define connectivity to the Microsoft Cloud Edge.
+type Properties struct {
 	// The properties that define a direct peering.
-	Direct *PeeringPropertiesDirect `json:"direct,omitempty"`
+	Direct *PropertiesDirect `json:"direct,omitempty"`
 
 	// The properties that define an exchange peering.
-	Exchange *PeeringPropertiesExchange `json:"exchange,omitempty"`
+	Exchange *PropertiesExchange `json:"exchange,omitempty"`
 
 	// The location of the peering.
 	PeeringLocation *string `json:"peeringLocation,omitempty"`
@@ -466,8 +655,8 @@ type PeeringProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// PeeringPropertiesDirect - The properties that define a direct peering.
-type PeeringPropertiesDirect struct {
+// PropertiesDirect - The properties that define a direct peering.
+type PropertiesDirect struct {
 	// The set of connections that constitute a direct peering.
 	Connections []*DirectConnection `json:"connections,omitempty"`
 
@@ -477,22 +666,12 @@ type PeeringPropertiesDirect struct {
 	// The reference of the peer ASN.
 	PeerAsn *SubResource `json:"peerAsn,omitempty"`
 
-	// The flag that indicates whether or not the peering is used for peering service.
-	UseForPeeringService *bool `json:"useForPeeringService,omitempty"`
+	// READ-ONLY; The flag that indicates whether or not the peering is used for peering service.
+	UseForPeeringService *bool `json:"useForPeeringService,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PeeringPropertiesDirect.
-func (p PeeringPropertiesDirect) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "connections", p.Connections)
-	populate(objectMap, "directPeeringType", p.DirectPeeringType)
-	populate(objectMap, "peerAsn", p.PeerAsn)
-	populate(objectMap, "useForPeeringService", p.UseForPeeringService)
-	return json.Marshal(objectMap)
-}
-
-// PeeringPropertiesExchange - The properties that define an exchange peering.
-type PeeringPropertiesExchange struct {
+// PropertiesExchange - The properties that define an exchange peering.
+type PropertiesExchange struct {
 	// The set of connections that constitute an exchange peering.
 	Connections []*ExchangeConnection `json:"connections,omitempty"`
 
@@ -500,297 +679,171 @@ type PeeringPropertiesExchange struct {
 	PeerAsn *SubResource `json:"peerAsn,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PeeringPropertiesExchange.
-func (p PeeringPropertiesExchange) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "connections", p.Connections)
-	populate(objectMap, "peerAsn", p.PeerAsn)
-	return json.Marshal(objectMap)
+// ReceivedRoute - The properties that define a received route.
+type ReceivedRoute struct {
+	// READ-ONLY; The AS path for the prefix.
+	AsPath *string `json:"asPath,omitempty" azure:"ro"`
+
+	// READ-ONLY; The next hop for the prefix.
+	NextHop *string `json:"nextHop,omitempty" azure:"ro"`
+
+	// READ-ONLY; The origin AS change information for the prefix.
+	OriginAsValidationState *string `json:"originAsValidationState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The prefix.
+	Prefix *string `json:"prefix,omitempty" azure:"ro"`
+
+	// READ-ONLY; The received timestamp associated with the prefix.
+	ReceivedTimestamp *string `json:"receivedTimestamp,omitempty" azure:"ro"`
+
+	// READ-ONLY; The RPKI validation state for the prefix and origin AS that's listed in the AS path.
+	RpkiValidationState *string `json:"rpkiValidationState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The authority which holds the Route Origin Authorization record for the prefix, if any.
+	TrustAnchor *string `json:"trustAnchor,omitempty" azure:"ro"`
 }
 
-// PeeringSKU - The SKU that defines the tier and kind of the peering.
-type PeeringSKU struct {
-	// The family of the peering SKU.
-	Family *Family `json:"family,omitempty"`
-
-	// The name of the peering SKU.
-	Name *Name `json:"name,omitempty"`
-
-	// The size of the peering SKU.
-	Size *Size `json:"size,omitempty"`
-
-	// The tier of the peering SKU.
-	Tier *Tier `json:"tier,omitempty"`
-}
-
-// PeeringService - Peering Service
-type PeeringService struct {
-	Resource
-	// REQUIRED; The location of the resource.
-	Location *string `json:"location,omitempty"`
-
-	// The properties that define a peering service.
-	Properties *PeeringServiceProperties `json:"properties,omitempty"`
-
-	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PeeringService.
-func (p PeeringService) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "location", p.Location)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "tags", p.Tags)
-	return json.Marshal(objectMap)
-}
-
-// PeeringServiceListResult - The paginated list of peering services.
-type PeeringServiceListResult struct {
-	// The link to fetch the next page of peering services.
+// ReceivedRouteListResult - The paginated list of received routes for the peering.
+type ReceivedRouteListResult struct {
+	// The link to fetch the next page of received routes for the peering.
 	NextLink *string `json:"nextLink,omitempty"`
 
-	// The list of peering services.
-	Value []*PeeringService `json:"value,omitempty"`
+	// The list of received routes for the peering.
+	Value []*ReceivedRoute `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PeeringServiceListResult.
-func (p PeeringServiceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
+// ReceivedRoutesClientListByPeeringOptions contains the optional parameters for the ReceivedRoutesClient.ListByPeering method.
+type ReceivedRoutesClientListByPeeringOptions struct {
+	// The optional AS path that can be used to filter the routes.
+	AsPath *string
+	// The optional origin AS validation state that can be used to filter the routes.
+	OriginAsValidationState *string
+	// The optional prefix that can be used to filter the routes.
+	Prefix *string
+	// The optional RPKI validation state that can be used to filter the routes.
+	RpkiValidationState *string
+	// The optional page continuation token that is used in the event of paginated result.
+	SkipToken *string
 }
 
-// PeeringServiceLocation - PeeringService location
-type PeeringServiceLocation struct {
-	Resource
-	// The properties that define a peering service location.
-	Properties *PeeringServiceLocationProperties `json:"properties,omitempty"`
+// RegisteredAsn - The customer's ASN that is registered by the peering service provider.
+type RegisteredAsn struct {
+	// The properties that define a registered ASN.
+	Properties *RegisteredAsnProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PeeringServiceLocation.
-func (p PeeringServiceLocation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
-}
-
-// PeeringServiceLocationListResult - The paginated list of peering service locations.
-type PeeringServiceLocationListResult struct {
-	// The link to fetch the next page of peering service locations.
+// RegisteredAsnListResult - The paginated list of peering registered ASNs.
+type RegisteredAsnListResult struct {
+	// The link to fetch the next page of peering registered ASNs.
 	NextLink *string `json:"nextLink,omitempty"`
 
-	// The list of peering service locations.
-	Value []*PeeringServiceLocation `json:"value,omitempty"`
+	// The list of peering registered ASNs.
+	Value []*RegisteredAsn `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PeeringServiceLocationListResult.
-func (p PeeringServiceLocationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
+// RegisteredAsnProperties - The properties that define a registered ASN.
+type RegisteredAsnProperties struct {
+	// The customer's ASN from which traffic originates.
+	Asn *int32 `json:"asn,omitempty"`
+
+	// READ-ONLY; The peering service prefix key that is to be shared with the customer.
+	PeeringServicePrefixKey *string `json:"peeringServicePrefixKey,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// PeeringServiceLocationProperties - The properties that define connectivity to the Peering Service Location.
-type PeeringServiceLocationProperties struct {
-	// Azure region for the location
-	AzureRegion *string `json:"azureRegion,omitempty"`
-
-	// Country of the customer
-	Country *string `json:"country,omitempty"`
-
-	// State of the customer
-	State *string `json:"state,omitempty"`
-}
-
-// PeeringServiceLocationsListOptions contains the optional parameters for the PeeringServiceLocations.List method.
-type PeeringServiceLocationsListOptions struct {
+// RegisteredAsnsClientCreateOrUpdateOptions contains the optional parameters for the RegisteredAsnsClient.CreateOrUpdate
+// method.
+type RegisteredAsnsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PeeringServicePrefix - The peering service prefix class.
-type PeeringServicePrefix struct {
-	Resource
-	// Gets or sets the peering prefix properties.
-	Properties *PeeringServicePrefixProperties `json:"properties,omitempty"`
+// RegisteredAsnsClientDeleteOptions contains the optional parameters for the RegisteredAsnsClient.Delete method.
+type RegisteredAsnsClientDeleteOptions struct {
+	// placeholder for future optional parameters
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PeeringServicePrefix.
-func (p PeeringServicePrefix) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+// RegisteredAsnsClientGetOptions contains the optional parameters for the RegisteredAsnsClient.Get method.
+type RegisteredAsnsClientGetOptions struct {
+	// placeholder for future optional parameters
 }
 
-// PeeringServicePrefixListResult - The paginated list of [T].
-type PeeringServicePrefixListResult struct {
-	// The link to fetch the next page of [T].
+// RegisteredAsnsClientListByPeeringOptions contains the optional parameters for the RegisteredAsnsClient.ListByPeering method.
+type RegisteredAsnsClientListByPeeringOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RegisteredPrefix - The customer's prefix that is registered by the peering service provider.
+type RegisteredPrefix struct {
+	// The properties that define a registered prefix.
+	Properties *RegisteredPrefixProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// RegisteredPrefixListResult - The paginated list of peering registered prefixes.
+type RegisteredPrefixListResult struct {
+	// The link to fetch the next page of peering registered prefixes.
 	NextLink *string `json:"nextLink,omitempty"`
 
-	// The list of [T].
-	Value []*PeeringServicePrefix `json:"value,omitempty"`
+	// The list of peering registered prefixes.
+	Value []*RegisteredPrefix `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PeeringServicePrefixListResult.
-func (p PeeringServicePrefixListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// PeeringServicePrefixProperties - The peering service prefix properties class.
-type PeeringServicePrefixProperties struct {
-	// The prefix learned type
-	LearnedType *LearnedType `json:"learnedType,omitempty"`
-
-	// Valid route prefix
+// RegisteredPrefixProperties - The properties that define a registered prefix.
+type RegisteredPrefixProperties struct {
+	// The customer's prefix from which traffic originates.
 	Prefix *string `json:"prefix,omitempty"`
 
-	// The prefix validation state
-	PrefixValidationState *PrefixValidationState `json:"prefixValidationState,omitempty"`
+	// READ-ONLY; The error message associated with the validation state, if any.
+	ErrorMessage *string `json:"errorMessage,omitempty" azure:"ro"`
+
+	// READ-ONLY; The peering service prefix key that is to be shared with the customer.
+	PeeringServicePrefixKey *string `json:"peeringServicePrefixKey,omitempty" azure:"ro"`
+
+	// READ-ONLY; The prefix validation state.
+	PrefixValidationState *PrefixValidationState `json:"prefixValidationState,omitempty" azure:"ro"`
 
 	// READ-ONLY; The provisioning state of the resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// PeeringServicePrefixesCreateOrUpdateOptions contains the optional parameters for the PeeringServicePrefixes.CreateOrUpdate method.
-type PeeringServicePrefixesCreateOrUpdateOptions struct {
+// RegisteredPrefixesClientCreateOrUpdateOptions contains the optional parameters for the RegisteredPrefixesClient.CreateOrUpdate
+// method.
+type RegisteredPrefixesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PeeringServicePrefixesDeleteOptions contains the optional parameters for the PeeringServicePrefixes.Delete method.
-type PeeringServicePrefixesDeleteOptions struct {
+// RegisteredPrefixesClientDeleteOptions contains the optional parameters for the RegisteredPrefixesClient.Delete method.
+type RegisteredPrefixesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PeeringServicePrefixesGetOptions contains the optional parameters for the PeeringServicePrefixes.Get method.
-type PeeringServicePrefixesGetOptions struct {
+// RegisteredPrefixesClientGetOptions contains the optional parameters for the RegisteredPrefixesClient.Get method.
+type RegisteredPrefixesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PeeringServiceProperties - The properties that define connectivity to the Peering Service.
-type PeeringServiceProperties struct {
-	// The PeeringServiceLocation of the Customer.
-	PeeringServiceLocation *string `json:"peeringServiceLocation,omitempty"`
-
-	// The MAPS Provider Name.
-	PeeringServiceProvider *string `json:"peeringServiceProvider,omitempty"`
-
-	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// PeeringServiceProvider - PeeringService provider
-type PeeringServiceProvider struct {
-	Resource
-	// The properties that define a peering service provider.
-	Properties *PeeringServiceProviderProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PeeringServiceProvider.
-func (p PeeringServiceProvider) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
-}
-
-// PeeringServiceProviderListResult - The paginated list of peering service providers.
-type PeeringServiceProviderListResult struct {
-	// The link to fetch the next page of peering service providers.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// The list of peering service providers.
-	Value []*PeeringServiceProvider `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PeeringServiceProviderListResult.
-func (p PeeringServiceProviderListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// PeeringServiceProviderProperties - The properties that define connectivity to the Peering Service Provider.
-type PeeringServiceProviderProperties struct {
-	// The name of the service provider.
-	ServiceProviderName *string `json:"serviceProviderName,omitempty"`
-}
-
-// PeeringServiceProvidersListOptions contains the optional parameters for the PeeringServiceProviders.List method.
-type PeeringServiceProvidersListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PeeringServicesCreateOrUpdateOptions contains the optional parameters for the PeeringServices.CreateOrUpdate method.
-type PeeringServicesCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PeeringServicesDeleteOptions contains the optional parameters for the PeeringServices.Delete method.
-type PeeringServicesDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PeeringServicesGetOptions contains the optional parameters for the PeeringServices.Get method.
-type PeeringServicesGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PeeringServicesListByResourceGroupOptions contains the optional parameters for the PeeringServices.ListByResourceGroup method.
-type PeeringServicesListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PeeringServicesListBySubscriptionOptions contains the optional parameters for the PeeringServices.ListBySubscription method.
-type PeeringServicesListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PeeringServicesUpdateOptions contains the optional parameters for the PeeringServices.Update method.
-type PeeringServicesUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PeeringsCreateOrUpdateOptions contains the optional parameters for the Peerings.CreateOrUpdate method.
-type PeeringsCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PeeringsDeleteOptions contains the optional parameters for the Peerings.Delete method.
-type PeeringsDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PeeringsGetOptions contains the optional parameters for the Peerings.Get method.
-type PeeringsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PeeringsListByResourceGroupOptions contains the optional parameters for the Peerings.ListByResourceGroup method.
-type PeeringsListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PeeringsListBySubscriptionOptions contains the optional parameters for the Peerings.ListBySubscription method.
-type PeeringsListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PeeringsUpdateOptions contains the optional parameters for the Peerings.Update method.
-type PeeringsUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrefixesListByPeeringServiceOptions contains the optional parameters for the Prefixes.ListByPeeringService method.
-type PrefixesListByPeeringServiceOptions struct {
+// RegisteredPrefixesClientListByPeeringOptions contains the optional parameters for the RegisteredPrefixesClient.ListByPeering
+// method.
+type RegisteredPrefixesClientListByPeeringOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -806,44 +859,303 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
 // ResourceTags - The resource tags.
 type ResourceTags struct {
 	// Gets or sets the tags, a dictionary of descriptors arm object
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceTags.
-func (r ResourceTags) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", r.Tags)
-	return json.Marshal(objectMap)
+// SKU - The SKU that defines the tier and kind of the peering.
+type SKU struct {
+	// The name of the peering SKU.
+	Name *string `json:"name,omitempty"`
+
+	// READ-ONLY; The family of the peering SKU.
+	Family *Family `json:"family,omitempty" azure:"ro"`
+
+	// READ-ONLY; The size of the peering SKU.
+	Size *Size `json:"size,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tier of the peering SKU.
+	Tier *Tier `json:"tier,omitempty" azure:"ro"`
+}
+
+// Service - Peering Service
+type Service struct {
+	// REQUIRED; The location of the resource.
+	Location *string `json:"location,omitempty"`
+
+	// The properties that define a peering service.
+	Properties *ServiceProperties `json:"properties,omitempty"`
+
+	// The SKU that defines the type of the peering service.
+	SKU *ServiceSKU `json:"sku,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ServiceCountriesClientListOptions contains the optional parameters for the ServiceCountriesClient.List method.
+type ServiceCountriesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceCountry - The peering service country.
+type ServiceCountry struct {
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ServiceCountryListResult - The paginated list of peering service countries.
+type ServiceCountryListResult struct {
+	// The link to fetch the next page of peering service countries.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of peering service countries.
+	Value []*ServiceCountry `json:"value,omitempty"`
+}
+
+// ServiceListResult - The paginated list of peering services.
+type ServiceListResult struct {
+	// The link to fetch the next page of peering services.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of peering services.
+	Value []*Service `json:"value,omitempty"`
+}
+
+// ServiceLocation - The peering service location.
+type ServiceLocation struct {
+	// The properties that define a peering service location.
+	Properties *ServiceLocationProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ServiceLocationListResult - The paginated list of peering service locations.
+type ServiceLocationListResult struct {
+	// The link to fetch the next page of peering service locations.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of peering service locations.
+	Value []*ServiceLocation `json:"value,omitempty"`
+}
+
+// ServiceLocationProperties - The properties that define connectivity to the Peering Service Location.
+type ServiceLocationProperties struct {
+	// Azure region for the location
+	AzureRegion *string `json:"azureRegion,omitempty"`
+
+	// Country of the customer
+	Country *string `json:"country,omitempty"`
+
+	// State of the customer
+	State *string `json:"state,omitempty"`
+}
+
+// ServiceLocationsClientListOptions contains the optional parameters for the ServiceLocationsClient.List method.
+type ServiceLocationsClientListOptions struct {
+	// The country of interest, in which the locations are to be present.
+	Country *string
+}
+
+// ServicePrefix - The peering service prefix class.
+type ServicePrefix struct {
+	// Gets or sets the peering prefix properties.
+	Properties *ServicePrefixProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ServicePrefixEvent - The details of the event associated with a prefix.
+type ServicePrefixEvent struct {
+	// READ-ONLY; The description of the event associated with a prefix.
+	EventDescription *string `json:"eventDescription,omitempty" azure:"ro"`
+
+	// READ-ONLY; The level of the event associated with a prefix.
+	EventLevel *string `json:"eventLevel,omitempty" azure:"ro"`
+
+	// READ-ONLY; The summary of the event associated with a prefix.
+	EventSummary *string `json:"eventSummary,omitempty" azure:"ro"`
+
+	// READ-ONLY; The timestamp of the event associated with a prefix.
+	EventTimestamp *time.Time `json:"eventTimestamp,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the event associated with a prefix.
+	EventType *string `json:"eventType,omitempty" azure:"ro"`
+}
+
+// ServicePrefixListResult - The paginated list of peering service prefixes.
+type ServicePrefixListResult struct {
+	// The link to fetch the next page of peering service prefixes.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of peering service prefixes.
+	Value []*ServicePrefix `json:"value,omitempty"`
+}
+
+// ServicePrefixProperties - The peering service prefix properties class.
+type ServicePrefixProperties struct {
+	// The peering service prefix key
+	PeeringServicePrefixKey *string `json:"peeringServicePrefixKey,omitempty"`
+
+	// The prefix from which your traffic originates.
+	Prefix *string `json:"prefix,omitempty"`
+
+	// READ-ONLY; The error message for validation state
+	ErrorMessage *string `json:"errorMessage,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of events for peering service prefix
+	Events []*ServicePrefixEvent `json:"events,omitempty" azure:"ro"`
+
+	// READ-ONLY; The prefix learned type
+	LearnedType *LearnedType `json:"learnedType,omitempty" azure:"ro"`
+
+	// READ-ONLY; The prefix validation state
+	PrefixValidationState *PrefixValidationState `json:"prefixValidationState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// ServiceProperties - The properties that define connectivity to the Peering Service.
+type ServiceProperties struct {
+	// The Log Analytics Workspace Properties
+	LogAnalyticsWorkspaceProperties *LogAnalyticsWorkspaceProperties `json:"logAnalyticsWorkspaceProperties,omitempty"`
+
+	// The location (state/province) of the customer.
+	PeeringServiceLocation *string `json:"peeringServiceLocation,omitempty"`
+
+	// The name of the service provider.
+	PeeringServiceProvider *string `json:"peeringServiceProvider,omitempty"`
+
+	// The backup peering (Microsoft/service provider) location to be used for customer traffic.
+	ProviderBackupPeeringLocation *string `json:"providerBackupPeeringLocation,omitempty"`
+
+	// The primary peering (Microsoft/service provider) location to be used for customer traffic.
+	ProviderPrimaryPeeringLocation *string `json:"providerPrimaryPeeringLocation,omitempty"`
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// ServiceProvider - PeeringService provider
+type ServiceProvider struct {
+	// The properties that define a peering service provider.
+	Properties *ServiceProviderProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The ID of the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ServiceProviderListResult - The paginated list of peering service providers.
+type ServiceProviderListResult struct {
+	// The link to fetch the next page of peering service providers.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of peering service providers.
+	Value []*ServiceProvider `json:"value,omitempty"`
+}
+
+// ServiceProviderProperties - The properties that define connectivity to the Peering Service Provider.
+type ServiceProviderProperties struct {
+	// The list of locations at which the service provider peers with Microsoft.
+	PeeringLocations []*string `json:"peeringLocations,omitempty"`
+
+	// The name of the service provider.
+	ServiceProviderName *string `json:"serviceProviderName,omitempty"`
+}
+
+// ServiceProvidersClientListOptions contains the optional parameters for the ServiceProvidersClient.List method.
+type ServiceProvidersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceSKU - The SKU that defines the type of the peering service.
+type ServiceSKU struct {
+	// The name of the peering service SKU.
+	Name *string `json:"name,omitempty"`
+}
+
+// ServiceSpecification - Service specification payload.
+type ServiceSpecification struct {
+	// READ-ONLY; Specifications of the Metrics for Azure Monitoring.
+	MetricSpecifications []*MetricSpecification `json:"metricSpecifications,omitempty" azure:"ro"`
+}
+
+// ServicesClientCreateOrUpdateOptions contains the optional parameters for the ServicesClient.CreateOrUpdate method.
+type ServicesClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServicesClientDeleteOptions contains the optional parameters for the ServicesClient.Delete method.
+type ServicesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServicesClientGetOptions contains the optional parameters for the ServicesClient.Get method.
+type ServicesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServicesClientInitializeConnectionMonitorOptions contains the optional parameters for the ServicesClient.InitializeConnectionMonitor
+// method.
+type ServicesClientInitializeConnectionMonitorOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServicesClientListByResourceGroupOptions contains the optional parameters for the ServicesClient.ListByResourceGroup method.
+type ServicesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServicesClientListBySubscriptionOptions contains the optional parameters for the ServicesClient.ListBySubscription method.
+type ServicesClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServicesClientUpdateOptions contains the optional parameters for the ServicesClient.Update method.
+type ServicesClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // SubResource - The sub resource.
 type SubResource struct {
 	// The identifier of the referenced resource.
 	ID *string `json:"id,omitempty"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
 }

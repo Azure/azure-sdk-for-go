@@ -11,86 +11,52 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
-	"github.com/Azure/go-amqp"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/stretchr/testify/require"
 )
-
-// implements `Retrier` interface.
-type fakeRetrier struct {
-	tryCalled  int
-	copyCalled int
-}
-
-func (r *fakeRetrier) Copy() Retrier {
-	r.copyCalled++
-
-	// NOTE: purposefully not making a copy so I can keep track of the
-	// try/copy counts.
-	return r
-}
-
-func (r *fakeRetrier) Exhausted() bool {
-	return false
-}
-
-func (r *fakeRetrier) Try(ctx context.Context) bool {
-	select {
-	case <-ctx.Done():
-		return false
-	default:
-	}
-
-	r.tryCalled++
-	return true
-}
-
-func (r *fakeRetrier) CurrentTry() int {
-	return r.tryCalled
-}
 
 type fakeTokenCredential struct {
 	azcore.TokenCredential
 	expires time.Time
 }
 
-func (ftc *fakeTokenCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
-	return &azcore.AccessToken{
+func (ftc *fakeTokenCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	return azcore.AccessToken{
 		ExpiresOn: ftc.expires,
 	}, nil
 }
 
 func TestNamespaceNegotiateClaim(t *testing.T) {
-	retrier := &fakeRetrier{}
-
 	expires := time.Now().Add(24 * time.Hour)
 
 	ns := &Namespace{
-		baseRetrier:   retrier,
+		RetryOptions:  retryOptionsOnlyOnce,
 		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: expires}),
 	}
 
 	cbsNegotiateClaimCalled := 0
 
-	cbsNegotiateClaim := func(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error {
+	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
 		cbsNegotiateClaimCalled++
 		return nil
 	}
 
-	getAMQPClientCalled := 0
+	newAMQPClientCalled := 0
 
-	getAMQPClient := func(ctx context.Context) (*amqp.Client, uint64, error) {
-		getAMQPClientCalled++
-		return &amqp.Client{}, 0, nil
+	ns.newClientFn = func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+		newAMQPClientCalled++
+		return &amqpwrap.AMQPClientWrapper{}, nil
 	}
 
 	// fire off a basic negotiate claim. The renewal duration is so long that it won't run - that's a separate test.
-	cancel, err := ns.startNegotiateClaimRenewer(
+	cancel, _, err := ns.startNegotiateClaimRenewer(
 		context.Background(),
 		"my entity path",
 		cbsNegotiateClaim,
-		getAMQPClient,
 		func(expirationTimeParam, currentTime time.Time) time.Duration {
 			require.EqualValues(t, expires, expirationTimeParam)
 			// wiggle room, but just want to check that they're passing me the time.Now() value (silly)
@@ -104,69 +70,51 @@ func TestNamespaceNegotiateClaim(t *testing.T) {
 	require.NoError(t, err)
 	cancel()
 
-	require.EqualValues(t, getAMQPClientCalled, 1)
+	require.EqualValues(t, newAMQPClientCalled, 1)
 	require.EqualValues(t, 1, cbsNegotiateClaimCalled)
-	require.EqualValues(t, 1, retrier.copyCalled)
-	require.EqualValues(t, 1, retrier.tryCalled)
 }
 
 func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
-	retrier := &fakeRetrier{}
-
 	expires := time.Now().Add(24 * time.Hour)
 
 	ns := &Namespace{
-		baseRetrier:   retrier,
+		RetryOptions:  retryOptionsOnlyOnce,
 		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: expires}),
 	}
 
 	cbsNegotiateClaimCalled := 0
 
-	cbsNegotiateClaim := func(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error {
+	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
 		cbsNegotiateClaimCalled++
 		return nil
-	}
-
-	getAMQPClientCalled := 0
-
-	notify := make(chan struct{})
-
-	getAMQPClient := func(ctx context.Context) (*amqp.Client, uint64, error) {
-		getAMQPClientCalled++
-
-		if getAMQPClientCalled == 3 {
-			close(notify)
-			<-ctx.Done()
-		}
-
-		return &amqp.Client{}, 0, nil
 	}
 
 	var errorsLogged []error
 	nextRefreshDurationChecks := 0
 
-	// fire off a basic negotiate claim. The renewal duration is so long that it won't run - that's a separate test.
-	cancel, err := ns.startNegotiateClaimRenewer(
+	ns.newClientFn = func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+		return &amqpwrap.AMQPClientWrapper{Inner: &amqp.Client{}}, nil
+	}
+
+	cancel, _, err := ns.startNegotiateClaimRenewer(
 		context.Background(),
 		"my entity path",
-		cbsNegotiateClaim, getAMQPClient, func(expirationTimeParam, currentTime time.Time) time.Duration {
+		cbsNegotiateClaim, func(expirationTimeParam, currentTime time.Time) time.Duration {
 			require.EqualValues(t, expires, expirationTimeParam)
 			nextRefreshDurationChecks++
-			return 0
+
+			if nextRefreshDurationChecks == 1 {
+				return 0
+			}
+
+			return 24 * time.Hour // ie, we don't need to do it again.
 		})
 	defer cancel()
 
 	require.NoError(t, err)
 	time.Sleep(3 * time.Second) // make sure, even with variability, we get at least one renewal
 
-	<-notify
-
-	require.GreaterOrEqual(t, getAMQPClientCalled, 2+1) // that last +1 is when we blocked to prevent us renewing too much for our test!
-
-	require.EqualValues(t, 3, retrier.copyCalled)
-	require.EqualValues(t, 3, retrier.tryCalled)
 	require.EqualValues(t, 2, nextRefreshDurationChecks)
-
 	require.EqualValues(t, 2, cbsNegotiateClaimCalled)
 	require.Empty(t, errorsLogged)
 
@@ -175,17 +123,18 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 
 func TestNamespaceNegotiateClaimFailsToGetClient(t *testing.T) {
 	ns := &Namespace{
-		baseRetrier:   noRetryRetrier.Copy(),
 		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: time.Now()}),
 	}
 
-	cancel, err := ns.startNegotiateClaimRenewer(
+	ns.newClientFn = func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+		return nil, errors.New("Getting *amqp.Client failed")
+	}
+
+	cancel, _, err := ns.startNegotiateClaimRenewer(
 		context.Background(),
 		"entity path",
-		func(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error {
+		func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
 			return errors.New("NegotiateClaim amqp.Client failed")
-		}, func(ctx context.Context) (*amqp.Client, uint64, error) {
-			return nil, 0, errors.New("Getting *amqp.Client failed")
 		}, func(expirationTime, currentTime time.Time) time.Duration {
 			// refresh immediately since we're in a unit test.
 			return 0
@@ -195,19 +144,59 @@ func TestNamespaceNegotiateClaimFailsToGetClient(t *testing.T) {
 	require.Nil(t, cancel)
 }
 
+func TestNamespaceNegotiateClaimNonRenewableToken(t *testing.T) {
+	ns := &Namespace{
+		RetryOptions: retryOptionsOnlyOnce,
+		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{
+			// credentials that don't renew return a zero-initialized time.
+			expires: time.Time{},
+		}),
+	}
+
+	cbsNegotiateClaimCalled := 0
+
+	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
+		cbsNegotiateClaimCalled++
+		return nil
+	}
+
+	ns.newClientFn = func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+		return &amqpwrap.AMQPClientWrapper{Inner: &amqp.Client{}}, nil
+	}
+
+	// since the token is non-renewable we will just do the single cbsNegotiateClaim call and never renew.
+	_, done, err := ns.startNegotiateClaimRenewer(
+		context.Background(),
+		"my entity path",
+		cbsNegotiateClaim,
+		func(expirationTimeParam, currentTime time.Time) time.Duration {
+			panic("Won't be called, no refreshing of claims will be done")
+		})
+
+	require.NoError(t, err)
+	require.Equal(t, 1, cbsNegotiateClaimCalled)
+
+	select {
+	case <-done:
+	default:
+		require.Fail(t, "cancel() returns a channel that is already Done()")
+	}
+}
+
 func TestNamespaceNegotiateClaimFails(t *testing.T) {
 	ns := &Namespace{
-		baseRetrier:   noRetryRetrier.Copy(),
 		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: time.Now()}),
 	}
 
-	cancel, err := ns.startNegotiateClaimRenewer(
+	ns.newClientFn = func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+		return &fakeAMQPClient{}, nil
+	}
+
+	cancel, _, err := ns.startNegotiateClaimRenewer(
 		context.Background(),
 		"entity path",
-		func(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error {
+		func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
 			return errors.New("NegotiateClaim amqp.Client failed")
-		}, func(ctx context.Context) (*amqp.Client, uint64, error) {
-			return &amqp.Client{}, 0, nil
 		}, func(expirationTime, currentTime time.Time) time.Duration {
 			// not even used.
 			return 0
@@ -215,6 +204,52 @@ func TestNamespaceNegotiateClaimFails(t *testing.T) {
 
 	require.EqualError(t, err, "NegotiateClaim amqp.Client failed")
 	require.Nil(t, cancel)
+}
+
+func TestNamespaceNegotiateClaimFatalErrors(t *testing.T) {
+	ns := &Namespace{
+		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: time.Now()}),
+	}
+
+	cbsNegotiateClaimCalled := 0
+
+	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
+		cbsNegotiateClaimCalled++
+
+		// work the first time, fail on renewals.
+		if cbsNegotiateClaimCalled > 1 {
+			return errNonRetriable{Message: "non retriable error message"}
+		}
+
+		return nil
+	}
+
+	endCapture := test.CaptureLogsForTest()
+	defer endCapture()
+
+	ns.newClientFn = func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+		return &amqpwrap.AMQPClientWrapper{Inner: &amqp.Client{}}, nil
+	}
+
+	_, done, err := ns.startNegotiateClaimRenewer(
+		context.Background(),
+		"entity path",
+		cbsNegotiateClaim, func(expirationTime, currentTime time.Time) time.Duration {
+			// instant renewals.
+			return 0
+		})
+
+	require.NoError(t, err)
+
+	select {
+	case <-done:
+		logs := endCapture()
+		// check the log messages - we should have one telling us why we stopped the claims loop
+		require.Contains(t, logs, "[azsb.Auth] [entity path] fatal error, stopping token refresh loop: non retriable error message")
+	case <-time.After(3 * time.Second):
+		// was locked! Should have been closed.
+		require.Fail(t, "claim renewal was automatically cancelled because of a non-retriable error")
+	}
 }
 
 func TestNamespaceNextClaimRefreshDuration(t *testing.T) {
@@ -233,12 +268,80 @@ func TestNamespaceNextClaimRefreshDuration(t *testing.T) {
 	require.EqualValues(t, 3*time.Minute, nextClaimRefreshDuration(now.Add(3*time.Minute+clockDrift), now))
 }
 
-var noRetryRetrier = NewBackoffRetrier(struct {
-	MaxRetries int
-	Factor     float64
-	Jitter     bool
-	Min        time.Duration
-	Max        time.Duration
-}{
-	MaxRetries: 0,
-})
+func TestNamespaceStaleConnection(t *testing.T) {
+	ns := &Namespace{
+		RetryOptions: retryOptionsOnlyOnce,
+		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{
+			// credentials that don't renew return a zero-initialized time.
+			expires: time.Time{},
+		}),
+	}
+
+	fakeClient := &fakeAMQPClient{}
+
+	ns.client = fakeClient
+	ns.connID = 101
+
+	require.NoError(t, ns.Close(context.Background(), false))
+	require.Equal(t, 1, fakeClient.closeCalled)
+	require.Nil(t, ns.client)
+
+	ns.newClientFn = func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+		return &fakeAMQPClient{}, nil
+	}
+
+	client, clientID, err := ns.GetAMQPClientImpl(context.Background())
+	require.NoError(t, err)
+	require.NotSame(t, fakeClient, client, "A new client should be created")
+	require.Equal(t, uint64(101+1), clientID, "Client ID is incremented since we had to recreate it")
+	require.NotNil(t, client)
+}
+
+func TestNamespaceUpdateClientWithoutLock(t *testing.T) {
+	newClient := 0
+	var clientToReturn amqpwrap.AMQPClient
+	var err error
+
+	ns := &Namespace{
+		newClientFn: func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+			newClient++
+			return clientToReturn, err
+		},
+		connID: 101,
+	}
+
+	err = errors.New("client error")
+
+	client, clientID, err := ns.updateClientWithoutLock(context.Background())
+	require.Error(t, err, "client error")
+	require.Equal(t, uint64(0), clientID)
+	require.Nil(t, client)
+
+	// when they create a new client they'll get this one.
+	clientToReturn = &fakeAMQPClient{}
+	err = nil
+
+	client, clientID, err = ns.updateClientWithoutLock(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, uint64(101+1), clientID)
+	require.Same(t, clientToReturn, client)
+
+	// change out the returned client (it won't get used because we return the cached one in ns.client)
+	origClient := client
+	clientToReturn = &fakeAMQPClient{}
+
+	client, clientID, err = ns.updateClientWithoutLock(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, uint64(101+1), clientID)
+	require.Same(t, origClient, client)
+}
+
+type fakeAMQPClient struct {
+	amqpwrap.AMQPClient
+	closeCalled int
+}
+
+func (f *fakeAMQPClient) Close() error {
+	f.closeCalled++
+	return nil
+}

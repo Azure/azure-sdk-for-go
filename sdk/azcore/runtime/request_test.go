@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -11,7 +11,6 @@ import (
 	"context"
 	"encoding/json"
 	"io"
-	"io/ioutil"
 	"mime"
 	"mime/multipart"
 	"net/http"
@@ -22,7 +21,7 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
 
@@ -109,7 +108,7 @@ func TestRequestMarshalAsByteArrayURLFormat(t *testing.T) {
 	if req.Raw().ContentLength == 0 {
 		t.Fatal("unexpected zero content length")
 	}
-	b, err := ioutil.ReadAll(req.Raw().Body)
+	b, err := io.ReadAll(req.Raw().Body)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -137,7 +136,7 @@ func TestRequestMarshalAsByteArrayStdFormat(t *testing.T) {
 	if req.Raw().ContentLength == 0 {
 		t.Fatal("unexpected zero content length")
 	}
-	b, err := ioutil.ReadAll(req.Raw().Body)
+	b, err := io.ReadAll(req.Raw().Body)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -345,7 +344,7 @@ func TestCloneWithoutReadOnlyFieldsEndToEnd(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	b, err := ioutil.ReadAll(req.Raw().Body)
+	b, err := io.ReadAll(req.Raw().Body)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -535,7 +534,7 @@ func TestRequestSetBodyContentLengthHeader(t *testing.T) {
 	for i := 0; i < buffLen; i++ {
 		buff[i] = 1
 	}
-	err = req.SetBody(shared.NopCloser(bytes.NewReader(buff)), "application/octet-stream")
+	err = req.SetBody(exported.NopCloser(bytes.NewReader(buff)), "application/octet-stream")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -565,7 +564,7 @@ func TestRequestValidFail(t *testing.T) {
 		t.Fatal(err)
 	}
 	req.Raw().Header.Add("inval d", "header")
-	p := pipeline.NewPipeline(nil)
+	p := exported.NewPipeline(nil)
 	resp, err := p.Do(req)
 	if err == nil {
 		t.Fatal("unexpected nil error")
@@ -593,7 +592,7 @@ func TestSetMultipartFormData(t *testing.T) {
 	err = SetMultipartFormData(req, map[string]interface{}{
 		"string": "value",
 		"int":    1,
-		"data":   shared.NopCloser(strings.NewReader("some data")),
+		"data":   exported.NopCloser(strings.NewReader("some data")),
 	})
 	if err != nil {
 		t.Fatal(err)

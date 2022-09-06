@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,9 +9,60 @@
 package armsqlvirtualmachine
 
 const (
-	module  = "armsqlvirtualmachine"
-	version = "v0.1.0"
+	moduleName    = "armsqlvirtualmachine"
+	moduleVersion = "v0.6.0"
 )
+
+// AssessmentDayOfWeek - Day of the week to run assessment.
+type AssessmentDayOfWeek string
+
+const (
+	AssessmentDayOfWeekMonday    AssessmentDayOfWeek = "Monday"
+	AssessmentDayOfWeekTuesday   AssessmentDayOfWeek = "Tuesday"
+	AssessmentDayOfWeekWednesday AssessmentDayOfWeek = "Wednesday"
+	AssessmentDayOfWeekThursday  AssessmentDayOfWeek = "Thursday"
+	AssessmentDayOfWeekFriday    AssessmentDayOfWeek = "Friday"
+	AssessmentDayOfWeekSaturday  AssessmentDayOfWeek = "Saturday"
+	AssessmentDayOfWeekSunday    AssessmentDayOfWeek = "Sunday"
+)
+
+// PossibleAssessmentDayOfWeekValues returns the possible values for the AssessmentDayOfWeek const type.
+func PossibleAssessmentDayOfWeekValues() []AssessmentDayOfWeek {
+	return []AssessmentDayOfWeek{
+		AssessmentDayOfWeekMonday,
+		AssessmentDayOfWeekTuesday,
+		AssessmentDayOfWeekWednesday,
+		AssessmentDayOfWeekThursday,
+		AssessmentDayOfWeekFriday,
+		AssessmentDayOfWeekSaturday,
+		AssessmentDayOfWeekSunday,
+	}
+}
+
+type AutoBackupDaysOfWeek string
+
+const (
+	AutoBackupDaysOfWeekFriday    AutoBackupDaysOfWeek = "Friday"
+	AutoBackupDaysOfWeekMonday    AutoBackupDaysOfWeek = "Monday"
+	AutoBackupDaysOfWeekSaturday  AutoBackupDaysOfWeek = "Saturday"
+	AutoBackupDaysOfWeekSunday    AutoBackupDaysOfWeek = "Sunday"
+	AutoBackupDaysOfWeekThursday  AutoBackupDaysOfWeek = "Thursday"
+	AutoBackupDaysOfWeekTuesday   AutoBackupDaysOfWeek = "Tuesday"
+	AutoBackupDaysOfWeekWednesday AutoBackupDaysOfWeek = "Wednesday"
+)
+
+// PossibleAutoBackupDaysOfWeekValues returns the possible values for the AutoBackupDaysOfWeek const type.
+func PossibleAutoBackupDaysOfWeekValues() []AutoBackupDaysOfWeek {
+	return []AutoBackupDaysOfWeek{
+		AutoBackupDaysOfWeekFriday,
+		AutoBackupDaysOfWeekMonday,
+		AutoBackupDaysOfWeekSaturday,
+		AutoBackupDaysOfWeekSunday,
+		AutoBackupDaysOfWeekThursday,
+		AutoBackupDaysOfWeekTuesday,
+		AutoBackupDaysOfWeekWednesday,
+	}
+}
 
 // BackupScheduleType - Backup schedule type.
 type BackupScheduleType string
@@ -29,11 +80,6 @@ func PossibleBackupScheduleTypeValues() []BackupScheduleType {
 	}
 }
 
-// ToPtr returns a *BackupScheduleType pointing to the current value.
-func (c BackupScheduleType) ToPtr() *BackupScheduleType {
-	return &c
-}
-
 // ClusterConfiguration - Cluster type.
 type ClusterConfiguration string
 
@@ -48,12 +94,8 @@ func PossibleClusterConfigurationValues() []ClusterConfiguration {
 	}
 }
 
-// ToPtr returns a *ClusterConfiguration pointing to the current value.
-func (c ClusterConfiguration) ToPtr() *ClusterConfiguration {
-	return &c
-}
-
-// ClusterManagerType - Type of cluster manager: Windows Server Failover Cluster (WSFC), implied by the scale type of the group and the OS type.
+// ClusterManagerType - Type of cluster manager: Windows Server Failover Cluster (WSFC), implied by the scale type of the
+// group and the OS type.
 type ClusterManagerType string
 
 const (
@@ -67,9 +109,20 @@ func PossibleClusterManagerTypeValues() []ClusterManagerType {
 	}
 }
 
-// ToPtr returns a *ClusterManagerType pointing to the current value.
-func (c ClusterManagerType) ToPtr() *ClusterManagerType {
-	return &c
+// Commit - Replica commit mode in availability group.
+type Commit string
+
+const (
+	CommitASYNCHRONOUSCOMMIT Commit = "ASYNCHRONOUS_COMMIT"
+	CommitSYNCHRONOUSCOMMIT  Commit = "SYNCHRONOUS_COMMIT"
+)
+
+// PossibleCommitValues returns the possible values for the Commit const type.
+func PossibleCommitValues() []Commit {
+	return []Commit{
+		CommitASYNCHRONOUSCOMMIT,
+		CommitSYNCHRONOUSCOMMIT,
+	}
 }
 
 // ConnectivityType - SQL Server connectivity option.
@@ -90,15 +143,31 @@ func PossibleConnectivityTypeValues() []ConnectivityType {
 	}
 }
 
-// ToPtr returns a *ConnectivityType pointing to the current value.
-func (c ConnectivityType) ToPtr() *ConnectivityType {
-	return &c
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
 }
 
 // DayOfWeek - Day of week to apply the patch on.
 type DayOfWeek string
 
 const (
+	DayOfWeekEveryday  DayOfWeek = "Everyday"
 	DayOfWeekMonday    DayOfWeek = "Monday"
 	DayOfWeekTuesday   DayOfWeek = "Tuesday"
 	DayOfWeekWednesday DayOfWeek = "Wednesday"
@@ -111,6 +180,7 @@ const (
 // PossibleDayOfWeekValues returns the possible values for the DayOfWeek const type.
 func PossibleDayOfWeekValues() []DayOfWeek {
 	return []DayOfWeek{
+		DayOfWeekEveryday,
 		DayOfWeekMonday,
 		DayOfWeekTuesday,
 		DayOfWeekWednesday,
@@ -119,11 +189,6 @@ func PossibleDayOfWeekValues() []DayOfWeek {
 		DayOfWeekSaturday,
 		DayOfWeekSunday,
 	}
-}
-
-// ToPtr returns a *DayOfWeek pointing to the current value.
-func (c DayOfWeek) ToPtr() *DayOfWeek {
-	return &c
 }
 
 // DiskConfigurationType - Disk configuration to apply to SQL Server.
@@ -144,9 +209,20 @@ func PossibleDiskConfigurationTypeValues() []DiskConfigurationType {
 	}
 }
 
-// ToPtr returns a *DiskConfigurationType pointing to the current value.
-func (c DiskConfigurationType) ToPtr() *DiskConfigurationType {
-	return &c
+// Failover - Replica failover mode in availability group.
+type Failover string
+
+const (
+	FailoverAUTOMATIC Failover = "AUTOMATIC"
+	FailoverMANUAL    Failover = "MANUAL"
+)
+
+// PossibleFailoverValues returns the possible values for the Failover const type.
+func PossibleFailoverValues() []Failover {
+	return []Failover{
+		FailoverAUTOMATIC,
+		FailoverMANUAL,
+	}
 }
 
 // FullBackupFrequencyType - Frequency of full backups. In both cases, full backups begin during the next scheduled time window.
@@ -165,29 +241,21 @@ func PossibleFullBackupFrequencyTypeValues() []FullBackupFrequencyType {
 	}
 }
 
-// ToPtr returns a *FullBackupFrequencyType pointing to the current value.
-func (c FullBackupFrequencyType) ToPtr() *FullBackupFrequencyType {
-	return &c
-}
-
-// IdentityType - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal for the
-// resource.
+// IdentityType - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active
+// Directory principal for the resource.
 type IdentityType string
 
 const (
+	IdentityTypeNone           IdentityType = "None"
 	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
 )
 
 // PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
 func PossibleIdentityTypeValues() []IdentityType {
 	return []IdentityType{
+		IdentityTypeNone,
 		IdentityTypeSystemAssigned,
 	}
-}
-
-// ToPtr returns a *IdentityType pointing to the current value.
-func (c IdentityType) ToPtr() *IdentityType {
-	return &c
 }
 
 // OperationOrigin - The intended executor of the operation.
@@ -206,9 +274,38 @@ func PossibleOperationOriginValues() []OperationOrigin {
 	}
 }
 
-// ToPtr returns a *OperationOrigin pointing to the current value.
-func (c OperationOrigin) ToPtr() *OperationOrigin {
-	return &c
+// ReadableSecondary - Replica readable secondary mode in availability group.
+type ReadableSecondary string
+
+const (
+	ReadableSecondaryALL      ReadableSecondary = "ALL"
+	ReadableSecondaryNO       ReadableSecondary = "NO"
+	ReadableSecondaryREADONLY ReadableSecondary = "READ_ONLY"
+)
+
+// PossibleReadableSecondaryValues returns the possible values for the ReadableSecondary const type.
+func PossibleReadableSecondaryValues() []ReadableSecondary {
+	return []ReadableSecondary{
+		ReadableSecondaryALL,
+		ReadableSecondaryNO,
+		ReadableSecondaryREADONLY,
+	}
+}
+
+// Role - Replica Role in availability group.
+type Role string
+
+const (
+	RolePRIMARY   Role = "PRIMARY"
+	RoleSECONDARY Role = "SECONDARY"
+)
+
+// PossibleRoleValues returns the possible values for the Role const type.
+func PossibleRoleValues() []Role {
+	return []Role{
+		RolePRIMARY,
+		RoleSECONDARY,
+	}
 }
 
 // SQLImageSKU - SQL Server edition type.
@@ -233,11 +330,6 @@ func PossibleSQLImageSKUValues() []SQLImageSKU {
 	}
 }
 
-// ToPtr returns a *SQLImageSKU pointing to the current value.
-func (c SQLImageSKU) ToPtr() *SQLImageSKU {
-	return &c
-}
-
 // SQLManagementMode - SQL Server Management type.
 type SQLManagementMode string
 
@@ -254,11 +346,6 @@ func PossibleSQLManagementModeValues() []SQLManagementMode {
 		SQLManagementModeLightWeight,
 		SQLManagementModeNoAgent,
 	}
-}
-
-// ToPtr returns a *SQLManagementMode pointing to the current value.
-func (c SQLManagementMode) ToPtr() *SQLManagementMode {
-	return &c
 }
 
 // SQLServerLicenseType - SQL Server license type.
@@ -279,11 +366,6 @@ func PossibleSQLServerLicenseTypeValues() []SQLServerLicenseType {
 	}
 }
 
-// ToPtr returns a *SQLServerLicenseType pointing to the current value.
-func (c SQLServerLicenseType) ToPtr() *SQLServerLicenseType {
-	return &c
-}
-
 // SQLVMGroupImageSKU - SQL image sku.
 type SQLVMGroupImageSKU string
 
@@ -298,11 +380,6 @@ func PossibleSQLVMGroupImageSKUValues() []SQLVMGroupImageSKU {
 		SQLVMGroupImageSKUDeveloper,
 		SQLVMGroupImageSKUEnterprise,
 	}
-}
-
-// ToPtr returns a *SQLVMGroupImageSKU pointing to the current value.
-func (c SQLVMGroupImageSKU) ToPtr() *SQLVMGroupImageSKU {
-	return &c
 }
 
 // SQLWorkloadType - SQL Server workload type.
@@ -323,11 +400,6 @@ func PossibleSQLWorkloadTypeValues() []SQLWorkloadType {
 	}
 }
 
-// ToPtr returns a *SQLWorkloadType pointing to the current value.
-func (c SQLWorkloadType) ToPtr() *SQLWorkloadType {
-	return &c
-}
-
 // ScaleType - Scale type.
 type ScaleType string
 
@@ -340,11 +412,6 @@ func PossibleScaleTypeValues() []ScaleType {
 	return []ScaleType{
 		ScaleTypeHA,
 	}
-}
-
-// ToPtr returns a *ScaleType pointing to the current value.
-func (c ScaleType) ToPtr() *ScaleType {
-	return &c
 }
 
 // StorageWorkloadType - Storage workload type.
@@ -363,9 +430,4 @@ func PossibleStorageWorkloadTypeValues() []StorageWorkloadType {
 		StorageWorkloadTypeGENERAL,
 		StorageWorkloadTypeOLTP,
 	}
-}
-
-// ToPtr returns a *StorageWorkloadType pointing to the current value.
-func (c StorageWorkloadType) ToPtr() *StorageWorkloadType {
-	return &c
 }

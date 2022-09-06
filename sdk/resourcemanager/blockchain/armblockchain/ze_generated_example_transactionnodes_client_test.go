@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,163 +12,142 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blockchain/armblockchain"
 )
 
-// x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/TransactionNodes_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/TransactionNodes_Get.json
 func ExampleTransactionNodesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblockchain.NewTransactionNodesClient("<subscription-id>", cred, nil)
+	client, err := armblockchain.NewTransactionNodesClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<blockchain-member-name>",
-		"<transaction-node-name>",
-		"<resource-group-name>",
+		"contosemember1",
+		"txnode2",
+		"mygroup",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("TransactionNode.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/TransactionNodes_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/TransactionNodes_Create.json
 func ExampleTransactionNodesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblockchain.NewTransactionNodesClient("<subscription-id>", cred, nil)
+	client, err := armblockchain.NewTransactionNodesClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreate(ctx,
-		"<blockchain-member-name>",
-		"<transaction-node-name>",
-		"<resource-group-name>",
-		&armblockchain.TransactionNodesBeginCreateOptions{TransactionNode: &armblockchain.TransactionNode{
-			Location: to.StringPtr("<location>"),
+		"contosemember1",
+		"txnode2",
+		"mygroup",
+		&armblockchain.TransactionNodesClientBeginCreateOptions{TransactionNode: &armblockchain.TransactionNode{
+			Location: to.Ptr("southeastasia"),
 			Properties: &armblockchain.TransactionNodeProperties{
-				Password: to.StringPtr("<password>"),
+				Password: to.Ptr("<password>"),
 			},
 		},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("TransactionNode.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/TransactionNodes_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/TransactionNodes_Delete.json
 func ExampleTransactionNodesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblockchain.NewTransactionNodesClient("<subscription-id>", cred, nil)
+	client, err := armblockchain.NewTransactionNodesClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginDelete(ctx,
-		"<blockchain-member-name>",
-		"<transaction-node-name>",
-		"<resource-group-name>",
+		"contosemember1",
+		"txNode2",
+		"mygroup",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/TransactionNodes_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/TransactionNodes_Update.json
 func ExampleTransactionNodesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblockchain.NewTransactionNodesClient("<subscription-id>", cred, nil)
+	client, err := armblockchain.NewTransactionNodesClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Update(ctx,
-		"<blockchain-member-name>",
-		"<transaction-node-name>",
-		"<resource-group-name>",
-		&armblockchain.TransactionNodesUpdateOptions{TransactionNode: &armblockchain.TransactionNodeUpdate{
+		"contosemember1",
+		"txnode2",
+		"mygroup",
+		&armblockchain.TransactionNodesClientUpdateOptions{TransactionNode: &armblockchain.TransactionNodeUpdate{
 			Properties: &armblockchain.TransactionNodePropertiesUpdate{
-				Password: to.StringPtr("<password>"),
+				Password: to.Ptr("<password>"),
 			},
 		},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("TransactionNode.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/TransactionNodes_List.json
-func ExampleTransactionNodesClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/TransactionNodes_List.json
+func ExampleTransactionNodesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblockchain.NewTransactionNodesClient("<subscription-id>", cred, nil)
-	pager := client.List("<blockchain-member-name>",
-		"<resource-group-name>",
+	client, err := armblockchain.NewTransactionNodesClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("contosemember1",
+		"mygroup",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("TransactionNode.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
-	}
-}
-
-// x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/TransactionNodes_ListApiKeys.json
-func ExampleTransactionNodesClient_ListAPIKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armblockchain.NewTransactionNodesClient("<subscription-id>", cred, nil)
-	_, err = client.ListAPIKeys(ctx,
-		"<blockchain-member-name>",
-		"<transaction-node-name>",
-		"<resource-group-name>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-// x-ms-original-file: specification/blockchain/resource-manager/Microsoft.Blockchain/preview/2018-06-01-preview/examples/TransactionNodes_ListRegenerateApiKeys.json
-func ExampleTransactionNodesClient_ListRegenerateAPIKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armblockchain.NewTransactionNodesClient("<subscription-id>", cred, nil)
-	_, err = client.ListRegenerateAPIKeys(ctx,
-		"<blockchain-member-name>",
-		"<transaction-node-name>",
-		"<resource-group-name>",
-		&armblockchain.TransactionNodesListRegenerateAPIKeysOptions{APIKey: &armblockchain.APIKey{
-			KeyName: to.StringPtr("<key-name>"),
-		},
-		})
-	if err != nil {
-		log.Fatal(err)
 	}
 }

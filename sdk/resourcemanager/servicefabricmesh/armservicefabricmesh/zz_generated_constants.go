@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package armservicefabricmesh
 
 const (
-	module  = "armservicefabricmesh"
-	version = "v0.1.0"
+	moduleName    = "armservicefabricmesh"
+	moduleVersion = "v0.5.0"
 )
 
 // ApplicationScopedVolumeKind - Specifies the application-scoped volume kind.
@@ -28,11 +28,6 @@ func PossibleApplicationScopedVolumeKindValues() []ApplicationScopedVolumeKind {
 	}
 }
 
-// ToPtr returns a *ApplicationScopedVolumeKind pointing to the current value.
-func (c ApplicationScopedVolumeKind) ToPtr() *ApplicationScopedVolumeKind {
-	return &c
-}
-
 // AutoScalingMechanismKind - Enumerates the mechanisms for auto scaling.
 type AutoScalingMechanismKind string
 
@@ -48,11 +43,6 @@ func PossibleAutoScalingMechanismKindValues() []AutoScalingMechanismKind {
 	}
 }
 
-// ToPtr returns a *AutoScalingMechanismKind pointing to the current value.
-func (c AutoScalingMechanismKind) ToPtr() *AutoScalingMechanismKind {
-	return &c
-}
-
 // AutoScalingMetricKind - Enumerates the metrics that are used for triggering auto scaling.
 type AutoScalingMetricKind string
 
@@ -66,11 +56,6 @@ func PossibleAutoScalingMetricKindValues() []AutoScalingMetricKind {
 	return []AutoScalingMetricKind{
 		AutoScalingMetricKindResource,
 	}
-}
-
-// ToPtr returns a *AutoScalingMetricKind pointing to the current value.
-func (c AutoScalingMetricKind) ToPtr() *AutoScalingMetricKind {
-	return &c
 }
 
 // AutoScalingResourceMetricName - Enumerates the resources that are used for triggering auto scaling.
@@ -91,16 +76,12 @@ func PossibleAutoScalingResourceMetricNameValues() []AutoScalingResourceMetricNa
 	}
 }
 
-// ToPtr returns a *AutoScalingResourceMetricName pointing to the current value.
-func (c AutoScalingResourceMetricName) ToPtr() *AutoScalingResourceMetricName {
-	return &c
-}
-
 // AutoScalingTriggerKind - Enumerates the triggers for auto scaling.
 type AutoScalingTriggerKind string
 
 const (
-	// AutoScalingTriggerKindAverageLoad - Indicates that scaling should be performed based on average load of all replicas in the service.
+	// AutoScalingTriggerKindAverageLoad - Indicates that scaling should be performed based on average load of all replicas in
+	// the service.
 	AutoScalingTriggerKindAverageLoad AutoScalingTriggerKind = "AverageLoad"
 )
 
@@ -109,11 +90,6 @@ func PossibleAutoScalingTriggerKindValues() []AutoScalingTriggerKind {
 	return []AutoScalingTriggerKind{
 		AutoScalingTriggerKindAverageLoad,
 	}
-}
-
-// ToPtr returns a *AutoScalingTriggerKind pointing to the current value.
-func (c AutoScalingTriggerKind) ToPtr() *AutoScalingTriggerKind {
-	return &c
 }
 
 // DiagnosticsSinkKind - The kind of DiagnosticsSink.
@@ -134,11 +110,6 @@ func PossibleDiagnosticsSinkKindValues() []DiagnosticsSinkKind {
 	}
 }
 
-// ToPtr returns a *DiagnosticsSinkKind pointing to the current value.
-func (c DiagnosticsSinkKind) ToPtr() *DiagnosticsSinkKind {
-	return &c
-}
-
 // HeaderMatchType - how to match header value
 type HeaderMatchType string
 
@@ -153,19 +124,16 @@ func PossibleHeaderMatchTypeValues() []HeaderMatchType {
 	}
 }
 
-// ToPtr returns a *HeaderMatchType pointing to the current value.
-func (c HeaderMatchType) ToPtr() *HeaderMatchType {
-	return &c
-}
-
-// HealthState - The health state of a Service Fabric entity such as Cluster, Node, Application, Service, Partition, Replica etc.
+// HealthState - The health state of a Service Fabric entity such as Cluster, Node, Application, Service, Partition, Replica
+// etc.
 type HealthState string
 
 const (
-	// HealthStateError - Indicates the health state is at an error level. Error health state should be investigated, as they can impact the correct functionality
-	// of the cluster. The value is 3.
+	// HealthStateError - Indicates the health state is at an error level. Error health state should be investigated, as they
+	// can impact the correct functionality of the cluster. The value is 3.
 	HealthStateError HealthState = "Error"
-	// HealthStateInvalid - Indicates an invalid health state. All Service Fabric enumerations have the invalid type. The value is zero.
+	// HealthStateInvalid - Indicates an invalid health state. All Service Fabric enumerations have the invalid type. The value
+	// is zero.
 	HealthStateInvalid HealthState = "Invalid"
 	// HealthStateOk - Indicates the health state is okay. The value is 1.
 	HealthStateOk HealthState = "Ok"
@@ -186,11 +154,6 @@ func PossibleHealthStateValues() []HealthState {
 	}
 }
 
-// ToPtr returns a *HealthState pointing to the current value.
-func (c HealthState) ToPtr() *HealthState {
-	return &c
-}
-
 // NetworkKind - The type of a Service Fabric container network.
 type NetworkKind string
 
@@ -204,11 +167,6 @@ func PossibleNetworkKindValues() []NetworkKind {
 	return []NetworkKind{
 		NetworkKindLocal,
 	}
-}
-
-// ToPtr returns a *NetworkKind pointing to the current value.
-func (c NetworkKind) ToPtr() *NetworkKind {
-	return &c
 }
 
 // OperatingSystemType - The operation system required by the code in service.
@@ -229,11 +187,6 @@ func PossibleOperatingSystemTypeValues() []OperatingSystemType {
 	}
 }
 
-// ToPtr returns a *OperatingSystemType pointing to the current value.
-func (c OperatingSystemType) ToPtr() *OperatingSystemType {
-	return &c
-}
-
 // PathMatchType - how to match value in the Uri
 type PathMatchType string
 
@@ -248,11 +201,6 @@ func PossiblePathMatchTypeValues() []PathMatchType {
 	}
 }
 
-// ToPtr returns a *PathMatchType pointing to the current value.
-func (c PathMatchType) ToPtr() *PathMatchType {
-	return &c
-}
-
 // ResourceStatus - Status of the resource.
 type ResourceStatus string
 
@@ -261,8 +209,8 @@ const (
 	ResourceStatusCreating ResourceStatus = "Creating"
 	// ResourceStatusDeleting - Indicates the resource is being deleted. The value is 4.
 	ResourceStatusDeleting ResourceStatus = "Deleting"
-	// ResourceStatusFailed - Indicates the resource is not functional due to persistent failures. See statusDetails property for more details. The value is
-	// 5.
+	// ResourceStatusFailed - Indicates the resource is not functional due to persistent failures. See statusDetails property
+	// for more details. The value is 5.
 	ResourceStatusFailed ResourceStatus = "Failed"
 	// ResourceStatusReady - Indicates the resource is ready. The value is 1.
 	ResourceStatusReady ResourceStatus = "Ready"
@@ -284,11 +232,6 @@ func PossibleResourceStatusValues() []ResourceStatus {
 	}
 }
 
-// ToPtr returns a *ResourceStatus pointing to the current value.
-func (c ResourceStatus) ToPtr() *ResourceStatus {
-	return &c
-}
-
 // SecretKind - Describes the kind of secret.
 type SecretKind string
 
@@ -302,11 +245,6 @@ func PossibleSecretKindValues() []SecretKind {
 	return []SecretKind{
 		SecretKindInlinedValue,
 	}
-}
-
-// ToPtr returns a *SecretKind pointing to the current value.
-func (c SecretKind) ToPtr() *SecretKind {
-	return &c
 }
 
 // SizeTypes - Volume size
@@ -327,11 +265,6 @@ func PossibleSizeTypesValues() []SizeTypes {
 	}
 }
 
-// ToPtr returns a *SizeTypes pointing to the current value.
-func (c SizeTypes) ToPtr() *SizeTypes {
-	return &c
-}
-
 // VolumeProvider - Describes the provider of the volume resource.
 type VolumeProvider string
 
@@ -345,9 +278,4 @@ func PossibleVolumeProviderValues() []VolumeProvider {
 	return []VolumeProvider{
 		VolumeProviderSFAzureFile,
 	}
-}
-
-// ToPtr returns a *VolumeProvider pointing to the current value.
-func (c VolumeProvider) ToPtr() *VolumeProvider {
-	return &c
 }

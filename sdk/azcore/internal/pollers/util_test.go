@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -7,163 +7,282 @@
 package pollers
 
 import (
+	"context"
+	"errors"
+	"io"
 	"net/http"
 	"strings"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/stretchr/testify/require"
 )
 
 func TestIsTerminalState(t *testing.T) {
-	if IsTerminalState("Updating") {
-		t.Fatal("Updating is not a terminal state")
-	}
-	if !IsTerminalState("Succeeded") {
-		t.Fatal("Succeeded is a terminal state")
-	}
-	if !IsTerminalState("failed") {
-		t.Fatal("failed is a terminal state")
-	}
-	if !IsTerminalState("canceled") {
-		t.Fatal("canceled is a terminal state")
-	}
+	require.False(t, IsTerminalState("Updating"), "Updating is not a terminal state")
+	require.True(t, IsTerminalState("Succeeded"), "Succeeded is a terminal state")
+	require.True(t, IsTerminalState("failed"), "failed is a terminal state")
+	require.True(t, IsTerminalState("canceled"), "canceled is a terminal state")
 }
 
 func TestStatusCodeValid(t *testing.T) {
-	if !StatusCodeValid(&http.Response{StatusCode: http.StatusOK}) {
-		t.Fatal("unexpected valid code")
-	}
-	if !StatusCodeValid(&http.Response{StatusCode: http.StatusAccepted}) {
-		t.Fatal("unexpected valid code")
-	}
-	if !StatusCodeValid(&http.Response{StatusCode: http.StatusCreated}) {
-		t.Fatal("unexpected valid code")
-	}
-	if !StatusCodeValid(&http.Response{StatusCode: http.StatusNoContent}) {
-		t.Fatal("unexpected valid code")
-	}
-	if StatusCodeValid(&http.Response{StatusCode: http.StatusPartialContent}) {
-		t.Fatal("unexpected valid code")
-	}
-	if StatusCodeValid(&http.Response{StatusCode: http.StatusBadRequest}) {
-		t.Fatal("unexpected valid code")
-	}
-	if StatusCodeValid(&http.Response{StatusCode: http.StatusInternalServerError}) {
-		t.Fatal("unexpected valid code")
-	}
+	require.True(t, StatusCodeValid(&http.Response{StatusCode: http.StatusOK}))
+	require.True(t, StatusCodeValid(&http.Response{StatusCode: http.StatusAccepted}))
+	require.True(t, StatusCodeValid(&http.Response{StatusCode: http.StatusCreated}))
+	require.True(t, StatusCodeValid(&http.Response{StatusCode: http.StatusNoContent}))
+	require.False(t, StatusCodeValid(&http.Response{StatusCode: http.StatusPartialContent}))
+	require.False(t, StatusCodeValid(&http.Response{StatusCode: http.StatusBadRequest}))
+	require.False(t, StatusCodeValid(&http.Response{StatusCode: http.StatusInternalServerError}))
 }
 
-func TestMakeID(t *testing.T) {
-	const (
-		pollerID = "pollerID"
-		kind     = "kind"
-	)
-	id := MakeID(pollerID, kind)
-	parts := strings.Split(id, idSeparator)
-	if l := len(parts); l != 2 {
-		t.Fatalf("unexpected length %d", l)
-	}
-	if p := parts[0]; p != pollerID {
-		t.Fatalf("unexpected poller ID %s", p)
-	}
-	if p := parts[1]; p != kind {
-		t.Fatalf("unexpected poller kind %s", p)
-	}
+type fakeResult[T any] struct {
+	Result T
 }
 
-func TestDecodeID(t *testing.T) {
-	_, _, err := DecodeID("")
-	if err == nil {
-		t.Fatal("unexpected nil error")
-	}
-	_, _, err = DecodeID("invalid_token")
-	if err == nil {
-		t.Fatal("unexpected nil error")
-	}
-	_, _, err = DecodeID("invalid_token;")
-	if err == nil {
-		t.Fatal("unexpected nil error")
-	}
-	_, _, err = DecodeID("  ;invalid_token")
-	if err == nil {
-		t.Fatal("unexpected nil error")
-	}
-	_, _, err = DecodeID("invalid;token;too")
-	if err == nil {
-		t.Fatal("unexpected nil error")
-	}
-	id, kind, err := DecodeID("pollerID;kind")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if id != "pollerID" {
-		t.Fatalf("unexpected ID %s", id)
-	}
-	if kind != "kind" {
-		t.Fatalf("unexpected kin %s", kind)
-	}
+func TestNewResumeToken(t *testing.T) {
+	n, err := NewResumeToken[struct{}](fakeResult[struct{}]{})
+	require.Error(t, err)
+	require.Empty(t, n)
+	n, err = NewResumeToken[interface{}](fakeResult[interface{}]{})
+	require.Error(t, err)
+	require.Empty(t, n)
+	n, err = NewResumeToken[int](fakeResult[int]{})
+	require.NoError(t, err)
+	require.Equal(t, `{"type":"int","token":{"Result":0}}`, n)
+	n, err = NewResumeToken[*float64](fakeResult[*float64]{})
+	require.NoError(t, err)
+	require.Equal(t, `{"type":"*float64","token":{"Result":null}}`, n)
+}
+
+func TestExtractToken(t *testing.T) {
+	tk, err := ExtractToken("not a JSON object")
+	require.Error(t, err)
+	require.Nil(t, tk)
+	tk, err = ExtractToken(`{ "not": "a token" }`)
+	require.Error(t, err)
+	require.Nil(t, tk)
+	tk, err = ExtractToken(`{"type":"int","token":{"Result":0}}`)
+	require.NoError(t, err)
+	require.Equal(t, `{"Result":0}`, string(tk))
+}
+
+func TestIsTokenValid(t *testing.T) {
+	err := IsTokenValid[int]("not a JSON object")
+	require.Error(t, err)
+	err = IsTokenValid[int](`{ "not": "a token" }`)
+	require.Error(t, err)
+	err = IsTokenValid[int](`{ "type": 123 }`)
+	require.Error(t, err)
+	err = IsTokenValid[struct{}](`{ "type": "empty" }`)
+	require.Error(t, err)
+	err = IsTokenValid[int](`{"type":"*float64","token":{"Result":null}}`)
+	require.Error(t, err)
+	err = IsTokenValid[int](`{"type":"int","token":{"Result":0}}`)
+	require.NoError(t, err)
 }
 
 func TestIsValidURL(t *testing.T) {
-	if IsValidURL("/foo") {
-		t.Fatal("unexpected valid URL")
-	}
-	if !IsValidURL("https://foo.bar/baz") {
-		t.Fatal("expected valid URL")
-	}
+	require.False(t, IsValidURL("/foo"))
+	require.True(t, IsValidURL("https://foo.bar/baz"))
 }
 
 func TestFailed(t *testing.T) {
-	if Failed("Succeeded") || Failed("Updating") {
-		t.Fatal("unexpected failure")
+	require.False(t, Failed("Succeeded"))
+	require.False(t, Failed("Updating"))
+	require.True(t, Failed("failed"))
+}
+
+func TestGetJSON(t *testing.T) {
+	j, err := GetJSON(&http.Response{Body: http.NoBody})
+	require.ErrorIs(t, err, ErrNoBody)
+	require.Nil(t, j)
+	j, err = GetJSON(&http.Response{Body: io.NopCloser(strings.NewReader(`{ "foo": "bar" }`))})
+	require.NoError(t, err)
+	require.Equal(t, "bar", j["foo"])
+}
+
+func TestGetStatusSuccess(t *testing.T) {
+	const jsonBody = `{ "status": "InProgress" }`
+	resp := &http.Response{
+		Body: io.NopCloser(strings.NewReader(jsonBody)),
 	}
-	if !Failed("failed") {
-		t.Fatal("expected failure")
+	status, err := GetStatus(resp)
+	require.NoError(t, err)
+	require.Equal(t, "InProgress", status)
+}
+
+func TestGetNoBody(t *testing.T) {
+	resp := &http.Response{
+		Body: http.NoBody,
 	}
+	status, err := GetStatus(resp)
+	require.ErrorIs(t, err, ErrNoBody)
+	require.Empty(t, status)
+	status, err = GetProvisioningState(resp)
+	require.ErrorIs(t, err, ErrNoBody)
+	require.Empty(t, status)
+}
+
+func TestGetStatusError(t *testing.T) {
+	resp := &http.Response{
+		Body: io.NopCloser(strings.NewReader("{}")),
+	}
+	status, err := GetStatus(resp)
+	require.NoError(t, err)
+	require.Empty(t, status)
+}
+
+func TestGetProvisioningState(t *testing.T) {
+	const jsonBody = `{ "properties": { "provisioningState": "Canceled" } }`
+	resp := &http.Response{
+		Body: io.NopCloser(strings.NewReader(jsonBody)),
+	}
+	state, err := GetProvisioningState(resp)
+	require.NoError(t, err)
+	require.Equal(t, "Canceled", state)
+}
+
+func TestGetResourceLocation(t *testing.T) {
+	resp := &http.Response{
+		Body: http.NoBody,
+	}
+	resLoc, err := GetResourceLocation(resp)
+	require.Error(t, err)
+	require.Empty(t, resLoc)
+	resp.Body = io.NopCloser(strings.NewReader(`{"status": "succeeded"}`))
+	resLoc, err = GetResourceLocation(resp)
+	require.NoError(t, err)
+	require.Empty(t, resLoc)
+	resp.Body = io.NopCloser(strings.NewReader(`{"resourceLocation": 123}`))
+	resLoc, err = GetResourceLocation(resp)
+	require.Error(t, err)
+	require.Empty(t, resLoc)
+	resp.Body = io.NopCloser(strings.NewReader(`{"resourceLocation": "here"}`))
+	resLoc, err = GetResourceLocation(resp)
+	require.NoError(t, err)
+	require.Equal(t, "here", resLoc)
+}
+
+func TestGetProvisioningStateError(t *testing.T) {
+	resp := &http.Response{
+		Body: io.NopCloser(strings.NewReader("{}")),
+	}
+	state, err := GetProvisioningState(resp)
+	require.NoError(t, err)
+	require.Empty(t, state)
 }
 
 func TestNopPoller(t *testing.T) {
-	np := NopPoller{}
-	if !np.Done() {
-		t.Fatal("expected done")
+	resp := &http.Response{
+		StatusCode: http.StatusNoContent,
+		Body:       http.NoBody,
 	}
-	if np.FinalGetURL() != "" {
-		t.Fatal("expected empty final get URL")
-	}
-	if np.Status() != StatusSucceeded {
-		t.Fatal("expected Succeeded")
-	}
-	if np.URL() != "" {
-		t.Fatal("expected empty URL")
-	}
-	if err := np.Update(nil); err != nil {
-		t.Fatal(err)
-	}
+	np, err := NewNopPoller[struct{}](resp)
+	require.NoError(t, err)
+	require.NotNil(t, np)
+	require.True(t, np.Done())
+	pollResp, err := np.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, resp, pollResp)
+	var result struct{}
+	err = np.Result(context.Background(), &result)
+	require.NoError(t, err)
+
+	resp.StatusCode = http.StatusOK
+	np, err = NewNopPoller[struct{}](resp)
+	require.NoError(t, err)
+	require.NotNil(t, np)
+	require.True(t, np.Done())
+	pollResp, err = np.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, resp, pollResp)
+	err = np.Result(context.Background(), &result)
+	require.NoError(t, err)
+
+	resp.Body = io.NopCloser(strings.NewReader(`"value"`))
+	np2, err := NewNopPoller[string](resp)
+	require.NoError(t, err)
+	require.NotNil(t, np2)
+	require.True(t, np2.Done())
+	pollResp, err = np2.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, resp, pollResp)
+	var result2 string
+	err = np2.Result(context.Background(), &result2)
+	require.NoError(t, err)
+	require.Equal(t, "value", result2)
 }
 
-/*func TestNewPollerNop(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	resp := initialResponse(http.MethodPost, srv.URL(), strings.NewReader(successResp))
+func TestPollHelper(t *testing.T) {
+	const fakeEndpoint = "https://fake.polling/endpoint"
+	err := PollHelper(context.Background(), "invalid endpoint", exported.Pipeline{}, func(*http.Response) (string, error) {
+		t.Fatal("shouldn't have been called")
+		return "", nil
+	})
+	require.Error(t, err)
+
+	pl := exported.NewPipeline(shared.TransportFunc(func(*http.Request) (*http.Response, error) {
+		return nil, errors.New("failed")
+	}))
+	err = PollHelper(context.Background(), fakeEndpoint, pl, func(*http.Response) (string, error) {
+		t.Fatal("shouldn't have been called")
+		return "", nil
+	})
+	require.Error(t, err)
+
+	require.Error(t, err)
+	pl = exported.NewPipeline(shared.TransportFunc(func(*http.Request) (*http.Response, error) {
+		return &http.Response{}, nil
+	}))
+	err = PollHelper(context.Background(), fakeEndpoint, pl, func(*http.Response) (string, error) {
+		return "", errors.New("failed")
+	})
+	require.Error(t, err)
+
+	require.Error(t, err)
+	pl = exported.NewPipeline(shared.TransportFunc(func(*http.Request) (*http.Response, error) {
+		return &http.Response{}, nil
+	}))
+	err = PollHelper(context.Background(), fakeEndpoint, pl, func(*http.Response) (string, error) {
+		return "inProgress", nil
+	})
+	require.NoError(t, err)
+}
+
+type widget struct {
+	Result        string
+	Precalculated int
+}
+
+func TestResultHelper(t *testing.T) {
+	resp := &http.Response{
+		StatusCode: http.StatusNoContent,
+		Body:       http.NoBody,
+	}
+	var result string
+	err := ResultHelper(resp, false, &result)
+	require.NoError(t, err)
+	require.Empty(t, result)
+
+	resp.StatusCode = http.StatusBadRequest
+	resp.Body = io.NopCloser(strings.NewReader(`{ "code": "failed", "message": "bad stuff" }`))
+	err = ResultHelper(resp, false, &result)
+	var respErr *exported.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, "failed", respErr.ErrorCode)
+	require.Empty(t, result)
+
 	resp.StatusCode = http.StatusOK
-	poller, err := NewPoller("pollerID", "", resp, getPipeline(srv), handleError)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if _, ok := poller.lro.(*nopPoller); !ok {
-		t.Fatalf("unexpected poller type %T", poller.lro)
-	}
-	tk, err := poller.ResumeToken()
-	if err == nil {
-		t.Fatal("unexpected nil error")
-	}
-	if tk != "" {
-		t.Fatal("expected empty token")
-	}
-	var result mockType
-	_, err = poller.PollUntilDone(context.Background(), 10*time.Millisecond, &result)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if v := *result.Field; v != "value" {
-		t.Fatalf("unexpected value %s", v)
-	}
-}*/
+	resp.Body = http.NoBody
+	err = ResultHelper(resp, false, &result)
+	require.NoError(t, err)
+	require.Empty(t, result)
+
+	resp.Body = io.NopCloser(strings.NewReader(`{ "Result": "happy" }`))
+	widgetResult := widget{Precalculated: 123}
+	err = ResultHelper(resp, false, &widgetResult)
+	require.NoError(t, err)
+	require.Equal(t, "happy", widgetResult.Result)
+	require.Equal(t, 123, widgetResult.Precalculated)
+}

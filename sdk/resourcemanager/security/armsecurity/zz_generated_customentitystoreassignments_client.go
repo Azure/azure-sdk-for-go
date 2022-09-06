@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,60 @@ import (
 // CustomEntityStoreAssignmentsClient contains the methods for the CustomEntityStoreAssignments group.
 // Don't use this type directly, use NewCustomEntityStoreAssignmentsClient() instead.
 type CustomEntityStoreAssignmentsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCustomEntityStoreAssignmentsClient creates a new instance of CustomEntityStoreAssignmentsClient with the specified values.
-func NewCustomEntityStoreAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CustomEntityStoreAssignmentsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Azure subscription ID
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewCustomEntityStoreAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomEntityStoreAssignmentsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &CustomEntityStoreAssignmentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &CustomEntityStoreAssignmentsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // Create - Creates a custom entity store assignment for the provided subscription, if not already exists.
-// If the operation fails it returns the *CloudError error type.
-func (client *CustomEntityStoreAssignmentsClient) Create(ctx context.Context, resourceGroupName string, customEntityStoreAssignmentName string, customEntityStoreAssignmentRequestBody CustomEntityStoreAssignmentRequest, options *CustomEntityStoreAssignmentsCreateOptions) (CustomEntityStoreAssignmentsCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01-preview
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// customEntityStoreAssignmentName - Name of the custom entity store assignment. Generated name is GUID.
+// customEntityStoreAssignmentRequestBody - Custom entity store assignment body
+// options - CustomEntityStoreAssignmentsClientCreateOptions contains the optional parameters for the CustomEntityStoreAssignmentsClient.Create
+// method.
+func (client *CustomEntityStoreAssignmentsClient) Create(ctx context.Context, resourceGroupName string, customEntityStoreAssignmentName string, customEntityStoreAssignmentRequestBody CustomEntityStoreAssignmentRequest, options *CustomEntityStoreAssignmentsClientCreateOptions) (CustomEntityStoreAssignmentsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, customEntityStoreAssignmentName, customEntityStoreAssignmentRequestBody, options)
 	if err != nil {
-		return CustomEntityStoreAssignmentsCreateResponse{}, err
+		return CustomEntityStoreAssignmentsClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CustomEntityStoreAssignmentsCreateResponse{}, err
+		return CustomEntityStoreAssignmentsClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return CustomEntityStoreAssignmentsCreateResponse{}, client.createHandleError(resp)
+		return CustomEntityStoreAssignmentsClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *CustomEntityStoreAssignmentsClient) createCreateRequest(ctx context.Context, resourceGroupName string, customEntityStoreAssignmentName string, customEntityStoreAssignmentRequestBody CustomEntityStoreAssignmentRequest, options *CustomEntityStoreAssignmentsCreateOptions) (*policy.Request, error) {
+func (client *CustomEntityStoreAssignmentsClient) createCreateRequest(ctx context.Context, resourceGroupName string, customEntityStoreAssignmentName string, customEntityStoreAssignmentRequestBody CustomEntityStoreAssignmentRequest, options *CustomEntityStoreAssignmentsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customEntityStoreAssignments/{customEntityStoreAssignmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,58 +92,50 @@ func (client *CustomEntityStoreAssignmentsClient) createCreateRequest(ctx contex
 		return nil, errors.New("parameter customEntityStoreAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{customEntityStoreAssignmentName}", url.PathEscape(customEntityStoreAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, customEntityStoreAssignmentRequestBody)
 }
 
 // createHandleResponse handles the Create response.
-func (client *CustomEntityStoreAssignmentsClient) createHandleResponse(resp *http.Response) (CustomEntityStoreAssignmentsCreateResponse, error) {
-	result := CustomEntityStoreAssignmentsCreateResponse{RawResponse: resp}
+func (client *CustomEntityStoreAssignmentsClient) createHandleResponse(resp *http.Response) (CustomEntityStoreAssignmentsClientCreateResponse, error) {
+	result := CustomEntityStoreAssignmentsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomEntityStoreAssignment); err != nil {
-		return CustomEntityStoreAssignmentsCreateResponse{}, runtime.NewResponseError(err, resp)
+		return CustomEntityStoreAssignmentsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *CustomEntityStoreAssignmentsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete a custom entity store assignment by name for a provided subscription
-// If the operation fails it returns the *CloudError error type.
-func (client *CustomEntityStoreAssignmentsClient) Delete(ctx context.Context, resourceGroupName string, customEntityStoreAssignmentName string, options *CustomEntityStoreAssignmentsDeleteOptions) (CustomEntityStoreAssignmentsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01-preview
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// customEntityStoreAssignmentName - Name of the custom entity store assignment. Generated name is GUID.
+// options - CustomEntityStoreAssignmentsClientDeleteOptions contains the optional parameters for the CustomEntityStoreAssignmentsClient.Delete
+// method.
+func (client *CustomEntityStoreAssignmentsClient) Delete(ctx context.Context, resourceGroupName string, customEntityStoreAssignmentName string, options *CustomEntityStoreAssignmentsClientDeleteOptions) (CustomEntityStoreAssignmentsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, customEntityStoreAssignmentName, options)
 	if err != nil {
-		return CustomEntityStoreAssignmentsDeleteResponse{}, err
+		return CustomEntityStoreAssignmentsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CustomEntityStoreAssignmentsDeleteResponse{}, err
+		return CustomEntityStoreAssignmentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return CustomEntityStoreAssignmentsDeleteResponse{}, client.deleteHandleError(resp)
+		return CustomEntityStoreAssignmentsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return CustomEntityStoreAssignmentsDeleteResponse{RawResponse: resp}, nil
+	return CustomEntityStoreAssignmentsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CustomEntityStoreAssignmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, customEntityStoreAssignmentName string, options *CustomEntityStoreAssignmentsDeleteOptions) (*policy.Request, error) {
+func (client *CustomEntityStoreAssignmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, customEntityStoreAssignmentName string, options *CustomEntityStoreAssignmentsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customEntityStoreAssignments/{customEntityStoreAssignmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -139,49 +149,41 @@ func (client *CustomEntityStoreAssignmentsClient) deleteCreateRequest(ctx contex
 		return nil, errors.New("parameter customEntityStoreAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{customEntityStoreAssignmentName}", url.PathEscape(customEntityStoreAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *CustomEntityStoreAssignmentsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets a single custom entity store assignment by name for the provided subscription and resource group.
-// If the operation fails it returns the *CloudError error type.
-func (client *CustomEntityStoreAssignmentsClient) Get(ctx context.Context, resourceGroupName string, customEntityStoreAssignmentName string, options *CustomEntityStoreAssignmentsGetOptions) (CustomEntityStoreAssignmentsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01-preview
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// customEntityStoreAssignmentName - Name of the custom entity store assignment. Generated name is GUID.
+// options - CustomEntityStoreAssignmentsClientGetOptions contains the optional parameters for the CustomEntityStoreAssignmentsClient.Get
+// method.
+func (client *CustomEntityStoreAssignmentsClient) Get(ctx context.Context, resourceGroupName string, customEntityStoreAssignmentName string, options *CustomEntityStoreAssignmentsClientGetOptions) (CustomEntityStoreAssignmentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, customEntityStoreAssignmentName, options)
 	if err != nil {
-		return CustomEntityStoreAssignmentsGetResponse{}, err
+		return CustomEntityStoreAssignmentsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CustomEntityStoreAssignmentsGetResponse{}, err
+		return CustomEntityStoreAssignmentsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CustomEntityStoreAssignmentsGetResponse{}, client.getHandleError(resp)
+		return CustomEntityStoreAssignmentsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CustomEntityStoreAssignmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, customEntityStoreAssignmentName string, options *CustomEntityStoreAssignmentsGetOptions) (*policy.Request, error) {
+func (client *CustomEntityStoreAssignmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, customEntityStoreAssignmentName string, options *CustomEntityStoreAssignmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customEntityStoreAssignments/{customEntityStoreAssignmentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -195,55 +197,62 @@ func (client *CustomEntityStoreAssignmentsClient) getCreateRequest(ctx context.C
 		return nil, errors.New("parameter customEntityStoreAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{customEntityStoreAssignmentName}", url.PathEscape(customEntityStoreAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *CustomEntityStoreAssignmentsClient) getHandleResponse(resp *http.Response) (CustomEntityStoreAssignmentsGetResponse, error) {
-	result := CustomEntityStoreAssignmentsGetResponse{RawResponse: resp}
+func (client *CustomEntityStoreAssignmentsClient) getHandleResponse(resp *http.Response) (CustomEntityStoreAssignmentsClientGetResponse, error) {
+	result := CustomEntityStoreAssignmentsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomEntityStoreAssignment); err != nil {
-		return CustomEntityStoreAssignmentsGetResponse{}, runtime.NewResponseError(err, resp)
+		return CustomEntityStoreAssignmentsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *CustomEntityStoreAssignmentsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByResourceGroup - List custom entity store assignments by a provided subscription and resource group
-// If the operation fails it returns the *CloudError error type.
-func (client *CustomEntityStoreAssignmentsClient) ListByResourceGroup(resourceGroupName string, options *CustomEntityStoreAssignmentsListByResourceGroupOptions) *CustomEntityStoreAssignmentsListByResourceGroupPager {
-	return &CustomEntityStoreAssignmentsListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+// NewListByResourceGroupPager - List custom entity store assignments by a provided subscription and resource group
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01-preview
+// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+// options - CustomEntityStoreAssignmentsClientListByResourceGroupOptions contains the optional parameters for the CustomEntityStoreAssignmentsClient.ListByResourceGroup
+// method.
+func (client *CustomEntityStoreAssignmentsClient) NewListByResourceGroupPager(resourceGroupName string, options *CustomEntityStoreAssignmentsClientListByResourceGroupOptions) *runtime.Pager[CustomEntityStoreAssignmentsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[CustomEntityStoreAssignmentsClientListByResourceGroupResponse]{
+		More: func(page CustomEntityStoreAssignmentsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CustomEntityStoreAssignmentsListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CustomEntityStoreAssignmentsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *CustomEntityStoreAssignmentsClientListByResourceGroupResponse) (CustomEntityStoreAssignmentsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CustomEntityStoreAssignmentsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CustomEntityStoreAssignmentsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CustomEntityStoreAssignmentsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *CustomEntityStoreAssignmentsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *CustomEntityStoreAssignmentsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *CustomEntityStoreAssignmentsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *CustomEntityStoreAssignmentsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customEntityStoreAssignments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -253,89 +262,82 @@ func (client *CustomEntityStoreAssignmentsClient) listByResourceGroupCreateReque
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *CustomEntityStoreAssignmentsClient) listByResourceGroupHandleResponse(resp *http.Response) (CustomEntityStoreAssignmentsListByResourceGroupResponse, error) {
-	result := CustomEntityStoreAssignmentsListByResourceGroupResponse{RawResponse: resp}
+func (client *CustomEntityStoreAssignmentsClient) listByResourceGroupHandleResponse(resp *http.Response) (CustomEntityStoreAssignmentsClientListByResourceGroupResponse, error) {
+	result := CustomEntityStoreAssignmentsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomEntityStoreAssignmentsListResult); err != nil {
-		return CustomEntityStoreAssignmentsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return CustomEntityStoreAssignmentsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *CustomEntityStoreAssignmentsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListBySubscription - List custom entity store assignments by provided subscription
-// If the operation fails it returns the *CloudError error type.
-func (client *CustomEntityStoreAssignmentsClient) ListBySubscription(options *CustomEntityStoreAssignmentsListBySubscriptionOptions) *CustomEntityStoreAssignmentsListBySubscriptionPager {
-	return &CustomEntityStoreAssignmentsListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+// NewListBySubscriptionPager - List custom entity store assignments by provided subscription
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01-preview
+// options - CustomEntityStoreAssignmentsClientListBySubscriptionOptions contains the optional parameters for the CustomEntityStoreAssignmentsClient.ListBySubscription
+// method.
+func (client *CustomEntityStoreAssignmentsClient) NewListBySubscriptionPager(options *CustomEntityStoreAssignmentsClientListBySubscriptionOptions) *runtime.Pager[CustomEntityStoreAssignmentsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[CustomEntityStoreAssignmentsClientListBySubscriptionResponse]{
+		More: func(page CustomEntityStoreAssignmentsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CustomEntityStoreAssignmentsListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CustomEntityStoreAssignmentsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *CustomEntityStoreAssignmentsClientListBySubscriptionResponse) (CustomEntityStoreAssignmentsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CustomEntityStoreAssignmentsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CustomEntityStoreAssignmentsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CustomEntityStoreAssignmentsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *CustomEntityStoreAssignmentsClient) listBySubscriptionCreateRequest(ctx context.Context, options *CustomEntityStoreAssignmentsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *CustomEntityStoreAssignmentsClient) listBySubscriptionCreateRequest(ctx context.Context, options *CustomEntityStoreAssignmentsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/customEntityStoreAssignments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *CustomEntityStoreAssignmentsClient) listBySubscriptionHandleResponse(resp *http.Response) (CustomEntityStoreAssignmentsListBySubscriptionResponse, error) {
-	result := CustomEntityStoreAssignmentsListBySubscriptionResponse{RawResponse: resp}
+func (client *CustomEntityStoreAssignmentsClient) listBySubscriptionHandleResponse(resp *http.Response) (CustomEntityStoreAssignmentsClientListBySubscriptionResponse, error) {
+	result := CustomEntityStoreAssignmentsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomEntityStoreAssignmentsListResult); err != nil {
-		return CustomEntityStoreAssignmentsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return CustomEntityStoreAssignmentsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *CustomEntityStoreAssignmentsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

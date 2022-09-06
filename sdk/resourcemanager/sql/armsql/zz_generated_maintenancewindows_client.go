@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,42 +25,62 @@ import (
 // MaintenanceWindowsClient contains the methods for the MaintenanceWindows group.
 // Don't use this type directly, use NewMaintenanceWindowsClient() instead.
 type MaintenanceWindowsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewMaintenanceWindowsClient creates a new instance of MaintenanceWindowsClient with the specified values.
-func NewMaintenanceWindowsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MaintenanceWindowsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewMaintenanceWindowsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MaintenanceWindowsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &MaintenanceWindowsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &MaintenanceWindowsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // CreateOrUpdate - Sets maintenance windows settings for a database.
-// If the operation fails it returns a generic error.
-func (client *MaintenanceWindowsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, maintenanceWindowName string, parameters MaintenanceWindows, options *MaintenanceWindowsCreateOrUpdateOptions) (MaintenanceWindowsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database to set maintenance windows for.
+// maintenanceWindowName - Maintenance window name.
+// options - MaintenanceWindowsClientCreateOrUpdateOptions contains the optional parameters for the MaintenanceWindowsClient.CreateOrUpdate
+// method.
+func (client *MaintenanceWindowsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, maintenanceWindowName string, parameters MaintenanceWindows, options *MaintenanceWindowsClientCreateOrUpdateOptions) (MaintenanceWindowsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, maintenanceWindowName, parameters, options)
 	if err != nil {
-		return MaintenanceWindowsCreateOrUpdateResponse{}, err
+		return MaintenanceWindowsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MaintenanceWindowsCreateOrUpdateResponse{}, err
+		return MaintenanceWindowsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MaintenanceWindowsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return MaintenanceWindowsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
-	return MaintenanceWindowsCreateOrUpdateResponse{RawResponse: resp}, nil
+	return MaintenanceWindowsClientCreateOrUpdateResponse{}, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *MaintenanceWindowsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, maintenanceWindowName string, parameters MaintenanceWindows, options *MaintenanceWindowsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *MaintenanceWindowsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, maintenanceWindowName string, parameters MaintenanceWindows, options *MaintenanceWindowsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/maintenanceWindows/current"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -77,7 +98,7 @@ func (client *MaintenanceWindowsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -88,37 +109,32 @@ func (client *MaintenanceWindowsClient) createOrUpdateCreateRequest(ctx context.
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *MaintenanceWindowsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Gets maintenance windows settings for a database.
-// If the operation fails it returns a generic error.
-func (client *MaintenanceWindowsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, maintenanceWindowName string, options *MaintenanceWindowsGetOptions) (MaintenanceWindowsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database to get maintenance windows for.
+// maintenanceWindowName - Maintenance window name.
+// options - MaintenanceWindowsClientGetOptions contains the optional parameters for the MaintenanceWindowsClient.Get method.
+func (client *MaintenanceWindowsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, maintenanceWindowName string, options *MaintenanceWindowsClientGetOptions) (MaintenanceWindowsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, maintenanceWindowName, options)
 	if err != nil {
-		return MaintenanceWindowsGetResponse{}, err
+		return MaintenanceWindowsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MaintenanceWindowsGetResponse{}, err
+		return MaintenanceWindowsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return MaintenanceWindowsGetResponse{}, client.getHandleError(resp)
+		return MaintenanceWindowsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *MaintenanceWindowsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, maintenanceWindowName string, options *MaintenanceWindowsGetOptions) (*policy.Request, error) {
+func (client *MaintenanceWindowsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, maintenanceWindowName string, options *MaintenanceWindowsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/maintenanceWindows/current"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -136,7 +152,7 @@ func (client *MaintenanceWindowsClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -144,27 +160,15 @@ func (client *MaintenanceWindowsClient) getCreateRequest(ctx context.Context, re
 	reqQP.Set("maintenanceWindowName", maintenanceWindowName)
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *MaintenanceWindowsClient) getHandleResponse(resp *http.Response) (MaintenanceWindowsGetResponse, error) {
-	result := MaintenanceWindowsGetResponse{RawResponse: resp}
+func (client *MaintenanceWindowsClient) getHandleResponse(resp *http.Response) (MaintenanceWindowsClientGetResponse, error) {
+	result := MaintenanceWindowsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MaintenanceWindows); err != nil {
-		return MaintenanceWindowsGetResponse{}, runtime.NewResponseError(err, resp)
+		return MaintenanceWindowsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *MaintenanceWindowsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

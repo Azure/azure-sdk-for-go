@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,26 +12,30 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox"
 )
 
-// x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/JobMitigate.json
-func ExampleDataBoxManagementClient_Mitigate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobMitigate.json
+func ExampleManagementClient_Mitigate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatabox.NewDataBoxManagementClient("<subscription-id>", cred, nil)
+	client, err := armdatabox.NewManagementClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Mitigate(ctx,
-		"<job-name>",
-		"<resource-group-name>",
+		"SdkJob8367",
+		"SdkRg9836",
 		armdatabox.MitigateJobRequest{
-			CustomerResolutionCode: armdatabox.CustomerResolutionCodeMoveToCleanUpDevice.ToPtr(),
+			CustomerResolutionCode: to.Ptr(armdatabox.CustomerResolutionCodeMoveToCleanUpDevice),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }

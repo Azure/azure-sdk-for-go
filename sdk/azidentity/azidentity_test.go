@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -5,12 +8,22 @@ package azidentity
 
 import (
 	"context"
+	"crypto/x509"
 	"errors"
+	"fmt"
+	"io"
+	"net/http"
 	"os"
+	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 // constants used throughout this package
@@ -18,21 +31,132 @@ const (
 	accessTokenRespSuccess   = `{"access_token": "` + tokenValue + `", "expires_in": 3600}`
 	accessTokenRespMalformed = `{"access_token": 0, "expires_in": 3600}`
 	badTenantID              = "bad_tenant"
-	tokenValue               = "new_token"
+	tenantDiscoveryResponse  = `{
+		"token_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/token",
+		"token_endpoint_auth_methods_supported": [
+		"client_secret_post",
+		"private_key_jwt",
+		"client_secret_basic"
+		],
+		"jwks_uri": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/discovery/v2.0/keys",
+		"response_modes_supported": [
+		"query",
+		"fragment",
+		"form_post"
+		],
+		"subject_types_supported": [
+		"pairwise"
+		],
+		"id_token_signing_alg_values_supported": [
+		"RS256"
+		],
+		"response_types_supported": [
+		"code",
+		"id_token",
+		"code id_token",
+		"id_token token"
+		],
+		"scopes_supported": [
+		"openid",
+		"profile",
+		"email",
+		"offline_access"
+		],
+		"issuer": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/v2.0",
+		"request_uri_parameter_supported": false,
+		"userinfo_endpoint": "https://graph.microsoft.com/oidc/userinfo",
+		"authorization_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/authorize",
+		"device_authorization_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/devicecode",
+		"http_logout_supported": true,
+		"frontchannel_logout_supported": true,
+		"end_session_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/logout",
+		"claims_supported": [
+		"sub",
+		"iss",
+		"cloud_instance_name",
+		"cloud_instance_host_name",
+		"cloud_graph_host_name",
+		"msgraph_host",
+		"aud",
+		"exp",
+		"iat",
+		"auth_time",
+		"acr",
+		"nonce",
+		"preferred_username",
+		"name",
+		"tid",
+		"ver",
+		"at_hash",
+		"c_hash",
+		"email"
+		],
+		"kerberos_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/kerberos",
+		"tenant_region_scope": "NA",
+		"cloud_instance_name": "microsoftonline.com",
+		"cloud_graph_host_name": "graph.windows.net",
+		"msgraph_host": "graph.microsoft.com",
+		"rbac_url": "https://pas.windows.net"
+		}`
+	tokenValue = "new_token"
 )
+
+var instanceDiscoveryResponse = []byte(`{
+	"tenant_discovery_endpoint": "https://login.microsoftonline.com/tenant/v2.0/.well-known/openid-configuration",
+	"api-version": "1.1",
+	"metadata": [
+		{
+			"preferred_network": "login.microsoftonline.com",
+			"preferred_cache": "login.windows.net",
+			"aliases": [
+				"login.microsoftonline.com",
+				"login.windows.net",
+				"login.microsoft.com",
+				"sts.windows.net"
+			]
+		}
+	]
+}`)
 
 // constants for this file
 const (
-	envHostString    = "https://mock.com/"
-	customHostString = "https://custommock.com/"
+	testHost = "https://localhost"
 )
+
+func validateX5C(t *testing.T, certs []*x509.Certificate) mock.ResponsePredicate {
+	return func(req *http.Request) bool {
+		body, err := io.ReadAll(req.Body)
+		if err != nil {
+			t.Fatal("Expected a request with the JWT in the body.")
+		}
+		bodystr := string(body)
+		kvps := strings.Split(bodystr, "&")
+		assertion := strings.Split(kvps[0], "=")
+		token, _ := jwt.Parse(assertion[1], nil)
+		if token == nil {
+			t.Fatalf("Failed to parse the JWT token: %s.", assertion[1])
+		}
+		if v, ok := token.Header["x5c"].([]any); !ok {
+			t.Fatal("missing x5c header")
+		} else if actual := len(v); actual != len(certs) {
+			t.Fatalf("expected %d certs, got %d", len(certs), actual)
+		}
+		return true
+	}
+}
 
 // Set environment variables for the duration of a test. Restore their prior values
 // after the test completes. Obviated by 1.17's T.Setenv
 func setEnvironmentVariables(t *testing.T, vars map[string]string) {
+	unsetSentinel := "variables having no initial value must be unset after the test"
 	priorValues := make(map[string]string, len(vars))
 	for k, v := range vars {
-		priorValues[k] = os.Getenv(k)
+		priorValue, ok := os.LookupEnv(k)
+		if ok {
+			priorValues[k] = priorValue
+		} else {
+			priorValues[k] = unsetSentinel
+		}
 		err := os.Setenv(k, v)
 		if err != nil {
 			t.Fatalf("Unexpected error setting %s: %v", k, err)
@@ -41,7 +165,12 @@ func setEnvironmentVariables(t *testing.T, vars map[string]string) {
 
 	t.Cleanup(func() {
 		for k, v := range priorValues {
-			err := os.Setenv(k, v)
+			var err error
+			if v == unsetSentinel {
+				err = os.Unsetenv(k)
+			} else {
+				err = os.Setenv(k, v)
+			}
 			if err != nil {
 				t.Fatalf("Unexpected error resetting %s: %v", k, err)
 			}
@@ -49,43 +178,83 @@ func setEnvironmentVariables(t *testing.T, vars map[string]string) {
 	})
 }
 
+func Test_WellKnownHosts(t *testing.T) {
+	for _, cloud := range []cloud.Configuration{cloud.AzureChina, cloud.AzureGovernment, cloud.AzurePublic} {
+		host, err := setAuthorityHost(cloud)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !strings.HasPrefix(host, "https://login.") {
+			t.Fatal("unexpected ActiveDirectoryAuthorityHost: " + host)
+		}
+	}
+}
+
 func Test_SetEnvAuthorityHost(t *testing.T) {
-	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: envHostString})
-	authorityHost, err := setAuthorityHost("")
+	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: testHost})
+	authorityHost, err := setAuthorityHost(cloud.Configuration{})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if authorityHost != envHostString {
-		t.Fatalf("Unexpected error when get host from environment variable: %v", err)
+	if authorityHost != testHost {
+		t.Fatalf(`unexpected host "%s"`, authorityHost)
 	}
 }
 
 func Test_CustomAuthorityHost(t *testing.T) {
-	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: envHostString})
-	authorityHost, err := setAuthorityHost(customHostString)
+	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: testHost + "/not"})
+	authorityHost, err := setAuthorityHost(cloud.Configuration{ActiveDirectoryAuthorityHost: testHost})
 	if err != nil {
 		t.Fatal(err)
 	}
 	// ensure env var doesn't override explicit value
-	if authorityHost != customHostString {
-		t.Fatalf("Unexpected host when get host from environment variable: %v", authorityHost)
+	if authorityHost != testHost {
+		t.Fatalf(`expected "%s", got "%s"`, testHost, authorityHost)
 	}
 }
 
 func Test_DefaultAuthorityHost(t *testing.T) {
 	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: ""})
-	authorityHost, err := setAuthorityHost("")
+	authorityHost, err := setAuthorityHost(cloud.Configuration{})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if authorityHost != string(AzurePublicCloud) {
-		t.Fatalf("Unexpected host when set default AuthorityHost: %v", authorityHost)
+	if authorityHost != cloud.AzurePublic.ActiveDirectoryAuthorityHost {
+		t.Fatal("unexpected default host: " + authorityHost)
+	}
+}
+
+func Test_GetTokenRequiresScopes(t *testing.T) {
+	for _, ctor := range []func() (azcore.TokenCredential, error){
+		func() (azcore.TokenCredential, error) { return NewAzureCLICredential(nil) },
+		func() (azcore.TokenCredential, error) {
+			return NewClientCertificateCredential("tenantID", "clientID", allCertTests[0].certs, allCertTests[0].key, nil)
+		},
+		func() (azcore.TokenCredential, error) {
+			return NewClientSecretCredential("tenantID", "clientID", "secret", nil)
+		},
+		func() (azcore.TokenCredential, error) { return NewDeviceCodeCredential(nil) },
+		func() (azcore.TokenCredential, error) { return NewInteractiveBrowserCredential(nil) },
+		func() (azcore.TokenCredential, error) {
+			return NewUsernamePasswordCredential("tenantID", "clientID", "username", "password", nil)
+		},
+	} {
+		cred, err := ctor()
+		t.Run(fmt.Sprintf("%T", cred), func(t *testing.T) {
+			if err != nil {
+				t.Fatal(err)
+			}
+			_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{})
+			if err == nil {
+				t.Fatal("expected an error")
+			}
+		})
 	}
 }
 
 func Test_NonHTTPSAuthorityHost(t *testing.T) {
 	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: ""})
-	authorityHost, err := setAuthorityHost("http://foo.com")
+	authorityHost, err := setAuthorityHost(cloud.Configuration{ActiveDirectoryAuthorityHost: "http://localhost"})
 	if err == nil {
 		t.Fatal("Expected an error but did not receive one.")
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,53 +17,63 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices"
 )
 
-// x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Quota/update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Quota/update.json
 func ExampleQuotasClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmachinelearningservices.NewQuotasClient("<subscription-id>", cred, nil)
-	_, err = client.Update(ctx,
-		"<location>",
+	client, err := armmachinelearningservices.NewQuotasClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.Update(ctx,
+		"eastus",
 		armmachinelearningservices.QuotaUpdateParameters{
 			Value: []*armmachinelearningservices.QuotaBaseProperties{
 				{
-					Type:  to.StringPtr("<type>"),
-					ID:    to.StringPtr("<id>"),
-					Limit: to.Int64Ptr(100),
-					Unit:  armmachinelearningservices.QuotaUnitCount.ToPtr(),
+					Type:  to.Ptr("Microsoft.MachineLearningServices/workspaces/quotas"),
+					ID:    to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.MachineLearningServices/workspaces/demo_workspace1/quotas/Standard_DSv2_Family_Cluster_Dedicated_vCPUs"),
+					Limit: to.Ptr[int64](100),
+					Unit:  to.Ptr(armmachinelearningservices.QuotaUnitCount),
 				},
 				{
-					Type:  to.StringPtr("<type>"),
-					ID:    to.StringPtr("<id>"),
-					Limit: to.Int64Ptr(200),
-					Unit:  armmachinelearningservices.QuotaUnitCount.ToPtr(),
+					Type:  to.Ptr("Microsoft.MachineLearningServices/workspaces/quotas"),
+					ID:    to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.MachineLearningServices/workspaces/demo_workspace2/quotas/Standard_DSv2_Family_Cluster_Dedicated_vCPUs"),
+					Limit: to.Ptr[int64](200),
+					Unit:  to.Ptr(armmachinelearningservices.QuotaUnitCount),
 				}},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Quota/list.json
-func ExampleQuotasClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Quota/list.json
+func ExampleQuotasClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmachinelearningservices.NewQuotasClient("<subscription-id>", cred, nil)
-	pager := client.List("<location>",
+	client, err := armmachinelearningservices.NewQuotasClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("eastus",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ResourceQuota.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

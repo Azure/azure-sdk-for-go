@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armmanagementpartner
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,237 +25,207 @@ import (
 // PartnerClient contains the methods for the Partner group.
 // Don't use this type directly, use NewPartnerClient() instead.
 type PartnerClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewPartnerClient creates a new instance of PartnerClient with the specified values.
-func NewPartnerClient(credential azcore.TokenCredential, options *arm.ClientOptions) *PartnerClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewPartnerClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PartnerClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &PartnerClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &PartnerClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
 // Create - Create a management partner for the objectId and tenantId.
-// If the operation fails it returns the *Error error type.
-func (client *PartnerClient) Create(ctx context.Context, partnerID string, options *PartnerCreateOptions) (PartnerCreateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-02-01
+// partnerID - Id of the Partner
+// options - PartnerClientCreateOptions contains the optional parameters for the PartnerClient.Create method.
+func (client *PartnerClient) Create(ctx context.Context, partnerID string, options *PartnerClientCreateOptions) (PartnerClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, partnerID, options)
 	if err != nil {
-		return PartnerCreateResponse{}, err
+		return PartnerClientCreateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PartnerCreateResponse{}, err
+		return PartnerClientCreateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PartnerCreateResponse{}, client.createHandleError(resp)
+		return PartnerClientCreateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *PartnerClient) createCreateRequest(ctx context.Context, partnerID string, options *PartnerCreateOptions) (*policy.Request, error) {
+func (client *PartnerClient) createCreateRequest(ctx context.Context, partnerID string, options *PartnerClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ManagementPartner/partners/{partnerId}"
 	if partnerID == "" {
 		return nil, errors.New("parameter partnerID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partnerId}", url.PathEscape(partnerID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // createHandleResponse handles the Create response.
-func (client *PartnerClient) createHandleResponse(resp *http.Response) (PartnerCreateResponse, error) {
-	result := PartnerCreateResponse{RawResponse: resp}
+func (client *PartnerClient) createHandleResponse(resp *http.Response) (PartnerClientCreateResponse, error) {
+	result := PartnerClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerResponse); err != nil {
-		return PartnerCreateResponse{}, runtime.NewResponseError(err, resp)
+		return PartnerClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// createHandleError handles the Create error response.
-func (client *PartnerClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete the management partner for the objectId and tenantId.
-// If the operation fails it returns the *Error error type.
-func (client *PartnerClient) Delete(ctx context.Context, partnerID string, options *PartnerDeleteOptions) (PartnerDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-02-01
+// partnerID - Id of the Partner
+// options - PartnerClientDeleteOptions contains the optional parameters for the PartnerClient.Delete method.
+func (client *PartnerClient) Delete(ctx context.Context, partnerID string, options *PartnerClientDeleteOptions) (PartnerClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, partnerID, options)
 	if err != nil {
-		return PartnerDeleteResponse{}, err
+		return PartnerClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PartnerDeleteResponse{}, err
+		return PartnerClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PartnerDeleteResponse{}, client.deleteHandleError(resp)
+		return PartnerClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return PartnerDeleteResponse{RawResponse: resp}, nil
+	return PartnerClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PartnerClient) deleteCreateRequest(ctx context.Context, partnerID string, options *PartnerDeleteOptions) (*policy.Request, error) {
+func (client *PartnerClient) deleteCreateRequest(ctx context.Context, partnerID string, options *PartnerClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ManagementPartner/partners/{partnerId}"
 	if partnerID == "" {
 		return nil, errors.New("parameter partnerID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partnerId}", url.PathEscape(partnerID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *PartnerClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get the management partner using the partnerId, objectId and tenantId.
-// If the operation fails it returns the *Error error type.
-func (client *PartnerClient) Get(ctx context.Context, partnerID string, options *PartnerGetOptions) (PartnerGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-02-01
+// partnerID - Id of the Partner
+// options - PartnerClientGetOptions contains the optional parameters for the PartnerClient.Get method.
+func (client *PartnerClient) Get(ctx context.Context, partnerID string, options *PartnerClientGetOptions) (PartnerClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, partnerID, options)
 	if err != nil {
-		return PartnerGetResponse{}, err
+		return PartnerClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PartnerGetResponse{}, err
+		return PartnerClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PartnerGetResponse{}, client.getHandleError(resp)
+		return PartnerClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PartnerClient) getCreateRequest(ctx context.Context, partnerID string, options *PartnerGetOptions) (*policy.Request, error) {
+func (client *PartnerClient) getCreateRequest(ctx context.Context, partnerID string, options *PartnerClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ManagementPartner/partners/{partnerId}"
 	if partnerID == "" {
 		return nil, errors.New("parameter partnerID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partnerId}", url.PathEscape(partnerID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PartnerClient) getHandleResponse(resp *http.Response) (PartnerGetResponse, error) {
-	result := PartnerGetResponse{RawResponse: resp}
+func (client *PartnerClient) getHandleResponse(resp *http.Response) (PartnerClientGetResponse, error) {
+	result := PartnerClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerResponse); err != nil {
-		return PartnerGetResponse{}, runtime.NewResponseError(err, resp)
+		return PartnerClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PartnerClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Update the management partner for the objectId and tenantId.
-// If the operation fails it returns the *Error error type.
-func (client *PartnerClient) Update(ctx context.Context, partnerID string, options *PartnerUpdateOptions) (PartnerUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-02-01
+// partnerID - Id of the Partner
+// options - PartnerClientUpdateOptions contains the optional parameters for the PartnerClient.Update method.
+func (client *PartnerClient) Update(ctx context.Context, partnerID string, options *PartnerClientUpdateOptions) (PartnerClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, partnerID, options)
 	if err != nil {
-		return PartnerUpdateResponse{}, err
+		return PartnerClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PartnerUpdateResponse{}, err
+		return PartnerClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PartnerUpdateResponse{}, client.updateHandleError(resp)
+		return PartnerClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PartnerClient) updateCreateRequest(ctx context.Context, partnerID string, options *PartnerUpdateOptions) (*policy.Request, error) {
+func (client *PartnerClient) updateCreateRequest(ctx context.Context, partnerID string, options *PartnerClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ManagementPartner/partners/{partnerId}"
 	if partnerID == "" {
 		return nil, errors.New("parameter partnerID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partnerId}", url.PathEscape(partnerID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // updateHandleResponse handles the Update response.
-func (client *PartnerClient) updateHandleResponse(resp *http.Response) (PartnerUpdateResponse, error) {
-	result := PartnerUpdateResponse{RawResponse: resp}
+func (client *PartnerClient) updateHandleResponse(resp *http.Response) (PartnerClientUpdateResponse, error) {
+	result := PartnerClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerResponse); err != nil {
-		return PartnerUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return PartnerClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *PartnerClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

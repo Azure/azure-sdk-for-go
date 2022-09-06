@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armconsumption
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,41 +25,75 @@ import (
 // ReservationsSummariesClient contains the methods for the ReservationsSummaries group.
 // Don't use this type directly, use NewReservationsSummariesClient() instead.
 type ReservationsSummariesClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewReservationsSummariesClient creates a new instance of ReservationsSummariesClient with the specified values.
-func NewReservationsSummariesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ReservationsSummariesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewReservationsSummariesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ReservationsSummariesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &ReservationsSummariesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &ReservationsSummariesClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
-// List - Lists the reservations summaries for the defined scope daily or monthly grain.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ReservationsSummariesClient) List(scope string, grain Datagrain, options *ReservationsSummariesListOptions) *ReservationsSummariesListPager {
-	return &ReservationsSummariesListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, scope, grain, options)
+// NewListPager - Lists the reservations summaries for the defined scope daily or monthly grain.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
+// resourceScope - The scope associated with reservations summaries operations. This includes '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}'
+// for BillingAccount scope (legacy), and
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for BillingProfile
+// scope (modern).
+// grain - Can be daily or monthly
+// options - ReservationsSummariesClientListOptions contains the optional parameters for the ReservationsSummariesClient.List
+// method.
+func (client *ReservationsSummariesClient) NewListPager(resourceScope string, grain Datagrain, options *ReservationsSummariesClientListOptions) *runtime.Pager[ReservationsSummariesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ReservationsSummariesClientListResponse]{
+		More: func(page ReservationsSummariesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReservationsSummariesListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReservationSummariesListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ReservationsSummariesClientListResponse) (ReservationsSummariesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceScope, grain, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReservationsSummariesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReservationsSummariesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReservationsSummariesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ReservationsSummariesClient) listCreateRequest(ctx context.Context, scope string, grain Datagrain, options *ReservationsSummariesListOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Consumption/reservationSummaries"
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+func (client *ReservationsSummariesClient) listCreateRequest(ctx context.Context, resourceScope string, grain Datagrain, options *ReservationsSummariesClientListOptions) (*policy.Request, error) {
+	urlPath := "/{resourceScope}/providers/Microsoft.Consumption/reservationSummaries"
+	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -82,54 +116,62 @@ func (client *ReservationsSummariesClient) listCreateRequest(ctx context.Context
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ReservationsSummariesClient) listHandleResponse(resp *http.Response) (ReservationsSummariesListResponse, error) {
-	result := ReservationsSummariesListResponse{RawResponse: resp}
+func (client *ReservationsSummariesClient) listHandleResponse(resp *http.Response) (ReservationsSummariesClientListResponse, error) {
+	result := ReservationsSummariesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationSummariesListResult); err != nil {
-		return ReservationsSummariesListResponse{}, runtime.NewResponseError(err, resp)
+		return ReservationsSummariesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *ReservationsSummariesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByReservationOrder - Lists the reservations summaries for daily or monthly grain.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ReservationsSummariesClient) ListByReservationOrder(reservationOrderID string, grain Datagrain, options *ReservationsSummariesListByReservationOrderOptions) *ReservationsSummariesListByReservationOrderPager {
-	return &ReservationsSummariesListByReservationOrderPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByReservationOrderCreateRequest(ctx, reservationOrderID, grain, options)
+// NewListByReservationOrderPager - Lists the reservations summaries for daily or monthly grain.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
+// reservationOrderID - Order Id of the reservation
+// grain - Can be daily or monthly
+// options - ReservationsSummariesClientListByReservationOrderOptions contains the optional parameters for the ReservationsSummariesClient.ListByReservationOrder
+// method.
+func (client *ReservationsSummariesClient) NewListByReservationOrderPager(reservationOrderID string, grain Datagrain, options *ReservationsSummariesClientListByReservationOrderOptions) *runtime.Pager[ReservationsSummariesClientListByReservationOrderResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ReservationsSummariesClientListByReservationOrderResponse]{
+		More: func(page ReservationsSummariesClientListByReservationOrderResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReservationsSummariesListByReservationOrderResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReservationSummariesListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ReservationsSummariesClientListByReservationOrderResponse) (ReservationsSummariesClientListByReservationOrderResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByReservationOrderCreateRequest(ctx, reservationOrderID, grain, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReservationsSummariesClientListByReservationOrderResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReservationsSummariesClientListByReservationOrderResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReservationsSummariesClientListByReservationOrderResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByReservationOrderHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByReservationOrderCreateRequest creates the ListByReservationOrder request.
-func (client *ReservationsSummariesClient) listByReservationOrderCreateRequest(ctx context.Context, reservationOrderID string, grain Datagrain, options *ReservationsSummariesListByReservationOrderOptions) (*policy.Request, error) {
+func (client *ReservationsSummariesClient) listByReservationOrderCreateRequest(ctx context.Context, reservationOrderID string, grain Datagrain, options *ReservationsSummariesClientListByReservationOrderOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationorders/{reservationOrderId}/providers/Microsoft.Consumption/reservationSummaries"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -140,48 +182,57 @@ func (client *ReservationsSummariesClient) listByReservationOrderCreateRequest(c
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByReservationOrderHandleResponse handles the ListByReservationOrder response.
-func (client *ReservationsSummariesClient) listByReservationOrderHandleResponse(resp *http.Response) (ReservationsSummariesListByReservationOrderResponse, error) {
-	result := ReservationsSummariesListByReservationOrderResponse{RawResponse: resp}
+func (client *ReservationsSummariesClient) listByReservationOrderHandleResponse(resp *http.Response) (ReservationsSummariesClientListByReservationOrderResponse, error) {
+	result := ReservationsSummariesClientListByReservationOrderResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationSummariesListResult); err != nil {
-		return ReservationsSummariesListByReservationOrderResponse{}, runtime.NewResponseError(err, resp)
+		return ReservationsSummariesClientListByReservationOrderResponse{}, err
 	}
 	return result, nil
 }
 
-// listByReservationOrderHandleError handles the ListByReservationOrder error response.
-func (client *ReservationsSummariesClient) listByReservationOrderHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByReservationOrderAndReservation - Lists the reservations summaries for daily or monthly grain.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ReservationsSummariesClient) ListByReservationOrderAndReservation(reservationOrderID string, reservationID string, grain Datagrain, options *ReservationsSummariesListByReservationOrderAndReservationOptions) *ReservationsSummariesListByReservationOrderAndReservationPager {
-	return &ReservationsSummariesListByReservationOrderAndReservationPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByReservationOrderAndReservationCreateRequest(ctx, reservationOrderID, reservationID, grain, options)
+// NewListByReservationOrderAndReservationPager - Lists the reservations summaries for daily or monthly grain.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
+// reservationOrderID - Order Id of the reservation
+// reservationID - Id of the reservation
+// grain - Can be daily or monthly
+// options - ReservationsSummariesClientListByReservationOrderAndReservationOptions contains the optional parameters for the
+// ReservationsSummariesClient.ListByReservationOrderAndReservation method.
+func (client *ReservationsSummariesClient) NewListByReservationOrderAndReservationPager(reservationOrderID string, reservationID string, grain Datagrain, options *ReservationsSummariesClientListByReservationOrderAndReservationOptions) *runtime.Pager[ReservationsSummariesClientListByReservationOrderAndReservationResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ReservationsSummariesClientListByReservationOrderAndReservationResponse]{
+		More: func(page ReservationsSummariesClientListByReservationOrderAndReservationResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ReservationsSummariesListByReservationOrderAndReservationResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ReservationSummariesListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *ReservationsSummariesClientListByReservationOrderAndReservationResponse) (ReservationsSummariesClientListByReservationOrderAndReservationResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByReservationOrderAndReservationCreateRequest(ctx, reservationOrderID, reservationID, grain, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ReservationsSummariesClientListByReservationOrderAndReservationResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ReservationsSummariesClientListByReservationOrderAndReservationResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ReservationsSummariesClientListByReservationOrderAndReservationResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByReservationOrderAndReservationHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByReservationOrderAndReservationCreateRequest creates the ListByReservationOrderAndReservation request.
-func (client *ReservationsSummariesClient) listByReservationOrderAndReservationCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, grain Datagrain, options *ReservationsSummariesListByReservationOrderAndReservationOptions) (*policy.Request, error) {
+func (client *ReservationsSummariesClient) listByReservationOrderAndReservationCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, grain Datagrain, options *ReservationsSummariesClientListByReservationOrderAndReservationOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/reservationorders/{reservationOrderId}/reservations/{reservationId}/providers/Microsoft.Consumption/reservationSummaries"
 	if reservationOrderID == "" {
 		return nil, errors.New("parameter reservationOrderID cannot be empty")
@@ -191,7 +242,7 @@ func (client *ReservationsSummariesClient) listByReservationOrderAndReservationC
 		return nil, errors.New("parameter reservationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reservationId}", url.PathEscape(reservationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -202,28 +253,15 @@ func (client *ReservationsSummariesClient) listByReservationOrderAndReservationC
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByReservationOrderAndReservationHandleResponse handles the ListByReservationOrderAndReservation response.
-func (client *ReservationsSummariesClient) listByReservationOrderAndReservationHandleResponse(resp *http.Response) (ReservationsSummariesListByReservationOrderAndReservationResponse, error) {
-	result := ReservationsSummariesListByReservationOrderAndReservationResponse{RawResponse: resp}
+func (client *ReservationsSummariesClient) listByReservationOrderAndReservationHandleResponse(resp *http.Response) (ReservationsSummariesClientListByReservationOrderAndReservationResponse, error) {
+	result := ReservationsSummariesClientListByReservationOrderAndReservationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationSummariesListResult); err != nil {
-		return ReservationsSummariesListByReservationOrderAndReservationResponse{}, runtime.NewResponseError(err, resp)
+		return ReservationsSummariesClientListByReservationOrderAndReservationResponse{}, err
 	}
 	return result, nil
-}
-
-// listByReservationOrderAndReservationHandleError handles the ListByReservationOrderAndReservation error response.
-func (client *ReservationsSummariesClient) listByReservationOrderAndReservationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

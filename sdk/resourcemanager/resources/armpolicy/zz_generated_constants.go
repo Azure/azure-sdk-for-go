@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package armpolicy
 
 const (
-	module  = "armpolicy"
-	version = "v0.1.1"
+	moduleName    = "armpolicy"
+	moduleVersion = "v0.6.0"
 )
 
 // AliasPathAttributes - The attributes of the token that the alias path is referring to.
@@ -29,11 +29,6 @@ func PossibleAliasPathAttributesValues() []AliasPathAttributes {
 		AliasPathAttributesModifiable,
 		AliasPathAttributesNone,
 	}
-}
-
-// ToPtr returns a *AliasPathAttributes pointing to the current value.
-func (c AliasPathAttributes) ToPtr() *AliasPathAttributes {
-	return &c
 }
 
 // AliasPathTokenType - The type of the token that the alias path is referring to.
@@ -72,11 +67,6 @@ func PossibleAliasPathTokenTypeValues() []AliasPathTokenType {
 	}
 }
 
-// ToPtr returns a *AliasPathTokenType pointing to the current value.
-func (c AliasPathTokenType) ToPtr() *AliasPathTokenType {
-	return &c
-}
-
 // AliasPatternType - The type of alias pattern
 type AliasPatternType string
 
@@ -93,11 +83,6 @@ func PossibleAliasPatternTypeValues() []AliasPatternType {
 		AliasPatternTypeNotSpecified,
 		AliasPatternTypeExtract,
 	}
-}
-
-// ToPtr returns a *AliasPatternType pointing to the current value.
-func (c AliasPatternType) ToPtr() *AliasPatternType {
-	return &c
 }
 
 // AliasType - The type of the alias.
@@ -121,11 +106,6 @@ func PossibleAliasTypeValues() []AliasType {
 	}
 }
 
-// ToPtr returns a *AliasType pointing to the current value.
-func (c AliasType) ToPtr() *AliasType {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -146,11 +126,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // EnforcementMode - The policy assignment enforcement mode. Possible values are Default and DoNotEnforce.
 type EnforcementMode string
 
@@ -169,16 +144,12 @@ func PossibleEnforcementModeValues() []EnforcementMode {
 	}
 }
 
-// ToPtr returns a *EnforcementMode pointing to the current value.
-func (c EnforcementMode) ToPtr() *EnforcementMode {
-	return &c
-}
-
 // ExemptionCategory - The policy exemption category. Possible values are Waiver and Mitigated.
 type ExemptionCategory string
 
 const (
-	// ExemptionCategoryMitigated - This category of exemptions usually means the mitigation actions have been applied to the scope.
+	// ExemptionCategoryMitigated - This category of exemptions usually means the mitigation actions have been applied to the
+	// scope.
 	ExemptionCategoryMitigated ExemptionCategory = "Mitigated"
 	// ExemptionCategoryWaiver - This category of exemptions usually means the scope is not applicable for the policy.
 	ExemptionCategoryWaiver ExemptionCategory = "Waiver"
@@ -190,11 +161,6 @@ func PossibleExemptionCategoryValues() []ExemptionCategory {
 		ExemptionCategoryMitigated,
 		ExemptionCategoryWaiver,
 	}
-}
-
-// ToPtr returns a *ExemptionCategory pointing to the current value.
-func (c ExemptionCategory) ToPtr() *ExemptionCategory {
-	return &c
 }
 
 // ParameterType - The data type of the parameter.
@@ -223,11 +189,6 @@ func PossibleParameterTypeValues() []ParameterType {
 	}
 }
 
-// ToPtr returns a *ParameterType pointing to the current value.
-func (c ParameterType) ToPtr() *ParameterType {
-	return &c
-}
-
 // PolicyType - The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom, and Static.
 type PolicyType string
 
@@ -248,12 +209,8 @@ func PossiblePolicyTypeValues() []PolicyType {
 	}
 }
 
-// ToPtr returns a *PolicyType pointing to the current value.
-func (c PolicyType) ToPtr() *PolicyType {
-	return &c
-}
-
-// ResourceIdentityType - The identity type. This is the only required field when adding a system or user assigned identity to a resource.
+// ResourceIdentityType - The identity type. This is the only required field when adding a system or user assigned identity
+// to a resource.
 type ResourceIdentityType string
 
 const (
@@ -261,7 +218,8 @@ const (
 	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
 	// ResourceIdentityTypeUserAssigned - Indicates that a system assigned identity is associated with the resource.
 	ResourceIdentityTypeUserAssigned ResourceIdentityType = "UserAssigned"
-	// ResourceIdentityTypeNone - Indicates that no identity is associated with the resource or that the existing identity should be removed.
+	// ResourceIdentityTypeNone - Indicates that no identity is associated with the resource or that the existing identity should
+	// be removed.
 	ResourceIdentityTypeNone ResourceIdentityType = "None"
 )
 
@@ -272,9 +230,4 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 		ResourceIdentityTypeUserAssigned,
 		ResourceIdentityTypeNone,
 	}
-}
-
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
 }

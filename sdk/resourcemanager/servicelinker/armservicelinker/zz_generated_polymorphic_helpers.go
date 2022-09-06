@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -36,40 +36,64 @@ func unmarshalAuthInfoBaseClassification(rawMsg json.RawMessage) (AuthInfoBaseCl
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalAuthInfoBaseClassificationArray(rawMsg json.RawMessage) ([]AuthInfoBaseClassification, error) {
+func unmarshalAzureResourcePropertiesBaseClassification(rawMsg json.RawMessage) (AzureResourcePropertiesBaseClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	fArray := make([]AuthInfoBaseClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalAuthInfoBaseClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
+	var b AzureResourcePropertiesBaseClassification
+	switch m["type"] {
+	case string(AzureResourceTypeKeyVault):
+		b = &AzureKeyVaultProperties{}
+	default:
+		b = &AzureResourcePropertiesBase{}
 	}
-	return fArray, nil
+	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalAuthInfoBaseClassificationMap(rawMsg json.RawMessage) (map[string]AuthInfoBaseClassification, error) {
+func unmarshalSecretInfoBaseClassification(rawMsg json.RawMessage) (SecretInfoBaseClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	fMap := make(map[string]AuthInfoBaseClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalAuthInfoBaseClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
+	var b SecretInfoBaseClassification
+	switch m["secretType"] {
+	case string(SecretTypeKeyVaultSecretReference):
+		b = &KeyVaultSecretReferenceSecretInfo{}
+	case string(SecretTypeKeyVaultSecretURI):
+		b = &KeyVaultSecretURISecretInfo{}
+	case string(SecretTypeRawValue):
+		b = &ValueSecretInfo{}
+	default:
+		b = &SecretInfoBase{}
 	}
-	return fMap, nil
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalTargetServiceBaseClassification(rawMsg json.RawMessage) (TargetServiceBaseClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b TargetServiceBaseClassification
+	switch m["type"] {
+	case string(TargetServiceTypeAzureResource):
+		b = &AzureResource{}
+	case string(TargetServiceTypeConfluentBootstrapServer):
+		b = &ConfluentBootstrapServer{}
+	case string(TargetServiceTypeConfluentSchemaRegistry):
+		b = &ConfluentSchemaRegistry{}
+	default:
+		b = &TargetServiceBase{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
 }

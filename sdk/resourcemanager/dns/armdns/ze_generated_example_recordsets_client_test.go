@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,172 +17,146 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns"
 )
 
-// x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchARecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchARecordset.json
 func ExampleRecordSetsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdns.NewRecordSetsClient("<subscription-id>", cred, nil)
+	client, err := armdns.NewRecordSetsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<zone-name>",
-		"<relative-record-set-name>",
+		"rg1",
+		"zone1",
+		"record1",
 		armdns.RecordTypeA,
 		armdns.RecordSet{
 			Properties: &armdns.RecordSetProperties{
 				Metadata: map[string]*string{
-					"key2": to.StringPtr("value2"),
+					"key2": to.Ptr("value2"),
 				},
 			},
 		},
-		&armdns.RecordSetsUpdateOptions{IfMatch: nil})
+		&armdns.RecordSetsClientUpdateOptions{IfMatch: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("RecordSet.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateARecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateARecordset.json
 func ExampleRecordSetsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdns.NewRecordSetsClient("<subscription-id>", cred, nil)
+	client, err := armdns.NewRecordSetsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<zone-name>",
-		"<relative-record-set-name>",
+		"rg1",
+		"zone1",
+		"record1",
 		armdns.RecordTypeA,
 		armdns.RecordSet{
 			Properties: &armdns.RecordSetProperties{
 				ARecords: []*armdns.ARecord{
 					{
-						IPv4Address: to.StringPtr("<ipv4address>"),
+						IPv4Address: to.Ptr("127.0.0.1"),
 					}},
-				TTL: to.Int64Ptr(3600),
+				TTL: to.Ptr[int64](3600),
 				Metadata: map[string]*string{
-					"key1": to.StringPtr("value1"),
+					"key1": to.Ptr("value1"),
 				},
 			},
 		},
-		&armdns.RecordSetsCreateOrUpdateOptions{IfMatch: nil,
+		&armdns.RecordSetsClientCreateOrUpdateOptions{IfMatch: nil,
 			IfNoneMatch: nil,
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("RecordSet.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/DeleteARecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/DeleteARecordset.json
 func ExampleRecordSetsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdns.NewRecordSetsClient("<subscription-id>", cred, nil)
-	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<zone-name>",
-		"<relative-record-set-name>",
-		armdns.RecordTypeA,
-		&armdns.RecordSetsDeleteOptions{IfMatch: nil})
+	client, err := armdns.NewRecordSetsClient("subid", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = client.Delete(ctx,
+		"rg1",
+		"zone1",
+		"record1",
+		armdns.RecordTypeA,
+		&armdns.RecordSetsClientDeleteOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetARecordset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetARecordset.json
 func ExampleRecordSetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdns.NewRecordSetsClient("<subscription-id>", cred, nil)
+	client, err := armdns.NewRecordSetsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<zone-name>",
-		"<relative-record-set-name>",
+		"rg1",
+		"zone1",
+		"record1",
 		armdns.RecordTypeA,
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("RecordSet.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListARecordset.json
-func ExampleRecordSetsClient_ListByType() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListARecordset.json
+func ExampleRecordSetsClient_NewListByTypePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdns.NewRecordSetsClient("<subscription-id>", cred, nil)
-	pager := client.ListByType("<resource-group-name>",
-		"<zone-name>",
+	client, err := armdns.NewRecordSetsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByTypePager("rg1",
+		"zone1",
 		armdns.RecordTypeA,
-		&armdns.RecordSetsListByTypeOptions{Top: nil,
+		&armdns.RecordSetsClientListByTypeOptions{Top: nil,
 			Recordsetnamesuffix: nil,
 		})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("RecordSet.ID: %s\n", *v.ID)
-		}
-	}
-}
-
-// x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListRecordSetsByZone.json
-func ExampleRecordSetsClient_ListByDNSZone() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armdns.NewRecordSetsClient("<subscription-id>", cred, nil)
-	pager := client.ListByDNSZone("<resource-group-name>",
-		"<zone-name>",
-		&armdns.RecordSetsListByDNSZoneOptions{Top: nil,
-			Recordsetnamesuffix: nil,
-		})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("RecordSet.ID: %s\n", *v.ID)
-		}
-	}
-}
-
-// x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListRecordSetsByZone.json
-func ExampleRecordSetsClient_ListAllByDNSZone() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armdns.NewRecordSetsClient("<subscription-id>", cred, nil)
-	pager := client.ListAllByDNSZone("<resource-group-name>",
-		"<zone-name>",
-		&armdns.RecordSetsListAllByDNSZoneOptions{Top: nil,
-			RecordSetNameSuffix: nil,
-		})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("RecordSet.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

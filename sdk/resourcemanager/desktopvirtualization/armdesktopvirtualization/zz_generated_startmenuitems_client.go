@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armdesktopvirtualization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,39 +25,71 @@ import (
 // StartMenuItemsClient contains the methods for the StartMenuItems group.
 // Don't use this type directly, use NewStartMenuItemsClient() instead.
 type StartMenuItemsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewStartMenuItemsClient creates a new instance of StartMenuItemsClient with the specified values.
-func NewStartMenuItemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StartMenuItemsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewStartMenuItemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StartMenuItemsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &StartMenuItemsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &StartMenuItemsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
-// List - List start menu items in the given application group.
-// If the operation fails it returns the *CloudError error type.
-func (client *StartMenuItemsClient) List(resourceGroupName string, applicationGroupName string, options *StartMenuItemsListOptions) *StartMenuItemsListPager {
-	return &StartMenuItemsListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, applicationGroupName, options)
+// NewListPager - List start menu items in the given application group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-10-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// applicationGroupName - The name of the application group
+// options - StartMenuItemsClientListOptions contains the optional parameters for the StartMenuItemsClient.List method.
+func (client *StartMenuItemsClient) NewListPager(resourceGroupName string, applicationGroupName string, options *StartMenuItemsClientListOptions) *runtime.Pager[StartMenuItemsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[StartMenuItemsClientListResponse]{
+		More: func(page StartMenuItemsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp StartMenuItemsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.StartMenuItemList.NextLink)
+		Fetcher: func(ctx context.Context, page *StartMenuItemsClientListResponse) (StartMenuItemsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, applicationGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return StartMenuItemsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return StartMenuItemsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return StartMenuItemsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *StartMenuItemsClient) listCreateRequest(ctx context.Context, resourceGroupName string, applicationGroupName string, options *StartMenuItemsListOptions) (*policy.Request, error) {
+func (client *StartMenuItemsClient) listCreateRequest(ctx context.Context, resourceGroupName string, applicationGroupName string, options *StartMenuItemsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}/startMenuItems"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -71,35 +103,22 @@ func (client *StartMenuItemsClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter applicationGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGroupName}", url.PathEscape(applicationGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-03-preview")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *StartMenuItemsClient) listHandleResponse(resp *http.Response) (StartMenuItemsListResponse, error) {
-	result := StartMenuItemsListResponse{RawResponse: resp}
+func (client *StartMenuItemsClient) listHandleResponse(resp *http.Response) (StartMenuItemsClientListResponse, error) {
+	result := StartMenuItemsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StartMenuItemList); err != nil {
-		return StartMenuItemsListResponse{}, runtime.NewResponseError(err, resp)
+		return StartMenuItemsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *StartMenuItemsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

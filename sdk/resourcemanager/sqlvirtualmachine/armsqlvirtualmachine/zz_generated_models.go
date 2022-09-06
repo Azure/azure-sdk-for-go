@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,16 +8,48 @@
 
 package armsqlvirtualmachine
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-)
+import "time"
 
 // AdditionalFeaturesServerConfigurations - Additional SQL Server feature settings.
 type AdditionalFeaturesServerConfigurations struct {
 	// Enable or disable R services (SQL 2016 onwards).
 	IsRServicesEnabled *bool `json:"isRServicesEnabled,omitempty"`
+}
+
+// AgConfiguration - Availability group configuration.
+type AgConfiguration struct {
+	// READ-ONLY; Replica configurations.
+	Replicas []*AgReplica `json:"replicas,omitempty" azure:"ro"`
+}
+
+// AgReplica - Availability group replica configuration.
+type AgReplica struct {
+	// Replica commit mode in availability group.
+	Commit *Commit `json:"commit,omitempty"`
+
+	// Replica failover mode in availability group.
+	Failover *Failover `json:"failover,omitempty"`
+
+	// Replica readable secondary mode in availability group.
+	ReadableSecondary *ReadableSecondary `json:"readableSecondary,omitempty"`
+
+	// Replica Role in availability group.
+	Role *Role `json:"role,omitempty"`
+
+	// Sql VirtualMachine Instance Id.
+	SQLVirtualMachineInstanceID *string `json:"sqlVirtualMachineInstanceId,omitempty"`
+}
+
+// AssessmentSettings - Configure assessment for databases in your SQL virtual machine.
+type AssessmentSettings struct {
+	// Enable or disable assessment feature on SQL virtual machine.
+	Enable *bool `json:"enable,omitempty"`
+
+	// Run assessment immediately on SQL virtual machine.
+	RunImmediately *bool `json:"runImmediately,omitempty"`
+
+	// Schedule for Assessment.
+	Schedule *Schedule `json:"schedule,omitempty"`
 }
 
 // AutoBackupSettings - Configure backups for databases in your SQL virtual machine.
@@ -27,6 +59,9 @@ type AutoBackupSettings struct {
 
 	// Include or exclude system databases from auto backup.
 	BackupSystemDbs *bool `json:"backupSystemDbs,omitempty"`
+
+	// Days of the week for the backups when FullBackupFrequency is set to Weekly.
+	DaysOfWeek []*AutoBackupDaysOfWeek `json:"daysOfWeek,omitempty"`
 
 	// Enable or disable autobackup on SQL virtual machine.
 	Enable *bool `json:"enable,omitempty"`
@@ -49,7 +84,7 @@ type AutoBackupSettings struct {
 	// Password for encryption on backup.
 	Password *string `json:"password,omitempty"`
 
-	// Retention period of backup: 1-30 days.
+	// Retention period of backup: 1-90 days.
 	RetentionPeriod *int32 `json:"retentionPeriod,omitempty"`
 
 	// Storage account key where backup will be taken to.
@@ -57,6 +92,9 @@ type AutoBackupSettings struct {
 
 	// Storage account url where backup will be taken to.
 	StorageAccountURL *string `json:"storageAccountUrl,omitempty"`
+
+	// Storage container name where backup will be taken to.
+	StorageContainerName *string `json:"storageContainerName,omitempty"`
 }
 
 // AutoPatchingSettings - Set a patching window during which Windows and SQL patches will be applied.
@@ -76,17 +114,20 @@ type AutoPatchingSettings struct {
 
 // AvailabilityGroupListener - A SQL Server availability group listener.
 type AvailabilityGroupListener struct {
-	ProxyResource
 	// Resource properties.
 	Properties *AvailabilityGroupListenerProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type AvailabilityGroupListener.
-func (a AvailabilityGroupListener) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // AvailabilityGroupListenerListResult - A list of availability group listeners.
@@ -98,16 +139,11 @@ type AvailabilityGroupListenerListResult struct {
 	Value []*AvailabilityGroupListener `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvailabilityGroupListenerListResult.
-func (a AvailabilityGroupListenerListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // AvailabilityGroupListenerProperties - The properties of an availability group listener.
 type AvailabilityGroupListenerProperties struct {
+	// Availability Group configuration.
+	AvailabilityGroupConfiguration *AgConfiguration `json:"availabilityGroupConfiguration,omitempty"`
+
 	// Name of the availability group.
 	AvailabilityGroupName *string `json:"availabilityGroupName,omitempty"`
 
@@ -124,34 +160,127 @@ type AvailabilityGroupListenerProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvailabilityGroupListenerProperties.
-func (a AvailabilityGroupListenerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "availabilityGroupName", a.AvailabilityGroupName)
-	populate(objectMap, "createDefaultAvailabilityGroupIfNotExist", a.CreateDefaultAvailabilityGroupIfNotExist)
-	populate(objectMap, "loadBalancerConfigurations", a.LoadBalancerConfigurations)
-	populate(objectMap, "port", a.Port)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	return json.Marshal(objectMap)
+// AvailabilityGroupListenersClientBeginCreateOrUpdateOptions contains the optional parameters for the AvailabilityGroupListenersClient.BeginCreateOrUpdate
+// method.
+type AvailabilityGroupListenersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// AvailabilityGroupListenersBeginCreateOrUpdateOptions contains the optional parameters for the AvailabilityGroupListeners.BeginCreateOrUpdate method.
-type AvailabilityGroupListenersBeginCreateOrUpdateOptions struct {
+// AvailabilityGroupListenersClientBeginDeleteOptions contains the optional parameters for the AvailabilityGroupListenersClient.BeginDelete
+// method.
+type AvailabilityGroupListenersClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AvailabilityGroupListenersClientGetOptions contains the optional parameters for the AvailabilityGroupListenersClient.Get
+// method.
+type AvailabilityGroupListenersClientGetOptions struct {
+	// The child resources to include in the response.
+	Expand *string
+}
+
+// AvailabilityGroupListenersClientListByGroupOptions contains the optional parameters for the AvailabilityGroupListenersClient.ListByGroup
+// method.
+type AvailabilityGroupListenersClientListByGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AvailabilityGroupListenersBeginDeleteOptions contains the optional parameters for the AvailabilityGroupListeners.BeginDelete method.
-type AvailabilityGroupListenersBeginDeleteOptions struct {
+// Group - A SQL virtual machine group.
+type Group struct {
+	// REQUIRED; Resource location.
+	Location *string `json:"location,omitempty"`
+
+	// Resource properties.
+	Properties *GroupProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GroupListResult - A list of SQL virtual machine groups.
+type GroupListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; Array of results.
+	Value []*Group `json:"value,omitempty" azure:"ro"`
+}
+
+// GroupProperties - The properties of a SQL virtual machine group.
+type GroupProperties struct {
+	// SQL image offer. Examples may include SQL2016-WS2016, SQL2017-WS2016.
+	SQLImageOffer *string `json:"sqlImageOffer,omitempty"`
+
+	// SQL image sku.
+	SQLImageSKU *SQLVMGroupImageSKU `json:"sqlImageSku,omitempty"`
+
+	// Cluster Active Directory domain profile.
+	WsfcDomainProfile *WsfcDomainProfile `json:"wsfcDomainProfile,omitempty"`
+
+	// READ-ONLY; Cluster type.
+	ClusterConfiguration *ClusterConfiguration `json:"clusterConfiguration,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of cluster manager: Windows Server Failover Cluster (WSFC), implied by the scale type of the group and
+	// the OS type.
+	ClusterManagerType *ClusterManagerType `json:"clusterManagerType,omitempty" azure:"ro"`
+
+	// READ-ONLY; Provisioning state to track the async operation status.
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Scale type.
+	ScaleType *ScaleType `json:"scaleType,omitempty" azure:"ro"`
+}
+
+// GroupUpdate - An update to a SQL virtual machine group.
+type GroupUpdate struct {
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// GroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the GroupsClient.BeginCreateOrUpdate method.
+type GroupsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GroupsClientBeginDeleteOptions contains the optional parameters for the GroupsClient.BeginDelete method.
+type GroupsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GroupsClientBeginUpdateOptions contains the optional parameters for the GroupsClient.BeginUpdate method.
+type GroupsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GroupsClientGetOptions contains the optional parameters for the GroupsClient.Get method.
+type GroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AvailabilityGroupListenersGetOptions contains the optional parameters for the AvailabilityGroupListeners.Get method.
-type AvailabilityGroupListenersGetOptions struct {
+// GroupsClientListByResourceGroupOptions contains the optional parameters for the GroupsClient.ListByResourceGroup method.
+type GroupsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AvailabilityGroupListenersListByGroupOptions contains the optional parameters for the AvailabilityGroupListeners.ListByGroup method.
-type AvailabilityGroupListenersListByGroupOptions struct {
+// GroupsClientListOptions contains the optional parameters for the GroupsClient.List method.
+type GroupsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -173,6 +302,15 @@ type KeyVaultCredentialSettings struct {
 	ServicePrincipalSecret *string `json:"servicePrincipalSecret,omitempty"`
 }
 
+// ListResult - A list of SQL virtual machines.
+type ListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; Array of results.
+	Value []*SQLVirtualMachine `json:"value,omitempty" azure:"ro"`
+}
+
 // LoadBalancerConfiguration - A load balancer configuration for an availability group listener.
 type LoadBalancerConfiguration struct {
 	// Resource id of the load balancer.
@@ -191,17 +329,6 @@ type LoadBalancerConfiguration struct {
 	SQLVirtualMachineInstances []*string `json:"sqlVirtualMachineInstances,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LoadBalancerConfiguration.
-func (l LoadBalancerConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "loadBalancerResourceId", l.LoadBalancerResourceID)
-	populate(objectMap, "privateIpAddress", l.PrivateIPAddress)
-	populate(objectMap, "probePort", l.ProbePort)
-	populate(objectMap, "publicIpAddressResourceId", l.PublicIPAddressResourceID)
-	populate(objectMap, "sqlVirtualMachineInstances", l.SQLVirtualMachineInstances)
-	return json.Marshal(objectMap)
-}
-
 // Operation - SQL REST API operation definition.
 type Operation struct {
 	// READ-ONLY; The localized display information for this particular operation / action.
@@ -214,17 +341,7 @@ type Operation struct {
 	Origin *OperationOrigin `json:"origin,omitempty" azure:"ro"`
 
 	// READ-ONLY; Additional descriptions for the operation.
-	Properties map[string]map[string]interface{} `json:"properties,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Operation.
-func (o Operation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "display", o.Display)
-	populate(objectMap, "name", o.Name)
-	populate(objectMap, "origin", o.Origin)
-	populate(objectMap, "properties", o.Properties)
-	return json.Marshal(objectMap)
+	Properties map[string]interface{} `json:"properties,omitempty" azure:"ro"`
 }
 
 // OperationDisplay - Display metadata associated with the operation.
@@ -251,16 +368,8 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -273,233 +382,11 @@ type PrivateIPAddress struct {
 	SubnetResourceID *string `json:"subnetResourceId,omitempty"`
 }
 
-// ProxyResource - ARM proxy resource.
-type ProxyResource struct {
-	Resource
-}
+// Properties - The SQL virtual machine properties.
+type Properties struct {
+	// Assessment Settings.
+	AssessmentSettings *AssessmentSettings `json:"assessmentSettings,omitempty"`
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
-}
-
-// Resource - ARM resource.
-type Resource struct {
-	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
-// ResourceIdentity - Azure Active Directory identity configuration for a resource.
-type ResourceIdentity struct {
-	// The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal for the resource.
-	Type *IdentityType `json:"type,omitempty"`
-
-	// READ-ONLY; The Azure Active Directory principal id.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The Azure Active Directory tenant id.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
-}
-
-// SQLConnectivityUpdateSettings - Set the access level and network port settings for SQL Server.
-type SQLConnectivityUpdateSettings struct {
-	// SQL Server connectivity option.
-	ConnectivityType *ConnectivityType `json:"connectivityType,omitempty"`
-
-	// SQL Server port.
-	Port *int32 `json:"port,omitempty"`
-
-	// SQL Server sysadmin login password.
-	SQLAuthUpdatePassword *string `json:"sqlAuthUpdatePassword,omitempty"`
-
-	// SQL Server sysadmin login to create.
-	SQLAuthUpdateUserName *string `json:"sqlAuthUpdateUserName,omitempty"`
-}
-
-// SQLStorageSettings - Set disk storage settings for SQL Server.
-type SQLStorageSettings struct {
-	// SQL Server default file path
-	DefaultFilePath *string `json:"defaultFilePath,omitempty"`
-
-	// Logical Unit Numbers for the disks.
-	Luns []*int32 `json:"luns,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLStorageSettings.
-func (s SQLStorageSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "defaultFilePath", s.DefaultFilePath)
-	populate(objectMap, "luns", s.Luns)
-	return json.Marshal(objectMap)
-}
-
-// SQLStorageUpdateSettings - Set disk storage settings for SQL Server.
-type SQLStorageUpdateSettings struct {
-	// Disk configuration to apply to SQL Server.
-	DiskConfigurationType *DiskConfigurationType `json:"diskConfigurationType,omitempty"`
-
-	// Virtual machine disk count.
-	DiskCount *int32 `json:"diskCount,omitempty"`
-
-	// Device id of the first disk to be updated.
-	StartingDeviceID *int32 `json:"startingDeviceId,omitempty"`
-}
-
-// SQLVirtualMachine - A SQL virtual machine.
-type SQLVirtualMachine struct {
-	TrackedResource
-	// Azure Active Directory identity of the server.
-	Identity *ResourceIdentity `json:"identity,omitempty"`
-
-	// Resource properties.
-	Properties *SQLVirtualMachineProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLVirtualMachine.
-func (s SQLVirtualMachine) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "identity", s.Identity)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
-}
-
-// SQLVirtualMachineGroup - A SQL virtual machine group.
-type SQLVirtualMachineGroup struct {
-	TrackedResource
-	// Resource properties.
-	Properties *SQLVirtualMachineGroupProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLVirtualMachineGroup.
-func (s SQLVirtualMachineGroup) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
-}
-
-// SQLVirtualMachineGroupListResult - A list of SQL virtual machine groups.
-type SQLVirtualMachineGroupListResult struct {
-	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; Array of results.
-	Value []*SQLVirtualMachineGroup `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLVirtualMachineGroupListResult.
-func (s SQLVirtualMachineGroupListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
-// SQLVirtualMachineGroupProperties - The properties of a SQL virtual machine group.
-type SQLVirtualMachineGroupProperties struct {
-	// SQL image offer. Examples may include SQL2016-WS2016, SQL2017-WS2016.
-	SQLImageOffer *string `json:"sqlImageOffer,omitempty"`
-
-	// SQL image sku.
-	SQLImageSKU *SQLVMGroupImageSKU `json:"sqlImageSku,omitempty"`
-
-	// Cluster Active Directory domain profile.
-	WsfcDomainProfile *WsfcDomainProfile `json:"wsfcDomainProfile,omitempty"`
-
-	// READ-ONLY; Cluster type.
-	ClusterConfiguration *ClusterConfiguration `json:"clusterConfiguration,omitempty" azure:"ro"`
-
-	// READ-ONLY; Type of cluster manager: Windows Server Failover Cluster (WSFC), implied by the scale type of the group and the OS type.
-	ClusterManagerType *ClusterManagerType `json:"clusterManagerType,omitempty" azure:"ro"`
-
-	// READ-ONLY; Provisioning state to track the async operation status.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; Scale type.
-	ScaleType *ScaleType `json:"scaleType,omitempty" azure:"ro"`
-}
-
-// SQLVirtualMachineGroupUpdate - An update to a SQL virtual machine group.
-type SQLVirtualMachineGroupUpdate struct {
-	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLVirtualMachineGroupUpdate.
-func (s SQLVirtualMachineGroupUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", s.Tags)
-	return json.Marshal(objectMap)
-}
-
-// SQLVirtualMachineGroupsBeginCreateOrUpdateOptions contains the optional parameters for the SQLVirtualMachineGroups.BeginCreateOrUpdate method.
-type SQLVirtualMachineGroupsBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SQLVirtualMachineGroupsBeginDeleteOptions contains the optional parameters for the SQLVirtualMachineGroups.BeginDelete method.
-type SQLVirtualMachineGroupsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SQLVirtualMachineGroupsBeginUpdateOptions contains the optional parameters for the SQLVirtualMachineGroups.BeginUpdate method.
-type SQLVirtualMachineGroupsBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SQLVirtualMachineGroupsGetOptions contains the optional parameters for the SQLVirtualMachineGroups.Get method.
-type SQLVirtualMachineGroupsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SQLVirtualMachineGroupsListByResourceGroupOptions contains the optional parameters for the SQLVirtualMachineGroups.ListByResourceGroup method.
-type SQLVirtualMachineGroupsListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SQLVirtualMachineGroupsListOptions contains the optional parameters for the SQLVirtualMachineGroups.List method.
-type SQLVirtualMachineGroupsListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// SQLVirtualMachineListResult - A list of SQL virtual machines.
-type SQLVirtualMachineListResult struct {
-	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; Array of results.
-	Value []*SQLVirtualMachine `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLVirtualMachineListResult.
-func (s SQLVirtualMachineListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
-// SQLVirtualMachineProperties - The SQL virtual machine properties.
-type SQLVirtualMachineProperties struct {
 	// Auto backup settings for SQL Server.
 	AutoBackupSettings *AutoBackupSettings `json:"autoBackupSettings,omitempty"`
 
@@ -540,52 +427,202 @@ type SQLVirtualMachineProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// SQLVirtualMachineUpdate - An update to a SQL virtual machine.
-type SQLVirtualMachineUpdate struct {
+// ProxyResource - ARM proxy resource.
+type ProxyResource struct {
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// Resource - ARM resource.
+type Resource struct {
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ResourceIdentity - Azure Active Directory identity configuration for a resource.
+type ResourceIdentity struct {
+	// The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal
+	// for the resource.
+	Type *IdentityType `json:"type,omitempty"`
+
+	// READ-ONLY; The Azure Active Directory principal id.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Azure Active Directory tenant id.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
+// SQLConnectivityUpdateSettings - Set the access level and network port settings for SQL Server.
+type SQLConnectivityUpdateSettings struct {
+	// SQL Server connectivity option.
+	ConnectivityType *ConnectivityType `json:"connectivityType,omitempty"`
+
+	// SQL Server port.
+	Port *int32 `json:"port,omitempty"`
+
+	// SQL Server sysadmin login password.
+	SQLAuthUpdatePassword *string `json:"sqlAuthUpdatePassword,omitempty"`
+
+	// SQL Server sysadmin login to create.
+	SQLAuthUpdateUserName *string `json:"sqlAuthUpdateUserName,omitempty"`
+}
+
+// SQLInstanceSettings - Set the server/instance-level settings for SQL Server.
+type SQLInstanceSettings struct {
+	// SQL Server Collation.
+	Collation *string `json:"collation,omitempty"`
+
+	// SQL Server Optimize for Adhoc workloads.
+	IsOptimizeForAdHocWorkloadsEnabled *bool `json:"isOptimizeForAdHocWorkloadsEnabled,omitempty"`
+
+	// SQL Server MAXDOP.
+	MaxDop *int32 `json:"maxDop,omitempty"`
+
+	// SQL Server maximum memory.
+	MaxServerMemoryMB *int32 `json:"maxServerMemoryMB,omitempty"`
+
+	// SQL Server minimum memory.
+	MinServerMemoryMB *int32 `json:"minServerMemoryMB,omitempty"`
+}
+
+// SQLStorageSettings - Set disk storage settings for SQL Server.
+type SQLStorageSettings struct {
+	// SQL Server default file path
+	DefaultFilePath *string `json:"defaultFilePath,omitempty"`
+
+	// Logical Unit Numbers for the disks.
+	Luns []*int32 `json:"luns,omitempty"`
+}
+
+// SQLStorageUpdateSettings - Set disk storage settings for SQL Server.
+type SQLStorageUpdateSettings struct {
+	// Disk configuration to apply to SQL Server.
+	DiskConfigurationType *DiskConfigurationType `json:"diskConfigurationType,omitempty"`
+
+	// Virtual machine disk count.
+	DiskCount *int32 `json:"diskCount,omitempty"`
+
+	// Device id of the first disk to be updated.
+	StartingDeviceID *int32 `json:"startingDeviceId,omitempty"`
+}
+
+type SQLTempDbSettings struct {
+	// SQL Server default file count
+	DataFileCount *int32 `json:"dataFileCount,omitempty"`
+
+	// SQL Server default file size
+	DataFileSize *int32 `json:"dataFileSize,omitempty"`
+
+	// SQL Server default file autoGrowth size
+	DataGrowth *int32 `json:"dataGrowth,omitempty"`
+
+	// SQL Server default file path
+	DefaultFilePath *string `json:"defaultFilePath,omitempty"`
+
+	// SQL Server default file size
+	LogFileSize *int32 `json:"logFileSize,omitempty"`
+
+	// SQL Server default file autoGrowth size
+	LogGrowth *int32 `json:"logGrowth,omitempty"`
+
+	// Logical Unit Numbers for the disks.
+	Luns []*int32 `json:"luns,omitempty"`
+}
+
+// SQLVirtualMachine - A SQL virtual machine.
+type SQLVirtualMachine struct {
+	// REQUIRED; Resource location.
+	Location *string `json:"location,omitempty"`
+
+	// Azure Active Directory identity of the server.
+	Identity *ResourceIdentity `json:"identity,omitempty"`
+
+	// Resource properties.
+	Properties *Properties `json:"properties,omitempty"`
+
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SQLVirtualMachineUpdate.
-func (s SQLVirtualMachineUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", s.Tags)
-	return json.Marshal(objectMap)
+// SQLVirtualMachinesClientBeginCreateOrUpdateOptions contains the optional parameters for the SQLVirtualMachinesClient.BeginCreateOrUpdate
+// method.
+type SQLVirtualMachinesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// SQLVirtualMachinesBeginCreateOrUpdateOptions contains the optional parameters for the SQLVirtualMachines.BeginCreateOrUpdate method.
-type SQLVirtualMachinesBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+// SQLVirtualMachinesClientBeginDeleteOptions contains the optional parameters for the SQLVirtualMachinesClient.BeginDelete
+// method.
+type SQLVirtualMachinesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// SQLVirtualMachinesBeginDeleteOptions contains the optional parameters for the SQLVirtualMachines.BeginDelete method.
-type SQLVirtualMachinesBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+// SQLVirtualMachinesClientBeginRedeployOptions contains the optional parameters for the SQLVirtualMachinesClient.BeginRedeploy
+// method.
+type SQLVirtualMachinesClientBeginRedeployOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// SQLVirtualMachinesBeginUpdateOptions contains the optional parameters for the SQLVirtualMachines.BeginUpdate method.
-type SQLVirtualMachinesBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+// SQLVirtualMachinesClientBeginStartAssessmentOptions contains the optional parameters for the SQLVirtualMachinesClient.BeginStartAssessment
+// method.
+type SQLVirtualMachinesClientBeginStartAssessmentOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// SQLVirtualMachinesGetOptions contains the optional parameters for the SQLVirtualMachines.Get method.
-type SQLVirtualMachinesGetOptions struct {
+// SQLVirtualMachinesClientBeginUpdateOptions contains the optional parameters for the SQLVirtualMachinesClient.BeginUpdate
+// method.
+type SQLVirtualMachinesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SQLVirtualMachinesClientGetOptions contains the optional parameters for the SQLVirtualMachinesClient.Get method.
+type SQLVirtualMachinesClientGetOptions struct {
 	// The child resources to include in the response.
 	Expand *string
 }
 
-// SQLVirtualMachinesListByResourceGroupOptions contains the optional parameters for the SQLVirtualMachines.ListByResourceGroup method.
-type SQLVirtualMachinesListByResourceGroupOptions struct {
+// SQLVirtualMachinesClientListByResourceGroupOptions contains the optional parameters for the SQLVirtualMachinesClient.ListByResourceGroup
+// method.
+type SQLVirtualMachinesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLVirtualMachinesListBySQLVMGroupOptions contains the optional parameters for the SQLVirtualMachines.ListBySQLVMGroup method.
-type SQLVirtualMachinesListBySQLVMGroupOptions struct {
+// SQLVirtualMachinesClientListBySQLVMGroupOptions contains the optional parameters for the SQLVirtualMachinesClient.ListBySQLVMGroup
+// method.
+type SQLVirtualMachinesClientListBySQLVMGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SQLVirtualMachinesListOptions contains the optional parameters for the SQLVirtualMachines.List method.
-type SQLVirtualMachinesListOptions struct {
+// SQLVirtualMachinesClientListOptions contains the optional parameters for the SQLVirtualMachinesClient.List method.
+type SQLVirtualMachinesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -595,6 +632,24 @@ type SQLWorkloadTypeUpdateSettings struct {
 	SQLWorkloadType *SQLWorkloadType `json:"sqlWorkloadType,omitempty"`
 }
 
+type Schedule struct {
+	// Day of the week to run assessment.
+	DayOfWeek *AssessmentDayOfWeek `json:"dayOfWeek,omitempty"`
+
+	// Enable or disable assessment schedule on SQL virtual machine.
+	Enable *bool `json:"enable,omitempty"`
+
+	// Occurrence of the DayOfWeek day within a month to schedule assessment. Takes values: 1,2,3,4 and -1. Use -1 for last DayOfWeek
+	// day of the month
+	MonthlyOccurrence *int32 `json:"monthlyOccurrence,omitempty"`
+
+	// Time of the day in HH:mm format. Eg. 17:30
+	StartTime *string `json:"startTime,omitempty"`
+
+	// Number of weeks to schedule between 2 assessment runs. Takes value from 1-6
+	WeeklyInterval *int32 `json:"weeklyInterval,omitempty"`
+}
+
 // ServerConfigurationsManagementSettings - Set the connectivity, storage and workload settings.
 type ServerConfigurationsManagementSettings struct {
 	// Additional SQL feature settings.
@@ -602,6 +657,9 @@ type ServerConfigurationsManagementSettings struct {
 
 	// SQL connectivity type settings.
 	SQLConnectivityUpdateSettings *SQLConnectivityUpdateSettings `json:"sqlConnectivityUpdateSettings,omitempty"`
+
+	// SQL Instance settings.
+	SQLInstanceSettings *SQLInstanceSettings `json:"sqlInstanceSettings,omitempty"`
 
 	// SQL storage update settings.
 	SQLStorageUpdateSettings *SQLStorageUpdateSettings `json:"sqlStorageUpdateSettings,omitempty"`
@@ -621,34 +679,59 @@ type StorageConfigurationSettings struct {
 	// SQL Server Log Storage Settings.
 	SQLLogSettings *SQLStorageSettings `json:"sqlLogSettings,omitempty"`
 
+	// SQL Server SystemDb Storage on DataPool if true.
+	SQLSystemDbOnDataDisk *bool `json:"sqlSystemDbOnDataDisk,omitempty"`
+
 	// SQL Server TempDb Storage Settings.
-	SQLTempDbSettings *SQLStorageSettings `json:"sqlTempDbSettings,omitempty"`
+	SQLTempDbSettings *SQLTempDbSettings `json:"sqlTempDbSettings,omitempty"`
 
 	// Storage workload type.
 	StorageWorkloadType *StorageWorkloadType `json:"storageWorkloadType,omitempty"`
 }
 
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+}
+
 // TrackedResource - ARM tracked top level resource.
 type TrackedResource struct {
-	Resource
 	// REQUIRED; Resource location.
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "tags", t.Tags)
+// Update - An update to a SQL virtual machine.
+type Update struct {
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // WsfcDomainCredentials - Domain credentials for setting up Windows Server Failover Cluster for SQL availability group.
@@ -668,7 +751,8 @@ type WsfcDomainProfile struct {
 	// Account name used for creating cluster (at minimum needs permissions to 'Create Computer Objects' in domain).
 	ClusterBootstrapAccount *string `json:"clusterBootstrapAccount,omitempty"`
 
-	// Account name used for operating cluster i.e. will be part of administrators group on all the participating virtual machines in the cluster.
+	// Account name used for operating cluster i.e. will be part of administrators group on all the participating virtual machines
+	// in the cluster.
 	ClusterOperatorAccount *string `json:"clusterOperatorAccount,omitempty"`
 
 	// Fully qualified name of the domain.
@@ -688,14 +772,4 @@ type WsfcDomainProfile struct {
 
 	// Fully qualified ARM resource id of the witness storage account.
 	StorageAccountURL *string `json:"storageAccountUrl,omitempty"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
 }

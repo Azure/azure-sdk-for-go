@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armdevtestlabs
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,42 +26,61 @@ import (
 // SchedulesClient contains the methods for the Schedules group.
 // Don't use this type directly, use NewSchedulesClient() instead.
 type SchedulesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewSchedulesClient creates a new instance of SchedulesClient with the specified values.
-func NewSchedulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SchedulesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewSchedulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SchedulesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &SchedulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &SchedulesClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // CreateOrUpdate - Create or replace an existing schedule.
-// If the operation fails it returns the *CloudError error type.
-func (client *SchedulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, schedule Schedule, options *SchedulesCreateOrUpdateOptions) (SchedulesCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the schedule.
+// schedule - A schedule.
+// options - SchedulesClientCreateOrUpdateOptions contains the optional parameters for the SchedulesClient.CreateOrUpdate
+// method.
+func (client *SchedulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, schedule Schedule, options *SchedulesClientCreateOrUpdateOptions) (SchedulesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, labName, name, schedule, options)
 	if err != nil {
-		return SchedulesCreateOrUpdateResponse{}, err
+		return SchedulesClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SchedulesCreateOrUpdateResponse{}, err
+		return SchedulesClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return SchedulesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return SchedulesClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SchedulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, schedule Schedule, options *SchedulesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SchedulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, schedule Schedule, options *SchedulesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/schedules/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -79,58 +98,50 @@ func (client *SchedulesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, schedule)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SchedulesClient) createOrUpdateHandleResponse(resp *http.Response) (SchedulesCreateOrUpdateResponse, error) {
-	result := SchedulesCreateOrUpdateResponse{RawResponse: resp}
+func (client *SchedulesClient) createOrUpdateHandleResponse(resp *http.Response) (SchedulesClientCreateOrUpdateResponse, error) {
+	result := SchedulesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Schedule); err != nil {
-		return SchedulesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SchedulesClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SchedulesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete schedule.
-// If the operation fails it returns the *CloudError error type.
-func (client *SchedulesClient) Delete(ctx context.Context, resourceGroupName string, labName string, name string, options *SchedulesDeleteOptions) (SchedulesDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the schedule.
+// options - SchedulesClientDeleteOptions contains the optional parameters for the SchedulesClient.Delete method.
+func (client *SchedulesClient) Delete(ctx context.Context, resourceGroupName string, labName string, name string, options *SchedulesClientDeleteOptions) (SchedulesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, labName, name, options)
 	if err != nil {
-		return SchedulesDeleteResponse{}, err
+		return SchedulesClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SchedulesDeleteResponse{}, err
+		return SchedulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return SchedulesDeleteResponse{}, client.deleteHandleError(resp)
+		return SchedulesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SchedulesDeleteResponse{RawResponse: resp}, nil
+	return SchedulesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SchedulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *SchedulesDeleteOptions) (*policy.Request, error) {
+func (client *SchedulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *SchedulesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/schedules/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -148,53 +159,40 @@ func (client *SchedulesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SchedulesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginExecute - Execute a schedule. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *SchedulesClient) BeginExecute(ctx context.Context, resourceGroupName string, labName string, name string, options *SchedulesBeginExecuteOptions) (SchedulesExecutePollerResponse, error) {
-	resp, err := client.execute(ctx, resourceGroupName, labName, name, options)
-	if err != nil {
-		return SchedulesExecutePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the schedule.
+// options - SchedulesClientBeginExecuteOptions contains the optional parameters for the SchedulesClient.BeginExecute method.
+func (client *SchedulesClient) BeginExecute(ctx context.Context, resourceGroupName string, labName string, name string, options *SchedulesClientBeginExecuteOptions) (*runtime.Poller[SchedulesClientExecuteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.execute(ctx, resourceGroupName, labName, name, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[SchedulesClientExecuteResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[SchedulesClientExecuteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SchedulesExecutePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SchedulesClient.Execute", "", resp, client.pl, client.executeHandleError)
-	if err != nil {
-		return SchedulesExecutePollerResponse{}, err
-	}
-	result.Poller = &SchedulesExecutePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Execute - Execute a schedule. This operation can take a while to complete.
-// If the operation fails it returns the *CloudError error type.
-func (client *SchedulesClient) execute(ctx context.Context, resourceGroupName string, labName string, name string, options *SchedulesBeginExecuteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+func (client *SchedulesClient) execute(ctx context.Context, resourceGroupName string, labName string, name string, options *SchedulesClientBeginExecuteOptions) (*http.Response, error) {
 	req, err := client.executeCreateRequest(ctx, resourceGroupName, labName, name, options)
 	if err != nil {
 		return nil, err
@@ -204,13 +202,13 @@ func (client *SchedulesClient) execute(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.executeHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // executeCreateRequest creates the Execute request.
-func (client *SchedulesClient) executeCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *SchedulesBeginExecuteOptions) (*policy.Request, error) {
+func (client *SchedulesClient) executeCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *SchedulesClientBeginExecuteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/schedules/{name}/execute"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -228,49 +226,41 @@ func (client *SchedulesClient) executeCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// executeHandleError handles the Execute error response.
-func (client *SchedulesClient) executeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get schedule.
-// If the operation fails it returns the *CloudError error type.
-func (client *SchedulesClient) Get(ctx context.Context, resourceGroupName string, labName string, name string, options *SchedulesGetOptions) (SchedulesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the schedule.
+// options - SchedulesClientGetOptions contains the optional parameters for the SchedulesClient.Get method.
+func (client *SchedulesClient) Get(ctx context.Context, resourceGroupName string, labName string, name string, options *SchedulesClientGetOptions) (SchedulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, labName, name, options)
 	if err != nil {
-		return SchedulesGetResponse{}, err
+		return SchedulesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SchedulesGetResponse{}, err
+		return SchedulesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SchedulesGetResponse{}, client.getHandleError(resp)
+		return SchedulesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SchedulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *SchedulesGetOptions) (*policy.Request, error) {
+func (client *SchedulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *SchedulesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/schedules/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -288,7 +278,7 @@ func (client *SchedulesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -298,48 +288,55 @@ func (client *SchedulesClient) getCreateRequest(ctx context.Context, resourceGro
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SchedulesClient) getHandleResponse(resp *http.Response) (SchedulesGetResponse, error) {
-	result := SchedulesGetResponse{RawResponse: resp}
+func (client *SchedulesClient) getHandleResponse(resp *http.Response) (SchedulesClientGetResponse, error) {
+	result := SchedulesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Schedule); err != nil {
-		return SchedulesGetResponse{}, runtime.NewResponseError(err, resp)
+		return SchedulesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SchedulesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - List schedules in a given lab.
-// If the operation fails it returns the *CloudError error type.
-func (client *SchedulesClient) List(resourceGroupName string, labName string, options *SchedulesListOptions) *SchedulesListPager {
-	return &SchedulesListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, labName, options)
+// NewListPager - List schedules in a given lab.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// options - SchedulesClientListOptions contains the optional parameters for the SchedulesClient.List method.
+func (client *SchedulesClient) NewListPager(resourceGroupName string, labName string, options *SchedulesClientListOptions) *runtime.Pager[SchedulesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SchedulesClientListResponse]{
+		More: func(page SchedulesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SchedulesListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ScheduleList.NextLink)
+		Fetcher: func(ctx context.Context, page *SchedulesClientListResponse) (SchedulesClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, labName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SchedulesClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SchedulesClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SchedulesClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *SchedulesClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, options *SchedulesListOptions) (*policy.Request, error) {
+func (client *SchedulesClient) listCreateRequest(ctx context.Context, resourceGroupName string, labName string, options *SchedulesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/schedules"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -353,7 +350,7 @@ func (client *SchedulesClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter labName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{labName}", url.PathEscape(labName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -372,48 +369,57 @@ func (client *SchedulesClient) listCreateRequest(ctx context.Context, resourceGr
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SchedulesClient) listHandleResponse(resp *http.Response) (SchedulesListResponse, error) {
-	result := SchedulesListResponse{RawResponse: resp}
+func (client *SchedulesClient) listHandleResponse(resp *http.Response) (SchedulesClientListResponse, error) {
+	result := SchedulesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScheduleList); err != nil {
-		return SchedulesListResponse{}, runtime.NewResponseError(err, resp)
+		return SchedulesClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *SchedulesClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListApplicable - Lists all applicable schedules
-// If the operation fails it returns the *CloudError error type.
-func (client *SchedulesClient) ListApplicable(resourceGroupName string, labName string, name string, options *SchedulesListApplicableOptions) *SchedulesListApplicablePager {
-	return &SchedulesListApplicablePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listApplicableCreateRequest(ctx, resourceGroupName, labName, name, options)
+// NewListApplicablePager - Lists all applicable schedules
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the schedule.
+// options - SchedulesClientListApplicableOptions contains the optional parameters for the SchedulesClient.ListApplicable
+// method.
+func (client *SchedulesClient) NewListApplicablePager(resourceGroupName string, labName string, name string, options *SchedulesClientListApplicableOptions) *runtime.Pager[SchedulesClientListApplicableResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SchedulesClientListApplicableResponse]{
+		More: func(page SchedulesClientListApplicableResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SchedulesListApplicableResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ScheduleList.NextLink)
+		Fetcher: func(ctx context.Context, page *SchedulesClientListApplicableResponse) (SchedulesClientListApplicableResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listApplicableCreateRequest(ctx, resourceGroupName, labName, name, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SchedulesClientListApplicableResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SchedulesClientListApplicableResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SchedulesClientListApplicableResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listApplicableHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listApplicableCreateRequest creates the ListApplicable request.
-func (client *SchedulesClient) listApplicableCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *SchedulesListApplicableOptions) (*policy.Request, error) {
+func (client *SchedulesClient) listApplicableCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, options *SchedulesClientListApplicableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/schedules/{name}/listApplicable"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -431,58 +437,51 @@ func (client *SchedulesClient) listApplicableCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listApplicableHandleResponse handles the ListApplicable response.
-func (client *SchedulesClient) listApplicableHandleResponse(resp *http.Response) (SchedulesListApplicableResponse, error) {
-	result := SchedulesListApplicableResponse{RawResponse: resp}
+func (client *SchedulesClient) listApplicableHandleResponse(resp *http.Response) (SchedulesClientListApplicableResponse, error) {
+	result := SchedulesClientListApplicableResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScheduleList); err != nil {
-		return SchedulesListApplicableResponse{}, runtime.NewResponseError(err, resp)
+		return SchedulesClientListApplicableResponse{}, err
 	}
 	return result, nil
 }
 
-// listApplicableHandleError handles the ListApplicable error response.
-func (client *SchedulesClient) listApplicableHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Allows modifying tags of schedules. All other properties will be ignored.
-// If the operation fails it returns the *CloudError error type.
-func (client *SchedulesClient) Update(ctx context.Context, resourceGroupName string, labName string, name string, schedule ScheduleFragment, options *SchedulesUpdateOptions) (SchedulesUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
+// resourceGroupName - The name of the resource group.
+// labName - The name of the lab.
+// name - The name of the schedule.
+// schedule - A schedule.
+// options - SchedulesClientUpdateOptions contains the optional parameters for the SchedulesClient.Update method.
+func (client *SchedulesClient) Update(ctx context.Context, resourceGroupName string, labName string, name string, schedule ScheduleFragment, options *SchedulesClientUpdateOptions) (SchedulesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, labName, name, schedule, options)
 	if err != nil {
-		return SchedulesUpdateResponse{}, err
+		return SchedulesClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SchedulesUpdateResponse{}, err
+		return SchedulesClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SchedulesUpdateResponse{}, client.updateHandleError(resp)
+		return SchedulesClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SchedulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, schedule ScheduleFragment, options *SchedulesUpdateOptions) (*policy.Request, error) {
+func (client *SchedulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, labName string, name string, schedule ScheduleFragment, options *SchedulesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/schedules/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -500,35 +499,22 @@ func (client *SchedulesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, schedule)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *SchedulesClient) updateHandleResponse(resp *http.Response) (SchedulesUpdateResponse, error) {
-	result := SchedulesUpdateResponse{RawResponse: resp}
+func (client *SchedulesClient) updateHandleResponse(resp *http.Response) (SchedulesClientUpdateResponse, error) {
+	result := SchedulesClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Schedule); err != nil {
-		return SchedulesUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SchedulesClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *SchedulesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

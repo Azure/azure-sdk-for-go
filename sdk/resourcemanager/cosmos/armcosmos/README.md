@@ -1,6 +1,6 @@
 # Azure Cosmos DB Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2)
 
 The `armcosmos` module provides operations for working with Azure Cosmos DB.
 
@@ -11,7 +11,7 @@ The `armcosmos` module provides operations for working with Azure Cosmos DB.
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.16 or above
+- Go 1.18 or above
 
 ## Install the package
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Cosmos DB module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2
 ```
 
 ## Authorization
@@ -38,16 +38,36 @@ For more information on authentication, please see the documentation for `aziden
 Azure Cosmos DB modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
 
 ```go
-client := armcosmos.NewDatabaseClient(<subscription ID>, cred, nil)
+client, err := armcosmos.NewDatabaseClient(<subscription ID>, cred, nil)
 ```
 
 You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
 
 ```go
-options = arm.ClientOptions{
-    Host: arm.AzureChina,
+options := arm.ClientOptions {
+    ClientOptions: azcore.ClientOptions {
+        Cloud: cloud.AzureChina,
+    },
 }
-client := armcosmos.NewDatabaseClient(<subscription ID>, cred, &options)
+client, err := armcosmos.NewDatabaseClient(<subscription ID>, cred, &options)
+```
+
+## More sample code
+
+- [Cassandra](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/cosmos/cassandra)
+- [Cosmos DB](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/cosmos/cosmosdb)
+- [Gremlin](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/cosmos/gremlin)
+- [Mongo DB](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/cosmos/mongodb)
+- [Sql](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/cosmos/sql)
+- [Table](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/cosmos/table)
+
+## Major Version Upgrade
+
+Go uses [semantic import versioning](https://github.com/golang/go/wiki/Modules#semantic-import-versioning) to ensure a good backward compatibility for modules. For Azure Go management SDK, we usually upgrade module version according to cooresponding service's API version. Regarding it could be a complicated experience for major version upgrade, we will try our best to keep the SDK API stable and release new version in backward compatible way. However, if any unavoidable breaking changes and a new major version releases for SDK modules, you could use these commands under your module folder to upgrade:
+
+```sh
+go install github.com/icholy/gomajor@latest
+gomajor get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute@latest
 ```
 
 ## Provide Feedback

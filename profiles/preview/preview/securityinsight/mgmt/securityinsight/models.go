@@ -12,7 +12,7 @@ package securityinsight
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2019-01-01-preview/securityinsight"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2022-01-01-preview/securityinsight"
 )
 
 const (
@@ -22,9 +22,23 @@ const (
 type ActionType = original.ActionType
 
 const (
-	ActionTypeAutomationRuleAction ActionType = original.ActionTypeAutomationRuleAction
-	ActionTypeModifyProperties     ActionType = original.ActionTypeModifyProperties
-	ActionTypeRunPlaybook          ActionType = original.ActionTypeRunPlaybook
+	ActionTypeModifyProperties ActionType = original.ActionTypeModifyProperties
+	ActionTypeRunPlaybook      ActionType = original.ActionTypeRunPlaybook
+)
+
+type ActionTypeBasicAutomationRuleAction = original.ActionTypeBasicAutomationRuleAction
+
+const (
+	ActionTypeBasicAutomationRuleActionActionTypeAutomationRuleAction ActionTypeBasicAutomationRuleAction = original.ActionTypeBasicAutomationRuleActionActionTypeAutomationRuleAction
+	ActionTypeBasicAutomationRuleActionActionTypeModifyProperties     ActionTypeBasicAutomationRuleAction = original.ActionTypeBasicAutomationRuleActionActionTypeModifyProperties
+	ActionTypeBasicAutomationRuleActionActionTypeRunPlaybook          ActionTypeBasicAutomationRuleAction = original.ActionTypeBasicAutomationRuleActionActionTypeRunPlaybook
+)
+
+type AlertDetail = original.AlertDetail
+
+const (
+	AlertDetailDisplayName AlertDetail = original.AlertDetailDisplayName
+	AlertDetailSeverity    AlertDetail = original.AlertDetailSeverity
 )
 
 type AlertRuleKind = original.AlertRuleKind
@@ -33,6 +47,7 @@ const (
 	AlertRuleKindFusion                            AlertRuleKind = original.AlertRuleKindFusion
 	AlertRuleKindMicrosoftSecurityIncidentCreation AlertRuleKind = original.AlertRuleKindMicrosoftSecurityIncidentCreation
 	AlertRuleKindMLBehaviorAnalytics               AlertRuleKind = original.AlertRuleKindMLBehaviorAnalytics
+	AlertRuleKindNRT                               AlertRuleKind = original.AlertRuleKindNRT
 	AlertRuleKindScheduled                         AlertRuleKind = original.AlertRuleKindScheduled
 	AlertRuleKindThreatIntelligence                AlertRuleKind = original.AlertRuleKindThreatIntelligence
 )
@@ -68,19 +83,23 @@ const (
 type AttackTactic = original.AttackTactic
 
 const (
-	AttackTacticCollection          AttackTactic = original.AttackTacticCollection
-	AttackTacticCommandAndControl   AttackTactic = original.AttackTacticCommandAndControl
-	AttackTacticCredentialAccess    AttackTactic = original.AttackTacticCredentialAccess
-	AttackTacticDefenseEvasion      AttackTactic = original.AttackTacticDefenseEvasion
-	AttackTacticDiscovery           AttackTactic = original.AttackTacticDiscovery
-	AttackTacticExecution           AttackTactic = original.AttackTacticExecution
-	AttackTacticExfiltration        AttackTactic = original.AttackTacticExfiltration
-	AttackTacticImpact              AttackTactic = original.AttackTacticImpact
-	AttackTacticInitialAccess       AttackTactic = original.AttackTacticInitialAccess
-	AttackTacticLateralMovement     AttackTactic = original.AttackTacticLateralMovement
-	AttackTacticPersistence         AttackTactic = original.AttackTacticPersistence
-	AttackTacticPreAttack           AttackTactic = original.AttackTacticPreAttack
-	AttackTacticPrivilegeEscalation AttackTactic = original.AttackTacticPrivilegeEscalation
+	AttackTacticCollection              AttackTactic = original.AttackTacticCollection
+	AttackTacticCommandAndControl       AttackTactic = original.AttackTacticCommandAndControl
+	AttackTacticCredentialAccess        AttackTactic = original.AttackTacticCredentialAccess
+	AttackTacticDefenseEvasion          AttackTactic = original.AttackTacticDefenseEvasion
+	AttackTacticDiscovery               AttackTactic = original.AttackTacticDiscovery
+	AttackTacticExecution               AttackTactic = original.AttackTacticExecution
+	AttackTacticExfiltration            AttackTactic = original.AttackTacticExfiltration
+	AttackTacticImpact                  AttackTactic = original.AttackTacticImpact
+	AttackTacticImpairProcessControl    AttackTactic = original.AttackTacticImpairProcessControl
+	AttackTacticInhibitResponseFunction AttackTactic = original.AttackTacticInhibitResponseFunction
+	AttackTacticInitialAccess           AttackTactic = original.AttackTacticInitialAccess
+	AttackTacticLateralMovement         AttackTactic = original.AttackTacticLateralMovement
+	AttackTacticPersistence             AttackTactic = original.AttackTacticPersistence
+	AttackTacticPreAttack               AttackTactic = original.AttackTacticPreAttack
+	AttackTacticPrivilegeEscalation     AttackTactic = original.AttackTacticPrivilegeEscalation
+	AttackTacticReconnaissance          AttackTactic = original.AttackTacticReconnaissance
+	AttackTacticResourceDevelopment     AttackTactic = original.AttackTacticResourceDevelopment
 )
 
 type AutomationRulePropertyConditionSupportedOperator = original.AutomationRulePropertyConditionSupportedOperator
@@ -107,6 +126,7 @@ const (
 	AutomationRulePropertyConditionSupportedPropertyAccountPUID                    AutomationRulePropertyConditionSupportedProperty = original.AutomationRulePropertyConditionSupportedPropertyAccountPUID
 	AutomationRulePropertyConditionSupportedPropertyAccountSid                     AutomationRulePropertyConditionSupportedProperty = original.AutomationRulePropertyConditionSupportedPropertyAccountSid
 	AutomationRulePropertyConditionSupportedPropertyAccountUPNSuffix               AutomationRulePropertyConditionSupportedProperty = original.AutomationRulePropertyConditionSupportedPropertyAccountUPNSuffix
+	AutomationRulePropertyConditionSupportedPropertyAlertProductNames              AutomationRulePropertyConditionSupportedProperty = original.AutomationRulePropertyConditionSupportedPropertyAlertProductNames
 	AutomationRulePropertyConditionSupportedPropertyAzureResourceResourceID        AutomationRulePropertyConditionSupportedProperty = original.AutomationRulePropertyConditionSupportedPropertyAzureResourceResourceID
 	AutomationRulePropertyConditionSupportedPropertyAzureResourceSubscriptionID    AutomationRulePropertyConditionSupportedProperty = original.AutomationRulePropertyConditionSupportedPropertyAzureResourceSubscriptionID
 	AutomationRulePropertyConditionSupportedPropertyCloudApplicationAppID          AutomationRulePropertyConditionSupportedProperty = original.AutomationRulePropertyConditionSupportedPropertyCloudApplicationAppID
@@ -121,6 +141,7 @@ const (
 	AutomationRulePropertyConditionSupportedPropertyHostNTDomain                   AutomationRulePropertyConditionSupportedProperty = original.AutomationRulePropertyConditionSupportedPropertyHostNTDomain
 	AutomationRulePropertyConditionSupportedPropertyHostOSVersion                  AutomationRulePropertyConditionSupportedProperty = original.AutomationRulePropertyConditionSupportedPropertyHostOSVersion
 	AutomationRulePropertyConditionSupportedPropertyIncidentDescription            AutomationRulePropertyConditionSupportedProperty = original.AutomationRulePropertyConditionSupportedPropertyIncidentDescription
+	AutomationRulePropertyConditionSupportedPropertyIncidentLabel                  AutomationRulePropertyConditionSupportedProperty = original.AutomationRulePropertyConditionSupportedPropertyIncidentLabel
 	AutomationRulePropertyConditionSupportedPropertyIncidentProviderName           AutomationRulePropertyConditionSupportedProperty = original.AutomationRulePropertyConditionSupportedPropertyIncidentProviderName
 	AutomationRulePropertyConditionSupportedPropertyIncidentRelatedAnalyticRuleIds AutomationRulePropertyConditionSupportedProperty = original.AutomationRulePropertyConditionSupportedPropertyIncidentRelatedAnalyticRuleIds
 	AutomationRulePropertyConditionSupportedPropertyIncidentSeverity               AutomationRulePropertyConditionSupportedProperty = original.AutomationRulePropertyConditionSupportedPropertyIncidentSeverity
@@ -153,40 +174,17 @@ const (
 	AutomationRulePropertyConditionSupportedPropertyURL                            AutomationRulePropertyConditionSupportedProperty = original.AutomationRulePropertyConditionSupportedPropertyURL
 )
 
-type CaseSeverity = original.CaseSeverity
-
-const (
-	CaseSeverityCritical      CaseSeverity = original.CaseSeverityCritical
-	CaseSeverityHigh          CaseSeverity = original.CaseSeverityHigh
-	CaseSeverityInformational CaseSeverity = original.CaseSeverityInformational
-	CaseSeverityLow           CaseSeverity = original.CaseSeverityLow
-	CaseSeverityMedium        CaseSeverity = original.CaseSeverityMedium
-)
-
-type CaseStatus = original.CaseStatus
-
-const (
-	CaseStatusClosed     CaseStatus = original.CaseStatusClosed
-	CaseStatusDraft      CaseStatus = original.CaseStatusDraft
-	CaseStatusInProgress CaseStatus = original.CaseStatusInProgress
-	CaseStatusNew        CaseStatus = original.CaseStatusNew
-)
-
-type CloseReason = original.CloseReason
-
-const (
-	CloseReasonDismissed     CloseReason = original.CloseReasonDismissed
-	CloseReasonFalsePositive CloseReason = original.CloseReasonFalsePositive
-	CloseReasonOther         CloseReason = original.CloseReasonOther
-	CloseReasonResolved      CloseReason = original.CloseReasonResolved
-	CloseReasonTruePositive  CloseReason = original.CloseReasonTruePositive
-)
-
 type ConditionType = original.ConditionType
 
 const (
-	ConditionTypeAutomationRuleCondition ConditionType = original.ConditionTypeAutomationRuleCondition
-	ConditionTypeProperty                ConditionType = original.ConditionTypeProperty
+	ConditionTypeProperty ConditionType = original.ConditionTypeProperty
+)
+
+type ConditionTypeBasicAutomationRuleCondition = original.ConditionTypeBasicAutomationRuleCondition
+
+const (
+	ConditionTypeBasicAutomationRuleConditionConditionTypeAutomationRuleCondition ConditionTypeBasicAutomationRuleCondition = original.ConditionTypeBasicAutomationRuleConditionConditionTypeAutomationRuleCondition
+	ConditionTypeBasicAutomationRuleConditionConditionTypeProperty                ConditionTypeBasicAutomationRuleCondition = original.ConditionTypeBasicAutomationRuleConditionConditionTypeProperty
 )
 
 type ConfidenceLevel = original.ConfidenceLevel
@@ -206,6 +204,42 @@ const (
 	ConfidenceScoreStatusNotFinal      ConfidenceScoreStatus = original.ConfidenceScoreStatusNotFinal
 )
 
+type ConnectAuthKind = original.ConnectAuthKind
+
+const (
+	ConnectAuthKindAPIKey ConnectAuthKind = original.ConnectAuthKindAPIKey
+	ConnectAuthKindBasic  ConnectAuthKind = original.ConnectAuthKindBasic
+	ConnectAuthKindOAuth2 ConnectAuthKind = original.ConnectAuthKindOAuth2
+)
+
+type ConnectivityType = original.ConnectivityType
+
+const (
+	ConnectivityTypeIsConnectedQuery ConnectivityType = original.ConnectivityTypeIsConnectedQuery
+)
+
+type ContentType = original.ContentType
+
+const (
+	ContentTypeAnalyticRule ContentType = original.ContentTypeAnalyticRule
+	ContentTypeWorkbook     ContentType = original.ContentTypeWorkbook
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
+type CustomEntityQueryKind = original.CustomEntityQueryKind
+
+const (
+	CustomEntityQueryKindActivity CustomEntityQueryKind = original.CustomEntityQueryKindActivity
+)
+
 type DataConnectorAuthorizationState = original.DataConnectorAuthorizationState
 
 const (
@@ -217,16 +251,23 @@ type DataConnectorKind = original.DataConnectorKind
 
 const (
 	DataConnectorKindAmazonWebServicesCloudTrail               DataConnectorKind = original.DataConnectorKindAmazonWebServicesCloudTrail
+	DataConnectorKindAmazonWebServicesS3                       DataConnectorKind = original.DataConnectorKindAmazonWebServicesS3
+	DataConnectorKindAPIPolling                                DataConnectorKind = original.DataConnectorKindAPIPolling
 	DataConnectorKindAzureActiveDirectory                      DataConnectorKind = original.DataConnectorKindAzureActiveDirectory
 	DataConnectorKindAzureAdvancedThreatProtection             DataConnectorKind = original.DataConnectorKindAzureAdvancedThreatProtection
 	DataConnectorKindAzureSecurityCenter                       DataConnectorKind = original.DataConnectorKindAzureSecurityCenter
 	DataConnectorKindDynamics365                               DataConnectorKind = original.DataConnectorKindDynamics365
+	DataConnectorKindGenericUI                                 DataConnectorKind = original.DataConnectorKindGenericUI
+	DataConnectorKindIOT                                       DataConnectorKind = original.DataConnectorKindIOT
 	DataConnectorKindMicrosoftCloudAppSecurity                 DataConnectorKind = original.DataConnectorKindMicrosoftCloudAppSecurity
 	DataConnectorKindMicrosoftDefenderAdvancedThreatProtection DataConnectorKind = original.DataConnectorKindMicrosoftDefenderAdvancedThreatProtection
 	DataConnectorKindMicrosoftThreatIntelligence               DataConnectorKind = original.DataConnectorKindMicrosoftThreatIntelligence
 	DataConnectorKindMicrosoftThreatProtection                 DataConnectorKind = original.DataConnectorKindMicrosoftThreatProtection
 	DataConnectorKindOffice365                                 DataConnectorKind = original.DataConnectorKindOffice365
+	DataConnectorKindOffice365Project                          DataConnectorKind = original.DataConnectorKindOffice365Project
 	DataConnectorKindOfficeATP                                 DataConnectorKind = original.DataConnectorKindOfficeATP
+	DataConnectorKindOfficeIRM                                 DataConnectorKind = original.DataConnectorKindOfficeIRM
+	DataConnectorKindOfficePowerBI                             DataConnectorKind = original.DataConnectorKindOfficePowerBI
 	DataConnectorKindThreatIntelligence                        DataConnectorKind = original.DataConnectorKindThreatIntelligence
 	DataConnectorKindThreatIntelligenceTaxii                   DataConnectorKind = original.DataConnectorKindThreatIntelligenceTaxii
 )
@@ -270,20 +311,37 @@ const (
 	DeliveryLocationUnknown       DeliveryLocation = original.DeliveryLocationUnknown
 )
 
+type DeploymentFetchStatus = original.DeploymentFetchStatus
+
+const (
+	DeploymentFetchStatusNotFound     DeploymentFetchStatus = original.DeploymentFetchStatusNotFound
+	DeploymentFetchStatusSuccess      DeploymentFetchStatus = original.DeploymentFetchStatusSuccess
+	DeploymentFetchStatusUnauthorized DeploymentFetchStatus = original.DeploymentFetchStatusUnauthorized
+)
+
+type DeploymentResult = original.DeploymentResult
+
+const (
+	DeploymentResultCanceled DeploymentResult = original.DeploymentResultCanceled
+	DeploymentResultFailed   DeploymentResult = original.DeploymentResultFailed
+	DeploymentResultSuccess  DeploymentResult = original.DeploymentResultSuccess
+)
+
+type DeploymentState = original.DeploymentState
+
+const (
+	DeploymentStateCanceling  DeploymentState = original.DeploymentStateCanceling
+	DeploymentStateCompleted  DeploymentState = original.DeploymentStateCompleted
+	DeploymentStateInProgress DeploymentState = original.DeploymentStateInProgress
+	DeploymentStateQueued     DeploymentState = original.DeploymentStateQueued
+)
+
 type ElevationToken = original.ElevationToken
 
 const (
 	ElevationTokenDefault ElevationToken = original.ElevationTokenDefault
 	ElevationTokenFull    ElevationToken = original.ElevationTokenFull
 	ElevationTokenLimited ElevationToken = original.ElevationTokenLimited
-)
-
-type EntitiesMatchingMethod = original.EntitiesMatchingMethod
-
-const (
-	EntitiesMatchingMethodAll    EntitiesMatchingMethod = original.EntitiesMatchingMethodAll
-	EntitiesMatchingMethodCustom EntitiesMatchingMethod = original.EntitiesMatchingMethodCustom
-	EntitiesMatchingMethodNone   EntitiesMatchingMethod = original.EntitiesMatchingMethodNone
 )
 
 type EntityKind = original.EntityKind
@@ -312,11 +370,41 @@ const (
 	EntityKindURL              EntityKind = original.EntityKindURL
 )
 
+type EntityMappingType = original.EntityMappingType
+
+const (
+	EntityMappingTypeAccount          EntityMappingType = original.EntityMappingTypeAccount
+	EntityMappingTypeAzureResource    EntityMappingType = original.EntityMappingTypeAzureResource
+	EntityMappingTypeCloudApplication EntityMappingType = original.EntityMappingTypeCloudApplication
+	EntityMappingTypeDNS              EntityMappingType = original.EntityMappingTypeDNS
+	EntityMappingTypeFile             EntityMappingType = original.EntityMappingTypeFile
+	EntityMappingTypeFileHash         EntityMappingType = original.EntityMappingTypeFileHash
+	EntityMappingTypeHost             EntityMappingType = original.EntityMappingTypeHost
+	EntityMappingTypeIP               EntityMappingType = original.EntityMappingTypeIP
+	EntityMappingTypeMailbox          EntityMappingType = original.EntityMappingTypeMailbox
+	EntityMappingTypeMailCluster      EntityMappingType = original.EntityMappingTypeMailCluster
+	EntityMappingTypeMailMessage      EntityMappingType = original.EntityMappingTypeMailMessage
+	EntityMappingTypeMalware          EntityMappingType = original.EntityMappingTypeMalware
+	EntityMappingTypeProcess          EntityMappingType = original.EntityMappingTypeProcess
+	EntityMappingTypeRegistryKey      EntityMappingType = original.EntityMappingTypeRegistryKey
+	EntityMappingTypeRegistryValue    EntityMappingType = original.EntityMappingTypeRegistryValue
+	EntityMappingTypeSecurityGroup    EntityMappingType = original.EntityMappingTypeSecurityGroup
+	EntityMappingTypeSubmissionMail   EntityMappingType = original.EntityMappingTypeSubmissionMail
+	EntityMappingTypeURL              EntityMappingType = original.EntityMappingTypeURL
+)
+
 type EntityQueryKind = original.EntityQueryKind
 
 const (
+	EntityQueryKindActivity  EntityQueryKind = original.EntityQueryKindActivity
 	EntityQueryKindExpansion EntityQueryKind = original.EntityQueryKindExpansion
 	EntityQueryKindInsight   EntityQueryKind = original.EntityQueryKindInsight
+)
+
+type EntityQueryTemplateKind = original.EntityQueryTemplateKind
+
+const (
+	EntityQueryTemplateKindActivity EntityQueryTemplateKind = original.EntityQueryTemplateKindActivity
 )
 
 type EntityTimelineKind = original.EntityTimelineKind
@@ -370,16 +458,6 @@ const (
 	FileHashAlgorithmUnknown  FileHashAlgorithm = original.FileHashAlgorithmUnknown
 )
 
-type GroupingEntityType = original.GroupingEntityType
-
-const (
-	GroupingEntityTypeAccount  GroupingEntityType = original.GroupingEntityTypeAccount
-	GroupingEntityTypeFileHash GroupingEntityType = original.GroupingEntityTypeFileHash
-	GroupingEntityTypeHost     GroupingEntityType = original.GroupingEntityTypeHost
-	GroupingEntityTypeIP       GroupingEntityType = original.GroupingEntityTypeIP
-	GroupingEntityTypeURL      GroupingEntityType = original.GroupingEntityTypeURL
-)
-
 type IncidentClassification = original.IncidentClassification
 
 const (
@@ -401,8 +479,8 @@ const (
 type IncidentLabelType = original.IncidentLabelType
 
 const (
-	IncidentLabelTypeSystem IncidentLabelType = original.IncidentLabelTypeSystem
-	IncidentLabelTypeUser   IncidentLabelType = original.IncidentLabelTypeUser
+	IncidentLabelTypeAutoAssigned IncidentLabelType = original.IncidentLabelTypeAutoAssigned
+	IncidentLabelTypeUser         IncidentLabelType = original.IncidentLabelTypeUser
 )
 
 type IncidentSeverity = original.IncidentSeverity
@@ -444,8 +522,23 @@ const (
 type Kind = original.Kind
 
 const (
-	KindAggregations     Kind = original.KindAggregations
-	KindCasesAggregation Kind = original.KindCasesAggregation
+	KindAnalyticsRule            Kind = original.KindAnalyticsRule
+	KindAnalyticsRuleTemplate    Kind = original.KindAnalyticsRuleTemplate
+	KindAutomationRule           Kind = original.KindAutomationRule
+	KindAzureFunction            Kind = original.KindAzureFunction
+	KindDataConnector            Kind = original.KindDataConnector
+	KindDataType                 Kind = original.KindDataType
+	KindHuntingQuery             Kind = original.KindHuntingQuery
+	KindInvestigationQuery       Kind = original.KindInvestigationQuery
+	KindLogicAppsCustomConnector Kind = original.KindLogicAppsCustomConnector
+	KindParser                   Kind = original.KindParser
+	KindPlaybook                 Kind = original.KindPlaybook
+	KindPlaybookTemplate         Kind = original.KindPlaybookTemplate
+	KindSolution                 Kind = original.KindSolution
+	KindWatchlist                Kind = original.KindWatchlist
+	KindWatchlistTemplate        Kind = original.KindWatchlistTemplate
+	KindWorkbook                 Kind = original.KindWorkbook
+	KindWorkbookTemplate         Kind = original.KindWorkbookTemplate
 )
 
 type KindBasicAlertRule = original.KindBasicAlertRule
@@ -455,6 +548,7 @@ const (
 	KindBasicAlertRuleKindFusion                            KindBasicAlertRule = original.KindBasicAlertRuleKindFusion
 	KindBasicAlertRuleKindMicrosoftSecurityIncidentCreation KindBasicAlertRule = original.KindBasicAlertRuleKindMicrosoftSecurityIncidentCreation
 	KindBasicAlertRuleKindMLBehaviorAnalytics               KindBasicAlertRule = original.KindBasicAlertRuleKindMLBehaviorAnalytics
+	KindBasicAlertRuleKindNRT                               KindBasicAlertRule = original.KindBasicAlertRuleKindNRT
 	KindBasicAlertRuleKindScheduled                         KindBasicAlertRule = original.KindBasicAlertRuleKindScheduled
 	KindBasicAlertRuleKindThreatIntelligence                KindBasicAlertRule = original.KindBasicAlertRuleKindThreatIntelligence
 )
@@ -466,25 +560,40 @@ const (
 	KindBasicAlertRuleTemplateKindFusion                            KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindFusion
 	KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation
 	KindBasicAlertRuleTemplateKindMLBehaviorAnalytics               KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindMLBehaviorAnalytics
+	KindBasicAlertRuleTemplateKindNRT                               KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindNRT
 	KindBasicAlertRuleTemplateKindScheduled                         KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindScheduled
 	KindBasicAlertRuleTemplateKindThreatIntelligence                KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindThreatIntelligence
+)
+
+type KindBasicCustomEntityQuery = original.KindBasicCustomEntityQuery
+
+const (
+	KindBasicCustomEntityQueryKindActivity          KindBasicCustomEntityQuery = original.KindBasicCustomEntityQueryKindActivity
+	KindBasicCustomEntityQueryKindCustomEntityQuery KindBasicCustomEntityQuery = original.KindBasicCustomEntityQueryKindCustomEntityQuery
 )
 
 type KindBasicDataConnector = original.KindBasicDataConnector
 
 const (
 	KindBasicDataConnectorKindAmazonWebServicesCloudTrail               KindBasicDataConnector = original.KindBasicDataConnectorKindAmazonWebServicesCloudTrail
+	KindBasicDataConnectorKindAmazonWebServicesS3                       KindBasicDataConnector = original.KindBasicDataConnectorKindAmazonWebServicesS3
+	KindBasicDataConnectorKindAPIPolling                                KindBasicDataConnector = original.KindBasicDataConnectorKindAPIPolling
 	KindBasicDataConnectorKindAzureActiveDirectory                      KindBasicDataConnector = original.KindBasicDataConnectorKindAzureActiveDirectory
 	KindBasicDataConnectorKindAzureAdvancedThreatProtection             KindBasicDataConnector = original.KindBasicDataConnectorKindAzureAdvancedThreatProtection
 	KindBasicDataConnectorKindAzureSecurityCenter                       KindBasicDataConnector = original.KindBasicDataConnectorKindAzureSecurityCenter
 	KindBasicDataConnectorKindDataConnector                             KindBasicDataConnector = original.KindBasicDataConnectorKindDataConnector
 	KindBasicDataConnectorKindDynamics365                               KindBasicDataConnector = original.KindBasicDataConnectorKindDynamics365
+	KindBasicDataConnectorKindGenericUI                                 KindBasicDataConnector = original.KindBasicDataConnectorKindGenericUI
+	KindBasicDataConnectorKindIOT                                       KindBasicDataConnector = original.KindBasicDataConnectorKindIOT
 	KindBasicDataConnectorKindMicrosoftCloudAppSecurity                 KindBasicDataConnector = original.KindBasicDataConnectorKindMicrosoftCloudAppSecurity
 	KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection KindBasicDataConnector = original.KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection
 	KindBasicDataConnectorKindMicrosoftThreatIntelligence               KindBasicDataConnector = original.KindBasicDataConnectorKindMicrosoftThreatIntelligence
 	KindBasicDataConnectorKindMicrosoftThreatProtection                 KindBasicDataConnector = original.KindBasicDataConnectorKindMicrosoftThreatProtection
 	KindBasicDataConnectorKindOffice365                                 KindBasicDataConnector = original.KindBasicDataConnectorKindOffice365
+	KindBasicDataConnectorKindOffice365Project                          KindBasicDataConnector = original.KindBasicDataConnectorKindOffice365Project
 	KindBasicDataConnectorKindOfficeATP                                 KindBasicDataConnector = original.KindBasicDataConnectorKindOfficeATP
+	KindBasicDataConnectorKindOfficeIRM                                 KindBasicDataConnector = original.KindBasicDataConnectorKindOfficeIRM
+	KindBasicDataConnectorKindOfficePowerBI                             KindBasicDataConnector = original.KindBasicDataConnectorKindOfficePowerBI
 	KindBasicDataConnectorKindThreatIntelligence                        KindBasicDataConnector = original.KindBasicDataConnectorKindThreatIntelligence
 	KindBasicDataConnectorKindThreatIntelligenceTaxii                   KindBasicDataConnector = original.KindBasicDataConnectorKindThreatIntelligenceTaxii
 )
@@ -493,16 +602,21 @@ type KindBasicDataConnectorsCheckRequirements = original.KindBasicDataConnectors
 
 const (
 	KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail               KindBasicDataConnectorsCheckRequirements = original.KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesCloudTrail
+	KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesS3                       KindBasicDataConnectorsCheckRequirements = original.KindBasicDataConnectorsCheckRequirementsKindAmazonWebServicesS3
 	KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory                      KindBasicDataConnectorsCheckRequirements = original.KindBasicDataConnectorsCheckRequirementsKindAzureActiveDirectory
 	KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection             KindBasicDataConnectorsCheckRequirements = original.KindBasicDataConnectorsCheckRequirementsKindAzureAdvancedThreatProtection
 	KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter                       KindBasicDataConnectorsCheckRequirements = original.KindBasicDataConnectorsCheckRequirementsKindAzureSecurityCenter
 	KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements           KindBasicDataConnectorsCheckRequirements = original.KindBasicDataConnectorsCheckRequirementsKindDataConnectorsCheckRequirements
 	KindBasicDataConnectorsCheckRequirementsKindDynamics365                               KindBasicDataConnectorsCheckRequirements = original.KindBasicDataConnectorsCheckRequirementsKindDynamics365
+	KindBasicDataConnectorsCheckRequirementsKindIOT                                       KindBasicDataConnectorsCheckRequirements = original.KindBasicDataConnectorsCheckRequirementsKindIOT
 	KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity                 KindBasicDataConnectorsCheckRequirements = original.KindBasicDataConnectorsCheckRequirementsKindMicrosoftCloudAppSecurity
 	KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection KindBasicDataConnectorsCheckRequirements = original.KindBasicDataConnectorsCheckRequirementsKindMicrosoftDefenderAdvancedThreatProtection
 	KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence               KindBasicDataConnectorsCheckRequirements = original.KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatIntelligence
 	KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection                 KindBasicDataConnectorsCheckRequirements = original.KindBasicDataConnectorsCheckRequirementsKindMicrosoftThreatProtection
+	KindBasicDataConnectorsCheckRequirementsKindOffice365Project                          KindBasicDataConnectorsCheckRequirements = original.KindBasicDataConnectorsCheckRequirementsKindOffice365Project
 	KindBasicDataConnectorsCheckRequirementsKindOfficeATP                                 KindBasicDataConnectorsCheckRequirements = original.KindBasicDataConnectorsCheckRequirementsKindOfficeATP
+	KindBasicDataConnectorsCheckRequirementsKindOfficeIRM                                 KindBasicDataConnectorsCheckRequirements = original.KindBasicDataConnectorsCheckRequirementsKindOfficeIRM
+	KindBasicDataConnectorsCheckRequirementsKindOfficePowerBI                             KindBasicDataConnectorsCheckRequirements = original.KindBasicDataConnectorsCheckRequirementsKindOfficePowerBI
 	KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence                        KindBasicDataConnectorsCheckRequirements = original.KindBasicDataConnectorsCheckRequirementsKindThreatIntelligence
 	KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii                   KindBasicDataConnectorsCheckRequirements = original.KindBasicDataConnectorsCheckRequirementsKindThreatIntelligenceTaxii
 )
@@ -537,8 +651,23 @@ const (
 type KindBasicEntityQuery = original.KindBasicEntityQuery
 
 const (
+	KindBasicEntityQueryKindActivity    KindBasicEntityQuery = original.KindBasicEntityQueryKindActivity
 	KindBasicEntityQueryKindEntityQuery KindBasicEntityQuery = original.KindBasicEntityQueryKindEntityQuery
 	KindBasicEntityQueryKindExpansion   KindBasicEntityQuery = original.KindBasicEntityQueryKindExpansion
+)
+
+type KindBasicEntityQueryItem = original.KindBasicEntityQueryItem
+
+const (
+	KindBasicEntityQueryItemKindEntityQueryItem KindBasicEntityQueryItem = original.KindBasicEntityQueryItemKindEntityQueryItem
+	KindBasicEntityQueryItemKindInsight         KindBasicEntityQueryItem = original.KindBasicEntityQueryItemKindInsight
+)
+
+type KindBasicEntityQueryTemplate = original.KindBasicEntityQueryTemplate
+
+const (
+	KindBasicEntityQueryTemplateKindActivity            KindBasicEntityQueryTemplate = original.KindBasicEntityQueryTemplateKindActivity
+	KindBasicEntityQueryTemplateKindEntityQueryTemplate KindBasicEntityQueryTemplate = original.KindBasicEntityQueryTemplateKindEntityQueryTemplate
 )
 
 type KindBasicEntityTimelineItem = original.KindBasicEntityTimelineItem
@@ -553,9 +682,9 @@ const (
 type KindBasicSettings = original.KindBasicSettings
 
 const (
+	KindBasicSettingsKindAnomalies       KindBasicSettings = original.KindBasicSettingsKindAnomalies
 	KindBasicSettingsKindEntityAnalytics KindBasicSettings = original.KindBasicSettingsKindEntityAnalytics
 	KindBasicSettingsKindEyesOn          KindBasicSettings = original.KindBasicSettingsKindEyesOn
-	KindBasicSettingsKindIPSyncer        KindBasicSettings = original.KindBasicSettingsKindIPSyncer
 	KindBasicSettingsKindSettings        KindBasicSettings = original.KindBasicSettingsKindSettings
 	KindBasicSettingsKindUeba            KindBasicSettings = original.KindBasicSettingsKindUeba
 )
@@ -565,6 +694,14 @@ type KindBasicThreatIntelligenceInformation = original.KindBasicThreatIntelligen
 const (
 	KindBasicThreatIntelligenceInformationKindIndicator                     KindBasicThreatIntelligenceInformation = original.KindBasicThreatIntelligenceInformationKindIndicator
 	KindBasicThreatIntelligenceInformationKindThreatIntelligenceInformation KindBasicThreatIntelligenceInformation = original.KindBasicThreatIntelligenceInformationKindThreatIntelligenceInformation
+)
+
+type MatchingMethod = original.MatchingMethod
+
+const (
+	MatchingMethodAllEntities MatchingMethod = original.MatchingMethodAllEntities
+	MatchingMethodAnyAlert    MatchingMethod = original.MatchingMethodAnyAlert
+	MatchingMethodSelected    MatchingMethod = original.MatchingMethodSelected
 )
 
 type MicrosoftSecurityProductName = original.MicrosoftSecurityProductName
@@ -589,6 +726,13 @@ const (
 	OSFamilyWindows OSFamily = original.OSFamilyWindows
 )
 
+type Operator = original.Operator
+
+const (
+	OperatorAND Operator = original.OperatorAND
+	OperatorOR  Operator = original.OperatorOR
+)
+
 type OutputType = original.OutputType
 
 const (
@@ -598,12 +742,39 @@ const (
 	OutputTypeString OutputType = original.OutputTypeString
 )
 
+type OwnerType = original.OwnerType
+
+const (
+	OwnerTypeGroup   OwnerType = original.OwnerTypeGroup
+	OwnerTypeUnknown OwnerType = original.OwnerTypeUnknown
+	OwnerTypeUser    OwnerType = original.OwnerTypeUser
+)
+
+type PermissionProviderScope = original.PermissionProviderScope
+
+const (
+	PermissionProviderScopeResourceGroup PermissionProviderScope = original.PermissionProviderScopeResourceGroup
+	PermissionProviderScopeSubscription  PermissionProviderScope = original.PermissionProviderScopeSubscription
+	PermissionProviderScopeWorkspace     PermissionProviderScope = original.PermissionProviderScopeWorkspace
+)
+
 type PollingFrequency = original.PollingFrequency
 
 const (
 	PollingFrequencyOnceADay    PollingFrequency = original.PollingFrequencyOnceADay
 	PollingFrequencyOnceAMinute PollingFrequency = original.PollingFrequencyOnceAMinute
 	PollingFrequencyOnceAnHour  PollingFrequency = original.PollingFrequencyOnceAnHour
+)
+
+type ProviderName = original.ProviderName
+
+const (
+	ProviderNameMicrosoftaadiamdiagnosticSettings                 ProviderName = original.ProviderNameMicrosoftaadiamdiagnosticSettings
+	ProviderNameMicrosoftAuthorizationpolicyAssignments           ProviderName = original.ProviderNameMicrosoftAuthorizationpolicyAssignments
+	ProviderNameMicrosoftOperationalInsightssolutions             ProviderName = original.ProviderNameMicrosoftOperationalInsightssolutions
+	ProviderNameMicrosoftOperationalInsightsworkspaces            ProviderName = original.ProviderNameMicrosoftOperationalInsightsworkspaces
+	ProviderNameMicrosoftOperationalInsightsworkspacesdatasources ProviderName = original.ProviderNameMicrosoftOperationalInsightsworkspacesdatasources
+	ProviderNameMicrosoftOperationalInsightsworkspacessharedKeys  ProviderName = original.ProviderNameMicrosoftOperationalInsightsworkspacessharedKeys
 )
 
 type RegistryHive = original.RegistryHive
@@ -634,32 +805,50 @@ const (
 	RegistryValueKindUnknown      RegistryValueKind = original.RegistryValueKindUnknown
 )
 
-type RelationNodeKind = original.RelationNodeKind
+type RepoType = original.RepoType
 
 const (
-	RelationNodeKindBookmark RelationNodeKind = original.RelationNodeKindBookmark
-	RelationNodeKindCase     RelationNodeKind = original.RelationNodeKindCase
+	RepoTypeDevOps RepoType = original.RepoTypeDevOps
+	RepoTypeGithub RepoType = original.RepoTypeGithub
 )
 
-type RelationTypes = original.RelationTypes
+type SettingType = original.SettingType
 
 const (
-	RelationTypesCasesToBookmarks RelationTypes = original.RelationTypesCasesToBookmarks
+	SettingTypeCopyableLabel         SettingType = original.SettingTypeCopyableLabel
+	SettingTypeInfoMessage           SettingType = original.SettingTypeInfoMessage
+	SettingTypeInstructionStepsGroup SettingType = original.SettingTypeInstructionStepsGroup
 )
 
-type SettingKind = original.SettingKind
+type SkuKind = original.SkuKind
 
 const (
-	SettingKindEntityAnalytics SettingKind = original.SettingKindEntityAnalytics
-	SettingKindEyesOn          SettingKind = original.SettingKindEyesOn
-	SettingKindUeba            SettingKind = original.SettingKindUeba
+	SkuKindCapacityReservation SkuKind = original.SkuKindCapacityReservation
+	SkuKindPerGB               SkuKind = original.SkuKindPerGB
 )
 
-type Source = original.Source
+type SourceKind = original.SourceKind
 
 const (
-	SourceLocalfile     Source = original.SourceLocalfile
-	SourceRemotestorage Source = original.SourceRemotestorage
+	SourceKindCommunity        SourceKind = original.SourceKindCommunity
+	SourceKindLocalWorkspace   SourceKind = original.SourceKindLocalWorkspace
+	SourceKindSolution         SourceKind = original.SourceKindSolution
+	SourceKindSourceRepository SourceKind = original.SourceKindSourceRepository
+)
+
+type SourceType = original.SourceType
+
+const (
+	SourceTypeLocalfile     SourceType = original.SourceTypeLocalfile
+	SourceTypeRemotestorage SourceType = original.SourceTypeRemotestorage
+)
+
+type SupportTier = original.SupportTier
+
+const (
+	SupportTierCommunity SupportTier = original.SupportTierCommunity
+	SupportTierMicrosoft SupportTier = original.SupportTierMicrosoft
+	SupportTierPartner   SupportTier = original.SupportTierPartner
 )
 
 type TemplateStatus = original.TemplateStatus
@@ -670,18 +859,18 @@ const (
 	TemplateStatusNotAvailable TemplateStatus = original.TemplateStatusNotAvailable
 )
 
-type ThreatIntelligenceResourceKind = original.ThreatIntelligenceResourceKind
+type ThreatIntelligenceResourceKindEnum = original.ThreatIntelligenceResourceKindEnum
 
 const (
-	ThreatIntelligenceResourceKindIndicator ThreatIntelligenceResourceKind = original.ThreatIntelligenceResourceKindIndicator
+	ThreatIntelligenceResourceKindEnumIndicator ThreatIntelligenceResourceKindEnum = original.ThreatIntelligenceResourceKindEnumIndicator
 )
 
-type ThreatIntelligenceSortingCriteria = original.ThreatIntelligenceSortingCriteria
+type ThreatIntelligenceSortingCriteriaEnum = original.ThreatIntelligenceSortingCriteriaEnum
 
 const (
-	ThreatIntelligenceSortingCriteriaAscending  ThreatIntelligenceSortingCriteria = original.ThreatIntelligenceSortingCriteriaAscending
-	ThreatIntelligenceSortingCriteriaDescending ThreatIntelligenceSortingCriteria = original.ThreatIntelligenceSortingCriteriaDescending
-	ThreatIntelligenceSortingCriteriaUnsorted   ThreatIntelligenceSortingCriteria = original.ThreatIntelligenceSortingCriteriaUnsorted
+	ThreatIntelligenceSortingCriteriaEnumAscending  ThreatIntelligenceSortingCriteriaEnum = original.ThreatIntelligenceSortingCriteriaEnumAscending
+	ThreatIntelligenceSortingCriteriaEnumDescending ThreatIntelligenceSortingCriteriaEnum = original.ThreatIntelligenceSortingCriteriaEnumDescending
+	ThreatIntelligenceSortingCriteriaEnumUnsorted   ThreatIntelligenceSortingCriteriaEnum = original.ThreatIntelligenceSortingCriteriaEnumUnsorted
 )
 
 type TriggerOperator = original.TriggerOperator
@@ -693,6 +882,18 @@ const (
 	TriggerOperatorNotEqual    TriggerOperator = original.TriggerOperatorNotEqual
 )
 
+type TriggersOn = original.TriggersOn
+
+const (
+	TriggersOnIncidents TriggersOn = original.TriggersOnIncidents
+)
+
+type TriggersWhen = original.TriggersWhen
+
+const (
+	TriggersWhenCreated TriggersWhen = original.TriggersWhenCreated
+)
+
 type UebaDataSources = original.UebaDataSources
 
 const (
@@ -700,6 +901,13 @@ const (
 	UebaDataSourcesAzureActivity UebaDataSources = original.UebaDataSourcesAzureActivity
 	UebaDataSourcesSecurityEvent UebaDataSources = original.UebaDataSourcesSecurityEvent
 	UebaDataSourcesSigninLogs    UebaDataSources = original.UebaDataSourcesSigninLogs
+)
+
+type Version = original.Version
+
+const (
+	VersionV1 Version = original.VersionV1
+	VersionV2 Version = original.VersionV2
 )
 
 type AADCheckRequirements = original.AADCheckRequirements
@@ -710,6 +918,7 @@ type AATPCheckRequirements = original.AATPCheckRequirements
 type AATPCheckRequirementsProperties = original.AATPCheckRequirementsProperties
 type AATPDataConnector = original.AATPDataConnector
 type AATPDataConnectorProperties = original.AATPDataConnectorProperties
+type APIPollingParameters = original.APIPollingParameters
 type ASCCheckRequirements = original.ASCCheckRequirements
 type ASCCheckRequirementsProperties = original.ASCCheckRequirementsProperties
 type ASCDataConnector = original.ASCDataConnector
@@ -725,17 +934,22 @@ type ActionsClient = original.ActionsClient
 type ActionsList = original.ActionsList
 type ActionsListIterator = original.ActionsListIterator
 type ActionsListPage = original.ActionsListPage
+type ActivityCustomEntityQuery = original.ActivityCustomEntityQuery
+type ActivityEntityQueriesProperties = original.ActivityEntityQueriesProperties
+type ActivityEntityQueriesPropertiesQueryDefinitions = original.ActivityEntityQueriesPropertiesQueryDefinitions
+type ActivityEntityQuery = original.ActivityEntityQuery
+type ActivityEntityQueryTemplate = original.ActivityEntityQueryTemplate
+type ActivityEntityQueryTemplateProperties = original.ActivityEntityQueryTemplateProperties
+type ActivityEntityQueryTemplatePropertiesQueryDefinitions = original.ActivityEntityQueryTemplatePropertiesQueryDefinitions
 type ActivityTimelineItem = original.ActivityTimelineItem
-type Aggregations = original.Aggregations
-type AggregationsKind = original.AggregationsKind
-type AggregationsModel = original.AggregationsModel
+type AlertDetailsOverride = original.AlertDetailsOverride
 type AlertRule = original.AlertRule
-type AlertRuleKind1 = original.AlertRuleKind1
 type AlertRuleModel = original.AlertRuleModel
 type AlertRuleTemplate = original.AlertRuleTemplate
 type AlertRuleTemplateDataSource = original.AlertRuleTemplateDataSource
 type AlertRuleTemplateModel = original.AlertRuleTemplateModel
 type AlertRuleTemplatePropertiesBase = original.AlertRuleTemplatePropertiesBase
+type AlertRuleTemplateWithMitreProperties = original.AlertRuleTemplateWithMitreProperties
 type AlertRuleTemplatesClient = original.AlertRuleTemplatesClient
 type AlertRuleTemplatesList = original.AlertRuleTemplatesList
 type AlertRuleTemplatesListIterator = original.AlertRuleTemplatesListIterator
@@ -745,44 +959,53 @@ type AlertRulesList = original.AlertRulesList
 type AlertRulesListIterator = original.AlertRulesListIterator
 type AlertRulesListPage = original.AlertRulesListPage
 type AlertsDataTypeOfDataConnector = original.AlertsDataTypeOfDataConnector
-type AlertsDataTypeOfDataConnectorAlerts = original.AlertsDataTypeOfDataConnectorAlerts
+type Anomalies = original.Anomalies
+type AnomaliesSettingsProperties = original.AnomaliesSettingsProperties
 type AutomationRule = original.AutomationRule
 type AutomationRuleAction = original.AutomationRuleAction
 type AutomationRuleCondition = original.AutomationRuleCondition
 type AutomationRuleModifyPropertiesAction = original.AutomationRuleModifyPropertiesAction
-type AutomationRuleModifyPropertiesActionActionConfiguration = original.AutomationRuleModifyPropertiesActionActionConfiguration
 type AutomationRuleProperties = original.AutomationRuleProperties
 type AutomationRulePropertyValuesCondition = original.AutomationRulePropertyValuesCondition
-type AutomationRulePropertyValuesConditionConditionProperties = original.AutomationRulePropertyValuesConditionConditionProperties
 type AutomationRuleRunPlaybookAction = original.AutomationRuleRunPlaybookAction
-type AutomationRuleRunPlaybookActionActionConfiguration = original.AutomationRuleRunPlaybookActionActionConfiguration
 type AutomationRuleTriggeringLogic = original.AutomationRuleTriggeringLogic
 type AutomationRulesClient = original.AutomationRulesClient
 type AutomationRulesList = original.AutomationRulesList
 type AutomationRulesListIterator = original.AutomationRulesListIterator
 type AutomationRulesListPage = original.AutomationRulesListPage
+type Availability = original.Availability
 type AwsCloudTrailCheckRequirements = original.AwsCloudTrailCheckRequirements
 type AwsCloudTrailDataConnector = original.AwsCloudTrailDataConnector
 type AwsCloudTrailDataConnectorDataTypes = original.AwsCloudTrailDataConnectorDataTypes
 type AwsCloudTrailDataConnectorDataTypesLogs = original.AwsCloudTrailDataConnectorDataTypesLogs
 type AwsCloudTrailDataConnectorProperties = original.AwsCloudTrailDataConnectorProperties
+type AwsS3CheckRequirements = original.AwsS3CheckRequirements
+type AwsS3DataConnector = original.AwsS3DataConnector
+type AwsS3DataConnectorDataTypes = original.AwsS3DataConnectorDataTypes
+type AwsS3DataConnectorDataTypesLogs = original.AwsS3DataConnectorDataTypesLogs
+type AwsS3DataConnectorProperties = original.AwsS3DataConnectorProperties
+type AzureDevOpsResourceInfo = original.AzureDevOpsResourceInfo
+type AzureEntityResource = original.AzureEntityResource
 type AzureResourceEntity = original.AzureResourceEntity
 type AzureResourceEntityProperties = original.AzureResourceEntityProperties
 type BaseClient = original.BaseClient
-type BasicAggregations = original.BasicAggregations
 type BasicAlertRule = original.BasicAlertRule
 type BasicAlertRuleTemplate = original.BasicAlertRuleTemplate
 type BasicAutomationRuleAction = original.BasicAutomationRuleAction
 type BasicAutomationRuleCondition = original.BasicAutomationRuleCondition
+type BasicCustomEntityQuery = original.BasicCustomEntityQuery
 type BasicDataConnector = original.BasicDataConnector
 type BasicDataConnectorsCheckRequirements = original.BasicDataConnectorsCheckRequirements
 type BasicEntity = original.BasicEntity
 type BasicEntityQuery = original.BasicEntityQuery
+type BasicEntityQueryItem = original.BasicEntityQueryItem
+type BasicEntityQueryTemplate = original.BasicEntityQueryTemplate
 type BasicEntityTimelineItem = original.BasicEntityTimelineItem
 type BasicSettings = original.BasicSettings
 type BasicThreatIntelligenceInformation = original.BasicThreatIntelligenceInformation
 type Bookmark = original.Bookmark
 type BookmarkClient = original.BookmarkClient
+type BookmarkEntityMappings = original.BookmarkEntityMappings
 type BookmarkExpandParameters = original.BookmarkExpandParameters
 type BookmarkExpandResponse = original.BookmarkExpandResponse
 type BookmarkExpandResponseValue = original.BookmarkExpandResponseValue
@@ -793,41 +1016,37 @@ type BookmarkProperties = original.BookmarkProperties
 type BookmarkRelationsClient = original.BookmarkRelationsClient
 type BookmarkTimelineItem = original.BookmarkTimelineItem
 type BookmarksClient = original.BookmarksClient
-type Case = original.Case
-type CaseComment = original.CaseComment
-type CaseCommentList = original.CaseCommentList
-type CaseCommentListIterator = original.CaseCommentListIterator
-type CaseCommentListPage = original.CaseCommentListPage
-type CaseCommentProperties = original.CaseCommentProperties
-type CaseCommentsClient = original.CaseCommentsClient
-type CaseList = original.CaseList
-type CaseListIterator = original.CaseListIterator
-type CaseListPage = original.CaseListPage
-type CaseProperties = original.CaseProperties
-type CaseRelation = original.CaseRelation
-type CaseRelationList = original.CaseRelationList
-type CaseRelationListIterator = original.CaseRelationListIterator
-type CaseRelationListPage = original.CaseRelationListPage
-type CaseRelationProperties = original.CaseRelationProperties
-type CaseRelationsClient = original.CaseRelationsClient
-type CasesAggregation = original.CasesAggregation
-type CasesAggregationBySeverityProperties = original.CasesAggregationBySeverityProperties
-type CasesAggregationByStatusProperties = original.CasesAggregationByStatusProperties
-type CasesAggregationProperties = original.CasesAggregationProperties
-type CasesAggregationsClient = original.CasesAggregationsClient
-type CasesClient = original.CasesClient
 type ClientInfo = original.ClientInfo
 type CloudApplicationEntity = original.CloudApplicationEntity
 type CloudApplicationEntityProperties = original.CloudApplicationEntityProperties
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
-type CommentsClient = original.CommentsClient
+type CodelessAPIPollingDataConnector = original.CodelessAPIPollingDataConnector
+type CodelessConnectorPollingAuthProperties = original.CodelessConnectorPollingAuthProperties
+type CodelessConnectorPollingConfigProperties = original.CodelessConnectorPollingConfigProperties
+type CodelessConnectorPollingPagingProperties = original.CodelessConnectorPollingPagingProperties
+type CodelessConnectorPollingRequestProperties = original.CodelessConnectorPollingRequestProperties
+type CodelessConnectorPollingResponseProperties = original.CodelessConnectorPollingResponseProperties
+type CodelessParameters = original.CodelessParameters
+type CodelessUIConnectorConfigProperties = original.CodelessUIConnectorConfigProperties
+type CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem = original.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem
+type CodelessUIConnectorConfigPropertiesDataTypesItem = original.CodelessUIConnectorConfigPropertiesDataTypesItem
+type CodelessUIConnectorConfigPropertiesGraphQueriesItem = original.CodelessUIConnectorConfigPropertiesGraphQueriesItem
+type CodelessUIConnectorConfigPropertiesInstructionStepsItem = original.CodelessUIConnectorConfigPropertiesInstructionStepsItem
+type CodelessUIConnectorConfigPropertiesSampleQueriesItem = original.CodelessUIConnectorConfigPropertiesSampleQueriesItem
+type CodelessUIDataConnector = original.CodelessUIDataConnector
 type ConnectedEntity = original.ConnectedEntity
+type ConnectivityCriteria = original.ConnectivityCriteria
+type ConnectorInstructionModelBase = original.ConnectorInstructionModelBase
+type ContentPathMap = original.ContentPathMap
+type CustomEntityQuery = original.CustomEntityQuery
+type Customs = original.Customs
+type CustomsPermission = original.CustomsPermission
 type DNSEntity = original.DNSEntity
 type DNSEntityProperties = original.DNSEntityProperties
 type DataConnector = original.DataConnector
+type DataConnectorConnectBody = original.DataConnectorConnectBody
 type DataConnectorDataTypeCommon = original.DataConnectorDataTypeCommon
-type DataConnectorKind1 = original.DataConnectorKind1
 type DataConnectorList = original.DataConnectorList
 type DataConnectorListIterator = original.DataConnectorListIterator
 type DataConnectorListPage = original.DataConnectorListPage
@@ -838,12 +1057,22 @@ type DataConnectorWithAlertsProperties = original.DataConnectorWithAlertsPropert
 type DataConnectorsCheckRequirements = original.DataConnectorsCheckRequirements
 type DataConnectorsCheckRequirementsClient = original.DataConnectorsCheckRequirementsClient
 type DataConnectorsClient = original.DataConnectorsClient
+type DataTypeDefinitions = original.DataTypeDefinitions
+type Deployment = original.Deployment
+type DeploymentInfo = original.DeploymentInfo
+type DomainWhoisClient = original.DomainWhoisClient
 type Dynamics365CheckRequirements = original.Dynamics365CheckRequirements
 type Dynamics365CheckRequirementsProperties = original.Dynamics365CheckRequirementsProperties
 type Dynamics365DataConnector = original.Dynamics365DataConnector
 type Dynamics365DataConnectorDataTypes = original.Dynamics365DataConnectorDataTypes
 type Dynamics365DataConnectorDataTypesDynamics365CdsActivities = original.Dynamics365DataConnectorDataTypesDynamics365CdsActivities
 type Dynamics365DataConnectorProperties = original.Dynamics365DataConnectorProperties
+type EnrichmentDomainWhois = original.EnrichmentDomainWhois
+type EnrichmentDomainWhoisContact = original.EnrichmentDomainWhoisContact
+type EnrichmentDomainWhoisContacts = original.EnrichmentDomainWhoisContacts
+type EnrichmentDomainWhoisDetails = original.EnrichmentDomainWhoisDetails
+type EnrichmentDomainWhoisRegistrarDetails = original.EnrichmentDomainWhoisRegistrarDetails
+type EnrichmentIPGeodata = original.EnrichmentIPGeodata
 type EntitiesClient = original.EntitiesClient
 type EntitiesGetTimelineClient = original.EntitiesGetTimelineClient
 type EntitiesRelationsClient = original.EntitiesRelationsClient
@@ -855,25 +1084,31 @@ type EntityEdges = original.EntityEdges
 type EntityExpandParameters = original.EntityExpandParameters
 type EntityExpandResponse = original.EntityExpandResponse
 type EntityExpandResponseValue = original.EntityExpandResponseValue
+type EntityFieldMapping = original.EntityFieldMapping
 type EntityGetInsightsParameters = original.EntityGetInsightsParameters
 type EntityGetInsightsResponse = original.EntityGetInsightsResponse
 type EntityInsightItem = original.EntityInsightItem
 type EntityInsightItemQueryTimeInterval = original.EntityInsightItemQueryTimeInterval
-type EntityKind1 = original.EntityKind1
 type EntityList = original.EntityList
 type EntityListIterator = original.EntityListIterator
 type EntityListPage = original.EntityListPage
+type EntityMapping = original.EntityMapping
 type EntityModel = original.EntityModel
 type EntityQueriesClient = original.EntityQueriesClient
 type EntityQuery = original.EntityQuery
 type EntityQueryItem = original.EntityQueryItem
 type EntityQueryItemProperties = original.EntityQueryItemProperties
 type EntityQueryItemPropertiesDataTypesItem = original.EntityQueryItemPropertiesDataTypesItem
-type EntityQueryKind1 = original.EntityQueryKind1
 type EntityQueryList = original.EntityQueryList
 type EntityQueryListIterator = original.EntityQueryListIterator
 type EntityQueryListPage = original.EntityQueryListPage
 type EntityQueryModel = original.EntityQueryModel
+type EntityQueryTemplate = original.EntityQueryTemplate
+type EntityQueryTemplateList = original.EntityQueryTemplateList
+type EntityQueryTemplateListIterator = original.EntityQueryTemplateListIterator
+type EntityQueryTemplateListPage = original.EntityQueryTemplateListPage
+type EntityQueryTemplateModel = original.EntityQueryTemplateModel
+type EntityQueryTemplatesClient = original.EntityQueryTemplatesClient
 type EntityRelationsClient = original.EntityRelationsClient
 type EntityTimelineItem = original.EntityTimelineItem
 type EntityTimelineParameters = original.EntityTimelineParameters
@@ -885,6 +1120,7 @@ type ExpansionResultAggregation = original.ExpansionResultAggregation
 type ExpansionResultsMetadata = original.ExpansionResultsMetadata
 type EyesOn = original.EyesOn
 type EyesOnSettingsProperties = original.EyesOnSettingsProperties
+type FieldMapping = original.FieldMapping
 type FileEntity = original.FileEntity
 type FileEntityProperties = original.FileEntityProperties
 type FileHashEntity = original.FileHashEntity
@@ -893,10 +1129,20 @@ type FusionAlertRule = original.FusionAlertRule
 type FusionAlertRuleProperties = original.FusionAlertRuleProperties
 type FusionAlertRuleTemplate = original.FusionAlertRuleTemplate
 type FusionAlertRuleTemplateProperties = original.FusionAlertRuleTemplateProperties
+type FusionScenarioExclusionPattern = original.FusionScenarioExclusionPattern
+type FusionSourceSettings = original.FusionSourceSettings
+type FusionSourceSubTypeSetting = original.FusionSourceSubTypeSetting
+type FusionSubTypeSeverityFilter = original.FusionSubTypeSeverityFilter
+type FusionSubTypeSeverityFiltersItem = original.FusionSubTypeSeverityFiltersItem
+type FusionTemplateSourceSetting = original.FusionTemplateSourceSetting
+type FusionTemplateSourceSubType = original.FusionTemplateSourceSubType
+type FusionTemplateSubTypeSeverityFilter = original.FusionTemplateSubTypeSeverityFilter
 type GeoLocation = original.GeoLocation
 type GetInsightsError = original.GetInsightsError
 type GetInsightsResultsMetadata = original.GetInsightsResultsMetadata
 type GetQueriesResponse = original.GetQueriesResponse
+type GitHubResourceInfo = original.GitHubResourceInfo
+type GraphQueries = original.GraphQueries
 type GroupingConfiguration = original.GroupingConfiguration
 type HostEntity = original.HostEntity
 type HostEntityProperties = original.HostEntityProperties
@@ -904,8 +1150,7 @@ type HuntingBookmark = original.HuntingBookmark
 type HuntingBookmarkProperties = original.HuntingBookmarkProperties
 type IPEntity = original.IPEntity
 type IPEntityProperties = original.IPEntityProperties
-type IPSyncer = original.IPSyncer
-type IPSyncerSettingsProperties = original.IPSyncerSettingsProperties
+type IPGeodataClient = original.IPGeodataClient
 type Incident = original.Incident
 type IncidentAdditionalData = original.IncidentAdditionalData
 type IncidentAlertList = original.IncidentAlertList
@@ -926,6 +1171,7 @@ type IncidentListIterator = original.IncidentListIterator
 type IncidentListPage = original.IncidentListPage
 type IncidentOwnerInfo = original.IncidentOwnerInfo
 type IncidentProperties = original.IncidentProperties
+type IncidentPropertiesAction = original.IncidentPropertiesAction
 type IncidentRelationsClient = original.IncidentRelationsClient
 type IncidentsClient = original.IncidentsClient
 type InsightQueryItem = original.InsightQueryItem
@@ -939,13 +1185,19 @@ type InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem = original.Insig
 type InsightQueryItemPropertiesTableQueryQueriesDefinitionsItemLinkColumnsDefinitionsItem = original.InsightQueryItemPropertiesTableQueryQueriesDefinitionsItemLinkColumnsDefinitionsItem
 type InsightsTableResult = original.InsightsTableResult
 type InsightsTableResultColumnsItem = original.InsightsTableResultColumnsItem
+type InstructionSteps = original.InstructionSteps
+type InstructionStepsInstructionsItem = original.InstructionStepsInstructionsItem
+type IoTCheckRequirements = original.IoTCheckRequirements
+type IoTCheckRequirementsProperties = original.IoTCheckRequirementsProperties
+type IoTDataConnector = original.IoTDataConnector
+type IoTDataConnectorProperties = original.IoTDataConnectorProperties
 type IoTDeviceEntity = original.IoTDeviceEntity
 type IoTDeviceEntityProperties = original.IoTDeviceEntityProperties
+type LastDataReceivedDataType = original.LastDataReceivedDataType
 type MCASCheckRequirements = original.MCASCheckRequirements
 type MCASCheckRequirementsProperties = original.MCASCheckRequirementsProperties
 type MCASDataConnector = original.MCASDataConnector
 type MCASDataConnectorDataTypes = original.MCASDataConnectorDataTypes
-type MCASDataConnectorDataTypesDiscoveryLogs = original.MCASDataConnectorDataTypesDiscoveryLogs
 type MCASDataConnectorProperties = original.MCASDataConnectorProperties
 type MDATPCheckRequirements = original.MDATPCheckRequirements
 type MDATPCheckRequirementsProperties = original.MDATPCheckRequirementsProperties
@@ -975,12 +1227,36 @@ type MailboxEntity = original.MailboxEntity
 type MailboxEntityProperties = original.MailboxEntityProperties
 type MalwareEntity = original.MalwareEntity
 type MalwareEntityProperties = original.MalwareEntityProperties
+type ManualTriggerRequestBody = original.ManualTriggerRequestBody
+type MetadataAuthor = original.MetadataAuthor
+type MetadataCategories = original.MetadataCategories
+type MetadataClient = original.MetadataClient
+type MetadataDependencies = original.MetadataDependencies
+type MetadataList = original.MetadataList
+type MetadataListIterator = original.MetadataListIterator
+type MetadataListPage = original.MetadataListPage
+type MetadataModel = original.MetadataModel
+type MetadataPatch = original.MetadataPatch
+type MetadataProperties = original.MetadataProperties
+type MetadataPropertiesPatch = original.MetadataPropertiesPatch
+type MetadataSource = original.MetadataSource
+type MetadataSupport = original.MetadataSupport
 type MicrosoftSecurityIncidentCreationAlertRule = original.MicrosoftSecurityIncidentCreationAlertRule
 type MicrosoftSecurityIncidentCreationAlertRuleCommonProperties = original.MicrosoftSecurityIncidentCreationAlertRuleCommonProperties
 type MicrosoftSecurityIncidentCreationAlertRuleProperties = original.MicrosoftSecurityIncidentCreationAlertRuleProperties
 type MicrosoftSecurityIncidentCreationAlertRuleTemplate = original.MicrosoftSecurityIncidentCreationAlertRuleTemplate
 type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties = original.MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties
 type MtpCheckRequirements = original.MtpCheckRequirements
+type NrtAlertRule = original.NrtAlertRule
+type NrtAlertRuleProperties = original.NrtAlertRuleProperties
+type NrtAlertRuleTemplate = original.NrtAlertRuleTemplate
+type NrtAlertRuleTemplateProperties = original.NrtAlertRuleTemplateProperties
+type Office365ProjectCheckRequirements = original.Office365ProjectCheckRequirements
+type Office365ProjectCheckRequirementsProperties = original.Office365ProjectCheckRequirementsProperties
+type Office365ProjectConnectorDataTypes = original.Office365ProjectConnectorDataTypes
+type Office365ProjectConnectorDataTypesLogs = original.Office365ProjectConnectorDataTypesLogs
+type Office365ProjectDataConnector = original.Office365ProjectDataConnector
+type Office365ProjectDataConnectorProperties = original.Office365ProjectDataConnectorProperties
 type OfficeATPCheckRequirements = original.OfficeATPCheckRequirements
 type OfficeATPCheckRequirementsProperties = original.OfficeATPCheckRequirementsProperties
 type OfficeATPDataConnector = original.OfficeATPDataConnector
@@ -997,30 +1273,52 @@ type OfficeDataConnectorDataTypesExchange = original.OfficeDataConnectorDataType
 type OfficeDataConnectorDataTypesSharePoint = original.OfficeDataConnectorDataTypesSharePoint
 type OfficeDataConnectorDataTypesTeams = original.OfficeDataConnectorDataTypesTeams
 type OfficeDataConnectorProperties = original.OfficeDataConnectorProperties
+type OfficeIRMCheckRequirements = original.OfficeIRMCheckRequirements
+type OfficeIRMCheckRequirementsProperties = original.OfficeIRMCheckRequirementsProperties
+type OfficeIRMDataConnector = original.OfficeIRMDataConnector
+type OfficeIRMDataConnectorProperties = original.OfficeIRMDataConnectorProperties
+type OfficePowerBICheckRequirements = original.OfficePowerBICheckRequirements
+type OfficePowerBICheckRequirementsProperties = original.OfficePowerBICheckRequirementsProperties
+type OfficePowerBIConnectorDataTypes = original.OfficePowerBIConnectorDataTypes
+type OfficePowerBIConnectorDataTypesLogs = original.OfficePowerBIConnectorDataTypesLogs
+type OfficePowerBIDataConnector = original.OfficePowerBIDataConnector
+type OfficePowerBIDataConnectorProperties = original.OfficePowerBIDataConnectorProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationsClient = original.OperationsClient
 type OperationsList = original.OperationsList
 type OperationsListIterator = original.OperationsListIterator
 type OperationsListPage = original.OperationsListPage
+type Permissions = original.Permissions
+type PermissionsCustomsItem = original.PermissionsCustomsItem
+type PermissionsResourceProviderItem = original.PermissionsResourceProviderItem
+type PlaybookActionProperties = original.PlaybookActionProperties
 type ProcessEntity = original.ProcessEntity
 type ProcessEntityProperties = original.ProcessEntityProperties
 type ProductSettingsClient = original.ProductSettingsClient
+type PropertyConditionProperties = original.PropertyConditionProperties
+type ProxyResource = original.ProxyResource
+type QueryBasedAlertRuleTemplateProperties = original.QueryBasedAlertRuleTemplateProperties
 type RegistryKeyEntity = original.RegistryKeyEntity
 type RegistryKeyEntityProperties = original.RegistryKeyEntityProperties
 type RegistryValueEntity = original.RegistryValueEntity
 type RegistryValueEntityProperties = original.RegistryValueEntityProperties
 type Relation = original.Relation
-type RelationBase = original.RelationBase
 type RelationList = original.RelationList
 type RelationListIterator = original.RelationListIterator
 type RelationListPage = original.RelationListPage
-type RelationNode = original.RelationNode
 type RelationProperties = original.RelationProperties
-type RelationsModelInput = original.RelationsModelInput
-type RelationsModelInputProperties = original.RelationsModelInputProperties
+type Repo = original.Repo
+type RepoList = original.RepoList
+type RepoListIterator = original.RepoListIterator
+type RepoListPage = original.RepoListPage
+type Repository = original.Repository
+type RepositoryResourceInfo = original.RepositoryResourceInfo
+type RequiredPermissions = original.RequiredPermissions
 type Resource = original.Resource
+type ResourceProvider = original.ResourceProvider
 type ResourceWithEtag = original.ResourceWithEtag
+type SampleQueries = original.SampleQueries
 type ScheduledAlertRule = original.ScheduledAlertRule
 type ScheduledAlertRuleCommonProperties = original.ScheduledAlertRuleCommonProperties
 type ScheduledAlertRuleProperties = original.ScheduledAlertRuleProperties
@@ -1032,18 +1330,33 @@ type SecurityAlertPropertiesConfidenceReasonsItem = original.SecurityAlertProper
 type SecurityAlertTimelineItem = original.SecurityAlertTimelineItem
 type SecurityGroupEntity = original.SecurityGroupEntity
 type SecurityGroupEntityProperties = original.SecurityGroupEntityProperties
+type SentinelOnboardingState = original.SentinelOnboardingState
+type SentinelOnboardingStateProperties = original.SentinelOnboardingStateProperties
+type SentinelOnboardingStatesClient = original.SentinelOnboardingStatesClient
+type SentinelOnboardingStatesList = original.SentinelOnboardingStatesList
+type SetObject = original.SetObject
 type SettingList = original.SettingList
 type Settings = original.Settings
-type SettingsKind = original.SettingsKind
 type SettingsModel = original.SettingsModel
+type Sku = original.Sku
+type SourceControl = original.SourceControl
+type SourceControlClient = original.SourceControlClient
+type SourceControlList = original.SourceControlList
+type SourceControlListIterator = original.SourceControlListIterator
+type SourceControlListPage = original.SourceControlListPage
+type SourceControlProperties = original.SourceControlProperties
+type SourceControlsClient = original.SourceControlsClient
 type SubmissionMailEntity = original.SubmissionMailEntity
 type SubmissionMailEntityProperties = original.SubmissionMailEntityProperties
+type SystemData = original.SystemData
 type TICheckRequirements = original.TICheckRequirements
 type TICheckRequirementsProperties = original.TICheckRequirementsProperties
 type TIDataConnector = original.TIDataConnector
 type TIDataConnectorDataTypes = original.TIDataConnectorDataTypes
 type TIDataConnectorDataTypesIndicators = original.TIDataConnectorDataTypesIndicators
 type TIDataConnectorProperties = original.TIDataConnectorProperties
+type TeamInformation = original.TeamInformation
+type TeamProperties = original.TeamProperties
 type ThreatIntelligence = original.ThreatIntelligence
 type ThreatIntelligenceAlertRule = original.ThreatIntelligenceAlertRule
 type ThreatIntelligenceAlertRuleProperties = original.ThreatIntelligenceAlertRuleProperties
@@ -1056,7 +1369,6 @@ type ThreatIntelligenceGranularMarkingModel = original.ThreatIntelligenceGranula
 type ThreatIntelligenceIndicatorClient = original.ThreatIntelligenceIndicatorClient
 type ThreatIntelligenceIndicatorMetricsClient = original.ThreatIntelligenceIndicatorMetricsClient
 type ThreatIntelligenceIndicatorModel = original.ThreatIntelligenceIndicatorModel
-type ThreatIntelligenceIndicatorModelForRequestBody = original.ThreatIntelligenceIndicatorModelForRequestBody
 type ThreatIntelligenceIndicatorProperties = original.ThreatIntelligenceIndicatorProperties
 type ThreatIntelligenceIndicatorsClient = original.ThreatIntelligenceIndicatorsClient
 type ThreatIntelligenceInformation = original.ThreatIntelligenceInformation
@@ -1071,8 +1383,7 @@ type ThreatIntelligenceMetrics = original.ThreatIntelligenceMetrics
 type ThreatIntelligenceMetricsList = original.ThreatIntelligenceMetricsList
 type ThreatIntelligenceParsedPattern = original.ThreatIntelligenceParsedPattern
 type ThreatIntelligenceParsedPatternTypeValue = original.ThreatIntelligenceParsedPatternTypeValue
-type ThreatIntelligenceResourceKind1 = original.ThreatIntelligenceResourceKind1
-type ThreatIntelligenceSortingCriteria1 = original.ThreatIntelligenceSortingCriteria1
+type ThreatIntelligenceSortingCriteria = original.ThreatIntelligenceSortingCriteria
 type TiTaxiiCheckRequirements = original.TiTaxiiCheckRequirements
 type TiTaxiiCheckRequirementsProperties = original.TiTaxiiCheckRequirementsProperties
 type TiTaxiiDataConnector = original.TiTaxiiDataConnector
@@ -1082,6 +1393,7 @@ type TiTaxiiDataConnectorProperties = original.TiTaxiiDataConnectorProperties
 type TimelineAggregation = original.TimelineAggregation
 type TimelineError = original.TimelineError
 type TimelineResultsMetadata = original.TimelineResultsMetadata
+type TrackedResource = original.TrackedResource
 type URLEntity = original.URLEntity
 type URLEntityProperties = original.URLEntityProperties
 type Ueba = original.Ueba
@@ -1099,6 +1411,7 @@ type WatchlistListIterator = original.WatchlistListIterator
 type WatchlistListPage = original.WatchlistListPage
 type WatchlistProperties = original.WatchlistProperties
 type WatchlistsClient = original.WatchlistsClient
+type Webhook = original.Webhook
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -1175,54 +1488,6 @@ func NewBookmarksClient(subscriptionID string) BookmarksClient {
 func NewBookmarksClientWithBaseURI(baseURI string, subscriptionID string) BookmarksClient {
 	return original.NewBookmarksClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewCaseCommentListIterator(page CaseCommentListPage) CaseCommentListIterator {
-	return original.NewCaseCommentListIterator(page)
-}
-func NewCaseCommentListPage(cur CaseCommentList, getNextPage func(context.Context, CaseCommentList) (CaseCommentList, error)) CaseCommentListPage {
-	return original.NewCaseCommentListPage(cur, getNextPage)
-}
-func NewCaseCommentsClient(subscriptionID string) CaseCommentsClient {
-	return original.NewCaseCommentsClient(subscriptionID)
-}
-func NewCaseCommentsClientWithBaseURI(baseURI string, subscriptionID string) CaseCommentsClient {
-	return original.NewCaseCommentsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewCaseListIterator(page CaseListPage) CaseListIterator {
-	return original.NewCaseListIterator(page)
-}
-func NewCaseListPage(cur CaseList, getNextPage func(context.Context, CaseList) (CaseList, error)) CaseListPage {
-	return original.NewCaseListPage(cur, getNextPage)
-}
-func NewCaseRelationListIterator(page CaseRelationListPage) CaseRelationListIterator {
-	return original.NewCaseRelationListIterator(page)
-}
-func NewCaseRelationListPage(cur CaseRelationList, getNextPage func(context.Context, CaseRelationList) (CaseRelationList, error)) CaseRelationListPage {
-	return original.NewCaseRelationListPage(cur, getNextPage)
-}
-func NewCaseRelationsClient(subscriptionID string) CaseRelationsClient {
-	return original.NewCaseRelationsClient(subscriptionID)
-}
-func NewCaseRelationsClientWithBaseURI(baseURI string, subscriptionID string) CaseRelationsClient {
-	return original.NewCaseRelationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewCasesAggregationsClient(subscriptionID string) CasesAggregationsClient {
-	return original.NewCasesAggregationsClient(subscriptionID)
-}
-func NewCasesAggregationsClientWithBaseURI(baseURI string, subscriptionID string) CasesAggregationsClient {
-	return original.NewCasesAggregationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewCasesClient(subscriptionID string) CasesClient {
-	return original.NewCasesClient(subscriptionID)
-}
-func NewCasesClientWithBaseURI(baseURI string, subscriptionID string) CasesClient {
-	return original.NewCasesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewCommentsClient(subscriptionID string) CommentsClient {
-	return original.NewCommentsClient(subscriptionID)
-}
-func NewCommentsClientWithBaseURI(baseURI string, subscriptionID string) CommentsClient {
-	return original.NewCommentsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewDataConnectorListIterator(page DataConnectorListPage) DataConnectorListIterator {
 	return original.NewDataConnectorListIterator(page)
 }
@@ -1240,6 +1505,12 @@ func NewDataConnectorsClient(subscriptionID string) DataConnectorsClient {
 }
 func NewDataConnectorsClientWithBaseURI(baseURI string, subscriptionID string) DataConnectorsClient {
 	return original.NewDataConnectorsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDomainWhoisClient(subscriptionID string) DomainWhoisClient {
+	return original.NewDomainWhoisClient(subscriptionID)
+}
+func NewDomainWhoisClientWithBaseURI(baseURI string, subscriptionID string) DomainWhoisClient {
+	return original.NewDomainWhoisClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewEntitiesClient(subscriptionID string) EntitiesClient {
 	return original.NewEntitiesClient(subscriptionID)
@@ -1277,11 +1548,29 @@ func NewEntityQueryListIterator(page EntityQueryListPage) EntityQueryListIterato
 func NewEntityQueryListPage(cur EntityQueryList, getNextPage func(context.Context, EntityQueryList) (EntityQueryList, error)) EntityQueryListPage {
 	return original.NewEntityQueryListPage(cur, getNextPage)
 }
+func NewEntityQueryTemplateListIterator(page EntityQueryTemplateListPage) EntityQueryTemplateListIterator {
+	return original.NewEntityQueryTemplateListIterator(page)
+}
+func NewEntityQueryTemplateListPage(cur EntityQueryTemplateList, getNextPage func(context.Context, EntityQueryTemplateList) (EntityQueryTemplateList, error)) EntityQueryTemplateListPage {
+	return original.NewEntityQueryTemplateListPage(cur, getNextPage)
+}
+func NewEntityQueryTemplatesClient(subscriptionID string) EntityQueryTemplatesClient {
+	return original.NewEntityQueryTemplatesClient(subscriptionID)
+}
+func NewEntityQueryTemplatesClientWithBaseURI(baseURI string, subscriptionID string) EntityQueryTemplatesClient {
+	return original.NewEntityQueryTemplatesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewEntityRelationsClient(subscriptionID string) EntityRelationsClient {
 	return original.NewEntityRelationsClient(subscriptionID)
 }
 func NewEntityRelationsClientWithBaseURI(baseURI string, subscriptionID string) EntityRelationsClient {
 	return original.NewEntityRelationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIPGeodataClient(subscriptionID string) IPGeodataClient {
+	return original.NewIPGeodataClient(subscriptionID)
+}
+func NewIPGeodataClientWithBaseURI(baseURI string, subscriptionID string) IPGeodataClient {
+	return original.NewIPGeodataClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewIncidentCommentListIterator(page IncidentCommentListPage) IncidentCommentListIterator {
 	return original.NewIncidentCommentListIterator(page)
@@ -1312,6 +1601,18 @@ func NewIncidentsClient(subscriptionID string) IncidentsClient {
 }
 func NewIncidentsClientWithBaseURI(baseURI string, subscriptionID string) IncidentsClient {
 	return original.NewIncidentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMetadataClient(subscriptionID string) MetadataClient {
+	return original.NewMetadataClient(subscriptionID)
+}
+func NewMetadataClientWithBaseURI(baseURI string, subscriptionID string) MetadataClient {
+	return original.NewMetadataClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMetadataListIterator(page MetadataListPage) MetadataListIterator {
+	return original.NewMetadataListIterator(page)
+}
+func NewMetadataListPage(cur MetadataList, getNextPage func(context.Context, MetadataList) (MetadataList, error)) MetadataListPage {
+	return original.NewMetadataListPage(cur, getNextPage)
 }
 func NewOfficeConsentListIterator(page OfficeConsentListPage) OfficeConsentListIterator {
 	return original.NewOfficeConsentListIterator(page)
@@ -1348,6 +1649,36 @@ func NewRelationListIterator(page RelationListPage) RelationListIterator {
 }
 func NewRelationListPage(cur RelationList, getNextPage func(context.Context, RelationList) (RelationList, error)) RelationListPage {
 	return original.NewRelationListPage(cur, getNextPage)
+}
+func NewRepoListIterator(page RepoListPage) RepoListIterator {
+	return original.NewRepoListIterator(page)
+}
+func NewRepoListPage(cur RepoList, getNextPage func(context.Context, RepoList) (RepoList, error)) RepoListPage {
+	return original.NewRepoListPage(cur, getNextPage)
+}
+func NewSentinelOnboardingStatesClient(subscriptionID string) SentinelOnboardingStatesClient {
+	return original.NewSentinelOnboardingStatesClient(subscriptionID)
+}
+func NewSentinelOnboardingStatesClientWithBaseURI(baseURI string, subscriptionID string) SentinelOnboardingStatesClient {
+	return original.NewSentinelOnboardingStatesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSourceControlClient(subscriptionID string) SourceControlClient {
+	return original.NewSourceControlClient(subscriptionID)
+}
+func NewSourceControlClientWithBaseURI(baseURI string, subscriptionID string) SourceControlClient {
+	return original.NewSourceControlClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSourceControlListIterator(page SourceControlListPage) SourceControlListIterator {
+	return original.NewSourceControlListIterator(page)
+}
+func NewSourceControlListPage(cur SourceControlList, getNextPage func(context.Context, SourceControlList) (SourceControlList, error)) SourceControlListPage {
+	return original.NewSourceControlListPage(cur, getNextPage)
+}
+func NewSourceControlsClient(subscriptionID string) SourceControlsClient {
+	return original.NewSourceControlsClient(subscriptionID)
+}
+func NewSourceControlsClientWithBaseURI(baseURI string, subscriptionID string) SourceControlsClient {
+	return original.NewSourceControlsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewThreatIntelligenceIndicatorClient(subscriptionID string) ThreatIntelligenceIndicatorClient {
 	return original.NewThreatIntelligenceIndicatorClient(subscriptionID)
@@ -1400,8 +1731,14 @@ func NewWatchlistsClientWithBaseURI(baseURI string, subscriptionID string) Watch
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleActionTypeBasicAutomationRuleActionValues() []ActionTypeBasicAutomationRuleAction {
+	return original.PossibleActionTypeBasicAutomationRuleActionValues()
+}
 func PossibleActionTypeValues() []ActionType {
 	return original.PossibleActionTypeValues()
+}
+func PossibleAlertDetailValues() []AlertDetail {
+	return original.PossibleAlertDetailValues()
 }
 func PossibleAlertRuleKindValues() []AlertRuleKind {
 	return original.PossibleAlertRuleKindValues()
@@ -1424,14 +1761,8 @@ func PossibleAutomationRulePropertyConditionSupportedOperatorValues() []Automati
 func PossibleAutomationRulePropertyConditionSupportedPropertyValues() []AutomationRulePropertyConditionSupportedProperty {
 	return original.PossibleAutomationRulePropertyConditionSupportedPropertyValues()
 }
-func PossibleCaseSeverityValues() []CaseSeverity {
-	return original.PossibleCaseSeverityValues()
-}
-func PossibleCaseStatusValues() []CaseStatus {
-	return original.PossibleCaseStatusValues()
-}
-func PossibleCloseReasonValues() []CloseReason {
-	return original.PossibleCloseReasonValues()
+func PossibleConditionTypeBasicAutomationRuleConditionValues() []ConditionTypeBasicAutomationRuleCondition {
+	return original.PossibleConditionTypeBasicAutomationRuleConditionValues()
 }
 func PossibleConditionTypeValues() []ConditionType {
 	return original.PossibleConditionTypeValues()
@@ -1441,6 +1772,21 @@ func PossibleConfidenceLevelValues() []ConfidenceLevel {
 }
 func PossibleConfidenceScoreStatusValues() []ConfidenceScoreStatus {
 	return original.PossibleConfidenceScoreStatusValues()
+}
+func PossibleConnectAuthKindValues() []ConnectAuthKind {
+	return original.PossibleConnectAuthKindValues()
+}
+func PossibleConnectivityTypeValues() []ConnectivityType {
+	return original.PossibleConnectivityTypeValues()
+}
+func PossibleContentTypeValues() []ContentType {
+	return original.PossibleContentTypeValues()
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
+func PossibleCustomEntityQueryKindValues() []CustomEntityQueryKind {
+	return original.PossibleCustomEntityQueryKindValues()
 }
 func PossibleDataConnectorAuthorizationStateValues() []DataConnectorAuthorizationState {
 	return original.PossibleDataConnectorAuthorizationStateValues()
@@ -1460,17 +1806,29 @@ func PossibleDeliveryActionValues() []DeliveryAction {
 func PossibleDeliveryLocationValues() []DeliveryLocation {
 	return original.PossibleDeliveryLocationValues()
 }
+func PossibleDeploymentFetchStatusValues() []DeploymentFetchStatus {
+	return original.PossibleDeploymentFetchStatusValues()
+}
+func PossibleDeploymentResultValues() []DeploymentResult {
+	return original.PossibleDeploymentResultValues()
+}
+func PossibleDeploymentStateValues() []DeploymentState {
+	return original.PossibleDeploymentStateValues()
+}
 func PossibleElevationTokenValues() []ElevationToken {
 	return original.PossibleElevationTokenValues()
-}
-func PossibleEntitiesMatchingMethodValues() []EntitiesMatchingMethod {
-	return original.PossibleEntitiesMatchingMethodValues()
 }
 func PossibleEntityKindValues() []EntityKind {
 	return original.PossibleEntityKindValues()
 }
+func PossibleEntityMappingTypeValues() []EntityMappingType {
+	return original.PossibleEntityMappingTypeValues()
+}
 func PossibleEntityQueryKindValues() []EntityQueryKind {
 	return original.PossibleEntityQueryKindValues()
+}
+func PossibleEntityQueryTemplateKindValues() []EntityQueryTemplateKind {
+	return original.PossibleEntityQueryTemplateKindValues()
 }
 func PossibleEntityTimelineKindValues() []EntityTimelineKind {
 	return original.PossibleEntityTimelineKindValues()
@@ -1483,9 +1841,6 @@ func PossibleEventGroupingAggregationKindValues() []EventGroupingAggregationKind
 }
 func PossibleFileHashAlgorithmValues() []FileHashAlgorithm {
 	return original.PossibleFileHashAlgorithmValues()
-}
-func PossibleGroupingEntityTypeValues() []GroupingEntityType {
-	return original.PossibleGroupingEntityTypeValues()
 }
 func PossibleIncidentClassificationReasonValues() []IncidentClassificationReason {
 	return original.PossibleIncidentClassificationReasonValues()
@@ -1511,11 +1866,20 @@ func PossibleKindBasicAlertRuleTemplateValues() []KindBasicAlertRuleTemplate {
 func PossibleKindBasicAlertRuleValues() []KindBasicAlertRule {
 	return original.PossibleKindBasicAlertRuleValues()
 }
+func PossibleKindBasicCustomEntityQueryValues() []KindBasicCustomEntityQuery {
+	return original.PossibleKindBasicCustomEntityQueryValues()
+}
 func PossibleKindBasicDataConnectorValues() []KindBasicDataConnector {
 	return original.PossibleKindBasicDataConnectorValues()
 }
 func PossibleKindBasicDataConnectorsCheckRequirementsValues() []KindBasicDataConnectorsCheckRequirements {
 	return original.PossibleKindBasicDataConnectorsCheckRequirementsValues()
+}
+func PossibleKindBasicEntityQueryItemValues() []KindBasicEntityQueryItem {
+	return original.PossibleKindBasicEntityQueryItemValues()
+}
+func PossibleKindBasicEntityQueryTemplateValues() []KindBasicEntityQueryTemplate {
+	return original.PossibleKindBasicEntityQueryTemplateValues()
 }
 func PossibleKindBasicEntityQueryValues() []KindBasicEntityQuery {
 	return original.PossibleKindBasicEntityQueryValues()
@@ -1535,17 +1899,32 @@ func PossibleKindBasicThreatIntelligenceInformationValues() []KindBasicThreatInt
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
 }
+func PossibleMatchingMethodValues() []MatchingMethod {
+	return original.PossibleMatchingMethodValues()
+}
 func PossibleMicrosoftSecurityProductNameValues() []MicrosoftSecurityProductName {
 	return original.PossibleMicrosoftSecurityProductNameValues()
 }
 func PossibleOSFamilyValues() []OSFamily {
 	return original.PossibleOSFamilyValues()
 }
+func PossibleOperatorValues() []Operator {
+	return original.PossibleOperatorValues()
+}
 func PossibleOutputTypeValues() []OutputType {
 	return original.PossibleOutputTypeValues()
 }
+func PossibleOwnerTypeValues() []OwnerType {
+	return original.PossibleOwnerTypeValues()
+}
+func PossiblePermissionProviderScopeValues() []PermissionProviderScope {
+	return original.PossiblePermissionProviderScopeValues()
+}
 func PossiblePollingFrequencyValues() []PollingFrequency {
 	return original.PossiblePollingFrequencyValues()
+}
+func PossibleProviderNameValues() []ProviderName {
+	return original.PossibleProviderNameValues()
 }
 func PossibleRegistryHiveValues() []RegistryHive {
 	return original.PossibleRegistryHiveValues()
@@ -1553,32 +1932,47 @@ func PossibleRegistryHiveValues() []RegistryHive {
 func PossibleRegistryValueKindValues() []RegistryValueKind {
 	return original.PossibleRegistryValueKindValues()
 }
-func PossibleRelationNodeKindValues() []RelationNodeKind {
-	return original.PossibleRelationNodeKindValues()
+func PossibleRepoTypeValues() []RepoType {
+	return original.PossibleRepoTypeValues()
 }
-func PossibleRelationTypesValues() []RelationTypes {
-	return original.PossibleRelationTypesValues()
+func PossibleSettingTypeValues() []SettingType {
+	return original.PossibleSettingTypeValues()
 }
-func PossibleSettingKindValues() []SettingKind {
-	return original.PossibleSettingKindValues()
+func PossibleSkuKindValues() []SkuKind {
+	return original.PossibleSkuKindValues()
 }
-func PossibleSourceValues() []Source {
-	return original.PossibleSourceValues()
+func PossibleSourceKindValues() []SourceKind {
+	return original.PossibleSourceKindValues()
+}
+func PossibleSourceTypeValues() []SourceType {
+	return original.PossibleSourceTypeValues()
+}
+func PossibleSupportTierValues() []SupportTier {
+	return original.PossibleSupportTierValues()
 }
 func PossibleTemplateStatusValues() []TemplateStatus {
 	return original.PossibleTemplateStatusValues()
 }
-func PossibleThreatIntelligenceResourceKindValues() []ThreatIntelligenceResourceKind {
-	return original.PossibleThreatIntelligenceResourceKindValues()
+func PossibleThreatIntelligenceResourceKindEnumValues() []ThreatIntelligenceResourceKindEnum {
+	return original.PossibleThreatIntelligenceResourceKindEnumValues()
 }
-func PossibleThreatIntelligenceSortingCriteriaValues() []ThreatIntelligenceSortingCriteria {
-	return original.PossibleThreatIntelligenceSortingCriteriaValues()
+func PossibleThreatIntelligenceSortingCriteriaEnumValues() []ThreatIntelligenceSortingCriteriaEnum {
+	return original.PossibleThreatIntelligenceSortingCriteriaEnumValues()
 }
 func PossibleTriggerOperatorValues() []TriggerOperator {
 	return original.PossibleTriggerOperatorValues()
 }
+func PossibleTriggersOnValues() []TriggersOn {
+	return original.PossibleTriggersOnValues()
+}
+func PossibleTriggersWhenValues() []TriggersWhen {
+	return original.PossibleTriggersWhenValues()
+}
 func PossibleUebaDataSourcesValues() []UebaDataSources {
 	return original.PossibleUebaDataSourcesValues()
+}
+func PossibleVersionValues() []Version {
+	return original.PossibleVersionValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,583 +8,137 @@
 
 package armhybridcompute
 
-import (
-	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"net/http"
-	"time"
-)
-
-// HybridComputeManagementClientUpgradeExtensionsPollerResponse contains the response from method HybridComputeManagementClient.UpgradeExtensions.
-type HybridComputeManagementClientUpgradeExtensionsPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *HybridComputeManagementClientUpgradeExtensionsPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l HybridComputeManagementClientUpgradeExtensionsPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (HybridComputeManagementClientUpgradeExtensionsResponse, error) {
-	respType := HybridComputeManagementClientUpgradeExtensionsResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a HybridComputeManagementClientUpgradeExtensionsPollerResponse from the provided client and resume token.
-func (l *HybridComputeManagementClientUpgradeExtensionsPollerResponse) Resume(ctx context.Context, client *HybridComputeManagementClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("HybridComputeManagementClient.UpgradeExtensions", token, client.pl, client.upgradeExtensionsHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &HybridComputeManagementClientUpgradeExtensionsPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// HybridComputeManagementClientUpgradeExtensionsResponse contains the response from method HybridComputeManagementClient.UpgradeExtensions.
-type HybridComputeManagementClientUpgradeExtensionsResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MachineExtensionsCreateOrUpdatePollerResponse contains the response from method MachineExtensions.CreateOrUpdate.
-type MachineExtensionsCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *MachineExtensionsCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l MachineExtensionsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MachineExtensionsCreateOrUpdateResponse, error) {
-	respType := MachineExtensionsCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MachineExtension)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a MachineExtensionsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *MachineExtensionsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *MachineExtensionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MachineExtensionsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &MachineExtensionsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// MachineExtensionsCreateOrUpdateResponse contains the response from method MachineExtensions.CreateOrUpdate.
-type MachineExtensionsCreateOrUpdateResponse struct {
-	MachineExtensionsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MachineExtensionsCreateOrUpdateResult contains the result from method MachineExtensions.CreateOrUpdate.
-type MachineExtensionsCreateOrUpdateResult struct {
+// MachineExtensionsClientCreateOrUpdateResponse contains the response from method MachineExtensionsClient.CreateOrUpdate.
+type MachineExtensionsClientCreateOrUpdateResponse struct {
 	MachineExtension
 }
 
-// MachineExtensionsDeletePollerResponse contains the response from method MachineExtensions.Delete.
-type MachineExtensionsDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *MachineExtensionsDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// MachineExtensionsClientDeleteResponse contains the response from method MachineExtensionsClient.Delete.
+type MachineExtensionsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l MachineExtensionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MachineExtensionsDeleteResponse, error) {
-	respType := MachineExtensionsDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a MachineExtensionsDeletePollerResponse from the provided client and resume token.
-func (l *MachineExtensionsDeletePollerResponse) Resume(ctx context.Context, client *MachineExtensionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MachineExtensionsClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &MachineExtensionsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// MachineExtensionsDeleteResponse contains the response from method MachineExtensions.Delete.
-type MachineExtensionsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MachineExtensionsGetResponse contains the response from method MachineExtensions.Get.
-type MachineExtensionsGetResponse struct {
-	MachineExtensionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MachineExtensionsGetResult contains the result from method MachineExtensions.Get.
-type MachineExtensionsGetResult struct {
+// MachineExtensionsClientGetResponse contains the response from method MachineExtensionsClient.Get.
+type MachineExtensionsClientGetResponse struct {
 	MachineExtension
 }
 
-// MachineExtensionsListResponse contains the response from method MachineExtensions.List.
-type MachineExtensionsListResponse struct {
-	MachineExtensionsListResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MachineExtensionsListResultEnvelope contains the result from method MachineExtensions.List.
-type MachineExtensionsListResultEnvelope struct {
+// MachineExtensionsClientListResponse contains the response from method MachineExtensionsClient.List.
+type MachineExtensionsClientListResponse struct {
 	MachineExtensionsListResult
 }
 
-// MachineExtensionsUpdatePollerResponse contains the response from method MachineExtensions.Update.
-type MachineExtensionsUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *MachineExtensionsUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l MachineExtensionsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MachineExtensionsUpdateResponse, error) {
-	respType := MachineExtensionsUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MachineExtension)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a MachineExtensionsUpdatePollerResponse from the provided client and resume token.
-func (l *MachineExtensionsUpdatePollerResponse) Resume(ctx context.Context, client *MachineExtensionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("MachineExtensionsClient.Update", token, client.pl, client.updateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &MachineExtensionsUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// MachineExtensionsUpdateResponse contains the response from method MachineExtensions.Update.
-type MachineExtensionsUpdateResponse struct {
-	MachineExtensionsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MachineExtensionsUpdateResult contains the result from method MachineExtensions.Update.
-type MachineExtensionsUpdateResult struct {
+// MachineExtensionsClientUpdateResponse contains the response from method MachineExtensionsClient.Update.
+type MachineExtensionsClientUpdateResponse struct {
 	MachineExtension
 }
 
-// MachinesCreateOrUpdateResponse contains the response from method Machines.CreateOrUpdate.
-type MachinesCreateOrUpdateResponse struct {
-	MachinesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MachinesCreateOrUpdateResult contains the result from method Machines.CreateOrUpdate.
-type MachinesCreateOrUpdateResult struct {
+// MachinesClientCreateOrUpdateResponse contains the response from method MachinesClient.CreateOrUpdate.
+type MachinesClientCreateOrUpdateResponse struct {
 	Machine
 }
 
-// MachinesDeleteResponse contains the response from method Machines.Delete.
-type MachinesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// MachinesClientDeleteResponse contains the response from method MachinesClient.Delete.
+type MachinesClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// MachinesGetResponse contains the response from method Machines.Get.
-type MachinesGetResponse struct {
-	MachinesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MachinesGetResult contains the result from method Machines.Get.
-type MachinesGetResult struct {
+// MachinesClientGetResponse contains the response from method MachinesClient.Get.
+type MachinesClientGetResponse struct {
 	Machine
 }
 
-// MachinesListByResourceGroupResponse contains the response from method Machines.ListByResourceGroup.
-type MachinesListByResourceGroupResponse struct {
-	MachinesListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MachinesListByResourceGroupResult contains the result from method Machines.ListByResourceGroup.
-type MachinesListByResourceGroupResult struct {
+// MachinesClientListByResourceGroupResponse contains the response from method MachinesClient.ListByResourceGroup.
+type MachinesClientListByResourceGroupResponse struct {
 	MachineListResult
 }
 
-// MachinesListBySubscriptionResponse contains the response from method Machines.ListBySubscription.
-type MachinesListBySubscriptionResponse struct {
-	MachinesListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MachinesListBySubscriptionResult contains the result from method Machines.ListBySubscription.
-type MachinesListBySubscriptionResult struct {
+// MachinesClientListBySubscriptionResponse contains the response from method MachinesClient.ListBySubscription.
+type MachinesClientListBySubscriptionResponse struct {
 	MachineListResult
 }
 
-// MachinesUpdateResponse contains the response from method Machines.Update.
-type MachinesUpdateResponse struct {
-	MachinesUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MachinesUpdateResult contains the result from method Machines.Update.
-type MachinesUpdateResult struct {
+// MachinesClientUpdateResponse contains the response from method MachinesClient.Update.
+type MachinesClientUpdateResponse struct {
 	Machine
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ManagementClientUpgradeExtensionsResponse contains the response from method ManagementClient.UpgradeExtensions.
+type ManagementClientUpgradeExtensionsResponse struct {
+	// placeholder for future response values
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PrivateEndpointConnectionsCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnections.CreateOrUpdate.
-type PrivateEndpointConnectionsCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsCreateOrUpdateResponse, error) {
-	respType := PrivateEndpointConnectionsCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a PrivateEndpointConnectionsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &PrivateEndpointConnectionsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// PrivateEndpointConnectionsCreateOrUpdateResponse contains the response from method PrivateEndpointConnections.CreateOrUpdate.
-type PrivateEndpointConnectionsCreateOrUpdateResponse struct {
-	PrivateEndpointConnectionsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsCreateOrUpdateResult contains the result from method PrivateEndpointConnections.CreateOrUpdate.
-type PrivateEndpointConnectionsCreateOrUpdateResult struct {
+// PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.CreateOrUpdate.
+type PrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsDeletePollerResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsDeleteResponse, error) {
-	respType := PrivateEndpointConnectionsDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a PrivateEndpointConnectionsDeletePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &PrivateEndpointConnectionsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// PrivateEndpointConnectionsDeleteResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsGetResponse contains the response from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResponse struct {
-	PrivateEndpointConnectionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsGetResult contains the result from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResult struct {
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsListByPrivateLinkScopeResponse contains the response from method PrivateEndpointConnections.ListByPrivateLinkScope.
-type PrivateEndpointConnectionsListByPrivateLinkScopeResponse struct {
-	PrivateEndpointConnectionsListByPrivateLinkScopeResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsListByPrivateLinkScopeResult contains the result from method PrivateEndpointConnections.ListByPrivateLinkScope.
-type PrivateEndpointConnectionsListByPrivateLinkScopeResult struct {
+// PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse contains the response from method PrivateEndpointConnectionsClient.ListByPrivateLinkScope.
+type PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse struct {
 	PrivateEndpointConnectionListResult
 }
 
-// PrivateLinkResourcesGetResponse contains the response from method PrivateLinkResources.Get.
-type PrivateLinkResourcesGetResponse struct {
-	PrivateLinkResourcesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkResourcesGetResult contains the result from method PrivateLinkResources.Get.
-type PrivateLinkResourcesGetResult struct {
+// PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResponse struct {
 	PrivateLinkResource
 }
 
-// PrivateLinkResourcesListByPrivateLinkScopeResponse contains the response from method PrivateLinkResources.ListByPrivateLinkScope.
-type PrivateLinkResourcesListByPrivateLinkScopeResponse struct {
-	PrivateLinkResourcesListByPrivateLinkScopeResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkResourcesListByPrivateLinkScopeResult contains the result from method PrivateLinkResources.ListByPrivateLinkScope.
-type PrivateLinkResourcesListByPrivateLinkScopeResult struct {
+// PrivateLinkResourcesClientListByPrivateLinkScopeResponse contains the response from method PrivateLinkResourcesClient.ListByPrivateLinkScope.
+type PrivateLinkResourcesClientListByPrivateLinkScopeResponse struct {
 	PrivateLinkResourceListResult
 }
 
-// PrivateLinkScopesCreateOrUpdateResponse contains the response from method PrivateLinkScopes.CreateOrUpdate.
-type PrivateLinkScopesCreateOrUpdateResponse struct {
-	PrivateLinkScopesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PrivateLinkScopesClientCreateOrUpdateResponse contains the response from method PrivateLinkScopesClient.CreateOrUpdate.
+type PrivateLinkScopesClientCreateOrUpdateResponse struct {
+	PrivateLinkScope
 }
 
-// PrivateLinkScopesCreateOrUpdateResult contains the result from method PrivateLinkScopes.CreateOrUpdate.
-type PrivateLinkScopesCreateOrUpdateResult struct {
-	HybridComputePrivateLinkScope
+// PrivateLinkScopesClientDeleteResponse contains the response from method PrivateLinkScopesClient.Delete.
+type PrivateLinkScopesClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PrivateLinkScopesDeletePollerResponse contains the response from method PrivateLinkScopes.Delete.
-type PrivateLinkScopesDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *PrivateLinkScopesDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PrivateLinkScopesClientGetResponse contains the response from method PrivateLinkScopesClient.Get.
+type PrivateLinkScopesClientGetResponse struct {
+	PrivateLinkScope
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateLinkScopesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkScopesDeleteResponse, error) {
-	respType := PrivateLinkScopesDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a PrivateLinkScopesDeletePollerResponse from the provided client and resume token.
-func (l *PrivateLinkScopesDeletePollerResponse) Resume(ctx context.Context, client *PrivateLinkScopesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateLinkScopesClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &PrivateLinkScopesDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// PrivateLinkScopesDeleteResponse contains the response from method PrivateLinkScopes.Delete.
-type PrivateLinkScopesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkScopesGetResponse contains the response from method PrivateLinkScopes.Get.
-type PrivateLinkScopesGetResponse struct {
-	PrivateLinkScopesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkScopesGetResult contains the result from method PrivateLinkScopes.Get.
-type PrivateLinkScopesGetResult struct {
-	HybridComputePrivateLinkScope
-}
-
-// PrivateLinkScopesGetValidationDetailsForMachineResponse contains the response from method PrivateLinkScopes.GetValidationDetailsForMachine.
-type PrivateLinkScopesGetValidationDetailsForMachineResponse struct {
-	PrivateLinkScopesGetValidationDetailsForMachineResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkScopesGetValidationDetailsForMachineResult contains the result from method PrivateLinkScopes.GetValidationDetailsForMachine.
-type PrivateLinkScopesGetValidationDetailsForMachineResult struct {
+// PrivateLinkScopesClientGetValidationDetailsForMachineResponse contains the response from method PrivateLinkScopesClient.GetValidationDetailsForMachine.
+type PrivateLinkScopesClientGetValidationDetailsForMachineResponse struct {
 	PrivateLinkScopeValidationDetails
 }
 
-// PrivateLinkScopesGetValidationDetailsResponse contains the response from method PrivateLinkScopes.GetValidationDetails.
-type PrivateLinkScopesGetValidationDetailsResponse struct {
-	PrivateLinkScopesGetValidationDetailsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkScopesGetValidationDetailsResult contains the result from method PrivateLinkScopes.GetValidationDetails.
-type PrivateLinkScopesGetValidationDetailsResult struct {
+// PrivateLinkScopesClientGetValidationDetailsResponse contains the response from method PrivateLinkScopesClient.GetValidationDetails.
+type PrivateLinkScopesClientGetValidationDetailsResponse struct {
 	PrivateLinkScopeValidationDetails
 }
 
-// PrivateLinkScopesListByResourceGroupResponse contains the response from method PrivateLinkScopes.ListByResourceGroup.
-type PrivateLinkScopesListByResourceGroupResponse struct {
-	PrivateLinkScopesListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PrivateLinkScopesClientListByResourceGroupResponse contains the response from method PrivateLinkScopesClient.ListByResourceGroup.
+type PrivateLinkScopesClientListByResourceGroupResponse struct {
+	PrivateLinkScopeListResult
 }
 
-// PrivateLinkScopesListByResourceGroupResult contains the result from method PrivateLinkScopes.ListByResourceGroup.
-type PrivateLinkScopesListByResourceGroupResult struct {
-	HybridComputePrivateLinkScopeListResult
+// PrivateLinkScopesClientListResponse contains the response from method PrivateLinkScopesClient.List.
+type PrivateLinkScopesClientListResponse struct {
+	PrivateLinkScopeListResult
 }
 
-// PrivateLinkScopesListResponse contains the response from method PrivateLinkScopes.List.
-type PrivateLinkScopesListResponse struct {
-	PrivateLinkScopesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkScopesListResult contains the result from method PrivateLinkScopes.List.
-type PrivateLinkScopesListResult struct {
-	HybridComputePrivateLinkScopeListResult
-}
-
-// PrivateLinkScopesUpdateTagsResponse contains the response from method PrivateLinkScopes.UpdateTags.
-type PrivateLinkScopesUpdateTagsResponse struct {
-	PrivateLinkScopesUpdateTagsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkScopesUpdateTagsResult contains the result from method PrivateLinkScopes.UpdateTags.
-type PrivateLinkScopesUpdateTagsResult struct {
-	HybridComputePrivateLinkScope
+// PrivateLinkScopesClientUpdateTagsResponse contains the response from method PrivateLinkScopesClient.UpdateTags.
+type PrivateLinkScopesClientUpdateTagsResponse struct {
+	PrivateLinkScope
 }

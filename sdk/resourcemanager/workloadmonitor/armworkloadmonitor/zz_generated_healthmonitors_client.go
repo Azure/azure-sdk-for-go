@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armworkloadmonitor
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,41 +26,60 @@ import (
 // HealthMonitorsClient contains the methods for the HealthMonitors group.
 // Don't use this type directly, use NewHealthMonitorsClient() instead.
 type HealthMonitorsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewHealthMonitorsClient creates a new instance of HealthMonitorsClient with the specified values.
-func NewHealthMonitorsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *HealthMonitorsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewHealthMonitorsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*HealthMonitorsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &HealthMonitorsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &HealthMonitorsClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
-// Get - Get the current health status of a monitor of a virtual machine. Optional parameter: $expand (retrieve the monitor's evidence and configuration).
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *HealthMonitorsClient) Get(ctx context.Context, subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, options *HealthMonitorsGetOptions) (HealthMonitorsGetResponse, error) {
+// Get - Get the current health status of a monitor of a virtual machine. Optional parameter: $expand (retrieve the monitor's
+// evidence and configuration).
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
+// subscriptionID - The subscription Id of the virtual machine.
+// resourceGroupName - The resource group of the virtual machine.
+// providerName - The provider name (ex: Microsoft.Compute for virtual machines).
+// resourceCollectionName - The resource collection name (ex: virtualMachines for virtual machines).
+// resourceName - The name of the virtual machine.
+// monitorID - The monitor Id of the virtual machine.
+// options - HealthMonitorsClientGetOptions contains the optional parameters for the HealthMonitorsClient.Get method.
+func (client *HealthMonitorsClient) Get(ctx context.Context, subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, options *HealthMonitorsClientGetOptions) (HealthMonitorsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, subscriptionID, resourceGroupName, providerName, resourceCollectionName, resourceName, monitorID, options)
 	if err != nil {
-		return HealthMonitorsGetResponse{}, err
+		return HealthMonitorsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return HealthMonitorsGetResponse{}, err
+		return HealthMonitorsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return HealthMonitorsGetResponse{}, client.getHandleError(resp)
+		return HealthMonitorsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *HealthMonitorsClient) getCreateRequest(ctx context.Context, subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, options *HealthMonitorsGetOptions) (*policy.Request, error) {
+func (client *HealthMonitorsClient) getCreateRequest(ctx context.Context, subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, options *HealthMonitorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceCollectionName}/{resourceName}/providers/Microsoft.WorkloadMonitor/monitors/{monitorId}"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -86,7 +105,7 @@ func (client *HealthMonitorsClient) getCreateRequest(ctx context.Context, subscr
 		return nil, errors.New("parameter monitorID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorId}", url.PathEscape(monitorID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -96,52 +115,49 @@ func (client *HealthMonitorsClient) getCreateRequest(ctx context.Context, subscr
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *HealthMonitorsClient) getHandleResponse(resp *http.Response) (HealthMonitorsGetResponse, error) {
-	result := HealthMonitorsGetResponse{RawResponse: resp}
+func (client *HealthMonitorsClient) getHandleResponse(resp *http.Response) (HealthMonitorsClientGetResponse, error) {
+	result := HealthMonitorsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HealthMonitor); err != nil {
-		return HealthMonitorsGetResponse{}, runtime.NewResponseError(err, resp)
+		return HealthMonitorsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *HealthMonitorsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// GetStateChange - Get the health state change of a monitor of a virtual machine at the provided timestamp. Optional parameter: $expand (retrieve the monitor's
-// evidence and configuration).
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *HealthMonitorsClient) GetStateChange(ctx context.Context, subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, timestampUnix string, options *HealthMonitorsGetStateChangeOptions) (HealthMonitorsGetStateChangeResponse, error) {
+// GetStateChange - Get the health state change of a monitor of a virtual machine at the provided timestamp. Optional parameter:
+// $expand (retrieve the monitor's evidence and configuration).
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
+// subscriptionID - The subscription Id of the virtual machine.
+// resourceGroupName - The resource group of the virtual machine.
+// providerName - The provider name (ex: Microsoft.Compute for virtual machines).
+// resourceCollectionName - The resource collection name (ex: virtualMachines for virtual machines).
+// resourceName - The name of the virtual machine.
+// monitorID - The monitor Id of the virtual machine.
+// timestampUnix - The timestamp of the state change (unix format).
+// options - HealthMonitorsClientGetStateChangeOptions contains the optional parameters for the HealthMonitorsClient.GetStateChange
+// method.
+func (client *HealthMonitorsClient) GetStateChange(ctx context.Context, subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, timestampUnix string, options *HealthMonitorsClientGetStateChangeOptions) (HealthMonitorsClientGetStateChangeResponse, error) {
 	req, err := client.getStateChangeCreateRequest(ctx, subscriptionID, resourceGroupName, providerName, resourceCollectionName, resourceName, monitorID, timestampUnix, options)
 	if err != nil {
-		return HealthMonitorsGetStateChangeResponse{}, err
+		return HealthMonitorsClientGetStateChangeResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return HealthMonitorsGetStateChangeResponse{}, err
+		return HealthMonitorsClientGetStateChangeResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return HealthMonitorsGetStateChangeResponse{}, client.getStateChangeHandleError(resp)
+		return HealthMonitorsClientGetStateChangeResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getStateChangeHandleResponse(resp)
 }
 
 // getStateChangeCreateRequest creates the GetStateChange request.
-func (client *HealthMonitorsClient) getStateChangeCreateRequest(ctx context.Context, subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, timestampUnix string, options *HealthMonitorsGetStateChangeOptions) (*policy.Request, error) {
+func (client *HealthMonitorsClient) getStateChangeCreateRequest(ctx context.Context, subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, timestampUnix string, options *HealthMonitorsClientGetStateChangeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceCollectionName}/{resourceName}/providers/Microsoft.WorkloadMonitor/monitors/{monitorId}/history/{timestampUnix}"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -171,7 +187,7 @@ func (client *HealthMonitorsClient) getStateChangeCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter timestampUnix cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{timestampUnix}", url.PathEscape(timestampUnix))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -181,49 +197,59 @@ func (client *HealthMonitorsClient) getStateChangeCreateRequest(ctx context.Cont
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getStateChangeHandleResponse handles the GetStateChange response.
-func (client *HealthMonitorsClient) getStateChangeHandleResponse(resp *http.Response) (HealthMonitorsGetStateChangeResponse, error) {
-	result := HealthMonitorsGetStateChangeResponse{RawResponse: resp}
+func (client *HealthMonitorsClient) getStateChangeHandleResponse(resp *http.Response) (HealthMonitorsClientGetStateChangeResponse, error) {
+	result := HealthMonitorsClientGetStateChangeResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HealthMonitorStateChange); err != nil {
-		return HealthMonitorsGetStateChangeResponse{}, runtime.NewResponseError(err, resp)
+		return HealthMonitorsClientGetStateChangeResponse{}, err
 	}
 	return result, nil
 }
 
-// getStateChangeHandleError handles the GetStateChange error response.
-func (client *HealthMonitorsClient) getStateChangeHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Get the current health status of all monitors of a virtual machine. Optional parameters: $expand (retrieve the monitor's evidence and configuration)
-// and $filter (filter by monitor name).
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *HealthMonitorsClient) List(subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, options *HealthMonitorsListOptions) *HealthMonitorsListPager {
-	return &HealthMonitorsListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, subscriptionID, resourceGroupName, providerName, resourceCollectionName, resourceName, options)
+// NewListPager - Get the current health status of all monitors of a virtual machine. Optional parameters: $expand (retrieve
+// the monitor's evidence and configuration) and $filter (filter by monitor name).
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
+// subscriptionID - The subscription Id of the virtual machine.
+// resourceGroupName - The resource group of the virtual machine.
+// providerName - The provider name (ex: Microsoft.Compute for virtual machines).
+// resourceCollectionName - The resource collection name (ex: virtualMachines for virtual machines).
+// resourceName - The name of the virtual machine.
+// options - HealthMonitorsClientListOptions contains the optional parameters for the HealthMonitorsClient.List method.
+func (client *HealthMonitorsClient) NewListPager(subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, options *HealthMonitorsClientListOptions) *runtime.Pager[HealthMonitorsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[HealthMonitorsClientListResponse]{
+		More: func(page HealthMonitorsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp HealthMonitorsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.HealthMonitorList.NextLink)
+		Fetcher: func(ctx context.Context, page *HealthMonitorsClientListResponse) (HealthMonitorsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, subscriptionID, resourceGroupName, providerName, resourceCollectionName, resourceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return HealthMonitorsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return HealthMonitorsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return HealthMonitorsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *HealthMonitorsClient) listCreateRequest(ctx context.Context, subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, options *HealthMonitorsListOptions) (*policy.Request, error) {
+func (client *HealthMonitorsClient) listCreateRequest(ctx context.Context, subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, options *HealthMonitorsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceCollectionName}/{resourceName}/providers/Microsoft.WorkloadMonitor/monitors"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -245,7 +271,7 @@ func (client *HealthMonitorsClient) listCreateRequest(ctx context.Context, subsc
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -258,50 +284,62 @@ func (client *HealthMonitorsClient) listCreateRequest(ctx context.Context, subsc
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *HealthMonitorsClient) listHandleResponse(resp *http.Response) (HealthMonitorsListResponse, error) {
-	result := HealthMonitorsListResponse{RawResponse: resp}
+func (client *HealthMonitorsClient) listHandleResponse(resp *http.Response) (HealthMonitorsClientListResponse, error) {
+	result := HealthMonitorsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HealthMonitorList); err != nil {
-		return HealthMonitorsListResponse{}, runtime.NewResponseError(err, resp)
+		return HealthMonitorsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *HealthMonitorsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListStateChanges - Get the health state changes of a monitor of a virtual machine within the provided time window (default is the last 24 hours). Optional
-// parameters: $expand (retrieve the monitor's evidence and
+// NewListStateChangesPager - Get the health state changes of a monitor of a virtual machine within the provided time window
+// (default is the last 24 hours). Optional parameters: $expand (retrieve the monitor's evidence and
 // configuration) and $filter (filter by heartbeat condition).
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *HealthMonitorsClient) ListStateChanges(subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, options *HealthMonitorsListStateChangesOptions) *HealthMonitorsListStateChangesPager {
-	return &HealthMonitorsListStateChangesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listStateChangesCreateRequest(ctx, subscriptionID, resourceGroupName, providerName, resourceCollectionName, resourceName, monitorID, options)
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
+// subscriptionID - The subscription Id of the virtual machine.
+// resourceGroupName - The resource group of the virtual machine.
+// providerName - The provider name (ex: Microsoft.Compute for virtual machines).
+// resourceCollectionName - The resource collection name (ex: virtualMachines for virtual machines).
+// resourceName - The name of the virtual machine.
+// monitorID - The monitor Id of the virtual machine.
+// options - HealthMonitorsClientListStateChangesOptions contains the optional parameters for the HealthMonitorsClient.ListStateChanges
+// method.
+func (client *HealthMonitorsClient) NewListStateChangesPager(subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, options *HealthMonitorsClientListStateChangesOptions) *runtime.Pager[HealthMonitorsClientListStateChangesResponse] {
+	return runtime.NewPager(runtime.PagingHandler[HealthMonitorsClientListStateChangesResponse]{
+		More: func(page HealthMonitorsClientListStateChangesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp HealthMonitorsListStateChangesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.HealthMonitorStateChangeList.NextLink)
+		Fetcher: func(ctx context.Context, page *HealthMonitorsClientListStateChangesResponse) (HealthMonitorsClientListStateChangesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listStateChangesCreateRequest(ctx, subscriptionID, resourceGroupName, providerName, resourceCollectionName, resourceName, monitorID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return HealthMonitorsClientListStateChangesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return HealthMonitorsClientListStateChangesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return HealthMonitorsClientListStateChangesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listStateChangesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listStateChangesCreateRequest creates the ListStateChanges request.
-func (client *HealthMonitorsClient) listStateChangesCreateRequest(ctx context.Context, subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, options *HealthMonitorsListStateChangesOptions) (*policy.Request, error) {
+func (client *HealthMonitorsClient) listStateChangesCreateRequest(ctx context.Context, subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, options *HealthMonitorsClientListStateChangesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceCollectionName}/{resourceName}/providers/Microsoft.WorkloadMonitor/monitors/{monitorId}/history"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -327,7 +365,7 @@ func (client *HealthMonitorsClient) listStateChangesCreateRequest(ctx context.Co
 		return nil, errors.New("parameter monitorID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorId}", url.PathEscape(monitorID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -346,28 +384,15 @@ func (client *HealthMonitorsClient) listStateChangesCreateRequest(ctx context.Co
 		reqQP.Set("endTimestampUtc", options.EndTimestampUTC.Format(time.RFC3339Nano))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listStateChangesHandleResponse handles the ListStateChanges response.
-func (client *HealthMonitorsClient) listStateChangesHandleResponse(resp *http.Response) (HealthMonitorsListStateChangesResponse, error) {
-	result := HealthMonitorsListStateChangesResponse{RawResponse: resp}
+func (client *HealthMonitorsClient) listStateChangesHandleResponse(resp *http.Response) (HealthMonitorsClientListStateChangesResponse, error) {
+	result := HealthMonitorsClientListStateChangesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HealthMonitorStateChangeList); err != nil {
-		return HealthMonitorsListStateChangesResponse{}, runtime.NewResponseError(err, resp)
+		return HealthMonitorsClientListStateChangesResponse{}, err
 	}
 	return result, nil
-}
-
-// listStateChangesHandleError handles the ListStateChanges error response.
-func (client *HealthMonitorsClient) listStateChangesHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

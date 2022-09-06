@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armiotsecurity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,384 +25,337 @@ import (
 // SensorsClient contains the methods for the Sensors group.
 // Don't use this type directly, use NewSensorsClient() instead.
 type SensorsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewSensorsClient creates a new instance of SensorsClient with the specified values.
-func NewSensorsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *SensorsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewSensorsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SensorsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &SensorsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &SensorsClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update IoT sensor
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SensorsClient) CreateOrUpdate(ctx context.Context, scope string, sensorName string, sensorModel SensorModel, options *SensorsCreateOrUpdateOptions) (SensorsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
+// scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
+// sensorName - Name of the IoT sensor
+// sensorModel - The IoT sensor model
+// options - SensorsClientCreateOrUpdateOptions contains the optional parameters for the SensorsClient.CreateOrUpdate method.
+func (client *SensorsClient) CreateOrUpdate(ctx context.Context, scope string, sensorName string, sensorModel SensorModel, options *SensorsClientCreateOrUpdateOptions) (SensorsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, scope, sensorName, sensorModel, options)
 	if err != nil {
-		return SensorsCreateOrUpdateResponse{}, err
+		return SensorsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SensorsCreateOrUpdateResponse{}, err
+		return SensorsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return SensorsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return SensorsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SensorsClient) createOrUpdateCreateRequest(ctx context.Context, scope string, sensorName string, sensorModel SensorModel, options *SensorsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SensorsClient) createOrUpdateCreateRequest(ctx context.Context, scope string, sensorName string, sensorModel SensorModel, options *SensorsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.IoTSecurity/sensors/{sensorName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if sensorName == "" {
 		return nil, errors.New("parameter sensorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sensorName}", url.PathEscape(sensorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, sensorModel)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SensorsClient) createOrUpdateHandleResponse(resp *http.Response) (SensorsCreateOrUpdateResponse, error) {
-	result := SensorsCreateOrUpdateResponse{RawResponse: resp}
+func (client *SensorsClient) createOrUpdateHandleResponse(resp *http.Response) (SensorsClientCreateOrUpdateResponse, error) {
+	result := SensorsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensorModel); err != nil {
-		return SensorsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return SensorsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *SensorsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete IoT sensor
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SensorsClient) Delete(ctx context.Context, scope string, sensorName string, options *SensorsDeleteOptions) (SensorsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
+// scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
+// sensorName - Name of the IoT sensor
+// options - SensorsClientDeleteOptions contains the optional parameters for the SensorsClient.Delete method.
+func (client *SensorsClient) Delete(ctx context.Context, scope string, sensorName string, options *SensorsClientDeleteOptions) (SensorsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, scope, sensorName, options)
 	if err != nil {
-		return SensorsDeleteResponse{}, err
+		return SensorsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SensorsDeleteResponse{}, err
+		return SensorsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return SensorsDeleteResponse{}, client.deleteHandleError(resp)
+		return SensorsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SensorsDeleteResponse{RawResponse: resp}, nil
+	return SensorsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SensorsClient) deleteCreateRequest(ctx context.Context, scope string, sensorName string, options *SensorsDeleteOptions) (*policy.Request, error) {
+func (client *SensorsClient) deleteCreateRequest(ctx context.Context, scope string, sensorName string, options *SensorsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.IoTSecurity/sensors/{sensorName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if sensorName == "" {
 		return nil, errors.New("parameter sensorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sensorName}", url.PathEscape(sensorName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *SensorsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // DownloadActivation - Download sensor activation file
-// If the operation fails it returns a generic error.
-func (client *SensorsClient) DownloadActivation(ctx context.Context, scope string, sensorName string, options *SensorsDownloadActivationOptions) (SensorsDownloadActivationResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
+// scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
+// sensorName - Name of the IoT sensor
+// options - SensorsClientDownloadActivationOptions contains the optional parameters for the SensorsClient.DownloadActivation
+// method.
+func (client *SensorsClient) DownloadActivation(ctx context.Context, scope string, sensorName string, options *SensorsClientDownloadActivationOptions) (SensorsClientDownloadActivationResponse, error) {
 	req, err := client.downloadActivationCreateRequest(ctx, scope, sensorName, options)
 	if err != nil {
-		return SensorsDownloadActivationResponse{}, err
+		return SensorsClientDownloadActivationResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SensorsDownloadActivationResponse{}, err
+		return SensorsClientDownloadActivationResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SensorsDownloadActivationResponse{}, client.downloadActivationHandleError(resp)
+		return SensorsClientDownloadActivationResponse{}, runtime.NewResponseError(resp)
 	}
-	return SensorsDownloadActivationResponse{RawResponse: resp}, nil
+	return SensorsClientDownloadActivationResponse{Body: resp.Body}, nil
 }
 
 // downloadActivationCreateRequest creates the DownloadActivation request.
-func (client *SensorsClient) downloadActivationCreateRequest(ctx context.Context, scope string, sensorName string, options *SensorsDownloadActivationOptions) (*policy.Request, error) {
+func (client *SensorsClient) downloadActivationCreateRequest(ctx context.Context, scope string, sensorName string, options *SensorsClientDownloadActivationOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.IoTSecurity/sensors/{sensorName}/downloadActivation"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if sensorName == "" {
 		return nil, errors.New("parameter sensorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sensorName}", url.PathEscape(sensorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.SkipBodyDownload()
-	req.Raw().Header.Set("Accept", "application/zip")
+	runtime.SkipBodyDownload(req)
+	req.Raw().Header["Accept"] = []string{"application/zip"}
 	return req, nil
 }
 
-// downloadActivationHandleError handles the DownloadActivation error response.
-func (client *SensorsClient) downloadActivationHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // DownloadResetPassword - Download file for reset password of the sensor
-// If the operation fails it returns a generic error.
-func (client *SensorsClient) DownloadResetPassword(ctx context.Context, scope string, sensorName string, body ResetPasswordInput, options *SensorsDownloadResetPasswordOptions) (SensorsDownloadResetPasswordResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
+// scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
+// sensorName - Name of the IoT sensor
+// body - The reset password input.
+// options - SensorsClientDownloadResetPasswordOptions contains the optional parameters for the SensorsClient.DownloadResetPassword
+// method.
+func (client *SensorsClient) DownloadResetPassword(ctx context.Context, scope string, sensorName string, body ResetPasswordInput, options *SensorsClientDownloadResetPasswordOptions) (SensorsClientDownloadResetPasswordResponse, error) {
 	req, err := client.downloadResetPasswordCreateRequest(ctx, scope, sensorName, body, options)
 	if err != nil {
-		return SensorsDownloadResetPasswordResponse{}, err
+		return SensorsClientDownloadResetPasswordResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SensorsDownloadResetPasswordResponse{}, err
+		return SensorsClientDownloadResetPasswordResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SensorsDownloadResetPasswordResponse{}, client.downloadResetPasswordHandleError(resp)
+		return SensorsClientDownloadResetPasswordResponse{}, runtime.NewResponseError(resp)
 	}
-	return SensorsDownloadResetPasswordResponse{RawResponse: resp}, nil
+	return SensorsClientDownloadResetPasswordResponse{Body: resp.Body}, nil
 }
 
 // downloadResetPasswordCreateRequest creates the DownloadResetPassword request.
-func (client *SensorsClient) downloadResetPasswordCreateRequest(ctx context.Context, scope string, sensorName string, body ResetPasswordInput, options *SensorsDownloadResetPasswordOptions) (*policy.Request, error) {
+func (client *SensorsClient) downloadResetPasswordCreateRequest(ctx context.Context, scope string, sensorName string, body ResetPasswordInput, options *SensorsClientDownloadResetPasswordOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.IoTSecurity/sensors/{sensorName}/downloadResetPassword"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if sensorName == "" {
 		return nil, errors.New("parameter sensorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sensorName}", url.PathEscape(sensorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.SkipBodyDownload()
-	req.Raw().Header.Set("Accept", "application/zip")
+	runtime.SkipBodyDownload(req)
+	req.Raw().Header["Accept"] = []string{"application/zip"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
-// downloadResetPasswordHandleError handles the DownloadResetPassword error response.
-func (client *SensorsClient) downloadResetPasswordHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Get - Get IoT sensor
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SensorsClient) Get(ctx context.Context, scope string, sensorName string, options *SensorsGetOptions) (SensorsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
+// scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
+// sensorName - Name of the IoT sensor
+// options - SensorsClientGetOptions contains the optional parameters for the SensorsClient.Get method.
+func (client *SensorsClient) Get(ctx context.Context, scope string, sensorName string, options *SensorsClientGetOptions) (SensorsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, sensorName, options)
 	if err != nil {
-		return SensorsGetResponse{}, err
+		return SensorsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SensorsGetResponse{}, err
+		return SensorsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SensorsGetResponse{}, client.getHandleError(resp)
+		return SensorsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SensorsClient) getCreateRequest(ctx context.Context, scope string, sensorName string, options *SensorsGetOptions) (*policy.Request, error) {
+func (client *SensorsClient) getCreateRequest(ctx context.Context, scope string, sensorName string, options *SensorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.IoTSecurity/sensors/{sensorName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if sensorName == "" {
 		return nil, errors.New("parameter sensorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sensorName}", url.PathEscape(sensorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SensorsClient) getHandleResponse(resp *http.Response) (SensorsGetResponse, error) {
-	result := SensorsGetResponse{RawResponse: resp}
+func (client *SensorsClient) getHandleResponse(resp *http.Response) (SensorsClientGetResponse, error) {
+	result := SensorsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensorModel); err != nil {
-		return SensorsGetResponse{}, runtime.NewResponseError(err, resp)
+		return SensorsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *SensorsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // List - List IoT sensors
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SensorsClient) List(ctx context.Context, scope string, options *SensorsListOptions) (SensorsListResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
+// scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
+// options - SensorsClientListOptions contains the optional parameters for the SensorsClient.List method.
+func (client *SensorsClient) List(ctx context.Context, scope string, options *SensorsClientListOptions) (SensorsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, scope, options)
 	if err != nil {
-		return SensorsListResponse{}, err
+		return SensorsClientListResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SensorsListResponse{}, err
+		return SensorsClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SensorsListResponse{}, client.listHandleError(resp)
+		return SensorsClientListResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *SensorsClient) listCreateRequest(ctx context.Context, scope string, options *SensorsListOptions) (*policy.Request, error) {
+func (client *SensorsClient) listCreateRequest(ctx context.Context, scope string, options *SensorsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.IoTSecurity/sensors"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SensorsClient) listHandleResponse(resp *http.Response) (SensorsListResponse, error) {
-	result := SensorsListResponse{RawResponse: resp}
+func (client *SensorsClient) listHandleResponse(resp *http.Response) (SensorsClientListResponse, error) {
+	result := SensorsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensorsList); err != nil {
-		return SensorsListResponse{}, runtime.NewResponseError(err, resp)
+		return SensorsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *SensorsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // TriggerTiPackageUpdate - Trigger threat intelligence package update
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *SensorsClient) TriggerTiPackageUpdate(ctx context.Context, scope string, sensorName string, options *SensorsTriggerTiPackageUpdateOptions) (SensorsTriggerTiPackageUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
+// scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
+// sensorName - Name of the IoT sensor
+// options - SensorsClientTriggerTiPackageUpdateOptions contains the optional parameters for the SensorsClient.TriggerTiPackageUpdate
+// method.
+func (client *SensorsClient) TriggerTiPackageUpdate(ctx context.Context, scope string, sensorName string, options *SensorsClientTriggerTiPackageUpdateOptions) (SensorsClientTriggerTiPackageUpdateResponse, error) {
 	req, err := client.triggerTiPackageUpdateCreateRequest(ctx, scope, sensorName, options)
 	if err != nil {
-		return SensorsTriggerTiPackageUpdateResponse{}, err
+		return SensorsClientTriggerTiPackageUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SensorsTriggerTiPackageUpdateResponse{}, err
+		return SensorsClientTriggerTiPackageUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SensorsTriggerTiPackageUpdateResponse{}, client.triggerTiPackageUpdateHandleError(resp)
+		return SensorsClientTriggerTiPackageUpdateResponse{}, runtime.NewResponseError(resp)
 	}
-	return SensorsTriggerTiPackageUpdateResponse{RawResponse: resp}, nil
+	return SensorsClientTriggerTiPackageUpdateResponse{}, nil
 }
 
 // triggerTiPackageUpdateCreateRequest creates the TriggerTiPackageUpdate request.
-func (client *SensorsClient) triggerTiPackageUpdateCreateRequest(ctx context.Context, scope string, sensorName string, options *SensorsTriggerTiPackageUpdateOptions) (*policy.Request, error) {
+func (client *SensorsClient) triggerTiPackageUpdateCreateRequest(ctx context.Context, scope string, sensorName string, options *SensorsClientTriggerTiPackageUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.IoTSecurity/sensors/{sensorName}/triggerTiPackageUpdate"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if sensorName == "" {
 		return nil, errors.New("parameter sensorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sensorName}", url.PathEscape(sensorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
-}
-
-// triggerTiPackageUpdateHandleError handles the TriggerTiPackageUpdate error response.
-func (client *SensorsClient) triggerTiPackageUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

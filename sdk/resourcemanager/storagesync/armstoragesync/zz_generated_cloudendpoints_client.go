@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armstoragesync
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,46 +25,61 @@ import (
 // CloudEndpointsClient contains the methods for the CloudEndpoints group.
 // Don't use this type directly, use NewCloudEndpointsClient() instead.
 type CloudEndpointsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCloudEndpointsClient creates a new instance of CloudEndpointsClient with the specified values.
-func NewCloudEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CloudEndpointsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewCloudEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CloudEndpointsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &CloudEndpointsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &CloudEndpointsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // BeginCreate - Create a new CloudEndpoint.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *CloudEndpointsClient) BeginCreate(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters CloudEndpointCreateParameters, options *CloudEndpointsBeginCreateOptions) (CloudEndpointsCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters, options)
-	if err != nil {
-		return CloudEndpointsCreatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// storageSyncServiceName - Name of Storage Sync Service resource.
+// syncGroupName - Name of Sync Group resource.
+// cloudEndpointName - Name of Cloud Endpoint object.
+// parameters - Body of Cloud Endpoint resource.
+// options - CloudEndpointsClientBeginCreateOptions contains the optional parameters for the CloudEndpointsClient.BeginCreate
+// method.
+func (client *CloudEndpointsClient) BeginCreate(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters CloudEndpointCreateParameters, options *CloudEndpointsClientBeginCreateOptions) (*runtime.Poller[CloudEndpointsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[CloudEndpointsClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[CloudEndpointsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := CloudEndpointsCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CloudEndpointsClient.Create", "", resp, client.pl, client.createHandleError)
-	if err != nil {
-		return CloudEndpointsCreatePollerResponse{}, err
-	}
-	result.Poller = &CloudEndpointsCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Create a new CloudEndpoint.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *CloudEndpointsClient) create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters CloudEndpointCreateParameters, options *CloudEndpointsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+func (client *CloudEndpointsClient) create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters CloudEndpointCreateParameters, options *CloudEndpointsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +89,13 @@ func (client *CloudEndpointsClient) create(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *CloudEndpointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters CloudEndpointCreateParameters, options *CloudEndpointsBeginCreateOptions) (*policy.Request, error) {
+func (client *CloudEndpointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters CloudEndpointCreateParameters, options *CloudEndpointsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/cloudEndpoints/{cloudEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -102,53 +117,42 @@ func (client *CloudEndpointsClient) createCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter cloudEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cloudEndpointName}", url.PathEscape(cloudEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createHandleError handles the Create error response.
-func (client *CloudEndpointsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageSyncError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete a given CloudEndpoint.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *CloudEndpointsClient) BeginDelete(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, options *CloudEndpointsBeginDeleteOptions) (CloudEndpointsDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, options)
-	if err != nil {
-		return CloudEndpointsDeletePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// storageSyncServiceName - Name of Storage Sync Service resource.
+// syncGroupName - Name of Sync Group resource.
+// cloudEndpointName - Name of Cloud Endpoint object.
+// options - CloudEndpointsClientBeginDeleteOptions contains the optional parameters for the CloudEndpointsClient.BeginDelete
+// method.
+func (client *CloudEndpointsClient) BeginDelete(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, options *CloudEndpointsClientBeginDeleteOptions) (*runtime.Poller[CloudEndpointsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[CloudEndpointsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[CloudEndpointsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := CloudEndpointsDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CloudEndpointsClient.Delete", "", resp, client.pl, client.deleteHandleError)
-	if err != nil {
-		return CloudEndpointsDeletePollerResponse{}, err
-	}
-	result.Poller = &CloudEndpointsDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete a given CloudEndpoint.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *CloudEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, options *CloudEndpointsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+func (client *CloudEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, options *CloudEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, options)
 	if err != nil {
 		return nil, err
@@ -158,13 +162,13 @@ func (client *CloudEndpointsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CloudEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, options *CloudEndpointsBeginDeleteOptions) (*policy.Request, error) {
+func (client *CloudEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, options *CloudEndpointsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/cloudEndpoints/{cloudEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -186,49 +190,42 @@ func (client *CloudEndpointsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter cloudEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cloudEndpointName}", url.PathEscape(cloudEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *CloudEndpointsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageSyncError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a given CloudEndpoint.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *CloudEndpointsClient) Get(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, options *CloudEndpointsGetOptions) (CloudEndpointsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// storageSyncServiceName - Name of Storage Sync Service resource.
+// syncGroupName - Name of Sync Group resource.
+// cloudEndpointName - Name of Cloud Endpoint object.
+// options - CloudEndpointsClientGetOptions contains the optional parameters for the CloudEndpointsClient.Get method.
+func (client *CloudEndpointsClient) Get(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, options *CloudEndpointsClientGetOptions) (CloudEndpointsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, options)
 	if err != nil {
-		return CloudEndpointsGetResponse{}, err
+		return CloudEndpointsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CloudEndpointsGetResponse{}, err
+		return CloudEndpointsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CloudEndpointsGetResponse{}, client.getHandleError(resp)
+		return CloudEndpointsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CloudEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, options *CloudEndpointsGetOptions) (*policy.Request, error) {
+func (client *CloudEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, options *CloudEndpointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/cloudEndpoints/{cloudEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -250,20 +247,20 @@ func (client *CloudEndpointsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter cloudEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cloudEndpointName}", url.PathEscape(cloudEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *CloudEndpointsClient) getHandleResponse(resp *http.Response) (CloudEndpointsGetResponse, error) {
-	result := CloudEndpointsGetResponse{RawResponse: resp}
+func (client *CloudEndpointsClient) getHandleResponse(resp *http.Response) (CloudEndpointsClientGetResponse, error) {
+	result := CloudEndpointsClientGetResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.XMSRequestID = &val
 	}
@@ -271,43 +268,43 @@ func (client *CloudEndpointsClient) getHandleResponse(resp *http.Response) (Clou
 		result.XMSCorrelationRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CloudEndpoint); err != nil {
-		return CloudEndpointsGetResponse{}, runtime.NewResponseError(err, resp)
+		return CloudEndpointsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *CloudEndpointsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageSyncError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListBySyncGroup - Get a CloudEndpoint List.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *CloudEndpointsClient) ListBySyncGroup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *CloudEndpointsListBySyncGroupOptions) (CloudEndpointsListBySyncGroupResponse, error) {
-	req, err := client.listBySyncGroupCreateRequest(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, options)
-	if err != nil {
-		return CloudEndpointsListBySyncGroupResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return CloudEndpointsListBySyncGroupResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CloudEndpointsListBySyncGroupResponse{}, client.listBySyncGroupHandleError(resp)
-	}
-	return client.listBySyncGroupHandleResponse(resp)
+// NewListBySyncGroupPager - Get a CloudEndpoint List.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// storageSyncServiceName - Name of Storage Sync Service resource.
+// syncGroupName - Name of Sync Group resource.
+// options - CloudEndpointsClientListBySyncGroupOptions contains the optional parameters for the CloudEndpointsClient.ListBySyncGroup
+// method.
+func (client *CloudEndpointsClient) NewListBySyncGroupPager(resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *CloudEndpointsClientListBySyncGroupOptions) *runtime.Pager[CloudEndpointsClientListBySyncGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[CloudEndpointsClientListBySyncGroupResponse]{
+		More: func(page CloudEndpointsClientListBySyncGroupResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *CloudEndpointsClientListBySyncGroupResponse) (CloudEndpointsClientListBySyncGroupResponse, error) {
+			req, err := client.listBySyncGroupCreateRequest(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, options)
+			if err != nil {
+				return CloudEndpointsClientListBySyncGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CloudEndpointsClientListBySyncGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CloudEndpointsClientListBySyncGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySyncGroupHandleResponse(resp)
+		},
+	})
 }
 
 // listBySyncGroupCreateRequest creates the ListBySyncGroup request.
-func (client *CloudEndpointsClient) listBySyncGroupCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *CloudEndpointsListBySyncGroupOptions) (*policy.Request, error) {
+func (client *CloudEndpointsClient) listBySyncGroupCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *CloudEndpointsClientListBySyncGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/cloudEndpoints"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -325,20 +322,20 @@ func (client *CloudEndpointsClient) listBySyncGroupCreateRequest(ctx context.Con
 		return nil, errors.New("parameter syncGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{syncGroupName}", url.PathEscape(syncGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySyncGroupHandleResponse handles the ListBySyncGroup response.
-func (client *CloudEndpointsClient) listBySyncGroupHandleResponse(resp *http.Response) (CloudEndpointsListBySyncGroupResponse, error) {
-	result := CloudEndpointsListBySyncGroupResponse{RawResponse: resp}
+func (client *CloudEndpointsClient) listBySyncGroupHandleResponse(resp *http.Response) (CloudEndpointsClientListBySyncGroupResponse, error) {
+	result := CloudEndpointsClientListBySyncGroupResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.XMSRequestID = &val
 	}
@@ -346,47 +343,37 @@ func (client *CloudEndpointsClient) listBySyncGroupHandleResponse(resp *http.Res
 		result.XMSCorrelationRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CloudEndpointArray); err != nil {
-		return CloudEndpointsListBySyncGroupResponse{}, runtime.NewResponseError(err, resp)
+		return CloudEndpointsClientListBySyncGroupResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySyncGroupHandleError handles the ListBySyncGroup error response.
-func (client *CloudEndpointsClient) listBySyncGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageSyncError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginPostBackup - Post Backup a given CloudEndpoint.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *CloudEndpointsClient) BeginPostBackup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest, options *CloudEndpointsBeginPostBackupOptions) (CloudEndpointsPostBackupPollerResponse, error) {
-	resp, err := client.postBackup(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters, options)
-	if err != nil {
-		return CloudEndpointsPostBackupPollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// storageSyncServiceName - Name of Storage Sync Service resource.
+// syncGroupName - Name of Sync Group resource.
+// cloudEndpointName - Name of Cloud Endpoint object.
+// parameters - Body of Backup request.
+// options - CloudEndpointsClientBeginPostBackupOptions contains the optional parameters for the CloudEndpointsClient.BeginPostBackup
+// method.
+func (client *CloudEndpointsClient) BeginPostBackup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest, options *CloudEndpointsClientBeginPostBackupOptions) (*runtime.Poller[CloudEndpointsClientPostBackupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.postBackup(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[CloudEndpointsClientPostBackupResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[CloudEndpointsClientPostBackupResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := CloudEndpointsPostBackupPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CloudEndpointsClient.PostBackup", "", resp, client.pl, client.postBackupHandleError)
-	if err != nil {
-		return CloudEndpointsPostBackupPollerResponse{}, err
-	}
-	result.Poller = &CloudEndpointsPostBackupPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // PostBackup - Post Backup a given CloudEndpoint.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *CloudEndpointsClient) postBackup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest, options *CloudEndpointsBeginPostBackupOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+func (client *CloudEndpointsClient) postBackup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest, options *CloudEndpointsClientBeginPostBackupOptions) (*http.Response, error) {
 	req, err := client.postBackupCreateRequest(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -396,13 +383,13 @@ func (client *CloudEndpointsClient) postBackup(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.postBackupHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // postBackupCreateRequest creates the PostBackup request.
-func (client *CloudEndpointsClient) postBackupCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest, options *CloudEndpointsBeginPostBackupOptions) (*policy.Request, error) {
+func (client *CloudEndpointsClient) postBackupCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest, options *CloudEndpointsClientBeginPostBackupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/cloudEndpoints/{cloudEndpointName}/postbackup"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -424,53 +411,43 @@ func (client *CloudEndpointsClient) postBackupCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter cloudEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cloudEndpointName}", url.PathEscape(cloudEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// postBackupHandleError handles the PostBackup error response.
-func (client *CloudEndpointsClient) postBackupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageSyncError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginPostRestore - Post Restore a given CloudEndpoint.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *CloudEndpointsClient) BeginPostRestore(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PostRestoreRequest, options *CloudEndpointsBeginPostRestoreOptions) (CloudEndpointsPostRestorePollerResponse, error) {
-	resp, err := client.postRestore(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters, options)
-	if err != nil {
-		return CloudEndpointsPostRestorePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// storageSyncServiceName - Name of Storage Sync Service resource.
+// syncGroupName - Name of Sync Group resource.
+// cloudEndpointName - Name of Cloud Endpoint object.
+// parameters - Body of Cloud Endpoint object.
+// options - CloudEndpointsClientBeginPostRestoreOptions contains the optional parameters for the CloudEndpointsClient.BeginPostRestore
+// method.
+func (client *CloudEndpointsClient) BeginPostRestore(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PostRestoreRequest, options *CloudEndpointsClientBeginPostRestoreOptions) (*runtime.Poller[CloudEndpointsClientPostRestoreResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.postRestore(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[CloudEndpointsClientPostRestoreResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[CloudEndpointsClientPostRestoreResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := CloudEndpointsPostRestorePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CloudEndpointsClient.PostRestore", "", resp, client.pl, client.postRestoreHandleError)
-	if err != nil {
-		return CloudEndpointsPostRestorePollerResponse{}, err
-	}
-	result.Poller = &CloudEndpointsPostRestorePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // PostRestore - Post Restore a given CloudEndpoint.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *CloudEndpointsClient) postRestore(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PostRestoreRequest, options *CloudEndpointsBeginPostRestoreOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+func (client *CloudEndpointsClient) postRestore(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PostRestoreRequest, options *CloudEndpointsClientBeginPostRestoreOptions) (*http.Response, error) {
 	req, err := client.postRestoreCreateRequest(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -480,13 +457,13 @@ func (client *CloudEndpointsClient) postRestore(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.postRestoreHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // postRestoreCreateRequest creates the PostRestore request.
-func (client *CloudEndpointsClient) postRestoreCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PostRestoreRequest, options *CloudEndpointsBeginPostRestoreOptions) (*policy.Request, error) {
+func (client *CloudEndpointsClient) postRestoreCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PostRestoreRequest, options *CloudEndpointsClientBeginPostRestoreOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/cloudEndpoints/{cloudEndpointName}/postrestore"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -508,53 +485,43 @@ func (client *CloudEndpointsClient) postRestoreCreateRequest(ctx context.Context
 		return nil, errors.New("parameter cloudEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cloudEndpointName}", url.PathEscape(cloudEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// postRestoreHandleError handles the PostRestore error response.
-func (client *CloudEndpointsClient) postRestoreHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageSyncError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginPreBackup - Pre Backup a given CloudEndpoint.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *CloudEndpointsClient) BeginPreBackup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest, options *CloudEndpointsBeginPreBackupOptions) (CloudEndpointsPreBackupPollerResponse, error) {
-	resp, err := client.preBackup(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters, options)
-	if err != nil {
-		return CloudEndpointsPreBackupPollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// storageSyncServiceName - Name of Storage Sync Service resource.
+// syncGroupName - Name of Sync Group resource.
+// cloudEndpointName - Name of Cloud Endpoint object.
+// parameters - Body of Backup request.
+// options - CloudEndpointsClientBeginPreBackupOptions contains the optional parameters for the CloudEndpointsClient.BeginPreBackup
+// method.
+func (client *CloudEndpointsClient) BeginPreBackup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest, options *CloudEndpointsClientBeginPreBackupOptions) (*runtime.Poller[CloudEndpointsClientPreBackupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.preBackup(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[CloudEndpointsClientPreBackupResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[CloudEndpointsClientPreBackupResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := CloudEndpointsPreBackupPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CloudEndpointsClient.PreBackup", "", resp, client.pl, client.preBackupHandleError)
-	if err != nil {
-		return CloudEndpointsPreBackupPollerResponse{}, err
-	}
-	result.Poller = &CloudEndpointsPreBackupPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // PreBackup - Pre Backup a given CloudEndpoint.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *CloudEndpointsClient) preBackup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest, options *CloudEndpointsBeginPreBackupOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+func (client *CloudEndpointsClient) preBackup(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest, options *CloudEndpointsClientBeginPreBackupOptions) (*http.Response, error) {
 	req, err := client.preBackupCreateRequest(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -564,13 +531,13 @@ func (client *CloudEndpointsClient) preBackup(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.preBackupHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // preBackupCreateRequest creates the PreBackup request.
-func (client *CloudEndpointsClient) preBackupCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest, options *CloudEndpointsBeginPreBackupOptions) (*policy.Request, error) {
+func (client *CloudEndpointsClient) preBackupCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters BackupRequest, options *CloudEndpointsClientBeginPreBackupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/cloudEndpoints/{cloudEndpointName}/prebackup"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -592,53 +559,43 @@ func (client *CloudEndpointsClient) preBackupCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter cloudEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cloudEndpointName}", url.PathEscape(cloudEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// preBackupHandleError handles the PreBackup error response.
-func (client *CloudEndpointsClient) preBackupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageSyncError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginPreRestore - Pre Restore a given CloudEndpoint.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *CloudEndpointsClient) BeginPreRestore(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PreRestoreRequest, options *CloudEndpointsBeginPreRestoreOptions) (CloudEndpointsPreRestorePollerResponse, error) {
-	resp, err := client.preRestore(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters, options)
-	if err != nil {
-		return CloudEndpointsPreRestorePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// storageSyncServiceName - Name of Storage Sync Service resource.
+// syncGroupName - Name of Sync Group resource.
+// cloudEndpointName - Name of Cloud Endpoint object.
+// parameters - Body of Cloud Endpoint object.
+// options - CloudEndpointsClientBeginPreRestoreOptions contains the optional parameters for the CloudEndpointsClient.BeginPreRestore
+// method.
+func (client *CloudEndpointsClient) BeginPreRestore(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PreRestoreRequest, options *CloudEndpointsClientBeginPreRestoreOptions) (*runtime.Poller[CloudEndpointsClientPreRestoreResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.preRestore(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[CloudEndpointsClientPreRestoreResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[CloudEndpointsClientPreRestoreResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := CloudEndpointsPreRestorePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CloudEndpointsClient.PreRestore", "", resp, client.pl, client.preRestoreHandleError)
-	if err != nil {
-		return CloudEndpointsPreRestorePollerResponse{}, err
-	}
-	result.Poller = &CloudEndpointsPreRestorePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // PreRestore - Pre Restore a given CloudEndpoint.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *CloudEndpointsClient) preRestore(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PreRestoreRequest, options *CloudEndpointsBeginPreRestoreOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+func (client *CloudEndpointsClient) preRestore(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PreRestoreRequest, options *CloudEndpointsClientBeginPreRestoreOptions) (*http.Response, error) {
 	req, err := client.preRestoreCreateRequest(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -648,13 +605,13 @@ func (client *CloudEndpointsClient) preRestore(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.preRestoreHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // preRestoreCreateRequest creates the PreRestore request.
-func (client *CloudEndpointsClient) preRestoreCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PreRestoreRequest, options *CloudEndpointsBeginPreRestoreOptions) (*policy.Request, error) {
+func (client *CloudEndpointsClient) preRestoreCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters PreRestoreRequest, options *CloudEndpointsClientBeginPreRestoreOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/cloudEndpoints/{cloudEndpointName}/prerestore"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -676,49 +633,43 @@ func (client *CloudEndpointsClient) preRestoreCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter cloudEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cloudEndpointName}", url.PathEscape(cloudEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// preRestoreHandleError handles the PreRestore error response.
-func (client *CloudEndpointsClient) preRestoreHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageSyncError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Restoreheartbeat - Restore Heartbeat a given CloudEndpoint.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *CloudEndpointsClient) Restoreheartbeat(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, options *CloudEndpointsRestoreheartbeatOptions) (CloudEndpointsRestoreheartbeatResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// storageSyncServiceName - Name of Storage Sync Service resource.
+// syncGroupName - Name of Sync Group resource.
+// cloudEndpointName - Name of Cloud Endpoint object.
+// options - CloudEndpointsClientRestoreheartbeatOptions contains the optional parameters for the CloudEndpointsClient.Restoreheartbeat
+// method.
+func (client *CloudEndpointsClient) Restoreheartbeat(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, options *CloudEndpointsClientRestoreheartbeatOptions) (CloudEndpointsClientRestoreheartbeatResponse, error) {
 	req, err := client.restoreheartbeatCreateRequest(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, options)
 	if err != nil {
-		return CloudEndpointsRestoreheartbeatResponse{}, err
+		return CloudEndpointsClientRestoreheartbeatResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CloudEndpointsRestoreheartbeatResponse{}, err
+		return CloudEndpointsClientRestoreheartbeatResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CloudEndpointsRestoreheartbeatResponse{}, client.restoreheartbeatHandleError(resp)
+		return CloudEndpointsClientRestoreheartbeatResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.restoreheartbeatHandleResponse(resp)
 }
 
 // restoreheartbeatCreateRequest creates the Restoreheartbeat request.
-func (client *CloudEndpointsClient) restoreheartbeatCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, options *CloudEndpointsRestoreheartbeatOptions) (*policy.Request, error) {
+func (client *CloudEndpointsClient) restoreheartbeatCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, options *CloudEndpointsClientRestoreheartbeatOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/cloudEndpoints/{cloudEndpointName}/restoreheartbeat"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -740,20 +691,20 @@ func (client *CloudEndpointsClient) restoreheartbeatCreateRequest(ctx context.Co
 		return nil, errors.New("parameter cloudEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cloudEndpointName}", url.PathEscape(cloudEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // restoreheartbeatHandleResponse handles the Restoreheartbeat response.
-func (client *CloudEndpointsClient) restoreheartbeatHandleResponse(resp *http.Response) (CloudEndpointsRestoreheartbeatResponse, error) {
-	result := CloudEndpointsRestoreheartbeatResponse{RawResponse: resp}
+func (client *CloudEndpointsClient) restoreheartbeatHandleResponse(resp *http.Response) (CloudEndpointsClientRestoreheartbeatResponse, error) {
+	result := CloudEndpointsClientRestoreheartbeatResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.XMSRequestID = &val
 	}
@@ -763,42 +714,34 @@ func (client *CloudEndpointsClient) restoreheartbeatHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// restoreheartbeatHandleError handles the Restoreheartbeat error response.
-func (client *CloudEndpointsClient) restoreheartbeatHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
+// BeginTriggerChangeDetection - Triggers detection of changes performed on Azure File share connected to the specified Azure
+// File Sync Cloud Endpoint.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// storageSyncServiceName - Name of Storage Sync Service resource.
+// syncGroupName - Name of Sync Group resource.
+// cloudEndpointName - Name of Cloud Endpoint object.
+// parameters - Trigger Change Detection Action parameters.
+// options - CloudEndpointsClientBeginTriggerChangeDetectionOptions contains the optional parameters for the CloudEndpointsClient.BeginTriggerChangeDetection
+// method.
+func (client *CloudEndpointsClient) BeginTriggerChangeDetection(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters TriggerChangeDetectionParameters, options *CloudEndpointsClientBeginTriggerChangeDetectionOptions) (*runtime.Poller[CloudEndpointsClientTriggerChangeDetectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.triggerChangeDetection(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[CloudEndpointsClientTriggerChangeDetectionResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[CloudEndpointsClientTriggerChangeDetectionResponse](options.ResumeToken, client.pl, nil)
 	}
-	errType := StorageSyncError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }
 
-// BeginTriggerChangeDetection - Triggers detection of changes performed on Azure File share connected to the specified Azure File Sync Cloud Endpoint.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *CloudEndpointsClient) BeginTriggerChangeDetection(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters TriggerChangeDetectionParameters, options *CloudEndpointsBeginTriggerChangeDetectionOptions) (CloudEndpointsTriggerChangeDetectionPollerResponse, error) {
-	resp, err := client.triggerChangeDetection(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters, options)
-	if err != nil {
-		return CloudEndpointsTriggerChangeDetectionPollerResponse{}, err
-	}
-	result := CloudEndpointsTriggerChangeDetectionPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CloudEndpointsClient.TriggerChangeDetection", "", resp, client.pl, client.triggerChangeDetectionHandleError)
-	if err != nil {
-		return CloudEndpointsTriggerChangeDetectionPollerResponse{}, err
-	}
-	result.Poller = &CloudEndpointsTriggerChangeDetectionPoller{
-		pt: pt,
-	}
-	return result, nil
-}
-
-// TriggerChangeDetection - Triggers detection of changes performed on Azure File share connected to the specified Azure File Sync Cloud Endpoint.
-// If the operation fails it returns the *StorageSyncError error type.
-func (client *CloudEndpointsClient) triggerChangeDetection(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters TriggerChangeDetectionParameters, options *CloudEndpointsBeginTriggerChangeDetectionOptions) (*http.Response, error) {
+// TriggerChangeDetection - Triggers detection of changes performed on Azure File share connected to the specified Azure File
+// Sync Cloud Endpoint.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
+func (client *CloudEndpointsClient) triggerChangeDetection(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters TriggerChangeDetectionParameters, options *CloudEndpointsClientBeginTriggerChangeDetectionOptions) (*http.Response, error) {
 	req, err := client.triggerChangeDetectionCreateRequest(ctx, resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -808,13 +751,13 @@ func (client *CloudEndpointsClient) triggerChangeDetection(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.triggerChangeDetectionHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // triggerChangeDetectionCreateRequest creates the TriggerChangeDetection request.
-func (client *CloudEndpointsClient) triggerChangeDetectionCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters TriggerChangeDetectionParameters, options *CloudEndpointsBeginTriggerChangeDetectionOptions) (*policy.Request, error) {
+func (client *CloudEndpointsClient) triggerChangeDetectionCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters TriggerChangeDetectionParameters, options *CloudEndpointsClientBeginTriggerChangeDetectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}/cloudEndpoints/{cloudEndpointName}/triggerChangeDetection"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -836,26 +779,13 @@ func (client *CloudEndpointsClient) triggerChangeDetectionCreateRequest(ctx cont
 		return nil, errors.New("parameter cloudEndpointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{cloudEndpointName}", url.PathEscape(cloudEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// triggerChangeDetectionHandleError handles the TriggerChangeDetection error response.
-func (client *CloudEndpointsClient) triggerChangeDetectionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := StorageSyncError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

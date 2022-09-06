@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armcdn
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,46 +25,61 @@ import (
 // CustomDomainsClient contains the methods for the CustomDomains group.
 // Don't use this type directly, use NewCustomDomainsClient() instead.
 type CustomDomainsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewCustomDomainsClient creates a new instance of CustomDomainsClient with the specified values.
-func NewCustomDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CustomDomainsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Azure Subscription ID.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewCustomDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomDomainsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &CustomDomainsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &CustomDomainsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // BeginCreate - Creates a new custom domain within an endpoint.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomDomainsClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, customDomainProperties CustomDomainParameters, options *CustomDomainsBeginCreateOptions) (CustomDomainsCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, profileName, endpointName, customDomainName, customDomainProperties, options)
-	if err != nil {
-		return CustomDomainsCreatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the CDN profile which is unique within the resource group.
+// endpointName - Name of the endpoint under the profile which is unique globally.
+// customDomainName - Name of the custom domain within an endpoint.
+// customDomainProperties - Properties required to create a new custom domain.
+// options - CustomDomainsClientBeginCreateOptions contains the optional parameters for the CustomDomainsClient.BeginCreate
+// method.
+func (client *CustomDomainsClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, customDomainProperties CustomDomainParameters, options *CustomDomainsClientBeginCreateOptions) (*runtime.Poller[CustomDomainsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, profileName, endpointName, customDomainName, customDomainProperties, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[CustomDomainsClientCreateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[CustomDomainsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := CustomDomainsCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CustomDomainsClient.Create", "", resp, client.pl, client.createHandleError)
-	if err != nil {
-		return CustomDomainsCreatePollerResponse{}, err
-	}
-	result.Poller = &CustomDomainsCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Creates a new custom domain within an endpoint.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomDomainsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, customDomainProperties CustomDomainParameters, options *CustomDomainsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+func (client *CustomDomainsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, customDomainProperties CustomDomainParameters, options *CustomDomainsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, endpointName, customDomainName, customDomainProperties, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +89,13 @@ func (client *CustomDomainsClient) create(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *CustomDomainsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, customDomainProperties CustomDomainParameters, options *CustomDomainsBeginCreateOptions) (*policy.Request, error) {
+func (client *CustomDomainsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, customDomainProperties CustomDomainParameters, options *CustomDomainsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -102,53 +117,42 @@ func (client *CustomDomainsClient) createCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, customDomainProperties)
 }
 
-// createHandleError handles the Create error response.
-func (client *CustomDomainsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes an existing custom domain within an endpoint.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomDomainsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginDeleteOptions) (CustomDomainsDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, endpointName, customDomainName, options)
-	if err != nil {
-		return CustomDomainsDeletePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the CDN profile which is unique within the resource group.
+// endpointName - Name of the endpoint under the profile which is unique globally.
+// customDomainName - Name of the custom domain within an endpoint.
+// options - CustomDomainsClientBeginDeleteOptions contains the optional parameters for the CustomDomainsClient.BeginDelete
+// method.
+func (client *CustomDomainsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsClientBeginDeleteOptions) (*runtime.Poller[CustomDomainsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, endpointName, customDomainName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[CustomDomainsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[CustomDomainsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := CustomDomainsDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CustomDomainsClient.Delete", "", resp, client.pl, client.deleteHandleError)
-	if err != nil {
-		return CustomDomainsDeletePollerResponse{}, err
-	}
-	result.Poller = &CustomDomainsDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes an existing custom domain within an endpoint.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomDomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+func (client *CustomDomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, endpointName, customDomainName, options)
 	if err != nil {
 		return nil, err
@@ -158,13 +162,13 @@ func (client *CustomDomainsClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CustomDomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginDeleteOptions) (*policy.Request, error) {
+func (client *CustomDomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -186,69 +190,43 @@ func (client *CustomDomainsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *CustomDomainsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginDisableCustomHTTPS - Disable https delivery of the custom domain.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomDomainsClient) BeginDisableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginDisableCustomHTTPSOptions) (CustomDomainsDisableCustomHTTPSPollerResponse, error) {
-	resp, err := client.disableCustomHTTPS(ctx, resourceGroupName, profileName, endpointName, customDomainName, options)
-	if err != nil {
-		return CustomDomainsDisableCustomHTTPSPollerResponse{}, err
-	}
-	result := CustomDomainsDisableCustomHTTPSPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CustomDomainsClient.DisableCustomHTTPS", "", resp, client.pl, client.disableCustomHTTPSHandleError)
-	if err != nil {
-		return CustomDomainsDisableCustomHTTPSPollerResponse{}, err
-	}
-	result.Poller = &CustomDomainsDisableCustomHTTPSPoller{
-		pt: pt,
-	}
-	return result, nil
-}
-
 // DisableCustomHTTPS - Disable https delivery of the custom domain.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomDomainsClient) disableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginDisableCustomHTTPSOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the CDN profile which is unique within the resource group.
+// endpointName - Name of the endpoint under the profile which is unique globally.
+// customDomainName - Name of the custom domain within an endpoint.
+// options - CustomDomainsClientDisableCustomHTTPSOptions contains the optional parameters for the CustomDomainsClient.DisableCustomHTTPS
+// method.
+func (client *CustomDomainsClient) DisableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsClientDisableCustomHTTPSOptions) (CustomDomainsClientDisableCustomHTTPSResponse, error) {
 	req, err := client.disableCustomHTTPSCreateRequest(ctx, resourceGroupName, profileName, endpointName, customDomainName, options)
 	if err != nil {
-		return nil, err
+		return CustomDomainsClientDisableCustomHTTPSResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return nil, err
+		return CustomDomainsClientDisableCustomHTTPSResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.disableCustomHTTPSHandleError(resp)
+		return CustomDomainsClientDisableCustomHTTPSResponse{}, runtime.NewResponseError(resp)
 	}
-	return resp, nil
+	return client.disableCustomHTTPSHandleResponse(resp)
 }
 
 // disableCustomHTTPSCreateRequest creates the DisableCustomHTTPS request.
-func (client *CustomDomainsClient) disableCustomHTTPSCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginDisableCustomHTTPSOptions) (*policy.Request, error) {
+func (client *CustomDomainsClient) disableCustomHTTPSCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsClientDisableCustomHTTPSOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/disableCustomHttps"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -270,69 +248,52 @@ func (client *CustomDomainsClient) disableCustomHTTPSCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// disableCustomHTTPSHandleError handles the DisableCustomHTTPS error response.
-func (client *CustomDomainsClient) disableCustomHTTPSHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// BeginEnableCustomHTTPS - Enable https delivery of the custom domain.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomDomainsClient) BeginEnableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginEnableCustomHTTPSOptions) (CustomDomainsEnableCustomHTTPSPollerResponse, error) {
-	resp, err := client.enableCustomHTTPS(ctx, resourceGroupName, profileName, endpointName, customDomainName, options)
-	if err != nil {
-		return CustomDomainsEnableCustomHTTPSPollerResponse{}, err
-	}
-	result := CustomDomainsEnableCustomHTTPSPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("CustomDomainsClient.EnableCustomHTTPS", "", resp, client.pl, client.enableCustomHTTPSHandleError)
-	if err != nil {
-		return CustomDomainsEnableCustomHTTPSPollerResponse{}, err
-	}
-	result.Poller = &CustomDomainsEnableCustomHTTPSPoller{
-		pt: pt,
+// disableCustomHTTPSHandleResponse handles the DisableCustomHTTPS response.
+func (client *CustomDomainsClient) disableCustomHTTPSHandleResponse(resp *http.Response) (CustomDomainsClientDisableCustomHTTPSResponse, error) {
+	result := CustomDomainsClientDisableCustomHTTPSResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CustomDomain); err != nil {
+		return CustomDomainsClientDisableCustomHTTPSResponse{}, err
 	}
 	return result, nil
 }
 
 // EnableCustomHTTPS - Enable https delivery of the custom domain.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomDomainsClient) enableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginEnableCustomHTTPSOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the CDN profile which is unique within the resource group.
+// endpointName - Name of the endpoint under the profile which is unique globally.
+// customDomainName - Name of the custom domain within an endpoint.
+// options - CustomDomainsClientEnableCustomHTTPSOptions contains the optional parameters for the CustomDomainsClient.EnableCustomHTTPS
+// method.
+func (client *CustomDomainsClient) EnableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsClientEnableCustomHTTPSOptions) (CustomDomainsClientEnableCustomHTTPSResponse, error) {
 	req, err := client.enableCustomHTTPSCreateRequest(ctx, resourceGroupName, profileName, endpointName, customDomainName, options)
 	if err != nil {
-		return nil, err
+		return CustomDomainsClientEnableCustomHTTPSResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return nil, err
+		return CustomDomainsClientEnableCustomHTTPSResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.enableCustomHTTPSHandleError(resp)
+		return CustomDomainsClientEnableCustomHTTPSResponse{}, runtime.NewResponseError(resp)
 	}
-	return resp, nil
+	return client.enableCustomHTTPSHandleResponse(resp)
 }
 
 // enableCustomHTTPSCreateRequest creates the EnableCustomHTTPS request.
-func (client *CustomDomainsClient) enableCustomHTTPSCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginEnableCustomHTTPSOptions) (*policy.Request, error) {
+func (client *CustomDomainsClient) enableCustomHTTPSCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsClientEnableCustomHTTPSOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/enableCustomHttps"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -354,52 +315,54 @@ func (client *CustomDomainsClient) enableCustomHTTPSCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.CustomDomainHTTPSParameters != nil {
 		return req, runtime.MarshalAsJSON(req, options.CustomDomainHTTPSParameters)
 	}
 	return req, nil
 }
 
-// enableCustomHTTPSHandleError handles the EnableCustomHTTPS error response.
-func (client *CustomDomainsClient) enableCustomHTTPSHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
+// enableCustomHTTPSHandleResponse handles the EnableCustomHTTPS response.
+func (client *CustomDomainsClient) enableCustomHTTPSHandleResponse(resp *http.Response) (CustomDomainsClientEnableCustomHTTPSResponse, error) {
+	result := CustomDomainsClientEnableCustomHTTPSResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CustomDomain); err != nil {
+		return CustomDomainsClientEnableCustomHTTPSResponse{}, err
 	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
+	return result, nil
 }
 
 // Get - Gets an existing custom domain within an endpoint.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomDomainsClient) Get(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsGetOptions) (CustomDomainsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the CDN profile which is unique within the resource group.
+// endpointName - Name of the endpoint under the profile which is unique globally.
+// customDomainName - Name of the custom domain within an endpoint.
+// options - CustomDomainsClientGetOptions contains the optional parameters for the CustomDomainsClient.Get method.
+func (client *CustomDomainsClient) Get(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsClientGetOptions) (CustomDomainsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, endpointName, customDomainName, options)
 	if err != nil {
-		return CustomDomainsGetResponse{}, err
+		return CustomDomainsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CustomDomainsGetResponse{}, err
+		return CustomDomainsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CustomDomainsGetResponse{}, client.getHandleError(resp)
+		return CustomDomainsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CustomDomainsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsGetOptions) (*policy.Request, error) {
+func (client *CustomDomainsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -421,55 +384,64 @@ func (client *CustomDomainsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *CustomDomainsClient) getHandleResponse(resp *http.Response) (CustomDomainsGetResponse, error) {
-	result := CustomDomainsGetResponse{RawResponse: resp}
+func (client *CustomDomainsClient) getHandleResponse(resp *http.Response) (CustomDomainsClientGetResponse, error) {
+	result := CustomDomainsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomDomain); err != nil {
-		return CustomDomainsGetResponse{}, runtime.NewResponseError(err, resp)
+		return CustomDomainsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *CustomDomainsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByEndpoint - Lists all of the existing custom domains within an endpoint.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomDomainsClient) ListByEndpoint(resourceGroupName string, profileName string, endpointName string, options *CustomDomainsListByEndpointOptions) *CustomDomainsListByEndpointPager {
-	return &CustomDomainsListByEndpointPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByEndpointCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
+// NewListByEndpointPager - Lists all of the existing custom domains within an endpoint.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - Name of the CDN profile which is unique within the resource group.
+// endpointName - Name of the endpoint under the profile which is unique globally.
+// options - CustomDomainsClientListByEndpointOptions contains the optional parameters for the CustomDomainsClient.ListByEndpoint
+// method.
+func (client *CustomDomainsClient) NewListByEndpointPager(resourceGroupName string, profileName string, endpointName string, options *CustomDomainsClientListByEndpointOptions) *runtime.Pager[CustomDomainsClientListByEndpointResponse] {
+	return runtime.NewPager(runtime.PagingHandler[CustomDomainsClientListByEndpointResponse]{
+		More: func(page CustomDomainsClientListByEndpointResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp CustomDomainsListByEndpointResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CustomDomainListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *CustomDomainsClientListByEndpointResponse) (CustomDomainsClientListByEndpointResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByEndpointCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return CustomDomainsClientListByEndpointResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return CustomDomainsClientListByEndpointResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CustomDomainsClientListByEndpointResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByEndpointHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByEndpointCreateRequest creates the ListByEndpoint request.
-func (client *CustomDomainsClient) listByEndpointCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *CustomDomainsListByEndpointOptions) (*policy.Request, error) {
+func (client *CustomDomainsClient) listByEndpointCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *CustomDomainsClientListByEndpointOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -487,35 +459,22 @@ func (client *CustomDomainsClient) listByEndpointCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-09-01")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByEndpointHandleResponse handles the ListByEndpoint response.
-func (client *CustomDomainsClient) listByEndpointHandleResponse(resp *http.Response) (CustomDomainsListByEndpointResponse, error) {
-	result := CustomDomainsListByEndpointResponse{RawResponse: resp}
+func (client *CustomDomainsClient) listByEndpointHandleResponse(resp *http.Response) (CustomDomainsClientListByEndpointResponse, error) {
+	result := CustomDomainsClientListByEndpointResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomDomainListResult); err != nil {
-		return CustomDomainsListByEndpointResponse{}, runtime.NewResponseError(err, resp)
+		return CustomDomainsClientListByEndpointResponse{}, err
 	}
 	return result, nil
-}
-
-// listByEndpointHandleError handles the ListByEndpoint error response.
-func (client *CustomDomainsClient) listByEndpointHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

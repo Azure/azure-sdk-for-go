@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,246 +12,309 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise"
 )
 
-// x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseDatabasesListByCluster.json
-func ExampleDatabasesClient_ListByCluster() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseDatabasesListByCluster.json
+func ExampleDatabasesClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
-	pager := client.ListByCluster("<resource-group-name>",
-		"<cluster-name>",
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByClusterPager("rg1",
+		"cache1",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Database.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseDatabasesCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseDatabasesCreate.json
 func ExampleDatabasesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"rg1",
+		"cache1",
+		"default",
 		armredisenterprise.Database{
 			Properties: &armredisenterprise.DatabaseProperties{
-				ClientProtocol:   armredisenterprise.ProtocolEncrypted.ToPtr(),
-				ClusteringPolicy: armredisenterprise.ClusteringPolicyEnterpriseCluster.ToPtr(),
-				EvictionPolicy:   armredisenterprise.EvictionPolicyAllKeysLRU.ToPtr(),
+				ClientProtocol:   to.Ptr(armredisenterprise.ProtocolEncrypted),
+				ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyEnterpriseCluster),
+				EvictionPolicy:   to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
 				Modules: []*armredisenterprise.Module{
 					{
-						Name: to.StringPtr("<name>"),
-						Args: to.StringPtr("<args>"),
+						Name: to.Ptr("RedisBloom"),
+						Args: to.Ptr("ERROR_RATE 0.00 INITIAL_SIZE 400"),
 					},
 					{
-						Name: to.StringPtr("<name>"),
-						Args: to.StringPtr("<args>"),
+						Name: to.Ptr("RedisTimeSeries"),
+						Args: to.Ptr("RETENTION_POLICY 20"),
 					},
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("RediSearch"),
 					}},
 				Persistence: &armredisenterprise.Persistence{
-					AofEnabled:   to.BoolPtr(true),
-					AofFrequency: armredisenterprise.AofFrequencyOneS.ToPtr(),
+					AofEnabled:   to.Ptr(true),
+					AofFrequency: to.Ptr(armredisenterprise.AofFrequencyOneS),
 				},
-				Port: to.Int32Ptr(10000),
+				Port: to.Ptr[int32](10000),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("Database.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseDatabasesUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseDatabasesUpdate.json
 func ExampleDatabasesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"rg1",
+		"cache1",
+		"default",
 		armredisenterprise.DatabaseUpdate{
 			Properties: &armredisenterprise.DatabaseProperties{
-				ClientProtocol: armredisenterprise.ProtocolEncrypted.ToPtr(),
-				EvictionPolicy: armredisenterprise.EvictionPolicyAllKeysLRU.ToPtr(),
+				ClientProtocol: to.Ptr(armredisenterprise.ProtocolEncrypted),
+				EvictionPolicy: to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
 				Persistence: &armredisenterprise.Persistence{
-					RdbEnabled:   to.BoolPtr(true),
-					RdbFrequency: armredisenterprise.RdbFrequencyTwelveH.ToPtr(),
+					RdbEnabled:   to.Ptr(true),
+					RdbFrequency: to.Ptr(armredisenterprise.RdbFrequencyTwelveH),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("Database.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseDatabasesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseDatabasesGet.json
 func ExampleDatabasesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"rg1",
+		"cache1",
+		"default",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Database.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseDatabasesDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseDatabasesDelete.json
 func ExampleDatabasesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"rg1",
+		"cache1",
+		"db1",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseDatabasesListKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseDatabasesListKeys.json
 func ExampleDatabasesClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
-	_, err = client.ListKeys(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.ListKeys(ctx,
+		"rg1",
+		"cache1",
+		"default",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseDatabasesRegenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseDatabasesRegenerateKey.json
 func ExampleDatabasesClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginRegenerateKey(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"rg1",
+		"cache1",
+		"default",
 		armredisenterprise.RegenerateKeyParameters{
-			KeyType: armredisenterprise.AccessKeyTypePrimary.ToPtr(),
+			KeyType: to.Ptr(armredisenterprise.AccessKeyTypePrimary),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseDatabasesImport.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseDatabasesImport.json
 func ExampleDatabasesClient_BeginImport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginImport(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"rg1",
+		"cache1",
+		"default",
 		armredisenterprise.ImportClusterParameters{
 			SasUris: []*string{
-				to.StringPtr("https://contosostorage.blob.core.window.net/urltoBlobFile1?sasKeyParameters"),
-				to.StringPtr("https://contosostorage.blob.core.window.net/urltoBlobFile2?sasKeyParameters")},
+				to.Ptr("https://contosostorage.blob.core.window.net/urltoBlobFile1?sasKeyParameters"),
+				to.Ptr("https://contosostorage.blob.core.window.net/urltoBlobFile2?sasKeyParameters")},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2021-08-01/examples/RedisEnterpriseDatabasesExport.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseDatabasesExport.json
 func ExampleDatabasesClient_BeginExport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginExport(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"rg1",
+		"cache1",
+		"default",
 		armredisenterprise.ExportClusterParameters{
-			SasURI: to.StringPtr("<sas-uri>"),
+			SasURI: to.Ptr("https://contosostorage.blob.core.window.net/urlToBlobContainer?sasKeyParameters"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseDatabasesForceUnlink.json
+func ExampleDatabasesClient_BeginForceUnlink() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginForceUnlink(ctx,
+		"rg1",
+		"cache1",
+		"default",
+		armredisenterprise.ForceUnlinkParameters{
+			IDs: []*string{
+				to.Ptr("/subscriptions/subid2/resourceGroups/rg2/providers/Microsoft.Cache/redisEnterprise/cache2/databases/default")},
+		},
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }

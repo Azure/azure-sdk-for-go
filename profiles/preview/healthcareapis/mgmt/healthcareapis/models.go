@@ -12,36 +12,73 @@ package healthcareapis
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/healthcareapis/mgmt/2020-03-30/healthcareapis"
+	original "github.com/Azure/azure-sdk-for-go/services/healthcareapis/mgmt/2021-11-01/healthcareapis"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type ActionType = original.ActionType
+
+const (
+	ActionTypeInternal ActionType = original.ActionTypeInternal
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
+type FhirResourceVersionPolicy = original.FhirResourceVersionPolicy
+
+const (
+	FhirResourceVersionPolicyNoVersion       FhirResourceVersionPolicy = original.FhirResourceVersionPolicyNoVersion
+	FhirResourceVersionPolicyVersioned       FhirResourceVersionPolicy = original.FhirResourceVersionPolicyVersioned
+	FhirResourceVersionPolicyVersionedUpdate FhirResourceVersionPolicy = original.FhirResourceVersionPolicyVersionedUpdate
+)
+
+type FhirServiceKind = original.FhirServiceKind
+
+const (
+	FhirServiceKindFhirR4   FhirServiceKind = original.FhirServiceKindFhirR4
+	FhirServiceKindFhirStu3 FhirServiceKind = original.FhirServiceKindFhirStu3
+)
+
+type IotIdentityResolutionType = original.IotIdentityResolutionType
+
+const (
+	IotIdentityResolutionTypeCreate IotIdentityResolutionType = original.IotIdentityResolutionTypeCreate
+	IotIdentityResolutionTypeLookup IotIdentityResolutionType = original.IotIdentityResolutionTypeLookup
+)
+
 type Kind = original.Kind
 
 const (
-	Fhir     Kind = original.Fhir
-	FhirR4   Kind = original.FhirR4
-	FhirStu3 Kind = original.FhirStu3
+	KindFhir     Kind = original.KindFhir
+	KindFhirR4   Kind = original.KindFhirR4
+	KindFhirStu3 Kind = original.KindFhirStu3
 )
 
 type ManagedServiceIdentityType = original.ManagedServiceIdentityType
 
 const (
-	None           ManagedServiceIdentityType = original.None
-	SystemAssigned ManagedServiceIdentityType = original.SystemAssigned
+	ManagedServiceIdentityTypeNone           ManagedServiceIdentityType = original.ManagedServiceIdentityTypeNone
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = original.ManagedServiceIdentityTypeSystemAssigned
 )
 
 type OperationResultStatus = original.OperationResultStatus
 
 const (
-	Canceled  OperationResultStatus = original.Canceled
-	Failed    OperationResultStatus = original.Failed
-	Requested OperationResultStatus = original.Requested
-	Running   OperationResultStatus = original.Running
-	Succeeded OperationResultStatus = original.Succeeded
+	OperationResultStatusCanceled  OperationResultStatus = original.OperationResultStatusCanceled
+	OperationResultStatusFailed    OperationResultStatus = original.OperationResultStatusFailed
+	OperationResultStatusRequested OperationResultStatus = original.OperationResultStatusRequested
+	OperationResultStatusRunning   OperationResultStatus = original.OperationResultStatusRunning
+	OperationResultStatusSucceeded OperationResultStatus = original.OperationResultStatusSucceeded
 )
 
 type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
@@ -56,71 +93,157 @@ const (
 type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
 
 const (
-	Approved PrivateEndpointServiceConnectionStatus = original.Approved
-	Pending  PrivateEndpointServiceConnectionStatus = original.Pending
-	Rejected PrivateEndpointServiceConnectionStatus = original.Rejected
+	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusApproved
+	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusPending
+	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusRejected
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	ProvisioningStateAccepted      ProvisioningState = original.ProvisioningStateAccepted
-	ProvisioningStateCanceled      ProvisioningState = original.ProvisioningStateCanceled
-	ProvisioningStateCreating      ProvisioningState = original.ProvisioningStateCreating
-	ProvisioningStateDeleting      ProvisioningState = original.ProvisioningStateDeleting
-	ProvisioningStateDeprovisioned ProvisioningState = original.ProvisioningStateDeprovisioned
-	ProvisioningStateFailed        ProvisioningState = original.ProvisioningStateFailed
-	ProvisioningStateSucceeded     ProvisioningState = original.ProvisioningStateSucceeded
-	ProvisioningStateUpdating      ProvisioningState = original.ProvisioningStateUpdating
-	ProvisioningStateVerifying     ProvisioningState = original.ProvisioningStateVerifying
+	ProvisioningStateAccepted          ProvisioningState = original.ProvisioningStateAccepted
+	ProvisioningStateCanceled          ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateCreating          ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleting          ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateDeprovisioned     ProvisioningState = original.ProvisioningStateDeprovisioned
+	ProvisioningStateFailed            ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateMoving            ProvisioningState = original.ProvisioningStateMoving
+	ProvisioningStateSucceeded         ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateSuspended         ProvisioningState = original.ProvisioningStateSuspended
+	ProvisioningStateSystemMaintenance ProvisioningState = original.ProvisioningStateSystemMaintenance
+	ProvisioningStateUpdating          ProvisioningState = original.ProvisioningStateUpdating
+	ProvisioningStateVerifying         ProvisioningState = original.ProvisioningStateVerifying
+	ProvisioningStateWarned            ProvisioningState = original.ProvisioningStateWarned
 )
 
 type PublicNetworkAccess = original.PublicNetworkAccess
 
 const (
-	Disabled PublicNetworkAccess = original.Disabled
-	Enabled  PublicNetworkAccess = original.Enabled
+	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
+	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
+)
+
+type ServiceEventState = original.ServiceEventState
+
+const (
+	ServiceEventStateDisabled ServiceEventState = original.ServiceEventStateDisabled
+	ServiceEventStateEnabled  ServiceEventState = original.ServiceEventStateEnabled
+	ServiceEventStateUpdating ServiceEventState = original.ServiceEventStateUpdating
+)
+
+type ServiceManagedIdentityType = original.ServiceManagedIdentityType
+
+const (
+	ServiceManagedIdentityTypeNone                       ServiceManagedIdentityType = original.ServiceManagedIdentityTypeNone
+	ServiceManagedIdentityTypeSystemAssigned             ServiceManagedIdentityType = original.ServiceManagedIdentityTypeSystemAssigned
+	ServiceManagedIdentityTypeSystemAssignedUserAssigned ServiceManagedIdentityType = original.ServiceManagedIdentityTypeSystemAssignedUserAssigned
+	ServiceManagedIdentityTypeUserAssigned               ServiceManagedIdentityType = original.ServiceManagedIdentityTypeUserAssigned
 )
 
 type ServiceNameUnavailabilityReason = original.ServiceNameUnavailabilityReason
 
 const (
-	AlreadyExists ServiceNameUnavailabilityReason = original.AlreadyExists
-	Invalid       ServiceNameUnavailabilityReason = original.Invalid
+	ServiceNameUnavailabilityReasonAlreadyExists ServiceNameUnavailabilityReason = original.ServiceNameUnavailabilityReasonAlreadyExists
+	ServiceNameUnavailabilityReasonInvalid       ServiceNameUnavailabilityReason = original.ServiceNameUnavailabilityReasonInvalid
 )
 
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type CheckNameAvailabilityParameters = original.CheckNameAvailabilityParameters
+type DicomService = original.DicomService
+type DicomServiceAuthenticationConfiguration = original.DicomServiceAuthenticationConfiguration
+type DicomServiceCollection = original.DicomServiceCollection
+type DicomServiceCollectionIterator = original.DicomServiceCollectionIterator
+type DicomServiceCollectionPage = original.DicomServiceCollectionPage
+type DicomServicePatchResource = original.DicomServicePatchResource
+type DicomServiceProperties = original.DicomServiceProperties
+type DicomServicesClient = original.DicomServicesClient
+type DicomServicesCreateOrUpdateFuture = original.DicomServicesCreateOrUpdateFuture
+type DicomServicesDeleteFuture = original.DicomServicesDeleteFuture
+type DicomServicesUpdateFuture = original.DicomServicesUpdateFuture
+type Error = original.Error
 type ErrorDetails = original.ErrorDetails
 type ErrorDetailsInternal = original.ErrorDetailsInternal
-type Operation = original.Operation
+type FhirDestinationsClient = original.FhirDestinationsClient
+type FhirService = original.FhirService
+type FhirServiceAccessPolicyEntry = original.FhirServiceAccessPolicyEntry
+type FhirServiceAcrConfiguration = original.FhirServiceAcrConfiguration
+type FhirServiceAuthenticationConfiguration = original.FhirServiceAuthenticationConfiguration
+type FhirServiceCollection = original.FhirServiceCollection
+type FhirServiceCollectionIterator = original.FhirServiceCollectionIterator
+type FhirServiceCollectionPage = original.FhirServiceCollectionPage
+type FhirServiceCorsConfiguration = original.FhirServiceCorsConfiguration
+type FhirServiceExportConfiguration = original.FhirServiceExportConfiguration
+type FhirServicePatchResource = original.FhirServicePatchResource
+type FhirServiceProperties = original.FhirServiceProperties
+type FhirServicesClient = original.FhirServicesClient
+type FhirServicesCreateOrUpdateFuture = original.FhirServicesCreateOrUpdateFuture
+type FhirServicesDeleteFuture = original.FhirServicesDeleteFuture
+type FhirServicesUpdateFuture = original.FhirServicesUpdateFuture
+type IotConnector = original.IotConnector
+type IotConnectorCollection = original.IotConnectorCollection
+type IotConnectorCollectionIterator = original.IotConnectorCollectionIterator
+type IotConnectorCollectionPage = original.IotConnectorCollectionPage
+type IotConnectorFhirDestinationClient = original.IotConnectorFhirDestinationClient
+type IotConnectorFhirDestinationCreateOrUpdateFuture = original.IotConnectorFhirDestinationCreateOrUpdateFuture
+type IotConnectorFhirDestinationDeleteFuture = original.IotConnectorFhirDestinationDeleteFuture
+type IotConnectorPatchResource = original.IotConnectorPatchResource
+type IotConnectorProperties = original.IotConnectorProperties
+type IotConnectorsClient = original.IotConnectorsClient
+type IotConnectorsCreateOrUpdateFuture = original.IotConnectorsCreateOrUpdateFuture
+type IotConnectorsDeleteFuture = original.IotConnectorsDeleteFuture
+type IotConnectorsUpdateFuture = original.IotConnectorsUpdateFuture
+type IotDestinationProperties = original.IotDestinationProperties
+type IotEventHubIngestionEndpointConfiguration = original.IotEventHubIngestionEndpointConfiguration
+type IotFhirDestination = original.IotFhirDestination
+type IotFhirDestinationCollection = original.IotFhirDestinationCollection
+type IotFhirDestinationCollectionIterator = original.IotFhirDestinationCollectionIterator
+type IotFhirDestinationCollectionPage = original.IotFhirDestinationCollectionPage
+type IotFhirDestinationProperties = original.IotFhirDestinationProperties
+type IotMappingProperties = original.IotMappingProperties
+type ListOperations = original.ListOperations
+type ListOperationsIterator = original.ListOperationsIterator
+type ListOperationsPage = original.ListOperationsPage
+type LocationBasedResource = original.LocationBasedResource
+type LogSpecification = original.LogSpecification
+type MetricDimension = original.MetricDimension
+type MetricSpecification = original.MetricSpecification
+type OperationDetail = original.OperationDetail
 type OperationDisplay = original.OperationDisplay
-type OperationListResult = original.OperationListResult
-type OperationListResultIterator = original.OperationListResultIterator
-type OperationListResultPage = original.OperationListResultPage
+type OperationProperties = original.OperationProperties
 type OperationResultsClient = original.OperationResultsClient
 type OperationResultsDescription = original.OperationResultsDescription
 type OperationsClient = original.OperationsClient
 type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionDescription = original.PrivateEndpointConnectionDescription
 type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionListResultDescription = original.PrivateEndpointConnectionListResultDescription
 type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
 type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
 type PrivateEndpointConnectionsCreateOrUpdateFuture = original.PrivateEndpointConnectionsCreateOrUpdateFuture
 type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
 type PrivateLinkResource = original.PrivateLinkResource
-type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceDescription = original.PrivateLinkResourceDescription
+type PrivateLinkResourceListResultDescription = original.PrivateLinkResourceListResultDescription
 type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
 type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
+type ResourceCore = original.ResourceCore
+type ResourceTags = original.ResourceTags
+type ResourceVersionPolicyConfiguration = original.ResourceVersionPolicyConfiguration
 type ServiceAccessPolicyEntry = original.ServiceAccessPolicyEntry
+type ServiceAcrConfigurationInfo = original.ServiceAcrConfigurationInfo
 type ServiceAuthenticationConfigurationInfo = original.ServiceAuthenticationConfigurationInfo
 type ServiceCorsConfigurationInfo = original.ServiceCorsConfigurationInfo
 type ServiceCosmosDbConfigurationInfo = original.ServiceCosmosDbConfigurationInfo
 type ServiceExportConfigurationInfo = original.ServiceExportConfigurationInfo
+type ServiceManagedIdentity = original.ServiceManagedIdentity
+type ServiceManagedIdentityIdentity = original.ServiceManagedIdentityIdentity
+type ServiceOciArtifactEntry = original.ServiceOciArtifactEntry
+type ServiceSpecification = original.ServiceSpecification
 type ServicesClient = original.ServicesClient
 type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
 type ServicesDeleteFuture = original.ServicesDeleteFuture
@@ -135,17 +258,87 @@ type ServicesPropertiesUpdateParameters = original.ServicesPropertiesUpdateParam
 type ServicesResource = original.ServicesResource
 type ServicesResourceIdentity = original.ServicesResourceIdentity
 type ServicesUpdateFuture = original.ServicesUpdateFuture
-type SetObject = original.SetObject
+type SystemData = original.SystemData
+type TaggedResource = original.TaggedResource
 type TrackedResource = original.TrackedResource
+type UserAssignedIdentity = original.UserAssignedIdentity
+type Workspace = original.Workspace
+type WorkspaceList = original.WorkspaceList
+type WorkspaceListIterator = original.WorkspaceListIterator
+type WorkspaceListPage = original.WorkspaceListPage
+type WorkspacePatchResource = original.WorkspacePatchResource
+type WorkspacePrivateEndpointConnectionsClient = original.WorkspacePrivateEndpointConnectionsClient
+type WorkspacePrivateEndpointConnectionsCreateOrUpdateFuture = original.WorkspacePrivateEndpointConnectionsCreateOrUpdateFuture
+type WorkspacePrivateEndpointConnectionsDeleteFuture = original.WorkspacePrivateEndpointConnectionsDeleteFuture
+type WorkspacePrivateLinkResourcesClient = original.WorkspacePrivateLinkResourcesClient
+type WorkspaceProperties = original.WorkspaceProperties
+type WorkspacesClient = original.WorkspacesClient
+type WorkspacesCreateOrUpdateFuture = original.WorkspacesCreateOrUpdateFuture
+type WorkspacesDeleteFuture = original.WorkspacesDeleteFuture
+type WorkspacesUpdateFuture = original.WorkspacesUpdateFuture
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
-	return original.NewOperationListResultIterator(page)
+func NewDicomServiceCollectionIterator(page DicomServiceCollectionPage) DicomServiceCollectionIterator {
+	return original.NewDicomServiceCollectionIterator(page)
 }
-func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(cur, getNextPage)
+func NewDicomServiceCollectionPage(cur DicomServiceCollection, getNextPage func(context.Context, DicomServiceCollection) (DicomServiceCollection, error)) DicomServiceCollectionPage {
+	return original.NewDicomServiceCollectionPage(cur, getNextPage)
+}
+func NewDicomServicesClient(subscriptionID string) DicomServicesClient {
+	return original.NewDicomServicesClient(subscriptionID)
+}
+func NewDicomServicesClientWithBaseURI(baseURI string, subscriptionID string) DicomServicesClient {
+	return original.NewDicomServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewFhirDestinationsClient(subscriptionID string) FhirDestinationsClient {
+	return original.NewFhirDestinationsClient(subscriptionID)
+}
+func NewFhirDestinationsClientWithBaseURI(baseURI string, subscriptionID string) FhirDestinationsClient {
+	return original.NewFhirDestinationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewFhirServiceCollectionIterator(page FhirServiceCollectionPage) FhirServiceCollectionIterator {
+	return original.NewFhirServiceCollectionIterator(page)
+}
+func NewFhirServiceCollectionPage(cur FhirServiceCollection, getNextPage func(context.Context, FhirServiceCollection) (FhirServiceCollection, error)) FhirServiceCollectionPage {
+	return original.NewFhirServiceCollectionPage(cur, getNextPage)
+}
+func NewFhirServicesClient(subscriptionID string) FhirServicesClient {
+	return original.NewFhirServicesClient(subscriptionID)
+}
+func NewFhirServicesClientWithBaseURI(baseURI string, subscriptionID string) FhirServicesClient {
+	return original.NewFhirServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIotConnectorCollectionIterator(page IotConnectorCollectionPage) IotConnectorCollectionIterator {
+	return original.NewIotConnectorCollectionIterator(page)
+}
+func NewIotConnectorCollectionPage(cur IotConnectorCollection, getNextPage func(context.Context, IotConnectorCollection) (IotConnectorCollection, error)) IotConnectorCollectionPage {
+	return original.NewIotConnectorCollectionPage(cur, getNextPage)
+}
+func NewIotConnectorFhirDestinationClient(subscriptionID string) IotConnectorFhirDestinationClient {
+	return original.NewIotConnectorFhirDestinationClient(subscriptionID)
+}
+func NewIotConnectorFhirDestinationClientWithBaseURI(baseURI string, subscriptionID string) IotConnectorFhirDestinationClient {
+	return original.NewIotConnectorFhirDestinationClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIotConnectorsClient(subscriptionID string) IotConnectorsClient {
+	return original.NewIotConnectorsClient(subscriptionID)
+}
+func NewIotConnectorsClientWithBaseURI(baseURI string, subscriptionID string) IotConnectorsClient {
+	return original.NewIotConnectorsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIotFhirDestinationCollectionIterator(page IotFhirDestinationCollectionPage) IotFhirDestinationCollectionIterator {
+	return original.NewIotFhirDestinationCollectionIterator(page)
+}
+func NewIotFhirDestinationCollectionPage(cur IotFhirDestinationCollection, getNextPage func(context.Context, IotFhirDestinationCollection) (IotFhirDestinationCollection, error)) IotFhirDestinationCollectionPage {
+	return original.NewIotFhirDestinationCollectionPage(cur, getNextPage)
+}
+func NewListOperationsIterator(page ListOperationsPage) ListOperationsIterator {
+	return original.NewListOperationsIterator(page)
+}
+func NewListOperationsPage(cur ListOperations, getNextPage func(context.Context, ListOperations) (ListOperations, error)) ListOperationsPage {
+	return original.NewListOperationsPage(cur, getNextPage)
 }
 func NewOperationResultsClient(subscriptionID string) OperationResultsClient {
 	return original.NewOperationResultsClient(subscriptionID)
@@ -186,6 +379,45 @@ func NewServicesDescriptionListResultPage(cur ServicesDescriptionListResult, get
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func NewWorkspaceListIterator(page WorkspaceListPage) WorkspaceListIterator {
+	return original.NewWorkspaceListIterator(page)
+}
+func NewWorkspaceListPage(cur WorkspaceList, getNextPage func(context.Context, WorkspaceList) (WorkspaceList, error)) WorkspaceListPage {
+	return original.NewWorkspaceListPage(cur, getNextPage)
+}
+func NewWorkspacePrivateEndpointConnectionsClient(subscriptionID string) WorkspacePrivateEndpointConnectionsClient {
+	return original.NewWorkspacePrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewWorkspacePrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) WorkspacePrivateEndpointConnectionsClient {
+	return original.NewWorkspacePrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkspacePrivateLinkResourcesClient(subscriptionID string) WorkspacePrivateLinkResourcesClient {
+	return original.NewWorkspacePrivateLinkResourcesClient(subscriptionID)
+}
+func NewWorkspacePrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacePrivateLinkResourcesClient {
+	return original.NewWorkspacePrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
+	return original.NewWorkspacesClient(subscriptionID)
+}
+func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
+	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleActionTypeValues() []ActionType {
+	return original.PossibleActionTypeValues()
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
+func PossibleFhirResourceVersionPolicyValues() []FhirResourceVersionPolicy {
+	return original.PossibleFhirResourceVersionPolicyValues()
+}
+func PossibleFhirServiceKindValues() []FhirServiceKind {
+	return original.PossibleFhirServiceKindValues()
+}
+func PossibleIotIdentityResolutionTypeValues() []IotIdentityResolutionType {
+	return original.PossibleIotIdentityResolutionTypeValues()
+}
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
 }
@@ -206,6 +438,12 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 }
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return original.PossiblePublicNetworkAccessValues()
+}
+func PossibleServiceEventStateValues() []ServiceEventState {
+	return original.PossibleServiceEventStateValues()
+}
+func PossibleServiceManagedIdentityTypeValues() []ServiceManagedIdentityType {
+	return original.PossibleServiceManagedIdentityTypeValues()
 }
 func PossibleServiceNameUnavailabilityReasonValues() []ServiceNameUnavailabilityReason {
 	return original.PossibleServiceNameUnavailabilityReasonValues()

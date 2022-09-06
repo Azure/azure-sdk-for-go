@@ -37,11 +37,12 @@ func (p Package) IsEmpty() bool {
 
 // BreakingChanges represents a set of breaking changes.
 type BreakingChanges struct {
-	Consts     map[string]delta.Signature    `json:"consts,omitempty"`
-	Funcs      map[string]delta.FuncSig      `json:"funcs,omitempty"`
-	Interfaces map[string]delta.InterfaceDef `json:"interfaces,omitempty"`
-	Structs    map[string]delta.StructDef    `json:"structs,omitempty"`
-	Removed    *delta.Content                `json:"removed,omitempty"`
+	Consts      map[string]delta.Signature    `json:"consts,omitempty"`
+	TypeAliases map[string]delta.Signature    `json:"typeAliases,omitempty"`
+	Funcs       map[string]delta.FuncSig      `json:"funcs,omitempty"`
+	Interfaces  map[string]delta.InterfaceDef `json:"interfaces,omitempty"`
+	Structs     map[string]delta.StructDef    `json:"structs,omitempty"`
+	Removed     *delta.Content                `json:"removed,omitempty"`
 }
 
 // Count returns the count of breaking changes
@@ -50,12 +51,12 @@ func (bc BreakingChanges) Count() int {
 	if bc.Removed != nil {
 		removed = bc.Removed.Count()
 	}
-	return len(bc.Consts) + len(bc.Funcs) + len(bc.Interfaces) + len(bc.Structs) + removed
+	return len(bc.Consts) + len(bc.TypeAliases) + len(bc.Funcs) + len(bc.Interfaces) + len(bc.Structs) + removed
 }
 
 // IsEmpty returns true if there are no breaking changes.
 func (bc BreakingChanges) IsEmpty() bool {
-	return len(bc.Consts) == 0 && len(bc.Funcs) == 0 && len(bc.Interfaces) == 0 && len(bc.Structs) == 0 &&
+	return len(bc.Consts) == 0 && len(bc.TypeAliases) == 0 && len(bc.Funcs) == 0 && len(bc.Interfaces) == 0 && len(bc.Structs) == 0 &&
 		(bc.Removed == nil || bc.Removed.IsEmpty())
 }
 
@@ -83,6 +84,7 @@ func Generate(lhs, rhs exports.Content, option *GenerationOption) Package {
 	if !onlyAdditiveChanges {
 		breaks := BreakingChanges{}
 		breaks.Consts = delta.GetConstTypeChanges(lhs, rhs)
+		breaks.TypeAliases = delta.GetTypeAliasTypeChanges(lhs, rhs)
 		breaks.Funcs = delta.GetFuncSigChanges(lhs, rhs)
 		breaks.Interfaces = delta.GetInterfaceMethodSigChanges(lhs, rhs)
 		breaks.Structs = delta.GetStructFieldChanges(lhs, rhs)
@@ -122,6 +124,7 @@ func (p Package) writeNewContent(md *markdown.Writer) {
 	}
 	md.WriteTopLevelHeader("Additive Changes")
 	writeConsts(p.AdditiveChanges.Consts, "New Constants", md)
+	writeTypeAliases(p.AdditiveChanges.TypeAliases, "New Type Aliases", md)
 	writeFuncs(p.AdditiveChanges.Funcs, "New Funcs", md)
 	writeStructs(p.AdditiveChanges, "New Structs", "New Struct Fields", md)
 }
@@ -132,13 +135,14 @@ func writeRemovedContent(removed *delta.Content, md *markdown.Writer) {
 		return
 	}
 	writeConsts(removed.Consts, "Removed Constants", md)
+	writeTypeAliases(removed.TypeAliases, "Removed Type Aliases", md)
 	writeFuncs(removed.Funcs, "Removed Funcs", md)
 	writeStructs(removed, "Removed Structs", "Removed Struct Fields", md)
 }
 
 // writes the subset of breaking changes pertaining to signature changes
 func writeSigChanges(bc *BreakingChanges, md *markdown.Writer) {
-	if len(bc.Consts) == 0 && len(bc.Funcs) == 0 && len(bc.Structs) == 0 {
+	if len(bc.Consts) == 0 && len(bc.TypeAliases) == 0 && len(bc.Funcs) == 0 && len(bc.Structs) == 0 {
 		return
 	}
 	md.WriteHeader("Signature Changes")
@@ -151,6 +155,19 @@ func writeSigChanges(bc *BreakingChanges, md *markdown.Writer) {
 		}
 		sort.Strings(items)
 		md.WriteSubheader("Const Types")
+		for _, item := range items {
+			md.WriteLine(item)
+		}
+	}
+	if len(bc.TypeAliases) > 0 {
+		items := make([]string, len(bc.TypeAliases))
+		i := 0
+		for k, v := range bc.TypeAliases {
+			items[i] = fmt.Sprintf("1. %s changed type from %s to %s", k, v.From, v.To)
+			i++
+		}
+		sort.Strings(items)
+		md.WriteSubheader("Type alias Types")
 		for _, item := range items {
 			md.WriteLine(item)
 		}
@@ -201,6 +218,24 @@ func writeConsts(co map[string]exports.Const, subheader string, md *markdown.Wri
 	i := 0
 	for c, t := range co {
 		items[i] = fmt.Sprintf("1. %s.%s", t.Type, c)
+		i++
+	}
+	sort.Strings(items)
+	md.WriteHeader(subheader)
+	for _, item := range items {
+		md.WriteLine(item)
+	}
+}
+
+// writes out type alias information formatted as TypeName.ConstName
+func writeTypeAliases(co map[string]exports.TypeAlias, subheader string, md *markdown.Writer) {
+	if len(co) == 0 {
+		return
+	}
+	items := make([]string, len(co))
+	i := 0
+	for c, t := range co {
+		items[i] = fmt.Sprintf("1. %s.%s", t.UnderlayingType, c)
 		i++
 	}
 	sort.Strings(items)

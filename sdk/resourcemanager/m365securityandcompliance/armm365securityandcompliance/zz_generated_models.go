@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,25 +8,12 @@
 
 package armm365securityandcompliance
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // ErrorDetails - Error details.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ErrorDetails struct {
-	raw string
 	// Object containing error details.
-	InnerError *ErrorDetailsInternal `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorDetails.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorDetails) Error() string {
-	return e.raw
+	Error *ErrorDetailsInternal `json:"error,omitempty"`
 }
 
 // ErrorDetailsInternal - Error details.
@@ -71,7 +58,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - A list of service operations. It contains a list of operations and a URL link to get the next set of results.
+// OperationListResult - A list of service operations. It contains a list of operations and a URL link to get the next set
+// of results.
 type OperationListResult struct {
 	// READ-ONLY; The link used to get the next page of service description objects.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -80,12 +68,9 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
+// OperationResultsClientGetOptions contains the optional parameters for the OperationResultsClient.Get method.
+type OperationResultsClientGetOptions struct {
+	// placeholder for future optional parameters
 }
 
 // OperationResultsDescription - The properties indicating the operation result of an operation on a service.
@@ -106,13 +91,8 @@ type OperationResultsDescription struct {
 	Status *OperationResultStatus `json:"status,omitempty" azure:"ro"`
 }
 
-// OperationResultsGetOptions contains the optional parameters for the OperationResults.Get method.
-type OperationResultsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -124,12 +104,20 @@ type PrivateEndpoint struct {
 
 // PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
-	Resource
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Required property for system data
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified storage account
@@ -139,14 +127,6 @@ type PrivateEndpointConnectionListResult struct {
 
 	// READ-ONLY; The URL to get the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionListResult.
-func (p PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
@@ -161,143 +141,178 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// PrivateEndpointConnectionsAdtAPIBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsAdtAPI.BeginCreateOrUpdate
+// PrivateEndpointConnectionsAdtAPIClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsAdtAPIClient.BeginCreateOrUpdate
 // method.
-type PrivateEndpointConnectionsAdtAPIBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+type PrivateEndpointConnectionsAdtAPIClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// PrivateEndpointConnectionsAdtAPIBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsAdtAPI.BeginDelete method.
-type PrivateEndpointConnectionsAdtAPIBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsAdtAPIGetOptions contains the optional parameters for the PrivateEndpointConnectionsAdtAPI.Get method.
-type PrivateEndpointConnectionsAdtAPIGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsAdtAPIListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionsAdtAPI.ListByService method.
-type PrivateEndpointConnectionsAdtAPIListByServiceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsCompBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsComp.BeginCreateOrUpdate
+// PrivateEndpointConnectionsAdtAPIClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsAdtAPIClient.BeginDelete
 // method.
-type PrivateEndpointConnectionsCompBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+type PrivateEndpointConnectionsAdtAPIClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// PrivateEndpointConnectionsCompBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsComp.BeginDelete method.
-type PrivateEndpointConnectionsCompBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsCompGetOptions contains the optional parameters for the PrivateEndpointConnectionsComp.Get method.
-type PrivateEndpointConnectionsCompGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsCompListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionsComp.ListByService method.
-type PrivateEndpointConnectionsCompListByServiceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsForEDMBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsForEDM.BeginCreateOrUpdate
+// PrivateEndpointConnectionsAdtAPIClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsAdtAPIClient.Get
 // method.
-type PrivateEndpointConnectionsForEDMBeginCreateOrUpdateOptions struct {
+type PrivateEndpointConnectionsAdtAPIClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsForEDMBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsForEDM.BeginDelete method.
-type PrivateEndpointConnectionsForEDMBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsForEDMGetOptions contains the optional parameters for the PrivateEndpointConnectionsForEDM.Get method.
-type PrivateEndpointConnectionsForEDMGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsForEDMListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionsForEDM.ListByService method.
-type PrivateEndpointConnectionsForEDMListByServiceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsForMIPPolicySyncBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsForMIPPolicySync.BeginCreateOrUpdate
+// PrivateEndpointConnectionsAdtAPIClientListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionsAdtAPIClient.ListByService
 // method.
-type PrivateEndpointConnectionsForMIPPolicySyncBeginCreateOrUpdateOptions struct {
+type PrivateEndpointConnectionsAdtAPIClientListByServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsForMIPPolicySyncBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsForMIPPolicySync.BeginDelete
+// PrivateEndpointConnectionsCompClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsCompClient.BeginCreateOrUpdate
 // method.
-type PrivateEndpointConnectionsForMIPPolicySyncBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+type PrivateEndpointConnectionsCompClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// PrivateEndpointConnectionsForMIPPolicySyncGetOptions contains the optional parameters for the PrivateEndpointConnectionsForMIPPolicySync.Get method.
-type PrivateEndpointConnectionsForMIPPolicySyncGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsForMIPPolicySyncListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionsForMIPPolicySync.ListByService
+// PrivateEndpointConnectionsCompClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsCompClient.BeginDelete
 // method.
-type PrivateEndpointConnectionsForMIPPolicySyncListByServiceOptions struct {
-	// placeholder for future optional parameters
+type PrivateEndpointConnectionsCompClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// PrivateEndpointConnectionsForSCCPowershellBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsForSCCPowershell.BeginCreateOrUpdate
+// PrivateEndpointConnectionsCompClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsCompClient.Get
 // method.
-type PrivateEndpointConnectionsForSCCPowershellBeginCreateOrUpdateOptions struct {
+type PrivateEndpointConnectionsCompClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsForSCCPowershellBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsForSCCPowershell.BeginDelete
+// PrivateEndpointConnectionsCompClientListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionsCompClient.ListByService
 // method.
-type PrivateEndpointConnectionsForSCCPowershellBeginDeleteOptions struct {
+type PrivateEndpointConnectionsCompClientListByServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsForSCCPowershellGetOptions contains the optional parameters for the PrivateEndpointConnectionsForSCCPowershell.Get method.
-type PrivateEndpointConnectionsForSCCPowershellGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionsForSCCPowershellListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionsForSCCPowershell.ListByService
+// PrivateEndpointConnectionsForEDMClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsForEDMClient.BeginCreateOrUpdate
 // method.
-type PrivateEndpointConnectionsForSCCPowershellListByServiceOptions struct {
+type PrivateEndpointConnectionsForEDMClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsForEDMClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsForEDMClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsForEDMClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsForEDMClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsForEDMClient.Get
+// method.
+type PrivateEndpointConnectionsForEDMClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsSecBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsSec.BeginCreateOrUpdate method.
-type PrivateEndpointConnectionsSecBeginCreateOrUpdateOptions struct {
+// PrivateEndpointConnectionsForEDMClientListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionsForEDMClient.ListByService
+// method.
+type PrivateEndpointConnectionsForEDMClientListByServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsSecBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsSec.BeginDelete method.
-type PrivateEndpointConnectionsSecBeginDeleteOptions struct {
+// PrivateEndpointConnectionsForMIPPolicySyncClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsForMIPPolicySyncClient.BeginCreateOrUpdate
+// method.
+type PrivateEndpointConnectionsForMIPPolicySyncClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsForMIPPolicySyncClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsForMIPPolicySyncClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsForMIPPolicySyncClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsForMIPPolicySyncClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsForMIPPolicySyncClient.Get
+// method.
+type PrivateEndpointConnectionsForMIPPolicySyncClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsSecGetOptions contains the optional parameters for the PrivateEndpointConnectionsSec.Get method.
-type PrivateEndpointConnectionsSecGetOptions struct {
+// PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionsForMIPPolicySyncClient.ListByService
+// method.
+type PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsSecListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionsSec.ListByService method.
-type PrivateEndpointConnectionsSecListByServiceOptions struct {
+// PrivateEndpointConnectionsForSCCPowershellClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsForSCCPowershellClient.BeginCreateOrUpdate
+// method.
+type PrivateEndpointConnectionsForSCCPowershellClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsForSCCPowershellClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsForSCCPowershellClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsForSCCPowershellClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsForSCCPowershellClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsForSCCPowershellClient.Get
+// method.
+type PrivateEndpointConnectionsForSCCPowershellClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsForSCCPowershellClientListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionsForSCCPowershellClient.ListByService
+// method.
+type PrivateEndpointConnectionsForSCCPowershellClientListByServiceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsSecClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsSecClient.BeginCreateOrUpdate
+// method.
+type PrivateEndpointConnectionsSecClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsSecClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsSecClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsSecClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsSecClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsSecClient.Get
+// method.
+type PrivateEndpointConnectionsSecClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsSecClientListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionsSecClient.ListByService
+// method.
+type PrivateEndpointConnectionsSecClientListByServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
-	Resource
 	// Resource properties.
 	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; Required property for system data
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
@@ -307,14 +322,6 @@ type PrivateLinkResourceListResult struct {
 
 	// READ-ONLY; The URL to get the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceListResult.
-func (p PrivateLinkResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
@@ -329,78 +336,77 @@ type PrivateLinkResourceProperties struct {
 	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
-func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupId", p.GroupID)
-	populate(objectMap, "requiredMembers", p.RequiredMembers)
-	populate(objectMap, "requiredZoneNames", p.RequiredZoneNames)
-	return json.Marshal(objectMap)
-}
-
-// PrivateLinkResourcesAdtAPIGetOptions contains the optional parameters for the PrivateLinkResourcesAdtAPI.Get method.
-type PrivateLinkResourcesAdtAPIGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateLinkResourcesAdtAPIListByServiceOptions contains the optional parameters for the PrivateLinkResourcesAdtAPI.ListByService method.
-type PrivateLinkResourcesAdtAPIListByServiceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateLinkResourcesCompGetOptions contains the optional parameters for the PrivateLinkResourcesComp.Get method.
-type PrivateLinkResourcesCompGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateLinkResourcesCompListByServiceOptions contains the optional parameters for the PrivateLinkResourcesComp.ListByService method.
-type PrivateLinkResourcesCompListByServiceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateLinkResourcesForMIPPolicySyncGetOptions contains the optional parameters for the PrivateLinkResourcesForMIPPolicySync.Get method.
-type PrivateLinkResourcesForMIPPolicySyncGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateLinkResourcesForMIPPolicySyncListByServiceOptions contains the optional parameters for the PrivateLinkResourcesForMIPPolicySync.ListByService
+// PrivateLinkResourcesAdtAPIClientGetOptions contains the optional parameters for the PrivateLinkResourcesAdtAPIClient.Get
 // method.
-type PrivateLinkResourcesForMIPPolicySyncListByServiceOptions struct {
+type PrivateLinkResourcesAdtAPIClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesForSCCPowershellGetOptions contains the optional parameters for the PrivateLinkResourcesForSCCPowershell.Get method.
-type PrivateLinkResourcesForSCCPowershellGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateLinkResourcesForSCCPowershellListByServiceOptions contains the optional parameters for the PrivateLinkResourcesForSCCPowershell.ListByService
+// PrivateLinkResourcesAdtAPIClientListByServiceOptions contains the optional parameters for the PrivateLinkResourcesAdtAPIClient.ListByService
 // method.
-type PrivateLinkResourcesForSCCPowershellListByServiceOptions struct {
+type PrivateLinkResourcesAdtAPIClientListByServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesGetOptions contains the optional parameters for the PrivateLinkResources.Get method.
-type PrivateLinkResourcesGetOptions struct {
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesListByServiceOptions contains the optional parameters for the PrivateLinkResources.ListByService method.
-type PrivateLinkResourcesListByServiceOptions struct {
+// PrivateLinkResourcesClientListByServiceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByService
+// method.
+type PrivateLinkResourcesClientListByServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesSecGetOptions contains the optional parameters for the PrivateLinkResourcesSec.Get method.
-type PrivateLinkResourcesSecGetOptions struct {
+// PrivateLinkResourcesCompClientGetOptions contains the optional parameters for the PrivateLinkResourcesCompClient.Get method.
+type PrivateLinkResourcesCompClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesSecListByServiceOptions contains the optional parameters for the PrivateLinkResourcesSec.ListByService method.
-type PrivateLinkResourcesSecListByServiceOptions struct {
+// PrivateLinkResourcesCompClientListByServiceOptions contains the optional parameters for the PrivateLinkResourcesCompClient.ListByService
+// method.
+type PrivateLinkResourcesCompClientListByServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer and provider.
+// PrivateLinkResourcesForMIPPolicySyncClientGetOptions contains the optional parameters for the PrivateLinkResourcesForMIPPolicySyncClient.Get
+// method.
+type PrivateLinkResourcesForMIPPolicySyncClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResourcesForMIPPolicySyncClientListByServiceOptions contains the optional parameters for the PrivateLinkResourcesForMIPPolicySyncClient.ListByService
+// method.
+type PrivateLinkResourcesForMIPPolicySyncClientListByServiceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResourcesForSCCPowershellClientGetOptions contains the optional parameters for the PrivateLinkResourcesForSCCPowershellClient.Get
+// method.
+type PrivateLinkResourcesForSCCPowershellClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResourcesForSCCPowershellClientListByServiceOptions contains the optional parameters for the PrivateLinkResourcesForSCCPowershellClient.ListByService
+// method.
+type PrivateLinkResourcesForSCCPowershellClientListByServiceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResourcesSecClientGetOptions contains the optional parameters for the PrivateLinkResourcesSecClient.Get method.
+type PrivateLinkResourcesSecClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResourcesSecClientListByServiceOptions contains the optional parameters for the PrivateLinkResourcesSecClient.ListByService
+// method.
+type PrivateLinkResourcesSecClientListByServiceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
@@ -412,30 +418,69 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
 }
 
-// PrivateLinkServicesForEDMUploadBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServicesForEDMUpload.BeginCreateOrUpdate
+// PrivateLinkServicesForEDMUploadClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServicesForEDMUploadClient.BeginCreateOrUpdate
 // method.
-type PrivateLinkServicesForEDMUploadBeginCreateOrUpdateOptions struct {
+type PrivateLinkServicesForEDMUploadClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateLinkServicesForEDMUploadClientBeginUpdateOptions contains the optional parameters for the PrivateLinkServicesForEDMUploadClient.BeginUpdate
+// method.
+type PrivateLinkServicesForEDMUploadClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateLinkServicesForEDMUploadClientGetOptions contains the optional parameters for the PrivateLinkServicesForEDMUploadClient.Get
+// method.
+type PrivateLinkServicesForEDMUploadClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesForEDMUploadBeginUpdateOptions contains the optional parameters for the PrivateLinkServicesForEDMUpload.BeginUpdate method.
-type PrivateLinkServicesForEDMUploadBeginUpdateOptions struct {
+// PrivateLinkServicesForEDMUploadClientListByResourceGroupOptions contains the optional parameters for the PrivateLinkServicesForEDMUploadClient.ListByResourceGroup
+// method.
+type PrivateLinkServicesForEDMUploadClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkServicesForEDMUploadClientListOptions contains the optional parameters for the PrivateLinkServicesForEDMUploadClient.List
+// method.
+type PrivateLinkServicesForEDMUploadClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PrivateLinkServicesForEDMUploadDescription - The description of the service.
 type PrivateLinkServicesForEDMUploadDescription struct {
-	ServicesResource
+	// REQUIRED; The kind of the service.
+	Kind *Kind `json:"kind,omitempty"`
+
+	// REQUIRED; The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// An etag associated with the resource, used for optimistic concurrency when editing it.
+	Etag *string `json:"etag,omitempty"`
+
+	// Setting indicating whether the service has a managed identity associated with it.
+	Identity *ServicesResourceIdentity `json:"identity,omitempty"`
+
 	// The common properties of a service.
 	Properties *ServicesProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkServicesForEDMUploadDescription.
-func (p PrivateLinkServicesForEDMUploadDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ServicesResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Required property for system data
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateLinkServicesForEDMUploadDescriptionListResult - A list of service description objects with a next link.
@@ -447,61 +492,76 @@ type PrivateLinkServicesForEDMUploadDescriptionListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkServicesForEDMUploadDescriptionListResult.
-func (p PrivateLinkServicesForEDMUploadDescriptionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// PrivateLinkServicesForEDMUploadGetOptions contains the optional parameters for the PrivateLinkServicesForEDMUpload.Get method.
-type PrivateLinkServicesForEDMUploadGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateLinkServicesForEDMUploadListByResourceGroupOptions contains the optional parameters for the PrivateLinkServicesForEDMUpload.ListByResourceGroup
+// PrivateLinkServicesForM365ComplianceCenterClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServicesForM365ComplianceCenterClient.BeginCreateOrUpdate
 // method.
-type PrivateLinkServicesForEDMUploadListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
+type PrivateLinkServicesForM365ComplianceCenterClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// PrivateLinkServicesForEDMUploadListOptions contains the optional parameters for the PrivateLinkServicesForEDMUpload.List method.
-type PrivateLinkServicesForEDMUploadListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateLinkServicesForM365ComplianceCenterBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServicesForM365ComplianceCenter.BeginCreateOrUpdate
+// PrivateLinkServicesForM365ComplianceCenterClientBeginDeleteOptions contains the optional parameters for the PrivateLinkServicesForM365ComplianceCenterClient.BeginDelete
 // method.
-type PrivateLinkServicesForM365ComplianceCenterBeginCreateOrUpdateOptions struct {
+type PrivateLinkServicesForM365ComplianceCenterClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateLinkServicesForM365ComplianceCenterClientBeginUpdateOptions contains the optional parameters for the PrivateLinkServicesForM365ComplianceCenterClient.BeginUpdate
+// method.
+type PrivateLinkServicesForM365ComplianceCenterClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateLinkServicesForM365ComplianceCenterClientGetOptions contains the optional parameters for the PrivateLinkServicesForM365ComplianceCenterClient.Get
+// method.
+type PrivateLinkServicesForM365ComplianceCenterClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesForM365ComplianceCenterBeginDeleteOptions contains the optional parameters for the PrivateLinkServicesForM365ComplianceCenter.BeginDelete
+// PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupOptions contains the optional parameters for the PrivateLinkServicesForM365ComplianceCenterClient.ListByResourceGroup
 // method.
-type PrivateLinkServicesForM365ComplianceCenterBeginDeleteOptions struct {
+type PrivateLinkServicesForM365ComplianceCenterClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesForM365ComplianceCenterBeginUpdateOptions contains the optional parameters for the PrivateLinkServicesForM365ComplianceCenter.BeginUpdate
+// PrivateLinkServicesForM365ComplianceCenterClientListOptions contains the optional parameters for the PrivateLinkServicesForM365ComplianceCenterClient.List
 // method.
-type PrivateLinkServicesForM365ComplianceCenterBeginUpdateOptions struct {
+type PrivateLinkServicesForM365ComplianceCenterClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PrivateLinkServicesForM365ComplianceCenterDescription - The description of the service.
 type PrivateLinkServicesForM365ComplianceCenterDescription struct {
-	ServicesResource
+	// REQUIRED; The kind of the service.
+	Kind *Kind `json:"kind,omitempty"`
+
+	// REQUIRED; The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// An etag associated with the resource, used for optimistic concurrency when editing it.
+	Etag *string `json:"etag,omitempty"`
+
+	// Setting indicating whether the service has a managed identity associated with it.
+	Identity *ServicesResourceIdentity `json:"identity,omitempty"`
+
 	// The common properties of a service.
 	Properties *ServicesProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkServicesForM365ComplianceCenterDescription.
-func (p PrivateLinkServicesForM365ComplianceCenterDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ServicesResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Required property for system data
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateLinkServicesForM365ComplianceCenterDescriptionListResult - A list of service description objects with a next link.
@@ -513,61 +573,76 @@ type PrivateLinkServicesForM365ComplianceCenterDescriptionListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkServicesForM365ComplianceCenterDescriptionListResult.
-func (p PrivateLinkServicesForM365ComplianceCenterDescriptionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// PrivateLinkServicesForM365ComplianceCenterGetOptions contains the optional parameters for the PrivateLinkServicesForM365ComplianceCenter.Get method.
-type PrivateLinkServicesForM365ComplianceCenterGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateLinkServicesForM365ComplianceCenterListByResourceGroupOptions contains the optional parameters for the PrivateLinkServicesForM365ComplianceCenter.ListByResourceGroup
+// PrivateLinkServicesForM365SecurityCenterClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenterClient.BeginCreateOrUpdate
 // method.
-type PrivateLinkServicesForM365ComplianceCenterListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
+type PrivateLinkServicesForM365SecurityCenterClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// PrivateLinkServicesForM365ComplianceCenterListOptions contains the optional parameters for the PrivateLinkServicesForM365ComplianceCenter.List method.
-type PrivateLinkServicesForM365ComplianceCenterListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateLinkServicesForM365SecurityCenterBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenter.BeginCreateOrUpdate
+// PrivateLinkServicesForM365SecurityCenterClientBeginDeleteOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenterClient.BeginDelete
 // method.
-type PrivateLinkServicesForM365SecurityCenterBeginCreateOrUpdateOptions struct {
+type PrivateLinkServicesForM365SecurityCenterClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateLinkServicesForM365SecurityCenterClientBeginUpdateOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenterClient.BeginUpdate
+// method.
+type PrivateLinkServicesForM365SecurityCenterClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateLinkServicesForM365SecurityCenterClientGetOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenterClient.Get
+// method.
+type PrivateLinkServicesForM365SecurityCenterClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesForM365SecurityCenterBeginDeleteOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenter.BeginDelete
+// PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenterClient.ListByResourceGroup
 // method.
-type PrivateLinkServicesForM365SecurityCenterBeginDeleteOptions struct {
+type PrivateLinkServicesForM365SecurityCenterClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesForM365SecurityCenterBeginUpdateOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenter.BeginUpdate
+// PrivateLinkServicesForM365SecurityCenterClientListOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenterClient.List
 // method.
-type PrivateLinkServicesForM365SecurityCenterBeginUpdateOptions struct {
+type PrivateLinkServicesForM365SecurityCenterClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PrivateLinkServicesForM365SecurityCenterDescription - The description of the service.
 type PrivateLinkServicesForM365SecurityCenterDescription struct {
-	ServicesResource
+	// REQUIRED; The kind of the service.
+	Kind *Kind `json:"kind,omitempty"`
+
+	// REQUIRED; The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// An etag associated with the resource, used for optimistic concurrency when editing it.
+	Etag *string `json:"etag,omitempty"`
+
+	// Setting indicating whether the service has a managed identity associated with it.
+	Identity *ServicesResourceIdentity `json:"identity,omitempty"`
+
 	// The common properties of a service.
 	Properties *ServicesProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkServicesForM365SecurityCenterDescription.
-func (p PrivateLinkServicesForM365SecurityCenterDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ServicesResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Required property for system data
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateLinkServicesForM365SecurityCenterDescriptionListResult - A list of service description objects with a next link.
@@ -579,59 +654,76 @@ type PrivateLinkServicesForM365SecurityCenterDescriptionListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkServicesForM365SecurityCenterDescriptionListResult.
-func (p PrivateLinkServicesForM365SecurityCenterDescriptionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// PrivateLinkServicesForM365SecurityCenterGetOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenter.Get method.
-type PrivateLinkServicesForM365SecurityCenterGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateLinkServicesForM365SecurityCenterListByResourceGroupOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenter.ListByResourceGroup
+// PrivateLinkServicesForMIPPolicySyncClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServicesForMIPPolicySyncClient.BeginCreateOrUpdate
 // method.
-type PrivateLinkServicesForM365SecurityCenterListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
+type PrivateLinkServicesForMIPPolicySyncClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// PrivateLinkServicesForM365SecurityCenterListOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenter.List method.
-type PrivateLinkServicesForM365SecurityCenterListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateLinkServicesForMIPPolicySyncBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServicesForMIPPolicySync.BeginCreateOrUpdate
+// PrivateLinkServicesForMIPPolicySyncClientBeginDeleteOptions contains the optional parameters for the PrivateLinkServicesForMIPPolicySyncClient.BeginDelete
 // method.
-type PrivateLinkServicesForMIPPolicySyncBeginCreateOrUpdateOptions struct {
+type PrivateLinkServicesForMIPPolicySyncClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateLinkServicesForMIPPolicySyncClientBeginUpdateOptions contains the optional parameters for the PrivateLinkServicesForMIPPolicySyncClient.BeginUpdate
+// method.
+type PrivateLinkServicesForMIPPolicySyncClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateLinkServicesForMIPPolicySyncClientGetOptions contains the optional parameters for the PrivateLinkServicesForMIPPolicySyncClient.Get
+// method.
+type PrivateLinkServicesForMIPPolicySyncClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesForMIPPolicySyncBeginDeleteOptions contains the optional parameters for the PrivateLinkServicesForMIPPolicySync.BeginDelete method.
-type PrivateLinkServicesForMIPPolicySyncBeginDeleteOptions struct {
+// PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupOptions contains the optional parameters for the PrivateLinkServicesForMIPPolicySyncClient.ListByResourceGroup
+// method.
+type PrivateLinkServicesForMIPPolicySyncClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesForMIPPolicySyncBeginUpdateOptions contains the optional parameters for the PrivateLinkServicesForMIPPolicySync.BeginUpdate method.
-type PrivateLinkServicesForMIPPolicySyncBeginUpdateOptions struct {
+// PrivateLinkServicesForMIPPolicySyncClientListOptions contains the optional parameters for the PrivateLinkServicesForMIPPolicySyncClient.List
+// method.
+type PrivateLinkServicesForMIPPolicySyncClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PrivateLinkServicesForMIPPolicySyncDescription - The description of the service.
 type PrivateLinkServicesForMIPPolicySyncDescription struct {
-	ServicesResource
+	// REQUIRED; The kind of the service.
+	Kind *Kind `json:"kind,omitempty"`
+
+	// REQUIRED; The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// An etag associated with the resource, used for optimistic concurrency when editing it.
+	Etag *string `json:"etag,omitempty"`
+
+	// Setting indicating whether the service has a managed identity associated with it.
+	Identity *ServicesResourceIdentity `json:"identity,omitempty"`
+
 	// The common properties of a service.
 	Properties *ServicesProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkServicesForMIPPolicySyncDescription.
-func (p PrivateLinkServicesForMIPPolicySyncDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ServicesResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Required property for system data
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateLinkServicesForMIPPolicySyncDescriptionListResult - A list of service description objects with a next link.
@@ -643,64 +735,80 @@ type PrivateLinkServicesForMIPPolicySyncDescriptionListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkServicesForMIPPolicySyncDescriptionListResult.
-func (p PrivateLinkServicesForMIPPolicySyncDescriptionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
+// PrivateLinkServicesForO365ManagementActivityAPIClientBeginCreateOrUpdateOptions contains the optional parameters for the
+// PrivateLinkServicesForO365ManagementActivityAPIClient.BeginCreateOrUpdate method.
+type PrivateLinkServicesForO365ManagementActivityAPIClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// PrivateLinkServicesForMIPPolicySyncGetOptions contains the optional parameters for the PrivateLinkServicesForMIPPolicySync.Get method.
-type PrivateLinkServicesForMIPPolicySyncGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateLinkServicesForMIPPolicySyncListByResourceGroupOptions contains the optional parameters for the PrivateLinkServicesForMIPPolicySync.ListByResourceGroup
+// PrivateLinkServicesForO365ManagementActivityAPIClientBeginDeleteOptions contains the optional parameters for the PrivateLinkServicesForO365ManagementActivityAPIClient.BeginDelete
 // method.
-type PrivateLinkServicesForMIPPolicySyncListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
+type PrivateLinkServicesForO365ManagementActivityAPIClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// PrivateLinkServicesForMIPPolicySyncListOptions contains the optional parameters for the PrivateLinkServicesForMIPPolicySync.List method.
-type PrivateLinkServicesForMIPPolicySyncListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateLinkServicesForO365ManagementActivityAPIBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServicesForO365ManagementActivityAPI.BeginCreateOrUpdate
+// PrivateLinkServicesForO365ManagementActivityAPIClientBeginUpdateOptions contains the optional parameters for the PrivateLinkServicesForO365ManagementActivityAPIClient.BeginUpdate
 // method.
-type PrivateLinkServicesForO365ManagementActivityAPIBeginCreateOrUpdateOptions struct {
+type PrivateLinkServicesForO365ManagementActivityAPIClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateLinkServicesForO365ManagementActivityAPIClientGetOptions contains the optional parameters for the PrivateLinkServicesForO365ManagementActivityAPIClient.Get
+// method.
+type PrivateLinkServicesForO365ManagementActivityAPIClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesForO365ManagementActivityAPIBeginDeleteOptions contains the optional parameters for the PrivateLinkServicesForO365ManagementActivityAPI.BeginDelete
-// method.
-type PrivateLinkServicesForO365ManagementActivityAPIBeginDeleteOptions struct {
+// PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupOptions contains the optional parameters for the
+// PrivateLinkServicesForO365ManagementActivityAPIClient.ListByResourceGroup method.
+type PrivateLinkServicesForO365ManagementActivityAPIClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesForO365ManagementActivityAPIBeginUpdateOptions contains the optional parameters for the PrivateLinkServicesForO365ManagementActivityAPI.BeginUpdate
+// PrivateLinkServicesForO365ManagementActivityAPIClientListOptions contains the optional parameters for the PrivateLinkServicesForO365ManagementActivityAPIClient.List
 // method.
-type PrivateLinkServicesForO365ManagementActivityAPIBeginUpdateOptions struct {
+type PrivateLinkServicesForO365ManagementActivityAPIClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PrivateLinkServicesForO365ManagementActivityAPIDescription - The description of the service.
 type PrivateLinkServicesForO365ManagementActivityAPIDescription struct {
-	ServicesResource
+	// REQUIRED; The kind of the service.
+	Kind *Kind `json:"kind,omitempty"`
+
+	// REQUIRED; The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// An etag associated with the resource, used for optimistic concurrency when editing it.
+	Etag *string `json:"etag,omitempty"`
+
+	// Setting indicating whether the service has a managed identity associated with it.
+	Identity *ServicesResourceIdentity `json:"identity,omitempty"`
+
 	// The common properties of a service.
 	Properties *ServicesProperties `json:"properties,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Required property for system data
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkServicesForO365ManagementActivityAPIDescription.
-func (p PrivateLinkServicesForO365ManagementActivityAPIDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ServicesResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
-}
-
-// PrivateLinkServicesForO365ManagementActivityAPIDescriptionListResult - A list of service description objects with a next link.
+// PrivateLinkServicesForO365ManagementActivityAPIDescriptionListResult - A list of service description objects with a next
+// link.
 type PrivateLinkServicesForO365ManagementActivityAPIDescriptionListResult struct {
 	// A list of service description objects.
 	Value []*PrivateLinkServicesForO365ManagementActivityAPIDescription `json:"value,omitempty"`
@@ -709,61 +817,76 @@ type PrivateLinkServicesForO365ManagementActivityAPIDescriptionListResult struct
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkServicesForO365ManagementActivityAPIDescriptionListResult.
-func (p PrivateLinkServicesForO365ManagementActivityAPIDescriptionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// PrivateLinkServicesForO365ManagementActivityAPIGetOptions contains the optional parameters for the PrivateLinkServicesForO365ManagementActivityAPI.Get
+// PrivateLinkServicesForSCCPowershellClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServicesForSCCPowershellClient.BeginCreateOrUpdate
 // method.
-type PrivateLinkServicesForO365ManagementActivityAPIGetOptions struct {
-	// placeholder for future optional parameters
+type PrivateLinkServicesForSCCPowershellClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// PrivateLinkServicesForO365ManagementActivityAPIListByResourceGroupOptions contains the optional parameters for the PrivateLinkServicesForO365ManagementActivityAPI.ListByResourceGroup
+// PrivateLinkServicesForSCCPowershellClientBeginDeleteOptions contains the optional parameters for the PrivateLinkServicesForSCCPowershellClient.BeginDelete
 // method.
-type PrivateLinkServicesForO365ManagementActivityAPIListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
+type PrivateLinkServicesForSCCPowershellClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// PrivateLinkServicesForO365ManagementActivityAPIListOptions contains the optional parameters for the PrivateLinkServicesForO365ManagementActivityAPI.List
+// PrivateLinkServicesForSCCPowershellClientBeginUpdateOptions contains the optional parameters for the PrivateLinkServicesForSCCPowershellClient.BeginUpdate
 // method.
-type PrivateLinkServicesForO365ManagementActivityAPIListOptions struct {
-	// placeholder for future optional parameters
+type PrivateLinkServicesForSCCPowershellClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// PrivateLinkServicesForSCCPowershellBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServicesForSCCPowershell.BeginCreateOrUpdate
+// PrivateLinkServicesForSCCPowershellClientGetOptions contains the optional parameters for the PrivateLinkServicesForSCCPowershellClient.Get
 // method.
-type PrivateLinkServicesForSCCPowershellBeginCreateOrUpdateOptions struct {
+type PrivateLinkServicesForSCCPowershellClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesForSCCPowershellBeginDeleteOptions contains the optional parameters for the PrivateLinkServicesForSCCPowershell.BeginDelete method.
-type PrivateLinkServicesForSCCPowershellBeginDeleteOptions struct {
+// PrivateLinkServicesForSCCPowershellClientListByResourceGroupOptions contains the optional parameters for the PrivateLinkServicesForSCCPowershellClient.ListByResourceGroup
+// method.
+type PrivateLinkServicesForSCCPowershellClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServicesForSCCPowershellBeginUpdateOptions contains the optional parameters for the PrivateLinkServicesForSCCPowershell.BeginUpdate method.
-type PrivateLinkServicesForSCCPowershellBeginUpdateOptions struct {
+// PrivateLinkServicesForSCCPowershellClientListOptions contains the optional parameters for the PrivateLinkServicesForSCCPowershellClient.List
+// method.
+type PrivateLinkServicesForSCCPowershellClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PrivateLinkServicesForSCCPowershellDescription - The description of the service.
 type PrivateLinkServicesForSCCPowershellDescription struct {
-	ServicesResource
+	// REQUIRED; The kind of the service.
+	Kind *Kind `json:"kind,omitempty"`
+
+	// REQUIRED; The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// An etag associated with the resource, used for optimistic concurrency when editing it.
+	Etag *string `json:"etag,omitempty"`
+
+	// Setting indicating whether the service has a managed identity associated with it.
+	Identity *ServicesResourceIdentity `json:"identity,omitempty"`
+
 	// The common properties of a service.
 	Properties *ServicesProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkServicesForSCCPowershellDescription.
-func (p PrivateLinkServicesForSCCPowershellDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.ServicesResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Required property for system data
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateLinkServicesForSCCPowershellDescriptionListResult - A list of service description objects with a next link.
@@ -773,30 +896,6 @@ type PrivateLinkServicesForSCCPowershellDescriptionListResult struct {
 
 	// READ-ONLY; The link used to get the next page of service description objects.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkServicesForSCCPowershellDescriptionListResult.
-func (p PrivateLinkServicesForSCCPowershellDescriptionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// PrivateLinkServicesForSCCPowershellGetOptions contains the optional parameters for the PrivateLinkServicesForSCCPowershell.Get method.
-type PrivateLinkServicesForSCCPowershellGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateLinkServicesForSCCPowershellListByResourceGroupOptions contains the optional parameters for the PrivateLinkServicesForSCCPowershell.ListByResourceGroup
-// method.
-type PrivateLinkServicesForSCCPowershellListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateLinkServicesForSCCPowershellListOptions contains the optional parameters for the PrivateLinkServicesForSCCPowershell.List method.
-type PrivateLinkServicesForSCCPowershellListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
@@ -847,17 +946,6 @@ type ServiceCorsConfigurationInfo struct {
 	Origins []*string `json:"origins,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServiceCorsConfigurationInfo.
-func (s ServiceCorsConfigurationInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowCredentials", s.AllowCredentials)
-	populate(objectMap, "headers", s.Headers)
-	populate(objectMap, "maxAge", s.MaxAge)
-	populate(objectMap, "methods", s.Methods)
-	populate(objectMap, "origins", s.Origins)
-	return json.Marshal(objectMap)
-}
-
 // ServiceCosmosDbConfigurationInfo - The settings for the Cosmos DB database backing the service.
 type ServiceCosmosDbConfigurationInfo struct {
 	// The URI of the customer-managed key for the backing database.
@@ -873,9 +961,10 @@ type ServiceExportConfigurationInfo struct {
 	StorageAccountName *string `json:"storageAccountName,omitempty"`
 }
 
-// ServicesBeginDeleteOptions contains the optional parameters for the Services.BeginDelete method.
-type ServicesBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+// ServicesClientBeginDeleteOptions contains the optional parameters for the ServicesClient.BeginDelete method.
+type ServicesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ServicesPatchDescription - The description of the service.
@@ -885,14 +974,6 @@ type ServicesPatchDescription struct {
 
 	// Instance tags
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServicesPatchDescription.
-func (s ServicesPatchDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "tags", s.Tags)
-	return json.Marshal(objectMap)
 }
 
 // ServicesProperties - The properties of a service instance.
@@ -920,20 +1001,6 @@ type ServicesProperties struct {
 
 	// READ-ONLY; The provisioning state.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServicesProperties.
-func (s ServicesProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accessPolicies", s.AccessPolicies)
-	populate(objectMap, "authenticationConfiguration", s.AuthenticationConfiguration)
-	populate(objectMap, "corsConfiguration", s.CorsConfiguration)
-	populate(objectMap, "cosmosDbConfiguration", s.CosmosDbConfiguration)
-	populate(objectMap, "exportConfiguration", s.ExportConfiguration)
-	populate(objectMap, "privateEndpointConnections", s.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", s.PublicNetworkAccess)
-	return json.Marshal(objectMap)
 }
 
 // ServicesPropertiesUpdateParameters - The properties for updating a service instance.
@@ -972,25 +1039,6 @@ type ServicesResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServicesResource.
-func (s ServicesResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (s ServicesResource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "etag", s.Etag)
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "identity", s.Identity)
-	populate(objectMap, "kind", s.Kind)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-}
-
 // ServicesResourceIdentity - Setting indicating whether the service has a managed identity associated with it.
 type ServicesResourceIdentity struct {
 	// Type of identity being specified, currently SystemAssigned and None are allowed.
@@ -1022,68 +1070,4 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

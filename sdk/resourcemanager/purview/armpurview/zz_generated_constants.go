@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package armpurview
 
 const (
-	module  = "armpurview"
-	version = "v0.1.0"
+	moduleName    = "armpurview"
+	moduleVersion = "v1.0.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -33,11 +33,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // LastModifiedByType - The type of identity that last modified the resource.
 type LastModifiedByType string
 
@@ -58,11 +53,6 @@ func PossibleLastModifiedByTypeValues() []LastModifiedByType {
 	}
 }
 
-// ToPtr returns a *LastModifiedByType pointing to the current value.
-func (c LastModifiedByType) ToPtr() *LastModifiedByType {
-	return &c
-}
-
 // Name - Gets or sets the sku name.
 type Name string
 
@@ -75,11 +65,6 @@ func PossibleNameValues() []Name {
 	return []Name{
 		NameStandard,
 	}
-}
-
-// ToPtr returns a *Name pointing to the current value.
-func (c Name) ToPtr() *Name {
-	return &c
 }
 
 // ProvisioningState - Gets or sets the state of the provisioning.
@@ -112,11 +97,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // PublicNetworkAccess - Gets or sets the public network access.
 type PublicNetworkAccess string
 
@@ -135,11 +115,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	}
 }
 
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
-}
-
 // Reason - The reason the name is not available.
 type Reason string
 
@@ -156,11 +131,6 @@ func PossibleReasonValues() []Reason {
 	}
 }
 
-// ToPtr returns a *Reason pointing to the current value.
-func (c Reason) ToPtr() *Reason {
-	return &c
-}
-
 // ScopeType - The scope where the default account is set.
 type ScopeType string
 
@@ -175,11 +145,6 @@ func PossibleScopeTypeValues() []ScopeType {
 		ScopeTypeSubscription,
 		ScopeTypeTenant,
 	}
-}
-
-// ToPtr returns a *ScopeType pointing to the current value.
-func (c ScopeType) ToPtr() *ScopeType {
-	return &c
 }
 
 // Status - The status.
@@ -204,26 +169,20 @@ func PossibleStatusValues() []Status {
 	}
 }
 
-// ToPtr returns a *Status pointing to the current value.
-func (c Status) ToPtr() *Status {
-	return &c
-}
-
 // Type - Identity Type
 type Type string
 
 const (
+	TypeNone           Type = "None"
 	TypeSystemAssigned Type = "SystemAssigned"
+	TypeUserAssigned   Type = "UserAssigned"
 )
 
 // PossibleTypeValues returns the possible values for the Type const type.
 func PossibleTypeValues() []Type {
 	return []Type{
+		TypeNone,
 		TypeSystemAssigned,
+		TypeUserAssigned,
 	}
-}
-
-// ToPtr returns a *Type pointing to the current value.
-func (c Type) ToPtr() *Type {
-	return &c
 }

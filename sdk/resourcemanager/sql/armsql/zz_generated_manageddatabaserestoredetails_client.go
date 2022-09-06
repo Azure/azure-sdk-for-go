@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,42 +25,62 @@ import (
 // ManagedDatabaseRestoreDetailsClient contains the methods for the ManagedDatabaseRestoreDetails group.
 // Don't use this type directly, use NewManagedDatabaseRestoreDetailsClient() instead.
 type ManagedDatabaseRestoreDetailsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewManagedDatabaseRestoreDetailsClient creates a new instance of ManagedDatabaseRestoreDetailsClient with the specified values.
-func NewManagedDatabaseRestoreDetailsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedDatabaseRestoreDetailsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewManagedDatabaseRestoreDetailsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedDatabaseRestoreDetailsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &ManagedDatabaseRestoreDetailsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &ManagedDatabaseRestoreDetailsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // Get - Gets managed database restore details.
-// If the operation fails it returns a generic error.
-func (client *ManagedDatabaseRestoreDetailsClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, restoreDetailsName RestoreDetailsName, options *ManagedDatabaseRestoreDetailsGetOptions) (ManagedDatabaseRestoreDetailsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// managedInstanceName - The name of the managed instance.
+// databaseName - The name of the database.
+// restoreDetailsName - The name of the restore details to retrieve.
+// options - ManagedDatabaseRestoreDetailsClientGetOptions contains the optional parameters for the ManagedDatabaseRestoreDetailsClient.Get
+// method.
+func (client *ManagedDatabaseRestoreDetailsClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, restoreDetailsName RestoreDetailsName, options *ManagedDatabaseRestoreDetailsClientGetOptions) (ManagedDatabaseRestoreDetailsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, restoreDetailsName, options)
 	if err != nil {
-		return ManagedDatabaseRestoreDetailsGetResponse{}, err
+		return ManagedDatabaseRestoreDetailsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ManagedDatabaseRestoreDetailsGetResponse{}, err
+		return ManagedDatabaseRestoreDetailsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ManagedDatabaseRestoreDetailsGetResponse{}, client.getHandleError(resp)
+		return ManagedDatabaseRestoreDetailsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedDatabaseRestoreDetailsClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, restoreDetailsName RestoreDetailsName, options *ManagedDatabaseRestoreDetailsGetOptions) (*policy.Request, error) {
+func (client *ManagedDatabaseRestoreDetailsClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, restoreDetailsName RestoreDetailsName, options *ManagedDatabaseRestoreDetailsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/restoreDetails/{restoreDetailsName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -81,34 +102,22 @@ func (client *ManagedDatabaseRestoreDetailsClient) getCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedDatabaseRestoreDetailsClient) getHandleResponse(resp *http.Response) (ManagedDatabaseRestoreDetailsGetResponse, error) {
-	result := ManagedDatabaseRestoreDetailsGetResponse{RawResponse: resp}
+func (client *ManagedDatabaseRestoreDetailsClient) getHandleResponse(resp *http.Response) (ManagedDatabaseRestoreDetailsClientGetResponse, error) {
+	result := ManagedDatabaseRestoreDetailsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabaseRestoreDetailsResult); err != nil {
-		return ManagedDatabaseRestoreDetailsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ManagedDatabaseRestoreDetailsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *ManagedDatabaseRestoreDetailsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

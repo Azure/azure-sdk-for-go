@@ -11,9 +11,6 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/stress/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
-	"github.com/devigned/tab"
 )
 
 // Simple query to view some of the stats reported by these stress tests.
@@ -25,21 +22,27 @@ import (
 
 func Run(remainingArgs []string) {
 	// turn on some simple stderr diagnostics
-	tracer := utils.NewSimpleTracer(map[string]bool{
-		tracing.SpanRecover:        true,
-		tracing.SpanNegotiateClaim: true,
-		tracing.SpanRecoverClient:  true,
-		tracing.SpanRecoverLink:    true,
-	}, nil)
+	// tracer := utils.NewSimpleTracer(map[string]bool{
+	// 	// tracing.SpanRecover:        true,
+	// 	//tracing.SpanNegotiateClaim: true,
+	// 	// tracing.SpanRecoverClient:  true,
+	// 	// tracing.SpanRecoverLink:    true,
+	// }, nil)
 
-	tab.Register(tracer)
+	// tab.Register(tracer)
 
 	allTests := map[string]func(args []string){
-		"infiniteSendAndReceive": InfiniteSendAndReceiveRun,
-		"finiteSendAndReceive":   FiniteSendAndReceiveTest,
-		"rapidOpenClose":         RapidOpenCloseTest,
-		"longRunningRenewLock":   LongRunningRenewLockTest,
-		"constantDetach":         ConstantDetachment,
+		"constantDetach":           ConstantDetachment,
+		"constantDetachmentSender": ConstantDetachmentSender,
+		"finitePeeks":              FinitePeeks,
+		"finiteSendAndReceive":     FiniteSendAndReceiveTest,
+		"idleFastReconnect":        IdleFastReconnect,
+		"infiniteSendAndReceive":   InfiniteSendAndReceiveRun,
+		"longRunningRenewLock":     LongRunningRenewLockTest,
+		"mostlyIdleReceiver":       MostlyIdleReceiver,
+		"rapidOpenClose":           RapidOpenCloseTest,
+		"receiveCancellation":      ReceiveCancellation,
+		"sendAndReceiveDrain":      SendAndReceiveDrain,
 	}
 
 	if len(remainingArgs) == 0 {
@@ -70,6 +73,6 @@ func printUsageAndQuit(allTests map[string]func(args []string)) {
 
 	sort.Strings(names)
 
-	fmt.Printf("Usage: stress test (%s)", strings.Join(names, " or "))
+	fmt.Printf("Usage: stress test <stress test name, listed below> \n  %s\n", strings.Join(names, "\n  "))
 	os.Exit(1)
 }

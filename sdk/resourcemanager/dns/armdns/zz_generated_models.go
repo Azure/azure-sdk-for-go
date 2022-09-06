@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,12 +7,6 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package armdns
-
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-)
 
 // ARecord - An A record.
 type ARecord struct {
@@ -39,17 +33,9 @@ type CaaRecord struct {
 }
 
 // CloudError - An error response from the service.
-// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
-	raw string
 	// Cloud error body.
-	InnerError *CloudErrorBody `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type CloudError.
-// The contents of the error text are not contractual and subject to change.
-func (e CloudError) Error() string {
-	return e.raw
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody - An error response from the service.
@@ -67,81 +53,10 @@ type CloudErrorBody struct {
 	Target *string `json:"target,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CloudErrorBody.
-func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", c.Code)
-	populate(objectMap, "details", c.Details)
-	populate(objectMap, "message", c.Message)
-	populate(objectMap, "target", c.Target)
-	return json.Marshal(objectMap)
-}
-
 // CnameRecord - A CNAME record.
 type CnameRecord struct {
 	// The canonical name for this CNAME record.
 	Cname *string `json:"cname,omitempty"`
-}
-
-// DNSResourceReference - Represents a single Azure resource and its referencing DNS records.
-type DNSResourceReference struct {
-	// A list of dns Records
-	DNSResources []*SubResource `json:"dnsResources,omitempty"`
-
-	// A reference to an azure resource from where the dns resource value is taken.
-	TargetResource *SubResource `json:"targetResource,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DNSResourceReference.
-func (d DNSResourceReference) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dnsResources", d.DNSResources)
-	populate(objectMap, "targetResource", d.TargetResource)
-	return json.Marshal(objectMap)
-}
-
-// DNSResourceReferenceGetByTargetResourcesOptions contains the optional parameters for the DNSResourceReference.GetByTargetResources method.
-type DNSResourceReferenceGetByTargetResourcesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DNSResourceReferenceRequest - Represents the properties of the Dns Resource Reference Request.
-type DNSResourceReferenceRequest struct {
-	// The properties of the Resource Reference Request.
-	Properties *DNSResourceReferenceRequestProperties `json:"properties,omitempty"`
-}
-
-// DNSResourceReferenceRequestProperties - Represents the properties of the Dns Resource Reference Request.
-type DNSResourceReferenceRequestProperties struct {
-	// A list of references to azure resources for which referencing dns records need to be queried.
-	TargetResources []*SubResource `json:"targetResources,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DNSResourceReferenceRequestProperties.
-func (d DNSResourceReferenceRequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "targetResources", d.TargetResources)
-	return json.Marshal(objectMap)
-}
-
-// DNSResourceReferenceResult - Represents the properties of the Dns Resource Reference Result.
-type DNSResourceReferenceResult struct {
-	// The result of dns resource reference request. Returns a list of dns resource references for each of the azure resource in the request.
-	Properties *DNSResourceReferenceResultProperties `json:"properties,omitempty"`
-}
-
-// DNSResourceReferenceResultProperties - The result of dns resource reference request. Returns a list of dns resource references for each of the azure
-// resource in the request.
-type DNSResourceReferenceResultProperties struct {
-	// The result of dns resource reference request. A list of dns resource references for each of the azure resource in the request
-	DNSResourceReferences []*DNSResourceReference `json:"dnsResourceReferences,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DNSResourceReferenceResultProperties.
-func (d DNSResourceReferenceResultProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dnsResourceReferences", d.DNSResourceReferences)
-	return json.Marshal(objectMap)
 }
 
 // MxRecord - An MX record.
@@ -183,17 +98,6 @@ type RecordSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RecordSet.
-func (r RecordSet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", r.Etag)
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "properties", r.Properties)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
-}
-
 // RecordSetListResult - The response to a record set List operation.
 type RecordSetListResult struct {
 	// Information about the record sets in the response.
@@ -201,14 +105,6 @@ type RecordSetListResult struct {
 
 	// READ-ONLY; The continuation token for the next page of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecordSetListResult.
-func (r RecordSetListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // RecordSetProperties - Represents the properties of the records in the record set.
@@ -259,85 +155,65 @@ type RecordSetProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RecordSetProperties.
-func (r RecordSetProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "ARecords", r.ARecords)
-	populate(objectMap, "AAAARecords", r.AaaaRecords)
-	populate(objectMap, "caaRecords", r.CaaRecords)
-	populate(objectMap, "CNAMERecord", r.CnameRecord)
-	populate(objectMap, "fqdn", r.Fqdn)
-	populate(objectMap, "metadata", r.Metadata)
-	populate(objectMap, "MXRecords", r.MxRecords)
-	populate(objectMap, "NSRecords", r.NsRecords)
-	populate(objectMap, "provisioningState", r.ProvisioningState)
-	populate(objectMap, "PTRRecords", r.PtrRecords)
-	populate(objectMap, "SOARecord", r.SoaRecord)
-	populate(objectMap, "SRVRecords", r.SrvRecords)
-	populate(objectMap, "TTL", r.TTL)
-	populate(objectMap, "targetResource", r.TargetResource)
-	populate(objectMap, "TXTRecords", r.TxtRecords)
-	return json.Marshal(objectMap)
-}
-
 // RecordSetUpdateParameters - Parameters supplied to update a record set.
 type RecordSetUpdateParameters struct {
 	// Specifies information about the record set being updated.
 	RecordSet *RecordSet `json:"RecordSet,omitempty"`
 }
 
-// RecordSetsCreateOrUpdateOptions contains the optional parameters for the RecordSets.CreateOrUpdate method.
-type RecordSetsCreateOrUpdateOptions struct {
-	// The etag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen etag value to prevent accidentally overwriting
-	// any concurrent changes.
+// RecordSetsClientCreateOrUpdateOptions contains the optional parameters for the RecordSetsClient.CreateOrUpdate method.
+type RecordSetsClientCreateOrUpdateOptions struct {
+	// The etag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen etag value
+	// to prevent accidentally overwriting any concurrent changes.
 	IfMatch *string
-	// Set to '*' to allow a new record set to be created, but to prevent updating an existing record set. Other values will be ignored.
+	// Set to '*' to allow a new record set to be created, but to prevent updating an existing record set. Other values will be
+	// ignored.
 	IfNoneMatch *string
 }
 
-// RecordSetsDeleteOptions contains the optional parameters for the RecordSets.Delete method.
-type RecordSetsDeleteOptions struct {
-	// The etag of the record set. Omit this value to always delete the current record set. Specify the last-seen etag value to prevent accidentally deleting
-	// any concurrent changes.
+// RecordSetsClientDeleteOptions contains the optional parameters for the RecordSetsClient.Delete method.
+type RecordSetsClientDeleteOptions struct {
+	// The etag of the record set. Omit this value to always delete the current record set. Specify the last-seen etag value to
+	// prevent accidentally deleting any concurrent changes.
 	IfMatch *string
 }
 
-// RecordSetsGetOptions contains the optional parameters for the RecordSets.Get method.
-type RecordSetsGetOptions struct {
+// RecordSetsClientGetOptions contains the optional parameters for the RecordSetsClient.Get method.
+type RecordSetsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecordSetsListAllByDNSZoneOptions contains the optional parameters for the RecordSets.ListAllByDNSZone method.
-type RecordSetsListAllByDNSZoneOptions struct {
-	// The suffix label of the record set name that has to be used to filter the record set enumerations. If this parameter is specified, Enumeration will return
-	// only records that end with .<recordSetNameSuffix>
+// RecordSetsClientListAllByDNSZoneOptions contains the optional parameters for the RecordSetsClient.ListAllByDNSZone method.
+type RecordSetsClientListAllByDNSZoneOptions struct {
+	// The suffix label of the record set name that has to be used to filter the record set enumerations. If this parameter is
+	// specified, Enumeration will return only records that end with .
 	RecordSetNameSuffix *string
 	// The maximum number of record sets to return. If not specified, returns up to 100 record sets.
 	Top *int32
 }
 
-// RecordSetsListByDNSZoneOptions contains the optional parameters for the RecordSets.ListByDNSZone method.
-type RecordSetsListByDNSZoneOptions struct {
-	// The suffix label of the record set name that has to be used to filter the record set enumerations. If this parameter is specified, Enumeration will return
-	// only records that end with .<recordSetNameSuffix>
+// RecordSetsClientListByDNSZoneOptions contains the optional parameters for the RecordSetsClient.ListByDNSZone method.
+type RecordSetsClientListByDNSZoneOptions struct {
+	// The suffix label of the record set name that has to be used to filter the record set enumerations. If this parameter is
+	// specified, Enumeration will return only records that end with .
 	Recordsetnamesuffix *string
 	// The maximum number of record sets to return. If not specified, returns up to 100 record sets.
 	Top *int32
 }
 
-// RecordSetsListByTypeOptions contains the optional parameters for the RecordSets.ListByType method.
-type RecordSetsListByTypeOptions struct {
-	// The suffix label of the record set name that has to be used to filter the record set enumerations. If this parameter is specified, Enumeration will return
-	// only records that end with .<recordSetNameSuffix>
+// RecordSetsClientListByTypeOptions contains the optional parameters for the RecordSetsClient.ListByType method.
+type RecordSetsClientListByTypeOptions struct {
+	// The suffix label of the record set name that has to be used to filter the record set enumerations. If this parameter is
+	// specified, Enumeration will return only records that end with .
 	Recordsetnamesuffix *string
 	// The maximum number of record sets to return. If not specified, returns up to 100 record sets.
 	Top *int32
 }
 
-// RecordSetsUpdateOptions contains the optional parameters for the RecordSets.Update method.
-type RecordSetsUpdateOptions struct {
-	// The etag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen etag value to prevent accidentally overwriting
-	// concurrent changes.
+// RecordSetsClientUpdateOptions contains the optional parameters for the RecordSetsClient.Update method.
+type RecordSetsClientUpdateOptions struct {
+	// The etag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen etag value
+	// to prevent accidentally overwriting concurrent changes.
 	IfMatch *string
 }
 
@@ -359,19 +235,45 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
+// ResourceReference - Represents a single Azure resource and its referencing DNS records.
+type ResourceReference struct {
+	// A list of dns Records
+	DNSResources []*SubResource `json:"dnsResources,omitempty"`
+
+	// A reference to an azure resource from where the dns resource value is taken.
+	TargetResource *SubResource `json:"targetResource,omitempty"`
 }
 
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
+// ResourceReferenceClientGetByTargetResourcesOptions contains the optional parameters for the ResourceReferenceClient.GetByTargetResources
+// method.
+type ResourceReferenceClientGetByTargetResourcesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceReferenceRequest - Represents the properties of the Dns Resource Reference Request.
+type ResourceReferenceRequest struct {
+	// The properties of the Resource Reference Request.
+	Properties *ResourceReferenceRequestProperties `json:"properties,omitempty"`
+}
+
+// ResourceReferenceRequestProperties - Represents the properties of the Dns Resource Reference Request.
+type ResourceReferenceRequestProperties struct {
+	// A list of references to azure resources for which referencing dns records need to be queried.
+	TargetResources []*SubResource `json:"targetResources,omitempty"`
+}
+
+// ResourceReferenceResult - Represents the properties of the Dns Resource Reference Result.
+type ResourceReferenceResult struct {
+	// The result of dns resource reference request. Returns a list of dns resource references for each of the azure resource
+	// in the request.
+	Properties *ResourceReferenceResultProperties `json:"properties,omitempty"`
+}
+
+// ResourceReferenceResultProperties - The result of dns resource reference request. Returns a list of dns resource references
+// for each of the azure resource in the request.
+type ResourceReferenceResultProperties struct {
+	// The result of dns resource reference request. A list of dns resource references for each of the azure resource in the request
+	DNSResourceReferences []*ResourceReference `json:"dnsResourceReferences,omitempty"`
 }
 
 // SoaRecord - An SOA record.
@@ -425,30 +327,28 @@ type TxtRecord struct {
 	Value []*string `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TxtRecord.
-func (t TxtRecord) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
-}
-
 // Zone - Describes a DNS zone.
 type Zone struct {
-	Resource
+	// REQUIRED; Resource location.
+	Location *string `json:"location,omitempty"`
+
 	// The etag of the zone.
 	Etag *string `json:"etag,omitempty"`
 
 	// The properties of the zone.
 	Properties *ZoneProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Zone.
-func (z Zone) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	z.Resource.marshalInternal(objectMap)
-	populate(objectMap, "etag", z.Etag)
-	populate(objectMap, "properties", z.Properties)
-	return json.Marshal(objectMap)
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ZoneListResult - The response to a Zone List or ListAll operation.
@@ -458,14 +358,6 @@ type ZoneListResult struct {
 
 	// READ-ONLY; The continuation token for the next page of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ZoneListResult.
-func (z ZoneListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", z.NextLink)
-	populate(objectMap, "value", z.Value)
-	return json.Marshal(objectMap)
 }
 
 // ZoneProperties - Represents the properties of the zone.
@@ -479,32 +371,20 @@ type ZoneProperties struct {
 	// The type of this DNS zone (Public or Private).
 	ZoneType *ZoneType `json:"zoneType,omitempty"`
 
-	// READ-ONLY; The maximum number of record sets that can be created in this DNS zone. This is a read-only property and any attempt to set this value will
-	// be ignored.
+	// READ-ONLY; The maximum number of record sets that can be created in this DNS zone. This is a read-only property and any
+	// attempt to set this value will be ignored.
 	MaxNumberOfRecordSets *int64 `json:"maxNumberOfRecordSets,omitempty" azure:"ro"`
 
-	// READ-ONLY; The maximum number of records per record set that can be created in this DNS zone. This is a read-only property and any attempt to set this
-	// value will be ignored.
+	// READ-ONLY; The maximum number of records per record set that can be created in this DNS zone. This is a read-only property
+	// and any attempt to set this value will be ignored.
 	MaxNumberOfRecordsPerRecordSet *int64 `json:"maxNumberOfRecordsPerRecordSet,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name servers for this DNS zone. This is a read-only property and any attempt to set this value will be ignored.
 	NameServers []*string `json:"nameServers,omitempty" azure:"ro"`
 
-	// READ-ONLY; The current number of record sets in this DNS zone. This is a read-only property and any attempt to set this value will be ignored.
+	// READ-ONLY; The current number of record sets in this DNS zone. This is a read-only property and any attempt to set this
+	// value will be ignored.
 	NumberOfRecordSets *int64 `json:"numberOfRecordSets,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ZoneProperties.
-func (z ZoneProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "maxNumberOfRecordSets", z.MaxNumberOfRecordSets)
-	populate(objectMap, "maxNumberOfRecordsPerRecordSet", z.MaxNumberOfRecordsPerRecordSet)
-	populate(objectMap, "nameServers", z.NameServers)
-	populate(objectMap, "numberOfRecordSets", z.NumberOfRecordSets)
-	populate(objectMap, "registrationVirtualNetworks", z.RegistrationVirtualNetworks)
-	populate(objectMap, "resolutionVirtualNetworks", z.ResolutionVirtualNetworks)
-	populate(objectMap, "zoneType", z.ZoneType)
-	return json.Marshal(objectMap)
 }
 
 // ZoneUpdate - Describes a request to update a DNS zone.
@@ -513,59 +393,44 @@ type ZoneUpdate struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ZoneUpdate.
-func (z ZoneUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", z.Tags)
-	return json.Marshal(objectMap)
-}
-
-// ZonesBeginDeleteOptions contains the optional parameters for the Zones.BeginDelete method.
-type ZonesBeginDeleteOptions struct {
-	// The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent accidentally deleting any concurrent
-	// changes.
+// ZonesClientBeginDeleteOptions contains the optional parameters for the ZonesClient.BeginDelete method.
+type ZonesClientBeginDeleteOptions struct {
+	// The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen etag value to prevent
+	// accidentally deleting any concurrent changes.
 	IfMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// ZonesCreateOrUpdateOptions contains the optional parameters for the Zones.CreateOrUpdate method.
-type ZonesCreateOrUpdateOptions struct {
-	// The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwriting
-	// any concurrent changes.
+// ZonesClientCreateOrUpdateOptions contains the optional parameters for the ZonesClient.CreateOrUpdate method.
+type ZonesClientCreateOrUpdateOptions struct {
+	// The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent
+	// accidentally overwriting any concurrent changes.
 	IfMatch *string
 	// Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone. Other values will be ignored.
 	IfNoneMatch *string
 }
 
-// ZonesGetOptions contains the optional parameters for the Zones.Get method.
-type ZonesGetOptions struct {
+// ZonesClientGetOptions contains the optional parameters for the ZonesClient.Get method.
+type ZonesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ZonesListByResourceGroupOptions contains the optional parameters for the Zones.ListByResourceGroup method.
-type ZonesListByResourceGroupOptions struct {
+// ZonesClientListByResourceGroupOptions contains the optional parameters for the ZonesClient.ListByResourceGroup method.
+type ZonesClientListByResourceGroupOptions struct {
 	// The maximum number of record sets to return. If not specified, returns up to 100 record sets.
 	Top *int32
 }
 
-// ZonesListOptions contains the optional parameters for the Zones.List method.
-type ZonesListOptions struct {
+// ZonesClientListOptions contains the optional parameters for the ZonesClient.List method.
+type ZonesClientListOptions struct {
 	// The maximum number of DNS zones to return. If not specified, returns up to 100 zones.
 	Top *int32
 }
 
-// ZonesUpdateOptions contains the optional parameters for the Zones.Update method.
-type ZonesUpdateOptions struct {
-	// The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally overwriting
-	// any concurrent changes.
+// ZonesClientUpdateOptions contains the optional parameters for the ZonesClient.Update method.
+type ZonesClientUpdateOptions struct {
+	// The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen etag value to prevent
+	// accidentally overwriting any concurrent changes.
 	IfMatch *string
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
 }

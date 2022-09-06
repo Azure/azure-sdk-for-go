@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,172 +12,207 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork/v2"
 )
 
-// x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/VendorSkuDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorSkuDelete.json
 func ExampleVendorSKUsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhybridnetwork.NewVendorSKUsClient("<subscription-id>", cred, nil)
+	client, err := armhybridnetwork.NewVendorSKUsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginDelete(ctx,
-		"<vendor-name>",
-		"<sku-name>",
+		"TestVendor",
+		"TestSku",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/VendorSkuGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorSkuGet.json
 func ExampleVendorSKUsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhybridnetwork.NewVendorSKUsClient("<subscription-id>", cred, nil)
+	client, err := armhybridnetwork.NewVendorSKUsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<vendor-name>",
-		"<sku-name>",
+		"TestVendor",
+		"TestSku",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("VendorSKU.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/VendorSkuCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorSkuCreate.json
 func ExampleVendorSKUsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhybridnetwork.NewVendorSKUsClient("<subscription-id>", cred, nil)
+	client, err := armhybridnetwork.NewVendorSKUsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<vendor-name>",
-		"<sku-name>",
+		"TestVendor",
+		"TestSku",
 		armhybridnetwork.VendorSKU{
 			Properties: &armhybridnetwork.VendorSKUPropertiesFormat{
-				DeploymentMode:             armhybridnetwork.SKUDeploymentModePrivateEdgeZone.ToPtr(),
+				DeploymentMode:             to.Ptr(armhybridnetwork.SKUDeploymentModePrivateEdgeZone),
 				ManagedApplicationTemplate: map[string]interface{}{},
 				NetworkFunctionTemplate: &armhybridnetwork.NetworkFunctionTemplate{
 					NetworkFunctionRoleConfigurations: []*armhybridnetwork.NetworkFunctionRoleConfiguration{
 						{
 							CustomProfile: &armhybridnetwork.CustomProfile{
-								MetadataConfigurationPath: to.StringPtr("<metadata-configuration-path>"),
+								MetadataConfigurationPath: to.Ptr("/var/logs/network.cfg"),
 							},
 							NetworkInterfaces: []*armhybridnetwork.NetworkInterface{
 								{
 									IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
 										{
-											DNSServers:         []*string{},
-											Gateway:            to.StringPtr("<gateway>"),
-											IPAddress:          to.StringPtr("<ipaddress>"),
-											IPAllocationMethod: armhybridnetwork.IPAllocationMethodDynamic.ToPtr(),
-											IPVersion:          armhybridnetwork.IPVersionIPv4.ToPtr(),
-											Subnet:             to.StringPtr("<subnet>"),
+											Gateway:            to.Ptr(""),
+											IPAddress:          to.Ptr(""),
+											IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
+											IPVersion:          to.Ptr(armhybridnetwork.IPVersionIPv4),
+											Subnet:             to.Ptr(""),
 										}},
-									MacAddress:           to.StringPtr("<mac-address>"),
-									NetworkInterfaceName: to.StringPtr("<network-interface-name>"),
-									VMSwitchType:         armhybridnetwork.VMSwitchTypeWan.ToPtr(),
+									MacAddress:           to.Ptr(""),
+									NetworkInterfaceName: to.Ptr("nic1"),
+									VMSwitchType:         to.Ptr(armhybridnetwork.VMSwitchTypeWan),
 								},
 								{
 									IPConfigurations: []*armhybridnetwork.NetworkInterfaceIPConfiguration{
 										{
-											DNSServers:         []*string{},
-											Gateway:            to.StringPtr("<gateway>"),
-											IPAddress:          to.StringPtr("<ipaddress>"),
-											IPAllocationMethod: armhybridnetwork.IPAllocationMethodDynamic.ToPtr(),
-											IPVersion:          armhybridnetwork.IPVersionIPv4.ToPtr(),
-											Subnet:             to.StringPtr("<subnet>"),
+											Gateway:            to.Ptr(""),
+											IPAddress:          to.Ptr(""),
+											IPAllocationMethod: to.Ptr(armhybridnetwork.IPAllocationMethodDynamic),
+											IPVersion:          to.Ptr(armhybridnetwork.IPVersionIPv4),
+											Subnet:             to.Ptr(""),
 										}},
-									MacAddress:           to.StringPtr("<mac-address>"),
-									NetworkInterfaceName: to.StringPtr("<network-interface-name>"),
-									VMSwitchType:         armhybridnetwork.VMSwitchTypeManagement.ToPtr(),
+									MacAddress:           to.Ptr(""),
+									NetworkInterfaceName: to.Ptr("nic2"),
+									VMSwitchType:         to.Ptr(armhybridnetwork.VMSwitchTypeManagement),
 								}},
 							OSProfile: &armhybridnetwork.OsProfile{
-								AdminUsername: to.StringPtr("<admin-username>"),
-								CustomData:    to.StringPtr("<custom-data>"),
+								AdminUsername: to.Ptr("dummyuser"),
+								CustomData:    to.Ptr("base-64 encoded string of custom data"),
 								LinuxConfiguration: &armhybridnetwork.LinuxConfiguration{
 									SSH: &armhybridnetwork.SSHConfiguration{
 										PublicKeys: []*armhybridnetwork.SSHPublicKey{
 											{
-												Path:    to.StringPtr("<path>"),
-												KeyData: to.StringPtr("<key-data>"),
+												Path:    to.Ptr("home/user/.ssh/authorized_keys"),
+												KeyData: to.Ptr("ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAgEAwrr66r8n6B8Y0zMF3dOpXEapIQD9DiYQ6D6/zwor9o39jSkHNiMMER/GETBbzP83LOcekm02aRjo55ArO7gPPVvCXbrirJu9pkm4AC4BBre5xSLS= user@constoso-DSH"),
 											}},
 									},
 								},
 							},
-							RoleName: to.StringPtr("<role-name>"),
-							RoleType: armhybridnetwork.NetworkFunctionRoleConfigurationTypeVirtualMachine.ToPtr(),
+							RoleName: to.Ptr("test"),
+							RoleType: to.Ptr(armhybridnetwork.NetworkFunctionRoleConfigurationTypeVirtualMachine),
 							StorageProfile: &armhybridnetwork.StorageProfile{
 								DataDisks: []*armhybridnetwork.DataDisk{
 									{
-										Name:         to.StringPtr("<name>"),
-										CreateOption: armhybridnetwork.DiskCreateOptionTypesEmpty.ToPtr(),
-										DiskSizeGB:   to.Int32Ptr(10),
+										Name:         to.Ptr("DataDisk1"),
+										CreateOption: to.Ptr(armhybridnetwork.DiskCreateOptionTypesEmpty),
+										DiskSizeGB:   to.Ptr[int32](10),
 									}},
 								ImageReference: &armhybridnetwork.ImageReference{
-									Offer:     to.StringPtr("<offer>"),
-									Publisher: to.StringPtr("<publisher>"),
-									SKU:       to.StringPtr("<sku>"),
-									Version:   to.StringPtr("<version>"),
+									Offer:     to.Ptr("UbuntuServer"),
+									Publisher: to.Ptr("Canonical"),
+									SKU:       to.Ptr("18.04-LTS"),
+									Version:   to.Ptr("18.04.201804262"),
 								},
 								OSDisk: &armhybridnetwork.OsDisk{
-									Name:       to.StringPtr("<name>"),
-									DiskSizeGB: to.Int32Ptr(30),
-									OSType:     armhybridnetwork.OperatingSystemTypesLinux.ToPtr(),
+									Name:       to.Ptr("vhdName"),
+									DiskSizeGB: to.Ptr[int32](30),
+									OSType:     to.Ptr(armhybridnetwork.OperatingSystemTypesLinux),
 									Vhd: &armhybridnetwork.VirtualHardDisk{
-										URI: to.StringPtr("<uri>"),
+										URI: to.Ptr("https://contoso.net/link/vnd.vhd?sp=rl&st=2020-10-08T20:38:19Z&se=2020-12-09T19:38:00Z&sv=2019-12-12&sr=b&sig=7BM2f4yOw%3D"),
 									},
 								},
 							},
-							VirtualMachineSize: armhybridnetwork.VirtualMachineSizeTypesStandardD3V2.ToPtr(),
+							VirtualMachineSize: to.Ptr(armhybridnetwork.VirtualMachineSizeTypesStandardD3V2),
 						}},
 				},
-				Preview: to.BoolPtr(true),
+				NetworkFunctionType: to.Ptr(armhybridnetwork.NetworkFunctionTypeVirtualNetworkFunction),
+				Preview:             to.Ptr(true),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("VendorSKU.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/VendorSkuListByVendor.json
-func ExampleVendorSKUsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorSkuListByVendor.json
+func ExampleVendorSKUsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armhybridnetwork.NewVendorSKUsClient("<subscription-id>", cred, nil)
-	pager := client.List("<vendor-name>",
+	client, err := armhybridnetwork.NewVendorSKUsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("TestVendor",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("VendorSKU.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorSkuListCredential.json
+func ExampleVendorSKUsClient_ListCredential() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armhybridnetwork.NewVendorSKUsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.ListCredential(ctx,
+		"TestVendor",
+		"TestSku",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
 }

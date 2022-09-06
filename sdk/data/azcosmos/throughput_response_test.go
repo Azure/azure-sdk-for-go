@@ -40,7 +40,7 @@ func TestThroughputResponseParsing(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	resp, _ := pl.Do(req)
 	parsedResponse, err := newThroughputResponse(resp, nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func TestThroughputResponseParsingWithPreviousRU(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	resp, _ := pl.Do(req)
 	parsedResponse, err := newThroughputResponse(resp, &queryRequestCharge)
 	if err != nil {

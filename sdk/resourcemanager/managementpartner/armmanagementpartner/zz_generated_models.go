@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,34 +8,32 @@
 
 package armmanagementpartner
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // Error - this is the management partner operations error
-// Implements the error and azcore.HTTPResponse interfaces.
 type Error struct {
-	raw string
-	// this is the ExtendedErrorInfo property
-	InnerError *ExtendedErrorInfo `json:"error,omitempty"`
-}
+	// this is the error response code
+	Code *string `json:"code,omitempty"`
 
-// Error implements the error interface for type Error.
-// The contents of the error text are not contractual and subject to change.
-func (e Error) Error() string {
-	return e.raw
+	// this is the ExtendedErrorInfo property
+	Error *ExtendedErrorInfo `json:"error,omitempty"`
+
+	// this is the extended error info message
+	Message *string `json:"message,omitempty"`
 }
 
 // ExtendedErrorInfo - this is the extended error info
 type ExtendedErrorInfo struct {
 	// this is the error response code
-	Code *ErrorResponseCode `json:"code,omitempty"`
+	Code *string `json:"code,omitempty"`
 
 	// this is the extended error info message
 	Message *string `json:"message,omitempty"`
+}
+
+// OperationClientListOptions contains the optional parameters for the OperationClient.List method.
+type OperationClientListOptions struct {
+	// placeholder for future optional parameters
 }
 
 // OperationDisplay - this is the management partner operation
@@ -62,19 +60,6 @@ type OperationList struct {
 	Value []*OperationResponse `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationList.
-func (o OperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
-// OperationListOptions contains the optional parameters for the Operation.List method.
-type OperationListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // OperationResponse - this is the management partner operations response
 type OperationResponse struct {
 	// this is the operation display
@@ -87,18 +72,23 @@ type OperationResponse struct {
 	Origin *string `json:"origin,omitempty"`
 }
 
-// PartnerCreateOptions contains the optional parameters for the Partner.Create method.
-type PartnerCreateOptions struct {
+// PartnerClientCreateOptions contains the optional parameters for the PartnerClient.Create method.
+type PartnerClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PartnerDeleteOptions contains the optional parameters for the Partner.Delete method.
-type PartnerDeleteOptions struct {
+// PartnerClientDeleteOptions contains the optional parameters for the PartnerClient.Delete method.
+type PartnerClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PartnerGetOptions contains the optional parameters for the Partner.Get method.
-type PartnerGetOptions struct {
+// PartnerClientGetOptions contains the optional parameters for the PartnerClient.Get method.
+type PartnerClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PartnerClientUpdateOptions contains the optional parameters for the PartnerClient.Update method.
+type PartnerClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -129,61 +119,6 @@ type PartnerProperties struct {
 	Version *int32 `json:"version,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PartnerProperties.
-func (p PartnerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdTime", p.CreatedTime)
-	populate(objectMap, "objectId", p.ObjectID)
-	populate(objectMap, "partnerId", p.PartnerID)
-	populate(objectMap, "partnerName", p.PartnerName)
-	populate(objectMap, "state", p.State)
-	populate(objectMap, "tenantId", p.TenantID)
-	populateTimeRFC3339(objectMap, "updatedTime", p.UpdatedTime)
-	populate(objectMap, "version", p.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PartnerProperties.
-func (p *PartnerProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdTime":
-			err = unpopulateTimeRFC3339(val, &p.CreatedTime)
-			delete(rawMsg, key)
-		case "objectId":
-			err = unpopulate(val, &p.ObjectID)
-			delete(rawMsg, key)
-		case "partnerId":
-			err = unpopulate(val, &p.PartnerID)
-			delete(rawMsg, key)
-		case "partnerName":
-			err = unpopulate(val, &p.PartnerName)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, &p.State)
-			delete(rawMsg, key)
-		case "tenantId":
-			err = unpopulate(val, &p.TenantID)
-			delete(rawMsg, key)
-		case "updatedTime":
-			err = unpopulateTimeRFC3339(val, &p.UpdatedTime)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &p.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // PartnerResponse - this is the management partner operations response
 type PartnerResponse struct {
 	// Type of the partner
@@ -202,29 +137,7 @@ type PartnerResponse struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// PartnerUpdateOptions contains the optional parameters for the Partner.Update method.
-type PartnerUpdateOptions struct {
+// PartnersClientGetOptions contains the optional parameters for the PartnersClient.Get method.
+type PartnersClientGetOptions struct {
 	// placeholder for future optional parameters
-}
-
-// PartnersGetOptions contains the optional parameters for the Partners.Get method.
-type PartnersGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -20,6 +20,12 @@ func unmarshalActionClassification(rawMsg json.RawMessage) (ActionClassification
 	}
 	var b ActionClassification
 	switch m["type"] {
+	case "continuous":
+		b = &ContinuousAction{}
+	case "delay":
+		b = &DelayAction{}
+	case "discrete":
+		b = &DiscreteAction{}
 	default:
 		b = &Action{}
 	}
@@ -43,23 +49,4 @@ func unmarshalActionClassificationArray(rawMsg json.RawMessage) ([]ActionClassif
 		fArray[index] = f
 	}
 	return fArray, nil
-}
-
-func unmarshalActionClassificationMap(rawMsg json.RawMessage) (map[string]ActionClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]ActionClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalActionClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

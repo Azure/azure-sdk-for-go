@@ -672,6 +672,45 @@ const (
 	SapTablePartitionOptionPartitionOnTime          SapTablePartitionOption = original.SapTablePartitionOptionPartitionOnTime
 )
 
+type ScriptActivityLogDestination = original.ScriptActivityLogDestination
+
+const (
+	ScriptActivityLogDestinationActivityOutput ScriptActivityLogDestination = original.ScriptActivityLogDestinationActivityOutput
+	ScriptActivityLogDestinationExternalStore  ScriptActivityLogDestination = original.ScriptActivityLogDestinationExternalStore
+)
+
+type ScriptActivityParameterDirection = original.ScriptActivityParameterDirection
+
+const (
+	ScriptActivityParameterDirectionInput       ScriptActivityParameterDirection = original.ScriptActivityParameterDirectionInput
+	ScriptActivityParameterDirectionInputOutput ScriptActivityParameterDirection = original.ScriptActivityParameterDirectionInputOutput
+	ScriptActivityParameterDirectionOutput      ScriptActivityParameterDirection = original.ScriptActivityParameterDirectionOutput
+)
+
+type ScriptActivityParameterType = original.ScriptActivityParameterType
+
+const (
+	ScriptActivityParameterTypeBoolean        ScriptActivityParameterType = original.ScriptActivityParameterTypeBoolean
+	ScriptActivityParameterTypeDateTime       ScriptActivityParameterType = original.ScriptActivityParameterTypeDateTime
+	ScriptActivityParameterTypeDateTimeOffset ScriptActivityParameterType = original.ScriptActivityParameterTypeDateTimeOffset
+	ScriptActivityParameterTypeDecimal        ScriptActivityParameterType = original.ScriptActivityParameterTypeDecimal
+	ScriptActivityParameterTypeDouble         ScriptActivityParameterType = original.ScriptActivityParameterTypeDouble
+	ScriptActivityParameterTypeGUID           ScriptActivityParameterType = original.ScriptActivityParameterTypeGUID
+	ScriptActivityParameterTypeInt16          ScriptActivityParameterType = original.ScriptActivityParameterTypeInt16
+	ScriptActivityParameterTypeInt32          ScriptActivityParameterType = original.ScriptActivityParameterTypeInt32
+	ScriptActivityParameterTypeInt64          ScriptActivityParameterType = original.ScriptActivityParameterTypeInt64
+	ScriptActivityParameterTypeSingle         ScriptActivityParameterType = original.ScriptActivityParameterTypeSingle
+	ScriptActivityParameterTypeString         ScriptActivityParameterType = original.ScriptActivityParameterTypeString
+	ScriptActivityParameterTypeTimespan       ScriptActivityParameterType = original.ScriptActivityParameterTypeTimespan
+)
+
+type ScriptType = original.ScriptType
+
+const (
+	ScriptTypeNonQuery ScriptType = original.ScriptTypeNonQuery
+	ScriptTypeQuery    ScriptType = original.ScriptTypeQuery
+)
+
 type SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatus
 
 const (
@@ -768,6 +807,13 @@ const (
 	SybaseAuthenticationTypeWindows SybaseAuthenticationType = original.SybaseAuthenticationTypeWindows
 )
 
+type TeamDeskAuthenticationType = original.TeamDeskAuthenticationType
+
+const (
+	TeamDeskAuthenticationTypeBasic TeamDeskAuthenticationType = original.TeamDeskAuthenticationTypeBasic
+	TeamDeskAuthenticationTypeToken TeamDeskAuthenticationType = original.TeamDeskAuthenticationTypeToken
+)
+
 type TeradataAuthenticationType = original.TeradataAuthenticationType
 
 const (
@@ -838,6 +884,7 @@ const (
 	TypeBasicActivityTypeExecuteSSISPackage       TypeBasicActivity = original.TypeBasicActivityTypeExecuteSSISPackage
 	TypeBasicActivityTypeExecuteWranglingDataflow TypeBasicActivity = original.TypeBasicActivityTypeExecuteWranglingDataflow
 	TypeBasicActivityTypeExecution                TypeBasicActivity = original.TypeBasicActivityTypeExecution
+	TypeBasicActivityTypeFail                     TypeBasicActivity = original.TypeBasicActivityTypeFail
 	TypeBasicActivityTypeFilter                   TypeBasicActivity = original.TypeBasicActivityTypeFilter
 	TypeBasicActivityTypeForEach                  TypeBasicActivity = original.TypeBasicActivityTypeForEach
 	TypeBasicActivityTypeGetMetadata              TypeBasicActivity = original.TypeBasicActivityTypeGetMetadata
@@ -848,6 +895,7 @@ const (
 	TypeBasicActivityTypeHDInsightStreaming       TypeBasicActivity = original.TypeBasicActivityTypeHDInsightStreaming
 	TypeBasicActivityTypeIfCondition              TypeBasicActivity = original.TypeBasicActivityTypeIfCondition
 	TypeBasicActivityTypeLookup                   TypeBasicActivity = original.TypeBasicActivityTypeLookup
+	TypeBasicActivityTypeScript                   TypeBasicActivity = original.TypeBasicActivityTypeScript
 	TypeBasicActivityTypeSetVariable              TypeBasicActivity = original.TypeBasicActivityTypeSetVariable
 	TypeBasicActivityTypeSQLServerStoredProcedure TypeBasicActivity = original.TypeBasicActivityTypeSQLServerStoredProcedure
 	TypeBasicActivityTypeSwitch                   TypeBasicActivity = original.TypeBasicActivityTypeSwitch
@@ -1257,6 +1305,8 @@ const (
 	TypeBasicLinkedServiceTypeAmazonRedshift           TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAmazonRedshift
 	TypeBasicLinkedServiceTypeAmazonS3                 TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAmazonS3
 	TypeBasicLinkedServiceTypeAmazonS3Compatible       TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAmazonS3Compatible
+	TypeBasicLinkedServiceTypeAppFigures               TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAppFigures
+	TypeBasicLinkedServiceTypeAsana                    TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAsana
 	TypeBasicLinkedServiceTypeAzureBatch               TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAzureBatch
 	TypeBasicLinkedServiceTypeAzureBlobFS              TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAzureBlobFS
 	TypeBasicLinkedServiceTypeAzureBlobStorage         TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAzureBlobStorage
@@ -1286,6 +1336,7 @@ const (
 	TypeBasicLinkedServiceTypeCosmosDbMongoDbAPI       TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeCosmosDbMongoDbAPI
 	TypeBasicLinkedServiceTypeCouchbase                TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeCouchbase
 	TypeBasicLinkedServiceTypeCustomDataSource         TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeCustomDataSource
+	TypeBasicLinkedServiceTypeDataworld                TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeDataworld
 	TypeBasicLinkedServiceTypeDb2                      TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeDb2
 	TypeBasicLinkedServiceTypeDrill                    TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeDrill
 	TypeBasicLinkedServiceTypeDynamics                 TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeDynamics
@@ -1328,6 +1379,7 @@ const (
 	TypeBasicLinkedServiceTypePhoenix                  TypeBasicLinkedService = original.TypeBasicLinkedServiceTypePhoenix
 	TypeBasicLinkedServiceTypePostgreSQL               TypeBasicLinkedService = original.TypeBasicLinkedServiceTypePostgreSQL
 	TypeBasicLinkedServiceTypePresto                   TypeBasicLinkedService = original.TypeBasicLinkedServiceTypePresto
+	TypeBasicLinkedServiceTypeQuickbase                TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeQuickbase
 	TypeBasicLinkedServiceTypeQuickBooks               TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeQuickBooks
 	TypeBasicLinkedServiceTypeResponsys                TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeResponsys
 	TypeBasicLinkedServiceTypeRestService              TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeRestService
@@ -1344,15 +1396,19 @@ const (
 	TypeBasicLinkedServiceTypeSftp                     TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeSftp
 	TypeBasicLinkedServiceTypeSharePointOnlineList     TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeSharePointOnlineList
 	TypeBasicLinkedServiceTypeShopify                  TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeShopify
+	TypeBasicLinkedServiceTypeSmartsheet               TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeSmartsheet
 	TypeBasicLinkedServiceTypeSnowflake                TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeSnowflake
 	TypeBasicLinkedServiceTypeSpark                    TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeSpark
 	TypeBasicLinkedServiceTypeSQLServer                TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeSQLServer
 	TypeBasicLinkedServiceTypeSquare                   TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeSquare
 	TypeBasicLinkedServiceTypeSybase                   TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeSybase
+	TypeBasicLinkedServiceTypeTeamDesk                 TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeTeamDesk
 	TypeBasicLinkedServiceTypeTeradata                 TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeTeradata
+	TypeBasicLinkedServiceTypeTwilio                   TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeTwilio
 	TypeBasicLinkedServiceTypeVertica                  TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeVertica
 	TypeBasicLinkedServiceTypeWeb                      TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeWeb
 	TypeBasicLinkedServiceTypeXero                     TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeXero
+	TypeBasicLinkedServiceTypeZendesk                  TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeZendesk
 	TypeBasicLinkedServiceTypeZoho                     TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeZoho
 )
 
@@ -1434,6 +1490,13 @@ const (
 	WebHookActivityMethodPOST WebHookActivityMethod = original.WebHookActivityMethodPOST
 )
 
+type ZendeskAuthenticationType = original.ZendeskAuthenticationType
+
+const (
+	ZendeskAuthenticationTypeBasic ZendeskAuthenticationType = original.ZendeskAuthenticationTypeBasic
+	ZendeskAuthenticationTypeToken ZendeskAuthenticationType = original.ZendeskAuthenticationTypeToken
+)
+
 type AccessPolicyResponse = original.AccessPolicyResponse
 type Activity = original.Activity
 type ActivityDependency = original.ActivityDependency
@@ -1473,9 +1536,13 @@ type AmazonS3LinkedService = original.AmazonS3LinkedService
 type AmazonS3LinkedServiceTypeProperties = original.AmazonS3LinkedServiceTypeProperties
 type AmazonS3Location = original.AmazonS3Location
 type AmazonS3ReadSettings = original.AmazonS3ReadSettings
+type AppFiguresLinkedService = original.AppFiguresLinkedService
+type AppFiguresLinkedServiceTypeProperties = original.AppFiguresLinkedServiceTypeProperties
 type AppendVariableActivity = original.AppendVariableActivity
 type AppendVariableActivityTypeProperties = original.AppendVariableActivityTypeProperties
 type ArmIDWrapper = original.ArmIDWrapper
+type AsanaLinkedService = original.AsanaLinkedService
+type AsanaLinkedServiceTypeProperties = original.AsanaLinkedServiceTypeProperties
 type AvroDataset = original.AvroDataset
 type AvroDatasetTypeProperties = original.AvroDatasetTypeProperties
 type AvroFormat = original.AvroFormat
@@ -1750,6 +1817,8 @@ type DatasetResource = original.DatasetResource
 type DatasetSchemaDataElement = original.DatasetSchemaDataElement
 type DatasetStorageFormat = original.DatasetStorageFormat
 type DatasetsClient = original.DatasetsClient
+type DataworldLinkedService = original.DataworldLinkedService
+type DataworldLinkedServiceTypeProperties = original.DataworldLinkedServiceTypeProperties
 type Db2LinkedService = original.Db2LinkedService
 type Db2LinkedServiceTypeProperties = original.Db2LinkedServiceTypeProperties
 type Db2Source = original.Db2Source
@@ -1807,6 +1876,7 @@ type ExecuteDataFlowActivity = original.ExecuteDataFlowActivity
 type ExecuteDataFlowActivityTypeProperties = original.ExecuteDataFlowActivityTypeProperties
 type ExecuteDataFlowActivityTypePropertiesCompute = original.ExecuteDataFlowActivityTypePropertiesCompute
 type ExecutePipelineActivity = original.ExecutePipelineActivity
+type ExecutePipelineActivityPolicy = original.ExecutePipelineActivityPolicy
 type ExecutePipelineActivityTypeProperties = original.ExecutePipelineActivityTypeProperties
 type ExecutePowerQueryActivityTypeProperties = original.ExecutePowerQueryActivityTypeProperties
 type ExecuteSSISPackageActivity = original.ExecuteSSISPackageActivity
@@ -1831,7 +1901,10 @@ type FactoryProperties = original.FactoryProperties
 type FactoryRepoConfiguration = original.FactoryRepoConfiguration
 type FactoryRepoUpdate = original.FactoryRepoUpdate
 type FactoryUpdateParameters = original.FactoryUpdateParameters
+type FactoryUpdateProperties = original.FactoryUpdateProperties
 type FactoryVSTSConfiguration = original.FactoryVSTSConfiguration
+type FailActivity = original.FailActivity
+type FailActivityTypeProperties = original.FailActivityTypeProperties
 type FileServerLinkedService = original.FileServerLinkedService
 type FileServerLinkedServiceTypeProperties = original.FileServerLinkedServiceTypeProperties
 type FileServerLocation = original.FileServerLocation
@@ -2166,6 +2239,7 @@ type PrestoLinkedServiceTypeProperties = original.PrestoLinkedServiceTypePropert
 type PrestoObjectDataset = original.PrestoObjectDataset
 type PrestoSource = original.PrestoSource
 type PrivateEndPointConnectionsClient = original.PrivateEndPointConnectionsClient
+type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointConnectionClient = original.PrivateEndpointConnectionClient
 type PrivateEndpointConnectionListResponse = original.PrivateEndpointConnectionListResponse
 type PrivateEndpointConnectionListResponseIterator = original.PrivateEndpointConnectionListResponseIterator
@@ -2178,6 +2252,7 @@ type PrivateLinkResource = original.PrivateLinkResource
 type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
 type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkResourcesWrapper = original.PrivateLinkResourcesWrapper
+type PurviewConfiguration = original.PurviewConfiguration
 type QueryDataFlowDebugSessionsResponse = original.QueryDataFlowDebugSessionsResponse
 type QueryDataFlowDebugSessionsResponseIterator = original.QueryDataFlowDebugSessionsResponseIterator
 type QueryDataFlowDebugSessionsResponsePage = original.QueryDataFlowDebugSessionsResponsePage
@@ -2185,6 +2260,8 @@ type QuickBooksLinkedService = original.QuickBooksLinkedService
 type QuickBooksLinkedServiceTypeProperties = original.QuickBooksLinkedServiceTypeProperties
 type QuickBooksObjectDataset = original.QuickBooksObjectDataset
 type QuickBooksSource = original.QuickBooksSource
+type QuickbaseLinkedService = original.QuickbaseLinkedService
+type QuickbaseLinkedServiceTypeProperties = original.QuickbaseLinkedServiceTypeProperties
 type RecurrenceSchedule = original.RecurrenceSchedule
 type RecurrenceScheduleOccurrence = original.RecurrenceScheduleOccurrence
 type RedirectIncompatibleRowSettings = original.RedirectIncompatibleRowSettings
@@ -2289,6 +2366,11 @@ type ScheduleTrigger = original.ScheduleTrigger
 type ScheduleTriggerRecurrence = original.ScheduleTriggerRecurrence
 type ScheduleTriggerTypeProperties = original.ScheduleTriggerTypeProperties
 type ScriptAction = original.ScriptAction
+type ScriptActivity = original.ScriptActivity
+type ScriptActivityParameter = original.ScriptActivityParameter
+type ScriptActivityScriptBlock = original.ScriptActivityScriptBlock
+type ScriptActivityTypeProperties = original.ScriptActivityTypeProperties
+type ScriptActivityTypePropertiesLogSettings = original.ScriptActivityTypePropertiesLogSettings
 type SecretBase = original.SecretBase
 type SecureString = original.SecureString
 type SelfDependencyTumblingWindowTriggerReference = original.SelfDependencyTumblingWindowTriggerReference
@@ -2320,6 +2402,8 @@ type ShopifyLinkedServiceTypeProperties = original.ShopifyLinkedServiceTypePrope
 type ShopifyObjectDataset = original.ShopifyObjectDataset
 type ShopifySource = original.ShopifySource
 type SkipErrorFile = original.SkipErrorFile
+type SmartsheetLinkedService = original.SmartsheetLinkedService
+type SmartsheetLinkedServiceTypeProperties = original.SmartsheetLinkedServiceTypeProperties
 type SnowflakeDataset = original.SnowflakeDataset
 type SnowflakeDatasetTypeProperties = original.SnowflakeDatasetTypeProperties
 type SnowflakeExportCopyCommand = original.SnowflakeExportCopyCommand
@@ -2365,6 +2449,8 @@ type TabularSource = original.TabularSource
 type TabularTranslator = original.TabularTranslator
 type TarGZipReadSettings = original.TarGZipReadSettings
 type TarReadSettings = original.TarReadSettings
+type TeamDeskLinkedService = original.TeamDeskLinkedService
+type TeamDeskLinkedServiceTypeProperties = original.TeamDeskLinkedServiceTypeProperties
 type TeradataLinkedService = original.TeradataLinkedService
 type TeradataLinkedServiceTypeProperties = original.TeradataLinkedServiceTypeProperties
 type TeradataPartitionSettings = original.TeradataPartitionSettings
@@ -2395,6 +2481,8 @@ type TriggersUnsubscribeFromEventsFuture = original.TriggersUnsubscribeFromEvent
 type TumblingWindowTrigger = original.TumblingWindowTrigger
 type TumblingWindowTriggerDependencyReference = original.TumblingWindowTriggerDependencyReference
 type TumblingWindowTriggerTypeProperties = original.TumblingWindowTriggerTypeProperties
+type TwilioLinkedService = original.TwilioLinkedService
+type TwilioLinkedServiceTypeProperties = original.TwilioLinkedServiceTypeProperties
 type TypeConversionSettings = original.TypeConversionSettings
 type UntilActivity = original.UntilActivity
 type UntilActivityTypeProperties = original.UntilActivityTypeProperties
@@ -2434,6 +2522,8 @@ type XeroLinkedService = original.XeroLinkedService
 type XeroLinkedServiceTypeProperties = original.XeroLinkedServiceTypeProperties
 type XeroObjectDataset = original.XeroObjectDataset
 type XeroSource = original.XeroSource
+type ZendeskLinkedService = original.ZendeskLinkedService
+type ZendeskLinkedServiceTypeProperties = original.ZendeskLinkedServiceTypeProperties
 type ZipDeflateReadSettings = original.ZipDeflateReadSettings
 type ZohoLinkedService = original.ZohoLinkedService
 type ZohoLinkedServiceTypeProperties = original.ZohoLinkedServiceTypeProperties
@@ -2866,6 +2956,18 @@ func PossibleSapHanaPartitionOptionValues() []SapHanaPartitionOption {
 func PossibleSapTablePartitionOptionValues() []SapTablePartitionOption {
 	return original.PossibleSapTablePartitionOptionValues()
 }
+func PossibleScriptActivityLogDestinationValues() []ScriptActivityLogDestination {
+	return original.PossibleScriptActivityLogDestinationValues()
+}
+func PossibleScriptActivityParameterDirectionValues() []ScriptActivityParameterDirection {
+	return original.PossibleScriptActivityParameterDirectionValues()
+}
+func PossibleScriptActivityParameterTypeValues() []ScriptActivityParameterType {
+	return original.PossibleScriptActivityParameterTypeValues()
+}
+func PossibleScriptTypeValues() []ScriptType {
+	return original.PossibleScriptTypeValues()
+}
 func PossibleSelfHostedIntegrationRuntimeNodeStatusValues() []SelfHostedIntegrationRuntimeNodeStatus {
 	return original.PossibleSelfHostedIntegrationRuntimeNodeStatusValues()
 }
@@ -2898,6 +3000,9 @@ func PossibleStoredProcedureParameterTypeValues() []StoredProcedureParameterType
 }
 func PossibleSybaseAuthenticationTypeValues() []SybaseAuthenticationType {
 	return original.PossibleSybaseAuthenticationTypeValues()
+}
+func PossibleTeamDeskAuthenticationTypeValues() []TeamDeskAuthenticationType {
+	return original.PossibleTeamDeskAuthenticationTypeValues()
 }
 func PossibleTeradataAuthenticationTypeValues() []TeradataAuthenticationType {
 	return original.PossibleTeradataAuthenticationTypeValues()
@@ -2997,6 +3102,9 @@ func PossibleWebActivityMethodValues() []WebActivityMethod {
 }
 func PossibleWebHookActivityMethodValues() []WebHookActivityMethod {
 	return original.PossibleWebHookActivityMethodValues()
+}
+func PossibleZendeskAuthenticationTypeValues() []ZendeskAuthenticationType {
+	return original.PossibleZendeskAuthenticationTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

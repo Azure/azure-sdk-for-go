@@ -12,7 +12,7 @@ package insights
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-09-01-preview/insights"
 )
 
 const (
@@ -394,7 +394,6 @@ const (
 	OperatorGreaterThanOrEqual Operator = original.OperatorGreaterThanOrEqual
 	OperatorLessThan           Operator = original.OperatorLessThan
 	OperatorLessThanOrEqual    Operator = original.OperatorLessThanOrEqual
-	OperatorNotEquals          Operator = original.OperatorNotEquals
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -486,12 +485,14 @@ const (
 )
 
 type Action = original.Action
+type ActionDetail = original.ActionDetail
 type ActionGroup = original.ActionGroup
 type ActionGroupList = original.ActionGroupList
 type ActionGroupPatch = original.ActionGroupPatch
 type ActionGroupPatchBody = original.ActionGroupPatchBody
 type ActionGroupResource = original.ActionGroupResource
 type ActionGroupsClient = original.ActionGroupsClient
+type ActionGroupsPostTestNotificationsFuture = original.ActionGroupsPostTestNotificationsFuture
 type ActionList = original.ActionList
 type ActivityLogAlertResource = original.ActivityLogAlertResource
 type ActivityLogAlertsClient = original.ActivityLogAlertsClient
@@ -543,6 +544,7 @@ type BasicRuleAction = original.BasicRuleAction
 type BasicRuleCondition = original.BasicRuleCondition
 type BasicRuleDataSource = original.BasicRuleDataSource
 type ConfigurationAccessEndpointSpec = original.ConfigurationAccessEndpointSpec
+type Context = original.Context
 type Criteria = original.Criteria
 type DataCollectionEndpoint = original.DataCollectionEndpoint
 type DataCollectionEndpointConfigurationAccess = original.DataCollectionEndpointConfigurationAccess
@@ -605,6 +607,7 @@ type EventData = original.EventData
 type EventDataCollection = original.EventDataCollection
 type EventDataCollectionIterator = original.EventDataCollectionIterator
 type EventDataCollectionPage = original.EventDataCollectionPage
+type EventHubReceiver = original.EventHubReceiver
 type ExtensionDataSource = original.ExtensionDataSource
 type HTTPRequestInfo = original.HTTPRequestInfo
 type Incident = original.Incident
@@ -665,6 +668,7 @@ type MetricValue = original.MetricValue
 type MetricsClient = original.MetricsClient
 type MultiMetricCriteria = original.MultiMetricCriteria
 type NetworkRuleSet = original.NetworkRuleSet
+type NotificationRequestBody = original.NotificationRequestBody
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -731,6 +735,8 @@ type SyslogDataSource = original.SyslogDataSource
 type SystemData = original.SystemData
 type TagsResource = original.TagsResource
 type TenantActivityLogsClient = original.TenantActivityLogsClient
+type TestNotificationDetailsResponse = original.TestNotificationDetailsResponse
+type TestNotificationResponse = original.TestNotificationResponse
 type ThresholdRuleCondition = original.ThresholdRuleCondition
 type TimeSeriesBaseline = original.TimeSeriesBaseline
 type TimeSeriesElement = original.TimeSeriesElement

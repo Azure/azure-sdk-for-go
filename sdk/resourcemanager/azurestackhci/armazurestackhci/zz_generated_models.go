@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,30 +8,43 @@
 
 package armazurestackhci
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
+
+// ArcConnectivityProperties - Connectivity related configuration required by arc server.
+type ArcConnectivityProperties struct {
+	// True indicates ARC connectivity is enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// ArcIdentityResponse - ArcIdentity details.
+type ArcIdentityResponse struct {
+	// READ-ONLY; ArcIdentity properties.
+	Properties *ArcIdentityResponseProperties `json:"properties,omitempty" azure:"ro"`
+}
+
+type ArcIdentityResponseProperties struct {
+	ArcApplicationClientID      *string `json:"arcApplicationClientId,omitempty"`
+	ArcApplicationObjectID      *string `json:"arcApplicationObjectId,omitempty"`
+	ArcApplicationTenantID      *string `json:"arcApplicationTenantId,omitempty"`
+	ArcServicePrincipalObjectID *string `json:"arcServicePrincipalObjectId,omitempty"`
+}
 
 // ArcSetting details.
 type ArcSetting struct {
-	ProxyResource
 	// ArcSetting properties.
 	Properties *ArcSettingProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; System data of ArcSetting resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ArcSetting.
-func (a ArcSetting) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ArcSettingList - List of ArcSetting proxy resources for the HCI cluster.
@@ -43,21 +56,28 @@ type ArcSettingList struct {
 	Value []*ArcSetting `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ArcSettingList.
-func (a ArcSettingList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // ArcSettingProperties - ArcSetting properties.
 type ArcSettingProperties struct {
+	// App id of arc AAD identity.
+	ArcApplicationClientID *string `json:"arcApplicationClientId,omitempty"`
+
+	// Object id of arc AAD identity.
+	ArcApplicationObjectID *string `json:"arcApplicationObjectId,omitempty"`
+
+	// Tenant id of arc AAD identity.
+	ArcApplicationTenantID *string `json:"arcApplicationTenantId,omitempty"`
+
+	// The resource group that hosts the Arc agents, ie. Hybrid Compute Machine resources.
+	ArcInstanceResourceGroup *string `json:"arcInstanceResourceGroup,omitempty"`
+
+	// Object id of arc AAD service principal.
+	ArcServicePrincipalObjectID *string `json:"arcServicePrincipalObjectId,omitempty"`
+
+	// contains connectivity related configuration for ARC resources
+	ConnectivityProperties interface{} `json:"connectivityProperties,omitempty"`
+
 	// READ-ONLY; Aggregate state of Arc agent across the nodes in this HCI cluster.
 	AggregateState *ArcSettingAggregateState `json:"aggregateState,omitempty" azure:"ro"`
-
-	// READ-ONLY; The resource group that hosts the Arc agents, ie. Hybrid Compute Machine resources.
-	ArcInstanceResourceGroup *string `json:"arcInstanceResourceGroup,omitempty" azure:"ro"`
 
 	// READ-ONLY; State of Arc agent in each of the nodes.
 	PerNodeDetails []*PerNodeState `json:"perNodeDetails,omitempty" azure:"ro"`
@@ -66,53 +86,81 @@ type ArcSettingProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ArcSettingProperties.
-func (a ArcSettingProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aggregateState", a.AggregateState)
-	populate(objectMap, "arcInstanceResourceGroup", a.ArcInstanceResourceGroup)
-	populate(objectMap, "perNodeDetails", a.PerNodeDetails)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	return json.Marshal(objectMap)
+// ArcSettingsClientBeginCreateIdentityOptions contains the optional parameters for the ArcSettingsClient.BeginCreateIdentity
+// method.
+type ArcSettingsClientBeginCreateIdentityOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// ArcSettingsBeginDeleteOptions contains the optional parameters for the ArcSettings.BeginDelete method.
-type ArcSettingsBeginDeleteOptions struct {
+// ArcSettingsClientBeginDeleteOptions contains the optional parameters for the ArcSettingsClient.BeginDelete method.
+type ArcSettingsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ArcSettingsClientCreateOptions contains the optional parameters for the ArcSettingsClient.Create method.
+type ArcSettingsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ArcSettingsCreateOptions contains the optional parameters for the ArcSettings.Create method.
-type ArcSettingsCreateOptions struct {
+// ArcSettingsClientGeneratePasswordOptions contains the optional parameters for the ArcSettingsClient.GeneratePassword method.
+type ArcSettingsClientGeneratePasswordOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ArcSettingsGetOptions contains the optional parameters for the ArcSettings.Get method.
-type ArcSettingsGetOptions struct {
+// ArcSettingsClientGetOptions contains the optional parameters for the ArcSettingsClient.Get method.
+type ArcSettingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ArcSettingsListByClusterOptions contains the optional parameters for the ArcSettings.ListByCluster method.
-type ArcSettingsListByClusterOptions struct {
+// ArcSettingsClientListByClusterOptions contains the optional parameters for the ArcSettingsClient.ListByCluster method.
+type ArcSettingsClientListByClusterOptions struct {
 	// placeholder for future optional parameters
+}
+
+// ArcSettingsClientUpdateOptions contains the optional parameters for the ArcSettingsClient.Update method.
+type ArcSettingsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ArcSettingsPatch - ArcSetting details to update.
+type ArcSettingsPatch struct {
+	// ArcSettings properties.
+	Properties *ArcSettingsPatchProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// ArcSettingsPatchProperties - ArcSettings properties.
+type ArcSettingsPatchProperties struct {
+	// contains connectivity related configuration for ARC resources
+	ConnectivityProperties interface{} `json:"connectivityProperties,omitempty"`
 }
 
 // Cluster details.
 type Cluster struct {
-	TrackedResource
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
 	// Cluster properties.
 	Properties *ClusterProperties `json:"properties,omitempty"`
 
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; System data of Cluster resource
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Cluster.
-func (c Cluster) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.TrackedResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "systemData", c.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ClusterDesiredProperties - Desired properties of the cluster.
@@ -124,6 +172,19 @@ type ClusterDesiredProperties struct {
 	WindowsServerSubscription *WindowsServerSubscription `json:"windowsServerSubscription,omitempty"`
 }
 
+// ClusterIdentityResponse - Cluster Identity details.
+type ClusterIdentityResponse struct {
+	// READ-ONLY; Cluster identity properties.
+	Properties *ClusterIdentityResponseProperties `json:"properties,omitempty" azure:"ro"`
+}
+
+type ClusterIdentityResponseProperties struct {
+	AADApplicationObjectID      *string `json:"aadApplicationObjectId,omitempty"`
+	AADClientID                 *string `json:"aadClientId,omitempty"`
+	AADServicePrincipalObjectID *string `json:"aadServicePrincipalObjectId,omitempty"`
+	AADTenantID                 *string `json:"aadTenantId,omitempty"`
+}
+
 // ClusterList - List of clusters.
 type ClusterList struct {
 	// List of clusters.
@@ -131,14 +192,6 @@ type ClusterList struct {
 
 	// READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ClusterList.
-func (c ClusterList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // ClusterNode - Cluster node details.
@@ -183,14 +236,6 @@ type ClusterPatch struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ClusterPatch.
-func (c ClusterPatch) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "tags", c.Tags)
-	return json.Marshal(objectMap)
-}
-
 // ClusterPatchProperties - Cluster properties.
 type ClusterPatchProperties struct {
 	// App id of cluster AAD identity.
@@ -208,10 +253,16 @@ type ClusterPatchProperties struct {
 
 // ClusterProperties - Cluster properties.
 type ClusterProperties struct {
-	// REQUIRED; App id of cluster AAD identity.
+	// Object id of cluster AAD identity.
+	AADApplicationObjectID *string `json:"aadApplicationObjectId,omitempty"`
+
+	// App id of cluster AAD identity.
 	AADClientID *string `json:"aadClientId,omitempty"`
 
-	// REQUIRED; Tenant id of cluster AAD identity.
+	// Id of cluster identity service principal.
+	AADServicePrincipalObjectID *string `json:"aadServicePrincipalObjectId,omitempty"`
+
+	// Tenant id of cluster AAD identity.
 	AADTenantID *string `json:"aadTenantId,omitempty"`
 
 	// Endpoint configured for management from the Azure portal.
@@ -241,86 +292,14 @@ type ClusterProperties struct {
 	// READ-ONLY; Properties reported by cluster agent.
 	ReportedProperties *ClusterReportedProperties `json:"reportedProperties,omitempty" azure:"ro"`
 
+	// READ-ONLY; Region specific DataPath Endpoint of the cluster.
+	ServiceEndpoint *string `json:"serviceEndpoint,omitempty" azure:"ro"`
+
 	// READ-ONLY; Status of the cluster agent.
 	Status *Status `json:"status,omitempty" azure:"ro"`
 
 	// READ-ONLY; Number of days remaining in the trial period.
 	TrialDaysRemaining *float32 `json:"trialDaysRemaining,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ClusterProperties.
-func (c ClusterProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aadClientId", c.AADClientID)
-	populate(objectMap, "aadTenantId", c.AADTenantID)
-	populate(objectMap, "billingModel", c.BillingModel)
-	populate(objectMap, "cloudId", c.CloudID)
-	populate(objectMap, "cloudManagementEndpoint", c.CloudManagementEndpoint)
-	populate(objectMap, "desiredProperties", c.DesiredProperties)
-	populateTimeRFC3339(objectMap, "lastBillingTimestamp", c.LastBillingTimestamp)
-	populateTimeRFC3339(objectMap, "lastSyncTimestamp", c.LastSyncTimestamp)
-	populate(objectMap, "provisioningState", c.ProvisioningState)
-	populateTimeRFC3339(objectMap, "registrationTimestamp", c.RegistrationTimestamp)
-	populate(objectMap, "reportedProperties", c.ReportedProperties)
-	populate(objectMap, "status", c.Status)
-	populate(objectMap, "trialDaysRemaining", c.TrialDaysRemaining)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ClusterProperties.
-func (c *ClusterProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "aadClientId":
-			err = unpopulate(val, &c.AADClientID)
-			delete(rawMsg, key)
-		case "aadTenantId":
-			err = unpopulate(val, &c.AADTenantID)
-			delete(rawMsg, key)
-		case "billingModel":
-			err = unpopulate(val, &c.BillingModel)
-			delete(rawMsg, key)
-		case "cloudId":
-			err = unpopulate(val, &c.CloudID)
-			delete(rawMsg, key)
-		case "cloudManagementEndpoint":
-			err = unpopulate(val, &c.CloudManagementEndpoint)
-			delete(rawMsg, key)
-		case "desiredProperties":
-			err = unpopulate(val, &c.DesiredProperties)
-			delete(rawMsg, key)
-		case "lastBillingTimestamp":
-			err = unpopulateTimeRFC3339(val, &c.LastBillingTimestamp)
-			delete(rawMsg, key)
-		case "lastSyncTimestamp":
-			err = unpopulateTimeRFC3339(val, &c.LastSyncTimestamp)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &c.ProvisioningState)
-			delete(rawMsg, key)
-		case "registrationTimestamp":
-			err = unpopulateTimeRFC3339(val, &c.RegistrationTimestamp)
-			delete(rawMsg, key)
-		case "reportedProperties":
-			err = unpopulate(val, &c.ReportedProperties)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &c.Status)
-			delete(rawMsg, key)
-		case "trialDaysRemaining":
-			err = unpopulate(val, &c.TrialDaysRemaining)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ClusterReportedProperties - Properties reported by cluster agent.
@@ -347,91 +326,54 @@ type ClusterReportedProperties struct {
 	Nodes []*ClusterNode `json:"nodes,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ClusterReportedProperties.
-func (c ClusterReportedProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "clusterId", c.ClusterID)
-	populate(objectMap, "clusterName", c.ClusterName)
-	populate(objectMap, "clusterVersion", c.ClusterVersion)
-	populate(objectMap, "diagnosticLevel", c.DiagnosticLevel)
-	populate(objectMap, "imdsAttestation", c.ImdsAttestation)
-	populateTimeRFC3339(objectMap, "lastUpdated", c.LastUpdated)
-	populate(objectMap, "nodes", c.Nodes)
-	return json.Marshal(objectMap)
+// ClustersClientBeginCreateIdentityOptions contains the optional parameters for the ClustersClient.BeginCreateIdentity method.
+type ClustersClientBeginCreateIdentityOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ClusterReportedProperties.
-func (c *ClusterReportedProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "clusterId":
-			err = unpopulate(val, &c.ClusterID)
-			delete(rawMsg, key)
-		case "clusterName":
-			err = unpopulate(val, &c.ClusterName)
-			delete(rawMsg, key)
-		case "clusterVersion":
-			err = unpopulate(val, &c.ClusterVersion)
-			delete(rawMsg, key)
-		case "diagnosticLevel":
-			err = unpopulate(val, &c.DiagnosticLevel)
-			delete(rawMsg, key)
-		case "imdsAttestation":
-			err = unpopulate(val, &c.ImdsAttestation)
-			delete(rawMsg, key)
-		case "lastUpdated":
-			err = unpopulateTimeRFC3339(val, &c.LastUpdated)
-			delete(rawMsg, key)
-		case "nodes":
-			err = unpopulate(val, &c.Nodes)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+// ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
+type ClustersClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// ClustersCreateOptions contains the optional parameters for the Clusters.Create method.
-type ClustersCreateOptions struct {
+// ClustersClientBeginUploadCertificateOptions contains the optional parameters for the ClustersClient.BeginUploadCertificate
+// method.
+type ClustersClientBeginUploadCertificateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ClustersClientCreateOptions contains the optional parameters for the ClustersClient.Create method.
+type ClustersClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersDeleteOptions contains the optional parameters for the Clusters.Delete method.
-type ClustersDeleteOptions struct {
+// ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
+type ClustersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersGetOptions contains the optional parameters for the Clusters.Get method.
-type ClustersGetOptions struct {
+// ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup method.
+type ClustersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersListByResourceGroupOptions contains the optional parameters for the Clusters.ListByResourceGroup method.
-type ClustersListByResourceGroupOptions struct {
+// ClustersClientListBySubscriptionOptions contains the optional parameters for the ClustersClient.ListBySubscription method.
+type ClustersClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersListBySubscriptionOptions contains the optional parameters for the Clusters.ListBySubscription method.
-type ClustersListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClustersUpdateOptions contains the optional parameters for the Clusters.Update method.
-type ClustersUpdateOptions struct {
+// ClustersClientUpdateOptions contains the optional parameters for the ClustersClient.Update method.
+type ClustersClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -455,49 +397,29 @@ type ErrorDetail struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // Extension - Details of a particular extension in HCI Cluster.
 type Extension struct {
-	ProxyResource
 	// Describes Machine Extension Properties.
 	Properties *ExtensionProperties `json:"properties,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; System data of Extension resource.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Extension.
-func (e Extension) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	e.ProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", e.Properties)
-	populate(objectMap, "systemData", e.SystemData)
-	return json.Marshal(objectMap)
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ExtensionList - List of Extensions in HCI cluster.
@@ -509,18 +431,10 @@ type ExtensionList struct {
 	Value []*Extension `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ExtensionList.
-func (e ExtensionList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
-}
-
 // ExtensionParameters - Describes the properties of a Machine Extension. This object mirrors the definition in HybridCompute.
 type ExtensionParameters struct {
-	// Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not
-	// upgrade minor versions unless redeployed, even
+	// Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed,
+	// however, the extension will not upgrade minor versions unless redeployed, even
 	// with this property set to true.
 	AutoUpgradeMinorVersion *bool `json:"autoUpgradeMinorVersion,omitempty"`
 
@@ -528,13 +442,13 @@ type ExtensionParameters struct {
 	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
 
 	// Protected settings (may contain secrets).
-	ProtectedSettings map[string]interface{} `json:"protectedSettings,omitempty"`
+	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
 
 	// The name of the extension handler publisher.
 	Publisher *string `json:"publisher,omitempty"`
 
 	// Json formatted public settings for the extension.
-	Settings map[string]interface{} `json:"settings,omitempty"`
+	Settings interface{} `json:"settings,omitempty"`
 
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
 	Type *string `json:"type,omitempty"`
@@ -558,38 +472,31 @@ type ExtensionProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ExtensionProperties.
-func (e ExtensionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aggregateState", e.AggregateState)
-	populate(objectMap, "extensionParameters", e.ExtensionParameters)
-	populate(objectMap, "perNodeExtensionDetails", e.PerNodeExtensionDetails)
-	populate(objectMap, "provisioningState", e.ProvisioningState)
-	return json.Marshal(objectMap)
+// ExtensionsClientBeginCreateOptions contains the optional parameters for the ExtensionsClient.BeginCreate method.
+type ExtensionsClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// ExtensionsBeginCreateOptions contains the optional parameters for the Extensions.BeginCreate method.
-type ExtensionsBeginCreateOptions struct {
+// ExtensionsClientBeginDeleteOptions contains the optional parameters for the ExtensionsClient.BeginDelete method.
+type ExtensionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ExtensionsClientBeginUpdateOptions contains the optional parameters for the ExtensionsClient.BeginUpdate method.
+type ExtensionsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ExtensionsClientGetOptions contains the optional parameters for the ExtensionsClient.Get method.
+type ExtensionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ExtensionsBeginDeleteOptions contains the optional parameters for the Extensions.BeginDelete method.
-type ExtensionsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ExtensionsBeginUpdateOptions contains the optional parameters for the Extensions.BeginUpdate method.
-type ExtensionsBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ExtensionsGetOptions contains the optional parameters for the Extensions.Get method.
-type ExtensionsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ExtensionsListByArcSettingOptions contains the optional parameters for the Extensions.ListByArcSetting method.
-type ExtensionsListByArcSettingOptions struct {
+// ExtensionsClientListByArcSettingOptions contains the optional parameters for the ExtensionsClient.ListByArcSetting method.
+type ExtensionsClientListByArcSettingOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -601,13 +508,16 @@ type Operation struct {
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
 
-	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane operations.
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
 	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
 
-	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
 	Origin *Origin `json:"origin,omitempty" azure:"ro"`
 }
 
@@ -616,18 +526,21 @@ type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string `json:"description,omitempty" azure:"ro"`
 
-	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual Machine", "Restart Virtual
-	// Machine".
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string `json:"operation,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft Compute".
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string `json:"provider,omitempty" azure:"ro"`
 
-	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job Schedule Collections".
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -636,17 +549,16 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
 }
 
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
-	// placeholder for future optional parameters
+type PasswordCredential struct {
+	EndDateTime   *time.Time `json:"endDateTime,omitempty"`
+	KeyID         *string    `json:"keyId,omitempty"`
+	SecretText    *string    `json:"secretText,omitempty"`
+	StartDateTime *time.Time `json:"startDateTime,omitempty"`
 }
 
 // PerNodeExtensionState - Status of Arc Extension for a particular node in HCI Cluster.
@@ -673,13 +585,21 @@ type PerNodeState struct {
 	State *NodeArcState `json:"state,omitempty" azure:"ro"`
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	Resource
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-func (p ProxyResource) marshalInternal(objectMap map[string]interface{}) {
-	p.Resource.marshalInternal(objectMap)
+type RawCertificateData struct {
+	Certificates []*string `json:"certificates,omitempty"`
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
@@ -692,19 +612,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -728,89 +635,25 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
-	Resource
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	t.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
-	t.Resource.marshalInternal(objectMap)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "tags", t.Tags)
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
+type UploadCertificateRequest struct {
+	Properties *RawCertificateData `json:"properties,omitempty"`
 }

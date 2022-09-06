@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,164 +17,181 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 )
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/GetPeering.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/peering/resource-manager/Microsoft.Peering/stable/2022-01-01/examples/GetPeering.json
 func ExamplePeeringsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeeringsClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewPeeringsClient("subId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<peering-name>",
+		"rgName",
+		"peeringName",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Peering.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/CreateDirectPeering.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/peering/resource-manager/Microsoft.Peering/stable/2022-01-01/examples/CreateDirectPeering.json
 func ExamplePeeringsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeeringsClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewPeeringsClient("subId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<peering-name>",
+		"rgName",
+		"peeringName",
 		armpeering.Peering{
-			Kind:     armpeering.KindDirect.ToPtr(),
-			Location: to.StringPtr("<location>"),
-			Properties: &armpeering.PeeringProperties{
-				Direct: &armpeering.PeeringPropertiesDirect{
+			Kind:     to.Ptr(armpeering.KindDirect),
+			Location: to.Ptr("eastus"),
+			Properties: &armpeering.Properties{
+				Direct: &armpeering.PropertiesDirect{
 					Connections: []*armpeering.DirectConnection{
 						{
-							BandwidthInMbps: to.Int32Ptr(10000),
+							BandwidthInMbps: to.Ptr[int32](10000),
 							BgpSession: &armpeering.BgpSession{
-								MaxPrefixesAdvertisedV4: to.Int32Ptr(1000),
-								MaxPrefixesAdvertisedV6: to.Int32Ptr(100),
-								MD5AuthenticationKey:    to.StringPtr("<md5authentication-key>"),
-								SessionPrefixV4:         to.StringPtr("<session-prefix-v4>"),
-								SessionPrefixV6:         to.StringPtr("<session-prefix-v6>"),
+								MaxPrefixesAdvertisedV4: to.Ptr[int32](1000),
+								MaxPrefixesAdvertisedV6: to.Ptr[int32](100),
+								MD5AuthenticationKey:    to.Ptr("test-md5-auth-key"),
+								SessionPrefixV4:         to.Ptr("192.168.0.0/31"),
+								SessionPrefixV6:         to.Ptr("fd00::0/127"),
 							},
-							ConnectionIdentifier:   to.StringPtr("<connection-identifier>"),
-							PeeringDBFacilityID:    to.Int32Ptr(99999),
-							SessionAddressProvider: armpeering.SessionAddressProviderPeer.ToPtr(),
-							UseForPeeringService:   to.BoolPtr(false),
+							ConnectionIdentifier:   to.Ptr("5F4CB5C7-6B43-4444-9338-9ABC72606C16"),
+							PeeringDBFacilityID:    to.Ptr[int32](99999),
+							SessionAddressProvider: to.Ptr(armpeering.SessionAddressProviderPeer),
+							UseForPeeringService:   to.Ptr(false),
 						},
 						{
-							BandwidthInMbps: to.Int32Ptr(10000),
-							BgpSession: &armpeering.BgpSession{
-								MaxPrefixesAdvertisedV4: to.Int32Ptr(1000),
-								MaxPrefixesAdvertisedV6: to.Int32Ptr(100),
-								MD5AuthenticationKey:    to.StringPtr("<md5authentication-key>"),
-								SessionPrefixV4:         to.StringPtr("<session-prefix-v4>"),
-								SessionPrefixV6:         to.StringPtr("<session-prefix-v6>"),
-							},
-							ConnectionIdentifier:   to.StringPtr("<connection-identifier>"),
-							PeeringDBFacilityID:    to.Int32Ptr(99999),
-							SessionAddressProvider: armpeering.SessionAddressProviderMicrosoft.ToPtr(),
-							UseForPeeringService:   to.BoolPtr(true),
+							BandwidthInMbps:        to.Ptr[int32](10000),
+							ConnectionIdentifier:   to.Ptr("8AB00818-D533-4504-A25A-03A17F61201C"),
+							PeeringDBFacilityID:    to.Ptr[int32](99999),
+							SessionAddressProvider: to.Ptr(armpeering.SessionAddressProviderMicrosoft),
+							UseForPeeringService:   to.Ptr(true),
 						}},
-					DirectPeeringType: armpeering.DirectPeeringTypeEdge.ToPtr(),
+					DirectPeeringType: to.Ptr(armpeering.DirectPeeringTypeEdge),
 					PeerAsn: &armpeering.SubResource{
-						ID: to.StringPtr("<id>"),
+						ID: to.Ptr("/subscriptions/subId/providers/Microsoft.Peering/peerAsns/myAsn1"),
 					},
-					UseForPeeringService: to.BoolPtr(false),
 				},
-				PeeringLocation: to.StringPtr("<peering-location>"),
+				PeeringLocation: to.Ptr("peeringLocation0"),
 			},
-			SKU: &armpeering.PeeringSKU{
-				Name: armpeering.NameBasicDirectFree.ToPtr(),
+			SKU: &armpeering.SKU{
+				Name: to.Ptr("Basic_Direct_Free"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Peering.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/DeletePeering.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/peering/resource-manager/Microsoft.Peering/stable/2022-01-01/examples/DeletePeering.json
 func ExamplePeeringsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeeringsClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewPeeringsClient("subId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<peering-name>",
+		"rgName",
+		"peeringName",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/UpdatePeeringTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/peering/resource-manager/Microsoft.Peering/stable/2022-01-01/examples/UpdatePeeringTags.json
 func ExamplePeeringsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeeringsClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewPeeringsClient("subId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<peering-name>",
+		"rgName",
+		"peeringName",
 		armpeering.ResourceTags{
 			Tags: map[string]*string{
-				"tag0": to.StringPtr("value0"),
-				"tag1": to.StringPtr("value1"),
+				"tag0": to.Ptr("value0"),
+				"tag1": to.Ptr("value1"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Peering.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/ListPeeringsByResourceGroup.json
-func ExamplePeeringsClient_ListByResourceGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/peering/resource-manager/Microsoft.Peering/stable/2022-01-01/examples/ListPeeringsByResourceGroup.json
+func ExamplePeeringsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeeringsClient("<subscription-id>", cred, nil)
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	client, err := armpeering.NewPeeringsClient("subId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByResourceGroupPager("rgName",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Peering.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/ListPeeringsBySubscription.json
-func ExamplePeeringsClient_ListBySubscription() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/peering/resource-manager/Microsoft.Peering/stable/2022-01-01/examples/ListPeeringsBySubscription.json
+func ExamplePeeringsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeeringsClient("<subscription-id>", cred, nil)
-	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armpeering.NewPeeringsClient("subId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListBySubscriptionPager(nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Peering.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armloadtestservice
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,77 @@ import (
 // LoadTestsClient contains the methods for the LoadTests group.
 // Don't use this type directly, use NewLoadTestsClient() instead.
 type LoadTestsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewLoadTestsClient creates a new instance of LoadTestsClient with the specified values.
-func NewLoadTestsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LoadTestsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewLoadTestsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LoadTestsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &LoadTestsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &LoadTestsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
+}
+
+// BeginCreateOrUpdate - Create or update LoadTest resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-15-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// loadTestName - Load Test resource name.
+// loadTestResource - LoadTest resource data
+// options - LoadTestsClientBeginCreateOrUpdateOptions contains the optional parameters for the LoadTestsClient.BeginCreateOrUpdate
+// method.
+func (client *LoadTestsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadTestName string, loadTestResource LoadTestResource, options *LoadTestsClientBeginCreateOrUpdateOptions) (*runtime.Poller[LoadTestsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, loadTestName, loadTestResource, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[LoadTestsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[LoadTestsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+	}
 }
 
 // CreateOrUpdate - Create or update LoadTest resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LoadTestsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, loadTestName string, loadTestResource LoadTestResource, options *LoadTestsCreateOrUpdateOptions) (LoadTestsCreateOrUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-15-preview
+func (client *LoadTestsClient) createOrUpdate(ctx context.Context, resourceGroupName string, loadTestName string, loadTestResource LoadTestResource, options *LoadTestsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, loadTestName, loadTestResource, options)
 	if err != nil {
-		return LoadTestsCreateOrUpdateResponse{}, err
+		return nil, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LoadTestsCreateOrUpdateResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LoadTestsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(resp)
 	}
-	return client.createOrUpdateHandleResponse(resp)
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *LoadTestsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, loadTestName string, loadTestResource LoadTestResource, options *LoadTestsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *LoadTestsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, loadTestName string, loadTestResource LoadTestResource, options *LoadTestsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/loadTests/{loadTestName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -74,62 +109,41 @@ func (client *LoadTestsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter loadTestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{loadTestName}", url.PathEscape(loadTestName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, loadTestResource)
 }
 
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *LoadTestsClient) createOrUpdateHandleResponse(resp *http.Response) (LoadTestsCreateOrUpdateResponse, error) {
-	result := LoadTestsCreateOrUpdateResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LoadTestResource); err != nil {
-		return LoadTestsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
-	}
-	return result, nil
-}
-
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *LoadTestsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Delete a LoadTest resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LoadTestsClient) BeginDelete(ctx context.Context, resourceGroupName string, loadTestName string, options *LoadTestsBeginDeleteOptions) (LoadTestsDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, loadTestName, options)
-	if err != nil {
-		return LoadTestsDeletePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-15-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// loadTestName - Load Test resource name.
+// options - LoadTestsClientBeginDeleteOptions contains the optional parameters for the LoadTestsClient.BeginDelete method.
+func (client *LoadTestsClient) BeginDelete(ctx context.Context, resourceGroupName string, loadTestName string, options *LoadTestsClientBeginDeleteOptions) (*runtime.Poller[LoadTestsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, loadTestName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[LoadTestsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[LoadTestsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := LoadTestsDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("LoadTestsClient.Delete", "", resp, client.pl, client.deleteHandleError)
-	if err != nil {
-		return LoadTestsDeletePollerResponse{}, err
-	}
-	result.Poller = &LoadTestsDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete a LoadTest resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LoadTestsClient) deleteOperation(ctx context.Context, resourceGroupName string, loadTestName string, options *LoadTestsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-15-preview
+func (client *LoadTestsClient) deleteOperation(ctx context.Context, resourceGroupName string, loadTestName string, options *LoadTestsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, loadTestName, options)
 	if err != nil {
 		return nil, err
@@ -139,13 +153,13 @@ func (client *LoadTestsClient) deleteOperation(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *LoadTestsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, loadTestName string, options *LoadTestsBeginDeleteOptions) (*policy.Request, error) {
+func (client *LoadTestsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, loadTestName string, options *LoadTestsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/loadTests/{loadTestName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -159,49 +173,40 @@ func (client *LoadTestsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter loadTestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{loadTestName}", url.PathEscape(loadTestName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *LoadTestsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Get a LoadTest resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LoadTestsClient) Get(ctx context.Context, resourceGroupName string, loadTestName string, options *LoadTestsGetOptions) (LoadTestsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-15-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// loadTestName - Load Test resource name.
+// options - LoadTestsClientGetOptions contains the optional parameters for the LoadTestsClient.Get method.
+func (client *LoadTestsClient) Get(ctx context.Context, resourceGroupName string, loadTestName string, options *LoadTestsClientGetOptions) (LoadTestsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, loadTestName, options)
 	if err != nil {
-		return LoadTestsGetResponse{}, err
+		return LoadTestsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LoadTestsGetResponse{}, err
+		return LoadTestsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LoadTestsGetResponse{}, client.getHandleError(resp)
+		return LoadTestsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LoadTestsClient) getCreateRequest(ctx context.Context, resourceGroupName string, loadTestName string, options *LoadTestsGetOptions) (*policy.Request, error) {
+func (client *LoadTestsClient) getCreateRequest(ctx context.Context, resourceGroupName string, loadTestName string, options *LoadTestsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/loadTests/{loadTestName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -215,55 +220,62 @@ func (client *LoadTestsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter loadTestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{loadTestName}", url.PathEscape(loadTestName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *LoadTestsClient) getHandleResponse(resp *http.Response) (LoadTestsGetResponse, error) {
-	result := LoadTestsGetResponse{RawResponse: resp}
+func (client *LoadTestsClient) getHandleResponse(resp *http.Response) (LoadTestsClientGetResponse, error) {
+	result := LoadTestsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LoadTestResource); err != nil {
-		return LoadTestsGetResponse{}, runtime.NewResponseError(err, resp)
+		return LoadTestsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *LoadTestsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByResourceGroup - Lists loadtest resources in a resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LoadTestsClient) ListByResourceGroup(resourceGroupName string, options *LoadTestsListByResourceGroupOptions) *LoadTestsListByResourceGroupPager {
-	return &LoadTestsListByResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+// NewListByResourceGroupPager - Lists loadtest resources in a resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-15-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - LoadTestsClientListByResourceGroupOptions contains the optional parameters for the LoadTestsClient.ListByResourceGroup
+// method.
+func (client *LoadTestsClient) NewListByResourceGroupPager(resourceGroupName string, options *LoadTestsClientListByResourceGroupOptions) *runtime.Pager[LoadTestsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[LoadTestsClientListByResourceGroupResponse]{
+		More: func(page LoadTestsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp LoadTestsListByResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.LoadTestResourcePageList.NextLink)
+		Fetcher: func(ctx context.Context, page *LoadTestsClientListByResourceGroupResponse) (LoadTestsClientListByResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return LoadTestsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return LoadTestsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return LoadTestsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *LoadTestsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *LoadTestsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *LoadTestsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *LoadTestsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/loadTests"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -273,112 +285,127 @@ func (client *LoadTestsClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *LoadTestsClient) listByResourceGroupHandleResponse(resp *http.Response) (LoadTestsListByResourceGroupResponse, error) {
-	result := LoadTestsListByResourceGroupResponse{RawResponse: resp}
+func (client *LoadTestsClient) listByResourceGroupHandleResponse(resp *http.Response) (LoadTestsClientListByResourceGroupResponse, error) {
+	result := LoadTestsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LoadTestResourcePageList); err != nil {
-		return LoadTestsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return LoadTestsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *LoadTestsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListBySubscription - Lists loadtests resources in a subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LoadTestsClient) ListBySubscription(options *LoadTestsListBySubscriptionOptions) *LoadTestsListBySubscriptionPager {
-	return &LoadTestsListBySubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listBySubscriptionCreateRequest(ctx, options)
+// NewListBySubscriptionPager - Lists loadtests resources in a subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-15-preview
+// options - LoadTestsClientListBySubscriptionOptions contains the optional parameters for the LoadTestsClient.ListBySubscription
+// method.
+func (client *LoadTestsClient) NewListBySubscriptionPager(options *LoadTestsClientListBySubscriptionOptions) *runtime.Pager[LoadTestsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[LoadTestsClientListBySubscriptionResponse]{
+		More: func(page LoadTestsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp LoadTestsListBySubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.LoadTestResourcePageList.NextLink)
+		Fetcher: func(ctx context.Context, page *LoadTestsClientListBySubscriptionResponse) (LoadTestsClientListBySubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return LoadTestsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return LoadTestsClientListBySubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return LoadTestsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *LoadTestsClient) listBySubscriptionCreateRequest(ctx context.Context, options *LoadTestsListBySubscriptionOptions) (*policy.Request, error) {
+func (client *LoadTestsClient) listBySubscriptionCreateRequest(ctx context.Context, options *LoadTestsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.LoadTestService/loadTests"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *LoadTestsClient) listBySubscriptionHandleResponse(resp *http.Response) (LoadTestsListBySubscriptionResponse, error) {
-	result := LoadTestsListBySubscriptionResponse{RawResponse: resp}
+func (client *LoadTestsClient) listBySubscriptionHandleResponse(resp *http.Response) (LoadTestsClientListBySubscriptionResponse, error) {
+	result := LoadTestsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LoadTestResourcePageList); err != nil {
-		return LoadTestsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
+		return LoadTestsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *LoadTestsClient) listBySubscriptionHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
+// BeginUpdate - Update a loadtest resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-15-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// loadTestName - Load Test resource name.
+// loadTestResourcePatchRequestBody - LoadTest resource update data
+// options - LoadTestsClientBeginUpdateOptions contains the optional parameters for the LoadTestsClient.BeginUpdate method.
+func (client *LoadTestsClient) BeginUpdate(ctx context.Context, resourceGroupName string, loadTestName string, loadTestResourcePatchRequestBody LoadTestResourcePatchRequestBody, options *LoadTestsClientBeginUpdateOptions) (*runtime.Poller[LoadTestsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, loadTestName, loadTestResourcePatchRequestBody, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[LoadTestsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[LoadTestsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }
 
 // Update - Update a loadtest resource.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *LoadTestsClient) Update(ctx context.Context, resourceGroupName string, loadTestName string, loadTestResourcePatchRequestBody LoadTestResourcePatchRequestBody, options *LoadTestsUpdateOptions) (LoadTestsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-15-preview
+func (client *LoadTestsClient) update(ctx context.Context, resourceGroupName string, loadTestName string, loadTestResourcePatchRequestBody LoadTestResourcePatchRequestBody, options *LoadTestsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, loadTestName, loadTestResourcePatchRequestBody, options)
 	if err != nil {
-		return LoadTestsUpdateResponse{}, err
+		return nil, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LoadTestsUpdateResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LoadTestsUpdateResponse{}, client.updateHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
 	}
-	return client.updateHandleResponse(resp)
+	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *LoadTestsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, loadTestName string, loadTestResourcePatchRequestBody LoadTestResourcePatchRequestBody, options *LoadTestsUpdateOptions) (*policy.Request, error) {
+func (client *LoadTestsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, loadTestName string, loadTestResourcePatchRequestBody LoadTestResourcePatchRequestBody, options *LoadTestsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/loadTests/{loadTestName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -392,35 +419,13 @@ func (client *LoadTestsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter loadTestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{loadTestName}", url.PathEscape(loadTestName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, loadTestResourcePatchRequestBody)
-}
-
-// updateHandleResponse handles the Update response.
-func (client *LoadTestsClient) updateHandleResponse(resp *http.Response) (LoadTestsUpdateResponse, error) {
-	result := LoadTestsUpdateResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LoadTestResource); err != nil {
-		return LoadTestsUpdateResponse{}, runtime.NewResponseError(err, resp)
-	}
-	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *LoadTestsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -9,7 +9,7 @@
 
 package cognitiveservicesapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2021-10-01/cognitiveservices/cognitiveservicesapi"
+import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2022-03-01/cognitiveservices/cognitiveservicesapi"
 
 type AccountsClientAPI = original.AccountsClientAPI
 type BaseClientAPI = original.BaseClientAPI

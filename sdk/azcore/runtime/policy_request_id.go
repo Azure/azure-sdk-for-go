@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -13,13 +13,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
-type requestIdPolicy struct{}
+type requestIDPolicy struct{}
 
-func NewRequestIdPolicy() policy.Policy {
-	return &requestIdPolicy{}
+// NewRequestIDPolicy returns a policy that add the x-ms-client-request-id header
+func NewRequestIDPolicy() policy.Policy {
+	return &requestIDPolicy{}
 }
 
-func (r *requestIdPolicy) Do(req *policy.Request) (*http.Response, error) {
+func (r *requestIDPolicy) Do(req *policy.Request) (*http.Response, error) {
 	const requestIdHeader = "x-ms-client-request-id"
 	if req.Raw().Header.Get(requestIdHeader) == "" {
 		id, err := uuid.New()

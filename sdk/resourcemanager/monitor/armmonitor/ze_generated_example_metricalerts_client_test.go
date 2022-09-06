@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,191 +17,214 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/listMetricAlert.json
-func ExampleMetricAlertsClient_ListBySubscription() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/listMetricAlert.json
+func ExampleMetricAlertsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewMetricAlertsClient("<subscription-id>", cred, nil)
-	_, err = client.ListBySubscription(ctx,
-		nil)
+	client, err := armmonitor.NewMetricAlertsClient("14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListBySubscriptionPager(nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/listMetricAlert.json
-func ExampleMetricAlertsClient_ListByResourceGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/listMetricAlert.json
+func ExampleMetricAlertsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewMetricAlertsClient("<subscription-id>", cred, nil)
-	_, err = client.ListByResourceGroup(ctx,
-		"<resource-group-name>",
-		nil)
+	client, err := armmonitor.NewMetricAlertsClient("14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByResourceGroupPager("gigtest",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getDynamicMetricAlertMultipleResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getDynamicMetricAlertMultipleResource.json
 func ExampleMetricAlertsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewMetricAlertsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewMetricAlertsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<rule-name>",
+		"gigtest",
+		"MetricAlertOnMultipleResources",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("MetricAlertResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/createOrUpdateDynamicMetricAlertMultipleResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/createOrUpdateDynamicMetricAlertMultipleResource.json
 func ExampleMetricAlertsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewMetricAlertsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewMetricAlertsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<rule-name>",
+		"gigtest",
+		"MetricAlertOnMultipleResources",
 		armmonitor.MetricAlertResource{
-			Resource: armmonitor.Resource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.Ptr("global"),
+			Tags:     map[string]*string{},
 			Properties: &armmonitor.MetricAlertProperties{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("This is the description of the rule1"),
 				Actions: []*armmonitor.MetricAlertAction{
 					{
-						ActionGroupID: to.StringPtr("<action-group-id>"),
+						ActionGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2"),
 						WebHookProperties: map[string]*string{
-							"key11": to.StringPtr("value11"),
-							"key12": to.StringPtr("value12"),
+							"key11": to.Ptr("value11"),
+							"key12": to.Ptr("value12"),
 						},
 					}},
-				AutoMitigate: to.BoolPtr(true),
+				AutoMitigate: to.Ptr(true),
 				Criteria: &armmonitor.MetricAlertMultipleResourceMultipleMetricCriteria{
-					MetricAlertCriteria: armmonitor.MetricAlertCriteria{
-						ODataType: armmonitor.OdatatypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria.ToPtr(),
-					},
+					ODataType: to.Ptr(armmonitor.OdatatypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria),
 					AllOf: []armmonitor.MultiMetricCriteriaClassification{
 						&armmonitor.DynamicMetricCriteria{
-							MultiMetricCriteria: armmonitor.MultiMetricCriteria{
-								Name:            to.StringPtr("<name>"),
-								CriterionType:   armmonitor.CriterionTypeDynamicThresholdCriterion.ToPtr(),
-								Dimensions:      []*armmonitor.MetricDimension{},
-								MetricName:      to.StringPtr("<metric-name>"),
-								MetricNamespace: to.StringPtr("<metric-namespace>"),
-								TimeAggregation: armmonitor.AggregationTypeEnumAverage.ToPtr(),
-							},
-							AlertSensitivity: armmonitor.DynamicThresholdSensitivityMedium.ToPtr(),
+							Name:             to.Ptr("High_CPU_80"),
+							CriterionType:    to.Ptr(armmonitor.CriterionTypeDynamicThresholdCriterion),
+							Dimensions:       []*armmonitor.MetricDimension{},
+							MetricName:       to.Ptr("Percentage CPU"),
+							MetricNamespace:  to.Ptr("microsoft.compute/virtualmachines"),
+							TimeAggregation:  to.Ptr(armmonitor.AggregationTypeEnumAverage),
+							AlertSensitivity: to.Ptr(armmonitor.DynamicThresholdSensitivityMedium),
 							FailingPeriods: &armmonitor.DynamicThresholdFailingPeriods{
-								MinFailingPeriodsToAlert:  to.Float32Ptr(4),
-								NumberOfEvaluationPeriods: to.Float32Ptr(4),
+								MinFailingPeriodsToAlert:  to.Ptr[float32](4),
+								NumberOfEvaluationPeriods: to.Ptr[float32](4),
 							},
-							Operator: armmonitor.DynamicThresholdOperatorGreaterOrLessThan.ToPtr(),
+							Operator: to.Ptr(armmonitor.DynamicThresholdOperatorGreaterOrLessThan),
 						}},
 				},
-				Enabled:             to.BoolPtr(true),
-				EvaluationFrequency: to.StringPtr("<evaluation-frequency>"),
+				Enabled:             to.Ptr(true),
+				EvaluationFrequency: to.Ptr("PT1M"),
 				Scopes: []*string{
-					to.StringPtr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme1"),
-					to.StringPtr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme2")},
-				Severity:             to.Int32Ptr(3),
-				TargetResourceRegion: to.StringPtr("<target-resource-region>"),
-				TargetResourceType:   to.StringPtr("<target-resource-type>"),
-				WindowSize:           to.StringPtr("<window-size>"),
+					to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme1"),
+					to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme2")},
+				Severity:             to.Ptr[int32](3),
+				TargetResourceRegion: to.Ptr("southcentralus"),
+				TargetResourceType:   to.Ptr("Microsoft.Compute/virtualMachines"),
+				WindowSize:           to.Ptr("PT15M"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("MetricAlertResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/UpdateMetricAlert.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/UpdateMetricAlert.json
 func ExampleMetricAlertsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewMetricAlertsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewMetricAlertsClient("14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<rule-name>",
+		"gigtest",
+		"chiricutin",
 		armmonitor.MetricAlertResourcePatch{
 			Properties: &armmonitor.MetricAlertPropertiesPatch{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("This is the description of the rule1"),
 				Actions: []*armmonitor.MetricAlertAction{
 					{
-						ActionGroupID: to.StringPtr("<action-group-id>"),
+						ActionGroupID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2"),
 						WebHookProperties: map[string]*string{
-							"key11": to.StringPtr("value11"),
-							"key12": to.StringPtr("value12"),
+							"key11": to.Ptr("value11"),
+							"key12": to.Ptr("value12"),
 						},
 					}},
-				AutoMitigate: to.BoolPtr(true),
+				AutoMitigate: to.Ptr(true),
 				Criteria: &armmonitor.MetricAlertSingleResourceMultipleMetricCriteria{
-					MetricAlertCriteria: armmonitor.MetricAlertCriteria{
-						ODataType: armmonitor.OdatatypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria.ToPtr(),
-					},
+					ODataType: to.Ptr(armmonitor.OdatatypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria),
 					AllOf: []*armmonitor.MetricCriteria{
 						{
-							MultiMetricCriteria: armmonitor.MultiMetricCriteria{
-								Name:            to.StringPtr("<name>"),
-								CriterionType:   armmonitor.CriterionTypeStaticThresholdCriterion.ToPtr(),
-								Dimensions:      []*armmonitor.MetricDimension{},
-								MetricName:      to.StringPtr("<metric-name>"),
-								TimeAggregation: armmonitor.AggregationTypeEnumAverage.ToPtr(),
-							},
-							Operator:  armmonitor.OperatorGreaterThan.ToPtr(),
-							Threshold: to.Float64Ptr(80.5),
+							Name:            to.Ptr("High_CPU_80"),
+							CriterionType:   to.Ptr(armmonitor.CriterionTypeStaticThresholdCriterion),
+							Dimensions:      []*armmonitor.MetricDimension{},
+							MetricName:      to.Ptr("\\Processor(_Total)\\% Processor Time"),
+							TimeAggregation: to.Ptr(armmonitor.AggregationTypeEnumAverage),
+							Operator:        to.Ptr(armmonitor.OperatorGreaterThan),
+							Threshold:       to.Ptr[float64](80.5),
 						}},
 				},
-				Enabled:             to.BoolPtr(true),
-				EvaluationFrequency: to.StringPtr("<evaluation-frequency>"),
+				Enabled:             to.Ptr(true),
+				EvaluationFrequency: to.Ptr("Pt1m"),
 				Scopes: []*string{
-					to.StringPtr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme")},
-				Severity:   to.Int32Ptr(3),
-				WindowSize: to.StringPtr("<window-size>"),
+					to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme")},
+				Severity:   to.Ptr[int32](3),
+				WindowSize: to.Ptr("Pt15m"),
 			},
 			Tags: map[string]*string{},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("MetricAlertResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/deleteMetricAlert.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/deleteMetricAlert.json
 func ExampleMetricAlertsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewMetricAlertsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewMetricAlertsClient("14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<rule-name>",
+		"gigtest",
+		"chiricutin",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armauthorization
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,59 @@ import (
 // AccessReviewScheduleDefinitionsClient contains the methods for the AccessReviewScheduleDefinitions group.
 // Don't use this type directly, use NewAccessReviewScheduleDefinitionsClient() instead.
 type AccessReviewScheduleDefinitionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewAccessReviewScheduleDefinitionsClient creates a new instance of AccessReviewScheduleDefinitionsClient with the specified values.
-func NewAccessReviewScheduleDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AccessReviewScheduleDefinitionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewAccessReviewScheduleDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewScheduleDefinitionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &AccessReviewScheduleDefinitionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &AccessReviewScheduleDefinitionsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // CreateOrUpdateByID - Create or Update access review schedule definition.
-// If the operation fails it returns the *ErrorDefinition error type.
-func (client *AccessReviewScheduleDefinitionsClient) CreateOrUpdateByID(ctx context.Context, scheduleDefinitionID string, properties AccessReviewScheduleDefinitionProperties, options *AccessReviewScheduleDefinitionsCreateOrUpdateByIDOptions) (AccessReviewScheduleDefinitionsCreateOrUpdateByIDResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
+// scheduleDefinitionID - The id of the access review schedule definition.
+// properties - Access review schedule definition properties.
+// options - AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.CreateOrUpdateByID
+// method.
+func (client *AccessReviewScheduleDefinitionsClient) CreateOrUpdateByID(ctx context.Context, scheduleDefinitionID string, properties AccessReviewScheduleDefinitionProperties, options *AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions) (AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse, error) {
 	req, err := client.createOrUpdateByIDCreateRequest(ctx, scheduleDefinitionID, properties, options)
 	if err != nil {
-		return AccessReviewScheduleDefinitionsCreateOrUpdateByIDResponse{}, err
+		return AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AccessReviewScheduleDefinitionsCreateOrUpdateByIDResponse{}, err
+		return AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AccessReviewScheduleDefinitionsCreateOrUpdateByIDResponse{}, client.createOrUpdateByIDHandleError(resp)
+		return AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateByIDHandleResponse(resp)
 }
 
 // createOrUpdateByIDCreateRequest creates the CreateOrUpdateByID request.
-func (client *AccessReviewScheduleDefinitionsClient) createOrUpdateByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, properties AccessReviewScheduleDefinitionProperties, options *AccessReviewScheduleDefinitionsCreateOrUpdateByIDOptions) (*policy.Request, error) {
+func (client *AccessReviewScheduleDefinitionsClient) createOrUpdateByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, properties AccessReviewScheduleDefinitionProperties, options *AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")
@@ -70,58 +87,49 @@ func (client *AccessReviewScheduleDefinitionsClient) createOrUpdateByIDCreateReq
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 
 // createOrUpdateByIDHandleResponse handles the CreateOrUpdateByID response.
-func (client *AccessReviewScheduleDefinitionsClient) createOrUpdateByIDHandleResponse(resp *http.Response) (AccessReviewScheduleDefinitionsCreateOrUpdateByIDResponse, error) {
-	result := AccessReviewScheduleDefinitionsCreateOrUpdateByIDResponse{RawResponse: resp}
+func (client *AccessReviewScheduleDefinitionsClient) createOrUpdateByIDHandleResponse(resp *http.Response) (AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse, error) {
+	result := AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewScheduleDefinition); err != nil {
-		return AccessReviewScheduleDefinitionsCreateOrUpdateByIDResponse{}, runtime.NewResponseError(err, resp)
+		return AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateByIDHandleError handles the CreateOrUpdateByID error response.
-func (client *AccessReviewScheduleDefinitionsClient) createOrUpdateByIDHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDefinition{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // DeleteByID - Delete access review schedule definition
-// If the operation fails it returns the *ErrorDefinition error type.
-func (client *AccessReviewScheduleDefinitionsClient) DeleteByID(ctx context.Context, scheduleDefinitionID string, options *AccessReviewScheduleDefinitionsDeleteByIDOptions) (AccessReviewScheduleDefinitionsDeleteByIDResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
+// scheduleDefinitionID - The id of the access review schedule definition.
+// options - AccessReviewScheduleDefinitionsClientDeleteByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.DeleteByID
+// method.
+func (client *AccessReviewScheduleDefinitionsClient) DeleteByID(ctx context.Context, scheduleDefinitionID string, options *AccessReviewScheduleDefinitionsClientDeleteByIDOptions) (AccessReviewScheduleDefinitionsClientDeleteByIDResponse, error) {
 	req, err := client.deleteByIDCreateRequest(ctx, scheduleDefinitionID, options)
 	if err != nil {
-		return AccessReviewScheduleDefinitionsDeleteByIDResponse{}, err
+		return AccessReviewScheduleDefinitionsClientDeleteByIDResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AccessReviewScheduleDefinitionsDeleteByIDResponse{}, err
+		return AccessReviewScheduleDefinitionsClientDeleteByIDResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return AccessReviewScheduleDefinitionsDeleteByIDResponse{}, client.deleteByIDHandleError(resp)
+		return AccessReviewScheduleDefinitionsClientDeleteByIDResponse{}, runtime.NewResponseError(resp)
 	}
-	return AccessReviewScheduleDefinitionsDeleteByIDResponse{RawResponse: resp}, nil
+	return AccessReviewScheduleDefinitionsClientDeleteByIDResponse{}, nil
 }
 
 // deleteByIDCreateRequest creates the DeleteByID request.
-func (client *AccessReviewScheduleDefinitionsClient) deleteByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, options *AccessReviewScheduleDefinitionsDeleteByIDOptions) (*policy.Request, error) {
+func (client *AccessReviewScheduleDefinitionsClient) deleteByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, options *AccessReviewScheduleDefinitionsClientDeleteByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")
@@ -131,49 +139,40 @@ func (client *AccessReviewScheduleDefinitionsClient) deleteByIDCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteByIDHandleError handles the DeleteByID error response.
-func (client *AccessReviewScheduleDefinitionsClient) deleteByIDHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDefinition{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetByID - Get single access review definition
-// If the operation fails it returns the *ErrorDefinition error type.
-func (client *AccessReviewScheduleDefinitionsClient) GetByID(ctx context.Context, scheduleDefinitionID string, options *AccessReviewScheduleDefinitionsGetByIDOptions) (AccessReviewScheduleDefinitionsGetByIDResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
+// scheduleDefinitionID - The id of the access review schedule definition.
+// options - AccessReviewScheduleDefinitionsClientGetByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.GetByID
+// method.
+func (client *AccessReviewScheduleDefinitionsClient) GetByID(ctx context.Context, scheduleDefinitionID string, options *AccessReviewScheduleDefinitionsClientGetByIDOptions) (AccessReviewScheduleDefinitionsClientGetByIDResponse, error) {
 	req, err := client.getByIDCreateRequest(ctx, scheduleDefinitionID, options)
 	if err != nil {
-		return AccessReviewScheduleDefinitionsGetByIDResponse{}, err
+		return AccessReviewScheduleDefinitionsClientGetByIDResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AccessReviewScheduleDefinitionsGetByIDResponse{}, err
+		return AccessReviewScheduleDefinitionsClientGetByIDResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AccessReviewScheduleDefinitionsGetByIDResponse{}, client.getByIDHandleError(resp)
+		return AccessReviewScheduleDefinitionsClientGetByIDResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getByIDHandleResponse(resp)
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *AccessReviewScheduleDefinitionsClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, options *AccessReviewScheduleDefinitionsGetByIDOptions) (*policy.Request, error) {
+func (client *AccessReviewScheduleDefinitionsClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, options *AccessReviewScheduleDefinitionsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")
@@ -183,112 +182,114 @@ func (client *AccessReviewScheduleDefinitionsClient) getByIDCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getByIDHandleResponse handles the GetByID response.
-func (client *AccessReviewScheduleDefinitionsClient) getByIDHandleResponse(resp *http.Response) (AccessReviewScheduleDefinitionsGetByIDResponse, error) {
-	result := AccessReviewScheduleDefinitionsGetByIDResponse{RawResponse: resp}
+func (client *AccessReviewScheduleDefinitionsClient) getByIDHandleResponse(resp *http.Response) (AccessReviewScheduleDefinitionsClientGetByIDResponse, error) {
+	result := AccessReviewScheduleDefinitionsClientGetByIDResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewScheduleDefinition); err != nil {
-		return AccessReviewScheduleDefinitionsGetByIDResponse{}, runtime.NewResponseError(err, resp)
+		return AccessReviewScheduleDefinitionsClientGetByIDResponse{}, err
 	}
 	return result, nil
 }
 
-// getByIDHandleError handles the GetByID error response.
-func (client *AccessReviewScheduleDefinitionsClient) getByIDHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDefinition{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Get access review schedule definitions
-// If the operation fails it returns the *ErrorDefinition error type.
-func (client *AccessReviewScheduleDefinitionsClient) List(options *AccessReviewScheduleDefinitionsListOptions) *AccessReviewScheduleDefinitionsListPager {
-	return &AccessReviewScheduleDefinitionsListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+// NewListPager - Get access review schedule definitions
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
+// options - AccessReviewScheduleDefinitionsClientListOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.List
+// method.
+func (client *AccessReviewScheduleDefinitionsClient) NewListPager(options *AccessReviewScheduleDefinitionsClientListOptions) *runtime.Pager[AccessReviewScheduleDefinitionsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AccessReviewScheduleDefinitionsClientListResponse]{
+		More: func(page AccessReviewScheduleDefinitionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AccessReviewScheduleDefinitionsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AccessReviewScheduleDefinitionListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AccessReviewScheduleDefinitionsClientListResponse) (AccessReviewScheduleDefinitionsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AccessReviewScheduleDefinitionsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AccessReviewScheduleDefinitionsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AccessReviewScheduleDefinitionsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AccessReviewScheduleDefinitionsClient) listCreateRequest(ctx context.Context, options *AccessReviewScheduleDefinitionsListOptions) (*policy.Request, error) {
+func (client *AccessReviewScheduleDefinitionsClient) listCreateRequest(ctx context.Context, options *AccessReviewScheduleDefinitionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	unencodedParams := []string{req.Raw().URL.RawQuery}
+	if options != nil && options.Filter != nil {
+		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
+	}
+	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AccessReviewScheduleDefinitionsClient) listHandleResponse(resp *http.Response) (AccessReviewScheduleDefinitionsListResponse, error) {
-	result := AccessReviewScheduleDefinitionsListResponse{RawResponse: resp}
+func (client *AccessReviewScheduleDefinitionsClient) listHandleResponse(resp *http.Response) (AccessReviewScheduleDefinitionsClientListResponse, error) {
+	result := AccessReviewScheduleDefinitionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewScheduleDefinitionListResult); err != nil {
-		return AccessReviewScheduleDefinitionsListResponse{}, runtime.NewResponseError(err, resp)
+		return AccessReviewScheduleDefinitionsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *AccessReviewScheduleDefinitionsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDefinition{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Stop - Stop access review definition
-// If the operation fails it returns the *ErrorDefinition error type.
-func (client *AccessReviewScheduleDefinitionsClient) Stop(ctx context.Context, scheduleDefinitionID string, options *AccessReviewScheduleDefinitionsStopOptions) (AccessReviewScheduleDefinitionsStopResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
+// scheduleDefinitionID - The id of the access review schedule definition.
+// options - AccessReviewScheduleDefinitionsClientStopOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.Stop
+// method.
+func (client *AccessReviewScheduleDefinitionsClient) Stop(ctx context.Context, scheduleDefinitionID string, options *AccessReviewScheduleDefinitionsClientStopOptions) (AccessReviewScheduleDefinitionsClientStopResponse, error) {
 	req, err := client.stopCreateRequest(ctx, scheduleDefinitionID, options)
 	if err != nil {
-		return AccessReviewScheduleDefinitionsStopResponse{}, err
+		return AccessReviewScheduleDefinitionsClientStopResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AccessReviewScheduleDefinitionsStopResponse{}, err
+		return AccessReviewScheduleDefinitionsClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return AccessReviewScheduleDefinitionsStopResponse{}, client.stopHandleError(resp)
+		return AccessReviewScheduleDefinitionsClientStopResponse{}, runtime.NewResponseError(resp)
 	}
-	return AccessReviewScheduleDefinitionsStopResponse{RawResponse: resp}, nil
+	return AccessReviewScheduleDefinitionsClientStopResponse{}, nil
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *AccessReviewScheduleDefinitionsClient) stopCreateRequest(ctx context.Context, scheduleDefinitionID string, options *AccessReviewScheduleDefinitionsStopOptions) (*policy.Request, error) {
+func (client *AccessReviewScheduleDefinitionsClient) stopCreateRequest(ctx context.Context, scheduleDefinitionID string, options *AccessReviewScheduleDefinitionsClientStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/stop"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")
@@ -298,26 +299,13 @@ func (client *AccessReviewScheduleDefinitionsClient) stopCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
-}
-
-// stopHandleError handles the Stop error response.
-func (client *AccessReviewScheduleDefinitionsClient) stopHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDefinition{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

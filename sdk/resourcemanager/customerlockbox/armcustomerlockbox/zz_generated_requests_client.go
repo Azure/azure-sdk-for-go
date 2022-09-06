@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armcustomerlockbox
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,41 +25,55 @@ import (
 // RequestsClient contains the methods for the Requests group.
 // Don't use this type directly, use NewRequestsClient() instead.
 type RequestsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewRequestsClient creates a new instance of RequestsClient with the specified values.
-func NewRequestsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RequestsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewRequestsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RequestsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &RequestsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &RequestsClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
 // Get - Get Customer Lockbox request
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RequestsClient) Get(ctx context.Context, requestID string, subscriptionID string, options *RequestsGetOptions) (RequestsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-02-28-preview
+// requestID - The Lockbox request ID.
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+// options - RequestsClientGetOptions contains the optional parameters for the RequestsClient.Get method.
+func (client *RequestsClient) Get(ctx context.Context, requestID string, subscriptionID string, options *RequestsClientGetOptions) (RequestsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, requestID, subscriptionID, options)
 	if err != nil {
-		return RequestsGetResponse{}, err
+		return RequestsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RequestsGetResponse{}, err
+		return RequestsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RequestsGetResponse{}, client.getHandleError(resp)
+		return RequestsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RequestsClient) getCreateRequest(ctx context.Context, requestID string, subscriptionID string, options *RequestsGetOptions) (*policy.Request, error) {
+func (client *RequestsClient) getCreateRequest(ctx context.Context, requestID string, subscriptionID string, options *RequestsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerLockbox/requests/{requestId}"
 	if requestID == "" {
 		return nil, errors.New("parameter requestID cannot be empty")
@@ -69,61 +83,67 @@ func (client *RequestsClient) getCreateRequest(ctx context.Context, requestID st
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-02-28-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RequestsClient) getHandleResponse(resp *http.Response) (RequestsGetResponse, error) {
-	result := RequestsGetResponse{RawResponse: resp}
+func (client *RequestsClient) getHandleResponse(resp *http.Response) (RequestsClientGetResponse, error) {
+	result := RequestsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LockboxRequestResponse); err != nil {
-		return RequestsGetResponse{}, runtime.NewResponseError(err, resp)
+		return RequestsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *RequestsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// List - Lists all of the Lockbox requests in the given subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RequestsClient) List(subscriptionID string, options *RequestsListOptions) *RequestsListPager {
-	return &RequestsListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, subscriptionID, options)
+// NewListPager - Lists all of the Lockbox requests in the given subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-02-28-preview
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+// options - RequestsClientListOptions contains the optional parameters for the RequestsClient.List method.
+func (client *RequestsClient) NewListPager(subscriptionID string, options *RequestsClientListOptions) *runtime.Pager[RequestsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[RequestsClientListResponse]{
+		More: func(page RequestsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RequestsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RequestListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RequestsClientListResponse) (RequestsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, subscriptionID, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RequestsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RequestsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RequestsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *RequestsClient) listCreateRequest(ctx context.Context, subscriptionID string, options *RequestsListOptions) (*policy.Request, error) {
+func (client *RequestsClient) listCreateRequest(ctx context.Context, subscriptionID string, options *RequestsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerLockbox/requests"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -132,51 +152,43 @@ func (client *RequestsClient) listCreateRequest(ctx context.Context, subscriptio
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RequestsClient) listHandleResponse(resp *http.Response) (RequestsListResponse, error) {
-	result := RequestsListResponse{RawResponse: resp}
+func (client *RequestsClient) listHandleResponse(resp *http.Response) (RequestsClientListResponse, error) {
+	result := RequestsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RequestListResult); err != nil {
-		return RequestsListResponse{}, runtime.NewResponseError(err, resp)
+		return RequestsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// listHandleError handles the List error response.
-func (client *RequestsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // UpdateStatus - Update Customer Lockbox request approval status API
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RequestsClient) UpdateStatus(ctx context.Context, subscriptionID string, requestID string, approval Approval, options *RequestsUpdateStatusOptions) (RequestsUpdateStatusResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-02-28-preview
+// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+// requestID - The Lockbox request ID.
+// approval - The approval object to update request status.
+// options - RequestsClientUpdateStatusOptions contains the optional parameters for the RequestsClient.UpdateStatus method.
+func (client *RequestsClient) UpdateStatus(ctx context.Context, subscriptionID string, requestID string, approval Approval, options *RequestsClientUpdateStatusOptions) (RequestsClientUpdateStatusResponse, error) {
 	req, err := client.updateStatusCreateRequest(ctx, subscriptionID, requestID, approval, options)
 	if err != nil {
-		return RequestsUpdateStatusResponse{}, err
+		return RequestsClientUpdateStatusResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RequestsUpdateStatusResponse{}, err
+		return RequestsClientUpdateStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RequestsUpdateStatusResponse{}, client.updateStatusHandleError(resp)
+		return RequestsClientUpdateStatusResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateStatusHandleResponse(resp)
 }
 
 // updateStatusCreateRequest creates the UpdateStatus request.
-func (client *RequestsClient) updateStatusCreateRequest(ctx context.Context, subscriptionID string, requestID string, approval Approval, options *RequestsUpdateStatusOptions) (*policy.Request, error) {
+func (client *RequestsClient) updateStatusCreateRequest(ctx context.Context, subscriptionID string, requestID string, approval Approval, options *RequestsClientUpdateStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CustomerLockbox/requests/{requestId}/updateApproval"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -186,35 +198,22 @@ func (client *RequestsClient) updateStatusCreateRequest(ctx context.Context, sub
 		return nil, errors.New("parameter requestID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{requestId}", url.PathEscape(requestID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-02-28-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, approval)
 }
 
 // updateStatusHandleResponse handles the UpdateStatus response.
-func (client *RequestsClient) updateStatusHandleResponse(resp *http.Response) (RequestsUpdateStatusResponse, error) {
-	result := RequestsUpdateStatusResponse{RawResponse: resp}
+func (client *RequestsClient) updateStatusHandleResponse(resp *http.Response) (RequestsClientUpdateStatusResponse, error) {
+	result := RequestsClientUpdateStatusResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Approval); err != nil {
-		return RequestsUpdateStatusResponse{}, runtime.NewResponseError(err, resp)
+		return RequestsClientUpdateStatusResponse{}, err
 	}
 	return result, nil
-}
-
-// updateStatusHandleError handles the UpdateStatus error response.
-func (client *RequestsClient) updateStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

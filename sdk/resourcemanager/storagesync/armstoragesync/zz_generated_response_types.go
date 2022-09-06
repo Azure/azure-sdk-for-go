@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,120 +8,18 @@
 
 package armstoragesync
 
-import (
-	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"net/http"
-	"time"
-)
-
-// CloudEndpointsCreatePollerResponse contains the response from method CloudEndpoints.Create.
-type CloudEndpointsCreatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *CloudEndpointsCreatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l CloudEndpointsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CloudEndpointsCreateResponse, error) {
-	respType := CloudEndpointsCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CloudEndpoint)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a CloudEndpointsCreatePollerResponse from the provided client and resume token.
-func (l *CloudEndpointsCreatePollerResponse) Resume(ctx context.Context, client *CloudEndpointsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CloudEndpointsClient.Create", token, client.pl, client.createHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &CloudEndpointsCreatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// CloudEndpointsCreateResponse contains the response from method CloudEndpoints.Create.
-type CloudEndpointsCreateResponse struct {
-	CloudEndpointsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CloudEndpointsCreateResult contains the result from method CloudEndpoints.Create.
-type CloudEndpointsCreateResult struct {
+// CloudEndpointsClientCreateResponse contains the response from method CloudEndpointsClient.Create.
+type CloudEndpointsClientCreateResponse struct {
 	CloudEndpoint
 }
 
-// CloudEndpointsDeletePollerResponse contains the response from method CloudEndpoints.Delete.
-type CloudEndpointsDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *CloudEndpointsDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// CloudEndpointsClientDeleteResponse contains the response from method CloudEndpointsClient.Delete.
+type CloudEndpointsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l CloudEndpointsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CloudEndpointsDeleteResponse, error) {
-	respType := CloudEndpointsDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a CloudEndpointsDeletePollerResponse from the provided client and resume token.
-func (l *CloudEndpointsDeletePollerResponse) Resume(ctx context.Context, client *CloudEndpointsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CloudEndpointsClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &CloudEndpointsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// CloudEndpointsDeleteResponse contains the response from method CloudEndpoints.Delete.
-type CloudEndpointsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CloudEndpointsGetResponse contains the response from method CloudEndpoints.Get.
-type CloudEndpointsGetResponse struct {
-	CloudEndpointsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CloudEndpointsGetResult contains the result from method CloudEndpoints.Get.
-type CloudEndpointsGetResult struct {
+// CloudEndpointsClientGetResponse contains the response from method CloudEndpointsClient.Get.
+type CloudEndpointsClientGetResponse struct {
 	CloudEndpoint
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string
@@ -130,15 +28,8 @@ type CloudEndpointsGetResult struct {
 	XMSRequestID *string
 }
 
-// CloudEndpointsListBySyncGroupResponse contains the response from method CloudEndpoints.ListBySyncGroup.
-type CloudEndpointsListBySyncGroupResponse struct {
-	CloudEndpointsListBySyncGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CloudEndpointsListBySyncGroupResult contains the result from method CloudEndpoints.ListBySyncGroup.
-type CloudEndpointsListBySyncGroupResult struct {
+// CloudEndpointsClientListBySyncGroupResponse contains the response from method CloudEndpointsClient.ListBySyncGroup.
+type CloudEndpointsClientListBySyncGroupResponse struct {
 	CloudEndpointArray
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string
@@ -147,205 +38,28 @@ type CloudEndpointsListBySyncGroupResult struct {
 	XMSRequestID *string
 }
 
-// CloudEndpointsPostBackupPollerResponse contains the response from method CloudEndpoints.PostBackup.
-type CloudEndpointsPostBackupPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *CloudEndpointsPostBackupPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l CloudEndpointsPostBackupPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CloudEndpointsPostBackupResponse, error) {
-	respType := CloudEndpointsPostBackupResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PostBackupResponse)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a CloudEndpointsPostBackupPollerResponse from the provided client and resume token.
-func (l *CloudEndpointsPostBackupPollerResponse) Resume(ctx context.Context, client *CloudEndpointsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CloudEndpointsClient.PostBackup", token, client.pl, client.postBackupHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &CloudEndpointsPostBackupPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// CloudEndpointsPostBackupResponse contains the response from method CloudEndpoints.PostBackup.
-type CloudEndpointsPostBackupResponse struct {
-	CloudEndpointsPostBackupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CloudEndpointsPostBackupResult contains the result from method CloudEndpoints.PostBackup.
-type CloudEndpointsPostBackupResult struct {
+// CloudEndpointsClientPostBackupResponse contains the response from method CloudEndpointsClient.PostBackup.
+type CloudEndpointsClientPostBackupResponse struct {
 	PostBackupResponse
 }
 
-// CloudEndpointsPostRestorePollerResponse contains the response from method CloudEndpoints.PostRestore.
-type CloudEndpointsPostRestorePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *CloudEndpointsPostRestorePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// CloudEndpointsClientPostRestoreResponse contains the response from method CloudEndpointsClient.PostRestore.
+type CloudEndpointsClientPostRestoreResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l CloudEndpointsPostRestorePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CloudEndpointsPostRestoreResponse, error) {
-	respType := CloudEndpointsPostRestoreResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
+// CloudEndpointsClientPreBackupResponse contains the response from method CloudEndpointsClient.PreBackup.
+type CloudEndpointsClientPreBackupResponse struct {
+	// placeholder for future response values
 }
 
-// Resume rehydrates a CloudEndpointsPostRestorePollerResponse from the provided client and resume token.
-func (l *CloudEndpointsPostRestorePollerResponse) Resume(ctx context.Context, client *CloudEndpointsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CloudEndpointsClient.PostRestore", token, client.pl, client.postRestoreHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &CloudEndpointsPostRestorePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
+// CloudEndpointsClientPreRestoreResponse contains the response from method CloudEndpointsClient.PreRestore.
+type CloudEndpointsClientPreRestoreResponse struct {
+	// placeholder for future response values
 }
 
-// CloudEndpointsPostRestoreResponse contains the response from method CloudEndpoints.PostRestore.
-type CloudEndpointsPostRestoreResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CloudEndpointsPreBackupPollerResponse contains the response from method CloudEndpoints.PreBackup.
-type CloudEndpointsPreBackupPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *CloudEndpointsPreBackupPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l CloudEndpointsPreBackupPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CloudEndpointsPreBackupResponse, error) {
-	respType := CloudEndpointsPreBackupResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a CloudEndpointsPreBackupPollerResponse from the provided client and resume token.
-func (l *CloudEndpointsPreBackupPollerResponse) Resume(ctx context.Context, client *CloudEndpointsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CloudEndpointsClient.PreBackup", token, client.pl, client.preBackupHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &CloudEndpointsPreBackupPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// CloudEndpointsPreBackupResponse contains the response from method CloudEndpoints.PreBackup.
-type CloudEndpointsPreBackupResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CloudEndpointsPreRestorePollerResponse contains the response from method CloudEndpoints.PreRestore.
-type CloudEndpointsPreRestorePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *CloudEndpointsPreRestorePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l CloudEndpointsPreRestorePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CloudEndpointsPreRestoreResponse, error) {
-	respType := CloudEndpointsPreRestoreResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a CloudEndpointsPreRestorePollerResponse from the provided client and resume token.
-func (l *CloudEndpointsPreRestorePollerResponse) Resume(ctx context.Context, client *CloudEndpointsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CloudEndpointsClient.PreRestore", token, client.pl, client.preRestoreHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &CloudEndpointsPreRestorePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// CloudEndpointsPreRestoreResponse contains the response from method CloudEndpoints.PreRestore.
-type CloudEndpointsPreRestoreResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CloudEndpointsRestoreheartbeatResponse contains the response from method CloudEndpoints.Restoreheartbeat.
-type CloudEndpointsRestoreheartbeatResponse struct {
-	CloudEndpointsRestoreheartbeatResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CloudEndpointsRestoreheartbeatResult contains the result from method CloudEndpoints.Restoreheartbeat.
-type CloudEndpointsRestoreheartbeatResult struct {
+// CloudEndpointsClientRestoreheartbeatResponse contains the response from method CloudEndpointsClient.Restoreheartbeat.
+type CloudEndpointsClientRestoreheartbeatResponse struct {
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string
 
@@ -353,61 +67,13 @@ type CloudEndpointsRestoreheartbeatResult struct {
 	XMSRequestID *string
 }
 
-// CloudEndpointsTriggerChangeDetectionPollerResponse contains the response from method CloudEndpoints.TriggerChangeDetection.
-type CloudEndpointsTriggerChangeDetectionPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *CloudEndpointsTriggerChangeDetectionPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// CloudEndpointsClientTriggerChangeDetectionResponse contains the response from method CloudEndpointsClient.TriggerChangeDetection.
+type CloudEndpointsClientTriggerChangeDetectionResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l CloudEndpointsTriggerChangeDetectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CloudEndpointsTriggerChangeDetectionResponse, error) {
-	respType := CloudEndpointsTriggerChangeDetectionResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a CloudEndpointsTriggerChangeDetectionPollerResponse from the provided client and resume token.
-func (l *CloudEndpointsTriggerChangeDetectionPollerResponse) Resume(ctx context.Context, client *CloudEndpointsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("CloudEndpointsClient.TriggerChangeDetection", token, client.pl, client.triggerChangeDetectionHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &CloudEndpointsTriggerChangeDetectionPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// CloudEndpointsTriggerChangeDetectionResponse contains the response from method CloudEndpoints.TriggerChangeDetection.
-type CloudEndpointsTriggerChangeDetectionResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MicrosoftStorageSyncLocationOperationStatusResponse contains the response from method MicrosoftStorageSync.LocationOperationStatus.
-type MicrosoftStorageSyncLocationOperationStatusResponse struct {
-	MicrosoftStorageSyncLocationOperationStatusResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MicrosoftStorageSyncLocationOperationStatusResult contains the result from method MicrosoftStorageSync.LocationOperationStatus.
-type MicrosoftStorageSyncLocationOperationStatusResult struct {
+// MicrosoftStorageSyncClientLocationOperationStatusResponse contains the response from method MicrosoftStorageSyncClient.LocationOperationStatus.
+type MicrosoftStorageSyncClientLocationOperationStatusResponse struct {
 	LocationOperationStatus
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string
@@ -416,15 +82,8 @@ type MicrosoftStorageSyncLocationOperationStatusResult struct {
 	XMSRequestID *string
 }
 
-// OperationStatusGetResponse contains the response from method OperationStatus.Get.
-type OperationStatusGetResponse struct {
-	OperationStatusGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationStatusGetResult contains the result from method OperationStatus.Get.
-type OperationStatusGetResult struct {
+// OperationStatusClientGetResponse contains the response from method OperationStatusClient.Get.
+type OperationStatusClientGetResponse struct {
 	OperationStatus
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string
@@ -433,15 +92,8 @@ type OperationStatusGetResult struct {
 	XMSRequestID *string
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
 	OperationEntityListResult
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string
@@ -450,125 +102,23 @@ type OperationsListResult struct {
 	XMSRequestID *string
 }
 
-// PrivateEndpointConnectionsCreatePollerResponse contains the response from method PrivateEndpointConnections.Create.
-type PrivateEndpointConnectionsCreatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsCreatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsCreateResponse, error) {
-	respType := PrivateEndpointConnectionsCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a PrivateEndpointConnectionsCreatePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsCreatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Create", token, client.pl, client.createHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &PrivateEndpointConnectionsCreatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// PrivateEndpointConnectionsCreateResponse contains the response from method PrivateEndpointConnections.Create.
-type PrivateEndpointConnectionsCreateResponse struct {
-	PrivateEndpointConnectionsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsCreateResult contains the result from method PrivateEndpointConnections.Create.
-type PrivateEndpointConnectionsCreateResult struct {
+// PrivateEndpointConnectionsClientCreateResponse contains the response from method PrivateEndpointConnectionsClient.Create.
+type PrivateEndpointConnectionsClientCreateResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsDeletePollerResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsDeleteResponse, error) {
-	respType := PrivateEndpointConnectionsDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a PrivateEndpointConnectionsDeletePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &PrivateEndpointConnectionsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// PrivateEndpointConnectionsDeleteResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsGetResponse contains the response from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResponse struct {
-	PrivateEndpointConnectionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsGetResult contains the result from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResult struct {
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsListByStorageSyncServiceResponse contains the response from method PrivateEndpointConnections.ListByStorageSyncService.
-type PrivateEndpointConnectionsListByStorageSyncServiceResponse struct {
-	PrivateEndpointConnectionsListByStorageSyncServiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsListByStorageSyncServiceResult contains the result from method PrivateEndpointConnections.ListByStorageSyncService.
-type PrivateEndpointConnectionsListByStorageSyncServiceResult struct {
+// PrivateEndpointConnectionsClientListByStorageSyncServiceResponse contains the response from method PrivateEndpointConnectionsClient.ListByStorageSyncService.
+type PrivateEndpointConnectionsClientListByStorageSyncServiceResponse struct {
 	PrivateEndpointConnectionListResult
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string
@@ -577,125 +127,23 @@ type PrivateEndpointConnectionsListByStorageSyncServiceResult struct {
 	XMSRequestID *string
 }
 
-// PrivateLinkResourcesListByStorageSyncServiceResponse contains the response from method PrivateLinkResources.ListByStorageSyncService.
-type PrivateLinkResourcesListByStorageSyncServiceResponse struct {
-	PrivateLinkResourcesListByStorageSyncServiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkResourcesListByStorageSyncServiceResult contains the result from method PrivateLinkResources.ListByStorageSyncService.
-type PrivateLinkResourcesListByStorageSyncServiceResult struct {
+// PrivateLinkResourcesClientListByStorageSyncServiceResponse contains the response from method PrivateLinkResourcesClient.ListByStorageSyncService.
+type PrivateLinkResourcesClientListByStorageSyncServiceResponse struct {
 	PrivateLinkResourceListResult
 }
 
-// RegisteredServersCreatePollerResponse contains the response from method RegisteredServers.Create.
-type RegisteredServersCreatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *RegisteredServersCreatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l RegisteredServersCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RegisteredServersCreateResponse, error) {
-	respType := RegisteredServersCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RegisteredServer)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a RegisteredServersCreatePollerResponse from the provided client and resume token.
-func (l *RegisteredServersCreatePollerResponse) Resume(ctx context.Context, client *RegisteredServersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("RegisteredServersClient.Create", token, client.pl, client.createHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &RegisteredServersCreatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// RegisteredServersCreateResponse contains the response from method RegisteredServers.Create.
-type RegisteredServersCreateResponse struct {
-	RegisteredServersCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RegisteredServersCreateResult contains the result from method RegisteredServers.Create.
-type RegisteredServersCreateResult struct {
+// RegisteredServersClientCreateResponse contains the response from method RegisteredServersClient.Create.
+type RegisteredServersClientCreateResponse struct {
 	RegisteredServer
 }
 
-// RegisteredServersDeletePollerResponse contains the response from method RegisteredServers.Delete.
-type RegisteredServersDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *RegisteredServersDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// RegisteredServersClientDeleteResponse contains the response from method RegisteredServersClient.Delete.
+type RegisteredServersClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l RegisteredServersDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RegisteredServersDeleteResponse, error) {
-	respType := RegisteredServersDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a RegisteredServersDeletePollerResponse from the provided client and resume token.
-func (l *RegisteredServersDeletePollerResponse) Resume(ctx context.Context, client *RegisteredServersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("RegisteredServersClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &RegisteredServersDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// RegisteredServersDeleteResponse contains the response from method RegisteredServers.Delete.
-type RegisteredServersDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RegisteredServersGetResponse contains the response from method RegisteredServers.Get.
-type RegisteredServersGetResponse struct {
-	RegisteredServersGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RegisteredServersGetResult contains the result from method RegisteredServers.Get.
-type RegisteredServersGetResult struct {
+// RegisteredServersClientGetResponse contains the response from method RegisteredServersClient.Get.
+type RegisteredServersClientGetResponse struct {
 	RegisteredServer
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string
@@ -704,15 +152,8 @@ type RegisteredServersGetResult struct {
 	XMSRequestID *string
 }
 
-// RegisteredServersListByStorageSyncServiceResponse contains the response from method RegisteredServers.ListByStorageSyncService.
-type RegisteredServersListByStorageSyncServiceResponse struct {
-	RegisteredServersListByStorageSyncServiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RegisteredServersListByStorageSyncServiceResult contains the result from method RegisteredServers.ListByStorageSyncService.
-type RegisteredServersListByStorageSyncServiceResult struct {
+// RegisteredServersClientListByStorageSyncServiceResponse contains the response from method RegisteredServersClient.ListByStorageSyncService.
+type RegisteredServersClientListByStorageSyncServiceResponse struct {
 	RegisteredServerArray
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string
@@ -721,159 +162,23 @@ type RegisteredServersListByStorageSyncServiceResult struct {
 	XMSRequestID *string
 }
 
-// RegisteredServersTriggerRolloverPollerResponse contains the response from method RegisteredServers.TriggerRollover.
-type RegisteredServersTriggerRolloverPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *RegisteredServersTriggerRolloverPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// RegisteredServersClientTriggerRolloverResponse contains the response from method RegisteredServersClient.TriggerRollover.
+type RegisteredServersClientTriggerRolloverResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l RegisteredServersTriggerRolloverPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RegisteredServersTriggerRolloverResponse, error) {
-	respType := RegisteredServersTriggerRolloverResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a RegisteredServersTriggerRolloverPollerResponse from the provided client and resume token.
-func (l *RegisteredServersTriggerRolloverPollerResponse) Resume(ctx context.Context, client *RegisteredServersClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("RegisteredServersClient.TriggerRollover", token, client.pl, client.triggerRolloverHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &RegisteredServersTriggerRolloverPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// RegisteredServersTriggerRolloverResponse contains the response from method RegisteredServers.TriggerRollover.
-type RegisteredServersTriggerRolloverResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServerEndpointsCreatePollerResponse contains the response from method ServerEndpoints.Create.
-type ServerEndpointsCreatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ServerEndpointsCreatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ServerEndpointsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServerEndpointsCreateResponse, error) {
-	respType := ServerEndpointsCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ServerEndpoint)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ServerEndpointsCreatePollerResponse from the provided client and resume token.
-func (l *ServerEndpointsCreatePollerResponse) Resume(ctx context.Context, client *ServerEndpointsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ServerEndpointsClient.Create", token, client.pl, client.createHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &ServerEndpointsCreatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// ServerEndpointsCreateResponse contains the response from method ServerEndpoints.Create.
-type ServerEndpointsCreateResponse struct {
-	ServerEndpointsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServerEndpointsCreateResult contains the result from method ServerEndpoints.Create.
-type ServerEndpointsCreateResult struct {
+// ServerEndpointsClientCreateResponse contains the response from method ServerEndpointsClient.Create.
+type ServerEndpointsClientCreateResponse struct {
 	ServerEndpoint
 }
 
-// ServerEndpointsDeletePollerResponse contains the response from method ServerEndpoints.Delete.
-type ServerEndpointsDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ServerEndpointsDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ServerEndpointsClientDeleteResponse contains the response from method ServerEndpointsClient.Delete.
+type ServerEndpointsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ServerEndpointsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServerEndpointsDeleteResponse, error) {
-	respType := ServerEndpointsDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ServerEndpointsDeletePollerResponse from the provided client and resume token.
-func (l *ServerEndpointsDeletePollerResponse) Resume(ctx context.Context, client *ServerEndpointsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ServerEndpointsClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &ServerEndpointsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// ServerEndpointsDeleteResponse contains the response from method ServerEndpoints.Delete.
-type ServerEndpointsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServerEndpointsGetResponse contains the response from method ServerEndpoints.Get.
-type ServerEndpointsGetResponse struct {
-	ServerEndpointsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServerEndpointsGetResult contains the result from method ServerEndpoints.Get.
-type ServerEndpointsGetResult struct {
+// ServerEndpointsClientGetResponse contains the response from method ServerEndpointsClient.Get.
+type ServerEndpointsClientGetResponse struct {
 	ServerEndpoint
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string
@@ -882,15 +187,8 @@ type ServerEndpointsGetResult struct {
 	XMSRequestID *string
 }
 
-// ServerEndpointsListBySyncGroupResponse contains the response from method ServerEndpoints.ListBySyncGroup.
-type ServerEndpointsListBySyncGroupResponse struct {
-	ServerEndpointsListBySyncGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServerEndpointsListBySyncGroupResult contains the result from method ServerEndpoints.ListBySyncGroup.
-type ServerEndpointsListBySyncGroupResult struct {
+// ServerEndpointsClientListBySyncGroupResponse contains the response from method ServerEndpointsClient.ListBySyncGroup.
+type ServerEndpointsClientListBySyncGroupResponse struct {
 	ServerEndpointArray
 	// Location contains the information returned from the Location header response.
 	Location *string
@@ -902,224 +200,34 @@ type ServerEndpointsListBySyncGroupResult struct {
 	XMSRequestID *string
 }
 
-// ServerEndpointsRecallActionPollerResponse contains the response from method ServerEndpoints.RecallAction.
-type ServerEndpointsRecallActionPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ServerEndpointsRecallActionPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ServerEndpointsClientRecallActionResponse contains the response from method ServerEndpointsClient.RecallAction.
+type ServerEndpointsClientRecallActionResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ServerEndpointsRecallActionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServerEndpointsRecallActionResponse, error) {
-	respType := ServerEndpointsRecallActionResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ServerEndpointsRecallActionPollerResponse from the provided client and resume token.
-func (l *ServerEndpointsRecallActionPollerResponse) Resume(ctx context.Context, client *ServerEndpointsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ServerEndpointsClient.RecallAction", token, client.pl, client.recallActionHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &ServerEndpointsRecallActionPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// ServerEndpointsRecallActionResponse contains the response from method ServerEndpoints.RecallAction.
-type ServerEndpointsRecallActionResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServerEndpointsUpdatePollerResponse contains the response from method ServerEndpoints.Update.
-type ServerEndpointsUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ServerEndpointsUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ServerEndpointsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServerEndpointsUpdateResponse, error) {
-	respType := ServerEndpointsUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ServerEndpoint)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ServerEndpointsUpdatePollerResponse from the provided client and resume token.
-func (l *ServerEndpointsUpdatePollerResponse) Resume(ctx context.Context, client *ServerEndpointsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ServerEndpointsClient.Update", token, client.pl, client.updateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &ServerEndpointsUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// ServerEndpointsUpdateResponse contains the response from method ServerEndpoints.Update.
-type ServerEndpointsUpdateResponse struct {
-	ServerEndpointsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServerEndpointsUpdateResult contains the result from method ServerEndpoints.Update.
-type ServerEndpointsUpdateResult struct {
+// ServerEndpointsClientUpdateResponse contains the response from method ServerEndpointsClient.Update.
+type ServerEndpointsClientUpdateResponse struct {
 	ServerEndpoint
 }
 
-// StorageSyncServicesCheckNameAvailabilityResponse contains the response from method StorageSyncServices.CheckNameAvailability.
-type StorageSyncServicesCheckNameAvailabilityResponse struct {
-	StorageSyncServicesCheckNameAvailabilityResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// StorageSyncServicesCheckNameAvailabilityResult contains the result from method StorageSyncServices.CheckNameAvailability.
-type StorageSyncServicesCheckNameAvailabilityResult struct {
+// ServicesClientCheckNameAvailabilityResponse contains the response from method ServicesClient.CheckNameAvailability.
+type ServicesClientCheckNameAvailabilityResponse struct {
 	CheckNameAvailabilityResult
 }
 
-// StorageSyncServicesCreatePollerResponse contains the response from method StorageSyncServices.Create.
-type StorageSyncServicesCreatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *StorageSyncServicesCreatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ServicesClientCreateResponse contains the response from method ServicesClient.Create.
+type ServicesClientCreateResponse struct {
+	Service
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StorageSyncServicesCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StorageSyncServicesCreateResponse, error) {
-	respType := StorageSyncServicesCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.StorageSyncService)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
+// ServicesClientDeleteResponse contains the response from method ServicesClient.Delete.
+type ServicesClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// Resume rehydrates a StorageSyncServicesCreatePollerResponse from the provided client and resume token.
-func (l *StorageSyncServicesCreatePollerResponse) Resume(ctx context.Context, client *StorageSyncServicesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StorageSyncServicesClient.Create", token, client.pl, client.createHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &StorageSyncServicesCreatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// StorageSyncServicesCreateResponse contains the response from method StorageSyncServices.Create.
-type StorageSyncServicesCreateResponse struct {
-	StorageSyncServicesCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// StorageSyncServicesCreateResult contains the result from method StorageSyncServices.Create.
-type StorageSyncServicesCreateResult struct {
-	StorageSyncService
-}
-
-// StorageSyncServicesDeletePollerResponse contains the response from method StorageSyncServices.Delete.
-type StorageSyncServicesDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *StorageSyncServicesDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StorageSyncServicesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StorageSyncServicesDeleteResponse, error) {
-	respType := StorageSyncServicesDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a StorageSyncServicesDeletePollerResponse from the provided client and resume token.
-func (l *StorageSyncServicesDeletePollerResponse) Resume(ctx context.Context, client *StorageSyncServicesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StorageSyncServicesClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &StorageSyncServicesDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// StorageSyncServicesDeleteResponse contains the response from method StorageSyncServices.Delete.
-type StorageSyncServicesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// StorageSyncServicesGetResponse contains the response from method StorageSyncServices.Get.
-type StorageSyncServicesGetResponse struct {
-	StorageSyncServicesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// StorageSyncServicesGetResult contains the result from method StorageSyncServices.Get.
-type StorageSyncServicesGetResult struct {
-	StorageSyncService
+// ServicesClientGetResponse contains the response from method ServicesClient.Get.
+type ServicesClientGetResponse struct {
+	Service
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string
 
@@ -1127,16 +235,9 @@ type StorageSyncServicesGetResult struct {
 	XMSRequestID *string
 }
 
-// StorageSyncServicesListByResourceGroupResponse contains the response from method StorageSyncServices.ListByResourceGroup.
-type StorageSyncServicesListByResourceGroupResponse struct {
-	StorageSyncServicesListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// StorageSyncServicesListByResourceGroupResult contains the result from method StorageSyncServices.ListByResourceGroup.
-type StorageSyncServicesListByResourceGroupResult struct {
-	StorageSyncServiceArray
+// ServicesClientListByResourceGroupResponse contains the response from method ServicesClient.ListByResourceGroup.
+type ServicesClientListByResourceGroupResponse struct {
+	ServiceArray
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string
 
@@ -1144,16 +245,9 @@ type StorageSyncServicesListByResourceGroupResult struct {
 	XMSRequestID *string
 }
 
-// StorageSyncServicesListBySubscriptionResponse contains the response from method StorageSyncServices.ListBySubscription.
-type StorageSyncServicesListBySubscriptionResponse struct {
-	StorageSyncServicesListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// StorageSyncServicesListBySubscriptionResult contains the result from method StorageSyncServices.ListBySubscription.
-type StorageSyncServicesListBySubscriptionResult struct {
-	StorageSyncServiceArray
+// ServicesClientListBySubscriptionResponse contains the response from method ServicesClient.ListBySubscription.
+type ServicesClientListBySubscriptionResponse struct {
+	ServiceArray
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string
 
@@ -1161,67 +255,13 @@ type StorageSyncServicesListBySubscriptionResult struct {
 	XMSRequestID *string
 }
 
-// StorageSyncServicesUpdatePollerResponse contains the response from method StorageSyncServices.Update.
-type StorageSyncServicesUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *StorageSyncServicesUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ServicesClientUpdateResponse contains the response from method ServicesClient.Update.
+type ServicesClientUpdateResponse struct {
+	Service
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l StorageSyncServicesUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StorageSyncServicesUpdateResponse, error) {
-	respType := StorageSyncServicesUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.StorageSyncService)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a StorageSyncServicesUpdatePollerResponse from the provided client and resume token.
-func (l *StorageSyncServicesUpdatePollerResponse) Resume(ctx context.Context, client *StorageSyncServicesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("StorageSyncServicesClient.Update", token, client.pl, client.updateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &StorageSyncServicesUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// StorageSyncServicesUpdateResponse contains the response from method StorageSyncServices.Update.
-type StorageSyncServicesUpdateResponse struct {
-	StorageSyncServicesUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// StorageSyncServicesUpdateResult contains the result from method StorageSyncServices.Update.
-type StorageSyncServicesUpdateResult struct {
-	StorageSyncService
-}
-
-// SyncGroupsCreateResponse contains the response from method SyncGroups.Create.
-type SyncGroupsCreateResponse struct {
-	SyncGroupsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SyncGroupsCreateResult contains the result from method SyncGroups.Create.
-type SyncGroupsCreateResult struct {
+// SyncGroupsClientCreateResponse contains the response from method SyncGroupsClient.Create.
+type SyncGroupsClientCreateResponse struct {
 	SyncGroup
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string
@@ -1230,15 +270,8 @@ type SyncGroupsCreateResult struct {
 	XMSRequestID *string
 }
 
-// SyncGroupsDeleteResponse contains the response from method SyncGroups.Delete.
-type SyncGroupsDeleteResponse struct {
-	SyncGroupsDeleteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SyncGroupsDeleteResult contains the result from method SyncGroups.Delete.
-type SyncGroupsDeleteResult struct {
+// SyncGroupsClientDeleteResponse contains the response from method SyncGroupsClient.Delete.
+type SyncGroupsClientDeleteResponse struct {
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string
 
@@ -1246,15 +279,8 @@ type SyncGroupsDeleteResult struct {
 	XMSRequestID *string
 }
 
-// SyncGroupsGetResponse contains the response from method SyncGroups.Get.
-type SyncGroupsGetResponse struct {
-	SyncGroupsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SyncGroupsGetResult contains the result from method SyncGroups.Get.
-type SyncGroupsGetResult struct {
+// SyncGroupsClientGetResponse contains the response from method SyncGroupsClient.Get.
+type SyncGroupsClientGetResponse struct {
 	SyncGroup
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string
@@ -1263,15 +289,8 @@ type SyncGroupsGetResult struct {
 	XMSRequestID *string
 }
 
-// SyncGroupsListByStorageSyncServiceResponse contains the response from method SyncGroups.ListByStorageSyncService.
-type SyncGroupsListByStorageSyncServiceResponse struct {
-	SyncGroupsListByStorageSyncServiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SyncGroupsListByStorageSyncServiceResult contains the result from method SyncGroups.ListByStorageSyncService.
-type SyncGroupsListByStorageSyncServiceResult struct {
+// SyncGroupsClientListByStorageSyncServiceResponse contains the response from method SyncGroupsClient.ListByStorageSyncService.
+type SyncGroupsClientListByStorageSyncServiceResponse struct {
 	SyncGroupArray
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string
@@ -1280,15 +299,8 @@ type SyncGroupsListByStorageSyncServiceResult struct {
 	XMSRequestID *string
 }
 
-// WorkflowsAbortResponse contains the response from method Workflows.Abort.
-type WorkflowsAbortResponse struct {
-	WorkflowsAbortResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowsAbortResult contains the result from method Workflows.Abort.
-type WorkflowsAbortResult struct {
+// WorkflowsClientAbortResponse contains the response from method WorkflowsClient.Abort.
+type WorkflowsClientAbortResponse struct {
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string
 
@@ -1296,15 +308,8 @@ type WorkflowsAbortResult struct {
 	XMSRequestID *string
 }
 
-// WorkflowsGetResponse contains the response from method Workflows.Get.
-type WorkflowsGetResponse struct {
-	WorkflowsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowsGetResult contains the result from method Workflows.Get.
-type WorkflowsGetResult struct {
+// WorkflowsClientGetResponse contains the response from method WorkflowsClient.Get.
+type WorkflowsClientGetResponse struct {
 	Workflow
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string
@@ -1313,15 +318,8 @@ type WorkflowsGetResult struct {
 	XMSRequestID *string
 }
 
-// WorkflowsListByStorageSyncServiceResponse contains the response from method Workflows.ListByStorageSyncService.
-type WorkflowsListByStorageSyncServiceResponse struct {
-	WorkflowsListByStorageSyncServiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkflowsListByStorageSyncServiceResult contains the result from method Workflows.ListByStorageSyncService.
-type WorkflowsListByStorageSyncServiceResult struct {
+// WorkflowsClientListByStorageSyncServiceResponse contains the response from method WorkflowsClient.ListByStorageSyncService.
+type WorkflowsClientListByStorageSyncServiceResponse struct {
 	WorkflowArray
 	// XMSCorrelationRequestID contains the information returned from the x-ms-correlation-request-id header response.
 	XMSCorrelationRequestID *string

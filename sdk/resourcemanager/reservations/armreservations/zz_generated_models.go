@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,25 +8,12 @@
 
 package armreservations
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 type AppliedReservationList struct {
 	// Url to get the next page of reservations
 	NextLink *string   `json:"nextLink,omitempty"`
 	Value    []*string `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppliedReservationList.
-func (a AppliedReservationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 type AppliedReservations struct {
@@ -61,22 +48,23 @@ type AvailableScopeRequestProperties struct {
 	Scopes []*string `json:"scopes,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvailableScopeRequestProperties.
-func (a AvailableScopeRequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "scopes", a.Scopes)
-	return json.Marshal(objectMap)
-}
-
-// AzureReservationAPIGetAppliedReservationListOptions contains the optional parameters for the AzureReservationAPI.GetAppliedReservationList method.
-type AzureReservationAPIGetAppliedReservationListOptions struct {
+// AzureReservationAPIClientGetAppliedReservationListOptions contains the optional parameters for the AzureReservationAPIClient.GetAppliedReservationList
+// method.
+type AzureReservationAPIClientGetAppliedReservationListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AzureReservationAPIGetCatalogOptions contains the optional parameters for the AzureReservationAPI.GetCatalog method.
-type AzureReservationAPIGetCatalogOptions struct {
+// AzureReservationAPIClientGetCatalogOptions contains the optional parameters for the AzureReservationAPIClient.GetCatalog
+// method.
+type AzureReservationAPIClientGetCatalogOptions struct {
 	// Filters the skus based on the location specified in this parameter. This can be an azure region or global
 	Location *string
+	// Offer id used to get the third party products
+	OfferID *string
+	// Plan id used to get the third party products
+	PlanID *string
+	// Publisher id used to get the third party products
+	PublisherID *string
 	// The type of the resource for which the skus should be provided.
 	ReservedResourceType *string
 }
@@ -88,9 +76,10 @@ type BillingInformation struct {
 	BillingCurrencyTotalPaidAmount           *Price `json:"billingCurrencyTotalPaidAmount,omitempty"`
 }
 
-// CalculateExchangeBeginPostOptions contains the optional parameters for the CalculateExchange.BeginPost method.
-type CalculateExchangeBeginPostOptions struct {
-	// placeholder for future optional parameters
+// CalculateExchangeClientBeginPostOptions contains the optional parameters for the CalculateExchangeClient.BeginPost method.
+type CalculateExchangeClientBeginPostOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CalculateExchangeOperationResultResponse - CalculateExchange operation result
@@ -126,14 +115,6 @@ type CalculateExchangeRequestProperties struct {
 	ReservationsToPurchase []*PurchaseRequest `json:"reservationsToPurchase,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CalculateExchangeRequestProperties.
-func (c CalculateExchangeRequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "reservationsToExchange", c.ReservationsToExchange)
-	populate(objectMap, "reservationsToPurchase", c.ReservationsToPurchase)
-	return json.Marshal(objectMap)
-}
-
 // CalculateExchangeResponseProperties - CalculateExchange response properties
 type CalculateExchangeResponseProperties struct {
 	NetPayable *Price `json:"netPayable,omitempty"`
@@ -151,19 +132,6 @@ type CalculateExchangeResponseProperties struct {
 
 	// Exchange session identifier
 	SessionID *string `json:"sessionId,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CalculateExchangeResponseProperties.
-func (c CalculateExchangeResponseProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "netPayable", c.NetPayable)
-	populate(objectMap, "policyResult", c.PolicyResult)
-	populate(objectMap, "purchasesTotal", c.PurchasesTotal)
-	populate(objectMap, "refundsTotal", c.RefundsTotal)
-	populate(objectMap, "reservationsToExchange", c.ReservationsToExchange)
-	populate(objectMap, "reservationsToPurchase", c.ReservationsToPurchase)
-	populate(objectMap, "sessionId", c.SessionID)
-	return json.Marshal(objectMap)
 }
 
 type CalculatePriceResponse struct {
@@ -203,24 +171,8 @@ type CalculatePriceResponseProperties struct {
 	TaxTotal *float64 `json:"taxTotal,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CalculatePriceResponseProperties.
-func (c CalculatePriceResponseProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "billingCurrencyTotal", c.BillingCurrencyTotal)
-	populate(objectMap, "grandTotal", c.GrandTotal)
-	populate(objectMap, "isBillingPartnerManaged", c.IsBillingPartnerManaged)
-	populate(objectMap, "isTaxIncluded", c.IsTaxIncluded)
-	populate(objectMap, "netTotal", c.NetTotal)
-	populate(objectMap, "paymentSchedule", c.PaymentSchedule)
-	populate(objectMap, "pricingCurrencyTotal", c.PricingCurrencyTotal)
-	populate(objectMap, "reservationOrderId", c.ReservationOrderID)
-	populate(objectMap, "skuDescription", c.SKUDescription)
-	populate(objectMap, "skuTitle", c.SKUTitle)
-	populate(objectMap, "taxTotal", c.TaxTotal)
-	return json.Marshal(objectMap)
-}
-
-// CalculatePriceResponsePropertiesBillingCurrencyTotal - Currency and amount that customer will be charged in customer's local currency. Tax is not included.
+// CalculatePriceResponsePropertiesBillingCurrencyTotal - Currency and amount that customer will be charged in customer's
+// local currency. Tax is not included.
 type CalculatePriceResponsePropertiesBillingCurrencyTotal struct {
 	// Amount in pricing currency. Tax is not included.
 	Amount *float64 `json:"amount,omitempty"`
@@ -229,8 +181,8 @@ type CalculatePriceResponsePropertiesBillingCurrencyTotal struct {
 	CurrencyCode *string `json:"currencyCode,omitempty"`
 }
 
-// CalculatePriceResponsePropertiesPricingCurrencyTotal - Amount that Microsoft uses for record. Used during refund for calculating refund limit. Tax is
-// not included.
+// CalculatePriceResponsePropertiesPricingCurrencyTotal - Amount that Microsoft uses for record. Used during refund for calculating
+// refund limit. Tax is not included.
 type CalculatePriceResponsePropertiesPricingCurrencyTotal struct {
 	Amount *float32 `json:"amount,omitempty"`
 
@@ -273,23 +225,6 @@ type Catalog struct {
 	Tier *string `json:"tier,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Catalog.
-func (c Catalog) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "billingPlans", c.BillingPlans)
-	populate(objectMap, "capabilities", c.Capabilities)
-	populate(objectMap, "locations", c.Locations)
-	populate(objectMap, "msrp", c.Msrp)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "resourceType", c.ResourceType)
-	populate(objectMap, "restrictions", c.Restrictions)
-	populate(objectMap, "skuProperties", c.SKUProperties)
-	populate(objectMap, "size", c.Size)
-	populate(objectMap, "terms", c.Terms)
-	populate(objectMap, "tier", c.Tier)
-	return json.Marshal(objectMap)
-}
-
 // CatalogMsrp - Pricing information about the SKU
 type CatalogMsrp struct {
 	// Amount in pricing currency. Tax not included.
@@ -306,14 +241,6 @@ type ChangeDirectoryResponse struct {
 	// Change directory result for reservation order or reservation
 	ReservationOrder *ChangeDirectoryResult   `json:"reservationOrder,omitempty"`
 	Reservations     []*ChangeDirectoryResult `json:"reservations,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ChangeDirectoryResponse.
-func (c ChangeDirectoryResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "reservationOrder", c.ReservationOrder)
-	populate(objectMap, "reservations", c.Reservations)
-	return json.Marshal(objectMap)
 }
 
 // ChangeDirectoryResult - Change directory result for reservation order or reservation
@@ -337,13 +264,6 @@ type CreateGenericQuotaRequestParameters struct {
 	Value []*CurrentQuotaLimitBase `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CreateGenericQuotaRequestParameters.
-func (c CreateGenericQuotaRequestParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
 // CurrentQuotaLimit - Current quota limits.
 type CurrentQuotaLimit struct {
 	// Additional properties for the quota status for the resource.
@@ -357,25 +277,19 @@ type CurrentQuotaLimit struct {
 type CurrentQuotaLimitBase struct {
 	// Quota properties for the resource.
 	Properties *QuotaProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The quota request ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the quota request.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of resource. "Microsoft.Capacity/ServiceLimits"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CurrentQuotaLimitBase.
-func (c CurrentQuotaLimitBase) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
-}
-
-// Implements the error and azcore.HTTPResponse interfaces.
 type Error struct {
-	raw        string
-	InnerError *ExtendedErrorInfo `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type Error.
-// The contents of the error text are not contractual and subject to change.
-func (e Error) Error() string {
-	return e.raw
+	Error *ExtendedErrorInfo `json:"error,omitempty"`
 }
 
 // ErrorDetails - The details of the error.
@@ -390,37 +304,23 @@ type ErrorDetails struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// ErrorResponse - Error response indicates that the service is not able to process the incoming request. The reason is provided in the error message.
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Error response indicates that the service is not able to process the incoming request. The reason is provided
+// in the error message.
 type ErrorResponse struct {
-	raw string
 	// The details of the error.
-	InnerError *ErrorDetails `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetails `json:"error,omitempty"`
 }
 
 // ExceptionResponse - The API error.
-// Implements the error and azcore.HTTPResponse interfaces.
 type ExceptionResponse struct {
-	raw string
 	// The API error details.
-	InnerError *ServiceError `json:"error,omitempty"`
+	Error *ServiceError `json:"error,omitempty"`
 }
 
-// Error implements the error interface for type ExceptionResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ExceptionResponse) Error() string {
-	return e.raw
-}
-
-// ExchangeBeginPostOptions contains the optional parameters for the Exchange.BeginPost method.
-type ExchangeBeginPostOptions struct {
-	// placeholder for future optional parameters
+// ExchangeClientBeginPostOptions contains the optional parameters for the ExchangeClient.BeginPost method.
+type ExchangeClientBeginPostOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ExchangeOperationResultResponse - Exchange operation result
@@ -451,13 +351,6 @@ type ExchangePolicyError struct {
 type ExchangePolicyErrors struct {
 	// Exchange Policy errors
 	PolicyErrors []*ExchangePolicyError `json:"policyErrors,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExchangePolicyErrors.
-func (e ExchangePolicyErrors) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "policyErrors", e.PolicyErrors)
-	return json.Marshal(objectMap)
 }
 
 // ExchangeRequest - Exchange request
@@ -491,19 +384,6 @@ type ExchangeResponseProperties struct {
 	SessionID *string `json:"sessionId,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ExchangeResponseProperties.
-func (e ExchangeResponseProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "netPayable", e.NetPayable)
-	populate(objectMap, "policyResult", e.PolicyResult)
-	populate(objectMap, "purchasesTotal", e.PurchasesTotal)
-	populate(objectMap, "refundsTotal", e.RefundsTotal)
-	populate(objectMap, "reservationsToExchange", e.ReservationsToExchange)
-	populate(objectMap, "reservationsToPurchase", e.ReservationsToPurchase)
-	populate(objectMap, "sessionId", e.SessionID)
-	return json.Marshal(objectMap)
-}
-
 type ExtendedErrorInfo struct {
 	Code    *ErrorResponseCode `json:"code,omitempty"`
 	Message *string            `json:"message,omitempty"`
@@ -515,20 +395,30 @@ type ExtendedStatusInfo struct {
 	StatusCode *ReservationStatusCode `json:"statusCode,omitempty"`
 }
 
+// ListResult - The list of reservations and summary of roll out count of reservations in each state.
+type ListResult struct {
+	// The roll out count summary of the reservations
+	Summary *ReservationSummary `json:"summary,omitempty"`
+
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of reservations.
+	Value []*ReservationResponse `json:"value,omitempty" azure:"ro"`
+}
+
 type MergeProperties struct {
 	// Format of the resource id should be /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
 	Sources []*string `json:"sources,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MergeProperties.
-func (m MergeProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "sources", m.Sources)
-	return json.Marshal(objectMap)
-}
-
 type MergeRequest struct {
 	Properties *MergeProperties `json:"properties,omitempty"`
+}
+
+// OperationClientListOptions contains the optional parameters for the OperationClient.List method.
+type OperationClientListOptions struct {
+	// placeholder for future optional parameters
 }
 
 type OperationDisplay struct {
@@ -542,19 +432,6 @@ type OperationList struct {
 	// Url to get the next page of items.
 	NextLink *string              `json:"nextLink,omitempty"`
 	Value    []*OperationResponse `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationList.
-func (o OperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
-// OperationListOptions contains the optional parameters for the Operation.List method.
-type OperationListOptions struct {
-	// placeholder for future optional parameters
 }
 
 type OperationResponse struct {
@@ -571,29 +448,22 @@ type OperationResponse struct {
 	Origin *string `json:"origin,omitempty"`
 
 	// Properties of the operation
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties interface{} `json:"properties,omitempty"`
 }
 
 // OperationResultError - Required if status == failed or status == canceled.
 type OperationResultError struct {
-	// Required if status == failed or status == cancelled. If status == failed, provide an invariant error code used for error troubleshooting, aggregation,
-	// and analysis.
+	// Required if status == failed or status == cancelled. If status == failed, provide an invariant error code used for error
+	// troubleshooting, aggregation, and analysis.
 	Code *string `json:"code,omitempty"`
 
-	// Required if status == failed. Localized. If status == failed, provide an actionable error message indicating what error occurred, and what the user can
-	// do to address the issue.
+	// Required if status == failed. Localized. If status == failed, provide an actionable error message indicating what error
+	// occurred, and what the user can do to address the issue.
 	Message *string `json:"message,omitempty"`
 }
 
 type Patch struct {
 	Properties *PatchProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Patch.
-func (p Patch) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", p.Properties)
-	return json.Marshal(objectMap)
 }
 
 type PatchProperties struct {
@@ -603,7 +473,8 @@ type PatchProperties struct {
 	// List of the subscriptions that the benefit will be applied. Do not specify if AppliedScopeType is Shared.
 	AppliedScopes []*string `json:"appliedScopes,omitempty"`
 
-	// Turning this on will apply the reservation discount to other VMs in the same VM size group. Only specify for VirtualMachines reserved resource type.
+	// Turning this on will apply the reservation discount to other VMs in the same VM size group. Only specify for VirtualMachines
+	// reserved resource type.
 	InstanceFlexibility *InstanceFlexibility `json:"instanceFlexibility,omitempty"`
 
 	// Name of the Reservation
@@ -612,18 +483,6 @@ type PatchProperties struct {
 	// Setting this to true will automatically purchase a new reservation on the expiration date time.
 	Renew           *bool                           `json:"renew,omitempty"`
 	RenewProperties *PatchPropertiesRenewProperties `json:"renewProperties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PatchProperties.
-func (p PatchProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appliedScopeType", p.AppliedScopeType)
-	populate(objectMap, "appliedScopes", p.AppliedScopes)
-	populate(objectMap, "instanceFlexibility", p.InstanceFlexibility)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "renew", p.Renew)
-	populate(objectMap, "renewProperties", p.RenewProperties)
-	return json.Marshal(objectMap)
 }
 
 type PatchPropertiesRenewProperties struct {
@@ -652,57 +511,6 @@ type PaymentDetail struct {
 	Status *PaymentStatus `json:"status,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PaymentDetail.
-func (p PaymentDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "billingAccount", p.BillingAccount)
-	populate(objectMap, "billingCurrencyTotal", p.BillingCurrencyTotal)
-	populateDateType(objectMap, "dueDate", p.DueDate)
-	populate(objectMap, "extendedStatusInfo", p.ExtendedStatusInfo)
-	populateDateType(objectMap, "paymentDate", p.PaymentDate)
-	populate(objectMap, "pricingCurrencyTotal", p.PricingCurrencyTotal)
-	populate(objectMap, "status", p.Status)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PaymentDetail.
-func (p *PaymentDetail) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "billingAccount":
-			err = unpopulate(val, &p.BillingAccount)
-			delete(rawMsg, key)
-		case "billingCurrencyTotal":
-			err = unpopulate(val, &p.BillingCurrencyTotal)
-			delete(rawMsg, key)
-		case "dueDate":
-			err = unpopulateDateType(val, &p.DueDate)
-			delete(rawMsg, key)
-		case "extendedStatusInfo":
-			err = unpopulate(val, &p.ExtendedStatusInfo)
-			delete(rawMsg, key)
-		case "paymentDate":
-			err = unpopulateDateType(val, &p.PaymentDate)
-			delete(rawMsg, key)
-		case "pricingCurrencyTotal":
-			err = unpopulate(val, &p.PricingCurrencyTotal)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &p.Status)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 type Price struct {
 	Amount *float64 `json:"amount,omitempty"`
 
@@ -710,836 +518,8 @@ type Price struct {
 	CurrencyCode *string `json:"currencyCode,omitempty"`
 }
 
-type PurchaseRequest struct {
-	// The Azure Region where the reserved resource lives.
-	Location   *string                    `json:"location,omitempty"`
-	Properties *PurchaseRequestProperties `json:"properties,omitempty"`
-	SKU        *SKUName                   `json:"sku,omitempty"`
-}
-
-type PurchaseRequestProperties struct {
-	// Type of the Applied Scope.
-	AppliedScopeType *AppliedScopeType `json:"appliedScopeType,omitempty"`
-
-	// List of the subscriptions that the benefit will be applied. Do not specify if AppliedScopeType is Shared.
-	AppliedScopes []*string `json:"appliedScopes,omitempty"`
-
-	// Represent the billing plans.
-	BillingPlan *ReservationBillingPlan `json:"billingPlan,omitempty"`
-
-	// Subscription that will be charged for purchasing Reservation
-	BillingScopeID *string `json:"billingScopeId,omitempty"`
-
-	// Friendly name of the Reservation
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Quantity of the SKUs that are part of the Reservation.
-	Quantity *int32 `json:"quantity,omitempty"`
-
-	// Setting this to true will automatically purchase a new reservation on the expiration date time.
-	Renew *bool `json:"renew,omitempty"`
-
-	// Properties specific to each reserved resource type. Not required if not applicable.
-	ReservedResourceProperties *PurchaseRequestPropertiesReservedResourceProperties `json:"reservedResourceProperties,omitempty"`
-
-	// The type of the resource that is being reserved.
-	ReservedResourceType *ReservedResourceType `json:"reservedResourceType,omitempty"`
-
-	// Represent the term of Reservation.
-	Term *ReservationTerm `json:"term,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PurchaseRequestProperties.
-func (p PurchaseRequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appliedScopeType", p.AppliedScopeType)
-	populate(objectMap, "appliedScopes", p.AppliedScopes)
-	populate(objectMap, "billingPlan", p.BillingPlan)
-	populate(objectMap, "billingScopeId", p.BillingScopeID)
-	populate(objectMap, "displayName", p.DisplayName)
-	populate(objectMap, "quantity", p.Quantity)
-	populate(objectMap, "renew", p.Renew)
-	populate(objectMap, "reservedResourceProperties", p.ReservedResourceProperties)
-	populate(objectMap, "reservedResourceType", p.ReservedResourceType)
-	populate(objectMap, "term", p.Term)
-	return json.Marshal(objectMap)
-}
-
-// PurchaseRequestPropertiesReservedResourceProperties - Properties specific to each reserved resource type. Not required if not applicable.
-type PurchaseRequestPropertiesReservedResourceProperties struct {
-	// Turning this on will apply the reservation discount to other VMs in the same VM size group. Only specify for VirtualMachines reserved resource type.
-	InstanceFlexibility *InstanceFlexibility `json:"instanceFlexibility,omitempty"`
-}
-
-// QuotaBeginCreateOrUpdateOptions contains the optional parameters for the Quota.BeginCreateOrUpdate method.
-type QuotaBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// QuotaBeginUpdateOptions contains the optional parameters for the Quota.BeginUpdate method.
-type QuotaBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// QuotaGetOptions contains the optional parameters for the Quota.Get method.
-type QuotaGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// QuotaLimits - Quota limits.
-type QuotaLimits struct {
-	// The URI for fetching the next page of quotas (service limits). When no more pages exist, the value is null.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// List of quotas (service limits).
-	Value []*CurrentQuotaLimitBase `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type QuotaLimits.
-func (q QuotaLimits) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", q.NextLink)
-	populate(objectMap, "value", q.Value)
-	return json.Marshal(objectMap)
-}
-
-// QuotaLimitsResponse - Quotas (service limits) in the request response.
-type QuotaLimitsResponse struct {
-	// The URI for fetching the next page of quota limits. When no more pages exist, the value is null.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// List of quotas with the quota request status.
-	Value []*CurrentQuotaLimit `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type QuotaLimitsResponse.
-func (q QuotaLimitsResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", q.NextLink)
-	populate(objectMap, "value", q.Value)
-	return json.Marshal(objectMap)
-}
-
-// QuotaListOptions contains the optional parameters for the Quota.List method.
-type QuotaListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// QuotaProperties - Quota properties for the resource.
-type QuotaProperties struct {
-	// Quota properties.
-	Limit *int32 `json:"limit,omitempty"`
-
-	// Name of the resource provide by the resource provider. Use this property for quotaRequests resource operations.
-	Name *ResourceName `json:"name,omitempty"`
-
-	// Additional properties for the specified resource provider.
-	Properties map[string]interface{} `json:"properties,omitempty"`
-
-	// The name of the resource type.
-	ResourceType *ResourceType `json:"resourceType,omitempty"`
-
-	// The limit units, such as count and bytes. Use the unit field provided in the response of the GET quota operation.
-	Unit *string `json:"unit,omitempty"`
-
-	// READ-ONLY; Current usage value for the resource.
-	CurrentValue *int32 `json:"currentValue,omitempty" azure:"ro"`
-
-	// READ-ONLY; The time period over which the quota usage values are summarized. For example, P1D (per one day), PT1M (per one minute), and PT1S (per one
-	// second). This parameter is optional because, for some
-	// resources such as compute, the time period is irrelevant.
-	QuotaPeriod *string `json:"quotaPeriod,omitempty" azure:"ro"`
-}
-
-// QuotaRequestDetails - Quota request details.
-type QuotaRequestDetails struct {
-	// Quota request details.
-	Properties *QuotaRequestProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Quota request ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Quota request name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// QuotaRequestDetailsList - Quota request details.
-type QuotaRequestDetailsList struct {
-	// The URI to fetch the next page of quota limits. When there are no more pages, this is null.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// The quota requests.
-	Value []*QuotaRequestDetails `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type QuotaRequestDetailsList.
-func (q QuotaRequestDetailsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", q.NextLink)
-	populate(objectMap, "value", q.Value)
-	return json.Marshal(objectMap)
-}
-
-// QuotaRequestOneResourceProperties - The details of quota request.
-type QuotaRequestOneResourceProperties struct {
-	// The quota request addition properties.
-	Properties *CurrentQuotaLimitBase `json:"properties,omitempty"`
-
-	// READ-ONLY; User friendly status message.
-	Message *string `json:"message,omitempty" azure:"ro"`
-
-	// READ-ONLY; The quota request status.
-	ProvisioningState *QuotaRequestState `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; The time when the quota request was submitted using format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-	RequestSubmitTime *time.Time `json:"requestSubmitTime,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type QuotaRequestOneResourceProperties.
-func (q QuotaRequestOneResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "message", q.Message)
-	populate(objectMap, "properties", q.Properties)
-	populate(objectMap, "provisioningState", q.ProvisioningState)
-	populateTimeRFC3339(objectMap, "requestSubmitTime", q.RequestSubmitTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type QuotaRequestOneResourceProperties.
-func (q *QuotaRequestOneResourceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "message":
-			err = unpopulate(val, &q.Message)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &q.Properties)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &q.ProvisioningState)
-			delete(rawMsg, key)
-		case "requestSubmitTime":
-			err = unpopulateTimeRFC3339(val, &q.RequestSubmitTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// QuotaRequestOneResourceSubmitResponse - Response for the quota submission request.
-type QuotaRequestOneResourceSubmitResponse struct {
-	// The details for quota request.
-	Properties *QuotaRequestOneResourceProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The quota request ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the quota request.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Type of resource. "Microsoft.Capacity/ServiceLimits"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// QuotaRequestProperties - The details of quota request.
-type QuotaRequestProperties struct {
-	// The quota request status.
-	ProvisioningState *QuotaRequestState `json:"provisioningState,omitempty"`
-
-	// The quotaRequests.
-	Value []*SubRequest `json:"value,omitempty"`
-
-	// READ-ONLY; User friendly status message.
-	Message *string `json:"message,omitempty" azure:"ro"`
-
-	// READ-ONLY; The time when the quota request was submitted using format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-	RequestSubmitTime *time.Time `json:"requestSubmitTime,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type QuotaRequestProperties.
-func (q QuotaRequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "message", q.Message)
-	populate(objectMap, "provisioningState", q.ProvisioningState)
-	populateTimeRFC3339(objectMap, "requestSubmitTime", q.RequestSubmitTime)
-	populate(objectMap, "value", q.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type QuotaRequestProperties.
-func (q *QuotaRequestProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "message":
-			err = unpopulate(val, &q.Message)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &q.ProvisioningState)
-			delete(rawMsg, key)
-		case "requestSubmitTime":
-			err = unpopulateTimeRFC3339(val, &q.RequestSubmitTime)
-			delete(rawMsg, key)
-		case "value":
-			err = unpopulate(val, &q.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// QuotaRequestStatusDetails - Quota request status details.
-type QuotaRequestStatusDetails struct {
-	// READ-ONLY; A user friendly message.
-	Message *string `json:"message,omitempty" azure:"ro"`
-
-	// READ-ONLY; The details of the quota request status.
-	ProvisioningState *QuotaRequestState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// QuotaRequestStatusGetOptions contains the optional parameters for the QuotaRequestStatus.Get method.
-type QuotaRequestStatusGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// QuotaRequestStatusListOptions contains the optional parameters for the QuotaRequestStatus.List method.
-type QuotaRequestStatusListOptions struct {
-	// | Field | Supported operators
-	// |---------------------|------------------------
-	//
-	// |requestSubmitTime | ge, le, eq, gt, lt
-	Filter *string
-	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink
-	// element includes a skiptoken parameter that specifies a starting point to use for subsequent calls.
-	Skiptoken *string
-	// Number of records to return.
-	Top *int32
-}
-
-// QuotaRequestSubmitResponse - Response for the quota submission request.
-type QuotaRequestSubmitResponse struct {
-	// The quota request details.
-	Properties *QuotaRequestProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The quota request ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the quota request.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Type of resource. "Microsoft.Capacity/serviceLimits"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// QuotaRequestSubmitResponse201 - Response with request ID that the quota request was accepted.
-type QuotaRequestSubmitResponse201 struct {
-	// Quota request status.
-	Properties *QuotaRequestStatusDetails `json:"properties,omitempty"`
-
-	// READ-ONLY; The quota request ID. Use the requestId parameter to check the request status.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Operation ID
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-type RenewPropertiesResponse struct {
-	// Currency and amount that customer will be charged in customer's local currency for renewal purchase. Tax is not included.
-	BillingCurrencyTotal *RenewPropertiesResponseBillingCurrencyTotal `json:"billingCurrencyTotal,omitempty"`
-
-	// Amount that Microsoft uses for record. Used during refund for calculating refund limit. Tax is not included. This is locked price 30 days before expiry.
-	PricingCurrencyTotal *RenewPropertiesResponsePricingCurrencyTotal `json:"pricingCurrencyTotal,omitempty"`
-	PurchaseProperties   *PurchaseRequest                             `json:"purchaseProperties,omitempty"`
-}
-
-// RenewPropertiesResponseBillingCurrencyTotal - Currency and amount that customer will be charged in customer's local currency for renewal purchase. Tax
-// is not included.
-type RenewPropertiesResponseBillingCurrencyTotal struct {
-	Amount *float32 `json:"amount,omitempty"`
-
-	// The ISO 4217 3-letter currency code for the currency used by this purchase record.
-	CurrencyCode *string `json:"currencyCode,omitempty"`
-}
-
-// RenewPropertiesResponsePricingCurrencyTotal - Amount that Microsoft uses for record. Used during refund for calculating refund limit. Tax is not included.
-// This is locked price 30 days before expiry.
-type RenewPropertiesResponsePricingCurrencyTotal struct {
-	Amount *float32 `json:"amount,omitempty"`
-
-	// The ISO 4217 3-letter currency code for the currency used by this purchase record.
-	CurrencyCode *string `json:"currencyCode,omitempty"`
-}
-
-// ReservationBeginAvailableScopesOptions contains the optional parameters for the Reservation.BeginAvailableScopes method.
-type ReservationBeginAvailableScopesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ReservationBeginMergeOptions contains the optional parameters for the Reservation.BeginMerge method.
-type ReservationBeginMergeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ReservationBeginSplitOptions contains the optional parameters for the Reservation.BeginSplit method.
-type ReservationBeginSplitOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ReservationBeginUpdateOptions contains the optional parameters for the Reservation.BeginUpdate method.
-type ReservationBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ReservationGetOptions contains the optional parameters for the Reservation.Get method.
-type ReservationGetOptions struct {
-	// Supported value of this query is renewProperties
-	Expand *string
-}
-
-type ReservationList struct {
-	// Url to get the next page of reservations.
-	NextLink *string                `json:"nextLink,omitempty"`
-	Value    []*ReservationResponse `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ReservationList.
-func (r ReservationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
-// ReservationListAllOptions contains the optional parameters for the Reservation.ListAll method.
-type ReservationListAllOptions struct {
-	// May be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does not currently support 'ne', 'gt', 'le', 'ge', or
-	// 'not'. Reservation properties include sku/name, properties/{appliedScopeType, archived, displayName, displayProvisioningState, effectiveDateTime, expiryDate,
-	// provisioningState, quantity, renew, reservedResourceType, term, userFriendlyAppliedScopeType, userFriendlyRenewState}
-	Filter *string
-	// May be used to sort order by reservation properties.
-	Orderby *string
-	// To indicate whether to refresh the roll up counts of the reservations group by provisioning states
-	RefreshSummary *string
-	// The selected provisioning state
-	SelectedState *string
-	// The number of reservations to skip from the list before returning results
-	Skiptoken *float32
-	// To number of reservations to return
-	Take *float32
-}
-
-// ReservationListOptions contains the optional parameters for the Reservation.List method.
-type ReservationListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ReservationListRevisionsOptions contains the optional parameters for the Reservation.ListRevisions method.
-type ReservationListRevisionsOptions struct {
-	// placeholder for future optional parameters
-}
-
-type ReservationMergeProperties struct {
-	// Reservation Resource Id Created due to the merge. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
-	MergeDestination *string `json:"mergeDestination,omitempty"`
-
-	// Resource Ids of the Source Reservation's merged to form this Reservation. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
-	MergeSources []*string `json:"mergeSources,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ReservationMergeProperties.
-func (r ReservationMergeProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "mergeDestination", r.MergeDestination)
-	populate(objectMap, "mergeSources", r.MergeSources)
-	return json.Marshal(objectMap)
-}
-
-// ReservationOrderBeginPurchaseOptions contains the optional parameters for the ReservationOrder.BeginPurchase method.
-type ReservationOrderBeginPurchaseOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ReservationOrderBillingPlanInformation - Information describing the type of billing plan for this reservation.
-type ReservationOrderBillingPlanInformation struct {
-	// For recurring billing plans, indicates the date when next payment will be processed. Null when total is paid off.
-	NextPaymentDueDate *time.Time `json:"nextPaymentDueDate,omitempty"`
-
-	// Amount of money to be paid for the Order. Tax is not included.
-	PricingCurrencyTotal *Price `json:"pricingCurrencyTotal,omitempty"`
-
-	// Date when the billing plan has started.
-	StartDate    *time.Time       `json:"startDate,omitempty"`
-	Transactions []*PaymentDetail `json:"transactions,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ReservationOrderBillingPlanInformation.
-func (r ReservationOrderBillingPlanInformation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateDateType(objectMap, "nextPaymentDueDate", r.NextPaymentDueDate)
-	populate(objectMap, "pricingCurrencyTotal", r.PricingCurrencyTotal)
-	populateDateType(objectMap, "startDate", r.StartDate)
-	populate(objectMap, "transactions", r.Transactions)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReservationOrderBillingPlanInformation.
-func (r *ReservationOrderBillingPlanInformation) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextPaymentDueDate":
-			err = unpopulateDateType(val, &r.NextPaymentDueDate)
-			delete(rawMsg, key)
-		case "pricingCurrencyTotal":
-			err = unpopulate(val, &r.PricingCurrencyTotal)
-			delete(rawMsg, key)
-		case "startDate":
-			err = unpopulateDateType(val, &r.StartDate)
-			delete(rawMsg, key)
-		case "transactions":
-			err = unpopulate(val, &r.Transactions)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// ReservationOrderCalculateOptions contains the optional parameters for the ReservationOrder.Calculate method.
-type ReservationOrderCalculateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ReservationOrderChangeDirectoryOptions contains the optional parameters for the ReservationOrder.ChangeDirectory method.
-type ReservationOrderChangeDirectoryOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ReservationOrderGetOptions contains the optional parameters for the ReservationOrder.Get method.
-type ReservationOrderGetOptions struct {
-	// May be used to expand the planInformation.
-	Expand *string
-}
-
-type ReservationOrderList struct {
-	// Url to get the next page of reservationOrders.
-	NextLink *string                     `json:"nextLink,omitempty"`
-	Value    []*ReservationOrderResponse `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ReservationOrderList.
-func (r ReservationOrderList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
-// ReservationOrderListOptions contains the optional parameters for the ReservationOrder.List method.
-type ReservationOrderListOptions struct {
-	// placeholder for future optional parameters
-}
-
-type ReservationOrderProperties struct {
-	// Represent the billing plans.
-	BillingPlan *ReservationBillingPlan `json:"billingPlan,omitempty"`
-
-	// This is the DateTime when the reservation was created.
-	CreatedDateTime *time.Time `json:"createdDateTime,omitempty"`
-
-	// Friendly name for user to easily identified the reservation.
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// This is the date when the Reservation will expire.
-	ExpiryDate *time.Time `json:"expiryDate,omitempty"`
-
-	// Total Quantity of the SKUs purchased in the Reservation.
-	OriginalQuantity *int32 `json:"originalQuantity,omitempty"`
-
-	// Information describing the type of billing plan for this reservation.
-	PlanInformation *ReservationOrderBillingPlanInformation `json:"planInformation,omitempty"`
-
-	// Current state of the reservation.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty"`
-
-	// This is the DateTime when the reservation was initially requested for purchase.
-	RequestDateTime *time.Time             `json:"requestDateTime,omitempty"`
-	Reservations    []*ReservationResponse `json:"reservations,omitempty"`
-
-	// Represent the term of Reservation.
-	Term *ReservationTerm `json:"term,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ReservationOrderProperties.
-func (r ReservationOrderProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "billingPlan", r.BillingPlan)
-	populateTimeRFC3339(objectMap, "createdDateTime", r.CreatedDateTime)
-	populate(objectMap, "displayName", r.DisplayName)
-	populateDateType(objectMap, "expiryDate", r.ExpiryDate)
-	populate(objectMap, "originalQuantity", r.OriginalQuantity)
-	populate(objectMap, "planInformation", r.PlanInformation)
-	populate(objectMap, "provisioningState", r.ProvisioningState)
-	populateTimeRFC3339(objectMap, "requestDateTime", r.RequestDateTime)
-	populate(objectMap, "reservations", r.Reservations)
-	populate(objectMap, "term", r.Term)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReservationOrderProperties.
-func (r *ReservationOrderProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "billingPlan":
-			err = unpopulate(val, &r.BillingPlan)
-			delete(rawMsg, key)
-		case "createdDateTime":
-			err = unpopulateTimeRFC3339(val, &r.CreatedDateTime)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &r.DisplayName)
-			delete(rawMsg, key)
-		case "expiryDate":
-			err = unpopulateDateType(val, &r.ExpiryDate)
-			delete(rawMsg, key)
-		case "originalQuantity":
-			err = unpopulate(val, &r.OriginalQuantity)
-			delete(rawMsg, key)
-		case "planInformation":
-			err = unpopulate(val, &r.PlanInformation)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &r.ProvisioningState)
-			delete(rawMsg, key)
-		case "requestDateTime":
-			err = unpopulateTimeRFC3339(val, &r.RequestDateTime)
-			delete(rawMsg, key)
-		case "reservations":
-			err = unpopulate(val, &r.Reservations)
-			delete(rawMsg, key)
-		case "term":
-			err = unpopulate(val, &r.Term)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-type ReservationOrderResponse struct {
-	Etag       *int32                      `json:"etag,omitempty"`
-	Properties *ReservationOrderProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Identifier of the reservation
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Name of the reservation
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; Type of resource. "Microsoft.Capacity/reservations"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ReservationResponse - The definition of the reservation.
-type ReservationResponse struct {
-	Etag *int32 `json:"etag,omitempty"`
-
-	// Resource Provider type to be reserved.
-	Kind *string `json:"kind,omitempty"`
-
-	// The Azure Region where the reserved resource lives.
-	Location *string `json:"location,omitempty"`
-
-	// The properties associated to this reservation
-	Properties *ReservationsProperties `json:"properties,omitempty"`
-
-	// The sku information associated to this reservation
-	SKU *SKUName `json:"sku,omitempty"`
-
-	// READ-ONLY; Identifier of the reservation
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Name of the reservation
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; Type of resource. "Microsoft.Capacity/reservationOrders/reservations"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-type ReservationSplitProperties struct {
-	// List of destination Resource Id that are created due to split. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
-	SplitDestinations []*string `json:"splitDestinations,omitempty"`
-
-	// Resource Id of the Reservation from which this is split. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
-	SplitSource *string `json:"splitSource,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ReservationSplitProperties.
-func (r ReservationSplitProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "splitDestinations", r.SplitDestinations)
-	populate(objectMap, "splitSource", r.SplitSource)
-	return json.Marshal(objectMap)
-}
-
-// ReservationSummary - The roll up count summary of reservations in each state
-type ReservationSummary struct {
-	// READ-ONLY; The number of reservation in Cancelled state
-	CancelledCount *float32 `json:"cancelledCount,omitempty" azure:"ro"`
-
-	// READ-ONLY; The number of reservation in Expired state
-	ExpiredCount *float32 `json:"expiredCount,omitempty" azure:"ro"`
-
-	// READ-ONLY; The number of reservation in Expiring state
-	ExpiringCount *float32 `json:"expiringCount,omitempty" azure:"ro"`
-
-	// READ-ONLY; The number of reservation in Failed state
-	FailedCount *float32 `json:"failedCount,omitempty" azure:"ro"`
-
-	// READ-ONLY; The number of reservation in Pending state
-	PendingCount *float32 `json:"pendingCount,omitempty" azure:"ro"`
-
-	// READ-ONLY; The number of reservation in Succeeded state
-	SucceededCount *float32 `json:"succeededCount,omitempty" azure:"ro"`
-}
-
-// ReservationToExchange - Reservation refund details
-type ReservationToExchange struct {
-	// billing information
-	BillingInformation  *BillingInformation `json:"billingInformation,omitempty"`
-	BillingRefundAmount *Price              `json:"billingRefundAmount,omitempty"`
-
-	// Quantity to be returned
-	Quantity *int32 `json:"quantity,omitempty"`
-
-	// Fully qualified id of the Reservation being returned.
-	ReservationID *string `json:"reservationId,omitempty"`
-}
-
-// ReservationToPurchaseCalculateExchange - Reservation purchase details
-type ReservationToPurchaseCalculateExchange struct {
-	BillingCurrencyTotal *Price           `json:"billingCurrencyTotal,omitempty"`
-	Properties           *PurchaseRequest `json:"properties,omitempty"`
-}
-
-// ReservationToPurchaseExchange - Reservation purchase details
-type ReservationToPurchaseExchange struct {
-	BillingCurrencyTotal *Price           `json:"billingCurrencyTotal,omitempty"`
-	Properties           *PurchaseRequest `json:"properties,omitempty"`
-
-	// Fully qualified id of the Reservation being purchased. This value is only guaranteed to be non-null if the purchase is successful.
-	ReservationID *string `json:"reservationId,omitempty"`
-
-	// Fully qualified id of the ReservationOrder being purchased
-	ReservationOrderID *string `json:"reservationOrderId,omitempty"`
-
-	// Status of the individual operation.
-	Status *OperationStatus `json:"status,omitempty"`
-}
-
-// ReservationToReturn - Reservation to return
-type ReservationToReturn struct {
-	// Quantity to be returned. Must be greater than zero.
-	Quantity *int32 `json:"quantity,omitempty"`
-
-	// Fully qualified identifier of the Reservation being returned
-	ReservationID *string `json:"reservationId,omitempty"`
-}
-
-// ReservationToReturnForExchange - Reservation refund details
-type ReservationToReturnForExchange struct {
-	// billing information
-	BillingInformation  *BillingInformation `json:"billingInformation,omitempty"`
-	BillingRefundAmount *Price              `json:"billingRefundAmount,omitempty"`
-
-	// Quantity to be returned
-	Quantity *int32 `json:"quantity,omitempty"`
-
-	// Fully qualified id of the Reservation being returned.
-	ReservationID *string `json:"reservationId,omitempty"`
-
-	// Status of the individual operation.
-	Status *OperationStatus `json:"status,omitempty"`
-}
-
-// ReservationUtilizationAggregates - The aggregate values of reservation utilization
-type ReservationUtilizationAggregates struct {
-	// READ-ONLY; The grain of the aggregate
-	Grain *float32 `json:"grain,omitempty" azure:"ro"`
-
-	// READ-ONLY; The grain unit of the aggregate
-	GrainUnit *string `json:"grainUnit,omitempty" azure:"ro"`
-
-	// READ-ONLY; The aggregate value
-	Value *float32 `json:"value,omitempty" azure:"ro"`
-
-	// READ-ONLY; The aggregate value unit
-	ValueUnit *string `json:"valueUnit,omitempty" azure:"ro"`
-}
-
-// ReservationsListResult - The list of reservations and summary of roll out count of reservations in each state.
-type ReservationsListResult struct {
-	// The roll out count summary of the reservations
-	Summary *ReservationSummary `json:"summary,omitempty"`
-
-	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; The list of reservations.
-	Value []*ReservationResponse `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ReservationsListResult.
-func (r ReservationsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "summary", r.Summary)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
-// ReservationsProperties - The properties of the reservations
-type ReservationsProperties struct {
+// Properties - The properties of the reservations
+type Properties struct {
 	// The applied scope type
 	AppliedScopeType *AppliedScopeType `json:"appliedScopeType,omitempty"`
 
@@ -1548,6 +528,9 @@ type ReservationsProperties struct {
 
 	// Indicates if the reservation is archived
 	Archived *bool `json:"archived,omitempty"`
+
+	// This is the DateTime when the reservation benefit started.
+	BenefitStartTime *time.Time `json:"benefitStartTime,omitempty"`
 
 	// The billing plan options available for this SKU.
 	BillingPlan *ReservationBillingPlan `json:"billingPlan,omitempty"`
@@ -1570,7 +553,8 @@ type ReservationsProperties struct {
 	// The message giving detailed information about the status code.
 	ExtendedStatusInfo *ExtendedStatusInfo `json:"extendedStatusInfo,omitempty"`
 
-	// Allows reservation discount to be applied across skus within the same Autofit group. Not all skus support instance size flexibility.
+	// Allows reservation discount to be applied across skus within the same Autofit group. Not all skus support instance size
+	// flexibility.
 	InstanceFlexibility *InstanceFlexibility        `json:"instanceFlexibility,omitempty"`
 	MergeProperties     *ReservationMergeProperties `json:"mergeProperties,omitempty"`
 
@@ -1620,150 +604,11 @@ type ReservationsProperties struct {
 	UserFriendlyRenewState *string `json:"userFriendlyRenewState,omitempty" azure:"ro"`
 
 	// READ-ONLY; Reservation utilization
-	Utilization *ReservationsPropertiesUtilization `json:"utilization,omitempty" azure:"ro"`
+	Utilization *PropertiesUtilization `json:"utilization,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReservationsProperties.
-func (r ReservationsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appliedScopeType", r.AppliedScopeType)
-	populate(objectMap, "appliedScopes", r.AppliedScopes)
-	populate(objectMap, "archived", r.Archived)
-	populate(objectMap, "billingPlan", r.BillingPlan)
-	populate(objectMap, "billingScopeId", r.BillingScopeID)
-	populate(objectMap, "capabilities", r.Capabilities)
-	populate(objectMap, "displayName", r.DisplayName)
-	populate(objectMap, "displayProvisioningState", r.DisplayProvisioningState)
-	populateTimeRFC3339(objectMap, "effectiveDateTime", r.EffectiveDateTime)
-	populateDateType(objectMap, "expiryDate", r.ExpiryDate)
-	populate(objectMap, "extendedStatusInfo", r.ExtendedStatusInfo)
-	populate(objectMap, "instanceFlexibility", r.InstanceFlexibility)
-	populateTimeRFC3339(objectMap, "lastUpdatedDateTime", r.LastUpdatedDateTime)
-	populate(objectMap, "mergeProperties", r.MergeProperties)
-	populate(objectMap, "provisioningState", r.ProvisioningState)
-	populate(objectMap, "provisioningSubState", r.ProvisioningSubState)
-	populateDateType(objectMap, "purchaseDate", r.PurchaseDate)
-	populate(objectMap, "quantity", r.Quantity)
-	populate(objectMap, "renew", r.Renew)
-	populate(objectMap, "renewDestination", r.RenewDestination)
-	populate(objectMap, "renewProperties", r.RenewProperties)
-	populate(objectMap, "renewSource", r.RenewSource)
-	populate(objectMap, "reservedResourceType", r.ReservedResourceType)
-	populate(objectMap, "skuDescription", r.SKUDescription)
-	populate(objectMap, "splitProperties", r.SplitProperties)
-	populate(objectMap, "term", r.Term)
-	populate(objectMap, "userFriendlyAppliedScopeType", r.UserFriendlyAppliedScopeType)
-	populate(objectMap, "userFriendlyRenewState", r.UserFriendlyRenewState)
-	populate(objectMap, "utilization", r.Utilization)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReservationsProperties.
-func (r *ReservationsProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appliedScopeType":
-			err = unpopulate(val, &r.AppliedScopeType)
-			delete(rawMsg, key)
-		case "appliedScopes":
-			err = unpopulate(val, &r.AppliedScopes)
-			delete(rawMsg, key)
-		case "archived":
-			err = unpopulate(val, &r.Archived)
-			delete(rawMsg, key)
-		case "billingPlan":
-			err = unpopulate(val, &r.BillingPlan)
-			delete(rawMsg, key)
-		case "billingScopeId":
-			err = unpopulate(val, &r.BillingScopeID)
-			delete(rawMsg, key)
-		case "capabilities":
-			err = unpopulate(val, &r.Capabilities)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &r.DisplayName)
-			delete(rawMsg, key)
-		case "displayProvisioningState":
-			err = unpopulate(val, &r.DisplayProvisioningState)
-			delete(rawMsg, key)
-		case "effectiveDateTime":
-			err = unpopulateTimeRFC3339(val, &r.EffectiveDateTime)
-			delete(rawMsg, key)
-		case "expiryDate":
-			err = unpopulateDateType(val, &r.ExpiryDate)
-			delete(rawMsg, key)
-		case "extendedStatusInfo":
-			err = unpopulate(val, &r.ExtendedStatusInfo)
-			delete(rawMsg, key)
-		case "instanceFlexibility":
-			err = unpopulate(val, &r.InstanceFlexibility)
-			delete(rawMsg, key)
-		case "lastUpdatedDateTime":
-			err = unpopulateTimeRFC3339(val, &r.LastUpdatedDateTime)
-			delete(rawMsg, key)
-		case "mergeProperties":
-			err = unpopulate(val, &r.MergeProperties)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &r.ProvisioningState)
-			delete(rawMsg, key)
-		case "provisioningSubState":
-			err = unpopulate(val, &r.ProvisioningSubState)
-			delete(rawMsg, key)
-		case "purchaseDate":
-			err = unpopulateDateType(val, &r.PurchaseDate)
-			delete(rawMsg, key)
-		case "quantity":
-			err = unpopulate(val, &r.Quantity)
-			delete(rawMsg, key)
-		case "renew":
-			err = unpopulate(val, &r.Renew)
-			delete(rawMsg, key)
-		case "renewDestination":
-			err = unpopulate(val, &r.RenewDestination)
-			delete(rawMsg, key)
-		case "renewProperties":
-			err = unpopulate(val, &r.RenewProperties)
-			delete(rawMsg, key)
-		case "renewSource":
-			err = unpopulate(val, &r.RenewSource)
-			delete(rawMsg, key)
-		case "reservedResourceType":
-			err = unpopulate(val, &r.ReservedResourceType)
-			delete(rawMsg, key)
-		case "skuDescription":
-			err = unpopulate(val, &r.SKUDescription)
-			delete(rawMsg, key)
-		case "splitProperties":
-			err = unpopulate(val, &r.SplitProperties)
-			delete(rawMsg, key)
-		case "term":
-			err = unpopulate(val, &r.Term)
-			delete(rawMsg, key)
-		case "userFriendlyAppliedScopeType":
-			err = unpopulate(val, &r.UserFriendlyAppliedScopeType)
-			delete(rawMsg, key)
-		case "userFriendlyRenewState":
-			err = unpopulate(val, &r.UserFriendlyRenewState)
-			delete(rawMsg, key)
-		case "utilization":
-			err = unpopulate(val, &r.Utilization)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// ReservationsPropertiesUtilization - Reservation utilization
-type ReservationsPropertiesUtilization struct {
+// PropertiesUtilization - Reservation utilization
+type PropertiesUtilization struct {
 	// The array of aggregates of a reservation's utilization
 	Aggregates []*ReservationUtilizationAggregates `json:"aggregates,omitempty"`
 
@@ -1771,12 +616,582 @@ type ReservationsPropertiesUtilization struct {
 	Trend *string `json:"trend,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReservationsPropertiesUtilization.
-func (r ReservationsPropertiesUtilization) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aggregates", r.Aggregates)
-	populate(objectMap, "trend", r.Trend)
-	return json.Marshal(objectMap)
+type PurchaseRequest struct {
+	// The Azure Region where the reserved resource lives.
+	Location   *string                    `json:"location,omitempty"`
+	Properties *PurchaseRequestProperties `json:"properties,omitempty"`
+	SKU        *SKUName                   `json:"sku,omitempty"`
+}
+
+type PurchaseRequestProperties struct {
+	// Type of the Applied Scope.
+	AppliedScopeType *AppliedScopeType `json:"appliedScopeType,omitempty"`
+
+	// List of the subscriptions that the benefit will be applied. Do not specify if AppliedScopeType is Shared.
+	AppliedScopes []*string `json:"appliedScopes,omitempty"`
+
+	// Represent the billing plans.
+	BillingPlan *ReservationBillingPlan `json:"billingPlan,omitempty"`
+
+	// Subscription that will be charged for purchasing Reservation
+	BillingScopeID *string `json:"billingScopeId,omitempty"`
+
+	// Friendly name of the Reservation
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Quantity of the SKUs that are part of the Reservation.
+	Quantity *int32 `json:"quantity,omitempty"`
+
+	// Setting this to true will automatically purchase a new reservation on the expiration date time.
+	Renew *bool `json:"renew,omitempty"`
+
+	// Properties specific to each reserved resource type. Not required if not applicable.
+	ReservedResourceProperties *PurchaseRequestPropertiesReservedResourceProperties `json:"reservedResourceProperties,omitempty"`
+
+	// The type of the resource that is being reserved.
+	ReservedResourceType *ReservedResourceType `json:"reservedResourceType,omitempty"`
+
+	// Represent the term of Reservation.
+	Term *ReservationTerm `json:"term,omitempty"`
+}
+
+// PurchaseRequestPropertiesReservedResourceProperties - Properties specific to each reserved resource type. Not required
+// if not applicable.
+type PurchaseRequestPropertiesReservedResourceProperties struct {
+	// Turning this on will apply the reservation discount to other VMs in the same VM size group. Only specify for VirtualMachines
+	// reserved resource type.
+	InstanceFlexibility *InstanceFlexibility `json:"instanceFlexibility,omitempty"`
+}
+
+// QuotaClientBeginCreateOrUpdateOptions contains the optional parameters for the QuotaClient.BeginCreateOrUpdate method.
+type QuotaClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// QuotaClientBeginUpdateOptions contains the optional parameters for the QuotaClient.BeginUpdate method.
+type QuotaClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// QuotaClientGetOptions contains the optional parameters for the QuotaClient.Get method.
+type QuotaClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QuotaClientListOptions contains the optional parameters for the QuotaClient.List method.
+type QuotaClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QuotaLimits - Quota limits.
+type QuotaLimits struct {
+	// The URI for fetching the next page of quotas (service limits). When no more pages exist, the value is null.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// List of quotas (service limits).
+	Value []*CurrentQuotaLimitBase `json:"value,omitempty"`
+}
+
+// QuotaLimitsResponse - Quotas (service limits) in the request response.
+type QuotaLimitsResponse struct {
+	// The URI for fetching the next page of quota limits. When no more pages exist, the value is null.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// List of quotas with the quota request status.
+	Value []*CurrentQuotaLimit `json:"value,omitempty"`
+}
+
+// QuotaProperties - Quota properties for the resource.
+type QuotaProperties struct {
+	// Quota properties.
+	Limit *int32 `json:"limit,omitempty"`
+
+	// Name of the resource provide by the resource provider. Use this property for quotaRequests resource operations.
+	Name *ResourceName `json:"name,omitempty"`
+
+	// Additional properties for the specified resource provider.
+	Properties interface{} `json:"properties,omitempty"`
+
+	// The name of the resource type.
+	ResourceType *ResourceType `json:"resourceType,omitempty"`
+
+	// The limit units, such as count and bytes. Use the unit field provided in the response of the GET quota operation.
+	Unit *string `json:"unit,omitempty"`
+
+	// READ-ONLY; Current usage value for the resource.
+	CurrentValue *int32 `json:"currentValue,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time period over which the quota usage values are summarized. For example, P1D (per one day), PT1M (per
+	// one minute), and PT1S (per one second). This parameter is optional because, for some
+	// resources such as compute, the time period is irrelevant.
+	QuotaPeriod *string `json:"quotaPeriod,omitempty" azure:"ro"`
+}
+
+// QuotaRequestDetails - Quota request details.
+type QuotaRequestDetails struct {
+	// Quota request details.
+	Properties *QuotaRequestProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Quota request ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Quota request name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// QuotaRequestDetailsList - Quota request details.
+type QuotaRequestDetailsList struct {
+	// The URI to fetch the next page of quota limits. When there are no more pages, this is null.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The quota requests.
+	Value []*QuotaRequestDetails `json:"value,omitempty"`
+}
+
+// QuotaRequestOneResourceProperties - The details of quota request.
+type QuotaRequestOneResourceProperties struct {
+	// The quota request addition properties.
+	Properties *CurrentQuotaLimitBase `json:"properties,omitempty"`
+
+	// READ-ONLY; User friendly status message.
+	Message *string `json:"message,omitempty" azure:"ro"`
+
+	// READ-ONLY; The quota request status.
+	ProvisioningState *QuotaRequestState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time when the quota request was submitted using format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601
+	// standard.
+	RequestSubmitTime *time.Time `json:"requestSubmitTime,omitempty" azure:"ro"`
+}
+
+// QuotaRequestOneResourceSubmitResponse - Response for the quota submission request.
+type QuotaRequestOneResourceSubmitResponse struct {
+	// The details for quota request.
+	Properties *QuotaRequestOneResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The quota request ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the quota request.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of resource. "Microsoft.Capacity/ServiceLimits"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// QuotaRequestProperties - The details of quota request.
+type QuotaRequestProperties struct {
+	// The quota request status.
+	ProvisioningState *QuotaRequestState `json:"provisioningState,omitempty"`
+
+	// The quotaRequests.
+	Value []*SubRequest `json:"value,omitempty"`
+
+	// READ-ONLY; User friendly status message.
+	Message *string `json:"message,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time when the quota request was submitted using format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601
+	// standard.
+	RequestSubmitTime *time.Time `json:"requestSubmitTime,omitempty" azure:"ro"`
+}
+
+// QuotaRequestStatusClientGetOptions contains the optional parameters for the QuotaRequestStatusClient.Get method.
+type QuotaRequestStatusClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QuotaRequestStatusClientListOptions contains the optional parameters for the QuotaRequestStatusClient.List method.
+type QuotaRequestStatusClientListOptions struct {
+	// FIELD SUPPORTED OPERATORS
+	// requestSubmitTime ge, le, eq, gt, lt
+	Filter *string
+	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
+	// the value of the nextLink element includes a skiptoken parameter that
+	// specifies a starting point to use for subsequent calls.
+	Skiptoken *string
+	// Number of records to return.
+	Top *int32
+}
+
+// QuotaRequestStatusDetails - Quota request status details.
+type QuotaRequestStatusDetails struct {
+	// READ-ONLY; A user friendly message.
+	Message *string `json:"message,omitempty" azure:"ro"`
+
+	// READ-ONLY; The details of the quota request status.
+	ProvisioningState *QuotaRequestState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// QuotaRequestSubmitResponse - Response for the quota submission request.
+type QuotaRequestSubmitResponse struct {
+	// The quota request details.
+	Properties *QuotaRequestProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The quota request ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the quota request.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of resource. "Microsoft.Capacity/serviceLimits"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// QuotaRequestSubmitResponse201 - Response with request ID that the quota request was accepted.
+type QuotaRequestSubmitResponse201 struct {
+	// Quota request status.
+	Properties *QuotaRequestStatusDetails `json:"properties,omitempty"`
+
+	// READ-ONLY; The quota request ID. Use the requestId parameter to check the request status.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Operation ID
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+type RenewPropertiesResponse struct {
+	// Currency and amount that customer will be charged in customer's local currency for renewal purchase. Tax is not included.
+	BillingCurrencyTotal *RenewPropertiesResponseBillingCurrencyTotal `json:"billingCurrencyTotal,omitempty"`
+
+	// Amount that Microsoft uses for record. Used during refund for calculating refund limit. Tax is not included. This is locked
+	// price 30 days before expiry.
+	PricingCurrencyTotal *RenewPropertiesResponsePricingCurrencyTotal `json:"pricingCurrencyTotal,omitempty"`
+	PurchaseProperties   *PurchaseRequest                             `json:"purchaseProperties,omitempty"`
+}
+
+// RenewPropertiesResponseBillingCurrencyTotal - Currency and amount that customer will be charged in customer's local currency
+// for renewal purchase. Tax is not included.
+type RenewPropertiesResponseBillingCurrencyTotal struct {
+	Amount *float32 `json:"amount,omitempty"`
+
+	// The ISO 4217 3-letter currency code for the currency used by this purchase record.
+	CurrencyCode *string `json:"currencyCode,omitempty"`
+}
+
+// RenewPropertiesResponsePricingCurrencyTotal - Amount that Microsoft uses for record. Used during refund for calculating
+// refund limit. Tax is not included. This is locked price 30 days before expiry.
+type RenewPropertiesResponsePricingCurrencyTotal struct {
+	Amount *float32 `json:"amount,omitempty"`
+
+	// The ISO 4217 3-letter currency code for the currency used by this purchase record.
+	CurrencyCode *string `json:"currencyCode,omitempty"`
+}
+
+// ReservationClientBeginAvailableScopesOptions contains the optional parameters for the ReservationClient.BeginAvailableScopes
+// method.
+type ReservationClientBeginAvailableScopesOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ReservationClientBeginMergeOptions contains the optional parameters for the ReservationClient.BeginMerge method.
+type ReservationClientBeginMergeOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ReservationClientBeginSplitOptions contains the optional parameters for the ReservationClient.BeginSplit method.
+type ReservationClientBeginSplitOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ReservationClientBeginUpdateOptions contains the optional parameters for the ReservationClient.BeginUpdate method.
+type ReservationClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ReservationClientGetOptions contains the optional parameters for the ReservationClient.Get method.
+type ReservationClientGetOptions struct {
+	// Supported value of this query is renewProperties
+	Expand *string
+}
+
+// ReservationClientListAllOptions contains the optional parameters for the ReservationClient.ListAll method.
+type ReservationClientListAllOptions struct {
+	// May be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does not currently support
+	// 'ne', 'gt', 'le', 'ge', or 'not'. Reservation properties include sku/name,
+	// properties/{appliedScopeType, archived, displayName, displayProvisioningState, effectiveDateTime, expiryDate, provisioningState,
+	// quantity, renew, reservedResourceType, term,
+	// userFriendlyAppliedScopeType, userFriendlyRenewState}
+	Filter *string
+	// May be used to sort order by reservation properties.
+	Orderby *string
+	// To indicate whether to refresh the roll up counts of the reservations group by provisioning states
+	RefreshSummary *string
+	// The selected provisioning state
+	SelectedState *string
+	// The number of reservations to skip from the list before returning results
+	Skiptoken *float32
+	// To number of reservations to return
+	Take *float32
+}
+
+// ReservationClientListOptions contains the optional parameters for the ReservationClient.List method.
+type ReservationClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ReservationClientListRevisionsOptions contains the optional parameters for the ReservationClient.ListRevisions method.
+type ReservationClientListRevisionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+type ReservationList struct {
+	// Url to get the next page of reservations.
+	NextLink *string                `json:"nextLink,omitempty"`
+	Value    []*ReservationResponse `json:"value,omitempty"`
+}
+
+type ReservationMergeProperties struct {
+	// Reservation Resource Id Created due to the merge. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+	MergeDestination *string `json:"mergeDestination,omitempty"`
+
+	// Resource Ids of the Source Reservation's merged to form this Reservation. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+	MergeSources []*string `json:"mergeSources,omitempty"`
+}
+
+// ReservationOrderBillingPlanInformation - Information describing the type of billing plan for this reservation.
+type ReservationOrderBillingPlanInformation struct {
+	// For recurring billing plans, indicates the date when next payment will be processed. Null when total is paid off.
+	NextPaymentDueDate *time.Time `json:"nextPaymentDueDate,omitempty"`
+
+	// Amount of money to be paid for the Order. Tax is not included.
+	PricingCurrencyTotal *Price `json:"pricingCurrencyTotal,omitempty"`
+
+	// Date when the billing plan has started.
+	StartDate    *time.Time       `json:"startDate,omitempty"`
+	Transactions []*PaymentDetail `json:"transactions,omitempty"`
+}
+
+// ReservationOrderClientBeginPurchaseOptions contains the optional parameters for the ReservationOrderClient.BeginPurchase
+// method.
+type ReservationOrderClientBeginPurchaseOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ReservationOrderClientCalculateOptions contains the optional parameters for the ReservationOrderClient.Calculate method.
+type ReservationOrderClientCalculateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ReservationOrderClientChangeDirectoryOptions contains the optional parameters for the ReservationOrderClient.ChangeDirectory
+// method.
+type ReservationOrderClientChangeDirectoryOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ReservationOrderClientGetOptions contains the optional parameters for the ReservationOrderClient.Get method.
+type ReservationOrderClientGetOptions struct {
+	// May be used to expand the planInformation.
+	Expand *string
+}
+
+// ReservationOrderClientListOptions contains the optional parameters for the ReservationOrderClient.List method.
+type ReservationOrderClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+type ReservationOrderList struct {
+	// Url to get the next page of reservationOrders.
+	NextLink *string                     `json:"nextLink,omitempty"`
+	Value    []*ReservationOrderResponse `json:"value,omitempty"`
+}
+
+type ReservationOrderProperties struct {
+	// This is the DateTime when the reservation benefit started.
+	BenefitStartTime *time.Time `json:"benefitStartTime,omitempty"`
+
+	// Represent the billing plans.
+	BillingPlan *ReservationBillingPlan `json:"billingPlan,omitempty"`
+
+	// This is the DateTime when the reservation was created.
+	CreatedDateTime *time.Time `json:"createdDateTime,omitempty"`
+
+	// Friendly name for user to easily identified the reservation.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// This is the date when the Reservation will expire.
+	ExpiryDate *time.Time `json:"expiryDate,omitempty"`
+
+	// Total Quantity of the SKUs purchased in the Reservation.
+	OriginalQuantity *int32 `json:"originalQuantity,omitempty"`
+
+	// Information describing the type of billing plan for this reservation.
+	PlanInformation *ReservationOrderBillingPlanInformation `json:"planInformation,omitempty"`
+
+	// Current state of the reservation.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty"`
+
+	// This is the DateTime when the reservation was initially requested for purchase.
+	RequestDateTime *time.Time             `json:"requestDateTime,omitempty"`
+	Reservations    []*ReservationResponse `json:"reservations,omitempty"`
+
+	// Represent the term of Reservation.
+	Term *ReservationTerm `json:"term,omitempty"`
+}
+
+type ReservationOrderResponse struct {
+	Etag       *int32                      `json:"etag,omitempty"`
+	Properties *ReservationOrderProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Identifier of the reservation
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the reservation
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of resource. "Microsoft.Capacity/reservations"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ReservationResponse - The definition of the reservation.
+type ReservationResponse struct {
+	Etag *int32 `json:"etag,omitempty"`
+
+	// Resource Provider type to be reserved.
+	Kind *string `json:"kind,omitempty"`
+
+	// The Azure Region where the reserved resource lives.
+	Location *string `json:"location,omitempty"`
+
+	// The properties associated to this reservation
+	Properties *Properties `json:"properties,omitempty"`
+
+	// The sku information associated to this reservation
+	SKU *SKUName `json:"sku,omitempty"`
+
+	// READ-ONLY; Identifier of the reservation
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the reservation
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of resource. "Microsoft.Capacity/reservationOrders/reservations"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+type ReservationSplitProperties struct {
+	// List of destination Resource Id that are created due to split. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+	SplitDestinations []*string `json:"splitDestinations,omitempty"`
+
+	// Resource Id of the Reservation from which this is split. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+	SplitSource *string `json:"splitSource,omitempty"`
+}
+
+// ReservationSummary - The roll up count summary of reservations in each state
+type ReservationSummary struct {
+	// READ-ONLY; The number of reservation in Cancelled state
+	CancelledCount *float32 `json:"cancelledCount,omitempty" azure:"ro"`
+
+	// READ-ONLY; The number of reservation in Expired state
+	ExpiredCount *float32 `json:"expiredCount,omitempty" azure:"ro"`
+
+	// READ-ONLY; The number of reservation in Expiring state
+	ExpiringCount *float32 `json:"expiringCount,omitempty" azure:"ro"`
+
+	// READ-ONLY; The number of reservation in Failed state
+	FailedCount *float32 `json:"failedCount,omitempty" azure:"ro"`
+
+	// READ-ONLY; The number of reservation in Pending state
+	PendingCount *float32 `json:"pendingCount,omitempty" azure:"ro"`
+
+	// READ-ONLY; The number of reservation in Processing state
+	ProcessingCount *float32 `json:"processingCount,omitempty" azure:"ro"`
+
+	// READ-ONLY; The number of reservation in Succeeded state
+	SucceededCount *float32 `json:"succeededCount,omitempty" azure:"ro"`
+}
+
+// ReservationToExchange - Reservation refund details
+type ReservationToExchange struct {
+	// billing information
+	BillingInformation  *BillingInformation `json:"billingInformation,omitempty"`
+	BillingRefundAmount *Price              `json:"billingRefundAmount,omitempty"`
+
+	// Quantity to be returned
+	Quantity *int32 `json:"quantity,omitempty"`
+
+	// Fully qualified id of the Reservation being returned.
+	ReservationID *string `json:"reservationId,omitempty"`
+}
+
+// ReservationToPurchaseCalculateExchange - Reservation purchase details
+type ReservationToPurchaseCalculateExchange struct {
+	BillingCurrencyTotal *Price           `json:"billingCurrencyTotal,omitempty"`
+	Properties           *PurchaseRequest `json:"properties,omitempty"`
+}
+
+// ReservationToPurchaseExchange - Reservation purchase details
+type ReservationToPurchaseExchange struct {
+	BillingCurrencyTotal *Price           `json:"billingCurrencyTotal,omitempty"`
+	Properties           *PurchaseRequest `json:"properties,omitempty"`
+
+	// Fully qualified id of the Reservation being purchased. This value is only guaranteed to be non-null if the purchase is
+	// successful.
+	ReservationID *string `json:"reservationId,omitempty"`
+
+	// Fully qualified id of the ReservationOrder being purchased
+	ReservationOrderID *string `json:"reservationOrderId,omitempty"`
+
+	// Status of the individual operation.
+	Status *OperationStatus `json:"status,omitempty"`
+}
+
+// ReservationToReturn - Reservation to return
+type ReservationToReturn struct {
+	// Quantity to be returned. Must be greater than zero.
+	Quantity *int32 `json:"quantity,omitempty"`
+
+	// Fully qualified identifier of the Reservation being returned
+	ReservationID *string `json:"reservationId,omitempty"`
+}
+
+// ReservationToReturnForExchange - Reservation refund details
+type ReservationToReturnForExchange struct {
+	// billing information
+	BillingInformation  *BillingInformation `json:"billingInformation,omitempty"`
+	BillingRefundAmount *Price              `json:"billingRefundAmount,omitempty"`
+
+	// Quantity to be returned
+	Quantity *int32 `json:"quantity,omitempty"`
+
+	// Fully qualified id of the Reservation being returned.
+	ReservationID *string `json:"reservationId,omitempty"`
+
+	// Status of the individual operation.
+	Status *OperationStatus `json:"status,omitempty"`
+}
+
+// ReservationUtilizationAggregates - The aggregate values of reservation utilization
+type ReservationUtilizationAggregates struct {
+	// READ-ONLY; The grain of the aggregate
+	Grain *float32 `json:"grain,omitempty" azure:"ro"`
+
+	// READ-ONLY; The grain unit of the aggregate
+	GrainUnit *string `json:"grainUnit,omitempty" azure:"ro"`
+
+	// READ-ONLY; The aggregate value
+	Value *float32 `json:"value,omitempty" azure:"ro"`
+
+	// READ-ONLY; The aggregate value unit
+	ValueUnit *string `json:"valueUnit,omitempty" azure:"ro"`
 }
 
 // ResourceName - Resource name provided by the resource provider. Use this property for quotaRequest parameter.
@@ -1815,17 +1230,9 @@ type SKURestriction struct {
 	// The type of restrictions.
 	Type *string `json:"type,omitempty"`
 
-	// The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU is restricted.
+	// The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU
+	// is restricted.
 	Values []*string `json:"values,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SKURestriction.
-func (s SKURestriction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "reasonCode", s.ReasonCode)
-	populate(objectMap, "type", s.Type)
-	populate(objectMap, "values", s.Values)
-	return json.Marshal(objectMap)
 }
 
 type ScopeProperties struct {
@@ -1845,15 +1252,6 @@ type ServiceError struct {
 	Details []*ServiceErrorDetail `json:"details,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServiceError.
-func (s ServiceError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", s.Code)
-	populate(objectMap, "details", s.Details)
-	populate(objectMap, "message", s.Message)
-	return json.Marshal(objectMap)
-}
-
 // ServiceErrorDetail - The error details.
 type ServiceErrorDetail struct {
 	// READ-ONLY; The error code.
@@ -1869,14 +1267,6 @@ type SplitProperties struct {
 
 	// Resource id of the reservation to be split. Format of the resource id should be /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
 	ReservationID *string `json:"reservationId,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SplitProperties.
-func (s SplitProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "quantities", s.Quantities)
-	populate(objectMap, "reservationId", s.ReservationID)
-	return json.Marshal(objectMap)
 }
 
 type SplitRequest struct {
@@ -1911,13 +1301,6 @@ type SubscriptionScopeProperties struct {
 	Scopes []*ScopeProperties `json:"scopes,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SubscriptionScopeProperties.
-func (s SubscriptionScopeProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "scopes", s.Scopes)
-	return json.Marshal(objectMap)
-}
-
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -1937,68 +1320,4 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armm365securityandcompliance
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,60 @@ import (
 // PrivateLinkResourcesForSCCPowershellClient contains the methods for the PrivateLinkResourcesForSCCPowershell group.
 // Don't use this type directly, use NewPrivateLinkResourcesForSCCPowershellClient() instead.
 type PrivateLinkResourcesForSCCPowershellClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPrivateLinkResourcesForSCCPowershellClient creates a new instance of PrivateLinkResourcesForSCCPowershellClient with the specified values.
-func NewPrivateLinkResourcesForSCCPowershellClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PrivateLinkResourcesForSCCPowershellClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewPrivateLinkResourcesForSCCPowershellClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesForSCCPowershellClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &PrivateLinkResourcesForSCCPowershellClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &PrivateLinkResourcesForSCCPowershellClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // Get - Gets a private link resource that need to be created for a service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateLinkResourcesForSCCPowershellClient) Get(ctx context.Context, resourceGroupName string, resourceName string, groupName string, options *PrivateLinkResourcesForSCCPowershellGetOptions) (PrivateLinkResourcesForSCCPowershellGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
+// resourceGroupName - The name of the resource group that contains the service instance.
+// resourceName - The name of the service instance.
+// groupName - The name of the private link resource group.
+// options - PrivateLinkResourcesForSCCPowershellClientGetOptions contains the optional parameters for the PrivateLinkResourcesForSCCPowershellClient.Get
+// method.
+func (client *PrivateLinkResourcesForSCCPowershellClient) Get(ctx context.Context, resourceGroupName string, resourceName string, groupName string, options *PrivateLinkResourcesForSCCPowershellClientGetOptions) (PrivateLinkResourcesForSCCPowershellClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, groupName, options)
 	if err != nil {
-		return PrivateLinkResourcesForSCCPowershellGetResponse{}, err
+		return PrivateLinkResourcesForSCCPowershellClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateLinkResourcesForSCCPowershellGetResponse{}, err
+		return PrivateLinkResourcesForSCCPowershellClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateLinkResourcesForSCCPowershellGetResponse{}, client.getHandleError(resp)
+		return PrivateLinkResourcesForSCCPowershellClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateLinkResourcesForSCCPowershellClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, groupName string, options *PrivateLinkResourcesForSCCPowershellGetOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesForSCCPowershellClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, groupName string, options *PrivateLinkResourcesForSCCPowershellClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.M365SecurityAndCompliance/privateLinkServicesForSCCPowershell/{resourceName}/privateLinkResources/{groupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -78,58 +96,50 @@ func (client *PrivateLinkResourcesForSCCPowershellClient) getCreateRequest(ctx c
 		return nil, errors.New("parameter groupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateLinkResourcesForSCCPowershellClient) getHandleResponse(resp *http.Response) (PrivateLinkResourcesForSCCPowershellGetResponse, error) {
-	result := PrivateLinkResourcesForSCCPowershellGetResponse{RawResponse: resp}
+func (client *PrivateLinkResourcesForSCCPowershellClient) getHandleResponse(resp *http.Response) (PrivateLinkResourcesForSCCPowershellClientGetResponse, error) {
+	result := PrivateLinkResourcesForSCCPowershellClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
-		return PrivateLinkResourcesForSCCPowershellGetResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkResourcesForSCCPowershellClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PrivateLinkResourcesForSCCPowershellClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // ListByService - Gets the private link resources that need to be created for a service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *PrivateLinkResourcesForSCCPowershellClient) ListByService(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesForSCCPowershellListByServiceOptions) (PrivateLinkResourcesForSCCPowershellListByServiceResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
+// resourceGroupName - The name of the resource group that contains the service instance.
+// resourceName - The name of the service instance.
+// options - PrivateLinkResourcesForSCCPowershellClientListByServiceOptions contains the optional parameters for the PrivateLinkResourcesForSCCPowershellClient.ListByService
+// method.
+func (client *PrivateLinkResourcesForSCCPowershellClient) ListByService(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesForSCCPowershellClientListByServiceOptions) (PrivateLinkResourcesForSCCPowershellClientListByServiceResponse, error) {
 	req, err := client.listByServiceCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return PrivateLinkResourcesForSCCPowershellListByServiceResponse{}, err
+		return PrivateLinkResourcesForSCCPowershellClientListByServiceResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateLinkResourcesForSCCPowershellListByServiceResponse{}, err
+		return PrivateLinkResourcesForSCCPowershellClientListByServiceResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PrivateLinkResourcesForSCCPowershellListByServiceResponse{}, client.listByServiceHandleError(resp)
+		return PrivateLinkResourcesForSCCPowershellClientListByServiceResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByServiceHandleResponse(resp)
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *PrivateLinkResourcesForSCCPowershellClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesForSCCPowershellListByServiceOptions) (*policy.Request, error) {
+func (client *PrivateLinkResourcesForSCCPowershellClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesForSCCPowershellClientListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.M365SecurityAndCompliance/privateLinkServicesForSCCPowershell/{resourceName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -143,35 +153,22 @@ func (client *PrivateLinkResourcesForSCCPowershellClient) listByServiceCreateReq
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *PrivateLinkResourcesForSCCPowershellClient) listByServiceHandleResponse(resp *http.Response) (PrivateLinkResourcesForSCCPowershellListByServiceResponse, error) {
-	result := PrivateLinkResourcesForSCCPowershellListByServiceResponse{RawResponse: resp}
+func (client *PrivateLinkResourcesForSCCPowershellClient) listByServiceHandleResponse(resp *http.Response) (PrivateLinkResourcesForSCCPowershellClientListByServiceResponse, error) {
+	result := PrivateLinkResourcesForSCCPowershellClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
-		return PrivateLinkResourcesForSCCPowershellListByServiceResponse{}, runtime.NewResponseError(err, resp)
+		return PrivateLinkResourcesForSCCPowershellClientListByServiceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServiceHandleError handles the ListByService error response.
-func (client *PrivateLinkResourcesForSCCPowershellClient) listByServiceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package armserialconsole
 
 const (
-	module  = "armserialconsole"
-	version = "v0.1.0"
+	moduleName    = "armserialconsole"
+	moduleVersion = "v1.0.0"
 )
 
 // SerialPortState - Specifies whether the port is enabled for a serial console connection.
@@ -27,9 +27,4 @@ func PossibleSerialPortStateValues() []SerialPortState {
 		SerialPortStateEnabled,
 		SerialPortStateDisabled,
 	}
-}
-
-// ToPtr returns a *SerialPortState pointing to the current value.
-func (c SerialPortState) ToPtr() *SerialPortState {
-	return &c
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,316 +8,132 @@
 
 package armmaintenance
 
-import "net/http"
-
-// ApplyUpdateForResourceGroupListResponse contains the response from method ApplyUpdateForResourceGroup.List.
-type ApplyUpdateForResourceGroupListResponse struct {
-	ApplyUpdateForResourceGroupListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplyUpdateForResourceGroupListResult contains the result from method ApplyUpdateForResourceGroup.List.
-type ApplyUpdateForResourceGroupListResult struct {
+// ApplyUpdateForResourceGroupClientListResponse contains the response from method ApplyUpdateForResourceGroupClient.List.
+type ApplyUpdateForResourceGroupClientListResponse struct {
 	ListApplyUpdate
 }
 
-// ApplyUpdatesCreateOrUpdateParentResponse contains the response from method ApplyUpdates.CreateOrUpdateParent.
-type ApplyUpdatesCreateOrUpdateParentResponse struct {
-	ApplyUpdatesCreateOrUpdateParentResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplyUpdatesCreateOrUpdateParentResult contains the result from method ApplyUpdates.CreateOrUpdateParent.
-type ApplyUpdatesCreateOrUpdateParentResult struct {
+// ApplyUpdatesClientCreateOrUpdateParentResponse contains the response from method ApplyUpdatesClient.CreateOrUpdateParent.
+type ApplyUpdatesClientCreateOrUpdateParentResponse struct {
 	ApplyUpdate
 }
 
-// ApplyUpdatesCreateOrUpdateResponse contains the response from method ApplyUpdates.CreateOrUpdate.
-type ApplyUpdatesCreateOrUpdateResponse struct {
-	ApplyUpdatesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplyUpdatesCreateOrUpdateResult contains the result from method ApplyUpdates.CreateOrUpdate.
-type ApplyUpdatesCreateOrUpdateResult struct {
+// ApplyUpdatesClientCreateOrUpdateResponse contains the response from method ApplyUpdatesClient.CreateOrUpdate.
+type ApplyUpdatesClientCreateOrUpdateResponse struct {
 	ApplyUpdate
 }
 
-// ApplyUpdatesGetParentResponse contains the response from method ApplyUpdates.GetParent.
-type ApplyUpdatesGetParentResponse struct {
-	ApplyUpdatesGetParentResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplyUpdatesGetParentResult contains the result from method ApplyUpdates.GetParent.
-type ApplyUpdatesGetParentResult struct {
+// ApplyUpdatesClientGetParentResponse contains the response from method ApplyUpdatesClient.GetParent.
+type ApplyUpdatesClientGetParentResponse struct {
 	ApplyUpdate
 }
 
-// ApplyUpdatesGetResponse contains the response from method ApplyUpdates.Get.
-type ApplyUpdatesGetResponse struct {
-	ApplyUpdatesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplyUpdatesGetResult contains the result from method ApplyUpdates.Get.
-type ApplyUpdatesGetResult struct {
+// ApplyUpdatesClientGetResponse contains the response from method ApplyUpdatesClient.Get.
+type ApplyUpdatesClientGetResponse struct {
 	ApplyUpdate
 }
 
-// ApplyUpdatesListResponse contains the response from method ApplyUpdates.List.
-type ApplyUpdatesListResponse struct {
-	ApplyUpdatesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ApplyUpdatesListResult contains the result from method ApplyUpdates.List.
-type ApplyUpdatesListResult struct {
+// ApplyUpdatesClientListResponse contains the response from method ApplyUpdatesClient.List.
+type ApplyUpdatesClientListResponse struct {
 	ListApplyUpdate
 }
 
-// ConfigurationAssignmentsCreateOrUpdateParentResponse contains the response from method ConfigurationAssignments.CreateOrUpdateParent.
-type ConfigurationAssignmentsCreateOrUpdateParentResponse struct {
-	ConfigurationAssignmentsCreateOrUpdateParentResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConfigurationAssignmentsCreateOrUpdateParentResult contains the result from method ConfigurationAssignments.CreateOrUpdateParent.
-type ConfigurationAssignmentsCreateOrUpdateParentResult struct {
+// ConfigurationAssignmentsClientCreateOrUpdateParentResponse contains the response from method ConfigurationAssignmentsClient.CreateOrUpdateParent.
+type ConfigurationAssignmentsClientCreateOrUpdateParentResponse struct {
 	ConfigurationAssignment
 }
 
-// ConfigurationAssignmentsCreateOrUpdateResponse contains the response from method ConfigurationAssignments.CreateOrUpdate.
-type ConfigurationAssignmentsCreateOrUpdateResponse struct {
-	ConfigurationAssignmentsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConfigurationAssignmentsCreateOrUpdateResult contains the result from method ConfigurationAssignments.CreateOrUpdate.
-type ConfigurationAssignmentsCreateOrUpdateResult struct {
+// ConfigurationAssignmentsClientCreateOrUpdateResponse contains the response from method ConfigurationAssignmentsClient.CreateOrUpdate.
+type ConfigurationAssignmentsClientCreateOrUpdateResponse struct {
 	ConfigurationAssignment
 }
 
-// ConfigurationAssignmentsDeleteParentResponse contains the response from method ConfigurationAssignments.DeleteParent.
-type ConfigurationAssignmentsDeleteParentResponse struct {
-	ConfigurationAssignmentsDeleteParentResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConfigurationAssignmentsDeleteParentResult contains the result from method ConfigurationAssignments.DeleteParent.
-type ConfigurationAssignmentsDeleteParentResult struct {
+// ConfigurationAssignmentsClientDeleteParentResponse contains the response from method ConfigurationAssignmentsClient.DeleteParent.
+type ConfigurationAssignmentsClientDeleteParentResponse struct {
 	ConfigurationAssignment
 }
 
-// ConfigurationAssignmentsDeleteResponse contains the response from method ConfigurationAssignments.Delete.
-type ConfigurationAssignmentsDeleteResponse struct {
-	ConfigurationAssignmentsDeleteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConfigurationAssignmentsDeleteResult contains the result from method ConfigurationAssignments.Delete.
-type ConfigurationAssignmentsDeleteResult struct {
+// ConfigurationAssignmentsClientDeleteResponse contains the response from method ConfigurationAssignmentsClient.Delete.
+type ConfigurationAssignmentsClientDeleteResponse struct {
 	ConfigurationAssignment
 }
 
-// ConfigurationAssignmentsGetParentResponse contains the response from method ConfigurationAssignments.GetParent.
-type ConfigurationAssignmentsGetParentResponse struct {
-	ConfigurationAssignmentsGetParentResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConfigurationAssignmentsGetParentResult contains the result from method ConfigurationAssignments.GetParent.
-type ConfigurationAssignmentsGetParentResult struct {
+// ConfigurationAssignmentsClientGetParentResponse contains the response from method ConfigurationAssignmentsClient.GetParent.
+type ConfigurationAssignmentsClientGetParentResponse struct {
 	ConfigurationAssignment
 }
 
-// ConfigurationAssignmentsGetResponse contains the response from method ConfigurationAssignments.Get.
-type ConfigurationAssignmentsGetResponse struct {
-	ConfigurationAssignmentsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConfigurationAssignmentsGetResult contains the result from method ConfigurationAssignments.Get.
-type ConfigurationAssignmentsGetResult struct {
+// ConfigurationAssignmentsClientGetResponse contains the response from method ConfigurationAssignmentsClient.Get.
+type ConfigurationAssignmentsClientGetResponse struct {
 	ConfigurationAssignment
 }
 
-// ConfigurationAssignmentsListParentResponse contains the response from method ConfigurationAssignments.ListParent.
-type ConfigurationAssignmentsListParentResponse struct {
-	ConfigurationAssignmentsListParentResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConfigurationAssignmentsListParentResult contains the result from method ConfigurationAssignments.ListParent.
-type ConfigurationAssignmentsListParentResult struct {
+// ConfigurationAssignmentsClientListParentResponse contains the response from method ConfigurationAssignmentsClient.ListParent.
+type ConfigurationAssignmentsClientListParentResponse struct {
 	ListConfigurationAssignmentsResult
 }
 
-// ConfigurationAssignmentsListResponse contains the response from method ConfigurationAssignments.List.
-type ConfigurationAssignmentsListResponse struct {
-	ConfigurationAssignmentsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConfigurationAssignmentsListResult contains the result from method ConfigurationAssignments.List.
-type ConfigurationAssignmentsListResult struct {
+// ConfigurationAssignmentsClientListResponse contains the response from method ConfigurationAssignmentsClient.List.
+type ConfigurationAssignmentsClientListResponse struct {
 	ListConfigurationAssignmentsResult
 }
 
-// ConfigurationAssignmentsWithinSubscriptionListResponse contains the response from method ConfigurationAssignmentsWithinSubscription.List.
-type ConfigurationAssignmentsWithinSubscriptionListResponse struct {
-	ConfigurationAssignmentsWithinSubscriptionListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConfigurationAssignmentsWithinSubscriptionListResult contains the result from method ConfigurationAssignmentsWithinSubscription.List.
-type ConfigurationAssignmentsWithinSubscriptionListResult struct {
+// ConfigurationAssignmentsWithinSubscriptionClientListResponse contains the response from method ConfigurationAssignmentsWithinSubscriptionClient.List.
+type ConfigurationAssignmentsWithinSubscriptionClientListResponse struct {
 	ListConfigurationAssignmentsResult
 }
 
-// MaintenanceConfigurationsCreateOrUpdateResponse contains the response from method MaintenanceConfigurations.CreateOrUpdate.
-type MaintenanceConfigurationsCreateOrUpdateResponse struct {
-	MaintenanceConfigurationsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ConfigurationsClientCreateOrUpdateResponse contains the response from method ConfigurationsClient.CreateOrUpdate.
+type ConfigurationsClientCreateOrUpdateResponse struct {
+	Configuration
 }
 
-// MaintenanceConfigurationsCreateOrUpdateResult contains the result from method MaintenanceConfigurations.CreateOrUpdate.
-type MaintenanceConfigurationsCreateOrUpdateResult struct {
-	MaintenanceConfiguration
+// ConfigurationsClientDeleteResponse contains the response from method ConfigurationsClient.Delete.
+type ConfigurationsClientDeleteResponse struct {
+	Configuration
 }
 
-// MaintenanceConfigurationsDeleteResponse contains the response from method MaintenanceConfigurations.Delete.
-type MaintenanceConfigurationsDeleteResponse struct {
-	MaintenanceConfigurationsDeleteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ConfigurationsClientGetResponse contains the response from method ConfigurationsClient.Get.
+type ConfigurationsClientGetResponse struct {
+	Configuration
 }
 
-// MaintenanceConfigurationsDeleteResult contains the result from method MaintenanceConfigurations.Delete.
-type MaintenanceConfigurationsDeleteResult struct {
-	MaintenanceConfiguration
-}
-
-// MaintenanceConfigurationsForResourceGroupListResponse contains the response from method MaintenanceConfigurationsForResourceGroup.List.
-type MaintenanceConfigurationsForResourceGroupListResponse struct {
-	MaintenanceConfigurationsForResourceGroupListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MaintenanceConfigurationsForResourceGroupListResult contains the result from method MaintenanceConfigurationsForResourceGroup.List.
-type MaintenanceConfigurationsForResourceGroupListResult struct {
+// ConfigurationsClientListResponse contains the response from method ConfigurationsClient.List.
+type ConfigurationsClientListResponse struct {
 	ListMaintenanceConfigurationsResult
 }
 
-// MaintenanceConfigurationsGetResponse contains the response from method MaintenanceConfigurations.Get.
-type MaintenanceConfigurationsGetResponse struct {
-	MaintenanceConfigurationsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ConfigurationsClientUpdateResponse contains the response from method ConfigurationsClient.Update.
+type ConfigurationsClientUpdateResponse struct {
+	Configuration
 }
 
-// MaintenanceConfigurationsGetResult contains the result from method MaintenanceConfigurations.Get.
-type MaintenanceConfigurationsGetResult struct {
-	MaintenanceConfiguration
-}
-
-// MaintenanceConfigurationsListResponse contains the response from method MaintenanceConfigurations.List.
-type MaintenanceConfigurationsListResponse struct {
-	MaintenanceConfigurationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MaintenanceConfigurationsListResult contains the result from method MaintenanceConfigurations.List.
-type MaintenanceConfigurationsListResult struct {
+// ConfigurationsForResourceGroupClientListResponse contains the response from method ConfigurationsForResourceGroupClient.List.
+type ConfigurationsForResourceGroupClientListResponse struct {
 	ListMaintenanceConfigurationsResult
 }
 
-// MaintenanceConfigurationsUpdateResponse contains the response from method MaintenanceConfigurations.Update.
-type MaintenanceConfigurationsUpdateResponse struct {
-	MaintenanceConfigurationsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MaintenanceConfigurationsUpdateResult contains the result from method MaintenanceConfigurations.Update.
-type MaintenanceConfigurationsUpdateResult struct {
-	MaintenanceConfiguration
-}
-
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResultEnvelope contains the result from method Operations.List.
-type OperationsListResultEnvelope struct {
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
 	OperationsListResult
 }
 
-// PublicMaintenanceConfigurationsGetResponse contains the response from method PublicMaintenanceConfigurations.Get.
-type PublicMaintenanceConfigurationsGetResponse struct {
-	PublicMaintenanceConfigurationsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PublicMaintenanceConfigurationsClientGetResponse contains the response from method PublicMaintenanceConfigurationsClient.Get.
+type PublicMaintenanceConfigurationsClientGetResponse struct {
+	Configuration
 }
 
-// PublicMaintenanceConfigurationsGetResult contains the result from method PublicMaintenanceConfigurations.Get.
-type PublicMaintenanceConfigurationsGetResult struct {
-	MaintenanceConfiguration
-}
-
-// PublicMaintenanceConfigurationsListResponse contains the response from method PublicMaintenanceConfigurations.List.
-type PublicMaintenanceConfigurationsListResponse struct {
-	PublicMaintenanceConfigurationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PublicMaintenanceConfigurationsListResult contains the result from method PublicMaintenanceConfigurations.List.
-type PublicMaintenanceConfigurationsListResult struct {
+// PublicMaintenanceConfigurationsClientListResponse contains the response from method PublicMaintenanceConfigurationsClient.List.
+type PublicMaintenanceConfigurationsClientListResponse struct {
 	ListMaintenanceConfigurationsResult
 }
 
-// UpdatesListParentResponse contains the response from method Updates.ListParent.
-type UpdatesListParentResponse struct {
-	UpdatesListParentResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// UpdatesListParentResult contains the result from method Updates.ListParent.
-type UpdatesListParentResult struct {
+// UpdatesClientListParentResponse contains the response from method UpdatesClient.ListParent.
+type UpdatesClientListParentResponse struct {
 	ListUpdatesResult
 }
 
-// UpdatesListResponse contains the response from method Updates.List.
-type UpdatesListResponse struct {
-	UpdatesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// UpdatesListResult contains the result from method Updates.List.
-type UpdatesListResult struct {
+// UpdatesClientListResponse contains the response from method UpdatesClient.List.
+type UpdatesClientListResponse struct {
 	ListUpdatesResult
 }

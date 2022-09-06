@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.1 (Unreleased)
+## 0.9.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,75 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.9.0 (2022-08-09)
+
+### Breaking Changes
+* Changed type of `NewClient` options parameter to `azsecrets.ClientOptions`, which embeds
+  the former type, `azcore.ClientOptions`
+
+## 0.8.0 (2022-07-07)
+
+### Breaking Changes
+* The `Client` API now corresponds more directly to the Key Vault REST API.
+  Most method signatures and types have changed. See the
+  [module documentation](https://aka.ms/azsdk/go/keyvault-secrets/docs)
+  for updated code examples and more details.
+
+### Other Changes
+* Upgrade to latest `azcore`
+
+## 0.7.1 (2022-05-12)
+
+### Other Changes
+* Updated to latest `azcore` and `internal` modules.
+
+## 0.7.0 (2022-04-06)
+
+### Features Added
+* Added `PossibleDeletionRecoveryLevelValues` to iterate over all valid `DeletionRecoveryLevel` values
+* Implemented generic pagers from `runtime.Pager` for all List operations
+* Added `Name *string` to `DeletedSecret`, `Properties`, `Secret`, `SecretItem`, and `SecretItem`
+* Added `Client.VaultURL` to determine the vault URL for debugging
+* Adding `ResumeToken` method to pollers for resuming polling at a later date by using the added `ResumeToken` optional parameter on client polling methods
+
+### Breaking Changes
+* Requires a minimum version of go 1.18
+* Removed `RawResponse` from pollers
+* Removed `DeletionRecoveryLevel`
+* Polling operations return a Poller struct directly instead of a Response envelope
+* Removed `ToPtr` methods
+* `Client.UpdateSecretProperties` takes a `Secret`
+* Renamed `Client.ListSecrets` to `Client.ListPropertiesOfSecrets`
+* Renamed `Client.ListSecretVersions` to `Client.ListPropertiesOfSecretVersions`
+* Renamed `DeletedDate` to `DeletedOn` and `Managed` to `IsManaged`
+* Moved `ContentType`, `Tags`, `KeyID`, and `IsManaged` to `Properties`
+
+## 0.6.0 (2022-03-08)
+
+### Breaking Changes
+* Changes `Attributes` to `Properties`
+* Changes `Secret.KID` to `Secret.KeyID`
+* Changes `DeletedSecretBundle` to `DeletedSecret`
+* Changes `DeletedDate` to `DeletedOn`, `Created` to `CreatedOn`, and `Updated` to `UpdatedOn`
+* Changes the signature of `Client.UpdateSecretProperties` to have all alterable properties in the `UpdateSecretPropertiesOptions` parameter, removing the `parameters Properties` parameter.
+* Changes `Item` to `SecretItem`
+* Pollers and pagers are structs instead of interfaces
+* Prefixed all `DeletionRecoveryLevel` constants with "DeletionRecoveryLevel"
+* Changed pager APIs for `ListSecretVersionsPager`, `ListDeletedSecretsPager`, and `ListSecretsPager`
+    * Use the `More()` method to determine if there are more pages to fetch
+    * Use the `NextPage(context.Context)` to fetch the next page of results
+* Removed all `RawResponse *http.Response` fields from response structs.
+
+## 0.5.0 (2022-02-08)
+
+### Breaking Changes
+* Fixes a bug where `UpdateSecretProperties` will delete properties that are not explicitly set each time. This is only a breaking change at runtime, where the request body will change.
+
+## 0.4.0 (2022-01-11)
+
+### Other Changes
+* Bumps `azcore` dependency from `v0.20.0` to `v0.21.0`
 
 ## 0.3.0 (2021-11-09)
 

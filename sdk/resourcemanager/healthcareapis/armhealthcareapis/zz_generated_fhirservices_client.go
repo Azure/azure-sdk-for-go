@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armhealthcareapis
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,46 +25,60 @@ import (
 // FhirServicesClient contains the methods for the FhirServices group.
 // Don't use this type directly, use NewFhirServicesClient() instead.
 type FhirServicesClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewFhirServicesClient creates a new instance of FhirServicesClient with the specified values.
-func NewFhirServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FhirServicesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription identifier.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewFhirServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FhirServicesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &FhirServicesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &FhirServicesClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a FHIR Service resource with the specified parameters.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *FhirServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, fhirServiceName string, fhirservice FhirService, options *FhirServicesBeginCreateOrUpdateOptions) (FhirServicesCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, fhirServiceName, fhirservice, options)
-	if err != nil {
-		return FhirServicesCreateOrUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-31-preview
+// resourceGroupName - The name of the resource group that contains the service instance.
+// workspaceName - The name of workspace resource.
+// fhirServiceName - The name of FHIR Service resource.
+// fhirservice - The parameters for creating or updating a Fhir Service resource.
+// options - FhirServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the FhirServicesClient.BeginCreateOrUpdate
+// method.
+func (client *FhirServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, fhirServiceName string, fhirservice FhirService, options *FhirServicesClientBeginCreateOrUpdateOptions) (*runtime.Poller[FhirServicesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, fhirServiceName, fhirservice, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[FhirServicesClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[FhirServicesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := FhirServicesCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("FhirServicesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return FhirServicesCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &FhirServicesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a FHIR Service resource with the specified parameters.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *FhirServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, fhirServiceName string, fhirservice FhirService, options *FhirServicesBeginCreateOrUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-31-preview
+func (client *FhirServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, fhirServiceName string, fhirservice FhirService, options *FhirServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, fhirServiceName, fhirservice, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +88,13 @@ func (client *FhirServicesClient) createOrUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *FhirServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, fhirServiceName string, fhirservice FhirService, options *FhirServicesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *FhirServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, fhirServiceName string, fhirservice FhirService, options *FhirServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/fhirservices/{fhirServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -98,53 +112,41 @@ func (client *FhirServicesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter fhirServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fhirServiceName}", url.PathEscape(fhirServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2022-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, fhirservice)
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *FhirServicesClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes a FHIR Service.
-// If the operation fails it returns the *Error error type.
-func (client *FhirServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, options *FhirServicesBeginDeleteOptions) (FhirServicesDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, fhirServiceName, workspaceName, options)
-	if err != nil {
-		return FhirServicesDeletePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-31-preview
+// resourceGroupName - The name of the resource group that contains the service instance.
+// fhirServiceName - The name of FHIR Service resource.
+// workspaceName - The name of workspace resource.
+// options - FhirServicesClientBeginDeleteOptions contains the optional parameters for the FhirServicesClient.BeginDelete
+// method.
+func (client *FhirServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, options *FhirServicesClientBeginDeleteOptions) (*runtime.Poller[FhirServicesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, fhirServiceName, workspaceName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[FhirServicesClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[FhirServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := FhirServicesDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("FhirServicesClient.Delete", "", resp, client.pl, client.deleteHandleError)
-	if err != nil {
-		return FhirServicesDeletePollerResponse{}, err
-	}
-	result.Poller = &FhirServicesDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a FHIR Service.
-// If the operation fails it returns the *Error error type.
-func (client *FhirServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, options *FhirServicesBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-31-preview
+func (client *FhirServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, options *FhirServicesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, fhirServiceName, workspaceName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +156,13 @@ func (client *FhirServicesClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *FhirServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, options *FhirServicesBeginDeleteOptions) (*policy.Request, error) {
+func (client *FhirServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, options *FhirServicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/fhirservices/{fhirServiceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,49 +180,41 @@ func (client *FhirServicesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2022-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *FhirServicesClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := Error{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the properties of the specified FHIR Service.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *FhirServicesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, fhirServiceName string, options *FhirServicesGetOptions) (FhirServicesGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-31-preview
+// resourceGroupName - The name of the resource group that contains the service instance.
+// workspaceName - The name of workspace resource.
+// fhirServiceName - The name of FHIR Service resource.
+// options - FhirServicesClientGetOptions contains the optional parameters for the FhirServicesClient.Get method.
+func (client *FhirServicesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, fhirServiceName string, options *FhirServicesClientGetOptions) (FhirServicesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, fhirServiceName, options)
 	if err != nil {
-		return FhirServicesGetResponse{}, err
+		return FhirServicesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return FhirServicesGetResponse{}, err
+		return FhirServicesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return FhirServicesGetResponse{}, client.getHandleError(resp)
+		return FhirServicesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *FhirServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, fhirServiceName string, options *FhirServicesGetOptions) (*policy.Request, error) {
+func (client *FhirServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, fhirServiceName string, options *FhirServicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/fhirservices/{fhirServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -238,55 +232,63 @@ func (client *FhirServicesClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter fhirServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fhirServiceName}", url.PathEscape(fhirServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2022-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *FhirServicesClient) getHandleResponse(resp *http.Response) (FhirServicesGetResponse, error) {
-	result := FhirServicesGetResponse{RawResponse: resp}
+func (client *FhirServicesClient) getHandleResponse(resp *http.Response) (FhirServicesClientGetResponse, error) {
+	result := FhirServicesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FhirService); err != nil {
-		return FhirServicesGetResponse{}, runtime.NewResponseError(err, resp)
+		return FhirServicesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *FhirServicesClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByWorkspace - Lists all FHIR Services for the given workspace
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *FhirServicesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *FhirServicesListByWorkspaceOptions) *FhirServicesListByWorkspacePager {
-	return &FhirServicesListByWorkspacePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
+// NewListByWorkspacePager - Lists all FHIR Services for the given workspace
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-31-preview
+// resourceGroupName - The name of the resource group that contains the service instance.
+// workspaceName - The name of workspace resource.
+// options - FhirServicesClientListByWorkspaceOptions contains the optional parameters for the FhirServicesClient.ListByWorkspace
+// method.
+func (client *FhirServicesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *FhirServicesClientListByWorkspaceOptions) *runtime.Pager[FhirServicesClientListByWorkspaceResponse] {
+	return runtime.NewPager(runtime.PagingHandler[FhirServicesClientListByWorkspaceResponse]{
+		More: func(page FhirServicesClientListByWorkspaceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp FhirServicesListByWorkspaceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.FhirServiceCollection.NextLink)
+		Fetcher: func(ctx context.Context, page *FhirServicesClientListByWorkspaceResponse) (FhirServicesClientListByWorkspaceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return FhirServicesClientListByWorkspaceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return FhirServicesClientListByWorkspaceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return FhirServicesClientListByWorkspaceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByWorkspaceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *FhirServicesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *FhirServicesListByWorkspaceOptions) (*policy.Request, error) {
+func (client *FhirServicesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *FhirServicesClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/fhirservices"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -300,62 +302,51 @@ func (client *FhirServicesClient) listByWorkspaceCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2022-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *FhirServicesClient) listByWorkspaceHandleResponse(resp *http.Response) (FhirServicesListByWorkspaceResponse, error) {
-	result := FhirServicesListByWorkspaceResponse{RawResponse: resp}
+func (client *FhirServicesClient) listByWorkspaceHandleResponse(resp *http.Response) (FhirServicesClientListByWorkspaceResponse, error) {
+	result := FhirServicesClientListByWorkspaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FhirServiceCollection); err != nil {
-		return FhirServicesListByWorkspaceResponse{}, runtime.NewResponseError(err, resp)
+		return FhirServicesClientListByWorkspaceResponse{}, err
 	}
 	return result, nil
-}
-
-// listByWorkspaceHandleError handles the ListByWorkspace error response.
-func (client *FhirServicesClient) listByWorkspaceHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginUpdate - Patch FHIR Service details.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *FhirServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, fhirservicePatchResource FhirServicePatchResource, options *FhirServicesBeginUpdateOptions) (FhirServicesUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, fhirServiceName, workspaceName, fhirservicePatchResource, options)
-	if err != nil {
-		return FhirServicesUpdatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-31-preview
+// resourceGroupName - The name of the resource group that contains the service instance.
+// fhirServiceName - The name of FHIR Service resource.
+// workspaceName - The name of workspace resource.
+// fhirservicePatchResource - The parameters for updating a Fhir Service.
+// options - FhirServicesClientBeginUpdateOptions contains the optional parameters for the FhirServicesClient.BeginUpdate
+// method.
+func (client *FhirServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, fhirservicePatchResource FhirServicePatchResource, options *FhirServicesClientBeginUpdateOptions) (*runtime.Poller[FhirServicesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, fhirServiceName, workspaceName, fhirservicePatchResource, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller[FhirServicesClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return runtime.NewPollerFromResumeToken[FhirServicesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := FhirServicesUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("FhirServicesClient.Update", "", resp, client.pl, client.updateHandleError)
-	if err != nil {
-		return FhirServicesUpdatePollerResponse{}, err
-	}
-	result.Poller = &FhirServicesUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Patch FHIR Service details.
-// If the operation fails it returns the *ErrorDetails error type.
-func (client *FhirServicesClient) update(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, fhirservicePatchResource FhirServicePatchResource, options *FhirServicesBeginUpdateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-31-preview
+func (client *FhirServicesClient) update(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, fhirservicePatchResource FhirServicePatchResource, options *FhirServicesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, fhirServiceName, workspaceName, fhirservicePatchResource, options)
 	if err != nil {
 		return nil, err
@@ -365,13 +356,13 @@ func (client *FhirServicesClient) update(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *FhirServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, fhirservicePatchResource FhirServicePatchResource, options *FhirServicesBeginUpdateOptions) (*policy.Request, error) {
+func (client *FhirServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, fhirservicePatchResource FhirServicePatchResource, options *FhirServicesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/fhirservices/{fhirServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -389,26 +380,13 @@ func (client *FhirServicesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2022-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, fhirservicePatchResource)
-}
-
-// updateHandleError handles the Update error response.
-func (client *FhirServicesClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorDetails{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

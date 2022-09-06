@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -15,6 +15,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -31,7 +32,11 @@ func TestNewPipelineWithOptions(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, azruntime.PipelineOptions{}, &opt).Do(req)
+	pl, err := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, &opt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -58,7 +63,11 @@ func TestNewPipelineWithCustomTelemetry(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, azruntime.PipelineOptions{}, &opt).Do(req)
+	pl, err := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, &opt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -90,7 +99,11 @@ func TestDisableAutoRPRegistration(t *testing.T) {
 	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
-	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, azruntime.PipelineOptions{}, opts).Do(req)
+	pl, err := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -123,7 +136,7 @@ func TestPipelineWithCustomPolicies(t *testing.T) {
 	perRetryPolicy := countingPolicy{}
 	opts := &arm.ClientOptions{
 		DisableRPRegistration: true,
-		ClientOptions: azcore.ClientOptions{
+		ClientOptions: policy.ClientOptions{
 			PerCallPolicies:  []policy.Policy{&perCallPolicy},
 			PerRetryPolicies: []policy.Policy{&perRetryPolicy},
 			Retry:            policy.RetryOptions{RetryDelay: time.Microsecond},
@@ -134,7 +147,11 @@ func TestPipelineWithCustomPolicies(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, azruntime.PipelineOptions{}, opts).Do(req)
+	pl, err := NewPipeline("armtest", "v1.2.3", mockCredential{}, azruntime.PipelineOptions{}, opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -146,5 +163,66 @@ func TestPipelineWithCustomPolicies(t *testing.T) {
 	}
 	if perRetryPolicy.count != 2 {
 		t.Fatalf("unexpected per retry policy count %d", perRetryPolicy.count)
+	}
+}
+
+func TestPipelineAudience(t *testing.T) {
+	for _, c := range []cloud.Configuration{cloud.AzureChina, cloud.AzureGovernment, cloud.AzurePublic} {
+		srv, close := mock.NewServer()
+		defer close()
+		srv.AppendResponse(mock.WithStatusCode(200))
+		opts := &arm.ClientOptions{}
+		opts.Cloud = c
+		opts.Transport = srv
+		audience := opts.Cloud.Services[cloud.ResourceManager].Audience
+		if !strings.HasPrefix(audience, "https://") {
+			t.Fatal("unexpected audience " + audience)
+		}
+		getTokenCalled := false
+		cred := mockCredential{getTokenImpl: func(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
+			getTokenCalled = true
+			if n := len(options.Scopes); n != 1 {
+				t.Fatalf("expected 1 scope, got %d", n)
+			}
+			if options.Scopes[0] != audience+"/.default" {
+				t.Fatalf(`unexpected scope "%s"`, options.Scopes[0])
+			}
+			return azcore.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour)}, nil
+		}}
+		req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+		if err != nil {
+			t.Fatal(err)
+		}
+		pl, err := NewPipeline("test", "v0.1.0", cred, azruntime.PipelineOptions{}, opts)
+		if err != nil {
+			t.Fatal(err)
+		}
+		_, err = pl.Do(req)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !getTokenCalled {
+			t.Fatal("mock credential's GetToken method wasn't called")
+		}
+	}
+}
+
+func TestPipelineWithIncompleteCloudConfig(t *testing.T) {
+	partialConfigs := []cloud.Configuration{
+		{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{"...": {Endpoint: "..."}}},
+		{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
+			cloud.ResourceManager: {Audience: "..."},
+		}},
+		{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
+			cloud.ResourceManager: {Endpoint: "http://localhost"},
+		}},
+	}
+	for _, c := range partialConfigs {
+		opts := &arm.ClientOptions{}
+		opts.Cloud = c
+		_, err := NewPipeline("test", "v0.1.0", mockCredential{}, azruntime.PipelineOptions{}, opts)
+		if err == nil {
+			t.Fatal("expected an error")
+		}
 	}
 }

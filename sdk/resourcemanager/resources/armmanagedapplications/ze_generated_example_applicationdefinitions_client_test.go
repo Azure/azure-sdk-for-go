@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,187 +12,118 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armmanagedapplications"
 )
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/getApplicationDefinition.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/getApplicationDefinition.json
 func ExampleApplicationDefinitionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmanagedapplications.NewApplicationDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armmanagedapplications.NewApplicationDefinitionsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<application-definition-name>",
+		"rg",
+		"myManagedApplicationDef",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("ApplicationDefinition.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/deleteApplicationDefinition.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/deleteApplicationDefinition.json
 func ExampleApplicationDefinitionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmanagedapplications.NewApplicationDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armmanagedapplications.NewApplicationDefinitionsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<application-definition-name>",
+		"rg",
+		"myManagedApplicationDef",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/createOrUpdateApplicationDefinition.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/createOrUpdateApplicationDefinition.json
 func ExampleApplicationDefinitionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmanagedapplications.NewApplicationDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armmanagedapplications.NewApplicationDefinitionsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<application-definition-name>",
+		"rg",
+		"myManagedApplicationDef",
 		armmanagedapplications.ApplicationDefinition{
-			GenericResource: armmanagedapplications.GenericResource{
-				Resource: armmanagedapplications.Resource{
-					Location: to.StringPtr("<location>"),
-				},
-			},
+			Location: to.Ptr("East US 2"),
 			Properties: &armmanagedapplications.ApplicationDefinitionProperties{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("myManagedApplicationDef description"),
 				Authorizations: []*armmanagedapplications.ApplicationProviderAuthorization{
 					{
-						PrincipalID:      to.StringPtr("<principal-id>"),
-						RoleDefinitionID: to.StringPtr("<role-definition-id>"),
+						PrincipalID:      to.Ptr("validprincipalguid"),
+						RoleDefinitionID: to.Ptr("validroleguid"),
 					}},
-				DisplayName:    to.StringPtr("<display-name>"),
-				LockLevel:      armmanagedapplications.ApplicationLockLevelNone.ToPtr(),
-				PackageFileURI: to.StringPtr("<package-file-uri>"),
+				DisplayName:    to.Ptr("myManagedApplicationDef"),
+				LockLevel:      to.Ptr(armmanagedapplications.ApplicationLockLevelNone),
+				PackageFileURI: to.Ptr("https://path/to/packagezipfile"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("ApplicationDefinition.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/listApplicationDefinitionsByResourceGroup.json
-func ExampleApplicationDefinitionsClient_ListByResourceGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/listApplicationDefinitionsByResourceGroup.json
+func ExampleApplicationDefinitionsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmanagedapplications.NewApplicationDefinitionsClient("<subscription-id>", cred, nil)
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	client, err := armmanagedapplications.NewApplicationDefinitionsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByResourceGroupPager("rg",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ApplicationDefinition.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
-}
-
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/getApplicationDefinition.json
-func ExampleApplicationDefinitionsClient_GetByID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armmanagedapplications.NewApplicationDefinitionsClient("<subscription-id>", cred, nil)
-	res, err := client.GetByID(ctx,
-		"<resource-group-name>",
-		"<application-definition-name>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("ApplicationDefinition.ID: %s\n", *res.ID)
-}
-
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/deleteApplicationDefinition.json
-func ExampleApplicationDefinitionsClient_BeginDeleteByID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armmanagedapplications.NewApplicationDefinitionsClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginDeleteByID(ctx,
-		"<resource-group-name>",
-		"<application-definition-name>",
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-// x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/createOrUpdateApplicationDefinition.json
-func ExampleApplicationDefinitionsClient_BeginCreateOrUpdateByID() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client := armmanagedapplications.NewApplicationDefinitionsClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginCreateOrUpdateByID(ctx,
-		"<resource-group-name>",
-		"<application-definition-name>",
-		armmanagedapplications.ApplicationDefinition{
-			GenericResource: armmanagedapplications.GenericResource{
-				Resource: armmanagedapplications.Resource{
-					Location: to.StringPtr("<location>"),
-				},
-			},
-			Properties: &armmanagedapplications.ApplicationDefinitionProperties{
-				Description: to.StringPtr("<description>"),
-				Authorizations: []*armmanagedapplications.ApplicationProviderAuthorization{
-					{
-						PrincipalID:      to.StringPtr("<principal-id>"),
-						RoleDefinitionID: to.StringPtr("<role-definition-id>"),
-					}},
-				DisplayName:    to.StringPtr("<display-name>"),
-				LockLevel:      armmanagedapplications.ApplicationLockLevelNone.ToPtr(),
-				PackageFileURI: to.StringPtr("<package-file-uri>"),
-			},
-		},
-		nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("ApplicationDefinition.ID: %s\n", *res.ID)
 }

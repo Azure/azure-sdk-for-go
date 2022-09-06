@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armapimanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,64 @@ import (
 // QuotaByPeriodKeysClient contains the methods for the QuotaByPeriodKeys group.
 // Don't use this type directly, use NewQuotaByPeriodKeysClient() instead.
 type QuotaByPeriodKeysClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewQuotaByPeriodKeysClient creates a new instance of QuotaByPeriodKeysClient with the specified values.
-func NewQuotaByPeriodKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *QuotaByPeriodKeysClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewQuotaByPeriodKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QuotaByPeriodKeysClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &QuotaByPeriodKeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &QuotaByPeriodKeysClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
-// Get - Gets the value of the quota counter associated with the counter-key in the policy for the specific period in service instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *QuotaByPeriodKeysClient) Get(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, quotaPeriodKey string, options *QuotaByPeriodKeysGetOptions) (QuotaByPeriodKeysGetResponse, error) {
+// Get - Gets the value of the quota counter associated with the counter-key in the policy for the specific period in service
+// instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// quotaCounterKey - Quota counter key identifier.This is the result of expression defined in counter-key attribute of the
+// quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
+// accessible by "boo" counter key. But if it’s defined as counter-key="@("b"+"a")" then it will be accessible by "ba" key
+// quotaPeriodKey - Quota period key identifier.
+// options - QuotaByPeriodKeysClientGetOptions contains the optional parameters for the QuotaByPeriodKeysClient.Get method.
+func (client *QuotaByPeriodKeysClient) Get(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, quotaPeriodKey string, options *QuotaByPeriodKeysClientGetOptions) (QuotaByPeriodKeysClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, quotaCounterKey, quotaPeriodKey, options)
 	if err != nil {
-		return QuotaByPeriodKeysGetResponse{}, err
+		return QuotaByPeriodKeysClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QuotaByPeriodKeysGetResponse{}, err
+		return QuotaByPeriodKeysClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return QuotaByPeriodKeysGetResponse{}, client.getHandleError(resp)
+		return QuotaByPeriodKeysClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *QuotaByPeriodKeysClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, quotaPeriodKey string, options *QuotaByPeriodKeysGetOptions) (*policy.Request, error) {
+func (client *QuotaByPeriodKeysClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, quotaPeriodKey string, options *QuotaByPeriodKeysClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/quotas/{quotaCounterKey}/periods/{quotaPeriodKey}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -82,58 +104,55 @@ func (client *QuotaByPeriodKeysClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *QuotaByPeriodKeysClient) getHandleResponse(resp *http.Response) (QuotaByPeriodKeysGetResponse, error) {
-	result := QuotaByPeriodKeysGetResponse{RawResponse: resp}
+func (client *QuotaByPeriodKeysClient) getHandleResponse(resp *http.Response) (QuotaByPeriodKeysClientGetResponse, error) {
+	result := QuotaByPeriodKeysClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaCounterContract); err != nil {
-		return QuotaByPeriodKeysGetResponse{}, runtime.NewResponseError(err, resp)
+		return QuotaByPeriodKeysClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *QuotaByPeriodKeysClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates an existing quota counter value in the specified service instance.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *QuotaByPeriodKeysClient) Update(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, quotaPeriodKey string, parameters QuotaCounterValueUpdateContract, options *QuotaByPeriodKeysUpdateOptions) (QuotaByPeriodKeysUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
+// resourceGroupName - The name of the resource group.
+// serviceName - The name of the API Management service.
+// quotaCounterKey - Quota counter key identifier.This is the result of expression defined in counter-key attribute of the
+// quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
+// accessible by "boo" counter key. But if it’s defined as counter-key="@("b"+"a")" then it will be accessible by "ba" key
+// quotaPeriodKey - Quota period key identifier.
+// parameters - The value of the Quota counter to be applied on the specified period.
+// options - QuotaByPeriodKeysClientUpdateOptions contains the optional parameters for the QuotaByPeriodKeysClient.Update
+// method.
+func (client *QuotaByPeriodKeysClient) Update(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, quotaPeriodKey string, parameters QuotaCounterValueUpdateContract, options *QuotaByPeriodKeysClientUpdateOptions) (QuotaByPeriodKeysClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, quotaCounterKey, quotaPeriodKey, parameters, options)
 	if err != nil {
-		return QuotaByPeriodKeysUpdateResponse{}, err
+		return QuotaByPeriodKeysClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return QuotaByPeriodKeysUpdateResponse{}, err
+		return QuotaByPeriodKeysClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return QuotaByPeriodKeysUpdateResponse{}, client.updateHandleError(resp)
+		return QuotaByPeriodKeysClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *QuotaByPeriodKeysClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, quotaPeriodKey string, parameters QuotaCounterValueUpdateContract, options *QuotaByPeriodKeysUpdateOptions) (*policy.Request, error) {
+func (client *QuotaByPeriodKeysClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, quotaPeriodKey string, parameters QuotaCounterValueUpdateContract, options *QuotaByPeriodKeysClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/quotas/{quotaCounterKey}/periods/{quotaPeriodKey}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -155,35 +174,22 @@ func (client *QuotaByPeriodKeysClient) updateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *QuotaByPeriodKeysClient) updateHandleResponse(resp *http.Response) (QuotaByPeriodKeysUpdateResponse, error) {
-	result := QuotaByPeriodKeysUpdateResponse{RawResponse: resp}
+func (client *QuotaByPeriodKeysClient) updateHandleResponse(resp *http.Response) (QuotaByPeriodKeysClientUpdateResponse, error) {
+	result := QuotaByPeriodKeysClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaCounterContract); err != nil {
-		return QuotaByPeriodKeysUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return QuotaByPeriodKeysClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *QuotaByPeriodKeysClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

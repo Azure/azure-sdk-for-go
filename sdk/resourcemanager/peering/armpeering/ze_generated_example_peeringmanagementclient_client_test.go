@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,21 +17,26 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 )
 
-// x-ms-original-file: specification/peering/resource-manager/Microsoft.Peering/preview/2019-08-01-preview/examples/CheckServiceProviderAvailability.json
-func ExamplePeeringManagementClient_CheckServiceProviderAvailability() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/peering/resource-manager/Microsoft.Peering/stable/2022-01-01/examples/CheckServiceProviderAvailability.json
+func ExampleManagementClient_CheckServiceProviderAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpeering.NewPeeringManagementClient("<subscription-id>", cred, nil)
-	_, err = client.CheckServiceProviderAvailability(ctx,
+	client, err := armpeering.NewManagementClient("subId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.CheckServiceProviderAvailability(ctx,
 		armpeering.CheckServiceProviderAvailabilityInput{
-			PeeringServiceLocation: to.StringPtr("<peering-service-location>"),
-			PeeringServiceProvider: to.StringPtr("<peering-service-provider>"),
+			PeeringServiceLocation: to.Ptr("peeringServiceLocation1"),
+			PeeringServiceProvider: to.Ptr("peeringServiceProvider1"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }

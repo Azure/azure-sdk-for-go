@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -9,16 +9,16 @@ package runtime
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"sort"
 	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/diag"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 type logPolicy struct {
@@ -56,6 +56,7 @@ func NewLogPolicy(o *policy.LogOptions) policy.Policy {
 		"traceparent":                   {},
 		"transfer-encoding":             {},
 		"user-agent":                    {},
+		"www-authenticate":              {},
 		"x-ms-request-id":               {},
 		"x-ms-client-request-id":        {},
 		"x-ms-return-client-request-id": {},
@@ -209,7 +210,7 @@ func writeReqBody(req *policy.Request, b *bytes.Buffer) error {
 	if ct := req.Raw().Header.Get(shared.HeaderContentType); !shouldLogBody(b, ct) {
 		return nil
 	}
-	body, err := ioutil.ReadAll(req.Raw().Body)
+	body, err := io.ReadAll(req.Raw().Body)
 	if err != nil {
 		fmt.Fprintf(b, "   Failed to read request body: %s\n", err.Error())
 		return err

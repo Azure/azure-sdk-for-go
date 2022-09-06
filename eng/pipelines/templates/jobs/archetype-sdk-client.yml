@@ -19,7 +19,7 @@ parameters:
     default: 'Public'
   - name: SupportedClouds
     type: string
-    default: 'Public,UsGov,China'
+    default: 'Public'
   - name: UnsupportedClouds
     type: string
     default: ''
@@ -65,6 +65,12 @@ parameters:
   - name: MatrixReplace
     type: object
     default: []
+  - name: TestRunTime
+    type: string
+    default: '600s'
+  - name: IncludeRelease
+    type: boolean
+    default: false
 
 
 stages:
@@ -73,25 +79,26 @@ stages:
     - job: Test
       displayName: Build and Test on
       variables:
-        - template: ../variables/globals.yml
+        - template: /eng/pipelines/templates/variables/globals.yml
       strategy:
         matrix:
-          Linux_Go117:
+          Linux_Go118:
             pool.name: azsdk-pool-mms-ubuntu-2004-general
             image.name: MMSUbuntu20.04
-            go.version: '1.17'
-          Windows_Go117:
+            go.version: '1.18.5'
+          Windows_Go118:
             pool.name: azsdk-pool-mms-win-2019-general
             image.name: MMS2019
-            go.version: '1.17'
-          Linux_Go116:
+            go.version: '1.18.5'
+          Linux_Go119:
             pool.name: azsdk-pool-mms-ubuntu-2004-general
             image.name: MMSUbuntu20.04
-            go.version: '1.16.7'
-          Windows_Go116:
+            go.version: '1.19'
+          Windows_Go119:
             pool.name: azsdk-pool-mms-win-2019-general
             image.name: MMS2019
-            go.version: '1.16.7'
+            go.version: '1.19'
+            generate.bom: true
       pool:
         name: $(pool.name)
         vmImage: $(image.name)
@@ -112,16 +119,12 @@ stages:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           Image: $(vm.image)
           GoVersion: $(go.version)
-          TestProxy: true # Do we need this conditional if it's always true? @benbp
+          TestProxy: true
+          TestRunTime: ${{ parameters.TestRunTime }}
           EnvVars:
             AZURE_RECORD_MODE: 'playback'
 
-      - pwsh: |
-          docker logs ambitious_azsdk_test_proxy
-        displayName: "Show Docker Logs"
-        condition: succeededOrFailed()
-
-    - ${{ if startsWith(parameters.ServiceDirectory, 'resourcemanager') }}:
+    - ${{ if and(startsWith(parameters.ServiceDirectory, 'resourcemanager'), ne(parameters.ServiceDirectory, 'resourcemanager/internal')) }}:
       - template: /eng/pipelines/templates/jobs/mgmt-mock-test.yml
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
@@ -129,14 +132,16 @@ stages:
     - job: Analyze
       displayName: Analyze
       variables:
-        - template: ../variables/globals.yml
+        - template: /eng/pipelines/templates/variables/globals.yml
       pool:
         name: azsdk-pool-mms-ubuntu-2004-general
 
       steps:
+      - template: /eng/common/pipelines/templates/steps/check-spelling.yml
+
       - task: GoTool@0
         inputs:
-          version: '1.17'
+          version: '1.19'
         displayName: "Select Go Version"
 
       - template: ../steps/create-go-workspace.yml
@@ -152,7 +157,7 @@ stages:
   - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:
     - ${{ each cloud in parameters.CloudConfig }}:
       # Run all clouds by default for weekly test pipeline, except for clouds specifically unsupported by the calling pipeline
-      - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
+      - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
         - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
           - stage: ${{ cloud.key }}
             displayName: Live Test ${{ cloud.key }}
@@ -190,16 +195,21 @@ stages:
                   Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}
                   Cloud: ${{ cloud.key }}
 
-  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-  - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-    - template: archetype-go-release.yml
-      parameters:
-        DependsOn:
-          - Build
-          # Copy cloud conditional logic from live test stage
-          - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:
-            - ${{ each cloud in parameters.CloudConfig }}:
-              - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
-                - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
-                  - ${{ cloud.key }}
-        ServiceDirectory: ${{ parameters.ServiceDirectory }}
+  # The Prerelease and Release stages are conditioned on:
+  # 1. Internal trigger, not Pull Request trigger
+  # 2. Not weekly build
+  # 3. Manual trigger or force IncludeRelease
+  - ${{ if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal')) }}:
+    - ${{ if not(contains(variables['Build.DefinitionName'], 'weekly')) }}:
+      - ${{ if or(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.IncludeRelease, true)) }}:
+        - template: archetype-go-release.yml
+          parameters:
+            DependsOn:
+              - Build
+              # Copy cloud conditional logic from live test stage
+              - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:
+                - ${{ each cloud in parameters.CloudConfig }}:
+                  - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
+                    - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
+                      - ${{ cloud.key }}
+            ServiceDirectory: ${{ parameters.ServiceDirectory }}

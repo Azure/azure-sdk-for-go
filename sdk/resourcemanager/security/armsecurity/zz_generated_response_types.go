@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,1845 +8,763 @@
 
 package armsecurity
 
-import (
-	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"net/http"
-	"time"
-)
-
-// AdaptiveApplicationControlsDeleteResponse contains the response from method AdaptiveApplicationControls.Delete.
-type AdaptiveApplicationControlsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AdaptiveApplicationControlsGetResponse contains the response from method AdaptiveApplicationControls.Get.
-type AdaptiveApplicationControlsGetResponse struct {
-	AdaptiveApplicationControlsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AdaptiveApplicationControlsGetResult contains the result from method AdaptiveApplicationControls.Get.
-type AdaptiveApplicationControlsGetResult struct {
-	AdaptiveApplicationControlGroup
-}
-
-// AdaptiveApplicationControlsListResponse contains the response from method AdaptiveApplicationControls.List.
-type AdaptiveApplicationControlsListResponse struct {
-	AdaptiveApplicationControlsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AdaptiveApplicationControlsListResult contains the result from method AdaptiveApplicationControls.List.
-type AdaptiveApplicationControlsListResult struct {
-	AdaptiveApplicationControlGroups
-}
-
-// AdaptiveApplicationControlsPutResponse contains the response from method AdaptiveApplicationControls.Put.
-type AdaptiveApplicationControlsPutResponse struct {
-	AdaptiveApplicationControlsPutResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AdaptiveApplicationControlsPutResult contains the result from method AdaptiveApplicationControls.Put.
-type AdaptiveApplicationControlsPutResult struct {
-	AdaptiveApplicationControlGroup
-}
-
-// AdaptiveNetworkHardeningsEnforcePollerResponse contains the response from method AdaptiveNetworkHardenings.Enforce.
-type AdaptiveNetworkHardeningsEnforcePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *AdaptiveNetworkHardeningsEnforcePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AdaptiveNetworkHardeningsEnforcePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AdaptiveNetworkHardeningsEnforceResponse, error) {
-	respType := AdaptiveNetworkHardeningsEnforceResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a AdaptiveNetworkHardeningsEnforcePollerResponse from the provided client and resume token.
-func (l *AdaptiveNetworkHardeningsEnforcePollerResponse) Resume(ctx context.Context, client *AdaptiveNetworkHardeningsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AdaptiveNetworkHardeningsClient.Enforce", token, client.pl, client.enforceHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &AdaptiveNetworkHardeningsEnforcePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// AdaptiveNetworkHardeningsEnforceResponse contains the response from method AdaptiveNetworkHardenings.Enforce.
-type AdaptiveNetworkHardeningsEnforceResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AdaptiveNetworkHardeningsGetResponse contains the response from method AdaptiveNetworkHardenings.Get.
-type AdaptiveNetworkHardeningsGetResponse struct {
-	AdaptiveNetworkHardeningsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AdaptiveNetworkHardeningsGetResult contains the result from method AdaptiveNetworkHardenings.Get.
-type AdaptiveNetworkHardeningsGetResult struct {
-	AdaptiveNetworkHardening
-}
-
-// AdaptiveNetworkHardeningsListByExtendedResourceResponse contains the response from method AdaptiveNetworkHardenings.ListByExtendedResource.
-type AdaptiveNetworkHardeningsListByExtendedResourceResponse struct {
-	AdaptiveNetworkHardeningsListByExtendedResourceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AdaptiveNetworkHardeningsListByExtendedResourceResult contains the result from method AdaptiveNetworkHardenings.ListByExtendedResource.
-type AdaptiveNetworkHardeningsListByExtendedResourceResult struct {
-	AdaptiveNetworkHardeningsList
-}
-
-// AdvancedThreatProtectionCreateResponse contains the response from method AdvancedThreatProtection.Create.
-type AdvancedThreatProtectionCreateResponse struct {
-	AdvancedThreatProtectionCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AdvancedThreatProtectionCreateResult contains the result from method AdvancedThreatProtection.Create.
-type AdvancedThreatProtectionCreateResult struct {
-	AdvancedThreatProtectionSetting
-}
-
-// AdvancedThreatProtectionGetResponse contains the response from method AdvancedThreatProtection.Get.
-type AdvancedThreatProtectionGetResponse struct {
-	AdvancedThreatProtectionGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AdvancedThreatProtectionGetResult contains the result from method AdvancedThreatProtection.Get.
-type AdvancedThreatProtectionGetResult struct {
-	AdvancedThreatProtectionSetting
-}
-
-// AlertsGetResourceGroupLevelResponse contains the response from method Alerts.GetResourceGroupLevel.
-type AlertsGetResourceGroupLevelResponse struct {
-	AlertsGetResourceGroupLevelResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsGetResourceGroupLevelResult contains the result from method Alerts.GetResourceGroupLevel.
-type AlertsGetResourceGroupLevelResult struct {
-	Alert
-}
-
-// AlertsGetSubscriptionLevelResponse contains the response from method Alerts.GetSubscriptionLevel.
-type AlertsGetSubscriptionLevelResponse struct {
-	AlertsGetSubscriptionLevelResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsGetSubscriptionLevelResult contains the result from method Alerts.GetSubscriptionLevel.
-type AlertsGetSubscriptionLevelResult struct {
-	Alert
-}
-
-// AlertsListByResourceGroupResponse contains the response from method Alerts.ListByResourceGroup.
-type AlertsListByResourceGroupResponse struct {
-	AlertsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsListByResourceGroupResult contains the result from method Alerts.ListByResourceGroup.
-type AlertsListByResourceGroupResult struct {
-	AlertList
-}
-
-// AlertsListResourceGroupLevelByRegionResponse contains the response from method Alerts.ListResourceGroupLevelByRegion.
-type AlertsListResourceGroupLevelByRegionResponse struct {
-	AlertsListResourceGroupLevelByRegionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsListResourceGroupLevelByRegionResult contains the result from method Alerts.ListResourceGroupLevelByRegion.
-type AlertsListResourceGroupLevelByRegionResult struct {
-	AlertList
-}
-
-// AlertsListResponse contains the response from method Alerts.List.
-type AlertsListResponse struct {
-	AlertsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsListResult contains the result from method Alerts.List.
-type AlertsListResult struct {
-	AlertList
-}
-
-// AlertsListSubscriptionLevelByRegionResponse contains the response from method Alerts.ListSubscriptionLevelByRegion.
-type AlertsListSubscriptionLevelByRegionResponse struct {
-	AlertsListSubscriptionLevelByRegionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsListSubscriptionLevelByRegionResult contains the result from method Alerts.ListSubscriptionLevelByRegion.
-type AlertsListSubscriptionLevelByRegionResult struct {
-	AlertList
-}
-
-// AlertsSimulatePollerResponse contains the response from method Alerts.Simulate.
-type AlertsSimulatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *AlertsSimulatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l AlertsSimulatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AlertsSimulateResponse, error) {
-	respType := AlertsSimulateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a AlertsSimulatePollerResponse from the provided client and resume token.
-func (l *AlertsSimulatePollerResponse) Resume(ctx context.Context, client *AlertsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("AlertsClient.Simulate", token, client.pl, client.simulateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &AlertsSimulatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// AlertsSimulateResponse contains the response from method Alerts.Simulate.
-type AlertsSimulateResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsSuppressionRulesDeleteResponse contains the response from method AlertsSuppressionRules.Delete.
-type AlertsSuppressionRulesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsSuppressionRulesGetResponse contains the response from method AlertsSuppressionRules.Get.
-type AlertsSuppressionRulesGetResponse struct {
-	AlertsSuppressionRulesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsSuppressionRulesGetResult contains the result from method AlertsSuppressionRules.Get.
-type AlertsSuppressionRulesGetResult struct {
-	AlertsSuppressionRule
-}
-
-// AlertsSuppressionRulesListResponse contains the response from method AlertsSuppressionRules.List.
-type AlertsSuppressionRulesListResponse struct {
-	AlertsSuppressionRulesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsSuppressionRulesListResult contains the result from method AlertsSuppressionRules.List.
-type AlertsSuppressionRulesListResult struct {
-	AlertsSuppressionRulesList
-}
-
-// AlertsSuppressionRulesUpdateResponse contains the response from method AlertsSuppressionRules.Update.
-type AlertsSuppressionRulesUpdateResponse struct {
-	AlertsSuppressionRulesUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsSuppressionRulesUpdateResult contains the result from method AlertsSuppressionRules.Update.
-type AlertsSuppressionRulesUpdateResult struct {
-	AlertsSuppressionRule
-}
-
-// AlertsUpdateResourceGroupLevelStateToActivateResponse contains the response from method Alerts.UpdateResourceGroupLevelStateToActivate.
-type AlertsUpdateResourceGroupLevelStateToActivateResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsUpdateResourceGroupLevelStateToDismissResponse contains the response from method Alerts.UpdateResourceGroupLevelStateToDismiss.
-type AlertsUpdateResourceGroupLevelStateToDismissResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsUpdateResourceGroupLevelStateToResolveResponse contains the response from method Alerts.UpdateResourceGroupLevelStateToResolve.
-type AlertsUpdateResourceGroupLevelStateToResolveResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsUpdateSubscriptionLevelStateToActivateResponse contains the response from method Alerts.UpdateSubscriptionLevelStateToActivate.
-type AlertsUpdateSubscriptionLevelStateToActivateResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsUpdateSubscriptionLevelStateToDismissResponse contains the response from method Alerts.UpdateSubscriptionLevelStateToDismiss.
-type AlertsUpdateSubscriptionLevelStateToDismissResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AlertsUpdateSubscriptionLevelStateToResolveResponse contains the response from method Alerts.UpdateSubscriptionLevelStateToResolve.
-type AlertsUpdateSubscriptionLevelStateToResolveResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AllowedConnectionsGetResponse contains the response from method AllowedConnections.Get.
-type AllowedConnectionsGetResponse struct {
-	AllowedConnectionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AllowedConnectionsGetResult contains the result from method AllowedConnections.Get.
-type AllowedConnectionsGetResult struct {
-	AllowedConnectionsResource
-}
-
-// AllowedConnectionsListByHomeRegionResponse contains the response from method AllowedConnections.ListByHomeRegion.
-type AllowedConnectionsListByHomeRegionResponse struct {
-	AllowedConnectionsListByHomeRegionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AllowedConnectionsListByHomeRegionResult contains the result from method AllowedConnections.ListByHomeRegion.
-type AllowedConnectionsListByHomeRegionResult struct {
-	AllowedConnectionsList
-}
-
-// AllowedConnectionsListResponse contains the response from method AllowedConnections.List.
-type AllowedConnectionsListResponse struct {
-	AllowedConnectionsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AllowedConnectionsListResult contains the result from method AllowedConnections.List.
-type AllowedConnectionsListResult struct {
-	AllowedConnectionsList
-}
-
-// AssessmentsCreateOrUpdateResponse contains the response from method Assessments.CreateOrUpdate.
-type AssessmentsCreateOrUpdateResponse struct {
-	AssessmentsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AssessmentsCreateOrUpdateResult contains the result from method Assessments.CreateOrUpdate.
-type AssessmentsCreateOrUpdateResult struct {
-	SecurityAssessmentResponse
-}
-
-// AssessmentsDeleteResponse contains the response from method Assessments.Delete.
-type AssessmentsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AssessmentsGetResponse contains the response from method Assessments.Get.
-type AssessmentsGetResponse struct {
-	AssessmentsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AssessmentsGetResult contains the result from method Assessments.Get.
-type AssessmentsGetResult struct {
-	SecurityAssessmentResponse
-}
-
-// AssessmentsListResponse contains the response from method Assessments.List.
-type AssessmentsListResponse struct {
-	AssessmentsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AssessmentsListResult contains the result from method Assessments.List.
-type AssessmentsListResult struct {
-	SecurityAssessmentList
-}
-
-// AssessmentsMetadataCreateInSubscriptionResponse contains the response from method AssessmentsMetadata.CreateInSubscription.
-type AssessmentsMetadataCreateInSubscriptionResponse struct {
-	AssessmentsMetadataCreateInSubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AssessmentsMetadataCreateInSubscriptionResult contains the result from method AssessmentsMetadata.CreateInSubscription.
-type AssessmentsMetadataCreateInSubscriptionResult struct {
-	SecurityAssessmentMetadataResponse
-}
-
-// AssessmentsMetadataDeleteInSubscriptionResponse contains the response from method AssessmentsMetadata.DeleteInSubscription.
-type AssessmentsMetadataDeleteInSubscriptionResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AssessmentsMetadataGetInSubscriptionResponse contains the response from method AssessmentsMetadata.GetInSubscription.
-type AssessmentsMetadataGetInSubscriptionResponse struct {
-	AssessmentsMetadataGetInSubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AssessmentsMetadataGetInSubscriptionResult contains the result from method AssessmentsMetadata.GetInSubscription.
-type AssessmentsMetadataGetInSubscriptionResult struct {
-	SecurityAssessmentMetadataResponse
-}
-
-// AssessmentsMetadataGetResponse contains the response from method AssessmentsMetadata.Get.
-type AssessmentsMetadataGetResponse struct {
-	AssessmentsMetadataGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AssessmentsMetadataGetResult contains the result from method AssessmentsMetadata.Get.
-type AssessmentsMetadataGetResult struct {
-	SecurityAssessmentMetadataResponse
-}
-
-// AssessmentsMetadataListBySubscriptionResponse contains the response from method AssessmentsMetadata.ListBySubscription.
-type AssessmentsMetadataListBySubscriptionResponse struct {
-	AssessmentsMetadataListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AssessmentsMetadataListBySubscriptionResult contains the result from method AssessmentsMetadata.ListBySubscription.
-type AssessmentsMetadataListBySubscriptionResult struct {
-	SecurityAssessmentMetadataResponseList
-}
-
-// AssessmentsMetadataListResponse contains the response from method AssessmentsMetadata.List.
-type AssessmentsMetadataListResponse struct {
-	AssessmentsMetadataListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AssessmentsMetadataListResult contains the result from method AssessmentsMetadata.List.
-type AssessmentsMetadataListResult struct {
-	SecurityAssessmentMetadataResponseList
-}
-
-// AutoProvisioningSettingsCreateResponse contains the response from method AutoProvisioningSettings.Create.
-type AutoProvisioningSettingsCreateResponse struct {
-	AutoProvisioningSettingsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutoProvisioningSettingsCreateResult contains the result from method AutoProvisioningSettings.Create.
-type AutoProvisioningSettingsCreateResult struct {
-	AutoProvisioningSetting
-}
-
-// AutoProvisioningSettingsGetResponse contains the response from method AutoProvisioningSettings.Get.
-type AutoProvisioningSettingsGetResponse struct {
-	AutoProvisioningSettingsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutoProvisioningSettingsGetResult contains the result from method AutoProvisioningSettings.Get.
-type AutoProvisioningSettingsGetResult struct {
-	AutoProvisioningSetting
-}
-
-// AutoProvisioningSettingsListResponse contains the response from method AutoProvisioningSettings.List.
-type AutoProvisioningSettingsListResponse struct {
-	AutoProvisioningSettingsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutoProvisioningSettingsListResult contains the result from method AutoProvisioningSettings.List.
-type AutoProvisioningSettingsListResult struct {
-	AutoProvisioningSettingList
-}
-
-// AutomationsCreateOrUpdateResponse contains the response from method Automations.CreateOrUpdate.
-type AutomationsCreateOrUpdateResponse struct {
-	AutomationsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutomationsCreateOrUpdateResult contains the result from method Automations.CreateOrUpdate.
-type AutomationsCreateOrUpdateResult struct {
-	Automation
-}
-
-// AutomationsDeleteResponse contains the response from method Automations.Delete.
-type AutomationsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutomationsGetResponse contains the response from method Automations.Get.
-type AutomationsGetResponse struct {
-	AutomationsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutomationsGetResult contains the result from method Automations.Get.
-type AutomationsGetResult struct {
-	Automation
-}
-
-// AutomationsListByResourceGroupResponse contains the response from method Automations.ListByResourceGroup.
-type AutomationsListByResourceGroupResponse struct {
-	AutomationsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutomationsListByResourceGroupResult contains the result from method Automations.ListByResourceGroup.
-type AutomationsListByResourceGroupResult struct {
-	AutomationList
-}
-
-// AutomationsListResponse contains the response from method Automations.List.
-type AutomationsListResponse struct {
-	AutomationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutomationsListResult contains the result from method Automations.List.
-type AutomationsListResult struct {
-	AutomationList
-}
-
-// AutomationsValidateResponse contains the response from method Automations.Validate.
-type AutomationsValidateResponse struct {
-	AutomationsValidateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AutomationsValidateResult contains the result from method Automations.Validate.
-type AutomationsValidateResult struct {
-	AutomationValidationStatus
-}
-
-// ComplianceResultsGetResponse contains the response from method ComplianceResults.Get.
-type ComplianceResultsGetResponse struct {
-	ComplianceResultsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ComplianceResultsGetResult contains the result from method ComplianceResults.Get.
-type ComplianceResultsGetResult struct {
-	ComplianceResult
-}
-
-// ComplianceResultsListResponse contains the response from method ComplianceResults.List.
-type ComplianceResultsListResponse struct {
-	ComplianceResultsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ComplianceResultsListResult contains the result from method ComplianceResults.List.
-type ComplianceResultsListResult struct {
-	ComplianceResultList
-}
-
-// CompliancesGetResponse contains the response from method Compliances.Get.
-type CompliancesGetResponse struct {
-	CompliancesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CompliancesGetResult contains the result from method Compliances.Get.
-type CompliancesGetResult struct {
-	Compliance
-}
-
-// CompliancesListResponse contains the response from method Compliances.List.
-type CompliancesListResponse struct {
-	CompliancesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CompliancesListResult contains the result from method Compliances.List.
-type CompliancesListResult struct {
-	ComplianceList
-}
-
-// ConnectorsCreateOrUpdateResponse contains the response from method Connectors.CreateOrUpdate.
-type ConnectorsCreateOrUpdateResponse struct {
-	ConnectorsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConnectorsCreateOrUpdateResult contains the result from method Connectors.CreateOrUpdate.
-type ConnectorsCreateOrUpdateResult struct {
+// AccountConnectorsClientCreateOrUpdateResponse contains the response from method AccountConnectorsClient.CreateOrUpdate.
+type AccountConnectorsClientCreateOrUpdateResponse struct {
 	ConnectorSetting
 }
 
-// ConnectorsDeleteResponse contains the response from method Connectors.Delete.
-type ConnectorsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// AccountConnectorsClientDeleteResponse contains the response from method AccountConnectorsClient.Delete.
+type AccountConnectorsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// ConnectorsGetResponse contains the response from method Connectors.Get.
-type ConnectorsGetResponse struct {
-	ConnectorsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConnectorsGetResult contains the result from method Connectors.Get.
-type ConnectorsGetResult struct {
+// AccountConnectorsClientGetResponse contains the response from method AccountConnectorsClient.Get.
+type AccountConnectorsClientGetResponse struct {
 	ConnectorSetting
 }
 
-// ConnectorsListResponse contains the response from method Connectors.List.
-type ConnectorsListResponse struct {
-	ConnectorsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConnectorsListResult contains the result from method Connectors.List.
-type ConnectorsListResult struct {
+// AccountConnectorsClientListResponse contains the response from method AccountConnectorsClient.List.
+type AccountConnectorsClientListResponse struct {
 	ConnectorSettingList
 }
 
-// CustomAssessmentAutomationsCreateResponse contains the response from method CustomAssessmentAutomations.Create.
-type CustomAssessmentAutomationsCreateResponse struct {
-	CustomAssessmentAutomationsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// AdaptiveApplicationControlsClientDeleteResponse contains the response from method AdaptiveApplicationControlsClient.Delete.
+type AdaptiveApplicationControlsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// CustomAssessmentAutomationsCreateResult contains the result from method CustomAssessmentAutomations.Create.
-type CustomAssessmentAutomationsCreateResult struct {
+// AdaptiveApplicationControlsClientGetResponse contains the response from method AdaptiveApplicationControlsClient.Get.
+type AdaptiveApplicationControlsClientGetResponse struct {
+	AdaptiveApplicationControlGroup
+}
+
+// AdaptiveApplicationControlsClientListResponse contains the response from method AdaptiveApplicationControlsClient.List.
+type AdaptiveApplicationControlsClientListResponse struct {
+	AdaptiveApplicationControlGroups
+}
+
+// AdaptiveApplicationControlsClientPutResponse contains the response from method AdaptiveApplicationControlsClient.Put.
+type AdaptiveApplicationControlsClientPutResponse struct {
+	AdaptiveApplicationControlGroup
+}
+
+// AdaptiveNetworkHardeningsClientEnforceResponse contains the response from method AdaptiveNetworkHardeningsClient.Enforce.
+type AdaptiveNetworkHardeningsClientEnforceResponse struct {
+	// placeholder for future response values
+}
+
+// AdaptiveNetworkHardeningsClientGetResponse contains the response from method AdaptiveNetworkHardeningsClient.Get.
+type AdaptiveNetworkHardeningsClientGetResponse struct {
+	AdaptiveNetworkHardening
+}
+
+// AdaptiveNetworkHardeningsClientListByExtendedResourceResponse contains the response from method AdaptiveNetworkHardeningsClient.ListByExtendedResource.
+type AdaptiveNetworkHardeningsClientListByExtendedResourceResponse struct {
+	AdaptiveNetworkHardeningsList
+}
+
+// AdvancedThreatProtectionClientCreateResponse contains the response from method AdvancedThreatProtectionClient.Create.
+type AdvancedThreatProtectionClientCreateResponse struct {
+	AdvancedThreatProtectionSetting
+}
+
+// AdvancedThreatProtectionClientGetResponse contains the response from method AdvancedThreatProtectionClient.Get.
+type AdvancedThreatProtectionClientGetResponse struct {
+	AdvancedThreatProtectionSetting
+}
+
+// AlertsClientGetResourceGroupLevelResponse contains the response from method AlertsClient.GetResourceGroupLevel.
+type AlertsClientGetResourceGroupLevelResponse struct {
+	Alert
+}
+
+// AlertsClientGetSubscriptionLevelResponse contains the response from method AlertsClient.GetSubscriptionLevel.
+type AlertsClientGetSubscriptionLevelResponse struct {
+	Alert
+}
+
+// AlertsClientListByResourceGroupResponse contains the response from method AlertsClient.ListByResourceGroup.
+type AlertsClientListByResourceGroupResponse struct {
+	AlertList
+}
+
+// AlertsClientListResourceGroupLevelByRegionResponse contains the response from method AlertsClient.ListResourceGroupLevelByRegion.
+type AlertsClientListResourceGroupLevelByRegionResponse struct {
+	AlertList
+}
+
+// AlertsClientListResponse contains the response from method AlertsClient.List.
+type AlertsClientListResponse struct {
+	AlertList
+}
+
+// AlertsClientListSubscriptionLevelByRegionResponse contains the response from method AlertsClient.ListSubscriptionLevelByRegion.
+type AlertsClientListSubscriptionLevelByRegionResponse struct {
+	AlertList
+}
+
+// AlertsClientSimulateResponse contains the response from method AlertsClient.Simulate.
+type AlertsClientSimulateResponse struct {
+	// placeholder for future response values
+}
+
+// AlertsClientUpdateResourceGroupLevelStateToActivateResponse contains the response from method AlertsClient.UpdateResourceGroupLevelStateToActivate.
+type AlertsClientUpdateResourceGroupLevelStateToActivateResponse struct {
+	// placeholder for future response values
+}
+
+// AlertsClientUpdateResourceGroupLevelStateToDismissResponse contains the response from method AlertsClient.UpdateResourceGroupLevelStateToDismiss.
+type AlertsClientUpdateResourceGroupLevelStateToDismissResponse struct {
+	// placeholder for future response values
+}
+
+// AlertsClientUpdateResourceGroupLevelStateToResolveResponse contains the response from method AlertsClient.UpdateResourceGroupLevelStateToResolve.
+type AlertsClientUpdateResourceGroupLevelStateToResolveResponse struct {
+	// placeholder for future response values
+}
+
+// AlertsClientUpdateSubscriptionLevelStateToActivateResponse contains the response from method AlertsClient.UpdateSubscriptionLevelStateToActivate.
+type AlertsClientUpdateSubscriptionLevelStateToActivateResponse struct {
+	// placeholder for future response values
+}
+
+// AlertsClientUpdateSubscriptionLevelStateToDismissResponse contains the response from method AlertsClient.UpdateSubscriptionLevelStateToDismiss.
+type AlertsClientUpdateSubscriptionLevelStateToDismissResponse struct {
+	// placeholder for future response values
+}
+
+// AlertsClientUpdateSubscriptionLevelStateToResolveResponse contains the response from method AlertsClient.UpdateSubscriptionLevelStateToResolve.
+type AlertsClientUpdateSubscriptionLevelStateToResolveResponse struct {
+	// placeholder for future response values
+}
+
+// AlertsSuppressionRulesClientDeleteResponse contains the response from method AlertsSuppressionRulesClient.Delete.
+type AlertsSuppressionRulesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AlertsSuppressionRulesClientGetResponse contains the response from method AlertsSuppressionRulesClient.Get.
+type AlertsSuppressionRulesClientGetResponse struct {
+	AlertsSuppressionRule
+}
+
+// AlertsSuppressionRulesClientListResponse contains the response from method AlertsSuppressionRulesClient.List.
+type AlertsSuppressionRulesClientListResponse struct {
+	AlertsSuppressionRulesList
+}
+
+// AlertsSuppressionRulesClientUpdateResponse contains the response from method AlertsSuppressionRulesClient.Update.
+type AlertsSuppressionRulesClientUpdateResponse struct {
+	AlertsSuppressionRule
+}
+
+// AllowedConnectionsClientGetResponse contains the response from method AllowedConnectionsClient.Get.
+type AllowedConnectionsClientGetResponse struct {
+	AllowedConnectionsResource
+}
+
+// AllowedConnectionsClientListByHomeRegionResponse contains the response from method AllowedConnectionsClient.ListByHomeRegion.
+type AllowedConnectionsClientListByHomeRegionResponse struct {
+	AllowedConnectionsList
+}
+
+// AllowedConnectionsClientListResponse contains the response from method AllowedConnectionsClient.List.
+type AllowedConnectionsClientListResponse struct {
+	AllowedConnectionsList
+}
+
+// AssessmentsClientCreateOrUpdateResponse contains the response from method AssessmentsClient.CreateOrUpdate.
+type AssessmentsClientCreateOrUpdateResponse struct {
+	AssessmentResponse
+}
+
+// AssessmentsClientDeleteResponse contains the response from method AssessmentsClient.Delete.
+type AssessmentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AssessmentsClientGetResponse contains the response from method AssessmentsClient.Get.
+type AssessmentsClientGetResponse struct {
+	AssessmentResponse
+}
+
+// AssessmentsClientListResponse contains the response from method AssessmentsClient.List.
+type AssessmentsClientListResponse struct {
+	AssessmentList
+}
+
+// AssessmentsMetadataClientCreateInSubscriptionResponse contains the response from method AssessmentsMetadataClient.CreateInSubscription.
+type AssessmentsMetadataClientCreateInSubscriptionResponse struct {
+	AssessmentMetadataResponse
+}
+
+// AssessmentsMetadataClientDeleteInSubscriptionResponse contains the response from method AssessmentsMetadataClient.DeleteInSubscription.
+type AssessmentsMetadataClientDeleteInSubscriptionResponse struct {
+	// placeholder for future response values
+}
+
+// AssessmentsMetadataClientGetInSubscriptionResponse contains the response from method AssessmentsMetadataClient.GetInSubscription.
+type AssessmentsMetadataClientGetInSubscriptionResponse struct {
+	AssessmentMetadataResponse
+}
+
+// AssessmentsMetadataClientGetResponse contains the response from method AssessmentsMetadataClient.Get.
+type AssessmentsMetadataClientGetResponse struct {
+	AssessmentMetadataResponse
+}
+
+// AssessmentsMetadataClientListBySubscriptionResponse contains the response from method AssessmentsMetadataClient.ListBySubscription.
+type AssessmentsMetadataClientListBySubscriptionResponse struct {
+	AssessmentMetadataResponseList
+}
+
+// AssessmentsMetadataClientListResponse contains the response from method AssessmentsMetadataClient.List.
+type AssessmentsMetadataClientListResponse struct {
+	AssessmentMetadataResponseList
+}
+
+// AutoProvisioningSettingsClientCreateResponse contains the response from method AutoProvisioningSettingsClient.Create.
+type AutoProvisioningSettingsClientCreateResponse struct {
+	AutoProvisioningSetting
+}
+
+// AutoProvisioningSettingsClientGetResponse contains the response from method AutoProvisioningSettingsClient.Get.
+type AutoProvisioningSettingsClientGetResponse struct {
+	AutoProvisioningSetting
+}
+
+// AutoProvisioningSettingsClientListResponse contains the response from method AutoProvisioningSettingsClient.List.
+type AutoProvisioningSettingsClientListResponse struct {
+	AutoProvisioningSettingList
+}
+
+// AutomationsClientCreateOrUpdateResponse contains the response from method AutomationsClient.CreateOrUpdate.
+type AutomationsClientCreateOrUpdateResponse struct {
+	Automation
+}
+
+// AutomationsClientDeleteResponse contains the response from method AutomationsClient.Delete.
+type AutomationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AutomationsClientGetResponse contains the response from method AutomationsClient.Get.
+type AutomationsClientGetResponse struct {
+	Automation
+}
+
+// AutomationsClientListByResourceGroupResponse contains the response from method AutomationsClient.ListByResourceGroup.
+type AutomationsClientListByResourceGroupResponse struct {
+	AutomationList
+}
+
+// AutomationsClientListResponse contains the response from method AutomationsClient.List.
+type AutomationsClientListResponse struct {
+	AutomationList
+}
+
+// AutomationsClientValidateResponse contains the response from method AutomationsClient.Validate.
+type AutomationsClientValidateResponse struct {
+	AutomationValidationStatus
+}
+
+// ComplianceResultsClientGetResponse contains the response from method ComplianceResultsClient.Get.
+type ComplianceResultsClientGetResponse struct {
+	ComplianceResult
+}
+
+// ComplianceResultsClientListResponse contains the response from method ComplianceResultsClient.List.
+type ComplianceResultsClientListResponse struct {
+	ComplianceResultList
+}
+
+// CompliancesClientGetResponse contains the response from method CompliancesClient.Get.
+type CompliancesClientGetResponse struct {
+	Compliance
+}
+
+// CompliancesClientListResponse contains the response from method CompliancesClient.List.
+type CompliancesClientListResponse struct {
+	ComplianceList
+}
+
+// ConnectorsClientCreateOrUpdateResponse contains the response from method ConnectorsClient.CreateOrUpdate.
+type ConnectorsClientCreateOrUpdateResponse struct {
+	Connector
+}
+
+// ConnectorsClientDeleteResponse contains the response from method ConnectorsClient.Delete.
+type ConnectorsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ConnectorsClientGetResponse contains the response from method ConnectorsClient.Get.
+type ConnectorsClientGetResponse struct {
+	Connector
+}
+
+// ConnectorsClientListByResourceGroupResponse contains the response from method ConnectorsClient.ListByResourceGroup.
+type ConnectorsClientListByResourceGroupResponse struct {
+	ConnectorsList
+}
+
+// ConnectorsClientListResponse contains the response from method ConnectorsClient.List.
+type ConnectorsClientListResponse struct {
+	ConnectorsList
+}
+
+// ConnectorsClientUpdateResponse contains the response from method ConnectorsClient.Update.
+type ConnectorsClientUpdateResponse struct {
+	Connector
+}
+
+// ContactsClientCreateResponse contains the response from method ContactsClient.Create.
+type ContactsClientCreateResponse struct {
+	Contact
+}
+
+// ContactsClientDeleteResponse contains the response from method ContactsClient.Delete.
+type ContactsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ContactsClientGetResponse contains the response from method ContactsClient.Get.
+type ContactsClientGetResponse struct {
+	Contact
+}
+
+// ContactsClientListResponse contains the response from method ContactsClient.List.
+type ContactsClientListResponse struct {
+	ContactList
+}
+
+// ContactsClientUpdateResponse contains the response from method ContactsClient.Update.
+type ContactsClientUpdateResponse struct {
+	Contact
+}
+
+// CustomAssessmentAutomationsClientCreateResponse contains the response from method CustomAssessmentAutomationsClient.Create.
+type CustomAssessmentAutomationsClientCreateResponse struct {
 	CustomAssessmentAutomation
 }
 
-// CustomAssessmentAutomationsDeleteResponse contains the response from method CustomAssessmentAutomations.Delete.
-type CustomAssessmentAutomationsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// CustomAssessmentAutomationsClientDeleteResponse contains the response from method CustomAssessmentAutomationsClient.Delete.
+type CustomAssessmentAutomationsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// CustomAssessmentAutomationsGetResponse contains the response from method CustomAssessmentAutomations.Get.
-type CustomAssessmentAutomationsGetResponse struct {
-	CustomAssessmentAutomationsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CustomAssessmentAutomationsGetResult contains the result from method CustomAssessmentAutomations.Get.
-type CustomAssessmentAutomationsGetResult struct {
+// CustomAssessmentAutomationsClientGetResponse contains the response from method CustomAssessmentAutomationsClient.Get.
+type CustomAssessmentAutomationsClientGetResponse struct {
 	CustomAssessmentAutomation
 }
 
-// CustomAssessmentAutomationsListByResourceGroupResponse contains the response from method CustomAssessmentAutomations.ListByResourceGroup.
-type CustomAssessmentAutomationsListByResourceGroupResponse struct {
-	CustomAssessmentAutomationsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CustomAssessmentAutomationsListByResourceGroupResult contains the result from method CustomAssessmentAutomations.ListByResourceGroup.
-type CustomAssessmentAutomationsListByResourceGroupResult struct {
+// CustomAssessmentAutomationsClientListByResourceGroupResponse contains the response from method CustomAssessmentAutomationsClient.ListByResourceGroup.
+type CustomAssessmentAutomationsClientListByResourceGroupResponse struct {
 	CustomAssessmentAutomationsListResult
 }
 
-// CustomAssessmentAutomationsListBySubscriptionResponse contains the response from method CustomAssessmentAutomations.ListBySubscription.
-type CustomAssessmentAutomationsListBySubscriptionResponse struct {
-	CustomAssessmentAutomationsListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CustomAssessmentAutomationsListBySubscriptionResult contains the result from method CustomAssessmentAutomations.ListBySubscription.
-type CustomAssessmentAutomationsListBySubscriptionResult struct {
+// CustomAssessmentAutomationsClientListBySubscriptionResponse contains the response from method CustomAssessmentAutomationsClient.ListBySubscription.
+type CustomAssessmentAutomationsClientListBySubscriptionResponse struct {
 	CustomAssessmentAutomationsListResult
 }
 
-// CustomEntityStoreAssignmentsCreateResponse contains the response from method CustomEntityStoreAssignments.Create.
-type CustomEntityStoreAssignmentsCreateResponse struct {
-	CustomEntityStoreAssignmentsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CustomEntityStoreAssignmentsCreateResult contains the result from method CustomEntityStoreAssignments.Create.
-type CustomEntityStoreAssignmentsCreateResult struct {
+// CustomEntityStoreAssignmentsClientCreateResponse contains the response from method CustomEntityStoreAssignmentsClient.Create.
+type CustomEntityStoreAssignmentsClientCreateResponse struct {
 	CustomEntityStoreAssignment
 }
 
-// CustomEntityStoreAssignmentsDeleteResponse contains the response from method CustomEntityStoreAssignments.Delete.
-type CustomEntityStoreAssignmentsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// CustomEntityStoreAssignmentsClientDeleteResponse contains the response from method CustomEntityStoreAssignmentsClient.Delete.
+type CustomEntityStoreAssignmentsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// CustomEntityStoreAssignmentsGetResponse contains the response from method CustomEntityStoreAssignments.Get.
-type CustomEntityStoreAssignmentsGetResponse struct {
-	CustomEntityStoreAssignmentsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CustomEntityStoreAssignmentsGetResult contains the result from method CustomEntityStoreAssignments.Get.
-type CustomEntityStoreAssignmentsGetResult struct {
+// CustomEntityStoreAssignmentsClientGetResponse contains the response from method CustomEntityStoreAssignmentsClient.Get.
+type CustomEntityStoreAssignmentsClientGetResponse struct {
 	CustomEntityStoreAssignment
 }
 
-// CustomEntityStoreAssignmentsListByResourceGroupResponse contains the response from method CustomEntityStoreAssignments.ListByResourceGroup.
-type CustomEntityStoreAssignmentsListByResourceGroupResponse struct {
-	CustomEntityStoreAssignmentsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CustomEntityStoreAssignmentsListByResourceGroupResult contains the result from method CustomEntityStoreAssignments.ListByResourceGroup.
-type CustomEntityStoreAssignmentsListByResourceGroupResult struct {
+// CustomEntityStoreAssignmentsClientListByResourceGroupResponse contains the response from method CustomEntityStoreAssignmentsClient.ListByResourceGroup.
+type CustomEntityStoreAssignmentsClientListByResourceGroupResponse struct {
 	CustomEntityStoreAssignmentsListResult
 }
 
-// CustomEntityStoreAssignmentsListBySubscriptionResponse contains the response from method CustomEntityStoreAssignments.ListBySubscription.
-type CustomEntityStoreAssignmentsListBySubscriptionResponse struct {
-	CustomEntityStoreAssignmentsListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CustomEntityStoreAssignmentsListBySubscriptionResult contains the result from method CustomEntityStoreAssignments.ListBySubscription.
-type CustomEntityStoreAssignmentsListBySubscriptionResult struct {
+// CustomEntityStoreAssignmentsClientListBySubscriptionResponse contains the response from method CustomEntityStoreAssignmentsClient.ListBySubscription.
+type CustomEntityStoreAssignmentsClientListBySubscriptionResponse struct {
 	CustomEntityStoreAssignmentsListResult
 }
 
-// DeviceSecurityGroupsCreateOrUpdateResponse contains the response from method DeviceSecurityGroups.CreateOrUpdate.
-type DeviceSecurityGroupsCreateOrUpdateResponse struct {
-	DeviceSecurityGroupsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DeviceSecurityGroupsCreateOrUpdateResult contains the result from method DeviceSecurityGroups.CreateOrUpdate.
-type DeviceSecurityGroupsCreateOrUpdateResult struct {
+// DeviceSecurityGroupsClientCreateOrUpdateResponse contains the response from method DeviceSecurityGroupsClient.CreateOrUpdate.
+type DeviceSecurityGroupsClientCreateOrUpdateResponse struct {
 	DeviceSecurityGroup
 }
 
-// DeviceSecurityGroupsDeleteResponse contains the response from method DeviceSecurityGroups.Delete.
-type DeviceSecurityGroupsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// DeviceSecurityGroupsClientDeleteResponse contains the response from method DeviceSecurityGroupsClient.Delete.
+type DeviceSecurityGroupsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// DeviceSecurityGroupsGetResponse contains the response from method DeviceSecurityGroups.Get.
-type DeviceSecurityGroupsGetResponse struct {
-	DeviceSecurityGroupsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DeviceSecurityGroupsGetResult contains the result from method DeviceSecurityGroups.Get.
-type DeviceSecurityGroupsGetResult struct {
+// DeviceSecurityGroupsClientGetResponse contains the response from method DeviceSecurityGroupsClient.Get.
+type DeviceSecurityGroupsClientGetResponse struct {
 	DeviceSecurityGroup
 }
 
-// DeviceSecurityGroupsListResponse contains the response from method DeviceSecurityGroups.List.
-type DeviceSecurityGroupsListResponse struct {
-	DeviceSecurityGroupsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DeviceSecurityGroupsListResult contains the result from method DeviceSecurityGroups.List.
-type DeviceSecurityGroupsListResult struct {
+// DeviceSecurityGroupsClientListResponse contains the response from method DeviceSecurityGroupsClient.List.
+type DeviceSecurityGroupsClientListResponse struct {
 	DeviceSecurityGroupList
 }
 
-// DiscoveredSecuritySolutionsGetResponse contains the response from method DiscoveredSecuritySolutions.Get.
-type DiscoveredSecuritySolutionsGetResponse struct {
-	DiscoveredSecuritySolutionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DiscoveredSecuritySolutionsGetResult contains the result from method DiscoveredSecuritySolutions.Get.
-type DiscoveredSecuritySolutionsGetResult struct {
+// DiscoveredSecuritySolutionsClientGetResponse contains the response from method DiscoveredSecuritySolutionsClient.Get.
+type DiscoveredSecuritySolutionsClientGetResponse struct {
 	DiscoveredSecuritySolution
 }
 
-// DiscoveredSecuritySolutionsListByHomeRegionResponse contains the response from method DiscoveredSecuritySolutions.ListByHomeRegion.
-type DiscoveredSecuritySolutionsListByHomeRegionResponse struct {
-	DiscoveredSecuritySolutionsListByHomeRegionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DiscoveredSecuritySolutionsListByHomeRegionResult contains the result from method DiscoveredSecuritySolutions.ListByHomeRegion.
-type DiscoveredSecuritySolutionsListByHomeRegionResult struct {
+// DiscoveredSecuritySolutionsClientListByHomeRegionResponse contains the response from method DiscoveredSecuritySolutionsClient.ListByHomeRegion.
+type DiscoveredSecuritySolutionsClientListByHomeRegionResponse struct {
 	DiscoveredSecuritySolutionList
 }
 
-// DiscoveredSecuritySolutionsListResponse contains the response from method DiscoveredSecuritySolutions.List.
-type DiscoveredSecuritySolutionsListResponse struct {
-	DiscoveredSecuritySolutionsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// DiscoveredSecuritySolutionsListResult contains the result from method DiscoveredSecuritySolutions.List.
-type DiscoveredSecuritySolutionsListResult struct {
+// DiscoveredSecuritySolutionsClientListResponse contains the response from method DiscoveredSecuritySolutionsClient.List.
+type DiscoveredSecuritySolutionsClientListResponse struct {
 	DiscoveredSecuritySolutionList
 }
 
-// ExternalSecuritySolutionsGetResponse contains the response from method ExternalSecuritySolutions.Get.
-type ExternalSecuritySolutionsGetResponse struct {
-	ExternalSecuritySolutionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ExternalSecuritySolutionsGetResult contains the result from method ExternalSecuritySolutions.Get.
-type ExternalSecuritySolutionsGetResult struct {
+// ExternalSecuritySolutionsClientGetResponse contains the response from method ExternalSecuritySolutionsClient.Get.
+type ExternalSecuritySolutionsClientGetResponse struct {
 	ExternalSecuritySolution
 }
 
-// ExternalSecuritySolutionsListByHomeRegionResponse contains the response from method ExternalSecuritySolutions.ListByHomeRegion.
-type ExternalSecuritySolutionsListByHomeRegionResponse struct {
-	ExternalSecuritySolutionsListByHomeRegionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ExternalSecuritySolutionsListByHomeRegionResult contains the result from method ExternalSecuritySolutions.ListByHomeRegion.
-type ExternalSecuritySolutionsListByHomeRegionResult struct {
+// ExternalSecuritySolutionsClientListByHomeRegionResponse contains the response from method ExternalSecuritySolutionsClient.ListByHomeRegion.
+type ExternalSecuritySolutionsClientListByHomeRegionResponse struct {
 	ExternalSecuritySolutionList
 }
 
-// ExternalSecuritySolutionsListResponse contains the response from method ExternalSecuritySolutions.List.
-type ExternalSecuritySolutionsListResponse struct {
-	ExternalSecuritySolutionsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ExternalSecuritySolutionsListResult contains the result from method ExternalSecuritySolutions.List.
-type ExternalSecuritySolutionsListResult struct {
+// ExternalSecuritySolutionsClientListResponse contains the response from method ExternalSecuritySolutionsClient.List.
+type ExternalSecuritySolutionsClientListResponse struct {
 	ExternalSecuritySolutionList
 }
 
-// InformationProtectionPoliciesCreateOrUpdateResponse contains the response from method InformationProtectionPolicies.CreateOrUpdate.
-type InformationProtectionPoliciesCreateOrUpdateResponse struct {
-	InformationProtectionPoliciesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// InformationProtectionPoliciesCreateOrUpdateResult contains the result from method InformationProtectionPolicies.CreateOrUpdate.
-type InformationProtectionPoliciesCreateOrUpdateResult struct {
+// InformationProtectionPoliciesClientCreateOrUpdateResponse contains the response from method InformationProtectionPoliciesClient.CreateOrUpdate.
+type InformationProtectionPoliciesClientCreateOrUpdateResponse struct {
 	InformationProtectionPolicy
 }
 
-// InformationProtectionPoliciesGetResponse contains the response from method InformationProtectionPolicies.Get.
-type InformationProtectionPoliciesGetResponse struct {
-	InformationProtectionPoliciesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// InformationProtectionPoliciesGetResult contains the result from method InformationProtectionPolicies.Get.
-type InformationProtectionPoliciesGetResult struct {
+// InformationProtectionPoliciesClientGetResponse contains the response from method InformationProtectionPoliciesClient.Get.
+type InformationProtectionPoliciesClientGetResponse struct {
 	InformationProtectionPolicy
 }
 
-// InformationProtectionPoliciesListResponse contains the response from method InformationProtectionPolicies.List.
-type InformationProtectionPoliciesListResponse struct {
-	InformationProtectionPoliciesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// InformationProtectionPoliciesListResult contains the result from method InformationProtectionPolicies.List.
-type InformationProtectionPoliciesListResult struct {
+// InformationProtectionPoliciesClientListResponse contains the response from method InformationProtectionPoliciesClient.List.
+type InformationProtectionPoliciesClientListResponse struct {
 	InformationProtectionPolicyList
 }
 
-// IngestionSettingsCreateResponse contains the response from method IngestionSettings.Create.
-type IngestionSettingsCreateResponse struct {
-	IngestionSettingsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IngestionSettingsCreateResult contains the result from method IngestionSettings.Create.
-type IngestionSettingsCreateResult struct {
+// IngestionSettingsClientCreateResponse contains the response from method IngestionSettingsClient.Create.
+type IngestionSettingsClientCreateResponse struct {
 	IngestionSetting
 }
 
-// IngestionSettingsDeleteResponse contains the response from method IngestionSettings.Delete.
-type IngestionSettingsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// IngestionSettingsClientDeleteResponse contains the response from method IngestionSettingsClient.Delete.
+type IngestionSettingsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// IngestionSettingsGetResponse contains the response from method IngestionSettings.Get.
-type IngestionSettingsGetResponse struct {
-	IngestionSettingsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IngestionSettingsGetResult contains the result from method IngestionSettings.Get.
-type IngestionSettingsGetResult struct {
+// IngestionSettingsClientGetResponse contains the response from method IngestionSettingsClient.Get.
+type IngestionSettingsClientGetResponse struct {
 	IngestionSetting
 }
 
-// IngestionSettingsListConnectionStringsResponse contains the response from method IngestionSettings.ListConnectionStrings.
-type IngestionSettingsListConnectionStringsResponse struct {
-	IngestionSettingsListConnectionStringsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IngestionSettingsListConnectionStringsResult contains the result from method IngestionSettings.ListConnectionStrings.
-type IngestionSettingsListConnectionStringsResult struct {
+// IngestionSettingsClientListConnectionStringsResponse contains the response from method IngestionSettingsClient.ListConnectionStrings.
+type IngestionSettingsClientListConnectionStringsResponse struct {
 	ConnectionStrings
 }
 
-// IngestionSettingsListResponse contains the response from method IngestionSettings.List.
-type IngestionSettingsListResponse struct {
-	IngestionSettingsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IngestionSettingsListResult contains the result from method IngestionSettings.List.
-type IngestionSettingsListResult struct {
+// IngestionSettingsClientListResponse contains the response from method IngestionSettingsClient.List.
+type IngestionSettingsClientListResponse struct {
 	IngestionSettingList
 }
 
-// IngestionSettingsListTokensResponse contains the response from method IngestionSettings.ListTokens.
-type IngestionSettingsListTokensResponse struct {
-	IngestionSettingsListTokensResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IngestionSettingsListTokensResult contains the result from method IngestionSettings.ListTokens.
-type IngestionSettingsListTokensResult struct {
+// IngestionSettingsClientListTokensResponse contains the response from method IngestionSettingsClient.ListTokens.
+type IngestionSettingsClientListTokensResponse struct {
 	IngestionSettingToken
 }
 
-// IotSecuritySolutionAnalyticsGetResponse contains the response from method IotSecuritySolutionAnalytics.Get.
-type IotSecuritySolutionAnalyticsGetResponse struct {
-	IotSecuritySolutionAnalyticsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotSecuritySolutionAnalyticsGetResult contains the result from method IotSecuritySolutionAnalytics.Get.
-type IotSecuritySolutionAnalyticsGetResult struct {
+// IotSecuritySolutionAnalyticsClientGetResponse contains the response from method IotSecuritySolutionAnalyticsClient.Get.
+type IotSecuritySolutionAnalyticsClientGetResponse struct {
 	IoTSecuritySolutionAnalyticsModel
 }
 
-// IotSecuritySolutionAnalyticsListResponse contains the response from method IotSecuritySolutionAnalytics.List.
-type IotSecuritySolutionAnalyticsListResponse struct {
-	IotSecuritySolutionAnalyticsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotSecuritySolutionAnalyticsListResult contains the result from method IotSecuritySolutionAnalytics.List.
-type IotSecuritySolutionAnalyticsListResult struct {
+// IotSecuritySolutionAnalyticsClientListResponse contains the response from method IotSecuritySolutionAnalyticsClient.List.
+type IotSecuritySolutionAnalyticsClientListResponse struct {
 	IoTSecuritySolutionAnalyticsModelList
 }
 
-// IotSecuritySolutionCreateOrUpdateResponse contains the response from method IotSecuritySolution.CreateOrUpdate.
-type IotSecuritySolutionCreateOrUpdateResponse struct {
-	IotSecuritySolutionCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotSecuritySolutionCreateOrUpdateResult contains the result from method IotSecuritySolution.CreateOrUpdate.
-type IotSecuritySolutionCreateOrUpdateResult struct {
+// IotSecuritySolutionClientCreateOrUpdateResponse contains the response from method IotSecuritySolutionClient.CreateOrUpdate.
+type IotSecuritySolutionClientCreateOrUpdateResponse struct {
 	IoTSecuritySolutionModel
 }
 
-// IotSecuritySolutionDeleteResponse contains the response from method IotSecuritySolution.Delete.
-type IotSecuritySolutionDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// IotSecuritySolutionClientDeleteResponse contains the response from method IotSecuritySolutionClient.Delete.
+type IotSecuritySolutionClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// IotSecuritySolutionGetResponse contains the response from method IotSecuritySolution.Get.
-type IotSecuritySolutionGetResponse struct {
-	IotSecuritySolutionGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotSecuritySolutionGetResult contains the result from method IotSecuritySolution.Get.
-type IotSecuritySolutionGetResult struct {
+// IotSecuritySolutionClientGetResponse contains the response from method IotSecuritySolutionClient.Get.
+type IotSecuritySolutionClientGetResponse struct {
 	IoTSecuritySolutionModel
 }
 
-// IotSecuritySolutionListByResourceGroupResponse contains the response from method IotSecuritySolution.ListByResourceGroup.
-type IotSecuritySolutionListByResourceGroupResponse struct {
-	IotSecuritySolutionListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotSecuritySolutionListByResourceGroupResult contains the result from method IotSecuritySolution.ListByResourceGroup.
-type IotSecuritySolutionListByResourceGroupResult struct {
+// IotSecuritySolutionClientListByResourceGroupResponse contains the response from method IotSecuritySolutionClient.ListByResourceGroup.
+type IotSecuritySolutionClientListByResourceGroupResponse struct {
 	IoTSecuritySolutionsList
 }
 
-// IotSecuritySolutionListBySubscriptionResponse contains the response from method IotSecuritySolution.ListBySubscription.
-type IotSecuritySolutionListBySubscriptionResponse struct {
-	IotSecuritySolutionListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotSecuritySolutionListBySubscriptionResult contains the result from method IotSecuritySolution.ListBySubscription.
-type IotSecuritySolutionListBySubscriptionResult struct {
+// IotSecuritySolutionClientListBySubscriptionResponse contains the response from method IotSecuritySolutionClient.ListBySubscription.
+type IotSecuritySolutionClientListBySubscriptionResponse struct {
 	IoTSecuritySolutionsList
 }
 
-// IotSecuritySolutionUpdateResponse contains the response from method IotSecuritySolution.Update.
-type IotSecuritySolutionUpdateResponse struct {
-	IotSecuritySolutionUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotSecuritySolutionUpdateResult contains the result from method IotSecuritySolution.Update.
-type IotSecuritySolutionUpdateResult struct {
+// IotSecuritySolutionClientUpdateResponse contains the response from method IotSecuritySolutionClient.Update.
+type IotSecuritySolutionClientUpdateResponse struct {
 	IoTSecuritySolutionModel
 }
 
-// IotSecuritySolutionsAnalyticsAggregatedAlertDismissResponse contains the response from method IotSecuritySolutionsAnalyticsAggregatedAlert.Dismiss.
-type IotSecuritySolutionsAnalyticsAggregatedAlertDismissResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// IotSecuritySolutionsAnalyticsAggregatedAlertClientDismissResponse contains the response from method IotSecuritySolutionsAnalyticsAggregatedAlertClient.Dismiss.
+type IotSecuritySolutionsAnalyticsAggregatedAlertClientDismissResponse struct {
+	// placeholder for future response values
 }
 
-// IotSecuritySolutionsAnalyticsAggregatedAlertGetResponse contains the response from method IotSecuritySolutionsAnalyticsAggregatedAlert.Get.
-type IotSecuritySolutionsAnalyticsAggregatedAlertGetResponse struct {
-	IotSecuritySolutionsAnalyticsAggregatedAlertGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotSecuritySolutionsAnalyticsAggregatedAlertGetResult contains the result from method IotSecuritySolutionsAnalyticsAggregatedAlert.Get.
-type IotSecuritySolutionsAnalyticsAggregatedAlertGetResult struct {
+// IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResponse contains the response from method IotSecuritySolutionsAnalyticsAggregatedAlertClient.Get.
+type IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResponse struct {
 	IoTSecurityAggregatedAlert
 }
 
-// IotSecuritySolutionsAnalyticsAggregatedAlertListResponse contains the response from method IotSecuritySolutionsAnalyticsAggregatedAlert.List.
-type IotSecuritySolutionsAnalyticsAggregatedAlertListResponse struct {
-	IotSecuritySolutionsAnalyticsAggregatedAlertListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotSecuritySolutionsAnalyticsAggregatedAlertListResult contains the result from method IotSecuritySolutionsAnalyticsAggregatedAlert.List.
-type IotSecuritySolutionsAnalyticsAggregatedAlertListResult struct {
+// IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse contains the response from method IotSecuritySolutionsAnalyticsAggregatedAlertClient.List.
+type IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse struct {
 	IoTSecurityAggregatedAlertList
 }
 
-// IotSecuritySolutionsAnalyticsRecommendationGetResponse contains the response from method IotSecuritySolutionsAnalyticsRecommendation.Get.
-type IotSecuritySolutionsAnalyticsRecommendationGetResponse struct {
-	IotSecuritySolutionsAnalyticsRecommendationGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotSecuritySolutionsAnalyticsRecommendationGetResult contains the result from method IotSecuritySolutionsAnalyticsRecommendation.Get.
-type IotSecuritySolutionsAnalyticsRecommendationGetResult struct {
+// IotSecuritySolutionsAnalyticsRecommendationClientGetResponse contains the response from method IotSecuritySolutionsAnalyticsRecommendationClient.Get.
+type IotSecuritySolutionsAnalyticsRecommendationClientGetResponse struct {
 	IoTSecurityAggregatedRecommendation
 }
 
-// IotSecuritySolutionsAnalyticsRecommendationListResponse contains the response from method IotSecuritySolutionsAnalyticsRecommendation.List.
-type IotSecuritySolutionsAnalyticsRecommendationListResponse struct {
-	IotSecuritySolutionsAnalyticsRecommendationListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// IotSecuritySolutionsAnalyticsRecommendationListResult contains the result from method IotSecuritySolutionsAnalyticsRecommendation.List.
-type IotSecuritySolutionsAnalyticsRecommendationListResult struct {
+// IotSecuritySolutionsAnalyticsRecommendationClientListResponse contains the response from method IotSecuritySolutionsAnalyticsRecommendationClient.List.
+type IotSecuritySolutionsAnalyticsRecommendationClientListResponse struct {
 	IoTSecurityAggregatedRecommendationList
 }
 
-// JitNetworkAccessPoliciesCreateOrUpdateResponse contains the response from method JitNetworkAccessPolicies.CreateOrUpdate.
-type JitNetworkAccessPoliciesCreateOrUpdateResponse struct {
-	JitNetworkAccessPoliciesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// JitNetworkAccessPoliciesCreateOrUpdateResult contains the result from method JitNetworkAccessPolicies.CreateOrUpdate.
-type JitNetworkAccessPoliciesCreateOrUpdateResult struct {
+// JitNetworkAccessPoliciesClientCreateOrUpdateResponse contains the response from method JitNetworkAccessPoliciesClient.CreateOrUpdate.
+type JitNetworkAccessPoliciesClientCreateOrUpdateResponse struct {
 	JitNetworkAccessPolicy
 }
 
-// JitNetworkAccessPoliciesDeleteResponse contains the response from method JitNetworkAccessPolicies.Delete.
-type JitNetworkAccessPoliciesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// JitNetworkAccessPoliciesClientDeleteResponse contains the response from method JitNetworkAccessPoliciesClient.Delete.
+type JitNetworkAccessPoliciesClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// JitNetworkAccessPoliciesGetResponse contains the response from method JitNetworkAccessPolicies.Get.
-type JitNetworkAccessPoliciesGetResponse struct {
-	JitNetworkAccessPoliciesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// JitNetworkAccessPoliciesGetResult contains the result from method JitNetworkAccessPolicies.Get.
-type JitNetworkAccessPoliciesGetResult struct {
+// JitNetworkAccessPoliciesClientGetResponse contains the response from method JitNetworkAccessPoliciesClient.Get.
+type JitNetworkAccessPoliciesClientGetResponse struct {
 	JitNetworkAccessPolicy
 }
 
-// JitNetworkAccessPoliciesInitiateResponse contains the response from method JitNetworkAccessPolicies.Initiate.
-type JitNetworkAccessPoliciesInitiateResponse struct {
-	JitNetworkAccessPoliciesInitiateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// JitNetworkAccessPoliciesInitiateResult contains the result from method JitNetworkAccessPolicies.Initiate.
-type JitNetworkAccessPoliciesInitiateResult struct {
+// JitNetworkAccessPoliciesClientInitiateResponse contains the response from method JitNetworkAccessPoliciesClient.Initiate.
+type JitNetworkAccessPoliciesClientInitiateResponse struct {
 	JitNetworkAccessRequest
 }
 
-// JitNetworkAccessPoliciesListByRegionResponse contains the response from method JitNetworkAccessPolicies.ListByRegion.
-type JitNetworkAccessPoliciesListByRegionResponse struct {
-	JitNetworkAccessPoliciesListByRegionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// JitNetworkAccessPoliciesListByRegionResult contains the result from method JitNetworkAccessPolicies.ListByRegion.
-type JitNetworkAccessPoliciesListByRegionResult struct {
+// JitNetworkAccessPoliciesClientListByRegionResponse contains the response from method JitNetworkAccessPoliciesClient.ListByRegion.
+type JitNetworkAccessPoliciesClientListByRegionResponse struct {
 	JitNetworkAccessPoliciesList
 }
 
-// JitNetworkAccessPoliciesListByResourceGroupAndRegionResponse contains the response from method JitNetworkAccessPolicies.ListByResourceGroupAndRegion.
-type JitNetworkAccessPoliciesListByResourceGroupAndRegionResponse struct {
-	JitNetworkAccessPoliciesListByResourceGroupAndRegionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// JitNetworkAccessPoliciesListByResourceGroupAndRegionResult contains the result from method JitNetworkAccessPolicies.ListByResourceGroupAndRegion.
-type JitNetworkAccessPoliciesListByResourceGroupAndRegionResult struct {
+// JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse contains the response from method JitNetworkAccessPoliciesClient.ListByResourceGroupAndRegion.
+type JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse struct {
 	JitNetworkAccessPoliciesList
 }
 
-// JitNetworkAccessPoliciesListByResourceGroupResponse contains the response from method JitNetworkAccessPolicies.ListByResourceGroup.
-type JitNetworkAccessPoliciesListByResourceGroupResponse struct {
-	JitNetworkAccessPoliciesListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// JitNetworkAccessPoliciesListByResourceGroupResult contains the result from method JitNetworkAccessPolicies.ListByResourceGroup.
-type JitNetworkAccessPoliciesListByResourceGroupResult struct {
+// JitNetworkAccessPoliciesClientListByResourceGroupResponse contains the response from method JitNetworkAccessPoliciesClient.ListByResourceGroup.
+type JitNetworkAccessPoliciesClientListByResourceGroupResponse struct {
 	JitNetworkAccessPoliciesList
 }
 
-// JitNetworkAccessPoliciesListResponse contains the response from method JitNetworkAccessPolicies.List.
-type JitNetworkAccessPoliciesListResponse struct {
-	JitNetworkAccessPoliciesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// JitNetworkAccessPoliciesListResult contains the result from method JitNetworkAccessPolicies.List.
-type JitNetworkAccessPoliciesListResult struct {
+// JitNetworkAccessPoliciesClientListResponse contains the response from method JitNetworkAccessPoliciesClient.List.
+type JitNetworkAccessPoliciesClientListResponse struct {
 	JitNetworkAccessPoliciesList
 }
 
-// LocationsGetResponse contains the response from method Locations.Get.
-type LocationsGetResponse struct {
-	LocationsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// LocationsGetResult contains the result from method Locations.Get.
-type LocationsGetResult struct {
+// LocationsClientGetResponse contains the response from method LocationsClient.Get.
+type LocationsClientGetResponse struct {
 	AscLocation
 }
 
-// LocationsListResponse contains the response from method Locations.List.
-type LocationsListResponse struct {
-	LocationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// LocationsListResult contains the result from method Locations.List.
-type LocationsListResult struct {
+// LocationsClientListResponse contains the response from method LocationsClient.List.
+type LocationsClientListResponse struct {
 	AscLocationList
 }
 
-// MdeOnboardingsGetResponse contains the response from method MdeOnboardings.Get.
-type MdeOnboardingsGetResponse struct {
-	MdeOnboardingsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MdeOnboardingsGetResult contains the result from method MdeOnboardings.Get.
-type MdeOnboardingsGetResult struct {
+// MdeOnboardingsClientGetResponse contains the response from method MdeOnboardingsClient.Get.
+type MdeOnboardingsClientGetResponse struct {
 	MdeOnboardingData
 }
 
-// MdeOnboardingsListResponse contains the response from method MdeOnboardings.List.
-type MdeOnboardingsListResponse struct {
-	MdeOnboardingsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// MdeOnboardingsListResult contains the result from method MdeOnboardings.List.
-type MdeOnboardingsListResult struct {
+// MdeOnboardingsClientListResponse contains the response from method MdeOnboardingsClient.List.
+type MdeOnboardingsClientListResponse struct {
 	MdeOnboardingDataList
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
 	OperationList
 }
 
-// PricingsGetResponse contains the response from method Pricings.Get.
-type PricingsGetResponse struct {
-	PricingsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PricingsGetResult contains the result from method Pricings.Get.
-type PricingsGetResult struct {
+// PricingsClientGetResponse contains the response from method PricingsClient.Get.
+type PricingsClientGetResponse struct {
 	Pricing
 }
 
-// PricingsListResponse contains the response from method Pricings.List.
-type PricingsListResponse struct {
-	PricingsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PricingsListResult contains the result from method Pricings.List.
-type PricingsListResult struct {
+// PricingsClientListResponse contains the response from method PricingsClient.List.
+type PricingsClientListResponse struct {
 	PricingList
 }
 
-// PricingsUpdateResponse contains the response from method Pricings.Update.
-type PricingsUpdateResponse struct {
-	PricingsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PricingsUpdateResult contains the result from method Pricings.Update.
-type PricingsUpdateResult struct {
+// PricingsClientUpdateResponse contains the response from method PricingsClient.Update.
+type PricingsClientUpdateResponse struct {
 	Pricing
 }
 
-// RegulatoryComplianceAssessmentsGetResponse contains the response from method RegulatoryComplianceAssessments.Get.
-type RegulatoryComplianceAssessmentsGetResponse struct {
-	RegulatoryComplianceAssessmentsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RegulatoryComplianceAssessmentsGetResult contains the result from method RegulatoryComplianceAssessments.Get.
-type RegulatoryComplianceAssessmentsGetResult struct {
+// RegulatoryComplianceAssessmentsClientGetResponse contains the response from method RegulatoryComplianceAssessmentsClient.Get.
+type RegulatoryComplianceAssessmentsClientGetResponse struct {
 	RegulatoryComplianceAssessment
 }
 
-// RegulatoryComplianceAssessmentsListResponse contains the response from method RegulatoryComplianceAssessments.List.
-type RegulatoryComplianceAssessmentsListResponse struct {
-	RegulatoryComplianceAssessmentsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RegulatoryComplianceAssessmentsListResult contains the result from method RegulatoryComplianceAssessments.List.
-type RegulatoryComplianceAssessmentsListResult struct {
+// RegulatoryComplianceAssessmentsClientListResponse contains the response from method RegulatoryComplianceAssessmentsClient.List.
+type RegulatoryComplianceAssessmentsClientListResponse struct {
 	RegulatoryComplianceAssessmentList
 }
 
-// RegulatoryComplianceControlsGetResponse contains the response from method RegulatoryComplianceControls.Get.
-type RegulatoryComplianceControlsGetResponse struct {
-	RegulatoryComplianceControlsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RegulatoryComplianceControlsGetResult contains the result from method RegulatoryComplianceControls.Get.
-type RegulatoryComplianceControlsGetResult struct {
+// RegulatoryComplianceControlsClientGetResponse contains the response from method RegulatoryComplianceControlsClient.Get.
+type RegulatoryComplianceControlsClientGetResponse struct {
 	RegulatoryComplianceControl
 }
 
-// RegulatoryComplianceControlsListResponse contains the response from method RegulatoryComplianceControls.List.
-type RegulatoryComplianceControlsListResponse struct {
-	RegulatoryComplianceControlsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RegulatoryComplianceControlsListResult contains the result from method RegulatoryComplianceControls.List.
-type RegulatoryComplianceControlsListResult struct {
+// RegulatoryComplianceControlsClientListResponse contains the response from method RegulatoryComplianceControlsClient.List.
+type RegulatoryComplianceControlsClientListResponse struct {
 	RegulatoryComplianceControlList
 }
 
-// RegulatoryComplianceStandardsGetResponse contains the response from method RegulatoryComplianceStandards.Get.
-type RegulatoryComplianceStandardsGetResponse struct {
-	RegulatoryComplianceStandardsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RegulatoryComplianceStandardsGetResult contains the result from method RegulatoryComplianceStandards.Get.
-type RegulatoryComplianceStandardsGetResult struct {
+// RegulatoryComplianceStandardsClientGetResponse contains the response from method RegulatoryComplianceStandardsClient.Get.
+type RegulatoryComplianceStandardsClientGetResponse struct {
 	RegulatoryComplianceStandard
 }
 
-// RegulatoryComplianceStandardsListResponse contains the response from method RegulatoryComplianceStandards.List.
-type RegulatoryComplianceStandardsListResponse struct {
-	RegulatoryComplianceStandardsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RegulatoryComplianceStandardsListResult contains the result from method RegulatoryComplianceStandards.List.
-type RegulatoryComplianceStandardsListResult struct {
+// RegulatoryComplianceStandardsClientListResponse contains the response from method RegulatoryComplianceStandardsClient.List.
+type RegulatoryComplianceStandardsClientListResponse struct {
 	RegulatoryComplianceStandardList
 }
 
-// SQLVulnerabilityAssessmentBaselineRulesAddResponse contains the response from method SQLVulnerabilityAssessmentBaselineRules.Add.
-type SQLVulnerabilityAssessmentBaselineRulesAddResponse struct {
-	SQLVulnerabilityAssessmentBaselineRulesAddResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLVulnerabilityAssessmentBaselineRulesAddResult contains the result from method SQLVulnerabilityAssessmentBaselineRules.Add.
-type SQLVulnerabilityAssessmentBaselineRulesAddResult struct {
+// SQLVulnerabilityAssessmentBaselineRulesClientAddResponse contains the response from method SQLVulnerabilityAssessmentBaselineRulesClient.Add.
+type SQLVulnerabilityAssessmentBaselineRulesClientAddResponse struct {
 	RulesResults
 }
 
-// SQLVulnerabilityAssessmentBaselineRulesCreateOrUpdateResponse contains the response from method SQLVulnerabilityAssessmentBaselineRules.CreateOrUpdate.
-type SQLVulnerabilityAssessmentBaselineRulesCreateOrUpdateResponse struct {
-	SQLVulnerabilityAssessmentBaselineRulesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLVulnerabilityAssessmentBaselineRulesCreateOrUpdateResult contains the result from method SQLVulnerabilityAssessmentBaselineRules.CreateOrUpdate.
-type SQLVulnerabilityAssessmentBaselineRulesCreateOrUpdateResult struct {
+// SQLVulnerabilityAssessmentBaselineRulesClientCreateOrUpdateResponse contains the response from method SQLVulnerabilityAssessmentBaselineRulesClient.CreateOrUpdate.
+type SQLVulnerabilityAssessmentBaselineRulesClientCreateOrUpdateResponse struct {
 	RuleResults
 }
 
-// SQLVulnerabilityAssessmentBaselineRulesDeleteResponse contains the response from method SQLVulnerabilityAssessmentBaselineRules.Delete.
-type SQLVulnerabilityAssessmentBaselineRulesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// SQLVulnerabilityAssessmentBaselineRulesClientDeleteResponse contains the response from method SQLVulnerabilityAssessmentBaselineRulesClient.Delete.
+type SQLVulnerabilityAssessmentBaselineRulesClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// SQLVulnerabilityAssessmentBaselineRulesGetResponse contains the response from method SQLVulnerabilityAssessmentBaselineRules.Get.
-type SQLVulnerabilityAssessmentBaselineRulesGetResponse struct {
-	SQLVulnerabilityAssessmentBaselineRulesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLVulnerabilityAssessmentBaselineRulesGetResult contains the result from method SQLVulnerabilityAssessmentBaselineRules.Get.
-type SQLVulnerabilityAssessmentBaselineRulesGetResult struct {
+// SQLVulnerabilityAssessmentBaselineRulesClientGetResponse contains the response from method SQLVulnerabilityAssessmentBaselineRulesClient.Get.
+type SQLVulnerabilityAssessmentBaselineRulesClientGetResponse struct {
 	RuleResults
 }
 
-// SQLVulnerabilityAssessmentBaselineRulesListResponse contains the response from method SQLVulnerabilityAssessmentBaselineRules.List.
-type SQLVulnerabilityAssessmentBaselineRulesListResponse struct {
-	SQLVulnerabilityAssessmentBaselineRulesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLVulnerabilityAssessmentBaselineRulesListResult contains the result from method SQLVulnerabilityAssessmentBaselineRules.List.
-type SQLVulnerabilityAssessmentBaselineRulesListResult struct {
+// SQLVulnerabilityAssessmentBaselineRulesClientListResponse contains the response from method SQLVulnerabilityAssessmentBaselineRulesClient.List.
+type SQLVulnerabilityAssessmentBaselineRulesClientListResponse struct {
 	RulesResults
 }
 
-// SQLVulnerabilityAssessmentScanResultsGetResponse contains the response from method SQLVulnerabilityAssessmentScanResults.Get.
-type SQLVulnerabilityAssessmentScanResultsGetResponse struct {
-	SQLVulnerabilityAssessmentScanResultsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLVulnerabilityAssessmentScanResultsGetResult contains the result from method SQLVulnerabilityAssessmentScanResults.Get.
-type SQLVulnerabilityAssessmentScanResultsGetResult struct {
+// SQLVulnerabilityAssessmentScanResultsClientGetResponse contains the response from method SQLVulnerabilityAssessmentScanResultsClient.Get.
+type SQLVulnerabilityAssessmentScanResultsClientGetResponse struct {
 	ScanResult
 }
 
-// SQLVulnerabilityAssessmentScanResultsListResponse contains the response from method SQLVulnerabilityAssessmentScanResults.List.
-type SQLVulnerabilityAssessmentScanResultsListResponse struct {
-	SQLVulnerabilityAssessmentScanResultsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLVulnerabilityAssessmentScanResultsListResult contains the result from method SQLVulnerabilityAssessmentScanResults.List.
-type SQLVulnerabilityAssessmentScanResultsListResult struct {
+// SQLVulnerabilityAssessmentScanResultsClientListResponse contains the response from method SQLVulnerabilityAssessmentScanResultsClient.List.
+type SQLVulnerabilityAssessmentScanResultsClientListResponse struct {
 	ScanResults
 }
 
-// SQLVulnerabilityAssessmentScansGetResponse contains the response from method SQLVulnerabilityAssessmentScans.Get.
-type SQLVulnerabilityAssessmentScansGetResponse struct {
-	SQLVulnerabilityAssessmentScansGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLVulnerabilityAssessmentScansGetResult contains the result from method SQLVulnerabilityAssessmentScans.Get.
-type SQLVulnerabilityAssessmentScansGetResult struct {
+// SQLVulnerabilityAssessmentScansClientGetResponse contains the response from method SQLVulnerabilityAssessmentScansClient.Get.
+type SQLVulnerabilityAssessmentScansClientGetResponse struct {
 	Scan
 }
 
-// SQLVulnerabilityAssessmentScansListResponse contains the response from method SQLVulnerabilityAssessmentScans.List.
-type SQLVulnerabilityAssessmentScansListResponse struct {
-	SQLVulnerabilityAssessmentScansListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SQLVulnerabilityAssessmentScansListResult contains the result from method SQLVulnerabilityAssessmentScans.List.
-type SQLVulnerabilityAssessmentScansListResult struct {
+// SQLVulnerabilityAssessmentScansClientListResponse contains the response from method SQLVulnerabilityAssessmentScansClient.List.
+type SQLVulnerabilityAssessmentScansClientListResponse struct {
 	Scans
 }
 
-// SecureScoreControlDefinitionsListBySubscriptionResponse contains the response from method SecureScoreControlDefinitions.ListBySubscription.
-type SecureScoreControlDefinitionsListBySubscriptionResponse struct {
-	SecureScoreControlDefinitionsListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecureScoreControlDefinitionsListBySubscriptionResult contains the result from method SecureScoreControlDefinitions.ListBySubscription.
-type SecureScoreControlDefinitionsListBySubscriptionResult struct {
+// SecureScoreControlDefinitionsClientListBySubscriptionResponse contains the response from method SecureScoreControlDefinitionsClient.ListBySubscription.
+type SecureScoreControlDefinitionsClientListBySubscriptionResponse struct {
 	SecureScoreControlDefinitionList
 }
 
-// SecureScoreControlDefinitionsListResponse contains the response from method SecureScoreControlDefinitions.List.
-type SecureScoreControlDefinitionsListResponse struct {
-	SecureScoreControlDefinitionsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecureScoreControlDefinitionsListResult contains the result from method SecureScoreControlDefinitions.List.
-type SecureScoreControlDefinitionsListResult struct {
+// SecureScoreControlDefinitionsClientListResponse contains the response from method SecureScoreControlDefinitionsClient.List.
+type SecureScoreControlDefinitionsClientListResponse struct {
 	SecureScoreControlDefinitionList
 }
 
-// SecureScoreControlsListBySecureScoreResponse contains the response from method SecureScoreControls.ListBySecureScore.
-type SecureScoreControlsListBySecureScoreResponse struct {
-	SecureScoreControlsListBySecureScoreResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecureScoreControlsListBySecureScoreResult contains the result from method SecureScoreControls.ListBySecureScore.
-type SecureScoreControlsListBySecureScoreResult struct {
+// SecureScoreControlsClientListBySecureScoreResponse contains the response from method SecureScoreControlsClient.ListBySecureScore.
+type SecureScoreControlsClientListBySecureScoreResponse struct {
 	SecureScoreControlList
 }
 
-// SecureScoreControlsListResponse contains the response from method SecureScoreControls.List.
-type SecureScoreControlsListResponse struct {
-	SecureScoreControlsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecureScoreControlsListResult contains the result from method SecureScoreControls.List.
-type SecureScoreControlsListResult struct {
+// SecureScoreControlsClientListResponse contains the response from method SecureScoreControlsClient.List.
+type SecureScoreControlsClientListResponse struct {
 	SecureScoreControlList
 }
 
-// SecureScoresGetResponse contains the response from method SecureScores.Get.
-type SecureScoresGetResponse struct {
-	SecureScoresGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecureScoresGetResult contains the result from method SecureScores.Get.
-type SecureScoresGetResult struct {
+// SecureScoresClientGetResponse contains the response from method SecureScoresClient.Get.
+type SecureScoresClientGetResponse struct {
 	SecureScoreItem
 }
 
-// SecureScoresListResponse contains the response from method SecureScores.List.
-type SecureScoresListResponse struct {
-	SecureScoresListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecureScoresListResult contains the result from method SecureScores.List.
-type SecureScoresListResult struct {
+// SecureScoresClientListResponse contains the response from method SecureScoresClient.List.
+type SecureScoresClientListResponse struct {
 	SecureScoresList
 }
 
-// SecurityConnectorsCreateOrUpdateResponse contains the response from method SecurityConnectors.CreateOrUpdate.
-type SecurityConnectorsCreateOrUpdateResponse struct {
-	SecurityConnectorsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecurityConnectorsCreateOrUpdateResult contains the result from method SecurityConnectors.CreateOrUpdate.
-type SecurityConnectorsCreateOrUpdateResult struct {
-	SecurityConnector
-}
-
-// SecurityConnectorsDeleteResponse contains the response from method SecurityConnectors.Delete.
-type SecurityConnectorsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecurityConnectorsGetResponse contains the response from method SecurityConnectors.Get.
-type SecurityConnectorsGetResponse struct {
-	SecurityConnectorsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecurityConnectorsGetResult contains the result from method SecurityConnectors.Get.
-type SecurityConnectorsGetResult struct {
-	SecurityConnector
-}
-
-// SecurityConnectorsListByResourceGroupResponse contains the response from method SecurityConnectors.ListByResourceGroup.
-type SecurityConnectorsListByResourceGroupResponse struct {
-	SecurityConnectorsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecurityConnectorsListByResourceGroupResult contains the result from method SecurityConnectors.ListByResourceGroup.
-type SecurityConnectorsListByResourceGroupResult struct {
-	SecurityConnectorsList
-}
-
-// SecurityConnectorsListResponse contains the response from method SecurityConnectors.List.
-type SecurityConnectorsListResponse struct {
-	SecurityConnectorsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecurityConnectorsListResult contains the result from method SecurityConnectors.List.
-type SecurityConnectorsListResult struct {
-	SecurityConnectorsList
-}
-
-// SecurityConnectorsUpdateResponse contains the response from method SecurityConnectors.Update.
-type SecurityConnectorsUpdateResponse struct {
-	SecurityConnectorsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecurityConnectorsUpdateResult contains the result from method SecurityConnectors.Update.
-type SecurityConnectorsUpdateResult struct {
-	SecurityConnector
-}
-
-// SecurityContactsCreateResponse contains the response from method SecurityContacts.Create.
-type SecurityContactsCreateResponse struct {
-	SecurityContactsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecurityContactsCreateResult contains the result from method SecurityContacts.Create.
-type SecurityContactsCreateResult struct {
-	SecurityContact
-}
-
-// SecurityContactsDeleteResponse contains the response from method SecurityContacts.Delete.
-type SecurityContactsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecurityContactsGetResponse contains the response from method SecurityContacts.Get.
-type SecurityContactsGetResponse struct {
-	SecurityContactsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecurityContactsGetResult contains the result from method SecurityContacts.Get.
-type SecurityContactsGetResult struct {
-	SecurityContact
-}
-
-// SecurityContactsListResponse contains the response from method SecurityContacts.List.
-type SecurityContactsListResponse struct {
-	SecurityContactsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecurityContactsListResult contains the result from method SecurityContacts.List.
-type SecurityContactsListResult struct {
-	SecurityContactList
-}
-
-// SecurityContactsUpdateResponse contains the response from method SecurityContacts.Update.
-type SecurityContactsUpdateResponse struct {
-	SecurityContactsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecurityContactsUpdateResult contains the result from method SecurityContacts.Update.
-type SecurityContactsUpdateResult struct {
-	SecurityContact
-}
-
-// SecuritySolutionsGetResponse contains the response from method SecuritySolutions.Get.
-type SecuritySolutionsGetResponse struct {
-	SecuritySolutionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecuritySolutionsGetResult contains the result from method SecuritySolutions.Get.
-type SecuritySolutionsGetResult struct {
-	SecuritySolution
-}
-
-// SecuritySolutionsListResponse contains the response from method SecuritySolutions.List.
-type SecuritySolutionsListResponse struct {
-	SecuritySolutionsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecuritySolutionsListResult contains the result from method SecuritySolutions.List.
-type SecuritySolutionsListResult struct {
-	SecuritySolutionList
-}
-
-// SecuritySolutionsReferenceDataListByHomeRegionResponse contains the response from method SecuritySolutionsReferenceData.ListByHomeRegion.
-type SecuritySolutionsReferenceDataListByHomeRegionResponse struct {
-	SecuritySolutionsReferenceDataListByHomeRegionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecuritySolutionsReferenceDataListByHomeRegionResult contains the result from method SecuritySolutionsReferenceData.ListByHomeRegion.
-type SecuritySolutionsReferenceDataListByHomeRegionResult struct {
-	SecuritySolutionsReferenceDataList
-}
-
-// SecuritySolutionsReferenceDataListResponse contains the response from method SecuritySolutionsReferenceData.List.
-type SecuritySolutionsReferenceDataListResponse struct {
-	SecuritySolutionsReferenceDataListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SecuritySolutionsReferenceDataListResult contains the result from method SecuritySolutionsReferenceData.List.
-type SecuritySolutionsReferenceDataListResult struct {
-	SecuritySolutionsReferenceDataList
-}
-
-// ServerVulnerabilityAssessmentCreateOrUpdateResponse contains the response from method ServerVulnerabilityAssessment.CreateOrUpdate.
-type ServerVulnerabilityAssessmentCreateOrUpdateResponse struct {
-	ServerVulnerabilityAssessmentCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServerVulnerabilityAssessmentCreateOrUpdateResult contains the result from method ServerVulnerabilityAssessment.CreateOrUpdate.
-type ServerVulnerabilityAssessmentCreateOrUpdateResult struct {
+// ServerVulnerabilityAssessmentClientCreateOrUpdateResponse contains the response from method ServerVulnerabilityAssessmentClient.CreateOrUpdate.
+type ServerVulnerabilityAssessmentClientCreateOrUpdateResponse struct {
 	ServerVulnerabilityAssessment
 }
 
-// ServerVulnerabilityAssessmentDeletePollerResponse contains the response from method ServerVulnerabilityAssessment.Delete.
-type ServerVulnerabilityAssessmentDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ServerVulnerabilityAssessmentDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ServerVulnerabilityAssessmentClientDeleteResponse contains the response from method ServerVulnerabilityAssessmentClient.Delete.
+type ServerVulnerabilityAssessmentClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ServerVulnerabilityAssessmentDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServerVulnerabilityAssessmentDeleteResponse, error) {
-	respType := ServerVulnerabilityAssessmentDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ServerVulnerabilityAssessmentDeletePollerResponse from the provided client and resume token.
-func (l *ServerVulnerabilityAssessmentDeletePollerResponse) Resume(ctx context.Context, client *ServerVulnerabilityAssessmentClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ServerVulnerabilityAssessmentClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &ServerVulnerabilityAssessmentDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// ServerVulnerabilityAssessmentDeleteResponse contains the response from method ServerVulnerabilityAssessment.Delete.
-type ServerVulnerabilityAssessmentDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServerVulnerabilityAssessmentGetResponse contains the response from method ServerVulnerabilityAssessment.Get.
-type ServerVulnerabilityAssessmentGetResponse struct {
-	ServerVulnerabilityAssessmentGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServerVulnerabilityAssessmentGetResult contains the result from method ServerVulnerabilityAssessment.Get.
-type ServerVulnerabilityAssessmentGetResult struct {
+// ServerVulnerabilityAssessmentClientGetResponse contains the response from method ServerVulnerabilityAssessmentClient.Get.
+type ServerVulnerabilityAssessmentClientGetResponse struct {
 	ServerVulnerabilityAssessment
 }
 
-// ServerVulnerabilityAssessmentListByExtendedResourceResponse contains the response from method ServerVulnerabilityAssessment.ListByExtendedResource.
-type ServerVulnerabilityAssessmentListByExtendedResourceResponse struct {
-	ServerVulnerabilityAssessmentListByExtendedResourceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ServerVulnerabilityAssessmentListByExtendedResourceResult contains the result from method ServerVulnerabilityAssessment.ListByExtendedResource.
-type ServerVulnerabilityAssessmentListByExtendedResourceResult struct {
+// ServerVulnerabilityAssessmentClientListByExtendedResourceResponse contains the response from method ServerVulnerabilityAssessmentClient.ListByExtendedResource.
+type ServerVulnerabilityAssessmentClientListByExtendedResourceResponse struct {
 	ServerVulnerabilityAssessmentsList
 }
 
-// SettingsGetResponse contains the response from method Settings.Get.
-type SettingsGetResponse struct {
-	SettingsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SettingsGetResult contains the result from method Settings.Get.
-type SettingsGetResult struct {
+// SettingsClientGetResponse contains the response from method SettingsClient.Get.
+type SettingsClientGetResponse struct {
 	SettingClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SettingsGetResult.
-func (s *SettingsGetResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type SettingsClientGetResponse.
+func (s *SettingsClientGetResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalSettingClassification(data)
 	if err != nil {
 		return err
@@ -1855,32 +773,18 @@ func (s *SettingsGetResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// SettingsListResponse contains the response from method Settings.List.
-type SettingsListResponse struct {
-	SettingsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SettingsListResult contains the result from method Settings.List.
-type SettingsListResult struct {
+// SettingsClientListResponse contains the response from method SettingsClient.List.
+type SettingsClientListResponse struct {
 	SettingsList
 }
 
-// SettingsUpdateResponse contains the response from method Settings.Update.
-type SettingsUpdateResponse struct {
-	SettingsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SettingsUpdateResult contains the result from method Settings.Update.
-type SettingsUpdateResult struct {
+// SettingsClientUpdateResponse contains the response from method SettingsClient.Update.
+type SettingsClientUpdateResponse struct {
 	SettingClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SettingsUpdateResult.
-func (s *SettingsUpdateResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type SettingsClientUpdateResponse.
+func (s *SettingsClientUpdateResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalSettingClassification(data)
 	if err != nil {
 		return err
@@ -1889,236 +793,127 @@ func (s *SettingsUpdateResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// SoftwareInventoriesGetResponse contains the response from method SoftwareInventories.Get.
-type SoftwareInventoriesGetResponse struct {
-	SoftwareInventoriesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SoftwareInventoriesGetResult contains the result from method SoftwareInventories.Get.
-type SoftwareInventoriesGetResult struct {
+// SoftwareInventoriesClientGetResponse contains the response from method SoftwareInventoriesClient.Get.
+type SoftwareInventoriesClientGetResponse struct {
 	Software
 }
 
-// SoftwareInventoriesListByExtendedResourceResponse contains the response from method SoftwareInventories.ListByExtendedResource.
-type SoftwareInventoriesListByExtendedResourceResponse struct {
-	SoftwareInventoriesListByExtendedResourceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SoftwareInventoriesListByExtendedResourceResult contains the result from method SoftwareInventories.ListByExtendedResource.
-type SoftwareInventoriesListByExtendedResourceResult struct {
+// SoftwareInventoriesClientListByExtendedResourceResponse contains the response from method SoftwareInventoriesClient.ListByExtendedResource.
+type SoftwareInventoriesClientListByExtendedResourceResponse struct {
 	SoftwaresList
 }
 
-// SoftwareInventoriesListBySubscriptionResponse contains the response from method SoftwareInventories.ListBySubscription.
-type SoftwareInventoriesListBySubscriptionResponse struct {
-	SoftwareInventoriesListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SoftwareInventoriesListBySubscriptionResult contains the result from method SoftwareInventories.ListBySubscription.
-type SoftwareInventoriesListBySubscriptionResult struct {
+// SoftwareInventoriesClientListBySubscriptionResponse contains the response from method SoftwareInventoriesClient.ListBySubscription.
+type SoftwareInventoriesClientListBySubscriptionResponse struct {
 	SoftwaresList
 }
 
-// SubAssessmentsGetResponse contains the response from method SubAssessments.Get.
-type SubAssessmentsGetResponse struct {
-	SubAssessmentsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// SolutionsClientGetResponse contains the response from method SolutionsClient.Get.
+type SolutionsClientGetResponse struct {
+	Solution
 }
 
-// SubAssessmentsGetResult contains the result from method SubAssessments.Get.
-type SubAssessmentsGetResult struct {
-	SecuritySubAssessment
+// SolutionsClientListResponse contains the response from method SolutionsClient.List.
+type SolutionsClientListResponse struct {
+	SolutionList
 }
 
-// SubAssessmentsListAllResponse contains the response from method SubAssessments.ListAll.
-type SubAssessmentsListAllResponse struct {
-	SubAssessmentsListAllResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// SolutionsReferenceDataClientListByHomeRegionResponse contains the response from method SolutionsReferenceDataClient.ListByHomeRegion.
+type SolutionsReferenceDataClientListByHomeRegionResponse struct {
+	SolutionsReferenceDataList
 }
 
-// SubAssessmentsListAllResult contains the result from method SubAssessments.ListAll.
-type SubAssessmentsListAllResult struct {
-	SecuritySubAssessmentList
+// SolutionsReferenceDataClientListResponse contains the response from method SolutionsReferenceDataClient.List.
+type SolutionsReferenceDataClientListResponse struct {
+	SolutionsReferenceDataList
 }
 
-// SubAssessmentsListResponse contains the response from method SubAssessments.List.
-type SubAssessmentsListResponse struct {
-	SubAssessmentsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// SubAssessmentsClientGetResponse contains the response from method SubAssessmentsClient.Get.
+type SubAssessmentsClientGetResponse struct {
+	SubAssessment
 }
 
-// SubAssessmentsListResult contains the result from method SubAssessments.List.
-type SubAssessmentsListResult struct {
-	SecuritySubAssessmentList
+// SubAssessmentsClientListAllResponse contains the response from method SubAssessmentsClient.ListAll.
+type SubAssessmentsClientListAllResponse struct {
+	SubAssessmentList
 }
 
-// TasksGetResourceGroupLevelTaskResponse contains the response from method Tasks.GetResourceGroupLevelTask.
-type TasksGetResourceGroupLevelTaskResponse struct {
-	TasksGetResourceGroupLevelTaskResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// SubAssessmentsClientListResponse contains the response from method SubAssessmentsClient.List.
+type SubAssessmentsClientListResponse struct {
+	SubAssessmentList
 }
 
-// TasksGetResourceGroupLevelTaskResult contains the result from method Tasks.GetResourceGroupLevelTask.
-type TasksGetResourceGroupLevelTaskResult struct {
-	SecurityTask
+// TasksClientGetResourceGroupLevelTaskResponse contains the response from method TasksClient.GetResourceGroupLevelTask.
+type TasksClientGetResourceGroupLevelTaskResponse struct {
+	Task
 }
 
-// TasksGetSubscriptionLevelTaskResponse contains the response from method Tasks.GetSubscriptionLevelTask.
-type TasksGetSubscriptionLevelTaskResponse struct {
-	TasksGetSubscriptionLevelTaskResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// TasksClientGetSubscriptionLevelTaskResponse contains the response from method TasksClient.GetSubscriptionLevelTask.
+type TasksClientGetSubscriptionLevelTaskResponse struct {
+	Task
 }
 
-// TasksGetSubscriptionLevelTaskResult contains the result from method Tasks.GetSubscriptionLevelTask.
-type TasksGetSubscriptionLevelTaskResult struct {
-	SecurityTask
+// TasksClientListByHomeRegionResponse contains the response from method TasksClient.ListByHomeRegion.
+type TasksClientListByHomeRegionResponse struct {
+	TaskList
 }
 
-// TasksListByHomeRegionResponse contains the response from method Tasks.ListByHomeRegion.
-type TasksListByHomeRegionResponse struct {
-	TasksListByHomeRegionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// TasksClientListByResourceGroupResponse contains the response from method TasksClient.ListByResourceGroup.
+type TasksClientListByResourceGroupResponse struct {
+	TaskList
 }
 
-// TasksListByHomeRegionResult contains the result from method Tasks.ListByHomeRegion.
-type TasksListByHomeRegionResult struct {
-	SecurityTaskList
+// TasksClientListResponse contains the response from method TasksClient.List.
+type TasksClientListResponse struct {
+	TaskList
 }
 
-// TasksListByResourceGroupResponse contains the response from method Tasks.ListByResourceGroup.
-type TasksListByResourceGroupResponse struct {
-	TasksListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// TasksClientUpdateResourceGroupLevelTaskStateResponse contains the response from method TasksClient.UpdateResourceGroupLevelTaskState.
+type TasksClientUpdateResourceGroupLevelTaskStateResponse struct {
+	// placeholder for future response values
 }
 
-// TasksListByResourceGroupResult contains the result from method Tasks.ListByResourceGroup.
-type TasksListByResourceGroupResult struct {
-	SecurityTaskList
+// TasksClientUpdateSubscriptionLevelTaskStateResponse contains the response from method TasksClient.UpdateSubscriptionLevelTaskState.
+type TasksClientUpdateSubscriptionLevelTaskStateResponse struct {
+	// placeholder for future response values
 }
 
-// TasksListResponse contains the response from method Tasks.List.
-type TasksListResponse struct {
-	TasksListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TasksListResult contains the result from method Tasks.List.
-type TasksListResult struct {
-	SecurityTaskList
-}
-
-// TasksUpdateResourceGroupLevelTaskStateResponse contains the response from method Tasks.UpdateResourceGroupLevelTaskState.
-type TasksUpdateResourceGroupLevelTaskStateResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TasksUpdateSubscriptionLevelTaskStateResponse contains the response from method Tasks.UpdateSubscriptionLevelTaskState.
-type TasksUpdateSubscriptionLevelTaskStateResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TopologyGetResponse contains the response from method Topology.Get.
-type TopologyGetResponse struct {
-	TopologyGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TopologyGetResult contains the result from method Topology.Get.
-type TopologyGetResult struct {
+// TopologyClientGetResponse contains the response from method TopologyClient.Get.
+type TopologyClientGetResponse struct {
 	TopologyResource
 }
 
-// TopologyListByHomeRegionResponse contains the response from method Topology.ListByHomeRegion.
-type TopologyListByHomeRegionResponse struct {
-	TopologyListByHomeRegionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TopologyListByHomeRegionResult contains the result from method Topology.ListByHomeRegion.
-type TopologyListByHomeRegionResult struct {
+// TopologyClientListByHomeRegionResponse contains the response from method TopologyClient.ListByHomeRegion.
+type TopologyClientListByHomeRegionResponse struct {
 	TopologyList
 }
 
-// TopologyListResponse contains the response from method Topology.List.
-type TopologyListResponse struct {
-	TopologyListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TopologyListResult contains the result from method Topology.List.
-type TopologyListResult struct {
+// TopologyClientListResponse contains the response from method TopologyClient.List.
+type TopologyClientListResponse struct {
 	TopologyList
 }
 
-// WorkspaceSettingsCreateResponse contains the response from method WorkspaceSettings.Create.
-type WorkspaceSettingsCreateResponse struct {
-	WorkspaceSettingsCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkspaceSettingsCreateResult contains the result from method WorkspaceSettings.Create.
-type WorkspaceSettingsCreateResult struct {
+// WorkspaceSettingsClientCreateResponse contains the response from method WorkspaceSettingsClient.Create.
+type WorkspaceSettingsClientCreateResponse struct {
 	WorkspaceSetting
 }
 
-// WorkspaceSettingsDeleteResponse contains the response from method WorkspaceSettings.Delete.
-type WorkspaceSettingsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// WorkspaceSettingsClientDeleteResponse contains the response from method WorkspaceSettingsClient.Delete.
+type WorkspaceSettingsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// WorkspaceSettingsGetResponse contains the response from method WorkspaceSettings.Get.
-type WorkspaceSettingsGetResponse struct {
-	WorkspaceSettingsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkspaceSettingsGetResult contains the result from method WorkspaceSettings.Get.
-type WorkspaceSettingsGetResult struct {
+// WorkspaceSettingsClientGetResponse contains the response from method WorkspaceSettingsClient.Get.
+type WorkspaceSettingsClientGetResponse struct {
 	WorkspaceSetting
 }
 
-// WorkspaceSettingsListResponse contains the response from method WorkspaceSettings.List.
-type WorkspaceSettingsListResponse struct {
-	WorkspaceSettingsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkspaceSettingsListResult contains the result from method WorkspaceSettings.List.
-type WorkspaceSettingsListResult struct {
+// WorkspaceSettingsClientListResponse contains the response from method WorkspaceSettingsClient.List.
+type WorkspaceSettingsClientListResponse struct {
 	WorkspaceSettingList
 }
 
-// WorkspaceSettingsUpdateResponse contains the response from method WorkspaceSettings.Update.
-type WorkspaceSettingsUpdateResponse struct {
-	WorkspaceSettingsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// WorkspaceSettingsUpdateResult contains the result from method WorkspaceSettings.Update.
-type WorkspaceSettingsUpdateResult struct {
+// WorkspaceSettingsClientUpdateResponse contains the response from method WorkspaceSettingsClient.Update.
+type WorkspaceSettingsClientUpdateResponse struct {
 	WorkspaceSetting
 }

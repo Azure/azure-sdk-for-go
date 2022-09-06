@@ -13,24 +13,25 @@ import (
 
 // https://docs.microsoft.com/en-us/rest/api/storageservices/payload-format-for-table-service-operations
 
-// The Entity type is the bare minimum properties for a valid Entity. These should be embedded in a custom struct.
+// Entity is the bare minimum properties for a valid Entity. These should be embedded in a custom struct.
 type Entity struct {
 	PartitionKey string
 	RowKey       string
 	Timestamp    EDMDateTime
 }
 
-// EDMEntity is an entity that embeds the azcore.Entity type and has a Properties map for an unlimited
+// EDMEntity is an entity that embeds the azcore.Entity type and has a Properties map for user defined entity properties
 type EDMEntity struct {
-	Metadata string `json:"odata.metadata"`
-	Id       string `json:"odata.id"`
-	EditLink string `json:"odata.editLink"`
-	Type     string `json:"odata.type"`
-	Etag     string `json:"odata.etag"`
 	Entity
+	Metadata   string                 `json:"odata.metadata"`
+	ID         string                 `json:"odata.id"`
+	EditLink   string                 `json:"odata.editLink"`
+	Type       string                 `json:"odata.type"`
+	ETag       string                 `json:"odata.etag"`
 	Properties map[string]interface{} // Type assert the value to one of these: bool, int32, float64, string, EDMDateTime, EDMBinary, EDMGUID, EDMInt64
 }
 
+// MarshalJSON implements the json.Marshal method
 func (e EDMEntity) MarshalJSON() ([]byte, error) {
 	entity := map[string]interface{}{}
 	entity["PartitionKey"], entity["RowKey"] = e.PartitionKey, e.RowKey
@@ -55,6 +56,7 @@ func (e EDMEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(entity)
 }
 
+// UnmarshalJSON implements the json.Unmarshal method
 func (e *EDMEntity) UnmarshalJSON(data []byte) (err error) {
 	var entity map[string]json.RawMessage
 	err = json.Unmarshal(data, &entity)
@@ -71,13 +73,13 @@ func (e *EDMEntity) UnmarshalJSON(data []byte) (err error) {
 		case "odata.metadata":
 			err = json.Unmarshal(propRawValue, &e.Metadata)
 		case "odata.id":
-			err = json.Unmarshal(propRawValue, &e.Id)
+			err = json.Unmarshal(propRawValue, &e.ID)
 		case "odata.editLink":
 			err = json.Unmarshal(propRawValue, &e.EditLink)
 		case "odata.type":
 			err = json.Unmarshal(propRawValue, &e.Type)
 		case "odata.etag":
-			err = json.Unmarshal(propRawValue, &e.Etag)
+			err = json.Unmarshal(propRawValue, &e.ETag)
 		case "PartitionKey":
 			err = json.Unmarshal(propRawValue, &e.PartitionKey)
 		case "RowKey":
@@ -133,10 +135,12 @@ func (e *EDMEntity) UnmarshalJSON(data []byte) (err error) {
 // EDMBinary will also receive the correct odata annotation for round-trip accuracy.
 type EDMBinary []byte
 
+// MarshalText implements the encoding.TextMarshaler interface
 func (e EDMBinary) MarshalText() ([]byte, error) {
 	return ([]byte)(base64.StdEncoding.EncodeToString(([]byte)(e))), nil
 }
 
+// UnmarshalText implements the encoding.TextMarshaler interface
 func (e *EDMBinary) UnmarshalText(data []byte) error {
 	decoded, err := base64.StdEncoding.DecodeString(string(data))
 	if err != nil {
@@ -150,10 +154,12 @@ func (e *EDMBinary) UnmarshalText(data []byte) error {
 // proper odata type annotations.
 type EDMInt64 int64
 
+// MarshalText implements the encoding.TextMarshaler interface
 func (e EDMInt64) MarshalText() ([]byte, error) {
 	return []byte(strconv.FormatInt(int64(e), 10)), nil
 }
 
+// UnmarshalText implements the encoding.TextMarshaler interface
 func (e *EDMInt64) UnmarshalText(data []byte) error {
 	i, err := strconv.ParseInt(string(data), 10, 64)
 	if err != nil {
@@ -167,10 +173,12 @@ func (e *EDMInt64) UnmarshalText(data []byte) error {
 // proper odata type annotations.
 type EDMGUID string
 
+// MarshalText implements the encoding.TextMarshaler interface
 func (e EDMGUID) MarshalText() ([]byte, error) {
 	return ([]byte)(e), nil
 }
 
+// UnmarshalText implements the encoding.TextMarshaler interface
 func (e *EDMGUID) UnmarshalText(data []byte) error {
 	*e = EDMGUID(string(data))
 	return nil
@@ -180,10 +188,12 @@ func (e *EDMGUID) UnmarshalText(data []byte) error {
 // proper odata type annotations.
 type EDMDateTime time.Time
 
+// MarshalText implements the encoding.TextMarshaler interface
 func (e EDMDateTime) MarshalText() ([]byte, error) {
 	return ([]byte)(time.Time(e).Format(rfc3339)), nil
 }
 
+// UnmarshalText implements the encoding.TextMarshaler interface
 func (e *EDMDateTime) UnmarshalText(data []byte) error {
 	t, err := time.Parse(rfc3339, string(data))
 	if err != nil {

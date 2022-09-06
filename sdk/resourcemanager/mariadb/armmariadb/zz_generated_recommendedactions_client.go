@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,42 +25,60 @@ import (
 // RecommendedActionsClient contains the methods for the RecommendedActions group.
 // Don't use this type directly, use NewRecommendedActionsClient() instead.
 type RecommendedActionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewRecommendedActionsClient creates a new instance of RecommendedActionsClient with the specified values.
-func NewRecommendedActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RecommendedActionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewRecommendedActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecommendedActionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &RecommendedActionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &RecommendedActionsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // Get - Retrieve recommended actions from the advisor.
-// If the operation fails it returns a generic error.
-func (client *RecommendedActionsClient) Get(ctx context.Context, resourceGroupName string, serverName string, advisorName string, recommendedActionName string, options *RecommendedActionsGetOptions) (RecommendedActionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverName - The name of the server.
+// advisorName - The advisor name for recommendation action.
+// recommendedActionName - The recommended action name.
+// options - RecommendedActionsClientGetOptions contains the optional parameters for the RecommendedActionsClient.Get method.
+func (client *RecommendedActionsClient) Get(ctx context.Context, resourceGroupName string, serverName string, advisorName string, recommendedActionName string, options *RecommendedActionsClientGetOptions) (RecommendedActionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, advisorName, recommendedActionName, options)
 	if err != nil {
-		return RecommendedActionsGetResponse{}, err
+		return RecommendedActionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RecommendedActionsGetResponse{}, err
+		return RecommendedActionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return RecommendedActionsGetResponse{}, client.getHandleError(resp)
+		return RecommendedActionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RecommendedActionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, advisorName string, recommendedActionName string, options *RecommendedActionsGetOptions) (*policy.Request, error) {
+func (client *RecommendedActionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, advisorName string, recommendedActionName string, options *RecommendedActionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB/servers/{serverName}/advisors/{advisorName}/recommendedActions/{recommendedActionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -81,54 +100,64 @@ func (client *RecommendedActionsClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter recommendedActionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{recommendedActionName}", url.PathEscape(recommendedActionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RecommendedActionsClient) getHandleResponse(resp *http.Response) (RecommendedActionsGetResponse, error) {
-	result := RecommendedActionsGetResponse{RawResponse: resp}
+func (client *RecommendedActionsClient) getHandleResponse(resp *http.Response) (RecommendedActionsClientGetResponse, error) {
+	result := RecommendedActionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationAction); err != nil {
-		return RecommendedActionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return RecommendedActionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *RecommendedActionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListByServer - Retrieve recommended actions from the advisor.
-// If the operation fails it returns a generic error.
-func (client *RecommendedActionsClient) ListByServer(resourceGroupName string, serverName string, advisorName string, options *RecommendedActionsListByServerOptions) *RecommendedActionsListByServerPager {
-	return &RecommendedActionsListByServerPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, advisorName, options)
+// NewListByServerPager - Retrieve recommended actions from the advisor.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// serverName - The name of the server.
+// advisorName - The advisor name for recommendation action.
+// options - RecommendedActionsClientListByServerOptions contains the optional parameters for the RecommendedActionsClient.ListByServer
+// method.
+func (client *RecommendedActionsClient) NewListByServerPager(resourceGroupName string, serverName string, advisorName string, options *RecommendedActionsClientListByServerOptions) *runtime.Pager[RecommendedActionsClientListByServerResponse] {
+	return runtime.NewPager(runtime.PagingHandler[RecommendedActionsClientListByServerResponse]{
+		More: func(page RecommendedActionsClientListByServerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RecommendedActionsListByServerResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecommendationActionsResultList.NextLink)
+		Fetcher: func(ctx context.Context, page *RecommendedActionsClientListByServerResponse) (RecommendedActionsClientListByServerResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, advisorName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RecommendedActionsClientListByServerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RecommendedActionsClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RecommendedActionsClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByServerHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *RecommendedActionsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, advisorName string, options *RecommendedActionsListByServerOptions) (*policy.Request, error) {
+func (client *RecommendedActionsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, advisorName string, options *RecommendedActionsClientListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB/servers/{serverName}/advisors/{advisorName}/recommendedActions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -146,7 +175,7 @@ func (client *RecommendedActionsClient) listByServerCreateRequest(ctx context.Co
 		return nil, errors.New("parameter advisorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{advisorName}", url.PathEscape(advisorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -156,27 +185,15 @@ func (client *RecommendedActionsClient) listByServerCreateRequest(ctx context.Co
 		reqQP.Set("sessionId", *options.SessionID)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *RecommendedActionsClient) listByServerHandleResponse(resp *http.Response) (RecommendedActionsListByServerResponse, error) {
-	result := RecommendedActionsListByServerResponse{RawResponse: resp}
+func (client *RecommendedActionsClient) listByServerHandleResponse(resp *http.Response) (RecommendedActionsClientListByServerResponse, error) {
+	result := RecommendedActionsClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationActionsResultList); err != nil {
-		return RecommendedActionsListByServerResponse{}, runtime.NewResponseError(err, resp)
+		return RecommendedActionsClientListByServerResponse{}, err
 	}
 	return result, nil
-}
-
-// listByServerHandleError handles the ListByServer error response.
-func (client *RecommendedActionsClient) listByServerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

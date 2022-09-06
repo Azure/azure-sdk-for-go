@@ -12,7 +12,7 @@ package cognitiveservices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2021-10-01/cognitiveservices"
+	original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2022-03-01/cognitiveservices"
 )
 
 const (
@@ -184,6 +184,10 @@ type Account = original.Account
 type AccountListResult = original.AccountListResult
 type AccountListResultIterator = original.AccountListResultIterator
 type AccountListResultPage = original.AccountListResultPage
+type AccountModel = original.AccountModel
+type AccountModelListResult = original.AccountModelListResult
+type AccountModelListResultIterator = original.AccountModelListResultIterator
+type AccountModelListResultPage = original.AccountModelListResultPage
 type AccountProperties = original.AccountProperties
 type AccountSku = original.AccountSku
 type AccountSkuListResult = original.AccountSkuListResult
@@ -232,6 +236,7 @@ type IPRule = original.IPRule
 type Identity = original.Identity
 type KeyVaultProperties = original.KeyVaultProperties
 type MetricName = original.MetricName
+type ModelDeprecationInfo = original.ModelDeprecationInfo
 type NetworkRuleSet = original.NetworkRuleSet
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -285,6 +290,12 @@ func NewAccountListResultIterator(page AccountListResultPage) AccountListResultI
 }
 func NewAccountListResultPage(cur AccountListResult, getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
 	return original.NewAccountListResultPage(cur, getNextPage)
+}
+func NewAccountModelListResultIterator(page AccountModelListResultPage) AccountModelListResultIterator {
+	return original.NewAccountModelListResultIterator(page)
+}
+func NewAccountModelListResultPage(cur AccountModelListResult, getNextPage func(context.Context, AccountModelListResult) (AccountModelListResult, error)) AccountModelListResultPage {
+	return original.NewAccountModelListResultPage(cur, getNextPage)
 }
 func NewAccountsClient(subscriptionID string) AccountsClient {
 	return original.NewAccountsClient(subscriptionID)

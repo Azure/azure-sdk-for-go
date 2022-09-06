@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armlogic
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // APIDeploymentParameterMetadata - The API deployment parameter metadata.
 type APIDeploymentParameterMetadata struct {
@@ -44,17 +39,23 @@ type APIDeploymentParameterMetadataSet struct {
 
 // APIOperation - The api operation.
 type APIOperation struct {
-	Resource
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
 	// The api operations properties
 	Properties *APIOperationPropertiesDefinition `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type APIOperation.
-func (a APIOperation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // APIOperationAnnotation - The Api Operation Annotation.
@@ -76,14 +77,6 @@ type APIOperationListResult struct {
 
 	// The api operation definitions for an API.
 	Value []*APIOperation `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type APIOperationListResult.
-func (a APIOperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // APIOperationPropertiesDefinition - The api operations properties
@@ -125,27 +118,8 @@ type APIOperationPropertiesDefinition struct {
 	Visibility *string `json:"visibility,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type APIOperationPropertiesDefinition.
-func (a APIOperationPropertiesDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "api", a.API)
-	populate(objectMap, "annotation", a.Annotation)
-	populate(objectMap, "description", a.Description)
-	populate(objectMap, "inputsDefinition", a.InputsDefinition)
-	populate(objectMap, "isNotification", a.IsNotification)
-	populate(objectMap, "isWebhook", a.IsWebhook)
-	populate(objectMap, "pageable", a.Pageable)
-	populate(objectMap, "responsesDefinition", a.ResponsesDefinition)
-	populate(objectMap, "summary", a.Summary)
-	populate(objectMap, "trigger", a.Trigger)
-	populate(objectMap, "triggerHint", a.TriggerHint)
-	populate(objectMap, "visibility", a.Visibility)
-	return json.Marshal(objectMap)
-}
-
 // APIReference - The Api reference.
 type APIReference struct {
-	ResourceReference
 	// The brand color of the api.
 	BrandColor *string `json:"brandColor,omitempty"`
 
@@ -158,6 +132,9 @@ type APIReference struct {
 	// The display name of the api.
 	DisplayName *string `json:"displayName,omitempty"`
 
+	// The resource id.
+	ID *string `json:"id,omitempty"`
+
 	// The icon uri of the api.
 	IconURI *string `json:"iconUri,omitempty"`
 
@@ -165,7 +142,13 @@ type APIReference struct {
 	IntegrationServiceEnvironment *ResourceReference `json:"integrationServiceEnvironment,omitempty"`
 
 	// The swagger of the api.
-	Swagger map[string]interface{} `json:"swagger,omitempty"`
+	Swagger interface{} `json:"swagger,omitempty"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // APIResourceBackendService - The API backend service.
@@ -237,22 +220,6 @@ type APIResourceMetadata struct {
 	WsdlService *WsdlService `json:"wsdlService,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type APIResourceMetadata.
-func (a APIResourceMetadata) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "ApiType", a.APIType)
-	populate(objectMap, "brandColor", a.BrandColor)
-	populate(objectMap, "connectionType", a.ConnectionType)
-	populate(objectMap, "deploymentParameters", a.DeploymentParameters)
-	populate(objectMap, "hideKey", a.HideKey)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "source", a.Source)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "wsdlImportMethod", a.WsdlImportMethod)
-	populate(objectMap, "wsdlService", a.WsdlService)
-	return json.Marshal(objectMap)
-}
-
 // APIResourcePolicies - The API resource policies.
 type APIResourcePolicies struct {
 	// The API level only policies XML as embedded content.
@@ -283,7 +250,7 @@ type APIResourceProperties struct {
 	Category *APITier `json:"category,omitempty" azure:"ro"`
 
 	// READ-ONLY; The connection parameters.
-	ConnectionParameters map[string]map[string]interface{} `json:"connectionParameters,omitempty" azure:"ro"`
+	ConnectionParameters map[string]interface{} `json:"connectionParameters,omitempty" azure:"ro"`
 
 	// READ-ONLY; The api general information.
 	GeneralInformation *APIResourceGeneralInformation `json:"generalInformation,omitempty" azure:"ro"`
@@ -302,29 +269,6 @@ type APIResourceProperties struct {
 
 	// READ-ONLY; The runtime urls.
 	RuntimeUrls []*string `json:"runtimeUrls,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type APIResourceProperties.
-func (a APIResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (a APIResourceProperties) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "apiDefinitionUrl", a.APIDefinitionURL)
-	populate(objectMap, "apiDefinitions", a.APIDefinitions)
-	populate(objectMap, "backendService", a.BackendService)
-	populate(objectMap, "capabilities", a.Capabilities)
-	populate(objectMap, "category", a.Category)
-	populate(objectMap, "connectionParameters", a.ConnectionParameters)
-	populate(objectMap, "generalInformation", a.GeneralInformation)
-	populate(objectMap, "integrationServiceEnvironment", a.IntegrationServiceEnvironment)
-	populate(objectMap, "metadata", a.Metadata)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "policies", a.Policies)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "runtimeUrls", a.RuntimeUrls)
 }
 
 // AS2AcknowledgementConnectionSettings - The AS2 agreement acknowledgement connection settings.
@@ -539,7 +483,9 @@ type AgreementContent struct {
 
 // ArtifactContentPropertiesDefinition - The artifact content properties definition.
 type ArtifactContentPropertiesDefinition struct {
-	ArtifactProperties
+	// The artifact changed time.
+	ChangedTime *time.Time `json:"changedTime,omitempty"`
+
 	// Anything
 	Content interface{} `json:"content,omitempty"`
 
@@ -548,53 +494,12 @@ type ArtifactContentPropertiesDefinition struct {
 
 	// The content type.
 	ContentType *string `json:"contentType,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ArtifactContentPropertiesDefinition.
-func (a ArtifactContentPropertiesDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
+	// The artifact creation time.
+	CreatedTime *time.Time `json:"createdTime,omitempty"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ArtifactContentPropertiesDefinition.
-func (a *ArtifactContentPropertiesDefinition) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a ArtifactContentPropertiesDefinition) marshalInternal(objectMap map[string]interface{}) {
-	a.ArtifactProperties.marshalInternal(objectMap)
-	populate(objectMap, "content", a.Content)
-	populate(objectMap, "contentLink", a.ContentLink)
-	populate(objectMap, "contentType", a.ContentType)
-}
-
-func (a *ArtifactContentPropertiesDefinition) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "content":
-			err = unpopulate(val, &a.Content)
-			delete(rawMsg, key)
-		case "contentLink":
-			err = unpopulate(val, &a.ContentLink)
-			delete(rawMsg, key)
-		case "contentType":
-			err = unpopulate(val, &a.ContentType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.ArtifactProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// Anything
+	Metadata interface{} `json:"metadata,omitempty"`
 }
 
 // ArtifactProperties - The artifact properties definition.
@@ -609,79 +514,34 @@ type ArtifactProperties struct {
 	Metadata interface{} `json:"metadata,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ArtifactProperties.
-func (a ArtifactProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ArtifactProperties.
-func (a *ArtifactProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a ArtifactProperties) marshalInternal(objectMap map[string]interface{}) {
-	populateTimeRFC3339(objectMap, "changedTime", a.ChangedTime)
-	populateTimeRFC3339(objectMap, "createdTime", a.CreatedTime)
-	populate(objectMap, "metadata", a.Metadata)
-}
-
-func (a *ArtifactProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "changedTime":
-			err = unpopulateTimeRFC3339(val, &a.ChangedTime)
-			delete(rawMsg, key)
-		case "createdTime":
-			err = unpopulateTimeRFC3339(val, &a.CreatedTime)
-			delete(rawMsg, key)
-		case "metadata":
-			err = unpopulate(val, &a.Metadata)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AssemblyCollection - A collection of assembly definitions.
 type AssemblyCollection struct {
 	Value []*AssemblyDefinition `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AssemblyCollection.
-func (a AssemblyCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // AssemblyDefinition - The assembly definition.
 type AssemblyDefinition struct {
-	Resource
 	// REQUIRED; The assembly properties.
 	Properties *AssemblyProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type AssemblyDefinition.
-func (a AssemblyDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // AssemblyProperties - The assembly properties definition.
 type AssemblyProperties struct {
-	ArtifactContentPropertiesDefinition
 	// REQUIRED; The assembly name.
 	AssemblyName *string `json:"assemblyName,omitempty"`
 
@@ -693,68 +553,36 @@ type AssemblyProperties struct {
 
 	// The assembly version.
 	AssemblyVersion *string `json:"assemblyVersion,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type AssemblyProperties.
-func (a AssemblyProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ArtifactContentPropertiesDefinition.marshalInternal(objectMap)
-	populate(objectMap, "assemblyCulture", a.AssemblyCulture)
-	populate(objectMap, "assemblyName", a.AssemblyName)
-	populate(objectMap, "assemblyPublicKeyToken", a.AssemblyPublicKeyToken)
-	populate(objectMap, "assemblyVersion", a.AssemblyVersion)
-	return json.Marshal(objectMap)
-}
+	// The artifact changed time.
+	ChangedTime *time.Time `json:"changedTime,omitempty"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AssemblyProperties.
-func (a *AssemblyProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "assemblyCulture":
-			err = unpopulate(val, &a.AssemblyCulture)
-			delete(rawMsg, key)
-		case "assemblyName":
-			err = unpopulate(val, &a.AssemblyName)
-			delete(rawMsg, key)
-		case "assemblyPublicKeyToken":
-			err = unpopulate(val, &a.AssemblyPublicKeyToken)
-			delete(rawMsg, key)
-		case "assemblyVersion":
-			err = unpopulate(val, &a.AssemblyVersion)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.ArtifactContentPropertiesDefinition.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// Anything
+	Content interface{} `json:"content,omitempty"`
+
+	// The content link.
+	ContentLink *ContentLink `json:"contentLink,omitempty"`
+
+	// The content type.
+	ContentType *string `json:"contentType,omitempty"`
+
+	// The artifact creation time.
+	CreatedTime *time.Time `json:"createdTime,omitempty"`
+
+	// Anything
+	Metadata interface{} `json:"metadata,omitempty"`
 }
 
 // AzureResourceErrorInfo - The azure resource error info.
 type AzureResourceErrorInfo struct {
-	ErrorInfo
+	// REQUIRED; The error code.
+	Code *string `json:"code,omitempty"`
+
 	// REQUIRED; The error message.
 	Message *string `json:"message,omitempty"`
 
 	// The error details.
 	Details []*AzureResourceErrorInfo `json:"details,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureResourceErrorInfo.
-func (a AzureResourceErrorInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ErrorInfo.marshalInternal(objectMap)
-	populate(objectMap, "details", a.Details)
-	populate(objectMap, "message", a.Message)
-	return json.Marshal(objectMap)
 }
 
 // B2BPartnerContent - The B2B partner content.
@@ -763,26 +591,25 @@ type B2BPartnerContent struct {
 	BusinessIdentities []*BusinessIdentity `json:"businessIdentities,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type B2BPartnerContent.
-func (b B2BPartnerContent) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "businessIdentities", b.BusinessIdentities)
-	return json.Marshal(objectMap)
-}
-
 // BatchConfiguration - The batch configuration resource definition.
 type BatchConfiguration struct {
-	Resource
 	// REQUIRED; The batch configuration properties.
 	Properties *BatchConfigurationProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type BatchConfiguration.
-func (b BatchConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", b.Properties)
-	return json.Marshal(objectMap)
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // BatchConfigurationCollection - A collection of batch configurations.
@@ -790,56 +617,22 @@ type BatchConfigurationCollection struct {
 	Value []*BatchConfiguration `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type BatchConfigurationCollection.
-func (b BatchConfigurationCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", b.Value)
-	return json.Marshal(objectMap)
-}
-
 // BatchConfigurationProperties - The batch configuration properties definition.
 type BatchConfigurationProperties struct {
-	ArtifactProperties
 	// REQUIRED; The name of the batch group.
 	BatchGroupName *string `json:"batchGroupName,omitempty"`
 
 	// REQUIRED; The batch release criteria.
 	ReleaseCriteria *BatchReleaseCriteria `json:"releaseCriteria,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type BatchConfigurationProperties.
-func (b BatchConfigurationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.ArtifactProperties.marshalInternal(objectMap)
-	populate(objectMap, "batchGroupName", b.BatchGroupName)
-	populate(objectMap, "releaseCriteria", b.ReleaseCriteria)
-	return json.Marshal(objectMap)
-}
+	// The artifact changed time.
+	ChangedTime *time.Time `json:"changedTime,omitempty"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type BatchConfigurationProperties.
-func (b *BatchConfigurationProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "batchGroupName":
-			err = unpopulate(val, &b.BatchGroupName)
-			delete(rawMsg, key)
-		case "releaseCriteria":
-			err = unpopulate(val, &b.ReleaseCriteria)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := b.ArtifactProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// The artifact creation time.
+	CreatedTime *time.Time `json:"createdTime,omitempty"`
+
+	// Anything
+	Metadata interface{} `json:"metadata,omitempty"`
 }
 
 // BatchReleaseCriteria - The batch release criteria.
@@ -893,7 +686,7 @@ type ContentLink struct {
 	ContentVersion *string `json:"contentVersion,omitempty" azure:"ro"`
 
 	// READ-ONLY; The metadata.
-	Metadata map[string]interface{} `json:"metadata,omitempty" azure:"ro"`
+	Metadata interface{} `json:"metadata,omitempty" azure:"ro"`
 }
 
 // Correlation - The correlation property.
@@ -1274,23 +1067,6 @@ type EdifactProtocolSettings struct {
 	ValidationOverrides []*EdifactValidationOverride `json:"validationOverrides,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EdifactProtocolSettings.
-func (e EdifactProtocolSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "acknowledgementSettings", e.AcknowledgementSettings)
-	populate(objectMap, "edifactDelimiterOverrides", e.EdifactDelimiterOverrides)
-	populate(objectMap, "envelopeOverrides", e.EnvelopeOverrides)
-	populate(objectMap, "envelopeSettings", e.EnvelopeSettings)
-	populate(objectMap, "framingSettings", e.FramingSettings)
-	populate(objectMap, "messageFilter", e.MessageFilter)
-	populate(objectMap, "messageFilterList", e.MessageFilterList)
-	populate(objectMap, "processingSettings", e.ProcessingSettings)
-	populate(objectMap, "schemaReferences", e.SchemaReferences)
-	populate(objectMap, "validationOverrides", e.ValidationOverrides)
-	populate(objectMap, "validationSettings", e.ValidationSettings)
-	return json.Marshal(objectMap)
-}
-
 // EdifactSchemaReference - The Edifact schema reference.
 type EdifactSchemaReference struct {
 	// REQUIRED; The message id.
@@ -1378,18 +1154,8 @@ type ErrorInfo struct {
 	Code *string `json:"code,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorInfo.
-func (e ErrorInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	e.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (e ErrorInfo) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "code", e.Code)
-}
-
-// ErrorProperties - Error properties indicate why the Logic service was not able to process the incoming request. The reason is provided in the error message.
+// ErrorProperties - Error properties indicate why the Logic service was not able to process the incoming request. The reason
+// is provided in the error message.
 type ErrorProperties struct {
 	// Error code.
 	Code *string `json:"code,omitempty"`
@@ -1398,18 +1164,11 @@ type ErrorProperties struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// ErrorResponse - Error response indicates Logic service is not able to process the incoming request. The error property contains the error details.
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Error response indicates Logic service is not able to process the incoming request. The error property
+// contains the error details.
 type ErrorResponse struct {
-	raw string
 	// The error properties.
-	InnerError *ErrorProperties `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorProperties `json:"error,omitempty"`
 }
 
 // Expression - The expression.
@@ -1427,45 +1186,27 @@ type Expression struct {
 	Value interface{} `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Expression.
-func (e Expression) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	e.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (e Expression) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "error", e.Error)
-	populate(objectMap, "subexpressions", e.Subexpressions)
-	populate(objectMap, "text", e.Text)
-	populate(objectMap, "value", e.Value)
-}
-
 // ExpressionRoot - The expression root.
 type ExpressionRoot struct {
-	Expression
+	// The azure resource error info.
+	Error *AzureResourceErrorInfo `json:"error,omitempty"`
+
 	// The path.
 	Path *string `json:"path,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ExpressionRoot.
-func (e ExpressionRoot) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	e.Expression.marshalInternal(objectMap)
-	populate(objectMap, "path", e.Path)
-	return json.Marshal(objectMap)
+	// The sub expressions.
+	Subexpressions []*Expression `json:"subexpressions,omitempty"`
+
+	// The text.
+	Text *string `json:"text,omitempty"`
+
+	// Anything
+	Value interface{} `json:"value,omitempty"`
 }
 
 // ExpressionTraces - The expression traces.
 type ExpressionTraces struct {
 	Inputs []*ExpressionRoot `json:"inputs,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExpressionTraces.
-func (e ExpressionTraces) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "inputs", e.Inputs)
-	return json.Marshal(objectMap)
 }
 
 // ExtendedErrorInfo - The extended error info.
@@ -1480,17 +1221,7 @@ type ExtendedErrorInfo struct {
 	Details []*ExtendedErrorInfo `json:"details,omitempty"`
 
 	// The inner error.
-	InnerError map[string]interface{} `json:"innerError,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExtendedErrorInfo.
-func (e ExtendedErrorInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "innerError", e.InnerError)
-	populate(objectMap, "message", e.Message)
-	return json.Marshal(objectMap)
+	InnerError interface{} `json:"innerError,omitempty"`
 }
 
 // FlowAccessControlConfiguration - The access control configuration.
@@ -1517,14 +1248,6 @@ type FlowAccessControlConfigurationPolicy struct {
 	OpenAuthenticationPolicies *OpenAuthenticationAccessPolicies `json:"openAuthenticationPolicies,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FlowAccessControlConfigurationPolicy.
-func (f FlowAccessControlConfigurationPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedCallerIpAddresses", f.AllowedCallerIPAddresses)
-	populate(objectMap, "openAuthenticationPolicies", f.OpenAuthenticationPolicies)
-	return json.Marshal(objectMap)
-}
-
 // FlowEndpoints - The flow endpoints configuration.
 type FlowEndpoints struct {
 	// The access endpoint ip address.
@@ -1532,14 +1255,6 @@ type FlowEndpoints struct {
 
 	// The outgoing ip address.
 	OutgoingIPAddresses []*IPAddress `json:"outgoingIpAddresses,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FlowEndpoints.
-func (f FlowEndpoints) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accessEndpointIpAddresses", f.AccessEndpointIPAddresses)
-	populate(objectMap, "outgoingIpAddresses", f.OutgoingIPAddresses)
-	return json.Marshal(objectMap)
 }
 
 // FlowEndpointsConfiguration - The endpoints configuration.
@@ -1566,37 +1281,6 @@ type GetCallbackURLParameters struct {
 	NotAfter *time.Time `json:"notAfter,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GetCallbackURLParameters.
-func (g GetCallbackURLParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "keyType", g.KeyType)
-	populateTimeRFC3339(objectMap, "notAfter", g.NotAfter)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type GetCallbackURLParameters.
-func (g *GetCallbackURLParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "keyType":
-			err = unpopulate(val, &g.KeyType)
-			delete(rawMsg, key)
-		case "notAfter":
-			err = unpopulateTimeRFC3339(val, &g.NotAfter)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // IPAddress - The ip address.
 type IPAddress struct {
 	// The address.
@@ -1611,36 +1295,47 @@ type IPAddressRange struct {
 
 // IntegrationAccount - The integration account.
 type IntegrationAccount struct {
-	Resource
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
 	// The integration account properties.
 	Properties *IntegrationAccountProperties `json:"properties,omitempty"`
 
 	// The sku.
 	SKU *IntegrationAccountSKU `json:"sku,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccount.
-func (i IntegrationAccount) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", i.Properties)
-	populate(objectMap, "sku", i.SKU)
-	return json.Marshal(objectMap)
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // IntegrationAccountAgreement - The integration account agreement.
 type IntegrationAccountAgreement struct {
-	Resource
 	// REQUIRED; The integration account agreement properties.
 	Properties *IntegrationAccountAgreementProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountAgreement.
-func (i IntegrationAccountAgreement) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", i.Properties)
-	return json.Marshal(objectMap)
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // IntegrationAccountAgreementFilter - The integration account agreement filter for odata query.
@@ -1656,14 +1351,6 @@ type IntegrationAccountAgreementListResult struct {
 
 	// The list of integration account agreements.
 	Value []*IntegrationAccountAgreement `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountAgreementListResult.
-func (i IntegrationAccountAgreementListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
 }
 
 // IntegrationAccountAgreementProperties - The integration account agreement properties.
@@ -1687,7 +1374,7 @@ type IntegrationAccountAgreementProperties struct {
 	HostPartner *string `json:"hostPartner,omitempty"`
 
 	// The metadata.
-	Metadata map[string]interface{} `json:"metadata,omitempty"`
+	Metadata interface{} `json:"metadata,omitempty"`
 
 	// READ-ONLY; The changed time.
 	ChangedTime *time.Time `json:"changedTime,omitempty" azure:"ro"`
@@ -1696,154 +1383,112 @@ type IntegrationAccountAgreementProperties struct {
 	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountAgreementProperties.
-func (i IntegrationAccountAgreementProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agreementType", i.AgreementType)
-	populateTimeRFC3339(objectMap, "changedTime", i.ChangedTime)
-	populate(objectMap, "content", i.Content)
-	populateTimeRFC3339(objectMap, "createdTime", i.CreatedTime)
-	populate(objectMap, "guestIdentity", i.GuestIdentity)
-	populate(objectMap, "guestPartner", i.GuestPartner)
-	populate(objectMap, "hostIdentity", i.HostIdentity)
-	populate(objectMap, "hostPartner", i.HostPartner)
-	populate(objectMap, "metadata", i.Metadata)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type IntegrationAccountAgreementProperties.
-func (i *IntegrationAccountAgreementProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agreementType":
-			err = unpopulate(val, &i.AgreementType)
-			delete(rawMsg, key)
-		case "changedTime":
-			err = unpopulateTimeRFC3339(val, &i.ChangedTime)
-			delete(rawMsg, key)
-		case "content":
-			err = unpopulate(val, &i.Content)
-			delete(rawMsg, key)
-		case "createdTime":
-			err = unpopulateTimeRFC3339(val, &i.CreatedTime)
-			delete(rawMsg, key)
-		case "guestIdentity":
-			err = unpopulate(val, &i.GuestIdentity)
-			delete(rawMsg, key)
-		case "guestPartner":
-			err = unpopulate(val, &i.GuestPartner)
-			delete(rawMsg, key)
-		case "hostIdentity":
-			err = unpopulate(val, &i.HostIdentity)
-			delete(rawMsg, key)
-		case "hostPartner":
-			err = unpopulate(val, &i.HostPartner)
-			delete(rawMsg, key)
-		case "metadata":
-			err = unpopulate(val, &i.Metadata)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// IntegrationAccountAgreementsCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountAgreements.CreateOrUpdate method.
-type IntegrationAccountAgreementsCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IntegrationAccountAgreementsDeleteOptions contains the optional parameters for the IntegrationAccountAgreements.Delete method.
-type IntegrationAccountAgreementsDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IntegrationAccountAgreementsGetOptions contains the optional parameters for the IntegrationAccountAgreements.Get method.
-type IntegrationAccountAgreementsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IntegrationAccountAgreementsListContentCallbackURLOptions contains the optional parameters for the IntegrationAccountAgreements.ListContentCallbackURL
+// IntegrationAccountAgreementsClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountAgreementsClient.CreateOrUpdate
 // method.
-type IntegrationAccountAgreementsListContentCallbackURLOptions struct {
+type IntegrationAccountAgreementsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountAgreementsListOptions contains the optional parameters for the IntegrationAccountAgreements.List method.
-type IntegrationAccountAgreementsListOptions struct {
+// IntegrationAccountAgreementsClientDeleteOptions contains the optional parameters for the IntegrationAccountAgreementsClient.Delete
+// method.
+type IntegrationAccountAgreementsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IntegrationAccountAgreementsClientGetOptions contains the optional parameters for the IntegrationAccountAgreementsClient.Get
+// method.
+type IntegrationAccountAgreementsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IntegrationAccountAgreementsClientListContentCallbackURLOptions contains the optional parameters for the IntegrationAccountAgreementsClient.ListContentCallbackURL
+// method.
+type IntegrationAccountAgreementsClientListContentCallbackURLOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IntegrationAccountAgreementsClientListOptions contains the optional parameters for the IntegrationAccountAgreementsClient.List
+// method.
+type IntegrationAccountAgreementsClientListOptions struct {
 	// The filter to apply on the operation. Options for filters include: AgreementType.
 	Filter *string
 	// The number of items to be included in the result.
 	Top *int32
 }
 
-// IntegrationAccountAssembliesCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountAssemblies.CreateOrUpdate method.
-type IntegrationAccountAssembliesCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IntegrationAccountAssembliesDeleteOptions contains the optional parameters for the IntegrationAccountAssemblies.Delete method.
-type IntegrationAccountAssembliesDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IntegrationAccountAssembliesGetOptions contains the optional parameters for the IntegrationAccountAssemblies.Get method.
-type IntegrationAccountAssembliesGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IntegrationAccountAssembliesListContentCallbackURLOptions contains the optional parameters for the IntegrationAccountAssemblies.ListContentCallbackURL
+// IntegrationAccountAssembliesClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountAssembliesClient.CreateOrUpdate
 // method.
-type IntegrationAccountAssembliesListContentCallbackURLOptions struct {
+type IntegrationAccountAssembliesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountAssembliesListOptions contains the optional parameters for the IntegrationAccountAssemblies.List method.
-type IntegrationAccountAssembliesListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IntegrationAccountBatchConfigurationsCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountBatchConfigurations.CreateOrUpdate
+// IntegrationAccountAssembliesClientDeleteOptions contains the optional parameters for the IntegrationAccountAssembliesClient.Delete
 // method.
-type IntegrationAccountBatchConfigurationsCreateOrUpdateOptions struct {
+type IntegrationAccountAssembliesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountBatchConfigurationsDeleteOptions contains the optional parameters for the IntegrationAccountBatchConfigurations.Delete method.
-type IntegrationAccountBatchConfigurationsDeleteOptions struct {
+// IntegrationAccountAssembliesClientGetOptions contains the optional parameters for the IntegrationAccountAssembliesClient.Get
+// method.
+type IntegrationAccountAssembliesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountBatchConfigurationsGetOptions contains the optional parameters for the IntegrationAccountBatchConfigurations.Get method.
-type IntegrationAccountBatchConfigurationsGetOptions struct {
+// IntegrationAccountAssembliesClientListContentCallbackURLOptions contains the optional parameters for the IntegrationAccountAssembliesClient.ListContentCallbackURL
+// method.
+type IntegrationAccountAssembliesClientListContentCallbackURLOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountBatchConfigurationsListOptions contains the optional parameters for the IntegrationAccountBatchConfigurations.List method.
-type IntegrationAccountBatchConfigurationsListOptions struct {
+// IntegrationAccountAssembliesClientListOptions contains the optional parameters for the IntegrationAccountAssembliesClient.List
+// method.
+type IntegrationAccountAssembliesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IntegrationAccountBatchConfigurationsClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountBatchConfigurationsClient.CreateOrUpdate
+// method.
+type IntegrationAccountBatchConfigurationsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IntegrationAccountBatchConfigurationsClientDeleteOptions contains the optional parameters for the IntegrationAccountBatchConfigurationsClient.Delete
+// method.
+type IntegrationAccountBatchConfigurationsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IntegrationAccountBatchConfigurationsClientGetOptions contains the optional parameters for the IntegrationAccountBatchConfigurationsClient.Get
+// method.
+type IntegrationAccountBatchConfigurationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IntegrationAccountBatchConfigurationsClientListOptions contains the optional parameters for the IntegrationAccountBatchConfigurationsClient.List
+// method.
+type IntegrationAccountBatchConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // IntegrationAccountCertificate - The integration account certificate.
 type IntegrationAccountCertificate struct {
-	Resource
 	// REQUIRED; The integration account certificate properties.
 	Properties *IntegrationAccountCertificateProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountCertificate.
-func (i IntegrationAccountCertificate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", i.Properties)
-	return json.Marshal(objectMap)
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // IntegrationAccountCertificateListResult - The list of integration account certificates.
@@ -1855,21 +1500,13 @@ type IntegrationAccountCertificateListResult struct {
 	Value []*IntegrationAccountCertificate `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountCertificateListResult.
-func (i IntegrationAccountCertificateListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
-}
-
 // IntegrationAccountCertificateProperties - The integration account certificate properties.
 type IntegrationAccountCertificateProperties struct {
 	// The key details in the key vault.
 	Key *KeyVaultKeyReference `json:"key,omitempty"`
 
 	// The metadata.
-	Metadata map[string]interface{} `json:"metadata,omitempty"`
+	Metadata interface{} `json:"metadata,omitempty"`
 
 	// The public certificate.
 	PublicCertificate *string `json:"publicCertificate,omitempty"`
@@ -1881,66 +1518,27 @@ type IntegrationAccountCertificateProperties struct {
 	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountCertificateProperties.
-func (i IntegrationAccountCertificateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "changedTime", i.ChangedTime)
-	populateTimeRFC3339(objectMap, "createdTime", i.CreatedTime)
-	populate(objectMap, "key", i.Key)
-	populate(objectMap, "metadata", i.Metadata)
-	populate(objectMap, "publicCertificate", i.PublicCertificate)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type IntegrationAccountCertificateProperties.
-func (i *IntegrationAccountCertificateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "changedTime":
-			err = unpopulateTimeRFC3339(val, &i.ChangedTime)
-			delete(rawMsg, key)
-		case "createdTime":
-			err = unpopulateTimeRFC3339(val, &i.CreatedTime)
-			delete(rawMsg, key)
-		case "key":
-			err = unpopulate(val, &i.Key)
-			delete(rawMsg, key)
-		case "metadata":
-			err = unpopulate(val, &i.Metadata)
-			delete(rawMsg, key)
-		case "publicCertificate":
-			err = unpopulate(val, &i.PublicCertificate)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// IntegrationAccountCertificatesCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountCertificates.CreateOrUpdate method.
-type IntegrationAccountCertificatesCreateOrUpdateOptions struct {
+// IntegrationAccountCertificatesClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountCertificatesClient.CreateOrUpdate
+// method.
+type IntegrationAccountCertificatesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountCertificatesDeleteOptions contains the optional parameters for the IntegrationAccountCertificates.Delete method.
-type IntegrationAccountCertificatesDeleteOptions struct {
+// IntegrationAccountCertificatesClientDeleteOptions contains the optional parameters for the IntegrationAccountCertificatesClient.Delete
+// method.
+type IntegrationAccountCertificatesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountCertificatesGetOptions contains the optional parameters for the IntegrationAccountCertificates.Get method.
-type IntegrationAccountCertificatesGetOptions struct {
+// IntegrationAccountCertificatesClientGetOptions contains the optional parameters for the IntegrationAccountCertificatesClient.Get
+// method.
+type IntegrationAccountCertificatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountCertificatesListOptions contains the optional parameters for the IntegrationAccountCertificates.List method.
-type IntegrationAccountCertificatesListOptions struct {
+// IntegrationAccountCertificatesClientListOptions contains the optional parameters for the IntegrationAccountCertificatesClient.List
+// method.
+type IntegrationAccountCertificatesClientListOptions struct {
 	// The number of items to be included in the result.
 	Top *int32
 }
@@ -1954,27 +1552,25 @@ type IntegrationAccountListResult struct {
 	Value []*IntegrationAccount `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountListResult.
-func (i IntegrationAccountListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
-}
-
 // IntegrationAccountMap - The integration account map.
 type IntegrationAccountMap struct {
-	Resource
 	// REQUIRED; The integration account map properties.
 	Properties *IntegrationAccountMapProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountMap.
-func (i IntegrationAccountMap) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", i.Properties)
-	return json.Marshal(objectMap)
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // IntegrationAccountMapFilter - The integration account map filter for odata query.
@@ -1992,14 +1588,6 @@ type IntegrationAccountMapListResult struct {
 	Value []*IntegrationAccountMap `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountMapListResult.
-func (i IntegrationAccountMapListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
-}
-
 // IntegrationAccountMapProperties - The integration account map.
 type IntegrationAccountMapProperties struct {
 	// REQUIRED; The map type.
@@ -2012,7 +1600,7 @@ type IntegrationAccountMapProperties struct {
 	ContentType *string `json:"contentType,omitempty"`
 
 	// The metadata.
-	Metadata map[string]interface{} `json:"metadata,omitempty"`
+	Metadata interface{} `json:"metadata,omitempty"`
 
 	// The parameters schema of integration account map.
 	ParametersSchema *IntegrationAccountMapPropertiesParametersSchema `json:"parametersSchema,omitempty"`
@@ -2027,89 +1615,37 @@ type IntegrationAccountMapProperties struct {
 	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountMapProperties.
-func (i IntegrationAccountMapProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "changedTime", i.ChangedTime)
-	populate(objectMap, "content", i.Content)
-	populate(objectMap, "contentLink", i.ContentLink)
-	populate(objectMap, "contentType", i.ContentType)
-	populateTimeRFC3339(objectMap, "createdTime", i.CreatedTime)
-	populate(objectMap, "mapType", i.MapType)
-	populate(objectMap, "metadata", i.Metadata)
-	populate(objectMap, "parametersSchema", i.ParametersSchema)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type IntegrationAccountMapProperties.
-func (i *IntegrationAccountMapProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "changedTime":
-			err = unpopulateTimeRFC3339(val, &i.ChangedTime)
-			delete(rawMsg, key)
-		case "content":
-			err = unpopulate(val, &i.Content)
-			delete(rawMsg, key)
-		case "contentLink":
-			err = unpopulate(val, &i.ContentLink)
-			delete(rawMsg, key)
-		case "contentType":
-			err = unpopulate(val, &i.ContentType)
-			delete(rawMsg, key)
-		case "createdTime":
-			err = unpopulateTimeRFC3339(val, &i.CreatedTime)
-			delete(rawMsg, key)
-		case "mapType":
-			err = unpopulate(val, &i.MapType)
-			delete(rawMsg, key)
-		case "metadata":
-			err = unpopulate(val, &i.Metadata)
-			delete(rawMsg, key)
-		case "parametersSchema":
-			err = unpopulate(val, &i.ParametersSchema)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // IntegrationAccountMapPropertiesParametersSchema - The parameters schema of integration account map.
 type IntegrationAccountMapPropertiesParametersSchema struct {
 	// The reference name.
 	Ref *string `json:"ref,omitempty"`
 }
 
-// IntegrationAccountMapsCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountMaps.CreateOrUpdate method.
-type IntegrationAccountMapsCreateOrUpdateOptions struct {
+// IntegrationAccountMapsClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountMapsClient.CreateOrUpdate
+// method.
+type IntegrationAccountMapsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountMapsDeleteOptions contains the optional parameters for the IntegrationAccountMaps.Delete method.
-type IntegrationAccountMapsDeleteOptions struct {
+// IntegrationAccountMapsClientDeleteOptions contains the optional parameters for the IntegrationAccountMapsClient.Delete
+// method.
+type IntegrationAccountMapsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountMapsGetOptions contains the optional parameters for the IntegrationAccountMaps.Get method.
-type IntegrationAccountMapsGetOptions struct {
+// IntegrationAccountMapsClientGetOptions contains the optional parameters for the IntegrationAccountMapsClient.Get method.
+type IntegrationAccountMapsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountMapsListContentCallbackURLOptions contains the optional parameters for the IntegrationAccountMaps.ListContentCallbackURL method.
-type IntegrationAccountMapsListContentCallbackURLOptions struct {
+// IntegrationAccountMapsClientListContentCallbackURLOptions contains the optional parameters for the IntegrationAccountMapsClient.ListContentCallbackURL
+// method.
+type IntegrationAccountMapsClientListContentCallbackURLOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountMapsListOptions contains the optional parameters for the IntegrationAccountMaps.List method.
-type IntegrationAccountMapsListOptions struct {
+// IntegrationAccountMapsClientListOptions contains the optional parameters for the IntegrationAccountMapsClient.List method.
+type IntegrationAccountMapsClientListOptions struct {
 	// The filter to apply on the operation. Options for filters include: MapType.
 	Filter *string
 	// The number of items to be included in the result.
@@ -2118,17 +1654,23 @@ type IntegrationAccountMapsListOptions struct {
 
 // IntegrationAccountPartner - The integration account partner.
 type IntegrationAccountPartner struct {
-	Resource
 	// REQUIRED; The integration account partner properties.
 	Properties *IntegrationAccountPartnerProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountPartner.
-func (i IntegrationAccountPartner) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", i.Properties)
-	return json.Marshal(objectMap)
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // IntegrationAccountPartnerFilter - The integration account partner filter for odata query.
@@ -2146,14 +1688,6 @@ type IntegrationAccountPartnerListResult struct {
 	Value []*IntegrationAccountPartner `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountPartnerListResult.
-func (i IntegrationAccountPartnerListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
-}
-
 // IntegrationAccountPartnerProperties - The integration account partner properties.
 type IntegrationAccountPartnerProperties struct {
 	// REQUIRED; The partner content.
@@ -2163,7 +1697,7 @@ type IntegrationAccountPartnerProperties struct {
 	PartnerType *PartnerType `json:"partnerType,omitempty"`
 
 	// The metadata.
-	Metadata map[string]interface{} `json:"metadata,omitempty"`
+	Metadata interface{} `json:"metadata,omitempty"`
 
 	// READ-ONLY; The changed time.
 	ChangedTime *time.Time `json:"changedTime,omitempty" azure:"ro"`
@@ -2172,71 +1706,33 @@ type IntegrationAccountPartnerProperties struct {
 	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountPartnerProperties.
-func (i IntegrationAccountPartnerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "changedTime", i.ChangedTime)
-	populate(objectMap, "content", i.Content)
-	populateTimeRFC3339(objectMap, "createdTime", i.CreatedTime)
-	populate(objectMap, "metadata", i.Metadata)
-	populate(objectMap, "partnerType", i.PartnerType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type IntegrationAccountPartnerProperties.
-func (i *IntegrationAccountPartnerProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "changedTime":
-			err = unpopulateTimeRFC3339(val, &i.ChangedTime)
-			delete(rawMsg, key)
-		case "content":
-			err = unpopulate(val, &i.Content)
-			delete(rawMsg, key)
-		case "createdTime":
-			err = unpopulateTimeRFC3339(val, &i.CreatedTime)
-			delete(rawMsg, key)
-		case "metadata":
-			err = unpopulate(val, &i.Metadata)
-			delete(rawMsg, key)
-		case "partnerType":
-			err = unpopulate(val, &i.PartnerType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// IntegrationAccountPartnersCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountPartners.CreateOrUpdate method.
-type IntegrationAccountPartnersCreateOrUpdateOptions struct {
+// IntegrationAccountPartnersClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountPartnersClient.CreateOrUpdate
+// method.
+type IntegrationAccountPartnersClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountPartnersDeleteOptions contains the optional parameters for the IntegrationAccountPartners.Delete method.
-type IntegrationAccountPartnersDeleteOptions struct {
+// IntegrationAccountPartnersClientDeleteOptions contains the optional parameters for the IntegrationAccountPartnersClient.Delete
+// method.
+type IntegrationAccountPartnersClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountPartnersGetOptions contains the optional parameters for the IntegrationAccountPartners.Get method.
-type IntegrationAccountPartnersGetOptions struct {
+// IntegrationAccountPartnersClientGetOptions contains the optional parameters for the IntegrationAccountPartnersClient.Get
+// method.
+type IntegrationAccountPartnersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountPartnersListContentCallbackURLOptions contains the optional parameters for the IntegrationAccountPartners.ListContentCallbackURL method.
-type IntegrationAccountPartnersListContentCallbackURLOptions struct {
+// IntegrationAccountPartnersClientListContentCallbackURLOptions contains the optional parameters for the IntegrationAccountPartnersClient.ListContentCallbackURL
+// method.
+type IntegrationAccountPartnersClientListContentCallbackURLOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountPartnersListOptions contains the optional parameters for the IntegrationAccountPartners.List method.
-type IntegrationAccountPartnersListOptions struct {
+// IntegrationAccountPartnersClientListOptions contains the optional parameters for the IntegrationAccountPartnersClient.List
+// method.
+type IntegrationAccountPartnersClientListOptions struct {
 	// The filter to apply on the operation. Options for filters include: PartnerType.
 	Filter *string
 	// The number of items to be included in the result.
@@ -2260,17 +1756,23 @@ type IntegrationAccountSKU struct {
 
 // IntegrationAccountSchema - The integration account schema.
 type IntegrationAccountSchema struct {
-	Resource
 	// REQUIRED; The integration account schema properties.
 	Properties *IntegrationAccountSchemaProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountSchema.
-func (i IntegrationAccountSchema) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", i.Properties)
-	return json.Marshal(objectMap)
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // IntegrationAccountSchemaFilter - The integration account schema filter for odata query.
@@ -2286,14 +1788,6 @@ type IntegrationAccountSchemaListResult struct {
 
 	// The list of integration account schemas.
 	Value []*IntegrationAccountSchema `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountSchemaListResult.
-func (i IntegrationAccountSchemaListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
 }
 
 // IntegrationAccountSchemaProperties - The integration account schema properties.
@@ -2314,7 +1808,7 @@ type IntegrationAccountSchemaProperties struct {
 	FileName *string `json:"fileName,omitempty"`
 
 	// The metadata.
-	Metadata map[string]interface{} `json:"metadata,omitempty"`
+	Metadata interface{} `json:"metadata,omitempty"`
 
 	// The target namespace of the schema.
 	TargetNamespace *string `json:"targetNamespace,omitempty"`
@@ -2329,91 +1823,33 @@ type IntegrationAccountSchemaProperties struct {
 	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountSchemaProperties.
-func (i IntegrationAccountSchemaProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "changedTime", i.ChangedTime)
-	populate(objectMap, "content", i.Content)
-	populate(objectMap, "contentLink", i.ContentLink)
-	populate(objectMap, "contentType", i.ContentType)
-	populateTimeRFC3339(objectMap, "createdTime", i.CreatedTime)
-	populate(objectMap, "documentName", i.DocumentName)
-	populate(objectMap, "fileName", i.FileName)
-	populate(objectMap, "metadata", i.Metadata)
-	populate(objectMap, "schemaType", i.SchemaType)
-	populate(objectMap, "targetNamespace", i.TargetNamespace)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type IntegrationAccountSchemaProperties.
-func (i *IntegrationAccountSchemaProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "changedTime":
-			err = unpopulateTimeRFC3339(val, &i.ChangedTime)
-			delete(rawMsg, key)
-		case "content":
-			err = unpopulate(val, &i.Content)
-			delete(rawMsg, key)
-		case "contentLink":
-			err = unpopulate(val, &i.ContentLink)
-			delete(rawMsg, key)
-		case "contentType":
-			err = unpopulate(val, &i.ContentType)
-			delete(rawMsg, key)
-		case "createdTime":
-			err = unpopulateTimeRFC3339(val, &i.CreatedTime)
-			delete(rawMsg, key)
-		case "documentName":
-			err = unpopulate(val, &i.DocumentName)
-			delete(rawMsg, key)
-		case "fileName":
-			err = unpopulate(val, &i.FileName)
-			delete(rawMsg, key)
-		case "metadata":
-			err = unpopulate(val, &i.Metadata)
-			delete(rawMsg, key)
-		case "schemaType":
-			err = unpopulate(val, &i.SchemaType)
-			delete(rawMsg, key)
-		case "targetNamespace":
-			err = unpopulate(val, &i.TargetNamespace)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// IntegrationAccountSchemasCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountSchemas.CreateOrUpdate method.
-type IntegrationAccountSchemasCreateOrUpdateOptions struct {
+// IntegrationAccountSchemasClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountSchemasClient.CreateOrUpdate
+// method.
+type IntegrationAccountSchemasClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountSchemasDeleteOptions contains the optional parameters for the IntegrationAccountSchemas.Delete method.
-type IntegrationAccountSchemasDeleteOptions struct {
+// IntegrationAccountSchemasClientDeleteOptions contains the optional parameters for the IntegrationAccountSchemasClient.Delete
+// method.
+type IntegrationAccountSchemasClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountSchemasGetOptions contains the optional parameters for the IntegrationAccountSchemas.Get method.
-type IntegrationAccountSchemasGetOptions struct {
+// IntegrationAccountSchemasClientGetOptions contains the optional parameters for the IntegrationAccountSchemasClient.Get
+// method.
+type IntegrationAccountSchemasClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountSchemasListContentCallbackURLOptions contains the optional parameters for the IntegrationAccountSchemas.ListContentCallbackURL method.
-type IntegrationAccountSchemasListContentCallbackURLOptions struct {
+// IntegrationAccountSchemasClientListContentCallbackURLOptions contains the optional parameters for the IntegrationAccountSchemasClient.ListContentCallbackURL
+// method.
+type IntegrationAccountSchemasClientListContentCallbackURLOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountSchemasListOptions contains the optional parameters for the IntegrationAccountSchemas.List method.
-type IntegrationAccountSchemasListOptions struct {
+// IntegrationAccountSchemasClientListOptions contains the optional parameters for the IntegrationAccountSchemasClient.List
+// method.
+type IntegrationAccountSchemasClientListOptions struct {
 	// The filter to apply on the operation. Options for filters include: SchemaType.
 	Filter *string
 	// The number of items to be included in the result.
@@ -2422,50 +1858,29 @@ type IntegrationAccountSchemasListOptions struct {
 
 // IntegrationAccountSession - The integration account session.
 type IntegrationAccountSession struct {
-	Resource
 	// REQUIRED; The integration account session properties.
 	Properties *IntegrationAccountSessionProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountSession.
-func (i IntegrationAccountSession) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", i.Properties)
-	return json.Marshal(objectMap)
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // IntegrationAccountSessionFilter - The integration account session filter.
 type IntegrationAccountSessionFilter struct {
 	// REQUIRED; The changed time of integration account sessions.
 	ChangedTime *time.Time `json:"changedTime,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountSessionFilter.
-func (i IntegrationAccountSessionFilter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "changedTime", i.ChangedTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type IntegrationAccountSessionFilter.
-func (i *IntegrationAccountSessionFilter) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "changedTime":
-			err = unpopulateTimeRFC3339(val, &i.ChangedTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // IntegrationAccountSessionListResult - The list of integration account sessions.
@@ -2477,18 +1892,10 @@ type IntegrationAccountSessionListResult struct {
 	Value []*IntegrationAccountSession `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountSessionListResult.
-func (i IntegrationAccountSessionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
-}
-
 // IntegrationAccountSessionProperties - The integration account session properties.
 type IntegrationAccountSessionProperties struct {
 	// The session content.
-	Content map[string]interface{} `json:"content,omitempty"`
+	Content interface{} `json:"content,omitempty"`
 
 	// READ-ONLY; The changed time.
 	ChangedTime *time.Time `json:"changedTime,omitempty" azure:"ro"`
@@ -2497,113 +1904,89 @@ type IntegrationAccountSessionProperties struct {
 	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationAccountSessionProperties.
-func (i IntegrationAccountSessionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "changedTime", i.ChangedTime)
-	populate(objectMap, "content", i.Content)
-	populateTimeRFC3339(objectMap, "createdTime", i.CreatedTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type IntegrationAccountSessionProperties.
-func (i *IntegrationAccountSessionProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "changedTime":
-			err = unpopulateTimeRFC3339(val, &i.ChangedTime)
-			delete(rawMsg, key)
-		case "content":
-			err = unpopulate(val, &i.Content)
-			delete(rawMsg, key)
-		case "createdTime":
-			err = unpopulateTimeRFC3339(val, &i.CreatedTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// IntegrationAccountSessionsCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountSessions.CreateOrUpdate method.
-type IntegrationAccountSessionsCreateOrUpdateOptions struct {
+// IntegrationAccountSessionsClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountSessionsClient.CreateOrUpdate
+// method.
+type IntegrationAccountSessionsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountSessionsDeleteOptions contains the optional parameters for the IntegrationAccountSessions.Delete method.
-type IntegrationAccountSessionsDeleteOptions struct {
+// IntegrationAccountSessionsClientDeleteOptions contains the optional parameters for the IntegrationAccountSessionsClient.Delete
+// method.
+type IntegrationAccountSessionsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountSessionsGetOptions contains the optional parameters for the IntegrationAccountSessions.Get method.
-type IntegrationAccountSessionsGetOptions struct {
+// IntegrationAccountSessionsClientGetOptions contains the optional parameters for the IntegrationAccountSessionsClient.Get
+// method.
+type IntegrationAccountSessionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountSessionsListOptions contains the optional parameters for the IntegrationAccountSessions.List method.
-type IntegrationAccountSessionsListOptions struct {
+// IntegrationAccountSessionsClientListOptions contains the optional parameters for the IntegrationAccountSessionsClient.List
+// method.
+type IntegrationAccountSessionsClientListOptions struct {
 	// The filter to apply on the operation. Options for filters include: ChangedTime.
 	Filter *string
 	// The number of items to be included in the result.
 	Top *int32
 }
 
-// IntegrationAccountsCreateOrUpdateOptions contains the optional parameters for the IntegrationAccounts.CreateOrUpdate method.
-type IntegrationAccountsCreateOrUpdateOptions struct {
+// IntegrationAccountsClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountsClient.CreateOrUpdate
+// method.
+type IntegrationAccountsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountsDeleteOptions contains the optional parameters for the IntegrationAccounts.Delete method.
-type IntegrationAccountsDeleteOptions struct {
+// IntegrationAccountsClientDeleteOptions contains the optional parameters for the IntegrationAccountsClient.Delete method.
+type IntegrationAccountsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountsGetOptions contains the optional parameters for the IntegrationAccounts.Get method.
-type IntegrationAccountsGetOptions struct {
+// IntegrationAccountsClientGetOptions contains the optional parameters for the IntegrationAccountsClient.Get method.
+type IntegrationAccountsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountsListByResourceGroupOptions contains the optional parameters for the IntegrationAccounts.ListByResourceGroup method.
-type IntegrationAccountsListByResourceGroupOptions struct {
+// IntegrationAccountsClientListByResourceGroupOptions contains the optional parameters for the IntegrationAccountsClient.ListByResourceGroup
+// method.
+type IntegrationAccountsClientListByResourceGroupOptions struct {
 	// The number of items to be included in the result.
 	Top *int32
 }
 
-// IntegrationAccountsListBySubscriptionOptions contains the optional parameters for the IntegrationAccounts.ListBySubscription method.
-type IntegrationAccountsListBySubscriptionOptions struct {
+// IntegrationAccountsClientListBySubscriptionOptions contains the optional parameters for the IntegrationAccountsClient.ListBySubscription
+// method.
+type IntegrationAccountsClientListBySubscriptionOptions struct {
 	// The number of items to be included in the result.
 	Top *int32
 }
 
-// IntegrationAccountsListCallbackURLOptions contains the optional parameters for the IntegrationAccounts.ListCallbackURL method.
-type IntegrationAccountsListCallbackURLOptions struct {
+// IntegrationAccountsClientListCallbackURLOptions contains the optional parameters for the IntegrationAccountsClient.ListCallbackURL
+// method.
+type IntegrationAccountsClientListCallbackURLOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountsListKeyVaultKeysOptions contains the optional parameters for the IntegrationAccounts.ListKeyVaultKeys method.
-type IntegrationAccountsListKeyVaultKeysOptions struct {
+// IntegrationAccountsClientListKeyVaultKeysOptions contains the optional parameters for the IntegrationAccountsClient.ListKeyVaultKeys
+// method.
+type IntegrationAccountsClientListKeyVaultKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountsLogTrackingEventsOptions contains the optional parameters for the IntegrationAccounts.LogTrackingEvents method.
-type IntegrationAccountsLogTrackingEventsOptions struct {
+// IntegrationAccountsClientLogTrackingEventsOptions contains the optional parameters for the IntegrationAccountsClient.LogTrackingEvents
+// method.
+type IntegrationAccountsClientLogTrackingEventsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountsRegenerateAccessKeyOptions contains the optional parameters for the IntegrationAccounts.RegenerateAccessKey method.
-type IntegrationAccountsRegenerateAccessKeyOptions struct {
+// IntegrationAccountsClientRegenerateAccessKeyOptions contains the optional parameters for the IntegrationAccountsClient.RegenerateAccessKey
+// method.
+type IntegrationAccountsClientRegenerateAccessKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationAccountsUpdateOptions contains the optional parameters for the IntegrationAccounts.Update method.
-type IntegrationAccountsUpdateOptions struct {
+// IntegrationAccountsClientUpdateOptions contains the optional parameters for the IntegrationAccountsClient.Update method.
+type IntegrationAccountsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2627,25 +2010,29 @@ type IntegrationServiceEnvironmenEncryptionKeyReference struct {
 
 // IntegrationServiceEnvironment - The integration service environment.
 type IntegrationServiceEnvironment struct {
-	Resource
 	// Managed service identity properties.
 	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
+	// The resource location.
+	Location *string `json:"location,omitempty"`
 
 	// The integration service environment properties.
 	Properties *IntegrationServiceEnvironmentProperties `json:"properties,omitempty"`
 
 	// The sku.
 	SKU *IntegrationServiceEnvironmentSKU `json:"sku,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationServiceEnvironment.
-func (i IntegrationServiceEnvironment) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
-	populate(objectMap, "identity", i.Identity)
-	populate(objectMap, "properties", i.Properties)
-	populate(objectMap, "sku", i.SKU)
-	return json.Marshal(objectMap)
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // IntegrationServiceEnvironmentAccessEndpoint - The integration service environment access endpoint.
@@ -2661,30 +2048,29 @@ type IntegrationServiceEnvironmentListResult struct {
 	Value    []*IntegrationServiceEnvironment `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationServiceEnvironmentListResult.
-func (i IntegrationServiceEnvironmentListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
-}
-
 // IntegrationServiceEnvironmentManagedAPI - The integration service environment managed api.
 type IntegrationServiceEnvironmentManagedAPI struct {
-	Resource
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
 	// The integration service environment managed api properties.
 	Properties *IntegrationServiceEnvironmentManagedAPIProperties `json:"properties,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationServiceEnvironmentManagedAPI.
-func (i IntegrationServiceEnvironmentManagedAPI) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", i.Properties)
-	return json.Marshal(objectMap)
-}
-
-// IntegrationServiceEnvironmentManagedAPIDeploymentParameters - The integration service environment managed api deployment parameters.
+// IntegrationServiceEnvironmentManagedAPIDeploymentParameters - The integration service environment managed api deployment
+// parameters.
 type IntegrationServiceEnvironmentManagedAPIDeploymentParameters struct {
 	// The integration service environment managed api content link for deployment.
 	ContentLinkDefinition *ContentLink `json:"contentLinkDefinition,omitempty"`
@@ -2699,53 +2085,80 @@ type IntegrationServiceEnvironmentManagedAPIListResult struct {
 	Value []*IntegrationServiceEnvironmentManagedAPI `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationServiceEnvironmentManagedAPIListResult.
-func (i IntegrationServiceEnvironmentManagedAPIListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
-}
-
-// IntegrationServiceEnvironmentManagedAPIOperationsListOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedAPIOperations.List
+// IntegrationServiceEnvironmentManagedAPIOperationsClientListOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedAPIOperationsClient.List
 // method.
-type IntegrationServiceEnvironmentManagedAPIOperationsListOptions struct {
+type IntegrationServiceEnvironmentManagedAPIOperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // IntegrationServiceEnvironmentManagedAPIProperties - The integration service environment managed api properties.
 type IntegrationServiceEnvironmentManagedAPIProperties struct {
-	APIResourceProperties
 	// The integration service environment managed api deployment parameters.
 	DeploymentParameters *IntegrationServiceEnvironmentManagedAPIDeploymentParameters `json:"deploymentParameters,omitempty"`
+
+	// The integration service environment reference.
+	IntegrationServiceEnvironment *ResourceReference `json:"integrationServiceEnvironment,omitempty"`
+
+	// READ-ONLY; The API definition.
+	APIDefinitionURL *string `json:"apiDefinitionUrl,omitempty" azure:"ro"`
+
+	// READ-ONLY; The api definitions.
+	APIDefinitions *APIResourceDefinitions `json:"apiDefinitions,omitempty" azure:"ro"`
+
+	// READ-ONLY; The backend service.
+	BackendService *APIResourceBackendService `json:"backendService,omitempty" azure:"ro"`
+
+	// READ-ONLY; The capabilities.
+	Capabilities []*string `json:"capabilities,omitempty" azure:"ro"`
+
+	// READ-ONLY; The category.
+	Category *APITier `json:"category,omitempty" azure:"ro"`
+
+	// READ-ONLY; The connection parameters.
+	ConnectionParameters map[string]interface{} `json:"connectionParameters,omitempty" azure:"ro"`
+
+	// READ-ONLY; The api general information.
+	GeneralInformation *APIResourceGeneralInformation `json:"generalInformation,omitempty" azure:"ro"`
+
+	// READ-ONLY; The metadata.
+	Metadata *APIResourceMetadata `json:"metadata,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The policies for the API.
+	Policies *APIResourcePolicies `json:"policies,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state.
+	ProvisioningState *WorkflowProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The runtime urls.
+	RuntimeUrls []*string `json:"runtimeUrls,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationServiceEnvironmentManagedAPIProperties.
-func (i IntegrationServiceEnvironmentManagedAPIProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	i.APIResourceProperties.marshalInternal(objectMap)
-	populate(objectMap, "deploymentParameters", i.DeploymentParameters)
-	return json.Marshal(objectMap)
-}
-
-// IntegrationServiceEnvironmentManagedApisBeginDeleteOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedApis.BeginDelete
+// IntegrationServiceEnvironmentManagedApisClientBeginDeleteOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedApisClient.BeginDelete
 // method.
-type IntegrationServiceEnvironmentManagedApisBeginDeleteOptions struct {
+type IntegrationServiceEnvironmentManagedApisClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// IntegrationServiceEnvironmentManagedApisClientBeginPutOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedApisClient.BeginPut
+// method.
+type IntegrationServiceEnvironmentManagedApisClientBeginPutOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// IntegrationServiceEnvironmentManagedApisClientGetOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedApisClient.Get
+// method.
+type IntegrationServiceEnvironmentManagedApisClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// IntegrationServiceEnvironmentManagedApisBeginPutOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedApis.BeginPut method.
-type IntegrationServiceEnvironmentManagedApisBeginPutOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IntegrationServiceEnvironmentManagedApisGetOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedApis.Get method.
-type IntegrationServiceEnvironmentManagedApisGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IntegrationServiceEnvironmentManagedApisListOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedApis.List method.
-type IntegrationServiceEnvironmentManagedApisListOptions struct {
+// IntegrationServiceEnvironmentManagedApisClientListOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedApisClient.List
+// method.
+type IntegrationServiceEnvironmentManagedApisClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2759,15 +2172,6 @@ type IntegrationServiceEnvironmentNetworkDependency struct {
 
 	// The endpoints.
 	Endpoints []*IntegrationServiceEnvironmentNetworkEndpoint `json:"endpoints,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IntegrationServiceEnvironmentNetworkDependency.
-func (i IntegrationServiceEnvironmentNetworkDependency) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "category", i.Category)
-	populate(objectMap, "displayName", i.DisplayName)
-	populate(objectMap, "endpoints", i.Endpoints)
-	return json.Marshal(objectMap)
 }
 
 // IntegrationServiceEnvironmentNetworkDependencyHealth - The integration service environment subnet network health.
@@ -2791,17 +2195,9 @@ type IntegrationServiceEnvironmentNetworkEndpoint struct {
 	Ports []*string `json:"ports,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationServiceEnvironmentNetworkEndpoint.
-func (i IntegrationServiceEnvironmentNetworkEndpoint) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accessibility", i.Accessibility)
-	populate(objectMap, "domainName", i.DomainName)
-	populate(objectMap, "ports", i.Ports)
-	return json.Marshal(objectMap)
-}
-
-// IntegrationServiceEnvironmentNetworkHealthGetOptions contains the optional parameters for the IntegrationServiceEnvironmentNetworkHealth.Get method.
-type IntegrationServiceEnvironmentNetworkHealthGetOptions struct {
+// IntegrationServiceEnvironmentNetworkHealthClientGetOptions contains the optional parameters for the IntegrationServiceEnvironmentNetworkHealthClient.Get
+// method.
+type IntegrationServiceEnvironmentNetworkHealthClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2880,16 +2276,9 @@ type IntegrationServiceEnvironmentSKUList struct {
 	Value []*IntegrationServiceEnvironmentSKUDefinition `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationServiceEnvironmentSKUList.
-func (i IntegrationServiceEnvironmentSKUList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
-}
-
-// IntegrationServiceEnvironmentSKUsListOptions contains the optional parameters for the IntegrationServiceEnvironmentSKUs.List method.
-type IntegrationServiceEnvironmentSKUsListOptions struct {
+// IntegrationServiceEnvironmentSKUsClientListOptions contains the optional parameters for the IntegrationServiceEnvironmentSKUsClient.List
+// method.
+type IntegrationServiceEnvironmentSKUsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2905,51 +2294,49 @@ type IntegrationServiceEnvironmentSubnetNetworkHealth struct {
 	OutboundNetworkHealth *IntegrationServiceEnvironmentNetworkDependencyHealth `json:"outboundNetworkHealth,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IntegrationServiceEnvironmentSubnetNetworkHealth.
-func (i IntegrationServiceEnvironmentSubnetNetworkHealth) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "networkDependencyHealthState", i.NetworkDependencyHealthState)
-	populate(objectMap, "outboundNetworkDependencies", i.OutboundNetworkDependencies)
-	populate(objectMap, "outboundNetworkHealth", i.OutboundNetworkHealth)
-	return json.Marshal(objectMap)
-}
-
-// IntegrationServiceEnvironmentsBeginCreateOrUpdateOptions contains the optional parameters for the IntegrationServiceEnvironments.BeginCreateOrUpdate
+// IntegrationServiceEnvironmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.BeginCreateOrUpdate
 // method.
-type IntegrationServiceEnvironmentsBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+type IntegrationServiceEnvironmentsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// IntegrationServiceEnvironmentsBeginUpdateOptions contains the optional parameters for the IntegrationServiceEnvironments.BeginUpdate method.
-type IntegrationServiceEnvironmentsBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IntegrationServiceEnvironmentsDeleteOptions contains the optional parameters for the IntegrationServiceEnvironments.Delete method.
-type IntegrationServiceEnvironmentsDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IntegrationServiceEnvironmentsGetOptions contains the optional parameters for the IntegrationServiceEnvironments.Get method.
-type IntegrationServiceEnvironmentsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IntegrationServiceEnvironmentsListByResourceGroupOptions contains the optional parameters for the IntegrationServiceEnvironments.ListByResourceGroup
+// IntegrationServiceEnvironmentsClientBeginUpdateOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.BeginUpdate
 // method.
-type IntegrationServiceEnvironmentsListByResourceGroupOptions struct {
+type IntegrationServiceEnvironmentsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// IntegrationServiceEnvironmentsClientDeleteOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.Delete
+// method.
+type IntegrationServiceEnvironmentsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IntegrationServiceEnvironmentsClientGetOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.Get
+// method.
+type IntegrationServiceEnvironmentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IntegrationServiceEnvironmentsClientListByResourceGroupOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.ListByResourceGroup
+// method.
+type IntegrationServiceEnvironmentsClientListByResourceGroupOptions struct {
 	// The number of items to be included in the result.
 	Top *int32
 }
 
-// IntegrationServiceEnvironmentsListBySubscriptionOptions contains the optional parameters for the IntegrationServiceEnvironments.ListBySubscription method.
-type IntegrationServiceEnvironmentsListBySubscriptionOptions struct {
+// IntegrationServiceEnvironmentsClientListBySubscriptionOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.ListBySubscription
+// method.
+type IntegrationServiceEnvironmentsClientListBySubscriptionOptions struct {
 	// The number of items to be included in the result.
 	Top *int32
 }
 
-// IntegrationServiceEnvironmentsRestartOptions contains the optional parameters for the IntegrationServiceEnvironments.Restart method.
-type IntegrationServiceEnvironmentsRestartOptions struct {
+// IntegrationServiceEnvironmentsClientRestartOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.Restart
+// method.
+type IntegrationServiceEnvironmentsClientRestartOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2992,14 +2379,6 @@ type KeyVaultKeyCollection struct {
 	Value []*KeyVaultKey `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type KeyVaultKeyCollection.
-func (k KeyVaultKeyCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "skipToken", k.SkipToken)
-	populate(objectMap, "value", k.Value)
-	return json.Marshal(objectMap)
-}
-
 // KeyVaultKeyReference - The reference to the key vault key.
 type KeyVaultKeyReference struct {
 	// REQUIRED; The private key name in key vault.
@@ -3026,7 +2405,14 @@ type KeyVaultKeyReferenceKeyVault struct {
 
 // KeyVaultReference - The key vault reference.
 type KeyVaultReference struct {
-	ResourceReference
+	// The resource id.
+	ID *string `json:"id,omitempty"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ListKeyVaultKeysDefinition - The list key vault keys definition.
@@ -3040,17 +2426,23 @@ type ListKeyVaultKeysDefinition struct {
 
 // ManagedAPI - The managed api definition.
 type ManagedAPI struct {
-	Resource
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
 	// The api resource properties.
 	Properties *APIResourceProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ManagedAPI.
-func (m ManagedAPI) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	m.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", m.Properties)
-	return json.Marshal(objectMap)
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ManagedAPIListResult - The list of managed APIs.
@@ -3062,21 +2454,14 @@ type ManagedAPIListResult struct {
 	Value []*ManagedAPI `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ManagedAPIListResult.
-func (m ManagedAPIListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
-}
-
 // ManagedServiceIdentity - Managed service identity properties.
 type ManagedServiceIdentity struct {
-	// REQUIRED; Type of managed service identity. The type 'SystemAssigned' includes an implicitly created identity. The type 'None' will remove any identities
-	// from the resource.
+	// REQUIRED; Type of managed service identity. The type 'SystemAssigned' includes an implicitly created identity. The type
+	// 'None' will remove any identities from the resource.
 	Type *ManagedServiceIdentityType `json:"type,omitempty"`
 
-	// The list of user assigned identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form:
+	// The list of user assigned identities associated with the resource. The user identity dictionary key references will be
+	// ARM resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}
 	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
 
@@ -3085,16 +2470,6 @@ type ManagedServiceIdentity struct {
 
 	// READ-ONLY; Tenant of managed service identity.
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ManagedServiceIdentity.
-func (m ManagedServiceIdentity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "principalId", m.PrincipalID)
-	populate(objectMap, "tenantId", m.TenantID)
-	populate(objectMap, "type", m.Type)
-	populate(objectMap, "userAssignedIdentities", m.UserAssignedIdentities)
-	return json.Marshal(objectMap)
 }
 
 // NetworkConfiguration - The network configuration.
@@ -3109,26 +2484,10 @@ type NetworkConfiguration struct {
 	VirtualNetworkAddressSpace *string `json:"virtualNetworkAddressSpace,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NetworkConfiguration.
-func (n NetworkConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accessEndpoint", n.AccessEndpoint)
-	populate(objectMap, "subnets", n.Subnets)
-	populate(objectMap, "virtualNetworkAddressSpace", n.VirtualNetworkAddressSpace)
-	return json.Marshal(objectMap)
-}
-
 // OpenAuthenticationAccessPolicies - AuthenticationPolicy of type Open.
 type OpenAuthenticationAccessPolicies struct {
 	// Open authentication policies.
 	Policies map[string]*OpenAuthenticationAccessPolicy `json:"policies,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OpenAuthenticationAccessPolicies.
-func (o OpenAuthenticationAccessPolicies) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "policies", o.Policies)
-	return json.Marshal(objectMap)
 }
 
 // OpenAuthenticationAccessPolicy - Open authentication access policy defined by user.
@@ -3138,14 +2497,6 @@ type OpenAuthenticationAccessPolicy struct {
 
 	// Type of provider for OAuth.
 	Type *OpenAuthenticationProviderType `json:"type,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OpenAuthenticationAccessPolicy.
-func (o OpenAuthenticationAccessPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "claims", o.Claims)
-	populate(objectMap, "type", o.Type)
-	return json.Marshal(objectMap)
 }
 
 // OpenAuthenticationPolicyClaim - Open authentication policy claim.
@@ -3169,7 +2520,7 @@ type Operation struct {
 	Origin *string `json:"origin,omitempty"`
 
 	// The properties.
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties interface{} `json:"properties,omitempty"`
 }
 
 // OperationDisplay - The object that represents the operation.
@@ -3187,7 +2538,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationListResult - Result of the request to list Logic operations. It contains a list of operations and a URL link to get the next set of results.
+// OperationListResult - Result of the request to list Logic operations. It contains a list of operations and a URL link to
+// get the next set of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -3196,106 +2548,47 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationResult - The operation result definition.
 type OperationResult struct {
-	OperationResultProperties
-	IterationCount *int32 `json:"iterationCount,omitempty"`
+	// The workflow scope repetition code.
+	Code *string `json:"code,omitempty"`
+
+	// The correlation properties.
+	Correlation *RunActionCorrelation `json:"correlation,omitempty"`
+
+	// The end time of the workflow scope repetition.
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// Anything
+	Error          interface{} `json:"error,omitempty"`
+	IterationCount *int32      `json:"iterationCount,omitempty"`
 
 	// Gets the retry histories.
 	RetryHistory []*RetryHistory `json:"retryHistory,omitempty"`
 
+	// The start time of the workflow scope repetition.
+	StartTime *time.Time `json:"startTime,omitempty"`
+
+	// The status of the workflow scope repetition.
+	Status *WorkflowStatus `json:"status,omitempty"`
+
 	// READ-ONLY; Gets the inputs.
-	Inputs map[string]interface{} `json:"inputs,omitempty" azure:"ro"`
+	Inputs interface{} `json:"inputs,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the link to inputs.
 	InputsLink *ContentLink `json:"inputsLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the outputs.
-	Outputs map[string]interface{} `json:"outputs,omitempty" azure:"ro"`
+	Outputs interface{} `json:"outputs,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the link to outputs.
 	OutputsLink *ContentLink `json:"outputsLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the tracked properties.
-	TrackedProperties map[string]interface{} `json:"trackedProperties,omitempty" azure:"ro"`
+	TrackedProperties interface{} `json:"trackedProperties,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the tracking id.
 	TrackingID *string `json:"trackingId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationResult.
-func (o OperationResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	o.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OperationResult.
-func (o *OperationResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return o.unmarshalInternal(rawMsg)
-}
-
-func (o OperationResult) marshalInternal(objectMap map[string]interface{}) {
-	o.OperationResultProperties.marshalInternal(objectMap)
-	populate(objectMap, "inputs", o.Inputs)
-	populate(objectMap, "inputsLink", o.InputsLink)
-	populate(objectMap, "iterationCount", o.IterationCount)
-	populate(objectMap, "outputs", o.Outputs)
-	populate(objectMap, "outputsLink", o.OutputsLink)
-	populate(objectMap, "retryHistory", o.RetryHistory)
-	populate(objectMap, "trackedProperties", o.TrackedProperties)
-	populate(objectMap, "trackingId", o.TrackingID)
-}
-
-func (o *OperationResult) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "inputs":
-			err = unpopulate(val, &o.Inputs)
-			delete(rawMsg, key)
-		case "inputsLink":
-			err = unpopulate(val, &o.InputsLink)
-			delete(rawMsg, key)
-		case "iterationCount":
-			err = unpopulate(val, &o.IterationCount)
-			delete(rawMsg, key)
-		case "outputs":
-			err = unpopulate(val, &o.Outputs)
-			delete(rawMsg, key)
-		case "outputsLink":
-			err = unpopulate(val, &o.OutputsLink)
-			delete(rawMsg, key)
-		case "retryHistory":
-			err = unpopulate(val, &o.RetryHistory)
-			delete(rawMsg, key)
-		case "trackedProperties":
-			err = unpopulate(val, &o.TrackedProperties)
-			delete(rawMsg, key)
-		case "trackingId":
-			err = unpopulate(val, &o.TrackingID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := o.OperationResultProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // OperationResultProperties - The run operation result properties.
@@ -3319,63 +2612,8 @@ type OperationResultProperties struct {
 	Status *WorkflowStatus `json:"status,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationResultProperties.
-func (o OperationResultProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	o.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OperationResultProperties.
-func (o *OperationResultProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return o.unmarshalInternal(rawMsg)
-}
-
-func (o OperationResultProperties) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "code", o.Code)
-	populate(objectMap, "correlation", o.Correlation)
-	populateTimeRFC3339(objectMap, "endTime", o.EndTime)
-	populate(objectMap, "error", o.Error)
-	populateTimeRFC3339(objectMap, "startTime", o.StartTime)
-	populate(objectMap, "status", o.Status)
-}
-
-func (o *OperationResultProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "code":
-			err = unpopulate(val, &o.Code)
-			delete(rawMsg, key)
-		case "correlation":
-			err = unpopulate(val, &o.Correlation)
-			delete(rawMsg, key)
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &o.EndTime)
-			delete(rawMsg, key)
-		case "error":
-			err = unpopulate(val, &o.Error)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &o.StartTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &o.Status)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3401,17 +2639,6 @@ type RecurrenceSchedule struct {
 
 	// The days of the week.
 	WeekDays []*DaysOfWeek `json:"weekDays,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecurrenceSchedule.
-func (r RecurrenceSchedule) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "hours", r.Hours)
-	populate(objectMap, "minutes", r.Minutes)
-	populate(objectMap, "monthDays", r.MonthDays)
-	populate(objectMap, "monthlyOccurrences", r.MonthlyOccurrences)
-	populate(objectMap, "weekDays", r.WeekDays)
-	return json.Marshal(objectMap)
 }
 
 // RecurrenceScheduleOccurrence - The recurrence schedule occurrence.
@@ -3441,7 +2668,7 @@ type RepetitionIndex struct {
 // Request - A request.
 type Request struct {
 	// A list of all the headers attached to the request.
-	Headers map[string]interface{} `json:"headers,omitempty"`
+	Headers interface{} `json:"headers,omitempty"`
 
 	// The HTTP method used for the request.
 	Method *string `json:"method,omitempty"`
@@ -3452,17 +2679,23 @@ type Request struct {
 
 // RequestHistory - The request history.
 type RequestHistory struct {
-	Resource
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
 	// The request history properties.
 	Properties *RequestHistoryProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type RequestHistory.
-func (r RequestHistory) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", r.Properties)
-	return json.Marshal(objectMap)
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // RequestHistoryListResult - The list of workflow request histories.
@@ -3472,14 +2705,6 @@ type RequestHistoryListResult struct {
 
 	// A list of workflow request histories.
 	Value []*RequestHistory `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RequestHistoryListResult.
-func (r RequestHistoryListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // RequestHistoryProperties - The request history.
@@ -3495,45 +2720,6 @@ type RequestHistoryProperties struct {
 
 	// The time the request started.
 	StartTime *time.Time `json:"startTime,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RequestHistoryProperties.
-func (r RequestHistoryProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", r.EndTime)
-	populate(objectMap, "request", r.Request)
-	populate(objectMap, "response", r.Response)
-	populateTimeRFC3339(objectMap, "startTime", r.StartTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RequestHistoryProperties.
-func (r *RequestHistoryProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &r.EndTime)
-			delete(rawMsg, key)
-		case "request":
-			err = unpopulate(val, &r.Request)
-			delete(rawMsg, key)
-		case "response":
-			err = unpopulate(val, &r.Response)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &r.StartTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // Resource - The base resource type.
@@ -3554,21 +2740,6 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-}
-
 // ResourceReference - The resource reference.
 type ResourceReference struct {
 	// The resource id.
@@ -3587,7 +2758,7 @@ type Response struct {
 	BodyLink *ContentLink `json:"bodyLink,omitempty"`
 
 	// A list of all the headers attached to the response.
-	Headers map[string]interface{} `json:"headers,omitempty"`
+	Headers interface{} `json:"headers,omitempty"`
 
 	// The status code of the response.
 	StatusCode *int32 `json:"statusCode,omitempty"`
@@ -3614,66 +2785,16 @@ type RetryHistory struct {
 	StartTime *time.Time `json:"startTime,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RetryHistory.
-func (r RetryHistory) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "clientRequestId", r.ClientRequestID)
-	populate(objectMap, "code", r.Code)
-	populateTimeRFC3339(objectMap, "endTime", r.EndTime)
-	populate(objectMap, "error", r.Error)
-	populate(objectMap, "serviceRequestId", r.ServiceRequestID)
-	populateTimeRFC3339(objectMap, "startTime", r.StartTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RetryHistory.
-func (r *RetryHistory) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "clientRequestId":
-			err = unpopulate(val, &r.ClientRequestID)
-			delete(rawMsg, key)
-		case "code":
-			err = unpopulate(val, &r.Code)
-			delete(rawMsg, key)
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &r.EndTime)
-			delete(rawMsg, key)
-		case "error":
-			err = unpopulate(val, &r.Error)
-			delete(rawMsg, key)
-		case "serviceRequestId":
-			err = unpopulate(val, &r.ServiceRequestID)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &r.StartTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RunActionCorrelation - The workflow run action correlation properties.
 type RunActionCorrelation struct {
-	RunCorrelation
 	// The action tracking identifier.
 	ActionTrackingID *string `json:"actionTrackingId,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type RunActionCorrelation.
-func (r RunActionCorrelation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.RunCorrelation.marshalInternal(objectMap)
-	populate(objectMap, "actionTrackingId", r.ActionTrackingID)
-	return json.Marshal(objectMap)
+	// The client keywords.
+	ClientKeywords []*string `json:"clientKeywords,omitempty"`
+
+	// The client tracking identifier.
+	ClientTrackingID *string `json:"clientTrackingId,omitempty"`
 }
 
 // RunCorrelation - The correlation properties.
@@ -3683,18 +2804,6 @@ type RunCorrelation struct {
 
 	// The client tracking identifier.
 	ClientTrackingID *string `json:"clientTrackingId,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RunCorrelation.
-func (r RunCorrelation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (r RunCorrelation) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "clientKeywords", r.ClientKeywords)
-	populate(objectMap, "clientTrackingId", r.ClientTrackingID)
 }
 
 // SKU - The sku type.
@@ -3729,7 +2838,8 @@ type SwaggerCustomDynamicList struct {
 	// The path to a property which defines the value which should be used.
 	ItemValuePath *string `json:"itemValuePath,omitempty"`
 
-	// The path to a response property (relative to the response object, not the response body) which contains an array of dynamic value items.
+	// The path to a response property (relative to the response object, not the response body) which contains an array of dynamic
+	// value items.
 	ItemsPath *string `json:"itemsPath,omitempty"`
 
 	// The operation id to fetch dynamic schema.
@@ -3737,18 +2847,6 @@ type SwaggerCustomDynamicList struct {
 
 	// The parameters.
 	Parameters map[string]*SwaggerCustomDynamicProperties `json:"parameters,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SwaggerCustomDynamicList.
-func (s SwaggerCustomDynamicList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "builtInOperation", s.BuiltInOperation)
-	populate(objectMap, "itemTitlePath", s.ItemTitlePath)
-	populate(objectMap, "itemValuePath", s.ItemValuePath)
-	populate(objectMap, "itemsPath", s.ItemsPath)
-	populate(objectMap, "operationId", s.OperationID)
-	populate(objectMap, "parameters", s.Parameters)
-	return json.Marshal(objectMap)
 }
 
 // SwaggerCustomDynamicProperties - The swagger custom dynamic properties.
@@ -3763,34 +2861,16 @@ type SwaggerCustomDynamicProperties struct {
 	ValuePath *string `json:"valuePath,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SwaggerCustomDynamicProperties.
-func (s SwaggerCustomDynamicProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "operationId", s.OperationID)
-	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "valuePath", s.ValuePath)
-	return json.Marshal(objectMap)
-}
-
 // SwaggerCustomDynamicSchema - The swagger custom dynamic schema.
 type SwaggerCustomDynamicSchema struct {
 	// The operation id to fetch dynamic schema.
 	OperationID *string `json:"operationId,omitempty"`
 
 	// The operation parameters.
-	Parameters map[string]map[string]interface{} `json:"parameters,omitempty"`
+	Parameters map[string]interface{} `json:"parameters,omitempty"`
 
 	// Json pointer to the dynamic schema on the response body.
 	ValuePath *string `json:"valuePath,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SwaggerCustomDynamicSchema.
-func (s SwaggerCustomDynamicSchema) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "operationId", s.OperationID)
-	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "valuePath", s.ValuePath)
-	return json.Marshal(objectMap)
 }
 
 // SwaggerCustomDynamicTree - The swagger custom dynamic tree.
@@ -3832,20 +2912,6 @@ type SwaggerCustomDynamicTreeCommand struct {
 	SelectableFilter *string `json:"selectableFilter,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SwaggerCustomDynamicTreeCommand.
-func (s SwaggerCustomDynamicTreeCommand) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "itemFullTitlePath", s.ItemFullTitlePath)
-	populate(objectMap, "itemIsParent", s.ItemIsParent)
-	populate(objectMap, "itemTitlePath", s.ItemTitlePath)
-	populate(objectMap, "itemValuePath", s.ItemValuePath)
-	populate(objectMap, "itemsPath", s.ItemsPath)
-	populate(objectMap, "operationId", s.OperationID)
-	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "selectableFilter", s.SelectableFilter)
-	return json.Marshal(objectMap)
-}
-
 // SwaggerCustomDynamicTreeParameter - The swagger custom dynamic tree parameter.
 type SwaggerCustomDynamicTreeParameter struct {
 	// The parameter reference.
@@ -3858,7 +2924,7 @@ type SwaggerCustomDynamicTreeParameter struct {
 	SelectedItemValuePath *string `json:"selectedItemValuePath,omitempty"`
 
 	// The parameter value.
-	Value map[string]interface{} `json:"value,omitempty"`
+	Value interface{} `json:"value,omitempty"`
 }
 
 // SwaggerCustomDynamicTreeSettings - The swagger custom dynamic tree settings.
@@ -3876,25 +2942,16 @@ type SwaggerExternalDocumentation struct {
 	Description *string `json:"description,omitempty"`
 
 	// The vendor extensions.
-	Extensions map[string]map[string]interface{} `json:"extensions,omitempty"`
+	Extensions map[string]interface{} `json:"extensions,omitempty"`
 
 	// The documentation Uri.
 	URI *string `json:"uri,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SwaggerExternalDocumentation.
-func (s SwaggerExternalDocumentation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", s.Description)
-	populate(objectMap, "extensions", s.Extensions)
-	populate(objectMap, "uri", s.URI)
-	return json.Marshal(objectMap)
-}
-
 // SwaggerSchema - The swagger schema.
 type SwaggerSchema struct {
 	// The additional properties.
-	AdditionalProperties map[string]interface{} `json:"additionalProperties,omitempty"`
+	AdditionalProperties interface{} `json:"additionalProperties,omitempty"`
 
 	// The schemas which must pass validation when this schema is used.
 	AllOf []*SwaggerSchema `json:"allOf,omitempty"`
@@ -3915,7 +2972,7 @@ type SwaggerSchema struct {
 	DynamicTree *SwaggerCustomDynamicTree `json:"dynamicTree,omitempty"`
 
 	// The example value.
-	Example map[string]interface{} `json:"example,omitempty"`
+	Example interface{} `json:"example,omitempty"`
 
 	// The external documentation.
 	ExternalDocs *SwaggerExternalDocumentation `json:"externalDocs,omitempty"`
@@ -3954,39 +3011,13 @@ type SwaggerSchema struct {
 	XML *SwaggerXML `json:"xml,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SwaggerSchema.
-func (s SwaggerSchema) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalProperties", s.AdditionalProperties)
-	populate(objectMap, "allOf", s.AllOf)
-	populate(objectMap, "discriminator", s.Discriminator)
-	populate(objectMap, "dynamicListNew", s.DynamicListNew)
-	populate(objectMap, "dynamicSchemaNew", s.DynamicSchemaNew)
-	populate(objectMap, "dynamicSchemaOld", s.DynamicSchemaOld)
-	populate(objectMap, "dynamicTree", s.DynamicTree)
-	populate(objectMap, "example", s.Example)
-	populate(objectMap, "externalDocs", s.ExternalDocs)
-	populate(objectMap, "items", s.Items)
-	populate(objectMap, "maxProperties", s.MaxProperties)
-	populate(objectMap, "minProperties", s.MinProperties)
-	populate(objectMap, "notificationUrlExtension", s.NotificationURLExtension)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "readOnly", s.ReadOnly)
-	populate(objectMap, "ref", s.Ref)
-	populate(objectMap, "required", s.Required)
-	populate(objectMap, "title", s.Title)
-	populate(objectMap, "type", s.Type)
-	populate(objectMap, "xml", s.XML)
-	return json.Marshal(objectMap)
-}
-
 // SwaggerXML - The Swagger XML.
 type SwaggerXML struct {
 	// Indicates whether the property should be an attribute instead of an element.
 	Attribute *bool `json:"attribute,omitempty"`
 
 	// The vendor extensions.
-	Extensions map[string]map[string]interface{} `json:"extensions,omitempty"`
+	Extensions map[string]interface{} `json:"extensions,omitempty"`
 
 	// The xml element or attribute name.
 	Name *string `json:"name,omitempty"`
@@ -3999,18 +3030,6 @@ type SwaggerXML struct {
 
 	// Indicates whether the array elements are wrapped in a container element.
 	Wrapped *bool `json:"wrapped,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SwaggerXML.
-func (s SwaggerXML) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "attribute", s.Attribute)
-	populate(objectMap, "extensions", s.Extensions)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "namespace", s.Namespace)
-	populate(objectMap, "prefix", s.Prefix)
-	populate(objectMap, "wrapped", s.Wrapped)
-	return json.Marshal(objectMap)
 }
 
 // TrackingEvent - The tracking event.
@@ -4028,50 +3047,7 @@ type TrackingEvent struct {
 	Error *TrackingEventErrorInfo `json:"error,omitempty"`
 
 	// The record.
-	Record map[string]interface{} `json:"record,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TrackingEvent.
-func (t TrackingEvent) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "error", t.Error)
-	populate(objectMap, "eventLevel", t.EventLevel)
-	populateTimeRFC3339(objectMap, "eventTime", t.EventTime)
-	populate(objectMap, "record", t.Record)
-	populate(objectMap, "recordType", t.RecordType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TrackingEvent.
-func (t *TrackingEvent) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "error":
-			err = unpopulate(val, &t.Error)
-			delete(rawMsg, key)
-		case "eventLevel":
-			err = unpopulate(val, &t.EventLevel)
-			delete(rawMsg, key)
-		case "eventTime":
-			err = unpopulateTimeRFC3339(val, &t.EventTime)
-			delete(rawMsg, key)
-		case "record":
-			err = unpopulate(val, &t.Record)
-			delete(rawMsg, key)
-		case "recordType":
-			err = unpopulate(val, &t.RecordType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	Record interface{} `json:"record,omitempty"`
 }
 
 // TrackingEventErrorInfo - The tracking event error info.
@@ -4095,15 +3071,6 @@ type TrackingEventsDefinition struct {
 	TrackEventsOptions *TrackEventsOperationOptions `json:"trackEventsOptions,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TrackingEventsDefinition.
-func (t TrackingEventsDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "events", t.Events)
-	populate(objectMap, "sourceType", t.SourceType)
-	populate(objectMap, "trackEventsOptions", t.TrackEventsOptions)
-	return json.Marshal(objectMap)
-}
-
 // UserAssignedIdentity - User Assigned identity properties.
 type UserAssignedIdentity struct {
 	// READ-ONLY; Client Id of user assigned identity
@@ -4115,21 +3082,26 @@ type UserAssignedIdentity struct {
 
 // Workflow - The workflow type.
 type Workflow struct {
-	Resource
 	// Managed service identity properties.
 	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
 	// The workflow properties.
 	Properties *WorkflowProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Workflow.
-func (w Workflow) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	w.Resource.marshalInternal(objectMap)
-	populate(objectMap, "identity", w.Identity)
-	populate(objectMap, "properties", w.Properties)
-	return json.Marshal(objectMap)
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // WorkflowFilter - The workflow filter.
@@ -4147,19 +3119,22 @@ type WorkflowListResult struct {
 	Value []*Workflow `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkflowListResult.
-func (w WorkflowListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", w.NextLink)
-	populate(objectMap, "value", w.Value)
-	return json.Marshal(objectMap)
-}
-
 // WorkflowOutputParameter - The workflow output parameter.
 type WorkflowOutputParameter struct {
-	WorkflowParameter
+	// The description.
+	Description *string `json:"description,omitempty"`
+
+	// The metadata.
+	Metadata interface{} `json:"metadata,omitempty"`
+
+	// The type.
+	Type *ParameterType `json:"type,omitempty"`
+
+	// The value.
+	Value interface{} `json:"value,omitempty"`
+
 	// READ-ONLY; Gets the error.
-	Error map[string]interface{} `json:"error,omitempty" azure:"ro"`
+	Error interface{} `json:"error,omitempty" azure:"ro"`
 }
 
 // WorkflowParameter - The workflow parameters.
@@ -4168,13 +3143,13 @@ type WorkflowParameter struct {
 	Description *string `json:"description,omitempty"`
 
 	// The metadata.
-	Metadata map[string]interface{} `json:"metadata,omitempty"`
+	Metadata interface{} `json:"metadata,omitempty"`
 
 	// The type.
 	Type *ParameterType `json:"type,omitempty"`
 
 	// The value.
-	Value map[string]interface{} `json:"value,omitempty"`
+	Value interface{} `json:"value,omitempty"`
 }
 
 // WorkflowProperties - The workflow properties.
@@ -4183,7 +3158,7 @@ type WorkflowProperties struct {
 	AccessControl *FlowAccessControlConfiguration `json:"accessControl,omitempty"`
 
 	// The definition.
-	Definition map[string]interface{} `json:"definition,omitempty"`
+	Definition interface{} `json:"definition,omitempty"`
 
 	// The endpoints configuration.
 	EndpointsConfiguration *FlowEndpointsConfiguration `json:"endpointsConfiguration,omitempty"`
@@ -4219,91 +3194,25 @@ type WorkflowProperties struct {
 	Version *string `json:"version,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkflowProperties.
-func (w WorkflowProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accessControl", w.AccessControl)
-	populate(objectMap, "accessEndpoint", w.AccessEndpoint)
-	populateTimeRFC3339(objectMap, "changedTime", w.ChangedTime)
-	populateTimeRFC3339(objectMap, "createdTime", w.CreatedTime)
-	populate(objectMap, "definition", w.Definition)
-	populate(objectMap, "endpointsConfiguration", w.EndpointsConfiguration)
-	populate(objectMap, "integrationAccount", w.IntegrationAccount)
-	populate(objectMap, "integrationServiceEnvironment", w.IntegrationServiceEnvironment)
-	populate(objectMap, "parameters", w.Parameters)
-	populate(objectMap, "provisioningState", w.ProvisioningState)
-	populate(objectMap, "sku", w.SKU)
-	populate(objectMap, "state", w.State)
-	populate(objectMap, "version", w.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type WorkflowProperties.
-func (w *WorkflowProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "accessControl":
-			err = unpopulate(val, &w.AccessControl)
-			delete(rawMsg, key)
-		case "accessEndpoint":
-			err = unpopulate(val, &w.AccessEndpoint)
-			delete(rawMsg, key)
-		case "changedTime":
-			err = unpopulateTimeRFC3339(val, &w.ChangedTime)
-			delete(rawMsg, key)
-		case "createdTime":
-			err = unpopulateTimeRFC3339(val, &w.CreatedTime)
-			delete(rawMsg, key)
-		case "definition":
-			err = unpopulate(val, &w.Definition)
-			delete(rawMsg, key)
-		case "endpointsConfiguration":
-			err = unpopulate(val, &w.EndpointsConfiguration)
-			delete(rawMsg, key)
-		case "integrationAccount":
-			err = unpopulate(val, &w.IntegrationAccount)
-			delete(rawMsg, key)
-		case "integrationServiceEnvironment":
-			err = unpopulate(val, &w.IntegrationServiceEnvironment)
-			delete(rawMsg, key)
-		case "parameters":
-			err = unpopulate(val, &w.Parameters)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &w.ProvisioningState)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, &w.SKU)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, &w.State)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &w.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // WorkflowReference - The workflow reference.
 type WorkflowReference struct {
-	ResourceReference
+	// The resource id.
+	ID *string `json:"id,omitempty"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // WorkflowRun - The workflow run.
 type WorkflowRun struct {
-	SubResource
 	// The workflow run properties.
 	Properties *WorkflowRunProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the workflow run name.
 	Name *string `json:"name,omitempty" azure:"ro"`
@@ -4314,9 +3223,11 @@ type WorkflowRun struct {
 
 // WorkflowRunAction - The workflow run action.
 type WorkflowRunAction struct {
-	SubResource
 	// The workflow run action properties.
 	Properties *WorkflowRunActionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the workflow run action name.
 	Name *string `json:"name,omitempty" azure:"ro"`
@@ -4340,14 +3251,6 @@ type WorkflowRunActionListResult struct {
 	Value []*WorkflowRunAction `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkflowRunActionListResult.
-func (w WorkflowRunActionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", w.NextLink)
-	populate(objectMap, "value", w.Value)
-	return json.Marshal(objectMap)
-}
-
 // WorkflowRunActionProperties - The workflow run action properties.
 type WorkflowRunActionProperties struct {
 	// The correlation properties.
@@ -4363,7 +3266,7 @@ type WorkflowRunActionProperties struct {
 	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the error.
-	Error map[string]interface{} `json:"error,omitempty" azure:"ro"`
+	Error interface{} `json:"error,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the link to inputs.
 	InputsLink *ContentLink `json:"inputsLink,omitempty" azure:"ro"`
@@ -4378,92 +3281,31 @@ type WorkflowRunActionProperties struct {
 	Status *WorkflowStatus `json:"status,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the tracked properties.
-	TrackedProperties map[string]interface{} `json:"trackedProperties,omitempty" azure:"ro"`
+	TrackedProperties interface{} `json:"trackedProperties,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the tracking id.
 	TrackingID *string `json:"trackingId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkflowRunActionProperties.
-func (w WorkflowRunActionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", w.Code)
-	populate(objectMap, "correlation", w.Correlation)
-	populateTimeRFC3339(objectMap, "endTime", w.EndTime)
-	populate(objectMap, "error", w.Error)
-	populate(objectMap, "inputsLink", w.InputsLink)
-	populate(objectMap, "outputsLink", w.OutputsLink)
-	populate(objectMap, "retryHistory", w.RetryHistory)
-	populateTimeRFC3339(objectMap, "startTime", w.StartTime)
-	populate(objectMap, "status", w.Status)
-	populate(objectMap, "trackedProperties", w.TrackedProperties)
-	populate(objectMap, "trackingId", w.TrackingID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type WorkflowRunActionProperties.
-func (w *WorkflowRunActionProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "code":
-			err = unpopulate(val, &w.Code)
-			delete(rawMsg, key)
-		case "correlation":
-			err = unpopulate(val, &w.Correlation)
-			delete(rawMsg, key)
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &w.EndTime)
-			delete(rawMsg, key)
-		case "error":
-			err = unpopulate(val, &w.Error)
-			delete(rawMsg, key)
-		case "inputsLink":
-			err = unpopulate(val, &w.InputsLink)
-			delete(rawMsg, key)
-		case "outputsLink":
-			err = unpopulate(val, &w.OutputsLink)
-			delete(rawMsg, key)
-		case "retryHistory":
-			err = unpopulate(val, &w.RetryHistory)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &w.StartTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &w.Status)
-			delete(rawMsg, key)
-		case "trackedProperties":
-			err = unpopulate(val, &w.TrackedProperties)
-			delete(rawMsg, key)
-		case "trackingId":
-			err = unpopulate(val, &w.TrackingID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // WorkflowRunActionRepetitionDefinition - The workflow run action repetition definition.
 type WorkflowRunActionRepetitionDefinition struct {
-	Resource
 	// REQUIRED; The workflow run action repetition properties definition.
 	Properties *WorkflowRunActionRepetitionProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type WorkflowRunActionRepetitionDefinition.
-func (w WorkflowRunActionRepetitionDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	w.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", w.Properties)
-	return json.Marshal(objectMap)
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // WorkflowRunActionRepetitionDefinitionCollection - A collection of workflow run action repetitions.
@@ -4473,109 +3315,119 @@ type WorkflowRunActionRepetitionDefinitionCollection struct {
 	Value    []*WorkflowRunActionRepetitionDefinition `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkflowRunActionRepetitionDefinitionCollection.
-func (w WorkflowRunActionRepetitionDefinitionCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", w.NextLink)
-	populate(objectMap, "value", w.Value)
-	return json.Marshal(objectMap)
-}
-
 // WorkflowRunActionRepetitionProperties - The workflow run action repetition properties definition.
 type WorkflowRunActionRepetitionProperties struct {
-	OperationResult
+	// The workflow scope repetition code.
+	Code *string `json:"code,omitempty"`
+
+	// The correlation properties.
+	Correlation *RunActionCorrelation `json:"correlation,omitempty"`
+
+	// The end time of the workflow scope repetition.
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// Anything
+	Error          interface{} `json:"error,omitempty"`
+	IterationCount *int32      `json:"iterationCount,omitempty"`
+
 	// The repetition indexes.
 	RepetitionIndexes []*RepetitionIndex `json:"repetitionIndexes,omitempty"`
+
+	// Gets the retry histories.
+	RetryHistory []*RetryHistory `json:"retryHistory,omitempty"`
+
+	// The start time of the workflow scope repetition.
+	StartTime *time.Time `json:"startTime,omitempty"`
+
+	// The status of the workflow scope repetition.
+	Status *WorkflowStatus `json:"status,omitempty"`
+
+	// READ-ONLY; Gets the inputs.
+	Inputs interface{} `json:"inputs,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the link to inputs.
+	InputsLink *ContentLink `json:"inputsLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the outputs.
+	Outputs interface{} `json:"outputs,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the link to outputs.
+	OutputsLink *ContentLink `json:"outputsLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the tracked properties.
+	TrackedProperties interface{} `json:"trackedProperties,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the tracking id.
+	TrackingID *string `json:"trackingId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkflowRunActionRepetitionProperties.
-func (w WorkflowRunActionRepetitionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	w.OperationResult.marshalInternal(objectMap)
-	populate(objectMap, "repetitionIndexes", w.RepetitionIndexes)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type WorkflowRunActionRepetitionProperties.
-func (w *WorkflowRunActionRepetitionProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "repetitionIndexes":
-			err = unpopulate(val, &w.RepetitionIndexes)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := w.OperationResult.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// WorkflowRunActionRepetitionsGetOptions contains the optional parameters for the WorkflowRunActionRepetitions.Get method.
-type WorkflowRunActionRepetitionsGetOptions struct {
+// WorkflowRunActionRepetitionsClientGetOptions contains the optional parameters for the WorkflowRunActionRepetitionsClient.Get
+// method.
+type WorkflowRunActionRepetitionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunActionRepetitionsListExpressionTracesOptions contains the optional parameters for the WorkflowRunActionRepetitions.ListExpressionTraces method.
-type WorkflowRunActionRepetitionsListExpressionTracesOptions struct {
+// WorkflowRunActionRepetitionsClientListExpressionTracesOptions contains the optional parameters for the WorkflowRunActionRepetitionsClient.ListExpressionTraces
+// method.
+type WorkflowRunActionRepetitionsClientListExpressionTracesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunActionRepetitionsListOptions contains the optional parameters for the WorkflowRunActionRepetitions.List method.
-type WorkflowRunActionRepetitionsListOptions struct {
+// WorkflowRunActionRepetitionsClientListOptions contains the optional parameters for the WorkflowRunActionRepetitionsClient.List
+// method.
+type WorkflowRunActionRepetitionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunActionRepetitionsRequestHistoriesGetOptions contains the optional parameters for the WorkflowRunActionRepetitionsRequestHistories.Get method.
-type WorkflowRunActionRepetitionsRequestHistoriesGetOptions struct {
+// WorkflowRunActionRepetitionsRequestHistoriesClientGetOptions contains the optional parameters for the WorkflowRunActionRepetitionsRequestHistoriesClient.Get
+// method.
+type WorkflowRunActionRepetitionsRequestHistoriesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunActionRepetitionsRequestHistoriesListOptions contains the optional parameters for the WorkflowRunActionRepetitionsRequestHistories.List method.
-type WorkflowRunActionRepetitionsRequestHistoriesListOptions struct {
+// WorkflowRunActionRepetitionsRequestHistoriesClientListOptions contains the optional parameters for the WorkflowRunActionRepetitionsRequestHistoriesClient.List
+// method.
+type WorkflowRunActionRepetitionsRequestHistoriesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunActionRequestHistoriesGetOptions contains the optional parameters for the WorkflowRunActionRequestHistories.Get method.
-type WorkflowRunActionRequestHistoriesGetOptions struct {
+// WorkflowRunActionRequestHistoriesClientGetOptions contains the optional parameters for the WorkflowRunActionRequestHistoriesClient.Get
+// method.
+type WorkflowRunActionRequestHistoriesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunActionRequestHistoriesListOptions contains the optional parameters for the WorkflowRunActionRequestHistories.List method.
-type WorkflowRunActionRequestHistoriesListOptions struct {
+// WorkflowRunActionRequestHistoriesClientListOptions contains the optional parameters for the WorkflowRunActionRequestHistoriesClient.List
+// method.
+type WorkflowRunActionRequestHistoriesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunActionScopeRepetitionsGetOptions contains the optional parameters for the WorkflowRunActionScopeRepetitions.Get method.
-type WorkflowRunActionScopeRepetitionsGetOptions struct {
+// WorkflowRunActionScopeRepetitionsClientGetOptions contains the optional parameters for the WorkflowRunActionScopeRepetitionsClient.Get
+// method.
+type WorkflowRunActionScopeRepetitionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunActionScopeRepetitionsListOptions contains the optional parameters for the WorkflowRunActionScopeRepetitions.List method.
-type WorkflowRunActionScopeRepetitionsListOptions struct {
+// WorkflowRunActionScopeRepetitionsClientListOptions contains the optional parameters for the WorkflowRunActionScopeRepetitionsClient.List
+// method.
+type WorkflowRunActionScopeRepetitionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunActionsGetOptions contains the optional parameters for the WorkflowRunActions.Get method.
-type WorkflowRunActionsGetOptions struct {
+// WorkflowRunActionsClientGetOptions contains the optional parameters for the WorkflowRunActionsClient.Get method.
+type WorkflowRunActionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunActionsListExpressionTracesOptions contains the optional parameters for the WorkflowRunActions.ListExpressionTraces method.
-type WorkflowRunActionsListExpressionTracesOptions struct {
+// WorkflowRunActionsClientListExpressionTracesOptions contains the optional parameters for the WorkflowRunActionsClient.ListExpressionTraces
+// method.
+type WorkflowRunActionsClientListExpressionTracesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunActionsListOptions contains the optional parameters for the WorkflowRunActions.List method.
-type WorkflowRunActionsListOptions struct {
+// WorkflowRunActionsClientListOptions contains the optional parameters for the WorkflowRunActionsClient.List method.
+type WorkflowRunActionsClientListOptions struct {
 	// The filter to apply on the operation. Options for filters include: Status.
 	Filter *string
 	// The number of items to be included in the result.
@@ -4597,16 +3449,8 @@ type WorkflowRunListResult struct {
 	Value []*WorkflowRun `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkflowRunListResult.
-func (w WorkflowRunListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", w.NextLink)
-	populate(objectMap, "value", w.Value)
-	return json.Marshal(objectMap)
-}
-
-// WorkflowRunOperationsGetOptions contains the optional parameters for the WorkflowRunOperations.Get method.
-type WorkflowRunOperationsGetOptions struct {
+// WorkflowRunOperationsClientGetOptions contains the optional parameters for the WorkflowRunOperationsClient.Get method.
+type WorkflowRunOperationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4625,7 +3469,7 @@ type WorkflowRunProperties struct {
 	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the error.
-	Error map[string]interface{} `json:"error,omitempty" azure:"ro"`
+	Error interface{} `json:"error,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the outputs.
 	Outputs map[string]*WorkflowOutputParameter `json:"outputs,omitempty" azure:"ro"`
@@ -4649,77 +3493,6 @@ type WorkflowRunProperties struct {
 	Workflow *ResourceReference `json:"workflow,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkflowRunProperties.
-func (w WorkflowRunProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", w.Code)
-	populate(objectMap, "correlation", w.Correlation)
-	populate(objectMap, "correlationId", w.CorrelationID)
-	populateTimeRFC3339(objectMap, "endTime", w.EndTime)
-	populate(objectMap, "error", w.Error)
-	populate(objectMap, "outputs", w.Outputs)
-	populate(objectMap, "response", w.Response)
-	populateTimeRFC3339(objectMap, "startTime", w.StartTime)
-	populate(objectMap, "status", w.Status)
-	populate(objectMap, "trigger", w.Trigger)
-	populateTimeRFC3339(objectMap, "waitEndTime", w.WaitEndTime)
-	populate(objectMap, "workflow", w.Workflow)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type WorkflowRunProperties.
-func (w *WorkflowRunProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "code":
-			err = unpopulate(val, &w.Code)
-			delete(rawMsg, key)
-		case "correlation":
-			err = unpopulate(val, &w.Correlation)
-			delete(rawMsg, key)
-		case "correlationId":
-			err = unpopulate(val, &w.CorrelationID)
-			delete(rawMsg, key)
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &w.EndTime)
-			delete(rawMsg, key)
-		case "error":
-			err = unpopulate(val, &w.Error)
-			delete(rawMsg, key)
-		case "outputs":
-			err = unpopulate(val, &w.Outputs)
-			delete(rawMsg, key)
-		case "response":
-			err = unpopulate(val, &w.Response)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &w.StartTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &w.Status)
-			delete(rawMsg, key)
-		case "trigger":
-			err = unpopulate(val, &w.Trigger)
-			delete(rawMsg, key)
-		case "waitEndTime":
-			err = unpopulateTimeRFC3339(val, &w.WaitEndTime)
-			delete(rawMsg, key)
-		case "workflow":
-			err = unpopulate(val, &w.Workflow)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // WorkflowRunTrigger - The workflow run trigger.
 type WorkflowRunTrigger struct {
 	// The run correlation.
@@ -4732,10 +3505,10 @@ type WorkflowRunTrigger struct {
 	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the error.
-	Error map[string]interface{} `json:"error,omitempty" azure:"ro"`
+	Error interface{} `json:"error,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the inputs.
-	Inputs map[string]interface{} `json:"inputs,omitempty" azure:"ro"`
+	Inputs interface{} `json:"inputs,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the link to inputs.
 	InputsLink *ContentLink `json:"inputsLink,omitempty" azure:"ro"`
@@ -4744,7 +3517,7 @@ type WorkflowRunTrigger struct {
 	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the outputs.
-	Outputs map[string]interface{} `json:"outputs,omitempty" azure:"ro"`
+	Outputs interface{} `json:"outputs,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the link to outputs.
 	OutputsLink *ContentLink `json:"outputsLink,omitempty" azure:"ro"`
@@ -4759,103 +3532,24 @@ type WorkflowRunTrigger struct {
 	Status *WorkflowStatus `json:"status,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the tracked properties.
-	TrackedProperties map[string]interface{} `json:"trackedProperties,omitempty" azure:"ro"`
+	TrackedProperties interface{} `json:"trackedProperties,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the tracking id.
 	TrackingID *string `json:"trackingId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkflowRunTrigger.
-func (w WorkflowRunTrigger) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", w.Code)
-	populate(objectMap, "correlation", w.Correlation)
-	populateTimeRFC3339(objectMap, "endTime", w.EndTime)
-	populate(objectMap, "error", w.Error)
-	populate(objectMap, "inputs", w.Inputs)
-	populate(objectMap, "inputsLink", w.InputsLink)
-	populate(objectMap, "name", w.Name)
-	populate(objectMap, "outputs", w.Outputs)
-	populate(objectMap, "outputsLink", w.OutputsLink)
-	populateTimeRFC3339(objectMap, "scheduledTime", w.ScheduledTime)
-	populateTimeRFC3339(objectMap, "startTime", w.StartTime)
-	populate(objectMap, "status", w.Status)
-	populate(objectMap, "trackedProperties", w.TrackedProperties)
-	populate(objectMap, "trackingId", w.TrackingID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type WorkflowRunTrigger.
-func (w *WorkflowRunTrigger) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "code":
-			err = unpopulate(val, &w.Code)
-			delete(rawMsg, key)
-		case "correlation":
-			err = unpopulate(val, &w.Correlation)
-			delete(rawMsg, key)
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &w.EndTime)
-			delete(rawMsg, key)
-		case "error":
-			err = unpopulate(val, &w.Error)
-			delete(rawMsg, key)
-		case "inputs":
-			err = unpopulate(val, &w.Inputs)
-			delete(rawMsg, key)
-		case "inputsLink":
-			err = unpopulate(val, &w.InputsLink)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &w.Name)
-			delete(rawMsg, key)
-		case "outputs":
-			err = unpopulate(val, &w.Outputs)
-			delete(rawMsg, key)
-		case "outputsLink":
-			err = unpopulate(val, &w.OutputsLink)
-			delete(rawMsg, key)
-		case "scheduledTime":
-			err = unpopulateTimeRFC3339(val, &w.ScheduledTime)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &w.StartTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &w.Status)
-			delete(rawMsg, key)
-		case "trackedProperties":
-			err = unpopulate(val, &w.TrackedProperties)
-			delete(rawMsg, key)
-		case "trackingId":
-			err = unpopulate(val, &w.TrackingID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// WorkflowRunsCancelOptions contains the optional parameters for the WorkflowRuns.Cancel method.
-type WorkflowRunsCancelOptions struct {
+// WorkflowRunsClientCancelOptions contains the optional parameters for the WorkflowRunsClient.Cancel method.
+type WorkflowRunsClientCancelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunsGetOptions contains the optional parameters for the WorkflowRuns.Get method.
-type WorkflowRunsGetOptions struct {
+// WorkflowRunsClientGetOptions contains the optional parameters for the WorkflowRunsClient.Get method.
+type WorkflowRunsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunsListOptions contains the optional parameters for the WorkflowRuns.List method.
-type WorkflowRunsListOptions struct {
+// WorkflowRunsClientListOptions contains the optional parameters for the WorkflowRunsClient.List method.
+type WorkflowRunsClientListOptions struct {
 	// The filter to apply on the operation. Options for filters include: Status, StartTime, and ClientTrackingId.
 	Filter *string
 	// The number of items to be included in the result.
@@ -4864,9 +3558,11 @@ type WorkflowRunsListOptions struct {
 
 // WorkflowTrigger - The workflow trigger.
 type WorkflowTrigger struct {
-	SubResource
 	// The workflow trigger properties.
 	Properties *WorkflowTriggerProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the workflow trigger name.
 	Name *string `json:"name,omitempty" azure:"ro"`
@@ -4896,47 +3592,39 @@ type WorkflowTriggerCallbackURL struct {
 	Value *string `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkflowTriggerCallbackURL.
-func (w WorkflowTriggerCallbackURL) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "basePath", w.BasePath)
-	populate(objectMap, "method", w.Method)
-	populate(objectMap, "queries", w.Queries)
-	populate(objectMap, "relativePath", w.RelativePath)
-	populate(objectMap, "relativePathParameters", w.RelativePathParameters)
-	populate(objectMap, "value", w.Value)
-	return json.Marshal(objectMap)
-}
-
 // WorkflowTriggerFilter - The workflow trigger filter.
 type WorkflowTriggerFilter struct {
 	// The state of workflow trigger.
 	State *WorkflowState `json:"state,omitempty"`
 }
 
-// WorkflowTriggerHistoriesGetOptions contains the optional parameters for the WorkflowTriggerHistories.Get method.
-type WorkflowTriggerHistoriesGetOptions struct {
+// WorkflowTriggerHistoriesClientGetOptions contains the optional parameters for the WorkflowTriggerHistoriesClient.Get method.
+type WorkflowTriggerHistoriesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowTriggerHistoriesListOptions contains the optional parameters for the WorkflowTriggerHistories.List method.
-type WorkflowTriggerHistoriesListOptions struct {
+// WorkflowTriggerHistoriesClientListOptions contains the optional parameters for the WorkflowTriggerHistoriesClient.List
+// method.
+type WorkflowTriggerHistoriesClientListOptions struct {
 	// The filter to apply on the operation. Options for filters include: Status, StartTime, and ClientTrackingId.
 	Filter *string
 	// The number of items to be included in the result.
 	Top *int32
 }
 
-// WorkflowTriggerHistoriesResubmitOptions contains the optional parameters for the WorkflowTriggerHistories.Resubmit method.
-type WorkflowTriggerHistoriesResubmitOptions struct {
+// WorkflowTriggerHistoriesClientResubmitOptions contains the optional parameters for the WorkflowTriggerHistoriesClient.Resubmit
+// method.
+type WorkflowTriggerHistoriesClientResubmitOptions struct {
 	// placeholder for future optional parameters
 }
 
 // WorkflowTriggerHistory - The workflow trigger history.
 type WorkflowTriggerHistory struct {
-	SubResource
 	// Gets the workflow trigger history properties.
 	Properties *WorkflowTriggerHistoryProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the workflow trigger history name.
 	Name *string `json:"name,omitempty" azure:"ro"`
@@ -4960,14 +3648,6 @@ type WorkflowTriggerHistoryListResult struct {
 	Value []*WorkflowTriggerHistory `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkflowTriggerHistoryListResult.
-func (w WorkflowTriggerHistoryListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", w.NextLink)
-	populate(objectMap, "value", w.Value)
-	return json.Marshal(objectMap)
-}
-
 // WorkflowTriggerHistoryProperties - The workflow trigger history properties.
 type WorkflowTriggerHistoryProperties struct {
 	// The run correlation.
@@ -4980,7 +3660,7 @@ type WorkflowTriggerHistoryProperties struct {
 	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; Gets the error.
-	Error map[string]interface{} `json:"error,omitempty" azure:"ro"`
+	Error interface{} `json:"error,omitempty" azure:"ro"`
 
 	// READ-ONLY; The value indicating whether trigger was fired.
 	Fired *bool `json:"fired,omitempty" azure:"ro"`
@@ -5005,77 +3685,6 @@ type WorkflowTriggerHistoryProperties struct {
 
 	// READ-ONLY; Gets the tracking id.
 	TrackingID *string `json:"trackingId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type WorkflowTriggerHistoryProperties.
-func (w WorkflowTriggerHistoryProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", w.Code)
-	populate(objectMap, "correlation", w.Correlation)
-	populateTimeRFC3339(objectMap, "endTime", w.EndTime)
-	populate(objectMap, "error", w.Error)
-	populate(objectMap, "fired", w.Fired)
-	populate(objectMap, "inputsLink", w.InputsLink)
-	populate(objectMap, "outputsLink", w.OutputsLink)
-	populate(objectMap, "run", w.Run)
-	populateTimeRFC3339(objectMap, "scheduledTime", w.ScheduledTime)
-	populateTimeRFC3339(objectMap, "startTime", w.StartTime)
-	populate(objectMap, "status", w.Status)
-	populate(objectMap, "trackingId", w.TrackingID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type WorkflowTriggerHistoryProperties.
-func (w *WorkflowTriggerHistoryProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "code":
-			err = unpopulate(val, &w.Code)
-			delete(rawMsg, key)
-		case "correlation":
-			err = unpopulate(val, &w.Correlation)
-			delete(rawMsg, key)
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &w.EndTime)
-			delete(rawMsg, key)
-		case "error":
-			err = unpopulate(val, &w.Error)
-			delete(rawMsg, key)
-		case "fired":
-			err = unpopulate(val, &w.Fired)
-			delete(rawMsg, key)
-		case "inputsLink":
-			err = unpopulate(val, &w.InputsLink)
-			delete(rawMsg, key)
-		case "outputsLink":
-			err = unpopulate(val, &w.OutputsLink)
-			delete(rawMsg, key)
-		case "run":
-			err = unpopulate(val, &w.Run)
-			delete(rawMsg, key)
-		case "scheduledTime":
-			err = unpopulateTimeRFC3339(val, &w.ScheduledTime)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &w.StartTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &w.Status)
-			delete(rawMsg, key)
-		case "trackingId":
-			err = unpopulate(val, &w.TrackingID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // WorkflowTriggerListCallbackURLQueries - Gets the workflow trigger callback URL query parameters.
@@ -5103,14 +3712,6 @@ type WorkflowTriggerListResult struct {
 
 	// A list of workflow triggers.
 	Value []*WorkflowTrigger `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type WorkflowTriggerListResult.
-func (w WorkflowTriggerListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", w.NextLink)
-	populate(objectMap, "value", w.Value)
-	return json.Marshal(objectMap)
 }
 
 // WorkflowTriggerProperties - The workflow trigger properties.
@@ -5143,65 +3744,6 @@ type WorkflowTriggerProperties struct {
 	Workflow *ResourceReference `json:"workflow,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkflowTriggerProperties.
-func (w WorkflowTriggerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "changedTime", w.ChangedTime)
-	populateTimeRFC3339(objectMap, "createdTime", w.CreatedTime)
-	populateTimeRFC3339(objectMap, "lastExecutionTime", w.LastExecutionTime)
-	populateTimeRFC3339(objectMap, "nextExecutionTime", w.NextExecutionTime)
-	populate(objectMap, "provisioningState", w.ProvisioningState)
-	populate(objectMap, "recurrence", w.Recurrence)
-	populate(objectMap, "state", w.State)
-	populate(objectMap, "status", w.Status)
-	populate(objectMap, "workflow", w.Workflow)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type WorkflowTriggerProperties.
-func (w *WorkflowTriggerProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "changedTime":
-			err = unpopulateTimeRFC3339(val, &w.ChangedTime)
-			delete(rawMsg, key)
-		case "createdTime":
-			err = unpopulateTimeRFC3339(val, &w.CreatedTime)
-			delete(rawMsg, key)
-		case "lastExecutionTime":
-			err = unpopulateTimeRFC3339(val, &w.LastExecutionTime)
-			delete(rawMsg, key)
-		case "nextExecutionTime":
-			err = unpopulateTimeRFC3339(val, &w.NextExecutionTime)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &w.ProvisioningState)
-			delete(rawMsg, key)
-		case "recurrence":
-			err = unpopulate(val, &w.Recurrence)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, &w.State)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &w.Status)
-			delete(rawMsg, key)
-		case "workflow":
-			err = unpopulate(val, &w.Workflow)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // WorkflowTriggerRecurrence - The workflow trigger recurrence.
 type WorkflowTriggerRecurrence struct {
 	// The end time.
@@ -5225,65 +3767,81 @@ type WorkflowTriggerRecurrence struct {
 
 // WorkflowTriggerReference - The workflow trigger reference.
 type WorkflowTriggerReference struct {
-	ResourceReference
 	// The workflow name.
 	FlowName *string `json:"flowName,omitempty"`
 
+	// The resource id.
+	ID *string `json:"id,omitempty"`
+
 	// The workflow trigger name.
 	TriggerName *string `json:"triggerName,omitempty"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// WorkflowTriggersGetOptions contains the optional parameters for the WorkflowTriggers.Get method.
-type WorkflowTriggersGetOptions struct {
+// WorkflowTriggersClientGetOptions contains the optional parameters for the WorkflowTriggersClient.Get method.
+type WorkflowTriggersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowTriggersGetSchemaJSONOptions contains the optional parameters for the WorkflowTriggers.GetSchemaJSON method.
-type WorkflowTriggersGetSchemaJSONOptions struct {
+// WorkflowTriggersClientGetSchemaJSONOptions contains the optional parameters for the WorkflowTriggersClient.GetSchemaJSON
+// method.
+type WorkflowTriggersClientGetSchemaJSONOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowTriggersListCallbackURLOptions contains the optional parameters for the WorkflowTriggers.ListCallbackURL method.
-type WorkflowTriggersListCallbackURLOptions struct {
+// WorkflowTriggersClientListCallbackURLOptions contains the optional parameters for the WorkflowTriggersClient.ListCallbackURL
+// method.
+type WorkflowTriggersClientListCallbackURLOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowTriggersListOptions contains the optional parameters for the WorkflowTriggers.List method.
-type WorkflowTriggersListOptions struct {
+// WorkflowTriggersClientListOptions contains the optional parameters for the WorkflowTriggersClient.List method.
+type WorkflowTriggersClientListOptions struct {
 	// The filter to apply on the operation.
 	Filter *string
 	// The number of items to be included in the result.
 	Top *int32
 }
 
-// WorkflowTriggersResetOptions contains the optional parameters for the WorkflowTriggers.Reset method.
-type WorkflowTriggersResetOptions struct {
+// WorkflowTriggersClientResetOptions contains the optional parameters for the WorkflowTriggersClient.Reset method.
+type WorkflowTriggersClientResetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowTriggersRunOptions contains the optional parameters for the WorkflowTriggers.Run method.
-type WorkflowTriggersRunOptions struct {
+// WorkflowTriggersClientRunOptions contains the optional parameters for the WorkflowTriggersClient.Run method.
+type WorkflowTriggersClientRunOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowTriggersSetStateOptions contains the optional parameters for the WorkflowTriggers.SetState method.
-type WorkflowTriggersSetStateOptions struct {
+// WorkflowTriggersClientSetStateOptions contains the optional parameters for the WorkflowTriggersClient.SetState method.
+type WorkflowTriggersClientSetStateOptions struct {
 	// placeholder for future optional parameters
 }
 
 // WorkflowVersion - The workflow version.
 type WorkflowVersion struct {
-	Resource
+	// The resource location.
+	Location *string `json:"location,omitempty"`
+
 	// The workflow version properties.
 	Properties *WorkflowVersionProperties `json:"properties,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type WorkflowVersion.
-func (w WorkflowVersion) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	w.Resource.marshalInternal(objectMap)
-	populate(objectMap, "properties", w.Properties)
-	return json.Marshal(objectMap)
+	// The resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // WorkflowVersionListResult - The list of workflow versions.
@@ -5295,21 +3853,13 @@ type WorkflowVersionListResult struct {
 	Value []*WorkflowVersion `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkflowVersionListResult.
-func (w WorkflowVersionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", w.NextLink)
-	populate(objectMap, "value", w.Value)
-	return json.Marshal(objectMap)
-}
-
 // WorkflowVersionProperties - The workflow version properties.
 type WorkflowVersionProperties struct {
 	// The access control configuration.
 	AccessControl *FlowAccessControlConfiguration `json:"accessControl,omitempty"`
 
 	// The definition.
-	Definition map[string]interface{} `json:"definition,omitempty"`
+	Definition interface{} `json:"definition,omitempty"`
 
 	// The endpoints configuration.
 	EndpointsConfiguration *FlowEndpointsConfiguration `json:"endpointsConfiguration,omitempty"`
@@ -5342,172 +3892,107 @@ type WorkflowVersionProperties struct {
 	Version *string `json:"version,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkflowVersionProperties.
-func (w WorkflowVersionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accessControl", w.AccessControl)
-	populate(objectMap, "accessEndpoint", w.AccessEndpoint)
-	populateTimeRFC3339(objectMap, "changedTime", w.ChangedTime)
-	populateTimeRFC3339(objectMap, "createdTime", w.CreatedTime)
-	populate(objectMap, "definition", w.Definition)
-	populate(objectMap, "endpointsConfiguration", w.EndpointsConfiguration)
-	populate(objectMap, "integrationAccount", w.IntegrationAccount)
-	populate(objectMap, "parameters", w.Parameters)
-	populate(objectMap, "provisioningState", w.ProvisioningState)
-	populate(objectMap, "sku", w.SKU)
-	populate(objectMap, "state", w.State)
-	populate(objectMap, "version", w.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type WorkflowVersionProperties.
-func (w *WorkflowVersionProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "accessControl":
-			err = unpopulate(val, &w.AccessControl)
-			delete(rawMsg, key)
-		case "accessEndpoint":
-			err = unpopulate(val, &w.AccessEndpoint)
-			delete(rawMsg, key)
-		case "changedTime":
-			err = unpopulateTimeRFC3339(val, &w.ChangedTime)
-			delete(rawMsg, key)
-		case "createdTime":
-			err = unpopulateTimeRFC3339(val, &w.CreatedTime)
-			delete(rawMsg, key)
-		case "definition":
-			err = unpopulate(val, &w.Definition)
-			delete(rawMsg, key)
-		case "endpointsConfiguration":
-			err = unpopulate(val, &w.EndpointsConfiguration)
-			delete(rawMsg, key)
-		case "integrationAccount":
-			err = unpopulate(val, &w.IntegrationAccount)
-			delete(rawMsg, key)
-		case "parameters":
-			err = unpopulate(val, &w.Parameters)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &w.ProvisioningState)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, &w.SKU)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, &w.State)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &w.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// WorkflowVersionTriggersListCallbackURLOptions contains the optional parameters for the WorkflowVersionTriggers.ListCallbackURL method.
-type WorkflowVersionTriggersListCallbackURLOptions struct {
+// WorkflowVersionTriggersClientListCallbackURLOptions contains the optional parameters for the WorkflowVersionTriggersClient.ListCallbackURL
+// method.
+type WorkflowVersionTriggersClientListCallbackURLOptions struct {
 	// The callback URL parameters.
 	Parameters *GetCallbackURLParameters
 }
 
-// WorkflowVersionsGetOptions contains the optional parameters for the WorkflowVersions.Get method.
-type WorkflowVersionsGetOptions struct {
+// WorkflowVersionsClientGetOptions contains the optional parameters for the WorkflowVersionsClient.Get method.
+type WorkflowVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowVersionsListOptions contains the optional parameters for the WorkflowVersions.List method.
-type WorkflowVersionsListOptions struct {
+// WorkflowVersionsClientListOptions contains the optional parameters for the WorkflowVersionsClient.List method.
+type WorkflowVersionsClientListOptions struct {
 	// The number of items to be included in the result.
 	Top *int32
 }
 
-// WorkflowsBeginMoveOptions contains the optional parameters for the Workflows.BeginMove method.
-type WorkflowsBeginMoveOptions struct {
+// WorkflowsClientBeginMoveOptions contains the optional parameters for the WorkflowsClient.BeginMove method.
+type WorkflowsClientBeginMoveOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// WorkflowsClientCreateOrUpdateOptions contains the optional parameters for the WorkflowsClient.CreateOrUpdate method.
+type WorkflowsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowsCreateOrUpdateOptions contains the optional parameters for the Workflows.CreateOrUpdate method.
-type WorkflowsCreateOrUpdateOptions struct {
+// WorkflowsClientDeleteOptions contains the optional parameters for the WorkflowsClient.Delete method.
+type WorkflowsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowsDeleteOptions contains the optional parameters for the Workflows.Delete method.
-type WorkflowsDeleteOptions struct {
+// WorkflowsClientDisableOptions contains the optional parameters for the WorkflowsClient.Disable method.
+type WorkflowsClientDisableOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowsDisableOptions contains the optional parameters for the Workflows.Disable method.
-type WorkflowsDisableOptions struct {
+// WorkflowsClientEnableOptions contains the optional parameters for the WorkflowsClient.Enable method.
+type WorkflowsClientEnableOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowsEnableOptions contains the optional parameters for the Workflows.Enable method.
-type WorkflowsEnableOptions struct {
+// WorkflowsClientGenerateUpgradedDefinitionOptions contains the optional parameters for the WorkflowsClient.GenerateUpgradedDefinition
+// method.
+type WorkflowsClientGenerateUpgradedDefinitionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowsGenerateUpgradedDefinitionOptions contains the optional parameters for the Workflows.GenerateUpgradedDefinition method.
-type WorkflowsGenerateUpgradedDefinitionOptions struct {
+// WorkflowsClientGetOptions contains the optional parameters for the WorkflowsClient.Get method.
+type WorkflowsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowsGetOptions contains the optional parameters for the Workflows.Get method.
-type WorkflowsGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WorkflowsListByResourceGroupOptions contains the optional parameters for the Workflows.ListByResourceGroup method.
-type WorkflowsListByResourceGroupOptions struct {
+// WorkflowsClientListByResourceGroupOptions contains the optional parameters for the WorkflowsClient.ListByResourceGroup
+// method.
+type WorkflowsClientListByResourceGroupOptions struct {
 	// The filter to apply on the operation. Options for filters include: State, Trigger, and ReferencedResourceId.
 	Filter *string
 	// The number of items to be included in the result.
 	Top *int32
 }
 
-// WorkflowsListBySubscriptionOptions contains the optional parameters for the Workflows.ListBySubscription method.
-type WorkflowsListBySubscriptionOptions struct {
+// WorkflowsClientListBySubscriptionOptions contains the optional parameters for the WorkflowsClient.ListBySubscription method.
+type WorkflowsClientListBySubscriptionOptions struct {
 	// The filter to apply on the operation. Options for filters include: State, Trigger, and ReferencedResourceId.
 	Filter *string
 	// The number of items to be included in the result.
 	Top *int32
 }
 
-// WorkflowsListCallbackURLOptions contains the optional parameters for the Workflows.ListCallbackURL method.
-type WorkflowsListCallbackURLOptions struct {
+// WorkflowsClientListCallbackURLOptions contains the optional parameters for the WorkflowsClient.ListCallbackURL method.
+type WorkflowsClientListCallbackURLOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowsListSwaggerOptions contains the optional parameters for the Workflows.ListSwagger method.
-type WorkflowsListSwaggerOptions struct {
+// WorkflowsClientListSwaggerOptions contains the optional parameters for the WorkflowsClient.ListSwagger method.
+type WorkflowsClientListSwaggerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowsRegenerateAccessKeyOptions contains the optional parameters for the Workflows.RegenerateAccessKey method.
-type WorkflowsRegenerateAccessKeyOptions struct {
+// WorkflowsClientRegenerateAccessKeyOptions contains the optional parameters for the WorkflowsClient.RegenerateAccessKey
+// method.
+type WorkflowsClientRegenerateAccessKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowsUpdateOptions contains the optional parameters for the Workflows.Update method.
-type WorkflowsUpdateOptions struct {
+// WorkflowsClientUpdateOptions contains the optional parameters for the WorkflowsClient.Update method.
+type WorkflowsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowsValidateByLocationOptions contains the optional parameters for the Workflows.ValidateByLocation method.
-type WorkflowsValidateByLocationOptions struct {
+// WorkflowsClientValidateByLocationOptions contains the optional parameters for the WorkflowsClient.ValidateByLocation method.
+type WorkflowsClientValidateByLocationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowsValidateByResourceGroupOptions contains the optional parameters for the Workflows.ValidateByResourceGroup method.
-type WorkflowsValidateByResourceGroupOptions struct {
+// WorkflowsClientValidateByResourceGroupOptions contains the optional parameters for the WorkflowsClient.ValidateByResourceGroup
+// method.
+type WorkflowsClientValidateByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5518,14 +4003,6 @@ type WsdlService struct {
 
 	// The qualified name.
 	QualifiedName *string `json:"qualifiedName,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type WsdlService.
-func (w WsdlService) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "EndpointQualifiedNames", w.EndpointQualifiedNames)
-	populate(objectMap, "qualifiedName", w.QualifiedName)
-	return json.Marshal(objectMap)
 }
 
 // X12AcknowledgementSettings - The X12 agreement acknowledgement settings.
@@ -5831,24 +4308,6 @@ type X12ProtocolSettings struct {
 	X12DelimiterOverrides []*X12DelimiterOverrides `json:"x12DelimiterOverrides,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type X12ProtocolSettings.
-func (x X12ProtocolSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "acknowledgementSettings", x.AcknowledgementSettings)
-	populate(objectMap, "envelopeOverrides", x.EnvelopeOverrides)
-	populate(objectMap, "envelopeSettings", x.EnvelopeSettings)
-	populate(objectMap, "framingSettings", x.FramingSettings)
-	populate(objectMap, "messageFilter", x.MessageFilter)
-	populate(objectMap, "messageFilterList", x.MessageFilterList)
-	populate(objectMap, "processingSettings", x.ProcessingSettings)
-	populate(objectMap, "schemaReferences", x.SchemaReferences)
-	populate(objectMap, "securitySettings", x.SecuritySettings)
-	populate(objectMap, "validationOverrides", x.ValidationOverrides)
-	populate(objectMap, "validationSettings", x.ValidationSettings)
-	populate(objectMap, "x12DelimiterOverrides", x.X12DelimiterOverrides)
-	return json.Marshal(objectMap)
-}
-
 // X12SchemaReference - The X12 schema reference.
 type X12SchemaReference struct {
 	// REQUIRED; The message id.
@@ -5934,21 +4393,4 @@ type X12ValidationSettings struct {
 
 	// REQUIRED; The value indicating whether to Whether to validate XSD types.
 	ValidateXSDTypes *bool `json:"validateXSDTypes,omitempty"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

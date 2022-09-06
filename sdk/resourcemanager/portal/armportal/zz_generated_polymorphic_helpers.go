@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -26,42 +26,4 @@ func unmarshalDashboardPartMetadataClassification(rawMsg json.RawMessage) (Dashb
 		b = &DashboardPartMetadata{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalDashboardPartMetadataClassificationArray(rawMsg json.RawMessage) ([]DashboardPartMetadataClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]DashboardPartMetadataClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalDashboardPartMetadataClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
-func unmarshalDashboardPartMetadataClassificationMap(rawMsg json.RawMessage) (map[string]DashboardPartMetadataClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages map[string]json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fMap := make(map[string]DashboardPartMetadataClassification, len(rawMessages))
-	for key, rawMessage := range rawMessages {
-		f, err := unmarshalDashboardPartMetadataClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fMap[key] = f
-	}
-	return fMap, nil
 }

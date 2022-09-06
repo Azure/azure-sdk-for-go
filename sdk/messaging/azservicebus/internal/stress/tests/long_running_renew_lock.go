@@ -5,6 +5,7 @@ package tests
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"time"
@@ -17,7 +18,7 @@ func LongRunningRenewLockTest(remainingArgs []string) {
 	sc := shared.MustCreateStressContext("LongRunningRenewLockTest")
 
 	queueName := fmt.Sprintf("renew-lock-test-%s", sc.Nano)
-	shared.MustCreateAutoDeletingQueue(sc, queueName)
+	shared.MustCreateAutoDeletingQueue(sc, queueName, nil)
 
 	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create admin.Client", err)
@@ -27,7 +28,7 @@ func LongRunningRenewLockTest(remainingArgs []string) {
 
 	err = sender.SendMessage(context.Background(), &azservicebus.Message{
 		Body: []byte("ping"),
-	})
+	}, nil)
 	sc.PanicOnError("failed to send message", err)
 
 	receiver, err := client.NewReceiverForQueue(queueName, nil)
@@ -48,12 +49,12 @@ func LongRunningRenewLockTest(remainingArgs []string) {
 		}
 
 		i++
-		err := receiver.RenewMessageLock(ctx, messages[0])
+		err := receiver.RenewMessageLock(ctx, messages[0], nil)
 
-		if err == context.Canceled || err == context.DeadlineExceeded {
+		if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
 			log.Printf("Cancellation/deadline exceeded. Can stop, will complete message now")
 
-			err = receiver.CompleteMessage(context.Background(), messages[0])
+			err = receiver.CompleteMessage(context.Background(), messages[0], nil)
 			sc.PanicOnError("failed to complete message", err)
 			break
 		}

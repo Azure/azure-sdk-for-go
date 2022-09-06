@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armmaintenance
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,76 +25,86 @@ import (
 // ConfigurationAssignmentsWithinSubscriptionClient contains the methods for the ConfigurationAssignmentsWithinSubscription group.
 // Don't use this type directly, use NewConfigurationAssignmentsWithinSubscriptionClient() instead.
 type ConfigurationAssignmentsWithinSubscriptionClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewConfigurationAssignmentsWithinSubscriptionClient creates a new instance of ConfigurationAssignmentsWithinSubscriptionClient with the specified values.
-func NewConfigurationAssignmentsWithinSubscriptionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConfigurationAssignmentsWithinSubscriptionClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
+// part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewConfigurationAssignmentsWithinSubscriptionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationAssignmentsWithinSubscriptionClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &ConfigurationAssignmentsWithinSubscriptionClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &ConfigurationAssignmentsWithinSubscriptionClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
-// List - Get configuration assignment within a subscription
-// If the operation fails it returns the *MaintenanceError error type.
-func (client *ConfigurationAssignmentsWithinSubscriptionClient) List(ctx context.Context, options *ConfigurationAssignmentsWithinSubscriptionListOptions) (ConfigurationAssignmentsWithinSubscriptionListResponse, error) {
-	req, err := client.listCreateRequest(ctx, options)
-	if err != nil {
-		return ConfigurationAssignmentsWithinSubscriptionListResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ConfigurationAssignmentsWithinSubscriptionListResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ConfigurationAssignmentsWithinSubscriptionListResponse{}, client.listHandleError(resp)
-	}
-	return client.listHandleResponse(resp)
+// NewListPager - Get configuration assignment within a subscription
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
+// options - ConfigurationAssignmentsWithinSubscriptionClientListOptions contains the optional parameters for the ConfigurationAssignmentsWithinSubscriptionClient.List
+// method.
+func (client *ConfigurationAssignmentsWithinSubscriptionClient) NewListPager(options *ConfigurationAssignmentsWithinSubscriptionClientListOptions) *runtime.Pager[ConfigurationAssignmentsWithinSubscriptionClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ConfigurationAssignmentsWithinSubscriptionClientListResponse]{
+		More: func(page ConfigurationAssignmentsWithinSubscriptionClientListResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ConfigurationAssignmentsWithinSubscriptionClientListResponse) (ConfigurationAssignmentsWithinSubscriptionClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, options)
+			if err != nil {
+				return ConfigurationAssignmentsWithinSubscriptionClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ConfigurationAssignmentsWithinSubscriptionClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ConfigurationAssignmentsWithinSubscriptionClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
+		},
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ConfigurationAssignmentsWithinSubscriptionClient) listCreateRequest(ctx context.Context, options *ConfigurationAssignmentsWithinSubscriptionListOptions) (*policy.Request, error) {
+func (client *ConfigurationAssignmentsWithinSubscriptionClient) listCreateRequest(ctx context.Context, options *ConfigurationAssignmentsWithinSubscriptionClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ConfigurationAssignmentsWithinSubscriptionClient) listHandleResponse(resp *http.Response) (ConfigurationAssignmentsWithinSubscriptionListResponse, error) {
-	result := ConfigurationAssignmentsWithinSubscriptionListResponse{RawResponse: resp}
+func (client *ConfigurationAssignmentsWithinSubscriptionClient) listHandleResponse(resp *http.Response) (ConfigurationAssignmentsWithinSubscriptionClientListResponse, error) {
+	result := ConfigurationAssignmentsWithinSubscriptionClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListConfigurationAssignmentsResult); err != nil {
-		return ConfigurationAssignmentsWithinSubscriptionListResponse{}, runtime.NewResponseError(err, resp)
+		return ConfigurationAssignmentsWithinSubscriptionClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *ConfigurationAssignmentsWithinSubscriptionClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := MaintenanceError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package armresources
 
 const (
-	module  = "armresources"
-	version = "v0.2.1"
+	moduleName    = "armresources"
+	moduleVersion = "v1.0.0"
 )
 
 // AliasPathAttributes - The attributes of the token that the alias path is referring to.
@@ -29,11 +29,6 @@ func PossibleAliasPathAttributesValues() []AliasPathAttributes {
 		AliasPathAttributesModifiable,
 		AliasPathAttributesNone,
 	}
-}
-
-// ToPtr returns a *AliasPathAttributes pointing to the current value.
-func (c AliasPathAttributes) ToPtr() *AliasPathAttributes {
-	return &c
 }
 
 // AliasPathTokenType - The type of the token that the alias path is referring to.
@@ -72,11 +67,6 @@ func PossibleAliasPathTokenTypeValues() []AliasPathTokenType {
 	}
 }
 
-// ToPtr returns a *AliasPathTokenType pointing to the current value.
-func (c AliasPathTokenType) ToPtr() *AliasPathTokenType {
-	return &c
-}
-
 // AliasPatternType - The type of alias pattern
 type AliasPatternType string
 
@@ -93,11 +83,6 @@ func PossibleAliasPatternTypeValues() []AliasPatternType {
 		AliasPatternTypeNotSpecified,
 		AliasPatternTypeExtract,
 	}
-}
-
-// ToPtr returns a *AliasPatternType pointing to the current value.
-func (c AliasPatternType) ToPtr() *AliasPatternType {
-	return &c
 }
 
 // AliasType - The type of the alias.
@@ -121,32 +106,27 @@ func PossibleAliasTypeValues() []AliasType {
 	}
 }
 
-// ToPtr returns a *AliasType pointing to the current value.
-func (c AliasType) ToPtr() *AliasType {
-	return &c
-}
-
 // ChangeType - Type of change that will be made to the resource when the deployment is executed.
 type ChangeType string
 
 const (
-	// ChangeTypeCreate - The resource does not exist in the current state but is present in the desired state. The resource will be created when the deployment
-	// is executed.
+	// ChangeTypeCreate - The resource does not exist in the current state but is present in the desired state. The resource will
+	// be created when the deployment is executed.
 	ChangeTypeCreate ChangeType = "Create"
-	// ChangeTypeDelete - The resource exists in the current state and is missing from the desired state. The resource will be deleted when the deployment is
-	// executed.
+	// ChangeTypeDelete - The resource exists in the current state and is missing from the desired state. The resource will be
+	// deleted when the deployment is executed.
 	ChangeTypeDelete ChangeType = "Delete"
-	// ChangeTypeIgnore - The resource exists in the current state and is missing from the desired state. The resource will not be deployed or modified when
-	// the deployment is executed.
+	// ChangeTypeIgnore - The resource exists in the current state and is missing from the desired state. The resource will not
+	// be deployed or modified when the deployment is executed.
 	ChangeTypeIgnore ChangeType = "Ignore"
-	// ChangeTypeDeploy - The resource exists in the current state and the desired state and will be redeployed when the deployment is executed. The properties
-	// of the resource may or may not change.
+	// ChangeTypeDeploy - The resource exists in the current state and the desired state and will be redeployed when the deployment
+	// is executed. The properties of the resource may or may not change.
 	ChangeTypeDeploy ChangeType = "Deploy"
-	// ChangeTypeNoChange - The resource exists in the current state and the desired state and will be redeployed when the deployment is executed. The properties
-	// of the resource will not change.
+	// ChangeTypeNoChange - The resource exists in the current state and the desired state and will be redeployed when the deployment
+	// is executed. The properties of the resource will not change.
 	ChangeTypeNoChange ChangeType = "NoChange"
-	// ChangeTypeModify - The resource exists in the current state and the desired state and will be redeployed when the deployment is executed. The properties
-	// of the resource will change.
+	// ChangeTypeModify - The resource exists in the current state and the desired state and will be redeployed when the deployment
+	// is executed. The properties of the resource will change.
 	ChangeTypeModify ChangeType = "Modify"
 	// ChangeTypeUnsupported - The resource is not supported by What-If.
 	ChangeTypeUnsupported ChangeType = "Unsupported"
@@ -165,15 +145,10 @@ func PossibleChangeTypeValues() []ChangeType {
 	}
 }
 
-// ToPtr returns a *ChangeType pointing to the current value.
-func (c ChangeType) ToPtr() *ChangeType {
-	return &c
-}
-
-// DeploymentMode - The mode that is used to deploy resources. This value can be either Incremental or Complete. In Incremental mode, resources are deployed
-// without deleting existing resources that are not included in
-// the template. In Complete mode, resources are deployed and existing resources in the resource group that are not included in the template are deleted.
-// Be careful when using Complete mode as you may
+// DeploymentMode - The mode that is used to deploy resources. This value can be either Incremental or Complete. In Incremental
+// mode, resources are deployed without deleting existing resources that are not included in
+// the template. In Complete mode, resources are deployed and existing resources in the resource group that are not included
+// in the template are deleted. Be careful when using Complete mode as you may
 // unintentionally delete resources.
 type DeploymentMode string
 
@@ -190,12 +165,8 @@ func PossibleDeploymentModeValues() []DeploymentMode {
 	}
 }
 
-// ToPtr returns a *DeploymentMode pointing to the current value.
-func (c DeploymentMode) ToPtr() *DeploymentMode {
-	return &c
-}
-
-// ExpressionEvaluationOptionsScopeType - The scope to be used for evaluation of parameters, variables and functions in a nested template.
+// ExpressionEvaluationOptionsScopeType - The scope to be used for evaluation of parameters, variables and functions in a
+// nested template.
 type ExpressionEvaluationOptionsScopeType string
 
 const (
@@ -213,11 +184,6 @@ func PossibleExpressionEvaluationOptionsScopeTypeValues() []ExpressionEvaluation
 	}
 }
 
-// ToPtr returns a *ExpressionEvaluationOptionsScopeType pointing to the current value.
-func (c ExpressionEvaluationOptionsScopeType) ToPtr() *ExpressionEvaluationOptionsScopeType {
-	return &c
-}
-
 // ExtendedLocationType - The extended location type.
 type ExtendedLocationType string
 
@@ -230,11 +196,6 @@ func PossibleExtendedLocationTypeValues() []ExtendedLocationType {
 	return []ExtendedLocationType{
 		ExtendedLocationTypeEdgeZone,
 	}
-}
-
-// ToPtr returns a *ExtendedLocationType pointing to the current value.
-func (c ExtendedLocationType) ToPtr() *ExtendedLocationType {
-	return &c
 }
 
 // OnErrorDeploymentType - The deployment on error behavior type. Possible values are LastSuccessful and SpecificDeployment.
@@ -253,23 +214,18 @@ func PossibleOnErrorDeploymentTypeValues() []OnErrorDeploymentType {
 	}
 }
 
-// ToPtr returns a *OnErrorDeploymentType pointing to the current value.
-func (c OnErrorDeploymentType) ToPtr() *OnErrorDeploymentType {
-	return &c
-}
-
 // PropertyChangeType - The type of property change.
 type PropertyChangeType string
 
 const (
-	// PropertyChangeTypeCreate - The property does not exist in the current state but is present in the desired state. The property will be created when the
-	// deployment is executed.
+	// PropertyChangeTypeCreate - The property does not exist in the current state but is present in the desired state. The property
+	// will be created when the deployment is executed.
 	PropertyChangeTypeCreate PropertyChangeType = "Create"
-	// PropertyChangeTypeDelete - The property exists in the current state and is missing from the desired state. It will be deleted when the deployment is
-	// executed.
+	// PropertyChangeTypeDelete - The property exists in the current state and is missing from the desired state. It will be deleted
+	// when the deployment is executed.
 	PropertyChangeTypeDelete PropertyChangeType = "Delete"
-	// PropertyChangeTypeModify - The property exists in both current and desired state and is different. The value of the property will change when the deployment
-	// is executed.
+	// PropertyChangeTypeModify - The property exists in both current and desired state and is different. The value of the property
+	// will change when the deployment is executed.
 	PropertyChangeTypeModify PropertyChangeType = "Modify"
 	// PropertyChangeTypeArray - The property is an array and contains nested changes.
 	PropertyChangeTypeArray PropertyChangeType = "Array"
@@ -286,11 +242,6 @@ func PossiblePropertyChangeTypeValues() []PropertyChangeType {
 		PropertyChangeTypeArray,
 		PropertyChangeTypeNoEffect,
 	}
-}
-
-// ToPtr returns a *PropertyChangeType pointing to the current value.
-func (c PropertyChangeType) ToPtr() *PropertyChangeType {
-	return &c
 }
 
 // ProviderAuthorizationConsentState - The provider authorization consent state.
@@ -311,11 +262,6 @@ func PossibleProviderAuthorizationConsentStateValues() []ProviderAuthorizationCo
 		ProviderAuthorizationConsentStateNotSpecified,
 		ProviderAuthorizationConsentStateRequired,
 	}
-}
-
-// ToPtr returns a *ProviderAuthorizationConsentState pointing to the current value.
-func (c ProviderAuthorizationConsentState) ToPtr() *ProviderAuthorizationConsentState {
-	return &c
 }
 
 // ProvisioningOperation - The name of the current provisioning operation.
@@ -340,7 +286,8 @@ const (
 	ProvisioningOperationRead ProvisioningOperation = "Read"
 	// ProvisioningOperationEvaluateDeploymentOutput - The provisioning operation is evaluate output.
 	ProvisioningOperationEvaluateDeploymentOutput ProvisioningOperation = "EvaluateDeploymentOutput"
-	// ProvisioningOperationDeploymentCleanup - The provisioning operation is cleanup. This operation is part of the 'complete' mode deployment.
+	// ProvisioningOperationDeploymentCleanup - The provisioning operation is cleanup. This operation is part of the 'complete'
+	// mode deployment.
 	ProvisioningOperationDeploymentCleanup ProvisioningOperation = "DeploymentCleanup"
 )
 
@@ -358,11 +305,6 @@ func PossibleProvisioningOperationValues() []ProvisioningOperation {
 		ProvisioningOperationEvaluateDeploymentOutput,
 		ProvisioningOperationDeploymentCleanup,
 	}
-}
-
-// ToPtr returns a *ProvisioningOperation pointing to the current value.
-func (c ProvisioningOperation) ToPtr() *ProvisioningOperation {
-	return &c
 }
 
 // ProvisioningState - Denotes the state of provisioning.
@@ -401,11 +343,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // ResourceIdentityType - The identity type.
 type ResourceIdentityType string
 
@@ -426,18 +363,14 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
-}
-
 // TagsPatchOperation - The operation type for the patch API.
 type TagsPatchOperation string
 
 const (
 	// TagsPatchOperationDelete - The 'delete' option allows selectively deleting tags based on given names or name/value pairs.
 	TagsPatchOperationDelete TagsPatchOperation = "Delete"
-	// TagsPatchOperationMerge - The 'merge' option allows adding tags with new names and updating the values of tags with existing names.
+	// TagsPatchOperationMerge - The 'merge' option allows adding tags with new names and updating the values of tags with existing
+	// names.
 	TagsPatchOperationMerge TagsPatchOperation = "Merge"
 	// TagsPatchOperationReplace - The 'replace' option replaces the entire set of existing tags with a new set.
 	TagsPatchOperationReplace TagsPatchOperation = "Replace"
@@ -450,11 +383,6 @@ func PossibleTagsPatchOperationValues() []TagsPatchOperation {
 		TagsPatchOperationMerge,
 		TagsPatchOperationReplace,
 	}
-}
-
-// ToPtr returns a *TagsPatchOperation pointing to the current value.
-func (c TagsPatchOperation) ToPtr() *TagsPatchOperation {
-	return &c
 }
 
 // WhatIfResultFormat - The format of the What-If results
@@ -471,9 +399,4 @@ func PossibleWhatIfResultFormatValues() []WhatIfResultFormat {
 		WhatIfResultFormatResourceIDOnly,
 		WhatIfResultFormatFullResourcePayloads,
 	}
-}
-
-// ToPtr returns a *WhatIfResultFormat pointing to the current value.
-func (c WhatIfResultFormat) ToPtr() *WhatIfResultFormat {
-	return &c
 }

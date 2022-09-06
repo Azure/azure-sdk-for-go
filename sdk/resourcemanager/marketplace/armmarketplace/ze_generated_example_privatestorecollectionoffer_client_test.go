@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,105 +17,124 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace"
 )
 
-// x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/GetPrivateStoreOffers.json
-func ExamplePrivateStoreCollectionOfferClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/GetPrivateStoreOffers.json
+func ExamplePrivateStoreCollectionOfferClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmarketplace.NewPrivateStoreCollectionOfferClient(cred, nil)
-	pager := client.List("<private-store-id>",
-		"<collection-id>",
+	client, err := armmarketplace.NewPrivateStoreCollectionOfferClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"56a1a02d-8cf8-45df-bf37-d5f7120fcb3d",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Offer.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/GetPrivateStoreCollectionOffer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/GetPrivateStoreCollectionOffer.json
 func ExamplePrivateStoreCollectionOfferClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmarketplace.NewPrivateStoreCollectionOfferClient(cred, nil)
+	client, err := armmarketplace.NewPrivateStoreCollectionOfferClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<private-store-id>",
-		"<offer-id>",
-		"<collection-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"marketplacetestthirdparty.md-test-third-party-2",
+		"56a1a02d-8cf8-45df-bf37-d5f7120fcb3d",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Offer.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/PrivateStoreOffer_update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/PrivateStoreOffer_update.json
 func ExamplePrivateStoreCollectionOfferClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmarketplace.NewPrivateStoreCollectionOfferClient(cred, nil)
+	client, err := armmarketplace.NewPrivateStoreCollectionOfferClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<private-store-id>",
-		"<offer-id>",
-		"<collection-id>",
-		&armmarketplace.PrivateStoreCollectionOfferCreateOrUpdateOptions{Payload: &armmarketplace.Offer{
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"marketplacetestthirdparty.md-test-third-party-2",
+		"56a1a02d-8cf8-45df-bf37-d5f7120fcb3d",
+		&armmarketplace.PrivateStoreCollectionOfferClientCreateOrUpdateOptions{Payload: &armmarketplace.Offer{
 			Properties: &armmarketplace.OfferProperties{
-				ETag: to.StringPtr("<etag>"),
+				ETag: to.Ptr("\"9301f4fd-0000-0100-0000-5e248b350666\""),
 				SpecificPlanIDsLimitation: []*string{
-					to.StringPtr("0001"),
-					to.StringPtr("0002")},
+					to.Ptr("0001"),
+					to.Ptr("0002")},
 			},
 		},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Offer.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/DeletePrivateStoreOffer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/DeletePrivateStoreOffer.json
 func ExamplePrivateStoreCollectionOfferClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmarketplace.NewPrivateStoreCollectionOfferClient(cred, nil)
+	client, err := armmarketplace.NewPrivateStoreCollectionOfferClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<private-store-id>",
-		"<offer-id>",
-		"<collection-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"marketplacetestthirdparty.md-test-third-party-2",
+		"56a1a02d-8cf8-45df-bf37-d5f7120fcb3d",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-06-01/examples/PostPrivateStoreCollectionOffer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/PostPrivateStoreCollectionOffer.json
 func ExamplePrivateStoreCollectionOfferClient_Post() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmarketplace.NewPrivateStoreCollectionOfferClient(cred, nil)
-	_, err = client.Post(ctx,
-		"<private-store-id>",
-		"<offer-id>",
-		"<collection-id>",
-		&armmarketplace.PrivateStoreCollectionOfferPostOptions{Payload: nil})
+	client, err := armmarketplace.NewPrivateStoreCollectionOfferClient(cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = client.Post(ctx,
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"marketplacetestthirdparty.md-test-third-party-2",
+		"56a1a02d-8cf8-45df-bf37-d5f7120fcb3d",
+		&armmarketplace.PrivateStoreCollectionOfferClientPostOptions{Payload: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }

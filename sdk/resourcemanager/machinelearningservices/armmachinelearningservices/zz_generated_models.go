@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,49 +8,59 @@
 
 package armmachinelearningservices
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AKS - A Machine Learning compute based on AKS.
 type AKS struct {
-	Compute
+	// REQUIRED; The type of compute
+	ComputeType *ComputeType `json:"computeType,omitempty"`
+
+	// Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty"`
+
+	// The description of the Machine Learning compute.
+	Description *string `json:"description,omitempty"`
+
+	// Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication.
+	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+
 	// AKS properties
 	Properties *AKSProperties `json:"properties,omitempty"`
+
+	// ARM resource id of the underlying compute
+	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; The time at which the compute was created.
+	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning
+	// service provisioned it if false.
+	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time at which the compute was last modified.
+	ModifiedOn *time.Time `json:"modifiedOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Errors during provisioning
+	ProvisioningErrors []*ErrorResponse `json:"provisioningErrors,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AKS.
-func (a AKS) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Compute.marshalInternal(objectMap, ComputeTypeAKS)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AKS.
-func (a *AKS) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetCompute implements the ComputeClassification interface for type AKS.
+func (a *AKS) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        a.ComputeType,
+		ComputeLocation:    a.ComputeLocation,
+		ProvisioningState:  a.ProvisioningState,
+		Description:        a.Description,
+		CreatedOn:          a.CreatedOn,
+		ModifiedOn:         a.ModifiedOn,
+		ResourceID:         a.ResourceID,
+		ProvisioningErrors: a.ProvisioningErrors,
+		IsAttachedCompute:  a.IsAttachedCompute,
+		DisableLocalAuth:   a.DisableLocalAuth,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.Compute.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // AKSProperties - AKS properties
@@ -83,33 +93,26 @@ type AKSProperties struct {
 	SystemServices []*SystemService `json:"systemServices,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AKSProperties.
-func (a AKSProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentCount", a.AgentCount)
-	populate(objectMap, "agentVmSize", a.AgentVMSize)
-	populate(objectMap, "aksNetworkingConfiguration", a.AksNetworkingConfiguration)
-	populate(objectMap, "clusterFqdn", a.ClusterFqdn)
-	populate(objectMap, "clusterPurpose", a.ClusterPurpose)
-	populate(objectMap, "loadBalancerSubnet", a.LoadBalancerSubnet)
-	populate(objectMap, "loadBalancerType", a.LoadBalancerType)
-	populate(objectMap, "sslConfiguration", a.SSLConfiguration)
-	populate(objectMap, "systemServices", a.SystemServices)
-	return json.Marshal(objectMap)
-}
-
 // AksComputeSecrets - Secrets related to a Machine Learning compute based on AKS.
 type AksComputeSecrets struct {
-	AksComputeSecretsProperties
-	ComputeSecrets
+	// REQUIRED; The type of compute
+	ComputeType *ComputeType `json:"computeType,omitempty"`
+
+	// Content of kubeconfig file that can be used to connect to the Kubernetes cluster.
+	AdminKubeConfig *string `json:"adminKubeConfig,omitempty"`
+
+	// Image registry pull secret.
+	ImagePullSecretName *string `json:"imagePullSecretName,omitempty"`
+
+	// Content of kubeconfig file that can be used to connect to the Kubernetes cluster.
+	UserKubeConfig *string `json:"userKubeConfig,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AksComputeSecrets.
-func (a AksComputeSecrets) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.ComputeSecrets.marshalInternal(objectMap, ComputeTypeAKS)
-	a.AksComputeSecretsProperties.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
+// GetComputeSecrets implements the ComputeSecretsClassification interface for type AksComputeSecrets.
+func (a *AksComputeSecrets) GetComputeSecrets() *ComputeSecrets {
+	return &ComputeSecrets{
+		ComputeType: a.ComputeType,
+	}
 }
 
 // AksComputeSecretsProperties - Properties of AksComputeSecrets
@@ -124,55 +127,14 @@ type AksComputeSecretsProperties struct {
 	UserKubeConfig *string `json:"userKubeConfig,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AksComputeSecretsProperties.
-func (a AksComputeSecretsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AksComputeSecretsProperties.
-func (a *AksComputeSecretsProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return a.unmarshalInternal(rawMsg)
-}
-
-func (a AksComputeSecretsProperties) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "adminKubeConfig", a.AdminKubeConfig)
-	populate(objectMap, "imagePullSecretName", a.ImagePullSecretName)
-	populate(objectMap, "userKubeConfig", a.UserKubeConfig)
-}
-
-func (a *AksComputeSecretsProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "adminKubeConfig":
-			err = unpopulate(val, &a.AdminKubeConfig)
-			delete(rawMsg, key)
-		case "imagePullSecretName":
-			err = unpopulate(val, &a.ImagePullSecretName)
-			delete(rawMsg, key)
-		case "userKubeConfig":
-			err = unpopulate(val, &a.UserKubeConfig)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AksNetworkingConfiguration - Advance configuration for AKS networking
 type AksNetworkingConfiguration struct {
-	// An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr.
+	// An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified
+	// in serviceCidr.
 	DNSServiceIP *string `json:"dnsServiceIP,omitempty"`
 
-	// A CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or the Kubernetes service address range.
+	// A CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or the Kubernetes
+	// service address range.
 	DockerBridgeCidr *string `json:"dockerBridgeCidr,omitempty"`
 
 	// A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges.
@@ -184,40 +146,55 @@ type AksNetworkingConfiguration struct {
 
 // AmlCompute - Properties(top level) of AmlCompute
 type AmlCompute struct {
-	Compute
+	// REQUIRED; The type of compute
+	ComputeType *ComputeType `json:"computeType,omitempty"`
+
+	// Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty"`
+
+	// The description of the Machine Learning compute.
+	Description *string `json:"description,omitempty"`
+
+	// Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication.
+	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+
 	// Properties of AmlCompute
 	Properties *AmlComputeProperties `json:"properties,omitempty"`
+
+	// ARM resource id of the underlying compute
+	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; The time at which the compute was created.
+	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning
+	// service provisioned it if false.
+	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time at which the compute was last modified.
+	ModifiedOn *time.Time `json:"modifiedOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Errors during provisioning
+	ProvisioningErrors []*ErrorResponse `json:"provisioningErrors,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AmlCompute.
-func (a AmlCompute) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	a.Compute.marshalInternal(objectMap, ComputeTypeAmlCompute)
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AmlCompute.
-func (a *AmlCompute) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetCompute implements the ComputeClassification interface for type AmlCompute.
+func (a *AmlCompute) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        a.ComputeType,
+		ComputeLocation:    a.ComputeLocation,
+		ProvisioningState:  a.ProvisioningState,
+		Description:        a.Description,
+		CreatedOn:          a.CreatedOn,
+		ModifiedOn:         a.ModifiedOn,
+		ResourceID:         a.ResourceID,
+		ProvisioningErrors: a.ProvisioningErrors,
+		IsAttachedCompute:  a.IsAttachedCompute,
+		DisableLocalAuth:   a.DisableLocalAuth,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := a.Compute.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // AmlComputeNodeInformation - Compute node information related to a AmlCompute.
@@ -250,18 +227,10 @@ type AmlComputeNodesInformation struct {
 	Nodes []*AmlComputeNodeInformation `json:"nodes,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AmlComputeNodesInformation.
-func (a AmlComputeNodesInformation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "nodes", a.Nodes)
-	return json.Marshal(objectMap)
-}
-
 // AmlComputeProperties - AML Compute properties
 type AmlComputeProperties struct {
-	// Enable or disable node public IP address provisioning. Possible values are: Possible values are: true - Indicates that the compute nodes will have public
-	// IPs provisioned. false - Indicates that the
+	// Enable or disable node public IP address provisioning. Possible values are: Possible values are: true - Indicates that
+	// the compute nodes will have public IPs provisioned. false - Indicates that the
 	// compute nodes will have a private endpoint and no public IPs.
 	EnableNodePublicIP *bool `json:"enableNodePublicIp,omitempty"`
 
@@ -271,10 +240,10 @@ type AmlComputeProperties struct {
 	// Compute OS Type
 	OSType *OsType `json:"osType,omitempty"`
 
-	// State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on all nodes of the cluster. Enabled - Indicates
-	// that the public ssh port is open on all
-	// nodes of the cluster. NotSpecified - Indicates that the public ssh port is closed on all nodes of the cluster if VNet is defined, else is open all public
-	// nodes. It can be default only during cluster
+	// State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on all nodes
+	// of the cluster. Enabled - Indicates that the public ssh port is open on all
+	// nodes of the cluster. NotSpecified - Indicates that the public ssh port is closed on all nodes of the cluster if VNet is
+	// defined, else is open all public nodes. It can be default only during cluster
 	// creation time, after creation it will be either enabled or disabled.
 	RemoteLoginPortPublicAccess *RemoteLoginPortPublicAccess `json:"remoteLoginPortPublicAccess,omitempty"`
 
@@ -296,10 +265,10 @@ type AmlComputeProperties struct {
 	// Virtual Machine image for AML Compute - windows only
 	VirtualMachineImage *VirtualMachineImage `json:"virtualMachineImage,omitempty"`
 
-	// READ-ONLY; Allocation state of the compute. Possible values are: steady - Indicates that the compute is not resizing. There are no changes to the number
-	// of compute nodes in the compute in progress. A compute
-	// enters this state when it is created and when no operations are being performed on the compute to change the number of compute nodes. resizing - Indicates
-	// that the compute is resizing; that is,
+	// READ-ONLY; Allocation state of the compute. Possible values are: steady - Indicates that the compute is not resizing. There
+	// are no changes to the number of compute nodes in the compute in progress. A compute
+	// enters this state when it is created and when no operations are being performed on the compute to change the number of
+	// compute nodes. resizing - Indicates that the compute is resizing; that is,
 	// compute nodes are being added to or removed from the compute.
 	AllocationState *AllocationState `json:"allocationState,omitempty" azure:"ro"`
 
@@ -315,97 +284,10 @@ type AmlComputeProperties struct {
 	// READ-ONLY; Counts of various node states on the compute.
 	NodeStateCounts *NodeStateCounts `json:"nodeStateCounts,omitempty" azure:"ro"`
 
-	// READ-ONLY; The target number of compute nodes for the compute. If the allocationState is resizing, this property denotes the target node count for the
-	// ongoing resize operation. If the allocationState is steady,
+	// READ-ONLY; The target number of compute nodes for the compute. If the allocationState is resizing, this property denotes
+	// the target node count for the ongoing resize operation. If the allocationState is steady,
 	// this property denotes the target node count for the previous resize operation.
 	TargetNodeCount *int32 `json:"targetNodeCount,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AmlComputeProperties.
-func (a AmlComputeProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allocationState", a.AllocationState)
-	populateTimeRFC3339(objectMap, "allocationStateTransitionTime", a.AllocationStateTransitionTime)
-	populate(objectMap, "currentNodeCount", a.CurrentNodeCount)
-	populate(objectMap, "enableNodePublicIp", a.EnableNodePublicIP)
-	populate(objectMap, "errors", a.Errors)
-	populate(objectMap, "isolatedNetwork", a.IsolatedNetwork)
-	populate(objectMap, "nodeStateCounts", a.NodeStateCounts)
-	populate(objectMap, "osType", a.OSType)
-	populate(objectMap, "remoteLoginPortPublicAccess", a.RemoteLoginPortPublicAccess)
-	populate(objectMap, "scaleSettings", a.ScaleSettings)
-	populate(objectMap, "subnet", a.Subnet)
-	populate(objectMap, "targetNodeCount", a.TargetNodeCount)
-	populate(objectMap, "userAccountCredentials", a.UserAccountCredentials)
-	populate(objectMap, "vmPriority", a.VMPriority)
-	populate(objectMap, "vmSize", a.VMSize)
-	populate(objectMap, "virtualMachineImage", a.VirtualMachineImage)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AmlComputeProperties.
-func (a *AmlComputeProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "allocationState":
-			err = unpopulate(val, &a.AllocationState)
-			delete(rawMsg, key)
-		case "allocationStateTransitionTime":
-			err = unpopulateTimeRFC3339(val, &a.AllocationStateTransitionTime)
-			delete(rawMsg, key)
-		case "currentNodeCount":
-			err = unpopulate(val, &a.CurrentNodeCount)
-			delete(rawMsg, key)
-		case "enableNodePublicIp":
-			err = unpopulate(val, &a.EnableNodePublicIP)
-			delete(rawMsg, key)
-		case "errors":
-			err = unpopulate(val, &a.Errors)
-			delete(rawMsg, key)
-		case "isolatedNetwork":
-			err = unpopulate(val, &a.IsolatedNetwork)
-			delete(rawMsg, key)
-		case "nodeStateCounts":
-			err = unpopulate(val, &a.NodeStateCounts)
-			delete(rawMsg, key)
-		case "osType":
-			err = unpopulate(val, &a.OSType)
-			delete(rawMsg, key)
-		case "remoteLoginPortPublicAccess":
-			err = unpopulate(val, &a.RemoteLoginPortPublicAccess)
-			delete(rawMsg, key)
-		case "scaleSettings":
-			err = unpopulate(val, &a.ScaleSettings)
-			delete(rawMsg, key)
-		case "subnet":
-			err = unpopulate(val, &a.Subnet)
-			delete(rawMsg, key)
-		case "targetNodeCount":
-			err = unpopulate(val, &a.TargetNodeCount)
-			delete(rawMsg, key)
-		case "userAccountCredentials":
-			err = unpopulate(val, &a.UserAccountCredentials)
-			delete(rawMsg, key)
-		case "vmPriority":
-			err = unpopulate(val, &a.VMPriority)
-			delete(rawMsg, key)
-		case "vmSize":
-			err = unpopulate(val, &a.VMSize)
-			delete(rawMsg, key)
-		case "virtualMachineImage":
-			err = unpopulate(val, &a.VirtualMachineImage)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AmlUserFeature - Features enabled for a workspace
@@ -448,13 +330,6 @@ type ClusterUpdateParameters struct {
 	Properties *ClusterUpdateProperties `json:"properties,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ClusterUpdateParameters.
-func (c ClusterUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
-}
-
 // ClusterUpdateProperties - The properties of a amlCompute that need to be updated.
 type ClusterUpdateProperties struct {
 	// Properties of ClusterUpdate
@@ -464,41 +339,6 @@ type ClusterUpdateProperties struct {
 type Components1D3SwueSchemasComputeresourceAllof1 struct {
 	// Compute properties
 	Properties ComputeClassification `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Components1D3SwueSchemasComputeresourceAllof1.
-func (c Components1D3SwueSchemasComputeresourceAllof1) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Components1D3SwueSchemasComputeresourceAllof1.
-func (c *Components1D3SwueSchemasComputeresourceAllof1) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return c.unmarshalInternal(rawMsg)
-}
-
-func (c Components1D3SwueSchemasComputeresourceAllof1) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "properties", c.Properties)
-}
-
-func (c *Components1D3SwueSchemasComputeresourceAllof1) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			c.Properties, err = unmarshalComputeClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ComputeClassification provides polymorphic access to related types.
@@ -531,7 +371,8 @@ type Compute struct {
 	// READ-ONLY; The time at which the compute was created.
 	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
 
-	// READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
+	// READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning
+	// service provisioned it if false.
 	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time at which the compute was last modified.
@@ -547,142 +388,114 @@ type Compute struct {
 // GetCompute implements the ComputeClassification interface for type Compute.
 func (c *Compute) GetCompute() *Compute { return c }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type Compute.
-func (c *Compute) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return c.unmarshalInternal(rawMsg)
+// ComputeClientBeginCreateOrUpdateOptions contains the optional parameters for the ComputeClient.BeginCreateOrUpdate method.
+type ComputeClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-func (c Compute) marshalInternal(objectMap map[string]interface{}, discValue ComputeType) {
-	populate(objectMap, "computeLocation", c.ComputeLocation)
-	c.ComputeType = &discValue
-	objectMap["computeType"] = c.ComputeType
-	populateTimeRFC3339(objectMap, "createdOn", c.CreatedOn)
-	populate(objectMap, "description", c.Description)
-	populate(objectMap, "disableLocalAuth", c.DisableLocalAuth)
-	populate(objectMap, "isAttachedCompute", c.IsAttachedCompute)
-	populateTimeRFC3339(objectMap, "modifiedOn", c.ModifiedOn)
-	populate(objectMap, "provisioningErrors", c.ProvisioningErrors)
-	populate(objectMap, "provisioningState", c.ProvisioningState)
-	populate(objectMap, "resourceId", c.ResourceID)
+// ComputeClientBeginDeleteOptions contains the optional parameters for the ComputeClient.BeginDelete method.
+type ComputeClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-func (c *Compute) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "computeLocation":
-			err = unpopulate(val, &c.ComputeLocation)
-			delete(rawMsg, key)
-		case "computeType":
-			err = unpopulate(val, &c.ComputeType)
-			delete(rawMsg, key)
-		case "createdOn":
-			err = unpopulateTimeRFC3339(val, &c.CreatedOn)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &c.Description)
-			delete(rawMsg, key)
-		case "disableLocalAuth":
-			err = unpopulate(val, &c.DisableLocalAuth)
-			delete(rawMsg, key)
-		case "isAttachedCompute":
-			err = unpopulate(val, &c.IsAttachedCompute)
-			delete(rawMsg, key)
-		case "modifiedOn":
-			err = unpopulateTimeRFC3339(val, &c.ModifiedOn)
-			delete(rawMsg, key)
-		case "provisioningErrors":
-			err = unpopulate(val, &c.ProvisioningErrors)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &c.ProvisioningState)
-			delete(rawMsg, key)
-		case "resourceId":
-			err = unpopulate(val, &c.ResourceID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+// ComputeClientBeginRestartOptions contains the optional parameters for the ComputeClient.BeginRestart method.
+type ComputeClientBeginRestartOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// ComputeBeginCreateOrUpdateOptions contains the optional parameters for the Compute.BeginCreateOrUpdate method.
-type ComputeBeginCreateOrUpdateOptions struct {
+// ComputeClientBeginStartOptions contains the optional parameters for the ComputeClient.BeginStart method.
+type ComputeClientBeginStartOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ComputeClientBeginStopOptions contains the optional parameters for the ComputeClient.BeginStop method.
+type ComputeClientBeginStopOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ComputeClientBeginUpdateOptions contains the optional parameters for the ComputeClient.BeginUpdate method.
+type ComputeClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ComputeClientGetOptions contains the optional parameters for the ComputeClient.Get method.
+type ComputeClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ComputeBeginDeleteOptions contains the optional parameters for the Compute.BeginDelete method.
-type ComputeBeginDeleteOptions struct {
+// ComputeClientListKeysOptions contains the optional parameters for the ComputeClient.ListKeys method.
+type ComputeClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ComputeBeginRestartOptions contains the optional parameters for the Compute.BeginRestart method.
-type ComputeBeginRestartOptions struct {
+// ComputeClientListNodesOptions contains the optional parameters for the ComputeClient.ListNodes method.
+type ComputeClientListNodesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ComputeBeginStartOptions contains the optional parameters for the Compute.BeginStart method.
-type ComputeBeginStartOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ComputeBeginStopOptions contains the optional parameters for the Compute.BeginStop method.
-type ComputeBeginStopOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ComputeBeginUpdateOptions contains the optional parameters for the Compute.BeginUpdate method.
-type ComputeBeginUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ComputeGetOptions contains the optional parameters for the Compute.Get method.
-type ComputeGetOptions struct {
-	// placeholder for future optional parameters
+// ComputeClientListOptions contains the optional parameters for the ComputeClient.List method.
+type ComputeClientListOptions struct {
+	// Continuation token for pagination.
+	Skip *string
 }
 
 // ComputeInstance - Properties(top level) of ComputeInstance
 type ComputeInstance struct {
-	Compute
+	// REQUIRED; The type of compute
+	ComputeType *ComputeType `json:"computeType,omitempty"`
+
+	// Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty"`
+
+	// The description of the Machine Learning compute.
+	Description *string `json:"description,omitempty"`
+
+	// Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication.
+	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+
 	// Properties of ComputeInstance
 	Properties *ComputeInstanceProperties `json:"properties,omitempty"`
+
+	// ARM resource id of the underlying compute
+	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; The time at which the compute was created.
+	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning
+	// service provisioned it if false.
+	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time at which the compute was last modified.
+	ModifiedOn *time.Time `json:"modifiedOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Errors during provisioning
+	ProvisioningErrors []*ErrorResponse `json:"provisioningErrors,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ComputeInstance.
-func (c ComputeInstance) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.Compute.marshalInternal(objectMap, ComputeTypeComputeInstance)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ComputeInstance.
-func (c *ComputeInstance) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetCompute implements the ComputeClassification interface for type ComputeInstance.
+func (c *ComputeInstance) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        c.ComputeType,
+		ComputeLocation:    c.ComputeLocation,
+		ProvisioningState:  c.ProvisioningState,
+		Description:        c.Description,
+		CreatedOn:          c.CreatedOn,
+		ModifiedOn:         c.ModifiedOn,
+		ResourceID:         c.ResourceID,
+		ProvisioningErrors: c.ProvisioningErrors,
+		IsAttachedCompute:  c.IsAttachedCompute,
+		DisableLocalAuth:   c.DisableLocalAuth,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &c.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := c.Compute.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // ComputeInstanceApplication - Defines an Aml Instance application and its connectivity endpoint URI.
@@ -727,45 +540,10 @@ type ComputeInstanceLastOperation struct {
 	OperationTime *time.Time `json:"operationTime,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ComputeInstanceLastOperation.
-func (c ComputeInstanceLastOperation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "operationName", c.OperationName)
-	populate(objectMap, "operationStatus", c.OperationStatus)
-	populateTimeRFC3339(objectMap, "operationTime", c.OperationTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ComputeInstanceLastOperation.
-func (c *ComputeInstanceLastOperation) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "operationName":
-			err = unpopulate(val, &c.OperationName)
-			delete(rawMsg, key)
-		case "operationStatus":
-			err = unpopulate(val, &c.OperationStatus)
-			delete(rawMsg, key)
-		case "operationTime":
-			err = unpopulateTimeRFC3339(val, &c.OperationTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ComputeInstanceProperties - Compute Instance properties
 type ComputeInstanceProperties struct {
-	// Policy for sharing applications on this compute instance among users of parent workspace. If Personal, only the creator can access applications on this
-	// compute instance. When Shared, any workspace
+	// Policy for sharing applications on this compute instance among users of parent workspace. If Personal, only the creator
+	// can access applications on this compute instance. When Shared, any workspace
 	// user can access applications on this instance depending on his/her assigned role.
 	ApplicationSharingPolicy *ApplicationSharingPolicy `json:"applicationSharingPolicy,omitempty"`
 
@@ -806,32 +584,13 @@ type ComputeInstanceProperties struct {
 	State *ComputeInstanceState `json:"state,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ComputeInstanceProperties.
-func (c ComputeInstanceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "applicationSharingPolicy", c.ApplicationSharingPolicy)
-	populate(objectMap, "applications", c.Applications)
-	populate(objectMap, "computeInstanceAuthorizationType", c.ComputeInstanceAuthorizationType)
-	populate(objectMap, "connectivityEndpoints", c.ConnectivityEndpoints)
-	populate(objectMap, "createdBy", c.CreatedBy)
-	populate(objectMap, "errors", c.Errors)
-	populate(objectMap, "lastOperation", c.LastOperation)
-	populate(objectMap, "personalComputeInstanceSettings", c.PersonalComputeInstanceSettings)
-	populate(objectMap, "sshSettings", c.SSHSettings)
-	populate(objectMap, "setupScripts", c.SetupScripts)
-	populate(objectMap, "state", c.State)
-	populate(objectMap, "subnet", c.Subnet)
-	populate(objectMap, "vmSize", c.VMSize)
-	return json.Marshal(objectMap)
-}
-
 // ComputeInstanceSSHSettings - Specifies policy and settings for SSH access.
 type ComputeInstanceSSHSettings struct {
 	// Specifies the SSH rsa public key file as a string. Use "ssh-keygen -t rsa -b 2048" to generate your SSH key pairs.
 	AdminPublicKey *string `json:"adminPublicKey,omitempty"`
 
-	// State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on this instance. Enabled - Indicates that
-	// the public ssh port is open and accessible
+	// State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on this instance.
+	// Enabled - Indicates that the public ssh port is open and accessible
 	// according to the VNet/subnet policy if applicable.
 	SSHPublicAccess *SSHPublicAccess `json:"sshPublicAccess,omitempty"`
 
@@ -842,31 +601,16 @@ type ComputeInstanceSSHSettings struct {
 	SSHPort *int32 `json:"sshPort,omitempty" azure:"ro"`
 }
 
-// ComputeListKeysOptions contains the optional parameters for the Compute.ListKeys method.
-type ComputeListKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ComputeListNodesOptions contains the optional parameters for the Compute.ListNodes method.
-type ComputeListNodesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ComputeListOptions contains the optional parameters for the Compute.List method.
-type ComputeListOptions struct {
-	// Continuation token for pagination.
-	Skip *string
-}
-
 // ComputeResource - Machine Learning compute object wrapped into ARM resource envelope.
 type ComputeResource struct {
-	Components1D3SwueSchemasComputeresourceAllof1
-	Resource
 	// The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
 
 	// Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
+
+	// Compute properties
+	Properties ComputeClassification `json:"properties,omitempty"`
 
 	// The sku of the workspace.
 	SKU *SKU `json:"sku,omitempty"`
@@ -874,59 +618,17 @@ type ComputeResource struct {
 	// Contains resource tags defined as key/value pairs.
 	Tags map[string]*string `json:"tags,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; System data
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type ComputeResource.
-func (c ComputeResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.Resource.marshalInternal(objectMap)
-	c.Components1D3SwueSchemasComputeresourceAllof1.marshalInternal(objectMap)
-	populate(objectMap, "identity", c.Identity)
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "sku", c.SKU)
-	populate(objectMap, "systemData", c.SystemData)
-	populate(objectMap, "tags", c.Tags)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ComputeResource.
-func (c *ComputeResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "identity":
-			err = unpopulate(val, &c.Identity)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &c.Location)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, &c.SKU)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &c.SystemData)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &c.Tags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := c.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	if err := c.Components1D3SwueSchemasComputeresourceAllof1.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // ComputeSecretsClassification provides polymorphic access to related types.
@@ -946,35 +648,6 @@ type ComputeSecrets struct {
 
 // GetComputeSecrets implements the ComputeSecretsClassification interface for type ComputeSecrets.
 func (c *ComputeSecrets) GetComputeSecrets() *ComputeSecrets { return c }
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ComputeSecrets.
-func (c *ComputeSecrets) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return c.unmarshalInternal(rawMsg)
-}
-
-func (c ComputeSecrets) marshalInternal(objectMap map[string]interface{}, discValue ComputeType) {
-	c.ComputeType = &discValue
-	objectMap["computeType"] = c.ComputeType
-}
-
-func (c *ComputeSecrets) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "computeType":
-			err = unpopulate(val, &c.ComputeType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
 
 // ContainerResourceRequirements - The resource requirements for the container (cpu and memory).
 type ContainerResourceRequirements struct {
@@ -1004,51 +677,103 @@ type CosmosDbSettings struct {
 
 // DataFactory - A DataFactory compute.
 type DataFactory struct {
-	Compute
+	// REQUIRED; The type of compute
+	ComputeType *ComputeType `json:"computeType,omitempty"`
+
+	// Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty"`
+
+	// The description of the Machine Learning compute.
+	Description *string `json:"description,omitempty"`
+
+	// Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication.
+	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+
+	// ARM resource id of the underlying compute
+	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; The time at which the compute was created.
+	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning
+	// service provisioned it if false.
+	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time at which the compute was last modified.
+	ModifiedOn *time.Time `json:"modifiedOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Errors during provisioning
+	ProvisioningErrors []*ErrorResponse `json:"provisioningErrors,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DataFactory.
-func (d DataFactory) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.Compute.marshalInternal(objectMap, ComputeTypeDataFactory)
-	return json.Marshal(objectMap)
+// GetCompute implements the ComputeClassification interface for type DataFactory.
+func (d *DataFactory) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        d.ComputeType,
+		ComputeLocation:    d.ComputeLocation,
+		ProvisioningState:  d.ProvisioningState,
+		Description:        d.Description,
+		CreatedOn:          d.CreatedOn,
+		ModifiedOn:         d.ModifiedOn,
+		ResourceID:         d.ResourceID,
+		ProvisioningErrors: d.ProvisioningErrors,
+		IsAttachedCompute:  d.IsAttachedCompute,
+		DisableLocalAuth:   d.DisableLocalAuth,
+	}
 }
 
 // DataLakeAnalytics - A DataLakeAnalytics compute.
 type DataLakeAnalytics struct {
-	Compute
-	Properties *DataLakeAnalyticsProperties `json:"properties,omitempty"`
+	// REQUIRED; The type of compute
+	ComputeType *ComputeType `json:"computeType,omitempty"`
+
+	// Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty"`
+
+	// The description of the Machine Learning compute.
+	Description *string `json:"description,omitempty"`
+
+	// Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication.
+	DisableLocalAuth *bool                        `json:"disableLocalAuth,omitempty"`
+	Properties       *DataLakeAnalyticsProperties `json:"properties,omitempty"`
+
+	// ARM resource id of the underlying compute
+	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; The time at which the compute was created.
+	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning
+	// service provisioned it if false.
+	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time at which the compute was last modified.
+	ModifiedOn *time.Time `json:"modifiedOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Errors during provisioning
+	ProvisioningErrors []*ErrorResponse `json:"provisioningErrors,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DataLakeAnalytics.
-func (d DataLakeAnalytics) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.Compute.marshalInternal(objectMap, ComputeTypeDataLakeAnalytics)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataLakeAnalytics.
-func (d *DataLakeAnalytics) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetCompute implements the ComputeClassification interface for type DataLakeAnalytics.
+func (d *DataLakeAnalytics) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        d.ComputeType,
+		ComputeLocation:    d.ComputeLocation,
+		ProvisioningState:  d.ProvisioningState,
+		Description:        d.Description,
+		CreatedOn:          d.CreatedOn,
+		ModifiedOn:         d.ModifiedOn,
+		ResourceID:         d.ResourceID,
+		ProvisioningErrors: d.ProvisioningErrors,
+		IsAttachedCompute:  d.IsAttachedCompute,
+		DisableLocalAuth:   d.DisableLocalAuth,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &d.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.Compute.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 type DataLakeAnalyticsProperties struct {
@@ -1058,95 +783,77 @@ type DataLakeAnalyticsProperties struct {
 
 // Databricks - A DataFactory compute.
 type Databricks struct {
-	Compute
+	// REQUIRED; The type of compute
+	ComputeType *ComputeType `json:"computeType,omitempty"`
+
+	// Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty"`
+
+	// The description of the Machine Learning compute.
+	Description *string `json:"description,omitempty"`
+
+	// Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication.
+	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+
 	// Properties of Databricks
 	Properties *DatabricksProperties `json:"properties,omitempty"`
+
+	// ARM resource id of the underlying compute
+	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; The time at which the compute was created.
+	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning
+	// service provisioned it if false.
+	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time at which the compute was last modified.
+	ModifiedOn *time.Time `json:"modifiedOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Errors during provisioning
+	ProvisioningErrors []*ErrorResponse `json:"provisioningErrors,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Databricks.
-func (d Databricks) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.Compute.marshalInternal(objectMap, ComputeTypeDatabricks)
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Databricks.
-func (d *Databricks) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetCompute implements the ComputeClassification interface for type Databricks.
+func (d *Databricks) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        d.ComputeType,
+		ComputeLocation:    d.ComputeLocation,
+		ProvisioningState:  d.ProvisioningState,
+		Description:        d.Description,
+		CreatedOn:          d.CreatedOn,
+		ModifiedOn:         d.ModifiedOn,
+		ResourceID:         d.ResourceID,
+		ProvisioningErrors: d.ProvisioningErrors,
+		IsAttachedCompute:  d.IsAttachedCompute,
+		DisableLocalAuth:   d.DisableLocalAuth,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &d.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.Compute.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // DatabricksComputeSecrets - Secrets related to a Machine Learning compute based on Databricks.
 type DatabricksComputeSecrets struct {
-	ComputeSecrets
-	DatabricksComputeSecretsProperties
+	// REQUIRED; The type of compute
+	ComputeType *ComputeType `json:"computeType,omitempty"`
+
+	// access token for databricks account.
+	DatabricksAccessToken *string `json:"databricksAccessToken,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DatabricksComputeSecrets.
-func (d DatabricksComputeSecrets) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.ComputeSecrets.marshalInternal(objectMap, ComputeTypeDatabricks)
-	d.DatabricksComputeSecretsProperties.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
+// GetComputeSecrets implements the ComputeSecretsClassification interface for type DatabricksComputeSecrets.
+func (d *DatabricksComputeSecrets) GetComputeSecrets() *ComputeSecrets {
+	return &ComputeSecrets{
+		ComputeType: d.ComputeType,
+	}
 }
 
 // DatabricksComputeSecretsProperties - Properties of Databricks Compute Secrets
 type DatabricksComputeSecretsProperties struct {
 	// access token for databricks account.
 	DatabricksAccessToken *string `json:"databricksAccessToken,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DatabricksComputeSecretsProperties.
-func (d DatabricksComputeSecretsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DatabricksComputeSecretsProperties.
-func (d *DatabricksComputeSecretsProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return d.unmarshalInternal(rawMsg)
-}
-
-func (d DatabricksComputeSecretsProperties) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "databricksAccessToken", d.DatabricksAccessToken)
-}
-
-func (d *DatabricksComputeSecretsProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "databricksAccessToken":
-			err = unpopulate(val, &d.DatabricksAccessToken)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // DatabricksProperties - Properties of Databricks
@@ -1160,46 +867,31 @@ type DatabricksProperties struct {
 
 type DiagnoseRequestProperties struct {
 	// Setting for diagnosing dependent application insights
-	ApplicationInsights map[string]map[string]interface{} `json:"applicationInsights,omitempty"`
+	ApplicationInsights map[string]interface{} `json:"applicationInsights,omitempty"`
 
 	// Setting for diagnosing dependent container registry
-	ContainerRegistry map[string]map[string]interface{} `json:"containerRegistry,omitempty"`
+	ContainerRegistry map[string]interface{} `json:"containerRegistry,omitempty"`
 
 	// Setting for diagnosing dns resolution
-	DNSResolution map[string]map[string]interface{} `json:"dnsResolution,omitempty"`
+	DNSResolution map[string]interface{} `json:"dnsResolution,omitempty"`
 
 	// Setting for diagnosing dependent key vault
-	KeyVault map[string]map[string]interface{} `json:"keyVault,omitempty"`
+	KeyVault map[string]interface{} `json:"keyVault,omitempty"`
 
 	// Setting for diagnosing network security group
-	Nsg map[string]map[string]interface{} `json:"nsg,omitempty"`
+	Nsg map[string]interface{} `json:"nsg,omitempty"`
 
 	// Setting for diagnosing unclassified category of problems
-	Others map[string]map[string]interface{} `json:"others,omitempty"`
+	Others map[string]interface{} `json:"others,omitempty"`
 
 	// Setting for diagnosing resource lock
-	ResourceLock map[string]map[string]interface{} `json:"resourceLock,omitempty"`
+	ResourceLock map[string]interface{} `json:"resourceLock,omitempty"`
 
 	// Setting for diagnosing dependent storage account
-	StorageAccount map[string]map[string]interface{} `json:"storageAccount,omitempty"`
+	StorageAccount map[string]interface{} `json:"storageAccount,omitempty"`
 
 	// Setting for diagnosing user defined routing
-	Udr map[string]map[string]interface{} `json:"udr,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DiagnoseRequestProperties.
-func (d DiagnoseRequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "applicationInsights", d.ApplicationInsights)
-	populate(objectMap, "containerRegistry", d.ContainerRegistry)
-	populate(objectMap, "dnsResolution", d.DNSResolution)
-	populate(objectMap, "keyVault", d.KeyVault)
-	populate(objectMap, "nsg", d.Nsg)
-	populate(objectMap, "others", d.Others)
-	populate(objectMap, "resourceLock", d.ResourceLock)
-	populate(objectMap, "storageAccount", d.StorageAccount)
-	populate(objectMap, "udr", d.Udr)
-	return json.Marshal(objectMap)
+	Udr map[string]interface{} `json:"udr,omitempty"`
 }
 
 type DiagnoseResponseResult struct {
@@ -1216,21 +908,6 @@ type DiagnoseResponseResultValue struct {
 	ResourceLockResults        []*DiagnoseResult `json:"resourceLockResults,omitempty"`
 	StorageAccountResults      []*DiagnoseResult `json:"storageAccountResults,omitempty"`
 	UserDefinedRouteResults    []*DiagnoseResult `json:"userDefinedRouteResults,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DiagnoseResponseResultValue.
-func (d DiagnoseResponseResultValue) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "applicationInsightsResults", d.ApplicationInsightsResults)
-	populate(objectMap, "containerRegistryResults", d.ContainerRegistryResults)
-	populate(objectMap, "dnsResolutionResults", d.DNSResolutionResults)
-	populate(objectMap, "keyVaultResults", d.KeyVaultResults)
-	populate(objectMap, "networkSecurityRuleResults", d.NetworkSecurityRuleResults)
-	populate(objectMap, "otherResults", d.OtherResults)
-	populate(objectMap, "resourceLockResults", d.ResourceLockResults)
-	populate(objectMap, "storageAccountResults", d.StorageAccountResults)
-	populate(objectMap, "userDefinedRouteResults", d.UserDefinedRouteResults)
-	return json.Marshal(objectMap)
 }
 
 // DiagnoseResult - Result of Diagnose
@@ -1265,7 +942,7 @@ type EncryptionProperty struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -1289,30 +966,11 @@ type ErrorDetail struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
-// error response format.).
-// Implements the error and azcore.HTTPResponse interfaces.
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
 type ErrorResponse struct {
-	raw string
 	// The error object.
-	InnerError *ErrorDetail `json:"error,omitempty"`
-}
-
-// Error implements the error interface for type ErrorResponse.
-// The contents of the error text are not contractual and subject to change.
-func (e ErrorResponse) Error() string {
-	return e.raw
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // EstimatedVMPrice - The estimated price info for using a VM of a particular OS type, tier, etc.
@@ -1339,37 +997,13 @@ type EstimatedVMPrices struct {
 	Values []*EstimatedVMPrice `json:"values,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EstimatedVMPrices.
-func (e EstimatedVMPrices) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "billingCurrency", e.BillingCurrency)
-	populate(objectMap, "unitOfMeasure", e.UnitOfMeasure)
-	populate(objectMap, "values", e.Values)
-	return json.Marshal(objectMap)
-}
-
 type ExternalFQDNResponse struct {
 	Value []*FQDNEndpoints `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExternalFQDNResponse.
-func (e ExternalFQDNResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
 }
 
 type FQDNEndpoint struct {
 	DomainName      *string               `json:"domainName,omitempty"`
 	EndpointDetails []*FQDNEndpointDetail `json:"endpointDetails,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FQDNEndpoint.
-func (f FQDNEndpoint) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "domainName", f.DomainName)
-	populate(objectMap, "endpointDetails", f.EndpointDetails)
-	return json.Marshal(objectMap)
 }
 
 type FQDNEndpointDetail struct {
@@ -1385,50 +1019,57 @@ type FQDNEndpointsProperties struct {
 	Endpoints []*FQDNEndpoint `json:"endpoints,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FQDNEndpointsProperties.
-func (f FQDNEndpointsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "category", f.Category)
-	populate(objectMap, "endpoints", f.Endpoints)
-	return json.Marshal(objectMap)
-}
-
 // HDInsight - A HDInsight compute.
 type HDInsight struct {
-	Compute
+	// REQUIRED; The type of compute
+	ComputeType *ComputeType `json:"computeType,omitempty"`
+
+	// Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty"`
+
+	// The description of the Machine Learning compute.
+	Description *string `json:"description,omitempty"`
+
+	// Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication.
+	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+
 	// HDInsight compute properties
 	Properties *HDInsightProperties `json:"properties,omitempty"`
+
+	// ARM resource id of the underlying compute
+	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; The time at which the compute was created.
+	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning
+	// service provisioned it if false.
+	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time at which the compute was last modified.
+	ModifiedOn *time.Time `json:"modifiedOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Errors during provisioning
+	ProvisioningErrors []*ErrorResponse `json:"provisioningErrors,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type HDInsight.
-func (h HDInsight) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	h.Compute.marshalInternal(objectMap, ComputeTypeHDInsight)
-	populate(objectMap, "properties", h.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HDInsight.
-func (h *HDInsight) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetCompute implements the ComputeClassification interface for type HDInsight.
+func (h *HDInsight) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        h.ComputeType,
+		ComputeLocation:    h.ComputeLocation,
+		ProvisioningState:  h.ProvisioningState,
+		Description:        h.Description,
+		CreatedOn:          h.CreatedOn,
+		ModifiedOn:         h.ModifiedOn,
+		ResourceID:         h.ResourceID,
+		ProvisioningErrors: h.ProvisioningErrors,
+		IsAttachedCompute:  h.IsAttachedCompute,
+		DisableLocalAuth:   h.DisableLocalAuth,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &h.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := h.Compute.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // HDInsightProperties - HDInsight compute properties
@@ -1458,16 +1099,6 @@ type Identity struct {
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Identity.
-func (i Identity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "principalId", i.PrincipalID)
-	populate(objectMap, "tenantId", i.TenantID)
-	populate(objectMap, "type", i.Type)
-	populate(objectMap, "userAssignedIdentities", i.UserAssignedIdentities)
-	return json.Marshal(objectMap)
-}
-
 // IdentityForCmk - Identity that will be used to access key vault for encryption at rest
 type IdentityForCmk struct {
 	// The ArmId of the user assigned identity that will be used to access the customer managed key vault
@@ -1483,14 +1114,6 @@ type InstanceTypeSchema struct {
 	Resources *InstanceTypeSchemaResources `json:"resources,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InstanceTypeSchema.
-func (i InstanceTypeSchema) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nodeSelector", i.NodeSelector)
-	populate(objectMap, "resources", i.Resources)
-	return json.Marshal(objectMap)
-}
-
 // InstanceTypeSchemaResources - Resource requests/limits for this instance type
 type InstanceTypeSchemaResources struct {
 	// Resource limits for this instance type
@@ -1498,14 +1121,6 @@ type InstanceTypeSchemaResources struct {
 
 	// Resource requests for this instance type
 	Requests map[string]*string `json:"requests,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InstanceTypeSchemaResources.
-func (i InstanceTypeSchemaResources) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "limits", i.Limits)
-	populate(objectMap, "requests", i.Requests)
-	return json.Marshal(objectMap)
 }
 
 type KeyVaultProperties struct {
@@ -1521,16 +1136,55 @@ type KeyVaultProperties struct {
 
 // Kubernetes - A Machine Learning compute based on Kubernetes Compute.
 type Kubernetes struct {
-	Compute
-	KubernetesSchema
+	// REQUIRED; The type of compute
+	ComputeType *ComputeType `json:"computeType,omitempty"`
+
+	// Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty"`
+
+	// The description of the Machine Learning compute.
+	Description *string `json:"description,omitempty"`
+
+	// Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication.
+	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+
+	// Properties of Kubernetes
+	Properties *KubernetesProperties `json:"properties,omitempty"`
+
+	// ARM resource id of the underlying compute
+	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; The time at which the compute was created.
+	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning
+	// service provisioned it if false.
+	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time at which the compute was last modified.
+	ModifiedOn *time.Time `json:"modifiedOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Errors during provisioning
+	ProvisioningErrors []*ErrorResponse `json:"provisioningErrors,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Kubernetes.
-func (k Kubernetes) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	k.Compute.marshalInternal(objectMap, ComputeTypeKubernetes)
-	k.KubernetesSchema.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
+// GetCompute implements the ComputeClassification interface for type Kubernetes.
+func (k *Kubernetes) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        k.ComputeType,
+		ComputeLocation:    k.ComputeLocation,
+		ProvisioningState:  k.ProvisioningState,
+		Description:        k.Description,
+		CreatedOn:          k.CreatedOn,
+		ModifiedOn:         k.ModifiedOn,
+		ResourceID:         k.ResourceID,
+		ProvisioningErrors: k.ProvisioningErrors,
+		IsAttachedCompute:  k.IsAttachedCompute,
+		DisableLocalAuth:   k.DisableLocalAuth,
+	}
 }
 
 // KubernetesProperties - Kubernetes properties
@@ -1560,76 +1214,20 @@ type KubernetesProperties struct {
 	VcName *string `json:"vcName,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type KubernetesProperties.
-func (k KubernetesProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "defaultInstanceType", k.DefaultInstanceType)
-	populate(objectMap, "extensionInstanceReleaseTrain", k.ExtensionInstanceReleaseTrain)
-	populate(objectMap, "extensionPrincipalId", k.ExtensionPrincipalID)
-	populate(objectMap, "instanceTypes", k.InstanceTypes)
-	populate(objectMap, "namespace", k.Namespace)
-	populate(objectMap, "relayConnectionString", k.RelayConnectionString)
-	populate(objectMap, "serviceBusConnectionString", k.ServiceBusConnectionString)
-	populate(objectMap, "vcName", k.VcName)
-	return json.Marshal(objectMap)
-}
-
 // KubernetesSchema - Kubernetes Compute Schema
 type KubernetesSchema struct {
 	// Properties of Kubernetes
 	Properties *KubernetesProperties `json:"properties,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type KubernetesSchema.
-func (k KubernetesSchema) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	k.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type KubernetesSchema.
-func (k *KubernetesSchema) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return k.unmarshalInternal(rawMsg)
-}
-
-func (k KubernetesSchema) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "properties", k.Properties)
-}
-
-func (k *KubernetesSchema) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &k.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ListAmlUserFeatureResult - The List Aml user feature operation response.
 type ListAmlUserFeatureResult struct {
-	// READ-ONLY; The URI to fetch the next page of AML user features information. Call ListNext() with this to fetch the next page of AML user features information.
+	// READ-ONLY; The URI to fetch the next page of AML user features information. Call ListNext() with this to fetch the next
+	// page of AML user features information.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; The list of AML user facing features.
 	Value []*AmlUserFeature `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListAmlUserFeatureResult.
-func (l ListAmlUserFeatureResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 type ListNotebookKeysResult struct {
@@ -1647,19 +1245,12 @@ type ListStorageAccountKeysResult struct {
 
 // ListUsagesResult - The List Usages operation response.
 type ListUsagesResult struct {
-	// READ-ONLY; The URI to fetch the next page of AML resource usage information. Call ListNext() with this to fetch the next page of AML resource usage information.
+	// READ-ONLY; The URI to fetch the next page of AML resource usage information. Call ListNext() with this to fetch the next
+	// page of AML resource usage information.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; The list of AML resource usages.
 	Value []*Usage `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListUsagesResult.
-func (l ListUsagesResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 type ListWorkspaceKeysResult struct {
@@ -1681,20 +1272,12 @@ type ListWorkspaceKeysResult struct {
 
 // ListWorkspaceQuotas - The List WorkspaceQuotasByVMFamily operation response.
 type ListWorkspaceQuotas struct {
-	// READ-ONLY; The URI to fetch the next page of workspace quota information by VM Family. Call ListNext() with this to fetch the next page of Workspace
-	// Quota information.
+	// READ-ONLY; The URI to fetch the next page of workspace quota information by VM Family. Call ListNext() with this to fetch
+	// the next page of Workspace Quota information.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; The list of Workspace Quotas by VM Family
 	Value []*ResourceQuota `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListWorkspaceQuotas.
-func (l ListWorkspaceQuotas) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 // NodeStateCounts - Counts of various compute node states on the amlCompute.
@@ -1789,15 +1372,8 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
-// OperationsListOptions contains the optional parameters for the Operations.List method.
-type OperationsListOptions struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1810,14 +1386,6 @@ type PaginatedComputeResourcesList struct {
 	Value []*ComputeResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PaginatedComputeResourcesList.
-func (p PaginatedComputeResourcesList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PaginatedWorkspaceConnectionsList - Paginated list of Workspace connection objects.
 type PaginatedWorkspaceConnectionsList struct {
 	// A continuation link (absolute URI) to the next page of results in the list.
@@ -1825,14 +1393,6 @@ type PaginatedWorkspaceConnectionsList struct {
 
 	// An array of Workspace connection objects.
 	Value []*WorkspaceConnection `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PaginatedWorkspaceConnectionsList.
-func (p PaginatedWorkspaceConnectionsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 type Password struct {
@@ -1860,7 +1420,6 @@ type PrivateEndpoint struct {
 
 // PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
-	Resource
 	// The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
 
@@ -1876,72 +1435,23 @@ type PrivateEndpointConnection struct {
 	// Contains resource tags defined as key/value pairs.
 	Tags map[string]*string `json:"tags,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; System data
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnection.
-func (p PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "identity", p.Identity)
-	populate(objectMap, "location", p.Location)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "sku", p.SKU)
-	populate(objectMap, "systemData", p.SystemData)
-	populate(objectMap, "tags", p.Tags)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PrivateEndpointConnection.
-func (p *PrivateEndpointConnection) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "identity":
-			err = unpopulate(val, &p.Identity)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &p.Location)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &p.Properties)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, &p.SKU)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &p.SystemData)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &p.Tags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := p.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified workspace
 type PrivateEndpointConnectionListResult struct {
 	// Array of private endpoint connections
 	Value []*PrivateEndpointConnection `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionListResult.
-func (p PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
@@ -1956,29 +1466,32 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// PrivateEndpointConnectionsCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnections.CreateOrUpdate method.
-type PrivateEndpointConnectionsCreateOrUpdateOptions struct {
+// PrivateEndpointConnectionsClientCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.CreateOrUpdate
+// method.
+type PrivateEndpointConnectionsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsDeleteOptions contains the optional parameters for the PrivateEndpointConnections.Delete method.
-type PrivateEndpointConnectionsDeleteOptions struct {
+// PrivateEndpointConnectionsClientDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Delete
+// method.
+type PrivateEndpointConnectionsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsGetOptions contains the optional parameters for the PrivateEndpointConnections.Get method.
-type PrivateEndpointConnectionsGetOptions struct {
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsListOptions contains the optional parameters for the PrivateEndpointConnections.List method.
-type PrivateEndpointConnectionsListOptions struct {
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// method.
+type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
-	Resource
 	// The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
 
@@ -1994,72 +1507,23 @@ type PrivateLinkResource struct {
 	// Contains resource tags defined as key/value pairs.
 	Tags map[string]*string `json:"tags,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; System data
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResource.
-func (p PrivateLinkResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	p.Resource.marshalInternal(objectMap)
-	populate(objectMap, "identity", p.Identity)
-	populate(objectMap, "location", p.Location)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "sku", p.SKU)
-	populate(objectMap, "systemData", p.SystemData)
-	populate(objectMap, "tags", p.Tags)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PrivateLinkResource.
-func (p *PrivateLinkResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "identity":
-			err = unpopulate(val, &p.Identity)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &p.Location)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &p.Properties)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, &p.SKU)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &p.SystemData)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &p.Tags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := p.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
 type PrivateLinkResourceListResult struct {
 	// Array of private link resources
 	Value []*PrivateLinkResource `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceListResult.
-func (p PrivateLinkResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
@@ -2074,21 +1538,13 @@ type PrivateLinkResourceProperties struct {
 	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
-func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupId", p.GroupID)
-	populate(objectMap, "requiredMembers", p.RequiredMembers)
-	populate(objectMap, "requiredZoneNames", p.RequiredZoneNames)
-	return json.Marshal(objectMap)
-}
-
-// PrivateLinkResourcesListOptions contains the optional parameters for the PrivateLinkResources.List method.
-type PrivateLinkResourcesListOptions struct {
+// PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.List method.
+type PrivateLinkResourcesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer and provider.
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
@@ -2124,21 +1580,13 @@ type QuotaUpdateParameters struct {
 	Value []*QuotaBaseProperties `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type QuotaUpdateParameters.
-func (q QuotaUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "location", q.Location)
-	populate(objectMap, "value", q.Value)
-	return json.Marshal(objectMap)
-}
-
-// QuotasListOptions contains the optional parameters for the Quotas.List method.
-type QuotasListOptions struct {
+// QuotasClientListOptions contains the optional parameters for the QuotasClient.List method.
+type QuotasClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// QuotasUpdateOptions contains the optional parameters for the Quotas.Update method.
-type QuotasUpdateOptions struct {
+// QuotasClientUpdateOptions contains the optional parameters for the QuotasClient.Update method.
+type QuotasClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2152,15 +1600,6 @@ type RegistryListCredentialsResult struct {
 	Username *string `json:"username,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RegistryListCredentialsResult.
-func (r RegistryListCredentialsResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "passwords", r.Passwords)
-	populate(objectMap, "username", r.Username)
-	return json.Marshal(objectMap)
-}
-
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -2171,49 +1610,6 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	r.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Resource.
-func (r *Resource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
-func (r Resource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
-}
-
-func (r *Resource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &r.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &r.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ResourceID - Represents a resource ID. For example, for a subnet, it is the resource URL for the subnet.
@@ -2263,15 +1659,6 @@ type ResourceSKULocationInfo struct {
 	Zones []*string `json:"zones,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceSKULocationInfo.
-func (r ResourceSKULocationInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "zoneDetails", r.ZoneDetails)
-	populate(objectMap, "zones", r.Zones)
-	return json.Marshal(objectMap)
-}
-
 // ResourceSKUZoneDetails - Describes The zonal capabilities of a SKU.
 type ResourceSKUZoneDetails struct {
 	// READ-ONLY; A list of capabilities that are available for the SKU in the specified list of zones.
@@ -2279,14 +1666,6 @@ type ResourceSKUZoneDetails struct {
 
 	// READ-ONLY; The set of zones that the SKU is available in with the specified capabilities.
 	Name []*string `json:"name,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceSKUZoneDetails.
-func (r ResourceSKUZoneDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "capabilities", r.Capabilities)
-	populate(objectMap, "name", r.Name)
-	return json.Marshal(objectMap)
 }
 
 // Restriction - The restriction because of which SKU cannot be used.
@@ -2297,17 +1676,9 @@ type Restriction struct {
 	// READ-ONLY; The type of restrictions. As of now only possible value for this is location.
 	Type *string `json:"type,omitempty" azure:"ro"`
 
-	// READ-ONLY; The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU is restricted.
+	// READ-ONLY; The value of restrictions. If the restriction type is set to location. This would be different locations where
+	// the SKU is restricted.
 	Values []*string `json:"values,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Restriction.
-func (r Restriction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "reasonCode", r.ReasonCode)
-	populate(objectMap, "type", r.Type)
-	populate(objectMap, "values", r.Values)
-	return json.Marshal(objectMap)
 }
 
 // SKU - Sku of the resource
@@ -2333,14 +1704,6 @@ type SKUListResult struct {
 	// The URI to fetch the next page of Workspace Skus. Call ListNext() with this URI to fetch the next page of Workspace Skus
 	NextLink *string         `json:"nextLink,omitempty"`
 	Value    []*WorkspaceSKU `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SKUListResult.
-func (s SKUListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // SSLConfiguration - The ssl configuration for scoring
@@ -2451,39 +1814,53 @@ type SharedPrivateLinkResourceProperty struct {
 
 // SynapseSpark - A SynapseSpark compute.
 type SynapseSpark struct {
-	Compute
-	Properties *SynapseSparkProperties `json:"properties,omitempty"`
+	// REQUIRED; The type of compute
+	ComputeType *ComputeType `json:"computeType,omitempty"`
+
+	// Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty"`
+
+	// The description of the Machine Learning compute.
+	Description *string `json:"description,omitempty"`
+
+	// Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication.
+	DisableLocalAuth *bool                   `json:"disableLocalAuth,omitempty"`
+	Properties       *SynapseSparkProperties `json:"properties,omitempty"`
+
+	// ARM resource id of the underlying compute
+	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; The time at which the compute was created.
+	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning
+	// service provisioned it if false.
+	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time at which the compute was last modified.
+	ModifiedOn *time.Time `json:"modifiedOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Errors during provisioning
+	ProvisioningErrors []*ErrorResponse `json:"provisioningErrors,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SynapseSpark.
-func (s SynapseSpark) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.Compute.marshalInternal(objectMap, ComputeTypeSynapseSpark)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SynapseSpark.
-func (s *SynapseSpark) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetCompute implements the ComputeClassification interface for type SynapseSpark.
+func (s *SynapseSpark) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        s.ComputeType,
+		ComputeLocation:    s.ComputeLocation,
+		ProvisioningState:  s.ProvisioningState,
+		Description:        s.Description,
+		CreatedOn:          s.CreatedOn,
+		ModifiedOn:         s.ModifiedOn,
+		ResourceID:         s.ResourceID,
+		ProvisioningErrors: s.ProvisioningErrors,
+		IsAttachedCompute:  s.IsAttachedCompute,
+		DisableLocalAuth:   s.DisableLocalAuth,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.Compute.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 type SynapseSparkProperties struct {
@@ -2539,53 +1916,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // SystemService - A system service running on a compute.
 type SystemService struct {
 	// READ-ONLY; Public IP address
@@ -2618,20 +1948,12 @@ type UpdateWorkspaceQuotas struct {
 
 // UpdateWorkspaceQuotasResult - The result of update workspace quota.
 type UpdateWorkspaceQuotasResult struct {
-	// READ-ONLY; The URI to fetch the next page of workspace quota update result. Call ListNext() with this to fetch the next page of Workspace Quota update
-	// result.
+	// READ-ONLY; The URI to fetch the next page of workspace quota update result. Call ListNext() with this to fetch the next
+	// page of Workspace Quota update result.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; The list of workspace quota update result.
 	Value []*UpdateWorkspaceQuotas `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UpdateWorkspaceQuotasResult.
-func (u UpdateWorkspaceQuotasResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", u.NextLink)
-	populate(objectMap, "value", u.Value)
-	return json.Marshal(objectMap)
 }
 
 // Usage - Describes AML Resource Usage.
@@ -2667,8 +1989,8 @@ type UsageName struct {
 	Value *string `json:"value,omitempty" azure:"ro"`
 }
 
-// UsagesListOptions contains the optional parameters for the Usages.List method.
-type UsagesListOptions struct {
+// UsagesClientListOptions contains the optional parameters for the UsagesClient.List method.
+type UsagesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2698,39 +2020,53 @@ type UserAssignedIdentity struct {
 
 // VirtualMachine - A Machine Learning compute based on Azure Virtual Machines.
 type VirtualMachine struct {
-	Compute
-	Properties *VirtualMachineProperties `json:"properties,omitempty"`
+	// REQUIRED; The type of compute
+	ComputeType *ComputeType `json:"computeType,omitempty"`
+
+	// Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty"`
+
+	// The description of the Machine Learning compute.
+	Description *string `json:"description,omitempty"`
+
+	// Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication.
+	DisableLocalAuth *bool                     `json:"disableLocalAuth,omitempty"`
+	Properties       *VirtualMachineProperties `json:"properties,omitempty"`
+
+	// ARM resource id of the underlying compute
+	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; The time at which the compute was created.
+	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning
+	// service provisioned it if false.
+	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time at which the compute was last modified.
+	ModifiedOn *time.Time `json:"modifiedOn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Errors during provisioning
+	ProvisioningErrors []*ErrorResponse `json:"provisioningErrors,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachine.
-func (v VirtualMachine) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	v.Compute.marshalInternal(objectMap, ComputeTypeVirtualMachine)
-	populate(objectMap, "properties", v.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualMachine.
-func (v *VirtualMachine) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetCompute implements the ComputeClassification interface for type VirtualMachine.
+func (v *VirtualMachine) GetCompute() *Compute {
+	return &Compute{
+		ComputeType:        v.ComputeType,
+		ComputeLocation:    v.ComputeLocation,
+		ProvisioningState:  v.ProvisioningState,
+		Description:        v.Description,
+		CreatedOn:          v.CreatedOn,
+		ModifiedOn:         v.ModifiedOn,
+		ResourceID:         v.ResourceID,
+		ProvisioningErrors: v.ProvisioningErrors,
+		IsAttachedCompute:  v.IsAttachedCompute,
+		DisableLocalAuth:   v.DisableLocalAuth,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &v.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := v.Compute.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // VirtualMachineImage - Virtual Machine image for Windows AML Compute
@@ -2773,40 +2109,18 @@ type VirtualMachineSSHCredentials struct {
 
 // VirtualMachineSecrets - Secrets related to a Machine Learning compute based on AKS.
 type VirtualMachineSecrets struct {
-	ComputeSecrets
+	// REQUIRED; The type of compute
+	ComputeType *ComputeType `json:"computeType,omitempty"`
+
 	// Admin credentials for virtual machine.
 	AdministratorAccount *VirtualMachineSSHCredentials `json:"administratorAccount,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachineSecrets.
-func (v VirtualMachineSecrets) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	v.ComputeSecrets.marshalInternal(objectMap, ComputeTypeVirtualMachine)
-	populate(objectMap, "administratorAccount", v.AdministratorAccount)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualMachineSecrets.
-func (v *VirtualMachineSecrets) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+// GetComputeSecrets implements the ComputeSecretsClassification interface for type VirtualMachineSecrets.
+func (v *VirtualMachineSecrets) GetComputeSecrets() *ComputeSecrets {
+	return &ComputeSecrets{
+		ComputeType: v.ComputeType,
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "administratorAccount":
-			err = unpopulate(val, &v.AdministratorAccount)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := v.ComputeSecrets.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // VirtualMachineSize - Describes the properties of a VM size.
@@ -2845,44 +2159,19 @@ type VirtualMachineSize struct {
 	VCPUs *int32 `json:"vCPUs,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachineSize.
-func (v VirtualMachineSize) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "estimatedVMPrices", v.EstimatedVMPrices)
-	populate(objectMap, "family", v.Family)
-	populate(objectMap, "gpus", v.Gpus)
-	populate(objectMap, "lowPriorityCapable", v.LowPriorityCapable)
-	populate(objectMap, "maxResourceVolumeMB", v.MaxResourceVolumeMB)
-	populate(objectMap, "memoryGB", v.MemoryGB)
-	populate(objectMap, "name", v.Name)
-	populate(objectMap, "osVhdSizeMB", v.OSVhdSizeMB)
-	populate(objectMap, "premiumIO", v.PremiumIO)
-	populate(objectMap, "supportedComputeTypes", v.SupportedComputeTypes)
-	populate(objectMap, "vCPUs", v.VCPUs)
-	return json.Marshal(objectMap)
-}
-
 // VirtualMachineSizeListResult - The List Virtual Machine size operation response.
 type VirtualMachineSizeListResult struct {
 	// The list of virtual machine sizes supported by AmlCompute.
 	Value []*VirtualMachineSize `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachineSizeListResult.
-func (v VirtualMachineSizeListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
-}
-
-// VirtualMachineSizesListOptions contains the optional parameters for the VirtualMachineSizes.List method.
-type VirtualMachineSizesListOptions struct {
+// VirtualMachineSizesClientListOptions contains the optional parameters for the VirtualMachineSizesClient.List method.
+type VirtualMachineSizesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // Workspace - An object that represents a machine learning workspace.
 type Workspace struct {
-	Resource
 	// The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
 
@@ -2898,59 +2187,17 @@ type Workspace struct {
 	// Contains resource tags defined as key/value pairs.
 	Tags map[string]*string `json:"tags,omitempty"`
 
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
 	// READ-ONLY; System data
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type Workspace.
-func (w Workspace) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	w.Resource.marshalInternal(objectMap)
-	populate(objectMap, "identity", w.Identity)
-	populate(objectMap, "location", w.Location)
-	populate(objectMap, "properties", w.Properties)
-	populate(objectMap, "sku", w.SKU)
-	populate(objectMap, "systemData", w.SystemData)
-	populate(objectMap, "tags", w.Tags)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Workspace.
-func (w *Workspace) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "identity":
-			err = unpopulate(val, &w.Identity)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &w.Location)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &w.Properties)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, &w.SKU)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &w.SystemData)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &w.Tags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := w.Resource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // WorkspaceConnection - Workspace connection.
@@ -2986,31 +2233,31 @@ type WorkspaceConnectionProps struct {
 	ValueFormat *ValueFormat `json:"valueFormat,omitempty"`
 }
 
-// WorkspaceConnectionsCreateOptions contains the optional parameters for the WorkspaceConnections.Create method.
-type WorkspaceConnectionsCreateOptions struct {
+// WorkspaceConnectionsClientCreateOptions contains the optional parameters for the WorkspaceConnectionsClient.Create method.
+type WorkspaceConnectionsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspaceConnectionsDeleteOptions contains the optional parameters for the WorkspaceConnections.Delete method.
-type WorkspaceConnectionsDeleteOptions struct {
+// WorkspaceConnectionsClientDeleteOptions contains the optional parameters for the WorkspaceConnectionsClient.Delete method.
+type WorkspaceConnectionsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspaceConnectionsGetOptions contains the optional parameters for the WorkspaceConnections.Get method.
-type WorkspaceConnectionsGetOptions struct {
+// WorkspaceConnectionsClientGetOptions contains the optional parameters for the WorkspaceConnectionsClient.Get method.
+type WorkspaceConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspaceConnectionsListOptions contains the optional parameters for the WorkspaceConnections.List method.
-type WorkspaceConnectionsListOptions struct {
+// WorkspaceConnectionsClientListOptions contains the optional parameters for the WorkspaceConnectionsClient.List method.
+type WorkspaceConnectionsClientListOptions struct {
 	// Category of the workspace connection.
 	Category *string
 	// Target of the workspace connection.
 	Target *string
 }
 
-// WorkspaceFeaturesListOptions contains the optional parameters for the WorkspaceFeatures.List method.
-type WorkspaceFeaturesListOptions struct {
+// WorkspaceFeaturesClientListOptions contains the optional parameters for the WorkspaceFeaturesClient.List method.
+type WorkspaceFeaturesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3019,17 +2266,9 @@ type WorkspaceListResult struct {
 	// The URI that can be used to request the next list of machine learning workspaces.
 	NextLink *string `json:"nextLink,omitempty"`
 
-	// The list of machine learning workspaces. Since this list may be incomplete, the nextLink field should be used to request the next list of machine learning
-	// workspaces.
+	// The list of machine learning workspaces. Since this list may be incomplete, the nextLink field should be used to request
+	// the next list of machine learning workspaces.
 	Value []*Workspace `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type WorkspaceListResult.
-func (w WorkspaceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", w.NextLink)
-	populate(objectMap, "value", w.Value)
-	return json.Marshal(objectMap)
 }
 
 // WorkspaceProperties - The properties of a machine learning workspace.
@@ -3091,10 +2330,12 @@ type WorkspaceProperties struct {
 	// READ-ONLY; Count of private connections in the workspace
 	PrivateLinkCount *int32 `json:"privateLinkCount,omitempty" azure:"ro"`
 
-	// READ-ONLY; The current deployment state of workspace resource. The provisioningState is to indicate states for resource provisioning.
+	// READ-ONLY; The current deployment state of workspace resource. The provisioningState is to indicate states for resource
+	// provisioning.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
-	// READ-ONLY; The name of the managed resource group created by workspace RP in customer subscription if the workspace is CMK workspace
+	// READ-ONLY; The name of the managed resource group created by workspace RP in customer subscription if the workspace is
+	// CMK workspace
 	ServiceProvisionedResourceGroup *string `json:"serviceProvisionedResourceGroup,omitempty" azure:"ro"`
 
 	// READ-ONLY; If the storage associated with the workspace has hierarchical namespace(HNS) enabled.
@@ -3105,36 +2346,6 @@ type WorkspaceProperties struct {
 
 	// READ-ONLY; The immutable id associated with this workspace.
 	WorkspaceID *string `json:"workspaceId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type WorkspaceProperties.
-func (w WorkspaceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowPublicAccessWhenBehindVnet", w.AllowPublicAccessWhenBehindVnet)
-	populate(objectMap, "applicationInsights", w.ApplicationInsights)
-	populate(objectMap, "containerRegistry", w.ContainerRegistry)
-	populate(objectMap, "description", w.Description)
-	populate(objectMap, "discoveryUrl", w.DiscoveryURL)
-	populate(objectMap, "encryption", w.Encryption)
-	populate(objectMap, "friendlyName", w.FriendlyName)
-	populate(objectMap, "hbiWorkspace", w.HbiWorkspace)
-	populate(objectMap, "imageBuildCompute", w.ImageBuildCompute)
-	populate(objectMap, "keyVault", w.KeyVault)
-	populate(objectMap, "mlFlowTrackingUri", w.MlFlowTrackingURI)
-	populate(objectMap, "notebookInfo", w.NotebookInfo)
-	populate(objectMap, "primaryUserAssignedIdentity", w.PrimaryUserAssignedIdentity)
-	populate(objectMap, "privateEndpointConnections", w.PrivateEndpointConnections)
-	populate(objectMap, "privateLinkCount", w.PrivateLinkCount)
-	populate(objectMap, "provisioningState", w.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", w.PublicNetworkAccess)
-	populate(objectMap, "serviceManagedResourcesSettings", w.ServiceManagedResourcesSettings)
-	populate(objectMap, "serviceProvisionedResourceGroup", w.ServiceProvisionedResourceGroup)
-	populate(objectMap, "sharedPrivateLinkResources", w.SharedPrivateLinkResources)
-	populate(objectMap, "storageAccount", w.StorageAccount)
-	populate(objectMap, "storageHnsEnabled", w.StorageHnsEnabled)
-	populate(objectMap, "tenantId", w.TenantID)
-	populate(objectMap, "workspaceId", w.WorkspaceID)
-	return json.Marshal(objectMap)
 }
 
 // WorkspacePropertiesUpdateParameters - The parameters for updating the properties of a machine learning workspace.
@@ -3169,8 +2380,8 @@ type WorkspaceSKU struct {
 	// READ-ONLY; A list of locations and availability zones in those locations where the SKU is available.
 	LocationInfo []*ResourceSKULocationInfo `json:"locationInfo,omitempty" azure:"ro"`
 
-	// READ-ONLY; The set of locations that the SKU is available. This will be supported and registered Azure Geo Regions (e.g. West US, East US, Southeast
-	// Asia, etc.).
+	// READ-ONLY; The set of locations that the SKU is available. This will be supported and registered Azure Geo Regions (e.g.
+	// West US, East US, Southeast Asia, etc.).
 	Locations []*string `json:"locations,omitempty" azure:"ro"`
 
 	// READ-ONLY
@@ -3183,21 +2394,8 @@ type WorkspaceSKU struct {
 	Tier *string `json:"tier,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkspaceSKU.
-func (w WorkspaceSKU) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "capabilities", w.Capabilities)
-	populate(objectMap, "locationInfo", w.LocationInfo)
-	populate(objectMap, "locations", w.Locations)
-	populate(objectMap, "name", w.Name)
-	populate(objectMap, "resourceType", w.ResourceType)
-	populate(objectMap, "restrictions", w.Restrictions)
-	populate(objectMap, "tier", w.Tier)
-	return json.Marshal(objectMap)
-}
-
-// WorkspaceSKUsListOptions contains the optional parameters for the WorkspaceSKUs.List method.
-type WorkspaceSKUsListOptions struct {
+// WorkspaceSKUsClientListOptions contains the optional parameters for the WorkspaceSKUsClient.List method.
+type WorkspaceSKUsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3216,103 +2414,88 @@ type WorkspaceUpdateParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkspaceUpdateParameters.
-func (w WorkspaceUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", w.Identity)
-	populate(objectMap, "properties", w.Properties)
-	populate(objectMap, "sku", w.SKU)
-	populate(objectMap, "tags", w.Tags)
-	return json.Marshal(objectMap)
+// WorkspacesClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkspacesClient.BeginCreateOrUpdate
+// method.
+type WorkspacesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// WorkspacesBeginCreateOrUpdateOptions contains the optional parameters for the Workspaces.BeginCreateOrUpdate method.
-type WorkspacesBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+// WorkspacesClientBeginDeleteOptions contains the optional parameters for the WorkspacesClient.BeginDelete method.
+type WorkspacesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// WorkspacesBeginDeleteOptions contains the optional parameters for the Workspaces.BeginDelete method.
-type WorkspacesBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WorkspacesBeginDiagnoseOptions contains the optional parameters for the Workspaces.BeginDiagnose method.
-type WorkspacesBeginDiagnoseOptions struct {
+// WorkspacesClientBeginDiagnoseOptions contains the optional parameters for the WorkspacesClient.BeginDiagnose method.
+type WorkspacesClientBeginDiagnoseOptions struct {
 	// The parameter of diagnosing workspace health
 	Parameters *DiagnoseWorkspaceParameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// WorkspacesBeginPrepareNotebookOptions contains the optional parameters for the Workspaces.BeginPrepareNotebook method.
-type WorkspacesBeginPrepareNotebookOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WorkspacesBeginResyncKeysOptions contains the optional parameters for the Workspaces.BeginResyncKeys method.
-type WorkspacesBeginResyncKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WorkspacesGetOptions contains the optional parameters for the Workspaces.Get method.
-type WorkspacesGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WorkspacesListByResourceGroupOptions contains the optional parameters for the Workspaces.ListByResourceGroup method.
-type WorkspacesListByResourceGroupOptions struct {
-	// Continuation token for pagination.
-	Skip *string
-}
-
-// WorkspacesListBySubscriptionOptions contains the optional parameters for the Workspaces.ListBySubscription method.
-type WorkspacesListBySubscriptionOptions struct {
-	// Continuation token for pagination.
-	Skip *string
-}
-
-// WorkspacesListKeysOptions contains the optional parameters for the Workspaces.ListKeys method.
-type WorkspacesListKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WorkspacesListNotebookAccessTokenOptions contains the optional parameters for the Workspaces.ListNotebookAccessToken method.
-type WorkspacesListNotebookAccessTokenOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WorkspacesListNotebookKeysOptions contains the optional parameters for the Workspaces.ListNotebookKeys method.
-type WorkspacesListNotebookKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WorkspacesListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the Workspaces.ListOutboundNetworkDependenciesEndpoints
+// WorkspacesClientBeginPrepareNotebookOptions contains the optional parameters for the WorkspacesClient.BeginPrepareNotebook
 // method.
-type WorkspacesListOutboundNetworkDependenciesEndpointsOptions struct {
+type WorkspacesClientBeginPrepareNotebookOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// WorkspacesClientBeginResyncKeysOptions contains the optional parameters for the WorkspacesClient.BeginResyncKeys method.
+type WorkspacesClientBeginResyncKeysOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// WorkspacesClientGetOptions contains the optional parameters for the WorkspacesClient.Get method.
+type WorkspacesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspacesListStorageAccountKeysOptions contains the optional parameters for the Workspaces.ListStorageAccountKeys method.
-type WorkspacesListStorageAccountKeysOptions struct {
+// WorkspacesClientListByResourceGroupOptions contains the optional parameters for the WorkspacesClient.ListByResourceGroup
+// method.
+type WorkspacesClientListByResourceGroupOptions struct {
+	// Continuation token for pagination.
+	Skip *string
+}
+
+// WorkspacesClientListBySubscriptionOptions contains the optional parameters for the WorkspacesClient.ListBySubscription
+// method.
+type WorkspacesClientListBySubscriptionOptions struct {
+	// Continuation token for pagination.
+	Skip *string
+}
+
+// WorkspacesClientListKeysOptions contains the optional parameters for the WorkspacesClient.ListKeys method.
+type WorkspacesClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkspacesUpdateOptions contains the optional parameters for the Workspaces.Update method.
-type WorkspacesUpdateOptions struct {
+// WorkspacesClientListNotebookAccessTokenOptions contains the optional parameters for the WorkspacesClient.ListNotebookAccessToken
+// method.
+type WorkspacesClientListNotebookAccessTokenOptions struct {
 	// placeholder for future optional parameters
 }
 
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
+// WorkspacesClientListNotebookKeysOptions contains the optional parameters for the WorkspacesClient.ListNotebookKeys method.
+type WorkspacesClientListNotebookKeysOptions struct {
+	// placeholder for future optional parameters
 }
 
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
+// WorkspacesClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the WorkspacesClient.ListOutboundNetworkDependenciesEndpoints
+// method.
+type WorkspacesClientListOutboundNetworkDependenciesEndpointsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkspacesClientListStorageAccountKeysOptions contains the optional parameters for the WorkspacesClient.ListStorageAccountKeys
+// method.
+type WorkspacesClientListStorageAccountKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkspacesClientUpdateOptions contains the optional parameters for the WorkspacesClient.Update method.
+type WorkspacesClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }

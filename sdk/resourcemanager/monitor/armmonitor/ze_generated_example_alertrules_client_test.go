@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,159 +17,182 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/createOrUpdateAlertRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/createOrUpdateAlertRule.json
 func ExampleAlertRulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewAlertRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewAlertRulesClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<rule-name>",
+		"Rac46PostSwapRG",
+		"chiricutin",
 		armmonitor.AlertRuleResource{
-			Resource: armmonitor.Resource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.Ptr("West US"),
+			Tags:     map[string]*string{},
 			Properties: &armmonitor.AlertRule{
-				Name:        to.StringPtr("<name>"),
-				Description: to.StringPtr("<description>"),
+				Name:        to.Ptr("chiricutin"),
+				Description: to.Ptr("Pura Vida"),
 				Actions:     []armmonitor.RuleActionClassification{},
 				Condition: &armmonitor.ThresholdRuleCondition{
-					RuleCondition: armmonitor.RuleCondition{
-						DataSource: &armmonitor.RuleMetricDataSource{
-							RuleDataSource: armmonitor.RuleDataSource{
-								ODataType:   to.StringPtr("<odata-type>"),
-								ResourceURI: to.StringPtr("<resource-uri>"),
-							},
-							MetricName: to.StringPtr("<metric-name>"),
-						},
-						ODataType: to.StringPtr("<odata-type>"),
+					DataSource: &armmonitor.RuleMetricDataSource{
+						ODataType:   to.Ptr("Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource"),
+						ResourceURI: to.Ptr("/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/Rac46PostSwapRG/providers/Microsoft.Web/sites/leoalerttest"),
+						MetricName:  to.Ptr("Requests"),
 					},
-					Operator:        armmonitor.ConditionOperatorGreaterThan.ToPtr(),
-					Threshold:       to.Float64Ptr(3),
-					TimeAggregation: armmonitor.TimeAggregationOperatorTotal.ToPtr(),
-					WindowSize:      to.StringPtr("<window-size>"),
+					ODataType:       to.Ptr("Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition"),
+					Operator:        to.Ptr(armmonitor.ConditionOperatorGreaterThan),
+					Threshold:       to.Ptr[float64](3),
+					TimeAggregation: to.Ptr(armmonitor.TimeAggregationOperatorTotal),
+					WindowSize:      to.Ptr("PT5M"),
 				},
-				IsEnabled: to.BoolPtr(true),
+				IsEnabled: to.Ptr(true),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("AlertRuleResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/deleteAlertRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/deleteAlertRule.json
 func ExampleAlertRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewAlertRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewAlertRulesClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<rule-name>",
+		"Rac46PostSwapRG",
+		"chiricutin",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/getAlertRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/getAlertRule.json
 func ExampleAlertRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewAlertRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewAlertRulesClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<rule-name>",
+		"Rac46PostSwapRG",
+		"chiricutin",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("AlertRuleResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/patchAlertRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/patchAlertRule.json
 func ExampleAlertRulesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewAlertRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewAlertRulesClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<rule-name>",
+		"Rac46PostSwapRG",
+		"chiricutin",
 		armmonitor.AlertRuleResourcePatch{
 			Properties: &armmonitor.AlertRule{
-				Name:        to.StringPtr("<name>"),
-				Description: to.StringPtr("<description>"),
+				Name:        to.Ptr("chiricutin"),
+				Description: to.Ptr("Pura Vida"),
 				Actions:     []armmonitor.RuleActionClassification{},
 				Condition: &armmonitor.ThresholdRuleCondition{
-					RuleCondition: armmonitor.RuleCondition{
-						DataSource: &armmonitor.RuleMetricDataSource{
-							RuleDataSource: armmonitor.RuleDataSource{
-								ODataType:   to.StringPtr("<odata-type>"),
-								ResourceURI: to.StringPtr("<resource-uri>"),
-							},
-							MetricName: to.StringPtr("<metric-name>"),
-						},
-						ODataType: to.StringPtr("<odata-type>"),
+					DataSource: &armmonitor.RuleMetricDataSource{
+						ODataType:   to.Ptr("Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource"),
+						ResourceURI: to.Ptr("/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/Rac46PostSwapRG/providers/Microsoft.Web/sites/leoalerttest"),
+						MetricName:  to.Ptr("Requests"),
 					},
-					Operator:        armmonitor.ConditionOperatorGreaterThan.ToPtr(),
-					Threshold:       to.Float64Ptr(3),
-					TimeAggregation: armmonitor.TimeAggregationOperatorTotal.ToPtr(),
-					WindowSize:      to.StringPtr("<window-size>"),
+					ODataType:       to.Ptr("Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition"),
+					Operator:        to.Ptr(armmonitor.ConditionOperatorGreaterThan),
+					Threshold:       to.Ptr[float64](3),
+					TimeAggregation: to.Ptr(armmonitor.TimeAggregationOperatorTotal),
+					WindowSize:      to.Ptr("PT5M"),
 				},
-				IsEnabled: to.BoolPtr(true),
+				IsEnabled: to.Ptr(true),
 			},
 			Tags: map[string]*string{
-				"$type": to.StringPtr("Microsoft.WindowsAzure.Management.Common.Storage.CasePreservedDictionary"),
+				"$type": to.Ptr("Microsoft.WindowsAzure.Management.Common.Storage.CasePreservedDictionary"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("AlertRuleResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/listAlertRule.json
-func ExampleAlertRulesClient_ListByResourceGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/listAlertRule.json
+func ExampleAlertRulesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewAlertRulesClient("<subscription-id>", cred, nil)
-	_, err = client.ListByResourceGroup(ctx,
-		"<resource-group-name>",
-		nil)
+	client, err := armmonitor.NewAlertRulesClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByResourceGroupPager("Rac46PostSwapRG",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/listAlertRuleBySubscription.json
-func ExampleAlertRulesClient_ListBySubscription() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/listAlertRuleBySubscription.json
+func ExampleAlertRulesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewAlertRulesClient("<subscription-id>", cred, nil)
-	_, err = client.ListBySubscription(ctx,
-		nil)
+	client, err := armmonitor.NewAlertRulesClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListBySubscriptionPager(nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
 }

@@ -18,6 +18,7 @@ func IndexingModeValues() []IndexingMode {
 	return []IndexingMode{IndexingModeConsistent, IndexingModeNone}
 }
 
+// ToPtr returns a *IndexingMode
 func (c IndexingMode) ToPtr() *IndexingMode {
 	return &c
 }

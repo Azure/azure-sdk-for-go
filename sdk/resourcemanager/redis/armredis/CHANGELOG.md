@@ -1,21 +1,23 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 2.0.0 (2022-09-01)
+### Breaking Changes
+
+- Operation `LinkedServerClient.Delete` has been changed to LRO, use `LinkedServerClient.BeginDelete` instead
+- Operation `*Client.Update` has been changed to LRO, use `Client.BeginUpdate` instead
 
 ### Features Added
 
-### Breaking Changes
+- New field `Authnotrequired` in struct `CommonPropertiesRedisConfiguration`
+- New field `AofBackupEnabled` in struct `CommonPropertiesRedisConfiguration`
+- New field `PreferredDataArchiveAuthMethod` in struct `ImportRDBParameters`
+- New field `PreferredDataArchiveAuthMethod` in struct `ExportRDBParameters`
 
-### Bugs Fixed
 
-### Other Changes
+## 1.0.0 (2022-05-17)
 
-## 0.2.0 (2021-10-29)
+The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.
 
-### Breaking Changes
+To migrate the existing applications to the latest version, please refer to [Migration Guide](https://aka.ms/azsdk/go/mgmt/migration).
 
-- `arm.Connection` has been removed in `github.com/Azure/azure-sdk-for-go/sdk/azcore/v0.20.0`
-- The parameters of `NewXXXClient` has been changed from `(con *arm.Connection, subscriptionID string)` to `(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions)`
-
-## 0.1.0 (2021-10-08)
-- To better align with the Azure SDK guidelines (https://azure.github.io/azure-sdk/general_introduction.html), we have decided to change the module path to "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis". Therefore, we are deprecating the old module path (which is "github.com/Azure/azure-sdk-for-go/sdk/redis/armredis") to avoid confusion.
+To learn more, please refer to our documentation [Quick Start](https://aka.ms/azsdk/go/mgmt).

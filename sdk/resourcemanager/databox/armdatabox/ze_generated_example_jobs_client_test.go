@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,271 +19,310 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox"
 )
 
-// x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/JobsList.json
-func ExampleJobsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsList.json
+func ExampleJobsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatabox.NewJobsClient("<subscription-id>", cred, nil)
-	pager := client.List(&armdatabox.JobsListOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armdatabox.NewJobsClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager(&armdatabox.JobsClientListOptions{SkipToken: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("JobResource.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/MarkDevicesShipped.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/MarkDevicesShipped.json
 func ExampleJobsClient_MarkDevicesShipped() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatabox.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armdatabox.NewJobsClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.MarkDevicesShipped(ctx,
-		"<job-name>",
-		"<resource-group-name>",
+		"SdkJob8367",
+		"SdkRg9836",
 		armdatabox.MarkDevicesShippedRequest{
 			DeliverToDcPackageDetails: &armdatabox.PackageCarrierInfo{
-				CarrierName: to.StringPtr("<carrier-name>"),
-				TrackingID:  to.StringPtr("<tracking-id>"),
+				CarrierName: to.Ptr("DHL"),
+				TrackingID:  to.Ptr("123456"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/JobsListByResourceGroup.json
-func ExampleJobsClient_ListByResourceGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsListByResourceGroup.json
+func ExampleJobsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatabox.NewJobsClient("<subscription-id>", cred, nil)
-	pager := client.ListByResourceGroup("<resource-group-name>",
-		&armdatabox.JobsListByResourceGroupOptions{SkipToken: nil})
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armdatabox.NewJobsClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByResourceGroupPager("SdkRg5154",
+		&armdatabox.JobsClientListByResourceGroupOptions{SkipToken: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("JobResource.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/JobsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsGet.json
 func ExampleJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatabox.NewJobsClient("<subscription-id>", cred, nil)
-	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		&armdatabox.JobsGetOptions{Expand: to.StringPtr("<expand>")})
+	client, err := armdatabox.NewJobsClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
 	}
-	log.Printf("JobResource.ID: %s\n", *res.ID)
+	res, err := client.Get(ctx,
+		"SdkRg5154",
+		"SdkJob952",
+		&armdatabox.JobsClientGetOptions{Expand: to.Ptr("details")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/JobsCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsCreate.json
 func ExampleJobsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatabox.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armdatabox.NewJobsClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<job-name>",
+		"SdkRg5154",
+		"SdkJob952",
 		armdatabox.JobResource{
-			Resource: armdatabox.Resource{
-				Location: to.StringPtr("<location>"),
-				SKU: &armdatabox.SKU{
-					Name: armdatabox.SKUNameDataBox.ToPtr(),
-				},
+			Location: to.Ptr("westus"),
+			SKU: &armdatabox.SKU{
+				Name: to.Ptr(armdatabox.SKUNameDataBox),
 			},
 			Properties: &armdatabox.JobProperties{
-				TransferType: armdatabox.TransferTypeImportToAzure.ToPtr(),
-				Details: &armdatabox.DataBoxJobDetails{
-					JobDetails: armdatabox.JobDetails{
-						ContactDetails: &armdatabox.ContactDetails{
-							ContactName: to.StringPtr("<contact-name>"),
-							EmailList: []*string{
-								to.StringPtr("testing@microsoft.com")},
-							Phone:          to.StringPtr("<phone>"),
-							PhoneExtension: to.StringPtr("<phone-extension>"),
-						},
-						DataImportDetails: []*armdatabox.DataImportDetails{
-							{
-								AccountDetails: &armdatabox.StorageAccountDetails{
-									DataAccountDetails: armdatabox.DataAccountDetails{
-										DataAccountType: armdatabox.DataAccountTypeStorageAccount.ToPtr(),
-									},
-									StorageAccountID: to.StringPtr("<storage-account-id>"),
-								},
-							}},
-						JobDetailsType: armdatabox.ClassDiscriminatorDataBox.ToPtr(),
-						ShippingAddress: &armdatabox.ShippingAddress{
-							AddressType:     armdatabox.AddressTypeCommercial.ToPtr(),
-							City:            to.StringPtr("<city>"),
-							CompanyName:     to.StringPtr("<company-name>"),
-							Country:         to.StringPtr("<country>"),
-							PostalCode:      to.StringPtr("<postal-code>"),
-							StateOrProvince: to.StringPtr("<state-or-province>"),
-							StreetAddress1:  to.StringPtr("<street-address1>"),
-							StreetAddress2:  to.StringPtr("<street-address2>"),
-						},
+				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
+				Details: &armdatabox.JobDetails{
+					ContactDetails: &armdatabox.ContactDetails{
+						ContactName: to.Ptr("Public SDK Test"),
+						EmailList: []*string{
+							to.Ptr("testing@microsoft.com")},
+						Phone:          to.Ptr("1234567890"),
+						PhoneExtension: to.Ptr("1234"),
+					},
+					DataImportDetails: []*armdatabox.DataImportDetails{
+						{
+							AccountDetails: &armdatabox.StorageAccountDetails{
+								DataAccountType:  to.Ptr(armdatabox.DataAccountTypeStorageAccount),
+								StorageAccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount"),
+							},
+						}},
+					JobDetailsType: to.Ptr(armdatabox.ClassDiscriminatorDataBox),
+					ShippingAddress: &armdatabox.ShippingAddress{
+						AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
+						City:            to.Ptr("San Francisco"),
+						CompanyName:     to.Ptr("Microsoft"),
+						Country:         to.Ptr("US"),
+						PostalCode:      to.Ptr("94107"),
+						StateOrProvince: to.Ptr("CA"),
+						StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
+						StreetAddress2:  to.Ptr("Unit 1"),
 					},
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("JobResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/JobsDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsDelete.json
 func ExampleJobsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatabox.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armdatabox.NewJobsClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<job-name>",
+		"SdkRg5154",
+		"SdkJob952",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/JobsPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsPatch.json
 func ExampleJobsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatabox.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armdatabox.NewJobsClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<job-name>",
+		"SdkRg5154",
+		"SdkJob952",
 		armdatabox.JobResourceUpdateParameter{
 			Properties: &armdatabox.UpdateJobProperties{
 				Details: &armdatabox.UpdateJobDetails{
 					ContactDetails: &armdatabox.ContactDetails{
-						ContactName: to.StringPtr("<contact-name>"),
+						ContactName: to.Ptr("Update Job"),
 						EmailList: []*string{
-							to.StringPtr("testing@microsoft.com")},
-						Phone:          to.StringPtr("<phone>"),
-						PhoneExtension: to.StringPtr("<phone-extension>"),
+							to.Ptr("testing@microsoft.com")},
+						Phone:          to.Ptr("1234567890"),
+						PhoneExtension: to.Ptr("1234"),
 					},
 					ShippingAddress: &armdatabox.ShippingAddress{
-						AddressType:     armdatabox.AddressTypeCommercial.ToPtr(),
-						City:            to.StringPtr("<city>"),
-						CompanyName:     to.StringPtr("<company-name>"),
-						Country:         to.StringPtr("<country>"),
-						PostalCode:      to.StringPtr("<postal-code>"),
-						StateOrProvince: to.StringPtr("<state-or-province>"),
-						StreetAddress1:  to.StringPtr("<street-address1>"),
-						StreetAddress2:  to.StringPtr("<street-address2>"),
+						AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
+						City:            to.Ptr("San Francisco"),
+						CompanyName:     to.Ptr("Microsoft"),
+						Country:         to.Ptr("US"),
+						PostalCode:      to.Ptr("94107"),
+						StateOrProvince: to.Ptr("CA"),
+						StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
+						StreetAddress2:  to.Ptr("Unit 1"),
 					},
 				},
 			},
 		},
-		&armdatabox.JobsBeginUpdateOptions{IfMatch: nil})
+		&armdatabox.JobsClientBeginUpdateOptions{IfMatch: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("JobResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/BookShipmentPickupPost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/BookShipmentPickupPost.json
 func ExampleJobsClient_BookShipmentPickUp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatabox.NewJobsClient("<subscription-id>", cred, nil)
-	_, err = client.BookShipmentPickUp(ctx,
-		"<resource-group-name>",
-		"<job-name>",
+	client, err := armdatabox.NewJobsClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.BookShipmentPickUp(ctx,
+		"bvttoolrg6",
+		"TJ-636646322037905056",
 		armdatabox.ShipmentPickUpRequest{
-			EndTime:          to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-22T18:30:00Z"); return t }()),
-			ShipmentLocation: to.StringPtr("<shipment-location>"),
-			StartTime:        to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-20T18:30:00Z"); return t }()),
+			EndTime:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-22T18:30:00Z"); return t }()),
+			ShipmentLocation: to.Ptr("Front desk"),
+			StartTime:        to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-20T18:30:00Z"); return t }()),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/JobsCancelPost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsCancelPost.json
 func ExampleJobsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatabox.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armdatabox.NewJobsClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Cancel(ctx,
-		"<resource-group-name>",
-		"<job-name>",
+		"SdkRg5154",
+		"SdkJob952",
 		armdatabox.CancellationReason{
-			Reason: to.StringPtr("<reason>"),
+			Reason: to.Ptr("CancelTest"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/preview/2021-08-01-preview/examples/JobsListCredentials.json
-func ExampleJobsClient_ListCredentials() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobsListCredentials.json
+func ExampleJobsClient_NewListCredentialsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatabox.NewJobsClient("<subscription-id>", cred, nil)
-	_, err = client.ListCredentials(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		nil)
+	client, err := armdatabox.NewJobsClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListCredentialsPager("bvttoolrg6",
+		"TJ-636646322037905056",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
 }

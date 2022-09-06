@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armfrontdoor
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,39 +25,73 @@ import (
 // PreconfiguredEndpointsClient contains the methods for the PreconfiguredEndpoints group.
 // Don't use this type directly, use NewPreconfiguredEndpointsClient() instead.
 type PreconfiguredEndpointsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPreconfiguredEndpointsClient creates a new instance of PreconfiguredEndpointsClient with the specified values.
-func NewPreconfiguredEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PreconfiguredEndpointsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+// ID forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewPreconfiguredEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PreconfiguredEndpointsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &PreconfiguredEndpointsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &PreconfiguredEndpointsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
-// List - Gets a list of Preconfigured Endpoints
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *PreconfiguredEndpointsClient) List(resourceGroupName string, profileName string, options *PreconfiguredEndpointsListOptions) *PreconfiguredEndpointsListPager {
-	return &PreconfiguredEndpointsListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, profileName, options)
+// NewListPager - Gets a list of Preconfigured Endpoints
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01
+// resourceGroupName - Name of the Resource group within the Azure subscription.
+// profileName - The Profile identifier associated with the Tenant and Partner
+// options - PreconfiguredEndpointsClientListOptions contains the optional parameters for the PreconfiguredEndpointsClient.List
+// method.
+func (client *PreconfiguredEndpointsClient) NewListPager(resourceGroupName string, profileName string, options *PreconfiguredEndpointsClientListOptions) *runtime.Pager[PreconfiguredEndpointsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PreconfiguredEndpointsClientListResponse]{
+		More: func(page PreconfiguredEndpointsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PreconfiguredEndpointsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PreconfiguredEndpointList.NextLink)
+		Fetcher: func(ctx context.Context, page *PreconfiguredEndpointsClientListResponse) (PreconfiguredEndpointsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, profileName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PreconfiguredEndpointsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PreconfiguredEndpointsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PreconfiguredEndpointsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *PreconfiguredEndpointsClient) listCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *PreconfiguredEndpointsListOptions) (*policy.Request, error) {
+func (client *PreconfiguredEndpointsClient) listCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *PreconfiguredEndpointsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/PreconfiguredEndpoints"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -71,35 +105,22 @@ func (client *PreconfiguredEndpointsClient) listCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter profileName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *PreconfiguredEndpointsClient) listHandleResponse(resp *http.Response) (PreconfiguredEndpointsListResponse, error) {
-	result := PreconfiguredEndpointsListResponse{RawResponse: resp}
+func (client *PreconfiguredEndpointsClient) listHandleResponse(resp *http.Response) (PreconfiguredEndpointsClientListResponse, error) {
+	result := PreconfiguredEndpointsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PreconfiguredEndpointList); err != nil {
-		return PreconfiguredEndpointsListResponse{}, runtime.NewResponseError(err, resp)
+		return PreconfiguredEndpointsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *PreconfiguredEndpointsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

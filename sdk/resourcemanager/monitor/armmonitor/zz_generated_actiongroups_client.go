@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armmonitor
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,42 +25,187 @@ import (
 // ActionGroupsClient contains the methods for the ActionGroups group.
 // Don't use this type directly, use NewActionGroupsClient() instead.
 type ActionGroupsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewActionGroupsClient creates a new instance of ActionGroupsClient with the specified values.
-func NewActionGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ActionGroupsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The ID of the target subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewActionGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActionGroupsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &ActionGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &ActionGroupsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
-// CreateOrUpdate - Create a new action group or update an existing one.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ActionGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroup ActionGroupResource, options *ActionGroupsCreateOrUpdateOptions) (ActionGroupsCreateOrUpdateResponse, error) {
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, actionGroupName, actionGroup, options)
+// BeginCreateNotificationsAtActionGroupResourceLevel - Send test notifications to a set of provided receivers
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// actionGroupName - The name of the action group.
+// notificationRequest - The notification request body which includes the contact details
+// options - ActionGroupsClientBeginCreateNotificationsAtActionGroupResourceLevelOptions contains the optional parameters
+// for the ActionGroupsClient.BeginCreateNotificationsAtActionGroupResourceLevel method.
+func (client *ActionGroupsClient) BeginCreateNotificationsAtActionGroupResourceLevel(ctx context.Context, resourceGroupName string, actionGroupName string, notificationRequest NotificationRequestBody, options *ActionGroupsClientBeginCreateNotificationsAtActionGroupResourceLevelOptions) (*runtime.Poller[ActionGroupsClientCreateNotificationsAtActionGroupResourceLevelResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createNotificationsAtActionGroupResourceLevel(ctx, resourceGroupName, actionGroupName, notificationRequest, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ActionGroupsClientCreateNotificationsAtActionGroupResourceLevelResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[ActionGroupsClientCreateNotificationsAtActionGroupResourceLevelResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// CreateNotificationsAtActionGroupResourceLevel - Send test notifications to a set of provided receivers
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-01
+func (client *ActionGroupsClient) createNotificationsAtActionGroupResourceLevel(ctx context.Context, resourceGroupName string, actionGroupName string, notificationRequest NotificationRequestBody, options *ActionGroupsClientBeginCreateNotificationsAtActionGroupResourceLevelOptions) (*http.Response, error) {
+	req, err := client.createNotificationsAtActionGroupResourceLevelCreateRequest(ctx, resourceGroupName, actionGroupName, notificationRequest, options)
 	if err != nil {
-		return ActionGroupsCreateOrUpdateResponse{}, err
+		return nil, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ActionGroupsCreateOrUpdateResponse{}, err
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// createNotificationsAtActionGroupResourceLevelCreateRequest creates the CreateNotificationsAtActionGroupResourceLevel request.
+func (client *ActionGroupsClient) createNotificationsAtActionGroupResourceLevelCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, notificationRequest NotificationRequestBody, options *ActionGroupsClientBeginCreateNotificationsAtActionGroupResourceLevelOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}/createNotifications"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if actionGroupName == "" {
+		return nil, errors.New("parameter actionGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{actionGroupName}", url.PathEscape(actionGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, notificationRequest)
+}
+
+// BeginCreateNotificationsAtResourceGroupLevel - Send test notifications to a set of provided receivers
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// notificationRequest - The notification request body which includes the contact details
+// options - ActionGroupsClientBeginCreateNotificationsAtResourceGroupLevelOptions contains the optional parameters for the
+// ActionGroupsClient.BeginCreateNotificationsAtResourceGroupLevel method.
+func (client *ActionGroupsClient) BeginCreateNotificationsAtResourceGroupLevel(ctx context.Context, resourceGroupName string, notificationRequest NotificationRequestBody, options *ActionGroupsClientBeginCreateNotificationsAtResourceGroupLevelOptions) (*runtime.Poller[ActionGroupsClientCreateNotificationsAtResourceGroupLevelResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createNotificationsAtResourceGroupLevel(ctx, resourceGroupName, notificationRequest, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ActionGroupsClientCreateNotificationsAtResourceGroupLevelResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[ActionGroupsClientCreateNotificationsAtResourceGroupLevelResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// CreateNotificationsAtResourceGroupLevel - Send test notifications to a set of provided receivers
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-01
+func (client *ActionGroupsClient) createNotificationsAtResourceGroupLevel(ctx context.Context, resourceGroupName string, notificationRequest NotificationRequestBody, options *ActionGroupsClientBeginCreateNotificationsAtResourceGroupLevelOptions) (*http.Response, error) {
+	req, err := client.createNotificationsAtResourceGroupLevelCreateRequest(ctx, resourceGroupName, notificationRequest, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
+	}
+	return resp, nil
+}
+
+// createNotificationsAtResourceGroupLevelCreateRequest creates the CreateNotificationsAtResourceGroupLevel request.
+func (client *ActionGroupsClient) createNotificationsAtResourceGroupLevelCreateRequest(ctx context.Context, resourceGroupName string, notificationRequest NotificationRequestBody, options *ActionGroupsClientBeginCreateNotificationsAtResourceGroupLevelOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/createNotifications"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, notificationRequest)
+}
+
+// CreateOrUpdate - Create a new action group or update an existing one.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// actionGroupName - The name of the action group.
+// actionGroup - The action group to create or use for the update.
+// options - ActionGroupsClientCreateOrUpdateOptions contains the optional parameters for the ActionGroupsClient.CreateOrUpdate
+// method.
+func (client *ActionGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroup ActionGroupResource, options *ActionGroupsClientCreateOrUpdateOptions) (ActionGroupsClientCreateOrUpdateResponse, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, actionGroupName, actionGroup, options)
+	if err != nil {
+		return ActionGroupsClientCreateOrUpdateResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return ActionGroupsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		return ActionGroupsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
+		return ActionGroupsClientCreateOrUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ActionGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroup ActionGroupResource, options *ActionGroupsCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ActionGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroup ActionGroupResource, options *ActionGroupsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,58 +219,49 @@ func (client *ActionGroupsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, actionGroup)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ActionGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (ActionGroupsCreateOrUpdateResponse, error) {
-	result := ActionGroupsCreateOrUpdateResponse{RawResponse: resp}
+func (client *ActionGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (ActionGroupsClientCreateOrUpdateResponse, error) {
+	result := ActionGroupsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionGroupResource); err != nil {
-		return ActionGroupsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ActionGroupsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ActionGroupsClient) createOrUpdateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Delete - Delete an action group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ActionGroupsClient) Delete(ctx context.Context, resourceGroupName string, actionGroupName string, options *ActionGroupsDeleteOptions) (ActionGroupsDeleteResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// actionGroupName - The name of the action group.
+// options - ActionGroupsClientDeleteOptions contains the optional parameters for the ActionGroupsClient.Delete method.
+func (client *ActionGroupsClient) Delete(ctx context.Context, resourceGroupName string, actionGroupName string, options *ActionGroupsClientDeleteOptions) (ActionGroupsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, actionGroupName, options)
 	if err != nil {
-		return ActionGroupsDeleteResponse{}, err
+		return ActionGroupsClientDeleteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ActionGroupsDeleteResponse{}, err
+		return ActionGroupsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
-		return ActionGroupsDeleteResponse{}, client.deleteHandleError(resp)
+		return ActionGroupsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ActionGroupsDeleteResponse{RawResponse: resp}, nil
+	return ActionGroupsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ActionGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, options *ActionGroupsDeleteOptions) (*policy.Request, error) {
+func (client *ActionGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, options *ActionGroupsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -139,50 +275,43 @@ func (client *ActionGroupsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ActionGroupsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// EnableReceiver - Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation is only supported
-// for Email or SMS receivers.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ActionGroupsClient) EnableReceiver(ctx context.Context, resourceGroupName string, actionGroupName string, enableRequest EnableRequest, options *ActionGroupsEnableReceiverOptions) (ActionGroupsEnableReceiverResponse, error) {
+// EnableReceiver - Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This
+// operation is only supported for Email or SMS receivers.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// actionGroupName - The name of the action group.
+// enableRequest - The receiver to re-enable.
+// options - ActionGroupsClientEnableReceiverOptions contains the optional parameters for the ActionGroupsClient.EnableReceiver
+// method.
+func (client *ActionGroupsClient) EnableReceiver(ctx context.Context, resourceGroupName string, actionGroupName string, enableRequest EnableRequest, options *ActionGroupsClientEnableReceiverOptions) (ActionGroupsClientEnableReceiverResponse, error) {
 	req, err := client.enableReceiverCreateRequest(ctx, resourceGroupName, actionGroupName, enableRequest, options)
 	if err != nil {
-		return ActionGroupsEnableReceiverResponse{}, err
+		return ActionGroupsClientEnableReceiverResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ActionGroupsEnableReceiverResponse{}, err
+		return ActionGroupsClientEnableReceiverResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ActionGroupsEnableReceiverResponse{}, client.enableReceiverHandleError(resp)
+		return ActionGroupsClientEnableReceiverResponse{}, runtime.NewResponseError(resp)
 	}
-	return ActionGroupsEnableReceiverResponse{RawResponse: resp}, nil
+	return ActionGroupsClientEnableReceiverResponse{}, nil
 }
 
 // enableReceiverCreateRequest creates the EnableReceiver request.
-func (client *ActionGroupsClient) enableReceiverCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, enableRequest EnableRequest, options *ActionGroupsEnableReceiverOptions) (*policy.Request, error) {
+func (client *ActionGroupsClient) enableReceiverCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, enableRequest EnableRequest, options *ActionGroupsClientEnableReceiverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}/subscribe"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -196,57 +325,40 @@ func (client *ActionGroupsClient) enableReceiverCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, enableRequest)
 }
 
-// enableReceiverHandleError handles the EnableReceiver error response.
-func (client *ActionGroupsClient) enableReceiverHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	switch resp.StatusCode {
-	case http.StatusConflict:
-		if len(body) == 0 {
-			return runtime.NewResponseError(errors.New(resp.Status), resp)
-		}
-		return runtime.NewResponseError(errors.New(string(body)), resp)
-	default:
-		errType := ErrorResponse{raw: string(body)}
-		if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-			return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-		}
-		return runtime.NewResponseError(&errType, resp)
-	}
-}
-
 // Get - Get an action group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ActionGroupsClient) Get(ctx context.Context, resourceGroupName string, actionGroupName string, options *ActionGroupsGetOptions) (ActionGroupsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// actionGroupName - The name of the action group.
+// options - ActionGroupsClientGetOptions contains the optional parameters for the ActionGroupsClient.Get method.
+func (client *ActionGroupsClient) Get(ctx context.Context, resourceGroupName string, actionGroupName string, options *ActionGroupsClientGetOptions) (ActionGroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, actionGroupName, options)
 	if err != nil {
-		return ActionGroupsGetResponse{}, err
+		return ActionGroupsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ActionGroupsGetResponse{}, err
+		return ActionGroupsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ActionGroupsGetResponse{}, client.getHandleError(resp)
+		return ActionGroupsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ActionGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, options *ActionGroupsGetOptions) (*policy.Request, error) {
+func (client *ActionGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, options *ActionGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -260,58 +372,49 @@ func (client *ActionGroupsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ActionGroupsClient) getHandleResponse(resp *http.Response) (ActionGroupsGetResponse, error) {
-	result := ActionGroupsGetResponse{RawResponse: resp}
+func (client *ActionGroupsClient) getHandleResponse(resp *http.Response) (ActionGroupsClientGetResponse, error) {
+	result := ActionGroupsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionGroupResource); err != nil {
-		return ActionGroupsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ActionGroupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ActionGroupsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetTestNotifications - Get the test notifications by the notification id
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ActionGroupsClient) GetTestNotifications(ctx context.Context, notificationID string, options *ActionGroupsGetTestNotificationsOptions) (ActionGroupsGetTestNotificationsResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-01
+// notificationID - The notification id
+// options - ActionGroupsClientGetTestNotificationsOptions contains the optional parameters for the ActionGroupsClient.GetTestNotifications
+// method.
+func (client *ActionGroupsClient) GetTestNotifications(ctx context.Context, notificationID string, options *ActionGroupsClientGetTestNotificationsOptions) (ActionGroupsClientGetTestNotificationsResponse, error) {
 	req, err := client.getTestNotificationsCreateRequest(ctx, notificationID, options)
 	if err != nil {
-		return ActionGroupsGetTestNotificationsResponse{}, err
+		return ActionGroupsClientGetTestNotificationsResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ActionGroupsGetTestNotificationsResponse{}, err
+		return ActionGroupsClientGetTestNotificationsResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ActionGroupsGetTestNotificationsResponse{}, client.getTestNotificationsHandleError(resp)
+		return ActionGroupsClientGetTestNotificationsResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getTestNotificationsHandleResponse(resp)
 }
 
 // getTestNotificationsCreateRequest creates the GetTestNotifications request.
-func (client *ActionGroupsClient) getTestNotificationsCreateRequest(ctx context.Context, notificationID string, options *ActionGroupsGetTestNotificationsOptions) (*policy.Request, error) {
+func (client *ActionGroupsClient) getTestNotificationsCreateRequest(ctx context.Context, notificationID string, options *ActionGroupsClientGetTestNotificationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/notificationStatus/{notificationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -321,58 +424,175 @@ func (client *ActionGroupsClient) getTestNotificationsCreateRequest(ctx context.
 		return nil, errors.New("parameter notificationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{notificationId}", url.PathEscape(notificationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getTestNotificationsHandleResponse handles the GetTestNotifications response.
-func (client *ActionGroupsClient) getTestNotificationsHandleResponse(resp *http.Response) (ActionGroupsGetTestNotificationsResponse, error) {
-	result := ActionGroupsGetTestNotificationsResponse{RawResponse: resp}
+func (client *ActionGroupsClient) getTestNotificationsHandleResponse(resp *http.Response) (ActionGroupsClientGetTestNotificationsResponse, error) {
+	result := ActionGroupsClientGetTestNotificationsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestNotificationDetailsResponse); err != nil {
-		return ActionGroupsGetTestNotificationsResponse{}, runtime.NewResponseError(err, resp)
+		return ActionGroupsClientGetTestNotificationsResponse{}, err
 	}
 	return result, nil
 }
 
-// getTestNotificationsHandleError handles the GetTestNotifications error response.
-func (client *ActionGroupsClient) getTestNotificationsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
+// GetTestNotificationsAtActionGroupResourceLevel - Get the test notifications by the notification id
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// actionGroupName - The name of the action group.
+// notificationID - The notification id
+// options - ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelOptions contains the optional parameters for
+// the ActionGroupsClient.GetTestNotificationsAtActionGroupResourceLevel method.
+func (client *ActionGroupsClient) GetTestNotificationsAtActionGroupResourceLevel(ctx context.Context, resourceGroupName string, actionGroupName string, notificationID string, options *ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelOptions) (ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse, error) {
+	req, err := client.getTestNotificationsAtActionGroupResourceLevelCreateRequest(ctx, resourceGroupName, actionGroupName, notificationID, options)
 	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListByResourceGroup - Get a list of all action groups in a resource group.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ActionGroupsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *ActionGroupsListByResourceGroupOptions) (ActionGroupsListByResourceGroupResponse, error) {
-	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-	if err != nil {
-		return ActionGroupsListByResourceGroupResponse{}, err
+		return ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ActionGroupsListByResourceGroupResponse{}, err
+		return ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ActionGroupsListByResourceGroupResponse{}, client.listByResourceGroupHandleError(resp)
+		return ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.listByResourceGroupHandleResponse(resp)
+	return client.getTestNotificationsAtActionGroupResourceLevelHandleResponse(resp)
+}
+
+// getTestNotificationsAtActionGroupResourceLevelCreateRequest creates the GetTestNotificationsAtActionGroupResourceLevel request.
+func (client *ActionGroupsClient) getTestNotificationsAtActionGroupResourceLevelCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, notificationID string, options *ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}/notificationStatus/{notificationId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if actionGroupName == "" {
+		return nil, errors.New("parameter actionGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{actionGroupName}", url.PathEscape(actionGroupName))
+	if notificationID == "" {
+		return nil, errors.New("parameter notificationID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{notificationId}", url.PathEscape(notificationID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getTestNotificationsAtActionGroupResourceLevelHandleResponse handles the GetTestNotificationsAtActionGroupResourceLevel response.
+func (client *ActionGroupsClient) getTestNotificationsAtActionGroupResourceLevelHandleResponse(resp *http.Response) (ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse, error) {
+	result := ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TestNotificationDetailsResponse); err != nil {
+		return ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse{}, err
+	}
+	return result, nil
+}
+
+// GetTestNotificationsAtResourceGroupLevel - Get the test notifications by the notification id
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// notificationID - The notification id
+// options - ActionGroupsClientGetTestNotificationsAtResourceGroupLevelOptions contains the optional parameters for the ActionGroupsClient.GetTestNotificationsAtResourceGroupLevel
+// method.
+func (client *ActionGroupsClient) GetTestNotificationsAtResourceGroupLevel(ctx context.Context, resourceGroupName string, notificationID string, options *ActionGroupsClientGetTestNotificationsAtResourceGroupLevelOptions) (ActionGroupsClientGetTestNotificationsAtResourceGroupLevelResponse, error) {
+	req, err := client.getTestNotificationsAtResourceGroupLevelCreateRequest(ctx, resourceGroupName, notificationID, options)
+	if err != nil {
+		return ActionGroupsClientGetTestNotificationsAtResourceGroupLevelResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return ActionGroupsClientGetTestNotificationsAtResourceGroupLevelResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return ActionGroupsClientGetTestNotificationsAtResourceGroupLevelResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.getTestNotificationsAtResourceGroupLevelHandleResponse(resp)
+}
+
+// getTestNotificationsAtResourceGroupLevelCreateRequest creates the GetTestNotificationsAtResourceGroupLevel request.
+func (client *ActionGroupsClient) getTestNotificationsAtResourceGroupLevelCreateRequest(ctx context.Context, resourceGroupName string, notificationID string, options *ActionGroupsClientGetTestNotificationsAtResourceGroupLevelOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/notificationStatus/{notificationId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if notificationID == "" {
+		return nil, errors.New("parameter notificationID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{notificationId}", url.PathEscape(notificationID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getTestNotificationsAtResourceGroupLevelHandleResponse handles the GetTestNotificationsAtResourceGroupLevel response.
+func (client *ActionGroupsClient) getTestNotificationsAtResourceGroupLevelHandleResponse(resp *http.Response) (ActionGroupsClientGetTestNotificationsAtResourceGroupLevelResponse, error) {
+	result := ActionGroupsClientGetTestNotificationsAtResourceGroupLevelResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TestNotificationDetailsResponse); err != nil {
+		return ActionGroupsClientGetTestNotificationsAtResourceGroupLevelResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByResourceGroupPager - Get a list of all action groups in a resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// options - ActionGroupsClientListByResourceGroupOptions contains the optional parameters for the ActionGroupsClient.ListByResourceGroup
+// method.
+func (client *ActionGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *ActionGroupsClientListByResourceGroupOptions) *runtime.Pager[ActionGroupsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ActionGroupsClientListByResourceGroupResponse]{
+		More: func(page ActionGroupsClientListByResourceGroupResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ActionGroupsClientListByResourceGroupResponse) (ActionGroupsClientListByResourceGroupResponse, error) {
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			if err != nil {
+				return ActionGroupsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ActionGroupsClientListByResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ActionGroupsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByResourceGroupHandleResponse(resp)
+		},
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ActionGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ActionGroupsListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ActionGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ActionGroupsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -382,119 +602,104 @@ func (client *ActionGroupsClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ActionGroupsClient) listByResourceGroupHandleResponse(resp *http.Response) (ActionGroupsListByResourceGroupResponse, error) {
-	result := ActionGroupsListByResourceGroupResponse{RawResponse: resp}
+func (client *ActionGroupsClient) listByResourceGroupHandleResponse(resp *http.Response) (ActionGroupsClientListByResourceGroupResponse, error) {
+	result := ActionGroupsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionGroupList); err != nil {
-		return ActionGroupsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
+		return ActionGroupsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *ActionGroupsClient) listByResourceGroupHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
-// ListBySubscriptionID - Get a list of all action groups in a subscription.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ActionGroupsClient) ListBySubscriptionID(ctx context.Context, options *ActionGroupsListBySubscriptionIDOptions) (ActionGroupsListBySubscriptionIDResponse, error) {
-	req, err := client.listBySubscriptionIDCreateRequest(ctx, options)
-	if err != nil {
-		return ActionGroupsListBySubscriptionIDResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return ActionGroupsListBySubscriptionIDResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ActionGroupsListBySubscriptionIDResponse{}, client.listBySubscriptionIDHandleError(resp)
-	}
-	return client.listBySubscriptionIDHandleResponse(resp)
+// NewListBySubscriptionIDPager - Get a list of all action groups in a subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-01
+// options - ActionGroupsClientListBySubscriptionIDOptions contains the optional parameters for the ActionGroupsClient.ListBySubscriptionID
+// method.
+func (client *ActionGroupsClient) NewListBySubscriptionIDPager(options *ActionGroupsClientListBySubscriptionIDOptions) *runtime.Pager[ActionGroupsClientListBySubscriptionIDResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ActionGroupsClientListBySubscriptionIDResponse]{
+		More: func(page ActionGroupsClientListBySubscriptionIDResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ActionGroupsClientListBySubscriptionIDResponse) (ActionGroupsClientListBySubscriptionIDResponse, error) {
+			req, err := client.listBySubscriptionIDCreateRequest(ctx, options)
+			if err != nil {
+				return ActionGroupsClientListBySubscriptionIDResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ActionGroupsClientListBySubscriptionIDResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ActionGroupsClientListBySubscriptionIDResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listBySubscriptionIDHandleResponse(resp)
+		},
+	})
 }
 
 // listBySubscriptionIDCreateRequest creates the ListBySubscriptionID request.
-func (client *ActionGroupsClient) listBySubscriptionIDCreateRequest(ctx context.Context, options *ActionGroupsListBySubscriptionIDOptions) (*policy.Request, error) {
+func (client *ActionGroupsClient) listBySubscriptionIDCreateRequest(ctx context.Context, options *ActionGroupsClientListBySubscriptionIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/actionGroups"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionIDHandleResponse handles the ListBySubscriptionID response.
-func (client *ActionGroupsClient) listBySubscriptionIDHandleResponse(resp *http.Response) (ActionGroupsListBySubscriptionIDResponse, error) {
-	result := ActionGroupsListBySubscriptionIDResponse{RawResponse: resp}
+func (client *ActionGroupsClient) listBySubscriptionIDHandleResponse(resp *http.Response) (ActionGroupsClientListBySubscriptionIDResponse, error) {
+	result := ActionGroupsClientListBySubscriptionIDResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionGroupList); err != nil {
-		return ActionGroupsListBySubscriptionIDResponse{}, runtime.NewResponseError(err, resp)
+		return ActionGroupsClientListBySubscriptionIDResponse{}, err
 	}
 	return result, nil
-}
-
-// listBySubscriptionIDHandleError handles the ListBySubscriptionID error response.
-func (client *ActionGroupsClient) listBySubscriptionIDHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginPostTestNotifications - Send test notifications to a set of provided receivers
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ActionGroupsClient) BeginPostTestNotifications(ctx context.Context, notificationRequest NotificationRequestBody, options *ActionGroupsBeginPostTestNotificationsOptions) (ActionGroupsPostTestNotificationsPollerResponse, error) {
-	resp, err := client.postTestNotifications(ctx, notificationRequest, options)
-	if err != nil {
-		return ActionGroupsPostTestNotificationsPollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-01
+// notificationRequest - The notification request body which includes the contact details
+// options - ActionGroupsClientBeginPostTestNotificationsOptions contains the optional parameters for the ActionGroupsClient.BeginPostTestNotifications
+// method.
+func (client *ActionGroupsClient) BeginPostTestNotifications(ctx context.Context, notificationRequest NotificationRequestBody, options *ActionGroupsClientBeginPostTestNotificationsOptions) (*runtime.Poller[ActionGroupsClientPostTestNotificationsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.postTestNotifications(ctx, notificationRequest, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ActionGroupsClientPostTestNotificationsResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[ActionGroupsClientPostTestNotificationsResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ActionGroupsPostTestNotificationsPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ActionGroupsClient.PostTestNotifications", "location", resp, client.pl, client.postTestNotificationsHandleError)
-	if err != nil {
-		return ActionGroupsPostTestNotificationsPollerResponse{}, err
-	}
-	result.Poller = &ActionGroupsPostTestNotificationsPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // PostTestNotifications - Send test notifications to a set of provided receivers
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ActionGroupsClient) postTestNotifications(ctx context.Context, notificationRequest NotificationRequestBody, options *ActionGroupsBeginPostTestNotificationsOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-01
+func (client *ActionGroupsClient) postTestNotifications(ctx context.Context, notificationRequest NotificationRequestBody, options *ActionGroupsClientBeginPostTestNotificationsOptions) (*http.Response, error) {
 	req, err := client.postTestNotificationsCreateRequest(ctx, notificationRequest, options)
 	if err != nil {
 		return nil, err
@@ -504,61 +709,53 @@ func (client *ActionGroupsClient) postTestNotifications(ctx context.Context, not
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
-		return nil, client.postTestNotificationsHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // postTestNotificationsCreateRequest creates the PostTestNotifications request.
-func (client *ActionGroupsClient) postTestNotificationsCreateRequest(ctx context.Context, notificationRequest NotificationRequestBody, options *ActionGroupsBeginPostTestNotificationsOptions) (*policy.Request, error) {
+func (client *ActionGroupsClient) postTestNotificationsCreateRequest(ctx context.Context, notificationRequest NotificationRequestBody, options *ActionGroupsClientBeginPostTestNotificationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/createNotifications"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, notificationRequest)
 }
 
-// postTestNotificationsHandleError handles the PostTestNotifications error response.
-func (client *ActionGroupsClient) postTestNotificationsHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Update - Updates an existing action group's tags. To update other fields use the CreateOrUpdate method.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ActionGroupsClient) Update(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroupPatch ActionGroupPatchBody, options *ActionGroupsUpdateOptions) (ActionGroupsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-06-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// actionGroupName - The name of the action group.
+// actionGroupPatch - Parameters supplied to the operation.
+// options - ActionGroupsClientUpdateOptions contains the optional parameters for the ActionGroupsClient.Update method.
+func (client *ActionGroupsClient) Update(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroupPatch ActionGroupPatchBody, options *ActionGroupsClientUpdateOptions) (ActionGroupsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, actionGroupName, actionGroupPatch, options)
 	if err != nil {
-		return ActionGroupsUpdateResponse{}, err
+		return ActionGroupsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ActionGroupsUpdateResponse{}, err
+		return ActionGroupsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ActionGroupsUpdateResponse{}, client.updateHandleError(resp)
+		return ActionGroupsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ActionGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroupPatch ActionGroupPatchBody, options *ActionGroupsUpdateOptions) (*policy.Request, error) {
+func (client *ActionGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroupPatch ActionGroupPatchBody, options *ActionGroupsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -572,35 +769,22 @@ func (client *ActionGroupsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter actionGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{actionGroupName}", url.PathEscape(actionGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, actionGroupPatch)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ActionGroupsClient) updateHandleResponse(resp *http.Response) (ActionGroupsUpdateResponse, error) {
-	result := ActionGroupsUpdateResponse{RawResponse: resp}
+func (client *ActionGroupsClient) updateHandleResponse(resp *http.Response) (ActionGroupsClientUpdateResponse, error) {
+	result := ActionGroupsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionGroupResource); err != nil {
-		return ActionGroupsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return ActionGroupsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *ActionGroupsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

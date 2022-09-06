@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,124 +8,77 @@
 
 package armtemplatespecs
 
-import "net/http"
-
-// TemplateSpecVersionsCreateOrUpdateResponse contains the response from method TemplateSpecVersions.CreateOrUpdate.
-type TemplateSpecVersionsCreateOrUpdateResponse struct {
-	TemplateSpecVersionsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ClientCreateOrUpdateResponse contains the response from method Client.CreateOrUpdate.
+type ClientCreateOrUpdateResponse struct {
+	TemplateSpec
 }
 
-// TemplateSpecVersionsCreateOrUpdateResult contains the result from method TemplateSpecVersions.CreateOrUpdate.
-type TemplateSpecVersionsCreateOrUpdateResult struct {
+// ClientDeleteResponse contains the response from method Client.Delete.
+type ClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ClientGetBuiltInResponse contains the response from method Client.GetBuiltIn.
+type ClientGetBuiltInResponse struct {
+	TemplateSpec
+}
+
+// ClientGetResponse contains the response from method Client.Get.
+type ClientGetResponse struct {
+	TemplateSpec
+}
+
+// ClientListBuiltInsResponse contains the response from method Client.ListBuiltIns.
+type ClientListBuiltInsResponse struct {
+	ListResult
+}
+
+// ClientListByResourceGroupResponse contains the response from method Client.ListByResourceGroup.
+type ClientListByResourceGroupResponse struct {
+	ListResult
+}
+
+// ClientListBySubscriptionResponse contains the response from method Client.ListBySubscription.
+type ClientListBySubscriptionResponse struct {
+	ListResult
+}
+
+// ClientUpdateResponse contains the response from method Client.Update.
+type ClientUpdateResponse struct {
+	TemplateSpec
+}
+
+// TemplateSpecVersionsClientCreateOrUpdateResponse contains the response from method TemplateSpecVersionsClient.CreateOrUpdate.
+type TemplateSpecVersionsClientCreateOrUpdateResponse struct {
 	TemplateSpecVersion
 }
 
-// TemplateSpecVersionsDeleteResponse contains the response from method TemplateSpecVersions.Delete.
-type TemplateSpecVersionsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// TemplateSpecVersionsClientDeleteResponse contains the response from method TemplateSpecVersionsClient.Delete.
+type TemplateSpecVersionsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// TemplateSpecVersionsGetResponse contains the response from method TemplateSpecVersions.Get.
-type TemplateSpecVersionsGetResponse struct {
-	TemplateSpecVersionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TemplateSpecVersionsGetResult contains the result from method TemplateSpecVersions.Get.
-type TemplateSpecVersionsGetResult struct {
+// TemplateSpecVersionsClientGetBuiltInResponse contains the response from method TemplateSpecVersionsClient.GetBuiltIn.
+type TemplateSpecVersionsClientGetBuiltInResponse struct {
 	TemplateSpecVersion
 }
 
-// TemplateSpecVersionsListResponse contains the response from method TemplateSpecVersions.List.
-type TemplateSpecVersionsListResponse struct {
-	TemplateSpecVersionsListResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// TemplateSpecVersionsClientGetResponse contains the response from method TemplateSpecVersionsClient.Get.
+type TemplateSpecVersionsClientGetResponse struct {
+	TemplateSpecVersion
 }
 
-// TemplateSpecVersionsListResultEnvelope contains the result from method TemplateSpecVersions.List.
-type TemplateSpecVersionsListResultEnvelope struct {
+// TemplateSpecVersionsClientListBuiltInsResponse contains the response from method TemplateSpecVersionsClient.ListBuiltIns.
+type TemplateSpecVersionsClientListBuiltInsResponse struct {
 	TemplateSpecVersionsListResult
 }
 
-// TemplateSpecVersionsUpdateResponse contains the response from method TemplateSpecVersions.Update.
-type TemplateSpecVersionsUpdateResponse struct {
-	TemplateSpecVersionsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// TemplateSpecVersionsClientListResponse contains the response from method TemplateSpecVersionsClient.List.
+type TemplateSpecVersionsClientListResponse struct {
+	TemplateSpecVersionsListResult
 }
 
-// TemplateSpecVersionsUpdateResult contains the result from method TemplateSpecVersions.Update.
-type TemplateSpecVersionsUpdateResult struct {
+// TemplateSpecVersionsClientUpdateResponse contains the response from method TemplateSpecVersionsClient.Update.
+type TemplateSpecVersionsClientUpdateResponse struct {
 	TemplateSpecVersion
-}
-
-// TemplateSpecsCreateOrUpdateResponse contains the response from method TemplateSpecs.CreateOrUpdate.
-type TemplateSpecsCreateOrUpdateResponse struct {
-	TemplateSpecsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TemplateSpecsCreateOrUpdateResult contains the result from method TemplateSpecs.CreateOrUpdate.
-type TemplateSpecsCreateOrUpdateResult struct {
-	TemplateSpec
-}
-
-// TemplateSpecsDeleteResponse contains the response from method TemplateSpecs.Delete.
-type TemplateSpecsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TemplateSpecsGetResponse contains the response from method TemplateSpecs.Get.
-type TemplateSpecsGetResponse struct {
-	TemplateSpecsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TemplateSpecsGetResult contains the result from method TemplateSpecs.Get.
-type TemplateSpecsGetResult struct {
-	TemplateSpec
-}
-
-// TemplateSpecsListByResourceGroupResponse contains the response from method TemplateSpecs.ListByResourceGroup.
-type TemplateSpecsListByResourceGroupResponse struct {
-	TemplateSpecsListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TemplateSpecsListByResourceGroupResult contains the result from method TemplateSpecs.ListByResourceGroup.
-type TemplateSpecsListByResourceGroupResult struct {
-	TemplateSpecsListResult
-}
-
-// TemplateSpecsListBySubscriptionResponse contains the response from method TemplateSpecs.ListBySubscription.
-type TemplateSpecsListBySubscriptionResponse struct {
-	TemplateSpecsListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TemplateSpecsListBySubscriptionResult contains the result from method TemplateSpecs.ListBySubscription.
-type TemplateSpecsListBySubscriptionResult struct {
-	TemplateSpecsListResult
-}
-
-// TemplateSpecsUpdateResponse contains the response from method TemplateSpecs.Update.
-type TemplateSpecsUpdateResponse struct {
-	TemplateSpecsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TemplateSpecsUpdateResult contains the result from method TemplateSpecs.Update.
-type TemplateSpecsUpdateResult struct {
-	TemplateSpec
 }

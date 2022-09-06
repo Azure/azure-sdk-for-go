@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,70 +8,62 @@
 
 package armaad
 
-import "net/http"
-
-// DiagnosticSettingsCategoryListResponse contains the response from method DiagnosticSettingsCategory.List.
-type DiagnosticSettingsCategoryListResponse struct {
-	DiagnosticSettingsCategoryListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PrivateEndpointConnectionsClientCreateResponse contains the response from method PrivateEndpointConnectionsClient.Create.
+type PrivateEndpointConnectionsClientCreateResponse struct {
+	PrivateEndpointConnection
 }
 
-// DiagnosticSettingsCategoryListResult contains the result from method DiagnosticSettingsCategory.List.
-type DiagnosticSettingsCategoryListResult struct {
-	DiagnosticSettingsCategoryResourceCollection
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// DiagnosticSettingsCreateOrUpdateResponse contains the response from method DiagnosticSettings.CreateOrUpdate.
-type DiagnosticSettingsCreateOrUpdateResponse struct {
-	DiagnosticSettingsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	PrivateEndpointConnection
 }
 
-// DiagnosticSettingsCreateOrUpdateResult contains the result from method DiagnosticSettings.CreateOrUpdate.
-type DiagnosticSettingsCreateOrUpdateResult struct {
-	DiagnosticSettingsResource
+// PrivateEndpointConnectionsClientListByPolicyNameResponse contains the response from method PrivateEndpointConnectionsClient.ListByPolicyName.
+type PrivateEndpointConnectionsClientListByPolicyNameResponse struct {
+	PrivateEndpointConnectionListResult
 }
 
-// DiagnosticSettingsDeleteResponse contains the response from method DiagnosticSettings.Delete.
-type DiagnosticSettingsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PrivateLinkForAzureAdClientCreateResponse contains the response from method PrivateLinkForAzureAdClient.Create.
+type PrivateLinkForAzureAdClientCreateResponse struct {
+	PrivateLinkPolicy
 }
 
-// DiagnosticSettingsGetResponse contains the response from method DiagnosticSettings.Get.
-type DiagnosticSettingsGetResponse struct {
-	DiagnosticSettingsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PrivateLinkForAzureAdClientDeleteResponse contains the response from method PrivateLinkForAzureAdClient.Delete.
+type PrivateLinkForAzureAdClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// DiagnosticSettingsGetResult contains the result from method DiagnosticSettings.Get.
-type DiagnosticSettingsGetResult struct {
-	DiagnosticSettingsResource
+// PrivateLinkForAzureAdClientGetResponse contains the response from method PrivateLinkForAzureAdClient.Get.
+type PrivateLinkForAzureAdClientGetResponse struct {
+	PrivateLinkPolicy
 }
 
-// DiagnosticSettingsListResponse contains the response from method DiagnosticSettings.List.
-type DiagnosticSettingsListResponse struct {
-	DiagnosticSettingsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PrivateLinkForAzureAdClientListBySubscriptionResponse contains the response from method PrivateLinkForAzureAdClient.ListBySubscription.
+type PrivateLinkForAzureAdClientListBySubscriptionResponse struct {
+	PrivateLinkPolicyListResult
 }
 
-// DiagnosticSettingsListResult contains the result from method DiagnosticSettings.List.
-type DiagnosticSettingsListResult struct {
-	DiagnosticSettingsResourceCollection
+// PrivateLinkForAzureAdClientListResponse contains the response from method PrivateLinkForAzureAdClient.List.
+type PrivateLinkForAzureAdClientListResponse struct {
+	PrivateLinkPolicyListResult
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PrivateLinkForAzureAdClientUpdateResponse contains the response from method PrivateLinkForAzureAdClient.Update.
+type PrivateLinkForAzureAdClientUpdateResponse struct {
+	PrivateLinkPolicy
 }
 
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
-	OperationsDiscoveryCollection
+// PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResponse struct {
+	PrivateLinkResource
+}
+
+// PrivateLinkResourcesClientListByPrivateLinkPolicyResponse contains the response from method PrivateLinkResourcesClient.ListByPrivateLinkPolicy.
+type PrivateLinkResourcesClientListByPrivateLinkPolicyResponse struct {
+	PrivateLinkResourceListResult
 }

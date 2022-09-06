@@ -83,15 +83,21 @@ func writeChangelogForPackage(r *report.Package) string {
 	md := &markdown.Writer{}
 
 	// write breaking changes
-	md.WriteHeader("Breaking Changes")
-	for _, item := range getBreakingChanges(r.BreakingChanges) {
-		md.WriteListItem(item)
+	breakings := getBreakingChanges(r.BreakingChanges)
+	if len(breakings) > 0 {
+		md.WriteHeader("Breaking Changes")
+		for _, item := range breakings {
+			md.WriteListItem(item)
+		}
 	}
 
 	// write additional changes
-	md.WriteHeader("Features Added")
-	for _, item := range getNewContents(r.AdditiveChanges) {
-		md.WriteListItem(item)
+	additives := getNewContents(r.AdditiveChanges)
+	if len(additives) > 0 {
+		md.WriteHeader("Features Added")
+		for _, item := range additives {
+			md.WriteListItem(item)
+		}
 	}
 
 	return md.String()
@@ -120,6 +126,12 @@ func getNewContents(c *delta.Content) []string {
 	if len(c.Consts) > 0 {
 		for k := range c.Consts {
 			line := fmt.Sprintf("New const `%s`", k)
+			items = append(items, line)
+		}
+	}
+	if len(c.TypeAliases) > 0 {
+		for k := range c.TypeAliases {
+			line := fmt.Sprintf("New type alias `%s`", k)
 			items = append(items, line)
 		}
 	}
@@ -193,6 +205,13 @@ func getSignatureChangeItems(b *report.BreakingChanges) []string {
 		}
 		// TODO -- sort?
 	}
+	// write type alias changes
+	if len(b.TypeAliases) > 0 {
+		for k, v := range b.TypeAliases {
+			line := fmt.Sprintf("Type alias `%s` type has been changed from `%s` to `%s`", k, v.From, v.To)
+			items = append(items, line)
+		}
+	}
 	// write function changes
 	if len(b.Funcs) > 0 {
 		for k, v := range b.Funcs {
@@ -230,6 +249,13 @@ func getRemovedContent(removed *delta.Content) []string {
 	if len(removed.Consts) > 0 {
 		for k := range removed.Consts {
 			line := fmt.Sprintf("Const `%s` has been removed", k)
+			items = append(items, line)
+		}
+	}
+	// write type alias
+	if len(removed.TypeAliases) > 0 {
+		for k := range removed.TypeAliases {
+			line := fmt.Sprintf("Type alias `%s` has been removed", k)
 			items = append(items, line)
 		}
 	}

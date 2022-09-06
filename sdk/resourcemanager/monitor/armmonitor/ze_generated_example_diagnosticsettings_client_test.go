@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,98 +17,114 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2017-05-01-preview/examples/getDiagnosticSetting.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-05-01-preview/examples/getDiagnosticSetting.json
 func ExampleDiagnosticSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewDiagnosticSettingsClient(cred, nil)
+	client, err := armmonitor.NewDiagnosticSettingsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-uri>",
-		"<name>",
+		"subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourcegroups/viruela1/providers/microsoft.logic/workflows/viruela6",
+		"mysetting",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("DiagnosticSettingsResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2017-05-01-preview/examples/createOrUpdateDiagnosticSetting.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-05-01-preview/examples/createOrUpdateDiagnosticSetting.json
 func ExampleDiagnosticSettingsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewDiagnosticSettingsClient(cred, nil)
+	client, err := armmonitor.NewDiagnosticSettingsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-uri>",
-		"<name>",
+		"subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourcegroups/viruela1/providers/microsoft.logic/workflows/viruela6",
+		"mysetting",
 		armmonitor.DiagnosticSettingsResource{
 			Properties: &armmonitor.DiagnosticSettings{
-				EventHubAuthorizationRuleID: to.StringPtr("<event-hub-authorization-rule-id>"),
-				EventHubName:                to.StringPtr("<event-hub-name>"),
-				LogAnalyticsDestinationType: to.StringPtr("<log-analytics-destination-type>"),
+				EventHubAuthorizationRuleID: to.Ptr("/subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourceGroups/montest/providers/microsoft.eventhub/namespaces/mynamespace/eventhubs/myeventhub/authorizationrules/myrule"),
+				EventHubName:                to.Ptr("myeventhub"),
+				LogAnalyticsDestinationType: to.Ptr("Dedicated"),
 				Logs: []*armmonitor.LogSettings{
 					{
-						Category: to.StringPtr("<category>"),
-						Enabled:  to.BoolPtr(true),
+						Category: to.Ptr("WorkflowRuntime"),
+						Enabled:  to.Ptr(true),
 						RetentionPolicy: &armmonitor.RetentionPolicy{
-							Days:    to.Int32Ptr(0),
-							Enabled: to.BoolPtr(false),
+							Days:    to.Ptr[int32](0),
+							Enabled: to.Ptr(false),
 						},
 					}},
 				Metrics: []*armmonitor.MetricSettings{
 					{
-						Category: to.StringPtr("<category>"),
-						Enabled:  to.BoolPtr(true),
+						Category: to.Ptr("WorkflowMetrics"),
+						Enabled:  to.Ptr(true),
 						RetentionPolicy: &armmonitor.RetentionPolicy{
-							Days:    to.Int32Ptr(0),
-							Enabled: to.BoolPtr(false),
+							Days:    to.Ptr[int32](0),
+							Enabled: to.Ptr(false),
 						},
 					}},
-				StorageAccountID: to.StringPtr("<storage-account-id>"),
-				WorkspaceID:      to.StringPtr("<workspace-id>"),
+				StorageAccountID: to.Ptr("/subscriptions/df602c9c-7aa0-407d-a6fb-eb20c8bd1192/resourceGroups/apptest/providers/Microsoft.Storage/storageAccounts/appteststorage1"),
+				WorkspaceID:      to.Ptr(""),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("DiagnosticSettingsResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2017-05-01-preview/examples/deleteDiagnosticSetting.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-05-01-preview/examples/deleteDiagnosticSetting.json
 func ExampleDiagnosticSettingsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewDiagnosticSettingsClient(cred, nil)
+	client, err := armmonitor.NewDiagnosticSettingsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<resource-uri>",
-		"<name>",
+		"subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourcegroups/viruela1/providers/microsoft.logic/workflows/viruela6",
+		"mysetting",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2017-05-01-preview/examples/listDiagnosticSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-05-01-preview/examples/listDiagnosticSettings.json
 func ExampleDiagnosticSettingsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewDiagnosticSettingsClient(cred, nil)
-	_, err = client.List(ctx,
-		"<resource-uri>",
+	client, err := armmonitor.NewDiagnosticSettingsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.List(ctx,
+		"subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourcegroups/viruela1/providers/microsoft.logic/workflows/viruela6",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }

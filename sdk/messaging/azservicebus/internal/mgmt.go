@@ -7,15 +7,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"sync"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
-	common "github.com/Azure/azure-sdk-for-go/sdk/messaging/internal"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/rpc"
-	"github.com/Azure/go-amqp"
-	"github.com/devigned/tab"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 )
 
 type Disposition struct {
@@ -34,190 +30,17 @@ const (
 	DeferredDisposition  DispositionStatus = "defered"
 )
 
-type (
-	mgmtClient struct {
-		ns    NamespaceForMgmtClient
-		links AMQPLinks
-
-		clientMu sync.RWMutex
-		rpcLink  RPCLink
-
-		sessionID          *string
-		isSessionFilterSet bool
-	}
-)
-
-type MgmtClient interface {
-	Close(ctx context.Context) error
-	SendDisposition(ctx context.Context, lockToken *amqp.UUID, state Disposition, propertiesToModify map[string]interface{}) error
-	ReceiveDeferred(ctx context.Context, mode ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error)
-	PeekMessages(ctx context.Context, fromSequenceNumber int64, messageCount int32) ([]*amqp.Message, error)
-
-	ScheduleMessages(ctx context.Context, enqueueTime time.Time, messages ...*amqp.Message) ([]int64, error)
-	CancelScheduled(ctx context.Context, seq ...int64) error
-
-	RenewLocks(ctx context.Context, linkName string, lockTokens []amqp.UUID) ([]time.Time, error)
-	RenewSessionLock(ctx context.Context, sessionID string) (time.Time, error)
-
-	GetSessionState(ctx context.Context, sessionID string) ([]byte, error)
-	SetSessionState(ctx context.Context, sessionID string, state []byte) error
-}
-
-func newMgmtClient(ctx context.Context, links AMQPLinks, ns NamespaceForMgmtClient) (MgmtClient, error) {
-	r := &mgmtClient{
-		ns:    ns,
-		links: links,
-	}
-
-	return r, nil
-}
-
-// Recover will attempt to close the current session and link, then rebuild them
-func (mc *mgmtClient) recover(ctx context.Context) error {
-	mc.clientMu.Lock()
-	defer mc.clientMu.Unlock()
-
-	ctx, span := mc.startSpanFromContext(ctx, string(tracing.SpanNameRecover))
-	defer span.End()
-
-	if mc.rpcLink != nil {
-		if err := mc.rpcLink.Close(ctx); err != nil {
-			tab.For(ctx).Debug(fmt.Sprintf("Error while closing old link in recovery: %s", err.Error()))
-		}
-		mc.rpcLink = nil
-	}
-
-	if _, err := mc.getLinkWithoutLock(ctx); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// getLinkWithoutLock returns the currently cached link (or creates a new one)
-func (mc *mgmtClient) getLinkWithoutLock(ctx context.Context) (RPCLink, error) {
-	if mc.rpcLink != nil {
-		return mc.rpcLink, nil
-	}
-
-	var err error
-	mc.rpcLink, err = mc.ns.NewRPCLink(ctx, mc.links.ManagementPath())
-
-	if err != nil {
-		return nil, err
-	}
-
-	return mc.rpcLink, nil
-}
-
-// Close will close the AMQP connection
-func (mc *mgmtClient) Close(ctx context.Context) error {
-	mc.clientMu.Lock()
-	defer mc.clientMu.Unlock()
-
-	if mc.rpcLink == nil {
-		return nil
-	}
-
-	err := mc.rpcLink.Close(ctx)
-	mc.rpcLink = nil
-	return err
-}
-
-// creates a new link and sends the RPC request, recovering and retrying on certain AMQP errors
-func (mc *mgmtClient) doRPCWithRetry(ctx context.Context, msg *amqp.Message, times int, delay time.Duration, opts ...rpc.LinkOption) (*rpc.Response, error) {
-	// track the number of times we attempt to perform the RPC call.
-	// this is to avoid a potential infinite loop if the returned error
-	// is always transient and Recover() doesn't fail.
-	sendCount := 0
-
-	for {
-		mc.clientMu.RLock()
-		rpcLink, err := mc.getLinkWithoutLock(ctx)
-		mc.clientMu.RUnlock()
-
-		var rsp *rpc.Response
-
-		if err == nil {
-			rsp, err = rpcLink.RetryableRPC(ctx, times, delay, msg)
-
-			if err == nil {
-				return rsp, err
-			}
-		}
-
-		if sendCount >= amqpRetryDefaultTimes || !isAMQPTransientError(ctx, err) {
-			return nil, err
-		}
-		sendCount++
-		// if we get here, recover and try again
-		tab.For(ctx).Debug("recovering RPC connection")
-
-		_, retryErr := common.Retry(amqpRetryDefaultTimes, amqpRetryDefaultDelay, func() (interface{}, error) {
-			ctx, sp := mc.startProducerSpanFromContext(ctx, string(tracing.SpanTryRecover))
-			defer sp.End()
-
-			if err := mc.recover(ctx); err == nil {
-				tab.For(ctx).Debug("recovered RPC connection")
-				return nil, nil
-			}
-			select {
-			case <-ctx.Done():
-				return nil, ctx.Err()
-			default:
-				return nil, common.Retryable(err.Error())
-			}
-		})
-
-		if retryErr != nil {
-			tab.For(ctx).Debug("RPC recovering retried, but error was unrecoverable")
-			return nil, retryErr
-		}
-	}
-}
-
-// returns true if the AMQP error is considered transient
-func isAMQPTransientError(ctx context.Context, err error) bool {
-	// always retry on a detach error
-	var amqpDetach *amqp.DetachError
-	if errors.As(err, &amqpDetach) {
-		return true
-	}
-	// for an AMQP error, only retry depending on the condition
-	var amqpErr *amqp.Error
-	if errors.As(err, &amqpErr) {
-		switch amqpErr.Condition {
-		case errorServerBusy, errorTimeout, errorOperationCancelled, errorContainerClose:
-			return true
-		default:
-			tab.For(ctx).Debug(fmt.Sprintf("isAMQPTransientError: condition %s is not transient", amqpErr.Condition))
-			return false
-		}
-	}
-	tab.For(ctx).Debug(fmt.Sprintf("isAMQPTransientError: %T is not transient", err))
-	return false
-}
-
-func (mc *mgmtClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error) {
-	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanReceiveDeferred, Version)
-	defer span.End()
-
+func ReceiveDeferred(ctx context.Context, rpcLink RPCLink, linkName string, mode exported.ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error) {
 	const messagesField, messageField = "messages", "message"
 
 	backwardsMode := uint32(0)
-	if mode == PeekLock {
+	if mode == exported.PeekLock {
 		backwardsMode = 1
 	}
 
 	values := map[string]interface{}{
 		"sequence-numbers":     sequenceNumbers,
 		"receiver-settle-mode": uint32(backwardsMode), // pick up messages with peek lock
-	}
-
-	var opts []rpc.LinkOption
-	if mc.isSessionFilterSet {
-		opts = append(opts, rpc.LinkWithSessionFilter(mc.sessionID))
-		values["session-id"] = mc.sessionID
 	}
 
 	msg := &amqp.Message{
@@ -227,9 +50,10 @@ func (mc *mgmtClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, seq
 		Value: values,
 	}
 
-	rsp, err := mc.doRPCWithRetry(ctx, msg, 5, 5*time.Second, opts...)
+	addAssociatedLinkName(linkName, msg)
+
+	rsp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
-		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -286,10 +110,7 @@ func (mc *mgmtClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, seq
 	return transformedMessages, nil
 }
 
-func (mc *mgmtClient) PeekMessages(ctx context.Context, fromSequenceNumber int64, messageCount int32) ([]*amqp.Message, error) {
-	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanPeekFromSequenceNumber, Version)
-	defer span.End()
-
+func PeekMessages(ctx context.Context, rpcLink RPCLink, linkName string, fromSequenceNumber int64, messageCount int32) ([]*amqp.Message, error) {
 	const messagesField, messageField = "messages", "message"
 
 	msg := &amqp.Message{
@@ -302,13 +123,14 @@ func (mc *mgmtClient) PeekMessages(ctx context.Context, fromSequenceNumber int64
 		},
 	}
 
+	addAssociatedLinkName(linkName, msg)
+
 	if deadline, ok := ctx.Deadline(); ok {
 		msg.ApplicationProperties["server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
 	}
 
-	rsp, err := mc.doRPCWithRetry(ctx, msg, 5, 5*time.Second)
+	rsp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
-		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -325,21 +147,18 @@ func (mc *mgmtClient) PeekMessages(ctx context.Context, fromSequenceNumber int64
 	val, ok := rsp.Message.Value.(map[string]interface{})
 	if !ok {
 		err = NewErrIncorrectType(messageField, map[string]interface{}{}, rsp.Message.Value)
-		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
 	rawMessages, ok := val[messagesField]
 	if !ok {
 		err = ErrMissingField(messagesField)
-		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
 	messages, ok := rawMessages.([]interface{})
 	if !ok {
 		err = NewErrIncorrectType(messagesField, []interface{}{}, rawMessages)
-		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -348,28 +167,24 @@ func (mc *mgmtClient) PeekMessages(ctx context.Context, fromSequenceNumber int64
 		rawEntry, ok := messages[i].(map[string]interface{})
 		if !ok {
 			err = NewErrIncorrectType(messageField, map[string]interface{}{}, messages[i])
-			tab.For(ctx).Error(err)
 			return nil, err
 		}
 
 		rawMessage, ok := rawEntry[messageField]
 		if !ok {
 			err = ErrMissingField(messageField)
-			tab.For(ctx).Error(err)
 			return nil, err
 		}
 
 		marshaled, ok := rawMessage.([]byte)
 		if !ok {
 			err = new(ErrMalformedMessage)
-			tab.For(ctx).Error(err)
 			return nil, err
 		}
 
 		var rehydrated amqp.Message
 		err = rehydrated.UnmarshalBinary(marshaled)
 		if err != nil {
-			tab.For(ctx).Error(err)
 			return nil, err
 		}
 
@@ -397,10 +212,7 @@ func (mc *mgmtClient) PeekMessages(ctx context.Context, fromSequenceNumber int64
 
 // RenewLocks renews the locks in a single 'com.microsoft:renew-lock' operation.
 // NOTE: this function assumes all the messages received on the same link.
-func (mc *mgmtClient) RenewLocks(ctx context.Context, linkName string, lockTokens []amqp.UUID) ([]time.Time, error) {
-	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanRenewLock, Version)
-	defer span.End()
-
+func RenewLocks(ctx context.Context, rpcLink RPCLink, linkName string, lockTokens []amqp.UUID) ([]time.Time, error) {
 	renewRequestMsg := &amqp.Message{
 		ApplicationProperties: map[string]interface{}{
 			"operation": "com.microsoft:renew-lock",
@@ -410,20 +222,16 @@ func (mc *mgmtClient) RenewLocks(ctx context.Context, linkName string, lockToken
 		},
 	}
 
-	if linkName != "" {
-		renewRequestMsg.ApplicationProperties["associated-link-name"] = linkName
-	}
+	addAssociatedLinkName(linkName, renewRequestMsg)
 
-	response, err := mc.doRPCWithRetry(ctx, renewRequestMsg, 3, 1*time.Second)
+	response, err := rpcLink.RPC(ctx, renewRequestMsg)
 
 	if err != nil {
-		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
 	if response.Code != 200 {
 		err := fmt.Errorf("error renewing locks: %v", response.Description)
-		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -451,7 +259,7 @@ func (mc *mgmtClient) RenewLocks(ctx context.Context, linkName string, lockToken
 }
 
 // RenewSessionLocks renews a session lock.
-func (mc *mgmtClient) RenewSessionLock(ctx context.Context, sessionID string) (time.Time, error) {
+func RenewSessionLock(ctx context.Context, rpcLink RPCLink, linkName string, sessionID string) (time.Time, error) {
 	body := map[string]interface{}{
 		"session-id": sessionID,
 	}
@@ -463,7 +271,9 @@ func (mc *mgmtClient) RenewSessionLock(ctx context.Context, sessionID string) (t
 		},
 	}
 
-	resp, err := mc.doRPCWithRetry(ctx, msg, 5, 5*time.Second)
+	addAssociatedLinkName(linkName, msg)
+
+	resp, err := rpcLink.RPC(ctx, msg)
 
 	if err != nil {
 		return time.Time{}, err
@@ -485,7 +295,7 @@ func (mc *mgmtClient) RenewSessionLock(ctx context.Context, sessionID string) (t
 }
 
 // GetSessionState retrieves state associated with the session.
-func (mc *mgmtClient) GetSessionState(ctx context.Context, sessionID string) ([]byte, error) {
+func GetSessionState(ctx context.Context, rpcLink RPCLink, linkName string, sessionID string) ([]byte, error) {
 	amqpMsg := &amqp.Message{
 		Value: map[string]interface{}{
 			"session-id": sessionID,
@@ -495,7 +305,9 @@ func (mc *mgmtClient) GetSessionState(ctx context.Context, sessionID string) ([]
 		},
 	}
 
-	resp, err := mc.doRPCWithRetry(ctx, amqpMsg, 5, 5*time.Second)
+	addAssociatedLinkName(linkName, amqpMsg)
+
+	resp, err := rpcLink.RPC(ctx, amqpMsg)
 
 	if err != nil {
 		return nil, err
@@ -528,7 +340,7 @@ func (mc *mgmtClient) GetSessionState(ctx context.Context, sessionID string) ([]
 }
 
 // SetSessionState sets the state associated with the session.
-func (mc *mgmtClient) SetSessionState(ctx context.Context, sessionID string, state []byte) error {
+func SetSessionState(ctx context.Context, rpcLink RPCLink, linkName string, sessionID string, state []byte) error {
 	uuid, err := uuid.New()
 
 	if err != nil {
@@ -546,7 +358,9 @@ func (mc *mgmtClient) SetSessionState(ctx context.Context, sessionID string, sta
 		},
 	}
 
-	resp, err := mc.doRPCWithRetry(ctx, amqpMsg, 5, 5*time.Second)
+	addAssociatedLinkName(linkName, amqpMsg)
+
+	resp, err := rpcLink.RPC(ctx, amqpMsg)
 
 	if err != nil {
 		return err
@@ -562,17 +376,12 @@ func (mc *mgmtClient) SetSessionState(ctx context.Context, sessionID string, sta
 // SendDisposition allows you settle a message using the management link, rather than via your
 // *amqp.Receiver. Use this if the receiver has been closed/lost or if the message isn't associated
 // with a link (ex: deferred messages).
-func (mc *mgmtClient) SendDisposition(ctx context.Context, lockToken *amqp.UUID, state Disposition, propertiesToModify map[string]interface{}) error {
-	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanSendDisposition, Version)
-	defer span.End()
-
+func SendDisposition(ctx context.Context, rpcLink RPCLink, linkName string, lockToken *amqp.UUID, state Disposition, propertiesToModify map[string]interface{}) error {
 	if lockToken == nil {
 		err := errors.New("lock token on the message is not set, thus cannot send disposition")
-		tab.For(ctx).Error(err)
 		return err
 	}
 
-	var opts []rpc.LinkOption
 	value := map[string]interface{}{
 		"disposition-status": string(state.Status),
 		"lock-tokens":        []amqp.UUID{*lockToken},
@@ -597,10 +406,11 @@ func (mc *mgmtClient) SendDisposition(ctx context.Context, lockToken *amqp.UUID,
 		Value: value,
 	}
 
+	addAssociatedLinkName(linkName, msg)
+
 	// no error, then it was successful
-	_, err := mc.doRPCWithRetry(ctx, msg, 5, 5*time.Second, opts...)
+	_, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
-		tab.For(ctx).Error(err)
 		return err
 	}
 
@@ -609,10 +419,7 @@ func (mc *mgmtClient) SendDisposition(ctx context.Context, lockToken *amqp.UUID,
 
 // ScheduleMessages will send a batch of messages to a Queue, schedule them to be enqueued, and return the sequence numbers
 // that can be used to cancel each message.
-func (mc *mgmtClient) ScheduleMessages(ctx context.Context, enqueueTime time.Time, messages ...*amqp.Message) ([]int64, error) {
-	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanScheduleMessage, Version)
-	defer span.End()
-
+func ScheduleMessages(ctx context.Context, rpcLink RPCLink, linkName string, enqueueTime time.Time, messages []*amqp.Message) ([]int64, error) {
 	if len(messages) <= 0 {
 		return nil, errors.New("expected one or more messages")
 	}
@@ -621,7 +428,10 @@ func (mc *mgmtClient) ScheduleMessages(ctx context.Context, enqueueTime time.Tim
 	enqueueTimeAsUTC := enqueueTime.UTC()
 
 	for i := range messages {
-		// TODO: don't like that we're modifying the underlying message here
+		if messages[i].Annotations == nil {
+			return nil, errors.New("message does not have an initialized Annotations property")
+		}
+
 		messages[i].Annotations["x-opt-scheduled-enqueue-time"] = &enqueueTimeAsUTC
 
 		if messages[i].Properties == nil {
@@ -673,13 +483,14 @@ func (mc *mgmtClient) ScheduleMessages(ctx context.Context, enqueueTime time.Tim
 		},
 	}
 
+	addAssociatedLinkName(linkName, msg)
+
 	if deadline, ok := ctx.Deadline(); ok {
 		msg.ApplicationProperties["com.microsoft:server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
 	}
 
-	resp, err := mc.doRPCWithRetry(ctx, msg, 5, 5*time.Second)
+	resp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
-		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -704,12 +515,9 @@ func (mc *mgmtClient) ScheduleMessages(ctx context.Context, enqueueTime time.Tim
 	return nil, NewErrIncorrectType("value", map[string]interface{}{}, resp.Message.Value)
 }
 
-// CancelScheduled allows for removal of messages that have been handed to the Service Bus broker for later delivery,
+// CancelScheduledMessages allows for removal of messages that have been handed to the Service Bus broker for later delivery,
 // but have not yet ben enqueued.
-func (mc *mgmtClient) CancelScheduled(ctx context.Context, seq ...int64) error {
-	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanCancelScheduledMessage, Version)
-	defer span.End()
-
+func CancelScheduledMessages(ctx context.Context, rpcLink RPCLink, linkName string, seq []int64) error {
 	msg := &amqp.Message{
 		ApplicationProperties: map[string]interface{}{
 			"operation": "com.microsoft:cancel-scheduled-message",
@@ -719,13 +527,14 @@ func (mc *mgmtClient) CancelScheduled(ctx context.Context, seq ...int64) error {
 		},
 	}
 
+	addAssociatedLinkName(linkName, msg)
+
 	if deadline, ok := ctx.Deadline(); ok {
 		msg.ApplicationProperties["com.microsoft:server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
 	}
 
-	resp, err := mc.doRPCWithRetry(ctx, msg, 5, 5*time.Second)
+	resp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
-		tab.For(ctx).Error(err)
 		return err
 	}
 
@@ -736,18 +545,12 @@ func (mc *mgmtClient) CancelScheduled(ctx context.Context, seq ...int64) error {
 	return nil
 }
 
-func (mc *mgmtClient) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
-	ctx, span := tracing.StartConsumerSpanFromContext(ctx, operationName, Version)
-	span.AddAttributes(tab.StringAttribute("message_bus.destination", mc.links.ManagementPath()))
-	return ctx, span
-}
-
-func (mc *mgmtClient) startProducerSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
-	ctx, span := tab.StartSpan(ctx, operationName)
-	tracing.ApplyComponentInfo(span, Version)
-	span.AddAttributes(
-		tab.StringAttribute("span.kind", "producer"),
-		tab.StringAttribute("message_bus.destination", mc.links.ManagementPath()),
-	)
-	return ctx, span
+// addAssociatedLinkName adds the 'associated-link-name' application
+// property to the AMQP message. Setting this property associates
+// management link activity with a sender or receiver link, which can
+// prevent it from idling out.
+func addAssociatedLinkName(linkName string, msg *amqp.Message) {
+	if linkName != "" {
+		msg.ApplicationProperties["associated-link-name"] = linkName
+	}
 }

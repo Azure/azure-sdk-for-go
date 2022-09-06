@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armhdinsight
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,46 +25,62 @@ import (
 // ExtensionsClient contains the methods for the Extensions group.
 // Don't use this type directly, use NewExtensionsClient() instead.
 type ExtensionsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewExtensionsClient creates a new instance of ExtensionsClient with the specified values.
-func NewExtensionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ExtensionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+// forms part of the URI for every service call.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewExtensionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExtensionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &ExtensionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &ExtensionsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // BeginCreate - Creates an HDInsight cluster extension.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) BeginCreate(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, parameters Extension, options *ExtensionsBeginCreateOptions) (ExtensionsCreatePollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, clusterName, extensionName, parameters, options)
-	if err != nil {
-		return ExtensionsCreatePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster.
+// extensionName - The name of the cluster extension.
+// parameters - The cluster extensions create request.
+// options - ExtensionsClientBeginCreateOptions contains the optional parameters for the ExtensionsClient.BeginCreate method.
+func (client *ExtensionsClient) BeginCreate(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, parameters Extension, options *ExtensionsClientBeginCreateOptions) (*runtime.Poller[ExtensionsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, clusterName, extensionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ExtensionsClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[ExtensionsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ExtensionsCreatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ExtensionsClient.Create", "location", resp, client.pl, client.createHandleError)
-	if err != nil {
-		return ExtensionsCreatePollerResponse{}, err
-	}
-	result.Poller = &ExtensionsCreatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Create - Creates an HDInsight cluster extension.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) create(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, parameters Extension, options *ExtensionsBeginCreateOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+func (client *ExtensionsClient) create(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, parameters Extension, options *ExtensionsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, clusterName, extensionName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -74,13 +90,13 @@ func (client *ExtensionsClient) create(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.createHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *ExtensionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, parameters Extension, options *ExtensionsBeginCreateOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, parameters Extension, options *ExtensionsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/{extensionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,53 +114,42 @@ func (client *ExtensionsClient) createCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter extensionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{extensionName}", url.PathEscape(extensionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// createHandleError handles the Create error response.
-func (client *ExtensionsClient) createHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDelete - Deletes the specified extension for HDInsight cluster.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, options *ExtensionsBeginDeleteOptions) (ExtensionsDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, extensionName, options)
-	if err != nil {
-		return ExtensionsDeletePollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster.
+// extensionName - The name of the cluster extension.
+// options - ExtensionsClientBeginDeleteOptions contains the optional parameters for the ExtensionsClient.BeginDelete method.
+func (client *ExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, options *ExtensionsClientBeginDeleteOptions) (*runtime.Poller[ExtensionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, extensionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ExtensionsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[ExtensionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ExtensionsDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ExtensionsClient.Delete", "location", resp, client.pl, client.deleteHandleError)
-	if err != nil {
-		return ExtensionsDeletePollerResponse{}, err
-	}
-	result.Poller = &ExtensionsDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the specified extension for HDInsight cluster.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, options *ExtensionsBeginDeleteOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+func (client *ExtensionsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, options *ExtensionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, extensionName, options)
 	if err != nil {
 		return nil, err
@@ -154,13 +159,13 @@ func (client *ExtensionsClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, options *ExtensionsBeginDeleteOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, options *ExtensionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/{extensionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,53 +183,42 @@ func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter extensionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{extensionName}", url.PathEscape(extensionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleError handles the Delete error response.
-func (client *ExtensionsClient) deleteHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDisableAzureMonitor - Disables the Azure Monitor on the HDInsight cluster.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) BeginDisableAzureMonitor(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsBeginDisableAzureMonitorOptions) (ExtensionsDisableAzureMonitorPollerResponse, error) {
-	resp, err := client.disableAzureMonitor(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ExtensionsDisableAzureMonitorPollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster.
+// options - ExtensionsClientBeginDisableAzureMonitorOptions contains the optional parameters for the ExtensionsClient.BeginDisableAzureMonitor
+// method.
+func (client *ExtensionsClient) BeginDisableAzureMonitor(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsClientBeginDisableAzureMonitorOptions) (*runtime.Poller[ExtensionsClientDisableAzureMonitorResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.disableAzureMonitor(ctx, resourceGroupName, clusterName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ExtensionsClientDisableAzureMonitorResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[ExtensionsClientDisableAzureMonitorResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ExtensionsDisableAzureMonitorPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ExtensionsClient.DisableAzureMonitor", "location", resp, client.pl, client.disableAzureMonitorHandleError)
-	if err != nil {
-		return ExtensionsDisableAzureMonitorPollerResponse{}, err
-	}
-	result.Poller = &ExtensionsDisableAzureMonitorPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DisableAzureMonitor - Disables the Azure Monitor on the HDInsight cluster.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) disableAzureMonitor(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsBeginDisableAzureMonitorOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+func (client *ExtensionsClient) disableAzureMonitor(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsClientBeginDisableAzureMonitorOptions) (*http.Response, error) {
 	req, err := client.disableAzureMonitorCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
 		return nil, err
@@ -234,13 +228,13 @@ func (client *ExtensionsClient) disableAzureMonitor(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.disableAzureMonitorHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // disableAzureMonitorCreateRequest creates the DisableAzureMonitor request.
-func (client *ExtensionsClient) disableAzureMonitorCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsBeginDisableAzureMonitorOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) disableAzureMonitorCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsClientBeginDisableAzureMonitorOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/azureMonitor"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -254,53 +248,42 @@ func (client *ExtensionsClient) disableAzureMonitorCreateRequest(ctx context.Con
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// disableAzureMonitorHandleError handles the DisableAzureMonitor error response.
-func (client *ExtensionsClient) disableAzureMonitorHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginDisableMonitoring - Disables the Operations Management Suite (OMS) on the HDInsight cluster.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) BeginDisableMonitoring(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsBeginDisableMonitoringOptions) (ExtensionsDisableMonitoringPollerResponse, error) {
-	resp, err := client.disableMonitoring(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ExtensionsDisableMonitoringPollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster.
+// options - ExtensionsClientBeginDisableMonitoringOptions contains the optional parameters for the ExtensionsClient.BeginDisableMonitoring
+// method.
+func (client *ExtensionsClient) BeginDisableMonitoring(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsClientBeginDisableMonitoringOptions) (*runtime.Poller[ExtensionsClientDisableMonitoringResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.disableMonitoring(ctx, resourceGroupName, clusterName, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ExtensionsClientDisableMonitoringResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[ExtensionsClientDisableMonitoringResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ExtensionsDisableMonitoringPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ExtensionsClient.DisableMonitoring", "location", resp, client.pl, client.disableMonitoringHandleError)
-	if err != nil {
-		return ExtensionsDisableMonitoringPollerResponse{}, err
-	}
-	result.Poller = &ExtensionsDisableMonitoringPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // DisableMonitoring - Disables the Operations Management Suite (OMS) on the HDInsight cluster.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) disableMonitoring(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsBeginDisableMonitoringOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+func (client *ExtensionsClient) disableMonitoring(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsClientBeginDisableMonitoringOptions) (*http.Response, error) {
 	req, err := client.disableMonitoringCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
 		return nil, err
@@ -310,13 +293,13 @@ func (client *ExtensionsClient) disableMonitoring(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.disableMonitoringHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // disableMonitoringCreateRequest creates the DisableMonitoring request.
-func (client *ExtensionsClient) disableMonitoringCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsBeginDisableMonitoringOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) disableMonitoringCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsClientBeginDisableMonitoringOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/clustermonitoring"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -330,53 +313,43 @@ func (client *ExtensionsClient) disableMonitoringCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// disableMonitoringHandleError handles the DisableMonitoring error response.
-func (client *ExtensionsClient) disableMonitoringHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginEnableAzureMonitor - Enables the Azure Monitor on the HDInsight cluster.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) BeginEnableAzureMonitor(ctx context.Context, resourceGroupName string, clusterName string, parameters AzureMonitorRequest, options *ExtensionsBeginEnableAzureMonitorOptions) (ExtensionsEnableAzureMonitorPollerResponse, error) {
-	resp, err := client.enableAzureMonitor(ctx, resourceGroupName, clusterName, parameters, options)
-	if err != nil {
-		return ExtensionsEnableAzureMonitorPollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster.
+// parameters - The Log Analytics workspace parameters.
+// options - ExtensionsClientBeginEnableAzureMonitorOptions contains the optional parameters for the ExtensionsClient.BeginEnableAzureMonitor
+// method.
+func (client *ExtensionsClient) BeginEnableAzureMonitor(ctx context.Context, resourceGroupName string, clusterName string, parameters AzureMonitorRequest, options *ExtensionsClientBeginEnableAzureMonitorOptions) (*runtime.Poller[ExtensionsClientEnableAzureMonitorResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.enableAzureMonitor(ctx, resourceGroupName, clusterName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ExtensionsClientEnableAzureMonitorResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[ExtensionsClientEnableAzureMonitorResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ExtensionsEnableAzureMonitorPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ExtensionsClient.EnableAzureMonitor", "location", resp, client.pl, client.enableAzureMonitorHandleError)
-	if err != nil {
-		return ExtensionsEnableAzureMonitorPollerResponse{}, err
-	}
-	result.Poller = &ExtensionsEnableAzureMonitorPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // EnableAzureMonitor - Enables the Azure Monitor on the HDInsight cluster.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) enableAzureMonitor(ctx context.Context, resourceGroupName string, clusterName string, parameters AzureMonitorRequest, options *ExtensionsBeginEnableAzureMonitorOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+func (client *ExtensionsClient) enableAzureMonitor(ctx context.Context, resourceGroupName string, clusterName string, parameters AzureMonitorRequest, options *ExtensionsClientBeginEnableAzureMonitorOptions) (*http.Response, error) {
 	req, err := client.enableAzureMonitorCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -386,13 +359,13 @@ func (client *ExtensionsClient) enableAzureMonitor(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.enableAzureMonitorHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // enableAzureMonitorCreateRequest creates the EnableAzureMonitor request.
-func (client *ExtensionsClient) enableAzureMonitorCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters AzureMonitorRequest, options *ExtensionsBeginEnableAzureMonitorOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) enableAzureMonitorCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters AzureMonitorRequest, options *ExtensionsClientBeginEnableAzureMonitorOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/azureMonitor"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -406,53 +379,43 @@ func (client *ExtensionsClient) enableAzureMonitorCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// enableAzureMonitorHandleError handles the EnableAzureMonitor error response.
-func (client *ExtensionsClient) enableAzureMonitorHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // BeginEnableMonitoring - Enables the Operations Management Suite (OMS) on the HDInsight cluster.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) BeginEnableMonitoring(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterMonitoringRequest, options *ExtensionsBeginEnableMonitoringOptions) (ExtensionsEnableMonitoringPollerResponse, error) {
-	resp, err := client.enableMonitoring(ctx, resourceGroupName, clusterName, parameters, options)
-	if err != nil {
-		return ExtensionsEnableMonitoringPollerResponse{}, err
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster.
+// parameters - The Operations Management Suite (OMS) workspace parameters.
+// options - ExtensionsClientBeginEnableMonitoringOptions contains the optional parameters for the ExtensionsClient.BeginEnableMonitoring
+// method.
+func (client *ExtensionsClient) BeginEnableMonitoring(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterMonitoringRequest, options *ExtensionsClientBeginEnableMonitoringOptions) (*runtime.Poller[ExtensionsClientEnableMonitoringResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.enableMonitoring(ctx, resourceGroupName, clusterName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ExtensionsClientEnableMonitoringResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[ExtensionsClientEnableMonitoringResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ExtensionsEnableMonitoringPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ExtensionsClient.EnableMonitoring", "location", resp, client.pl, client.enableMonitoringHandleError)
-	if err != nil {
-		return ExtensionsEnableMonitoringPollerResponse{}, err
-	}
-	result.Poller = &ExtensionsEnableMonitoringPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // EnableMonitoring - Enables the Operations Management Suite (OMS) on the HDInsight cluster.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) enableMonitoring(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterMonitoringRequest, options *ExtensionsBeginEnableMonitoringOptions) (*http.Response, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+func (client *ExtensionsClient) enableMonitoring(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterMonitoringRequest, options *ExtensionsClientBeginEnableMonitoringOptions) (*http.Response, error) {
 	req, err := client.enableMonitoringCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -462,13 +425,13 @@ func (client *ExtensionsClient) enableMonitoring(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
-		return nil, client.enableMonitoringHandleError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
 }
 
 // enableMonitoringCreateRequest creates the EnableMonitoring request.
-func (client *ExtensionsClient) enableMonitoringCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterMonitoringRequest, options *ExtensionsBeginEnableMonitoringOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) enableMonitoringCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterMonitoringRequest, options *ExtensionsClientBeginEnableMonitoringOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/clustermonitoring"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -482,49 +445,41 @@ func (client *ExtensionsClient) enableMonitoringCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// enableMonitoringHandleError handles the EnableMonitoring error response.
-func (client *ExtensionsClient) enableMonitoringHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // Get - Gets the extension properties for the specified HDInsight cluster extension.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, options *ExtensionsGetOptions) (ExtensionsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster.
+// extensionName - The name of the cluster extension.
+// options - ExtensionsClientGetOptions contains the optional parameters for the ExtensionsClient.Get method.
+func (client *ExtensionsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, options *ExtensionsClientGetOptions) (ExtensionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, extensionName, options)
 	if err != nil {
-		return ExtensionsGetResponse{}, err
+		return ExtensionsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExtensionsGetResponse{}, err
+		return ExtensionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExtensionsGetResponse{}, client.getHandleError(resp)
+		return ExtensionsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ExtensionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, options *ExtensionsGetOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, options *ExtensionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/{extensionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -542,58 +497,52 @@ func (client *ExtensionsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter extensionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{extensionName}", url.PathEscape(extensionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExtensionsClient) getHandleResponse(resp *http.Response) (ExtensionsGetResponse, error) {
-	result := ExtensionsGetResponse{RawResponse: resp}
+func (client *ExtensionsClient) getHandleResponse(resp *http.Response) (ExtensionsClientGetResponse, error) {
+	result := ExtensionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterMonitoringResponse); err != nil {
-		return ExtensionsGetResponse{}, runtime.NewResponseError(err, resp)
+		return ExtensionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *ExtensionsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAzureAsyncOperationStatus - Gets the async operation status.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) GetAzureAsyncOperationStatus(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, operationID string, options *ExtensionsGetAzureAsyncOperationStatusOptions) (ExtensionsGetAzureAsyncOperationStatusResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster.
+// extensionName - The name of the cluster extension.
+// operationID - The long running operation id.
+// options - ExtensionsClientGetAzureAsyncOperationStatusOptions contains the optional parameters for the ExtensionsClient.GetAzureAsyncOperationStatus
+// method.
+func (client *ExtensionsClient) GetAzureAsyncOperationStatus(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, operationID string, options *ExtensionsClientGetAzureAsyncOperationStatusOptions) (ExtensionsClientGetAzureAsyncOperationStatusResponse, error) {
 	req, err := client.getAzureAsyncOperationStatusCreateRequest(ctx, resourceGroupName, clusterName, extensionName, operationID, options)
 	if err != nil {
-		return ExtensionsGetAzureAsyncOperationStatusResponse{}, err
+		return ExtensionsClientGetAzureAsyncOperationStatusResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExtensionsGetAzureAsyncOperationStatusResponse{}, err
+		return ExtensionsClientGetAzureAsyncOperationStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExtensionsGetAzureAsyncOperationStatusResponse{}, client.getAzureAsyncOperationStatusHandleError(resp)
+		return ExtensionsClientGetAzureAsyncOperationStatusResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAzureAsyncOperationStatusHandleResponse(resp)
 }
 
 // getAzureAsyncOperationStatusCreateRequest creates the GetAzureAsyncOperationStatus request.
-func (client *ExtensionsClient) getAzureAsyncOperationStatusCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, operationID string, options *ExtensionsGetAzureAsyncOperationStatusOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) getAzureAsyncOperationStatusCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, operationID string, options *ExtensionsClientGetAzureAsyncOperationStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/{extensionName}/azureAsyncOperations/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -615,58 +564,50 @@ func (client *ExtensionsClient) getAzureAsyncOperationStatusCreateRequest(ctx co
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getAzureAsyncOperationStatusHandleResponse handles the GetAzureAsyncOperationStatus response.
-func (client *ExtensionsClient) getAzureAsyncOperationStatusHandleResponse(resp *http.Response) (ExtensionsGetAzureAsyncOperationStatusResponse, error) {
-	result := ExtensionsGetAzureAsyncOperationStatusResponse{RawResponse: resp}
+func (client *ExtensionsClient) getAzureAsyncOperationStatusHandleResponse(resp *http.Response) (ExtensionsClientGetAzureAsyncOperationStatusResponse, error) {
+	result := ExtensionsClientGetAzureAsyncOperationStatusResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AsyncOperationResult); err != nil {
-		return ExtensionsGetAzureAsyncOperationStatusResponse{}, runtime.NewResponseError(err, resp)
+		return ExtensionsClientGetAzureAsyncOperationStatusResponse{}, err
 	}
 	return result, nil
 }
 
-// getAzureAsyncOperationStatusHandleError handles the GetAzureAsyncOperationStatus error response.
-func (client *ExtensionsClient) getAzureAsyncOperationStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetAzureMonitorStatus - Gets the status of Azure Monitor on the HDInsight cluster.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) GetAzureMonitorStatus(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsGetAzureMonitorStatusOptions) (ExtensionsGetAzureMonitorStatusResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster.
+// options - ExtensionsClientGetAzureMonitorStatusOptions contains the optional parameters for the ExtensionsClient.GetAzureMonitorStatus
+// method.
+func (client *ExtensionsClient) GetAzureMonitorStatus(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsClientGetAzureMonitorStatusOptions) (ExtensionsClientGetAzureMonitorStatusResponse, error) {
 	req, err := client.getAzureMonitorStatusCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
-		return ExtensionsGetAzureMonitorStatusResponse{}, err
+		return ExtensionsClientGetAzureMonitorStatusResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExtensionsGetAzureMonitorStatusResponse{}, err
+		return ExtensionsClientGetAzureMonitorStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExtensionsGetAzureMonitorStatusResponse{}, client.getAzureMonitorStatusHandleError(resp)
+		return ExtensionsClientGetAzureMonitorStatusResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getAzureMonitorStatusHandleResponse(resp)
 }
 
 // getAzureMonitorStatusCreateRequest creates the GetAzureMonitorStatus request.
-func (client *ExtensionsClient) getAzureMonitorStatusCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsGetAzureMonitorStatusOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) getAzureMonitorStatusCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsClientGetAzureMonitorStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/azureMonitor"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -680,58 +621,50 @@ func (client *ExtensionsClient) getAzureMonitorStatusCreateRequest(ctx context.C
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getAzureMonitorStatusHandleResponse handles the GetAzureMonitorStatus response.
-func (client *ExtensionsClient) getAzureMonitorStatusHandleResponse(resp *http.Response) (ExtensionsGetAzureMonitorStatusResponse, error) {
-	result := ExtensionsGetAzureMonitorStatusResponse{RawResponse: resp}
+func (client *ExtensionsClient) getAzureMonitorStatusHandleResponse(resp *http.Response) (ExtensionsClientGetAzureMonitorStatusResponse, error) {
+	result := ExtensionsClientGetAzureMonitorStatusResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureMonitorResponse); err != nil {
-		return ExtensionsGetAzureMonitorStatusResponse{}, runtime.NewResponseError(err, resp)
+		return ExtensionsClientGetAzureMonitorStatusResponse{}, err
 	}
 	return result, nil
 }
 
-// getAzureMonitorStatusHandleError handles the GetAzureMonitorStatus error response.
-func (client *ExtensionsClient) getAzureMonitorStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
-}
-
 // GetMonitoringStatus - Gets the status of Operations Management Suite (OMS) on the HDInsight cluster.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *ExtensionsClient) GetMonitoringStatus(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsGetMonitoringStatusOptions) (ExtensionsGetMonitoringStatusResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
+// resourceGroupName - The name of the resource group.
+// clusterName - The name of the cluster.
+// options - ExtensionsClientGetMonitoringStatusOptions contains the optional parameters for the ExtensionsClient.GetMonitoringStatus
+// method.
+func (client *ExtensionsClient) GetMonitoringStatus(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsClientGetMonitoringStatusOptions) (ExtensionsClientGetMonitoringStatusResponse, error) {
 	req, err := client.getMonitoringStatusCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
-		return ExtensionsGetMonitoringStatusResponse{}, err
+		return ExtensionsClientGetMonitoringStatusResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExtensionsGetMonitoringStatusResponse{}, err
+		return ExtensionsClientGetMonitoringStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ExtensionsGetMonitoringStatusResponse{}, client.getMonitoringStatusHandleError(resp)
+		return ExtensionsClientGetMonitoringStatusResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getMonitoringStatusHandleResponse(resp)
 }
 
 // getMonitoringStatusCreateRequest creates the GetMonitoringStatus request.
-func (client *ExtensionsClient) getMonitoringStatusCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsGetMonitoringStatusOptions) (*policy.Request, error) {
+func (client *ExtensionsClient) getMonitoringStatusCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsClientGetMonitoringStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/clustermonitoring"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -745,35 +678,22 @@ func (client *ExtensionsClient) getMonitoringStatusCreateRequest(ctx context.Con
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getMonitoringStatusHandleResponse handles the GetMonitoringStatus response.
-func (client *ExtensionsClient) getMonitoringStatusHandleResponse(resp *http.Response) (ExtensionsGetMonitoringStatusResponse, error) {
-	result := ExtensionsGetMonitoringStatusResponse{RawResponse: resp}
+func (client *ExtensionsClient) getMonitoringStatusHandleResponse(resp *http.Response) (ExtensionsClientGetMonitoringStatusResponse, error) {
+	result := ExtensionsClientGetMonitoringStatusResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterMonitoringResponse); err != nil {
-		return ExtensionsGetMonitoringStatusResponse{}, runtime.NewResponseError(err, resp)
+		return ExtensionsClientGetMonitoringStatusResponse{}, err
 	}
 	return result, nil
-}
-
-// getMonitoringStatusHandleError handles the GetMonitoringStatus error response.
-func (client *ExtensionsClient) getMonitoringStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

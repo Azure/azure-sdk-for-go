@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,42 +25,61 @@ import (
 // DatabaseAdvisorsClient contains the methods for the DatabaseAdvisors group.
 // Don't use this type directly, use NewDatabaseAdvisorsClient() instead.
 type DatabaseAdvisorsClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewDatabaseAdvisorsClient creates a new instance of DatabaseAdvisorsClient with the specified values.
-func NewDatabaseAdvisorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabaseAdvisorsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The subscription ID that identifies an Azure subscription.
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewDatabaseAdvisorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseAdvisorsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &DatabaseAdvisorsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &DatabaseAdvisorsClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // Get - Gets a database advisor.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAdvisorsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, options *DatabaseAdvisorsGetOptions) (DatabaseAdvisorsGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// advisorName - The name of the Database Advisor.
+// options - DatabaseAdvisorsClientGetOptions contains the optional parameters for the DatabaseAdvisorsClient.Get method.
+func (client *DatabaseAdvisorsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, options *DatabaseAdvisorsClientGetOptions) (DatabaseAdvisorsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, advisorName, options)
 	if err != nil {
-		return DatabaseAdvisorsGetResponse{}, err
+		return DatabaseAdvisorsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseAdvisorsGetResponse{}, err
+		return DatabaseAdvisorsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseAdvisorsGetResponse{}, client.getHandleError(resp)
+		return DatabaseAdvisorsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DatabaseAdvisorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, options *DatabaseAdvisorsGetOptions) (*policy.Request, error) {
+func (client *DatabaseAdvisorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, options *DatabaseAdvisorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/advisors/{advisorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -81,57 +101,52 @@ func (client *DatabaseAdvisorsClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabaseAdvisorsClient) getHandleResponse(resp *http.Response) (DatabaseAdvisorsGetResponse, error) {
-	result := DatabaseAdvisorsGetResponse{RawResponse: resp}
+func (client *DatabaseAdvisorsClient) getHandleResponse(resp *http.Response) (DatabaseAdvisorsClientGetResponse, error) {
+	result := DatabaseAdvisorsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Advisor); err != nil {
-		return DatabaseAdvisorsGetResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseAdvisorsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *DatabaseAdvisorsClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // ListByDatabase - Gets a list of database advisors.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAdvisorsClient) ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseAdvisorsListByDatabaseOptions) (DatabaseAdvisorsListByDatabaseResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// options - DatabaseAdvisorsClientListByDatabaseOptions contains the optional parameters for the DatabaseAdvisorsClient.ListByDatabase
+// method.
+func (client *DatabaseAdvisorsClient) ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseAdvisorsClientListByDatabaseOptions) (DatabaseAdvisorsClientListByDatabaseResponse, error) {
 	req, err := client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 	if err != nil {
-		return DatabaseAdvisorsListByDatabaseResponse{}, err
+		return DatabaseAdvisorsClientListByDatabaseResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseAdvisorsListByDatabaseResponse{}, err
+		return DatabaseAdvisorsClientListByDatabaseResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseAdvisorsListByDatabaseResponse{}, client.listByDatabaseHandleError(resp)
+		return DatabaseAdvisorsClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.listByDatabaseHandleResponse(resp)
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *DatabaseAdvisorsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseAdvisorsListByDatabaseOptions) (*policy.Request, error) {
+func (client *DatabaseAdvisorsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseAdvisorsClientListByDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/advisors"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -149,7 +164,7 @@ func (client *DatabaseAdvisorsClient) listByDatabaseCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,50 +174,46 @@ func (client *DatabaseAdvisorsClient) listByDatabaseCreateRequest(ctx context.Co
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *DatabaseAdvisorsClient) listByDatabaseHandleResponse(resp *http.Response) (DatabaseAdvisorsListByDatabaseResponse, error) {
-	result := DatabaseAdvisorsListByDatabaseResponse{RawResponse: resp}
+func (client *DatabaseAdvisorsClient) listByDatabaseHandleResponse(resp *http.Response) (DatabaseAdvisorsClientListByDatabaseResponse, error) {
+	result := DatabaseAdvisorsClientListByDatabaseResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdvisorArray); err != nil {
-		return DatabaseAdvisorsListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseAdvisorsClientListByDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
-// listByDatabaseHandleError handles the ListByDatabase error response.
-func (client *DatabaseAdvisorsClient) listByDatabaseHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
 // Update - Updates a database advisor.
-// If the operation fails it returns a generic error.
-func (client *DatabaseAdvisorsClient) Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, parameters Advisor, options *DatabaseAdvisorsUpdateOptions) (DatabaseAdvisorsUpdateResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
+// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+// Resource Manager API or the portal.
+// serverName - The name of the server.
+// databaseName - The name of the database.
+// advisorName - The name of the Database Advisor.
+// parameters - The requested advisor resource state.
+// options - DatabaseAdvisorsClientUpdateOptions contains the optional parameters for the DatabaseAdvisorsClient.Update method.
+func (client *DatabaseAdvisorsClient) Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, parameters Advisor, options *DatabaseAdvisorsClientUpdateOptions) (DatabaseAdvisorsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, databaseName, advisorName, parameters, options)
 	if err != nil {
-		return DatabaseAdvisorsUpdateResponse{}, err
+		return DatabaseAdvisorsClientUpdateResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DatabaseAdvisorsUpdateResponse{}, err
+		return DatabaseAdvisorsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return DatabaseAdvisorsUpdateResponse{}, client.updateHandleError(resp)
+		return DatabaseAdvisorsClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DatabaseAdvisorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, parameters Advisor, options *DatabaseAdvisorsUpdateOptions) (*policy.Request, error) {
+func (client *DatabaseAdvisorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, parameters Advisor, options *DatabaseAdvisorsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/advisors/{advisorName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -224,34 +235,22 @@ func (client *DatabaseAdvisorsClient) updateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DatabaseAdvisorsClient) updateHandleResponse(resp *http.Response) (DatabaseAdvisorsUpdateResponse, error) {
-	result := DatabaseAdvisorsUpdateResponse{RawResponse: resp}
+func (client *DatabaseAdvisorsClient) updateHandleResponse(resp *http.Response) (DatabaseAdvisorsClientUpdateResponse, error) {
+	result := DatabaseAdvisorsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Advisor); err != nil {
-		return DatabaseAdvisorsUpdateResponse{}, runtime.NewResponseError(err, resp)
+		return DatabaseAdvisorsClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// updateHandleError handles the Update error response.
-func (client *DatabaseAdvisorsClient) updateHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

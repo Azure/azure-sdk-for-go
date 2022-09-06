@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,204 +8,54 @@
 
 package armquota
 
-import (
-	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"net/http"
-	"time"
-)
-
-// QuotaCreateOrUpdatePollerResponse contains the response from method Quota.CreateOrUpdate.
-type QuotaCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *QuotaCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l QuotaCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (QuotaCreateOrUpdateResponse, error) {
-	respType := QuotaCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CurrentQuotaLimitBase)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a QuotaCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *QuotaCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *QuotaClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("QuotaClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &QuotaCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// QuotaCreateOrUpdateResponse contains the response from method Quota.CreateOrUpdate.
-type QuotaCreateOrUpdateResponse struct {
-	QuotaCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// QuotaCreateOrUpdateResult contains the result from method Quota.CreateOrUpdate.
-type QuotaCreateOrUpdateResult struct {
+// ClientCreateOrUpdateResponse contains the response from method Client.CreateOrUpdate.
+type ClientCreateOrUpdateResponse struct {
 	CurrentQuotaLimitBase
 }
 
-// QuotaGetResponse contains the response from method Quota.Get.
-type QuotaGetResponse struct {
-	QuotaGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// QuotaGetResult contains the result from method Quota.Get.
-type QuotaGetResult struct {
+// ClientGetResponse contains the response from method Client.Get.
+type ClientGetResponse struct {
 	CurrentQuotaLimitBase
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// QuotaListResponse contains the response from method Quota.List.
-type QuotaListResponse struct {
-	QuotaListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// QuotaListResult contains the result from method Quota.List.
-type QuotaListResult struct {
-	QuotaLimits
+// ClientListResponse contains the response from method Client.List.
+type ClientListResponse struct {
+	Limits
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// QuotaOperationListResponse contains the response from method QuotaOperation.List.
-type QuotaOperationListResponse struct {
-	QuotaOperationListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ClientUpdateResponse contains the response from method Client.Update.
+type ClientUpdateResponse struct {
+	CurrentQuotaLimitBase
 }
 
-// QuotaOperationListResult contains the result from method QuotaOperation.List.
-type QuotaOperationListResult struct {
+// OperationClientListResponse contains the response from method OperationClient.List.
+type OperationClientListResponse struct {
 	OperationList
 }
 
-// QuotaRequestStatusGetResponse contains the response from method QuotaRequestStatus.Get.
-type QuotaRequestStatusGetResponse struct {
-	QuotaRequestStatusGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// RequestStatusClientGetResponse contains the response from method RequestStatusClient.Get.
+type RequestStatusClientGetResponse struct {
+	RequestDetails
 }
 
-// QuotaRequestStatusGetResult contains the result from method QuotaRequestStatus.Get.
-type QuotaRequestStatusGetResult struct {
-	QuotaRequestDetails
+// RequestStatusClientListResponse contains the response from method RequestStatusClient.List.
+type RequestStatusClientListResponse struct {
+	RequestDetailsList
 }
 
-// QuotaRequestStatusListResponse contains the response from method QuotaRequestStatus.List.
-type QuotaRequestStatusListResponse struct {
-	QuotaRequestStatusListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// QuotaRequestStatusListResult contains the result from method QuotaRequestStatus.List.
-type QuotaRequestStatusListResult struct {
-	QuotaRequestDetailsList
-}
-
-// QuotaUpdatePollerResponse contains the response from method Quota.Update.
-type QuotaUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *QuotaUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l QuotaUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (QuotaUpdateResponse, error) {
-	respType := QuotaUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CurrentQuotaLimitBase)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a QuotaUpdatePollerResponse from the provided client and resume token.
-func (l *QuotaUpdatePollerResponse) Resume(ctx context.Context, client *QuotaClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("QuotaClient.Update", token, client.pl, client.updateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &QuotaUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// QuotaUpdateResponse contains the response from method Quota.Update.
-type QuotaUpdateResponse struct {
-	QuotaUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// QuotaUpdateResult contains the result from method Quota.Update.
-type QuotaUpdateResult struct {
-	CurrentQuotaLimitBase
-}
-
-// UsagesGetResponse contains the response from method Usages.Get.
-type UsagesGetResponse struct {
-	UsagesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// UsagesGetResult contains the result from method Usages.Get.
-type UsagesGetResult struct {
+// UsagesClientGetResponse contains the response from method UsagesClient.Get.
+type UsagesClientGetResponse struct {
 	CurrentUsagesBase
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 }
 
-// UsagesListResponse contains the response from method Usages.List.
-type UsagesListResponse struct {
-	UsagesListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// UsagesListResult contains the result from method Usages.List.
-type UsagesListResult struct {
+// UsagesClientListResponse contains the response from method UsagesClient.List.
+type UsagesClientListResponse struct {
 	UsagesLimits
 	// ETag contains the information returned from the ETag header response.
 	ETag *string

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -13,7 +13,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"math/rand"
 	"net/http"
@@ -415,7 +415,7 @@ func (r *Recording) createVariablesFileIfNotExists() (*os.File, error) {
 }
 
 func (r *Recording) unmarshalVariablesFile(out interface{}) error {
-	data, err := ioutil.ReadFile(r.VariablesFile)
+	data, err := os.ReadFile(r.VariablesFile)
 	if err != nil {
 		// If the file or dir do not exist, this is not an error to report
 		if os.IsNotExist(err) {
@@ -468,13 +468,29 @@ func init() {
 			log.Panicf(err.Error())
 		}
 	}
-	cert, err := ioutil.ReadFile(localFile)
+	cert, err := os.ReadFile(localFile)
 	if err != nil {
 		log.Printf("could not read file set in PROXY_CERT variable at %s.\n", localFile)
 	}
 
 	if ok := certPool.AppendCertsFromPEM(cert); !ok {
 		log.Println("no certs appended, using system certs only")
+	}
+
+	// Set a Default matcher that ignores :path, :scheme, :authority, and :method headers
+	err = SetDefaultMatcher(
+		nil,
+		&SetDefaultMatcherOptions{ExcludedHeaders: []string{
+			":authority",
+			":method",
+			":path",
+			":scheme",
+		}},
+	)
+	if err != nil {
+		log.Println("could not set the default matcher")
+	} else {
+		log.Println("default matcher was set ")
 	}
 }
 
@@ -508,6 +524,7 @@ type RecordingOptions struct {
 	UseHTTPS        bool
 	GroupForReplace string
 	Variables       map[string]interface{}
+	TestInstance    *testing.T
 }
 
 func defaultOptions() *RecordingOptions {
@@ -516,17 +533,26 @@ func defaultOptions() *RecordingOptions {
 	}
 }
 
-func (r RecordingOptions) ReplaceAuthority(t *testing.T, rawReq *http.Request) {
+func (r RecordingOptions) ReplaceAuthority(t *testing.T, rawReq *http.Request) *http.Request {
 	if GetRecordMode() != LiveMode && !IsLiveOnly(t) {
 		originalURLHost := rawReq.URL.Host
-		rawReq.URL.Scheme = r.scheme()
-		rawReq.URL.Host = r.host()
-		rawReq.Host = r.host()
 
-		rawReq.Header.Set(UpstreamURIHeader, fmt.Sprintf("%v://%v", r.scheme(), originalURLHost))
-		rawReq.Header.Set(ModeHeader, GetRecordMode())
-		rawReq.Header.Set(IDHeader, GetRecordingId(t))
+		// don't modify the original request
+		cp := *rawReq
+		cpURL := *cp.URL
+		cp.URL = &cpURL
+		cp.Header = rawReq.Header.Clone()
+
+		cp.URL.Scheme = r.scheme()
+		cp.URL.Host = r.host()
+		cp.Host = r.host()
+
+		cp.Header.Set(UpstreamURIHeader, fmt.Sprintf("%v://%v", r.scheme(), originalURLHost))
+		cp.Header.Set(ModeHeader, GetRecordMode())
+		cp.Header.Set(IDHeader, GetRecordingId(t))
+		rawReq = &cp
 	}
+	return rawReq
 }
 
 func (r RecordingOptions) host() string {
@@ -575,7 +601,14 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 	if err != nil {
 		return err
 	}
-	req.Header.Set("x-recording-file", testId)
+
+	req.Header.Set("Content-Type", "application/json")
+	marshalled, err := json.Marshal(map[string]string{"x-recording-file": testId})
+	if err != nil {
+		return err
+	}
+	req.Body = io.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -583,7 +616,7 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 	}
 	recId := resp.Header.Get(IDHeader)
 	if recId == "" {
-		b, err := ioutil.ReadAll(resp.Body)
+		b, err := io.ReadAll(resp.Body)
 		defer resp.Body.Close()
 		if err != nil {
 			return err
@@ -593,7 +626,7 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 
 	// Unmarshal any variables returned by the proxy
 	var m map[string]interface{}
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	if err != nil {
 		return err
@@ -646,7 +679,7 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 		if err != nil {
 			return err
 		}
-		req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+		req.Body = io.NopCloser(bytes.NewReader(marshalled))
 		req.ContentLength = int64(len(marshalled))
 	}
 
@@ -655,10 +688,10 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 	if recTest, ok = testSuite[t.Name()]; !ok {
 		return errors.New("Recording ID was never set. Did you call StartRecording?")
 	}
-	req.Header.Set("x-recording-id", recTest.recordingId)
+	req.Header.Set(IDHeader, recTest.recordingId)
 	resp, err := client.Do(req)
 	if resp.StatusCode != 200 {
-		b, err := ioutil.ReadAll(resp.Body)
+		b, err := io.ReadAll(resp.Body)
 		defer resp.Body.Close()
 		if err == nil {
 			return fmt.Errorf("proxy did not stop the recording properly: %s", string(b))
@@ -699,7 +732,11 @@ func Sleep(duration time.Duration) {
 }
 
 func GetRecordingId(t *testing.T) string {
-	return testSuite[t.Name()].recordingId
+	if val, ok := testSuite[t.Name()]; ok {
+		return val.recordingId
+	} else {
+		return ""
+	}
 }
 
 func GetRecordMode() string {
@@ -728,7 +765,7 @@ type RecordingHTTPClient struct {
 }
 
 func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
-	c.options.ReplaceAuthority(c.t, req)
+	req = c.options.ReplaceAuthority(c.t, req)
 	return c.defaultClient.Do(req)
 }
 

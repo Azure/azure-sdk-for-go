@@ -12,7 +12,7 @@ package redisenterprise
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/redisenterprise/mgmt/2021-03-01/redisenterprise"
+	original "github.com/Azure/azure-sdk-for-go/services/redisenterprise/mgmt/2022-01-01/redisenterprise"
 )
 
 const (
@@ -22,73 +22,83 @@ const (
 type AccessKeyType = original.AccessKeyType
 
 const (
-	Primary   AccessKeyType = original.Primary
-	Secondary AccessKeyType = original.Secondary
+	AccessKeyTypePrimary   AccessKeyType = original.AccessKeyTypePrimary
+	AccessKeyTypeSecondary AccessKeyType = original.AccessKeyTypeSecondary
 )
 
 type ActionType = original.ActionType
 
 const (
-	Internal ActionType = original.Internal
+	ActionTypeInternal ActionType = original.ActionTypeInternal
 )
 
 type AofFrequency = original.AofFrequency
 
 const (
-	Always AofFrequency = original.Always
-	Ones   AofFrequency = original.Ones
+	AofFrequencyAlways AofFrequency = original.AofFrequencyAlways
+	AofFrequencyOnes   AofFrequency = original.AofFrequencyOnes
 )
 
 type ClusteringPolicy = original.ClusteringPolicy
 
 const (
-	EnterpriseCluster ClusteringPolicy = original.EnterpriseCluster
-	OSSCluster        ClusteringPolicy = original.OSSCluster
+	ClusteringPolicyEnterpriseCluster ClusteringPolicy = original.ClusteringPolicyEnterpriseCluster
+	ClusteringPolicyOSSCluster        ClusteringPolicy = original.ClusteringPolicyOSSCluster
 )
 
 type EvictionPolicy = original.EvictionPolicy
 
 const (
-	AllKeysLFU     EvictionPolicy = original.AllKeysLFU
-	AllKeysLRU     EvictionPolicy = original.AllKeysLRU
-	AllKeysRandom  EvictionPolicy = original.AllKeysRandom
-	NoEviction     EvictionPolicy = original.NoEviction
-	VolatileLFU    EvictionPolicy = original.VolatileLFU
-	VolatileLRU    EvictionPolicy = original.VolatileLRU
-	VolatileRandom EvictionPolicy = original.VolatileRandom
-	VolatileTTL    EvictionPolicy = original.VolatileTTL
+	EvictionPolicyAllKeysLFU     EvictionPolicy = original.EvictionPolicyAllKeysLFU
+	EvictionPolicyAllKeysLRU     EvictionPolicy = original.EvictionPolicyAllKeysLRU
+	EvictionPolicyAllKeysRandom  EvictionPolicy = original.EvictionPolicyAllKeysRandom
+	EvictionPolicyNoEviction     EvictionPolicy = original.EvictionPolicyNoEviction
+	EvictionPolicyVolatileLFU    EvictionPolicy = original.EvictionPolicyVolatileLFU
+	EvictionPolicyVolatileLRU    EvictionPolicy = original.EvictionPolicyVolatileLRU
+	EvictionPolicyVolatileRandom EvictionPolicy = original.EvictionPolicyVolatileRandom
+	EvictionPolicyVolatileTTL    EvictionPolicy = original.EvictionPolicyVolatileTTL
+)
+
+type LinkState = original.LinkState
+
+const (
+	LinkStateLinked       LinkState = original.LinkStateLinked
+	LinkStateLinkFailed   LinkState = original.LinkStateLinkFailed
+	LinkStateLinking      LinkState = original.LinkStateLinking
+	LinkStateUnlinkFailed LinkState = original.LinkStateUnlinkFailed
+	LinkStateUnlinking    LinkState = original.LinkStateUnlinking
 )
 
 type Origin = original.Origin
 
 const (
-	System     Origin = original.System
-	User       Origin = original.User
-	Usersystem Origin = original.Usersystem
+	OriginSystem     Origin = original.OriginSystem
+	OriginUser       Origin = original.OriginUser
+	OriginUsersystem Origin = original.OriginUsersystem
 )
 
 type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
 
 const (
-	Creating  PrivateEndpointConnectionProvisioningState = original.Creating
-	Deleting  PrivateEndpointConnectionProvisioningState = original.Deleting
-	Failed    PrivateEndpointConnectionProvisioningState = original.Failed
-	Succeeded PrivateEndpointConnectionProvisioningState = original.Succeeded
+	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateCreating
+	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateDeleting
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateFailed
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateSucceeded
 )
 
 type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
 
 const (
-	Approved PrivateEndpointServiceConnectionStatus = original.Approved
-	Pending  PrivateEndpointServiceConnectionStatus = original.Pending
-	Rejected PrivateEndpointServiceConnectionStatus = original.Rejected
+	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusApproved
+	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusPending
+	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusRejected
 )
 
 type Protocol = original.Protocol
 
 const (
-	Encrypted Protocol = original.Encrypted
-	Plaintext Protocol = original.Plaintext
+	ProtocolEncrypted Protocol = original.ProtocolEncrypted
+	ProtocolPlaintext Protocol = original.ProtocolPlaintext
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -105,9 +115,9 @@ const (
 type RdbFrequency = original.RdbFrequency
 
 const (
-	Oneh    RdbFrequency = original.Oneh
-	OneTwoh RdbFrequency = original.OneTwoh
-	Sixh    RdbFrequency = original.Sixh
+	RdbFrequencyOneh    RdbFrequency = original.RdbFrequencyOneh
+	RdbFrequencyOneTwoh RdbFrequency = original.RdbFrequencyOneTwoh
+	RdbFrequencySixh    RdbFrequency = original.RdbFrequencySixh
 )
 
 type ResourceState = original.ResourceState
@@ -130,21 +140,21 @@ const (
 type SkuName = original.SkuName
 
 const (
-	EnterpriseE10        SkuName = original.EnterpriseE10
-	EnterpriseE100       SkuName = original.EnterpriseE100
-	EnterpriseE20        SkuName = original.EnterpriseE20
-	EnterpriseE50        SkuName = original.EnterpriseE50
-	EnterpriseFlashF1500 SkuName = original.EnterpriseFlashF1500
-	EnterpriseFlashF300  SkuName = original.EnterpriseFlashF300
-	EnterpriseFlashF700  SkuName = original.EnterpriseFlashF700
+	SkuNameEnterpriseE10        SkuName = original.SkuNameEnterpriseE10
+	SkuNameEnterpriseE100       SkuName = original.SkuNameEnterpriseE100
+	SkuNameEnterpriseE20        SkuName = original.SkuNameEnterpriseE20
+	SkuNameEnterpriseE50        SkuName = original.SkuNameEnterpriseE50
+	SkuNameEnterpriseFlashF1500 SkuName = original.SkuNameEnterpriseFlashF1500
+	SkuNameEnterpriseFlashF300  SkuName = original.SkuNameEnterpriseFlashF300
+	SkuNameEnterpriseFlashF700  SkuName = original.SkuNameEnterpriseFlashF700
 )
 
 type TLSVersion = original.TLSVersion
 
 const (
-	OneFullStopOne  TLSVersion = original.OneFullStopOne
-	OneFullStopTwo  TLSVersion = original.OneFullStopTwo
-	OneFullStopZero TLSVersion = original.OneFullStopZero
+	TLSVersionOneFullStopOne  TLSVersion = original.TLSVersionOneFullStopOne
+	TLSVersionOneFullStopTwo  TLSVersion = original.TLSVersionOneFullStopTwo
+	TLSVersionOneFullStopZero TLSVersion = original.TLSVersionOneFullStopZero
 )
 
 type AccessKeys = original.AccessKeys
@@ -163,11 +173,13 @@ type DatabaseList = original.DatabaseList
 type DatabaseListIterator = original.DatabaseListIterator
 type DatabaseListPage = original.DatabaseListPage
 type DatabaseProperties = original.DatabaseProperties
+type DatabasePropertiesGeoReplication = original.DatabasePropertiesGeoReplication
 type DatabaseUpdate = original.DatabaseUpdate
 type DatabasesClient = original.DatabasesClient
 type DatabasesCreateFuture = original.DatabasesCreateFuture
 type DatabasesDeleteFuture = original.DatabasesDeleteFuture
 type DatabasesExportFuture = original.DatabasesExportFuture
+type DatabasesForceUnlinkFuture = original.DatabasesForceUnlinkFuture
 type DatabasesImportFuture = original.DatabasesImportFuture
 type DatabasesRegenerateKeyFuture = original.DatabasesRegenerateKeyFuture
 type DatabasesUpdateFuture = original.DatabasesUpdateFuture
@@ -176,7 +188,9 @@ type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
 type ExportClusterParameters = original.ExportClusterParameters
+type ForceUnlinkParameters = original.ForceUnlinkParameters
 type ImportClusterParameters = original.ImportClusterParameters
+type LinkedDatabase = original.LinkedDatabase
 type Module = original.Module
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -279,6 +293,9 @@ func PossibleClusteringPolicyValues() []ClusteringPolicy {
 }
 func PossibleEvictionPolicyValues() []EvictionPolicy {
 	return original.PossibleEvictionPolicyValues()
+}
+func PossibleLinkStateValues() []LinkState {
+	return original.PossibleLinkStateValues()
 }
 func PossibleOriginValues() []Origin {
 	return original.PossibleOriginValues()

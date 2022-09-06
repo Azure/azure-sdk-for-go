@@ -14,6 +14,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
@@ -74,11 +75,13 @@ func (c *KeyCredential) buildCanonicalizedAuthHeaderFromRequest(req *policy.Requ
 	return value, nil
 }
 
-//where date is like time.RFC1123 but hard-codes GMT as the time zone
+// where date is like time.RFC1123 but hard-codes GMT as the time zone
 func (c *KeyCredential) buildCanonicalizedAuthHeader(method, resourceType, resourceAddress, xmsDate, tokenType, version string) string {
 	if method == "" || resourceType == "" {
 		return ""
 	}
+
+	resourceAddress, _ = url.PathUnescape(resourceAddress)
 
 	// https://docs.microsoft.com/en-us/rest/api/cosmos-db/access-control-on-cosmosdb-resources#constructkeytoken
 	stringToSign := join(strings.ToLower(method), "\n", strings.ToLower(resourceType), "\n", resourceAddress, "\n", strings.ToLower(xmsDate), "\n", "", "\n")
@@ -117,7 +120,7 @@ func (s *sharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
 	response, err := req.Next()
 	if err != nil && response != nil && response.StatusCode == http.StatusForbidden {
 		// Service failed to authenticate request, log it
-		log.Write(log.EventResponse, "===== HTTP Forbidden status, Authorization:\n"+authHeader+"\n=====\n")
+		log.Write(azlog.EventResponse, "===== HTTP Forbidden status, Authorization:\n"+authHeader+"\n=====\n")
 	}
 	return response, err
 }

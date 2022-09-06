@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,127 +12,141 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices"
 )
 
-// x-ms-original-file: specification/managedservices/resource-manager/Microsoft.ManagedServices/preview/2020-02-01-preview/examples/GetRegistrationDefinition.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/managedservices/resource-manager/Microsoft.ManagedServices/preview/2022-01-01-preview/examples/GetRegistrationDefinition.json
 func ExampleRegistrationDefinitionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmanagedservices.NewRegistrationDefinitionsClient(cred, nil)
+	client, err := armmanagedservices.NewRegistrationDefinitionsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<scope>",
-		"<registration-definition-id>",
+		"subscription/0afefe50-734e-4610-8a82-a144ahf49dea",
+		"26c128c2-fefa-4340-9bb1-6e081c90ada2",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("RegistrationDefinition.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/managedservices/resource-manager/Microsoft.ManagedServices/preview/2020-02-01-preview/examples/DeleteRegistrationDefinition.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/managedservices/resource-manager/Microsoft.ManagedServices/preview/2022-01-01-preview/examples/DeleteRegistrationDefinition.json
 func ExampleRegistrationDefinitionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmanagedservices.NewRegistrationDefinitionsClient(cred, nil)
+	client, err := armmanagedservices.NewRegistrationDefinitionsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<registration-definition-id>",
-		"<scope>",
+		"26c128c2-fefa-4340-9bb1-6e081c90ada2",
+		"subscription/0afefe50-734e-4610-8a82-a144ahf49dea",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/managedservices/resource-manager/Microsoft.ManagedServices/preview/2020-02-01-preview/examples/PutRegistrationDefinition.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/managedservices/resource-manager/Microsoft.ManagedServices/preview/2022-01-01-preview/examples/PutRegistrationDefinition.json
 func ExampleRegistrationDefinitionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmanagedservices.NewRegistrationDefinitionsClient(cred, nil)
+	client, err := armmanagedservices.NewRegistrationDefinitionsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<registration-definition-id>",
-		"<scope>",
+		"26c128c2-fefa-4340-9bb1-6e081c90ada2",
+		"subscription/0afefe50-734e-4610-8a82-a144ahf49dea",
 		armmanagedservices.RegistrationDefinition{
 			Plan: &armmanagedservices.Plan{
-				Name:      to.StringPtr("<name>"),
-				Product:   to.StringPtr("<product>"),
-				Publisher: to.StringPtr("<publisher>"),
-				Version:   to.StringPtr("<version>"),
+				Name:      to.Ptr("addesai-plan"),
+				Product:   to.Ptr("test"),
+				Publisher: to.Ptr("marketplace-test"),
+				Version:   to.Ptr("1.0.0"),
 			},
 			Properties: &armmanagedservices.RegistrationDefinitionProperties{
-				Description: to.StringPtr("<description>"),
+				Description: to.Ptr("Tes1t"),
 				Authorizations: []*armmanagedservices.Authorization{
 					{
-						PrincipalID:            to.StringPtr("<principal-id>"),
-						PrincipalIDDisplayName: to.StringPtr("<principal-iddisplay-name>"),
-						RoleDefinitionID:       to.StringPtr("<role-definition-id>"),
+						PrincipalID:            to.Ptr("f98d86a2-4cc4-4e9d-ad47-b3e80a1bcdfc"),
+						PrincipalIDDisplayName: to.Ptr("Support User"),
+						RoleDefinitionID:       to.Ptr("acdd72a7-3385-48ef-bd42-f606fba81ae7"),
 					},
 					{
 						DelegatedRoleDefinitionIDs: []*string{
-							to.StringPtr("b24988ac-6180-42a0-ab88-20f7382dd24c")},
-						PrincipalID:            to.StringPtr("<principal-id>"),
-						PrincipalIDDisplayName: to.StringPtr("<principal-iddisplay-name>"),
-						RoleDefinitionID:       to.StringPtr("<role-definition-id>"),
+							to.Ptr("b24988ac-6180-42a0-ab88-20f7382dd24c")},
+						PrincipalID:            to.Ptr("f98d86a2-4cc4-4e9d-ad47-b3e80a1bcdfc"),
+						PrincipalIDDisplayName: to.Ptr("User Access Administrator"),
+						RoleDefinitionID:       to.Ptr("18d7d88d-d35e-4fb5-a5c3-7773c20a72d9"),
 					}},
 				EligibleAuthorizations: []*armmanagedservices.EligibleAuthorization{
 					{
 						JustInTimeAccessPolicy: &armmanagedservices.JustInTimeAccessPolicy{
 							ManagedByTenantApprovers: []*armmanagedservices.EligibleApprover{
 								{
-									PrincipalID:            to.StringPtr("<principal-id>"),
-									PrincipalIDDisplayName: to.StringPtr("<principal-iddisplay-name>"),
+									PrincipalID:            to.Ptr("d9b22cd6-6407-43cc-8c60-07c56df0b51a"),
+									PrincipalIDDisplayName: to.Ptr("Approver Group"),
 								}},
-							MaximumActivationDuration: to.StringPtr("<maximum-activation-duration>"),
-							MultiFactorAuthProvider:   armmanagedservices.MultiFactorAuthProviderAzure.ToPtr(),
+							MaximumActivationDuration: to.Ptr("PT8H"),
+							MultiFactorAuthProvider:   to.Ptr(armmanagedservices.MultiFactorAuthProviderAzure),
 						},
-						PrincipalID:            to.StringPtr("<principal-id>"),
-						PrincipalIDDisplayName: to.StringPtr("<principal-iddisplay-name>"),
-						RoleDefinitionID:       to.StringPtr("<role-definition-id>"),
+						PrincipalID:            to.Ptr("3e0ed8c6-e902-4fc5-863c-e3ddbb2ae2a2"),
+						PrincipalIDDisplayName: to.Ptr("Support User"),
+						RoleDefinitionID:       to.Ptr("ae349356-3a1b-4a5e-921d-050484c6347e"),
 					}},
-				ManagedByTenantID:          to.StringPtr("<managed-by-tenant-id>"),
-				RegistrationDefinitionName: to.StringPtr("<registration-definition-name>"),
+				ManagedByTenantID:          to.Ptr("83abe5cd-bcc3-441a-bd86-e6a75360cecc"),
+				RegistrationDefinitionName: to.Ptr("DefinitionName"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("RegistrationDefinition.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/managedservices/resource-manager/Microsoft.ManagedServices/preview/2020-02-01-preview/examples/GetRegistrationDefinitions.json
-func ExampleRegistrationDefinitionsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/managedservices/resource-manager/Microsoft.ManagedServices/preview/2022-01-01-preview/examples/GetRegistrationDefinitions.json
+func ExampleRegistrationDefinitionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmanagedservices.NewRegistrationDefinitionsClient(cred, nil)
-	pager := client.List("<scope>",
-		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armmanagedservices.NewRegistrationDefinitionsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("subscription/0afefe50-734e-4610-8a82-a144ahf49dea",
+		&armmanagedservices.RegistrationDefinitionsClientListOptions{Filter: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("RegistrationDefinition.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

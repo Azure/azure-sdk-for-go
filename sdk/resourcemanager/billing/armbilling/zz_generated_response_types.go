@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,1218 +8,233 @@
 
 package armbilling
 
-import (
-	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"net/http"
-	"time"
-)
-
-// AddressValidateResponse contains the response from method Address.Validate.
-type AddressValidateResponse struct {
-	AddressValidateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// AccountsClientGetResponse contains the response from method AccountsClient.Get.
+type AccountsClientGetResponse struct {
+	Account
 }
 
-// AddressValidateResult contains the result from method Address.Validate.
-type AddressValidateResult struct {
-	ValidateAddressResponse
-}
-
-// AgreementsGetResponse contains the response from method Agreements.Get.
-type AgreementsGetResponse struct {
-	AgreementsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AgreementsGetResult contains the result from method Agreements.Get.
-type AgreementsGetResult struct {
-	Agreement
-}
-
-// AgreementsListByBillingAccountResponse contains the response from method Agreements.ListByBillingAccount.
-type AgreementsListByBillingAccountResponse struct {
-	AgreementsListByBillingAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AgreementsListByBillingAccountResult contains the result from method Agreements.ListByBillingAccount.
-type AgreementsListByBillingAccountResult struct {
-	AgreementListResult
-}
-
-// AvailableBalancesGetResponse contains the response from method AvailableBalances.Get.
-type AvailableBalancesGetResponse struct {
-	AvailableBalancesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AvailableBalancesGetResult contains the result from method AvailableBalances.Get.
-type AvailableBalancesGetResult struct {
-	AvailableBalance
-}
-
-// BillingAccountsGetResponse contains the response from method BillingAccounts.Get.
-type BillingAccountsGetResponse struct {
-	BillingAccountsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingAccountsGetResult contains the result from method BillingAccounts.Get.
-type BillingAccountsGetResult struct {
-	BillingAccount
-}
-
-// BillingAccountsListInvoiceSectionsByCreateSubscriptionPermissionResponse contains the response from method BillingAccounts.ListInvoiceSectionsByCreateSubscriptionPermission.
-type BillingAccountsListInvoiceSectionsByCreateSubscriptionPermissionResponse struct {
-	BillingAccountsListInvoiceSectionsByCreateSubscriptionPermissionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingAccountsListInvoiceSectionsByCreateSubscriptionPermissionResult contains the result from method BillingAccounts.ListInvoiceSectionsByCreateSubscriptionPermission.
-type BillingAccountsListInvoiceSectionsByCreateSubscriptionPermissionResult struct {
+// AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse contains the response from method AccountsClient.ListInvoiceSectionsByCreateSubscriptionPermission.
+type AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse struct {
 	InvoiceSectionListWithCreateSubPermissionResult
 }
 
-// BillingAccountsListResponse contains the response from method BillingAccounts.List.
-type BillingAccountsListResponse struct {
-	BillingAccountsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// AccountsClientListResponse contains the response from method AccountsClient.List.
+type AccountsClientListResponse struct {
+	AccountListResult
 }
 
-// BillingAccountsListResult contains the result from method BillingAccounts.List.
-type BillingAccountsListResult struct {
-	BillingAccountListResult
+// AccountsClientUpdateResponse contains the response from method AccountsClient.Update.
+type AccountsClientUpdateResponse struct {
+	Account
 }
 
-// BillingAccountsUpdatePollerResponse contains the response from method BillingAccounts.Update.
-type BillingAccountsUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *BillingAccountsUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l BillingAccountsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BillingAccountsUpdateResponse, error) {
-	respType := BillingAccountsUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.BillingAccount)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a BillingAccountsUpdatePollerResponse from the provided client and resume token.
-func (l *BillingAccountsUpdatePollerResponse) Resume(ctx context.Context, client *BillingAccountsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("BillingAccountsClient.Update", token, client.pl, client.updateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &BillingAccountsUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// BillingAccountsUpdateResponse contains the response from method BillingAccounts.Update.
-type BillingAccountsUpdateResponse struct {
-	BillingAccountsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingAccountsUpdateResult contains the result from method BillingAccounts.Update.
-type BillingAccountsUpdateResult struct {
-	BillingAccount
-}
-
-// BillingPeriodsGetResponse contains the response from method BillingPeriods.Get.
-type BillingPeriodsGetResponse struct {
-	BillingPeriodsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingPeriodsGetResult contains the result from method BillingPeriods.Get.
-type BillingPeriodsGetResult struct {
-	BillingPeriod
-}
-
-// BillingPeriodsListResponse contains the response from method BillingPeriods.List.
-type BillingPeriodsListResponse struct {
-	BillingPeriodsListResultEnvelope
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingPeriodsListResultEnvelope contains the result from method BillingPeriods.List.
-type BillingPeriodsListResultEnvelope struct {
-	BillingPeriodsListResult
-}
-
-// BillingPermissionsListByBillingAccountResponse contains the response from method BillingPermissions.ListByBillingAccount.
-type BillingPermissionsListByBillingAccountResponse struct {
-	BillingPermissionsListByBillingAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingPermissionsListByBillingAccountResult contains the result from method BillingPermissions.ListByBillingAccount.
-type BillingPermissionsListByBillingAccountResult struct {
-	BillingPermissionsListResult
-}
-
-// BillingPermissionsListByBillingProfileResponse contains the response from method BillingPermissions.ListByBillingProfile.
-type BillingPermissionsListByBillingProfileResponse struct {
-	BillingPermissionsListByBillingProfileResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingPermissionsListByBillingProfileResult contains the result from method BillingPermissions.ListByBillingProfile.
-type BillingPermissionsListByBillingProfileResult struct {
-	BillingPermissionsListResult
-}
-
-// BillingPermissionsListByCustomerResponse contains the response from method BillingPermissions.ListByCustomer.
-type BillingPermissionsListByCustomerResponse struct {
-	BillingPermissionsListByCustomerResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingPermissionsListByCustomerResult contains the result from method BillingPermissions.ListByCustomer.
-type BillingPermissionsListByCustomerResult struct {
-	BillingPermissionsListResult
-}
-
-// BillingPermissionsListByInvoiceSectionsResponse contains the response from method BillingPermissions.ListByInvoiceSections.
-type BillingPermissionsListByInvoiceSectionsResponse struct {
-	BillingPermissionsListByInvoiceSectionsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingPermissionsListByInvoiceSectionsResult contains the result from method BillingPermissions.ListByInvoiceSections.
-type BillingPermissionsListByInvoiceSectionsResult struct {
-	BillingPermissionsListResult
-}
-
-// BillingProfilesCreateOrUpdatePollerResponse contains the response from method BillingProfiles.CreateOrUpdate.
-type BillingProfilesCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *BillingProfilesCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l BillingProfilesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BillingProfilesCreateOrUpdateResponse, error) {
-	respType := BillingProfilesCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.BillingProfile)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a BillingProfilesCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *BillingProfilesCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *BillingProfilesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("BillingProfilesClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &BillingProfilesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// BillingProfilesCreateOrUpdateResponse contains the response from method BillingProfiles.CreateOrUpdate.
-type BillingProfilesCreateOrUpdateResponse struct {
-	BillingProfilesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingProfilesCreateOrUpdateResult contains the result from method BillingProfiles.CreateOrUpdate.
-type BillingProfilesCreateOrUpdateResult struct {
-	BillingProfile
-}
-
-// BillingProfilesGetResponse contains the response from method BillingProfiles.Get.
-type BillingProfilesGetResponse struct {
-	BillingProfilesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingProfilesGetResult contains the result from method BillingProfiles.Get.
-type BillingProfilesGetResult struct {
-	BillingProfile
-}
-
-// BillingProfilesListByBillingAccountResponse contains the response from method BillingProfiles.ListByBillingAccount.
-type BillingProfilesListByBillingAccountResponse struct {
-	BillingProfilesListByBillingAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingProfilesListByBillingAccountResult contains the result from method BillingProfiles.ListByBillingAccount.
-type BillingProfilesListByBillingAccountResult struct {
-	BillingProfileListResult
-}
-
-// BillingPropertyGetResponse contains the response from method BillingProperty.Get.
-type BillingPropertyGetResponse struct {
-	BillingPropertyGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingPropertyGetResult contains the result from method BillingProperty.Get.
-type BillingPropertyGetResult struct {
-	BillingProperty
-}
-
-// BillingPropertyUpdateResponse contains the response from method BillingProperty.Update.
-type BillingPropertyUpdateResponse struct {
-	BillingPropertyUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingPropertyUpdateResult contains the result from method BillingProperty.Update.
-type BillingPropertyUpdateResult struct {
-	BillingProperty
-}
-
-// BillingRoleAssignmentsDeleteByBillingAccountResponse contains the response from method BillingRoleAssignments.DeleteByBillingAccount.
-type BillingRoleAssignmentsDeleteByBillingAccountResponse struct {
-	BillingRoleAssignmentsDeleteByBillingAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingRoleAssignmentsDeleteByBillingAccountResult contains the result from method BillingRoleAssignments.DeleteByBillingAccount.
-type BillingRoleAssignmentsDeleteByBillingAccountResult struct {
-	BillingRoleAssignment
-}
-
-// BillingRoleAssignmentsDeleteByBillingProfileResponse contains the response from method BillingRoleAssignments.DeleteByBillingProfile.
-type BillingRoleAssignmentsDeleteByBillingProfileResponse struct {
-	BillingRoleAssignmentsDeleteByBillingProfileResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingRoleAssignmentsDeleteByBillingProfileResult contains the result from method BillingRoleAssignments.DeleteByBillingProfile.
-type BillingRoleAssignmentsDeleteByBillingProfileResult struct {
-	BillingRoleAssignment
-}
-
-// BillingRoleAssignmentsDeleteByInvoiceSectionResponse contains the response from method BillingRoleAssignments.DeleteByInvoiceSection.
-type BillingRoleAssignmentsDeleteByInvoiceSectionResponse struct {
-	BillingRoleAssignmentsDeleteByInvoiceSectionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingRoleAssignmentsDeleteByInvoiceSectionResult contains the result from method BillingRoleAssignments.DeleteByInvoiceSection.
-type BillingRoleAssignmentsDeleteByInvoiceSectionResult struct {
-	BillingRoleAssignment
-}
-
-// BillingRoleAssignmentsGetByBillingAccountResponse contains the response from method BillingRoleAssignments.GetByBillingAccount.
-type BillingRoleAssignmentsGetByBillingAccountResponse struct {
-	BillingRoleAssignmentsGetByBillingAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingRoleAssignmentsGetByBillingAccountResult contains the result from method BillingRoleAssignments.GetByBillingAccount.
-type BillingRoleAssignmentsGetByBillingAccountResult struct {
-	BillingRoleAssignment
-}
-
-// BillingRoleAssignmentsGetByBillingProfileResponse contains the response from method BillingRoleAssignments.GetByBillingProfile.
-type BillingRoleAssignmentsGetByBillingProfileResponse struct {
-	BillingRoleAssignmentsGetByBillingProfileResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingRoleAssignmentsGetByBillingProfileResult contains the result from method BillingRoleAssignments.GetByBillingProfile.
-type BillingRoleAssignmentsGetByBillingProfileResult struct {
-	BillingRoleAssignment
-}
-
-// BillingRoleAssignmentsGetByInvoiceSectionResponse contains the response from method BillingRoleAssignments.GetByInvoiceSection.
-type BillingRoleAssignmentsGetByInvoiceSectionResponse struct {
-	BillingRoleAssignmentsGetByInvoiceSectionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingRoleAssignmentsGetByInvoiceSectionResult contains the result from method BillingRoleAssignments.GetByInvoiceSection.
-type BillingRoleAssignmentsGetByInvoiceSectionResult struct {
-	BillingRoleAssignment
-}
-
-// BillingRoleAssignmentsListByBillingAccountResponse contains the response from method BillingRoleAssignments.ListByBillingAccount.
-type BillingRoleAssignmentsListByBillingAccountResponse struct {
-	BillingRoleAssignmentsListByBillingAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingRoleAssignmentsListByBillingAccountResult contains the result from method BillingRoleAssignments.ListByBillingAccount.
-type BillingRoleAssignmentsListByBillingAccountResult struct {
-	BillingRoleAssignmentListResult
-}
-
-// BillingRoleAssignmentsListByBillingProfileResponse contains the response from method BillingRoleAssignments.ListByBillingProfile.
-type BillingRoleAssignmentsListByBillingProfileResponse struct {
-	BillingRoleAssignmentsListByBillingProfileResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingRoleAssignmentsListByBillingProfileResult contains the result from method BillingRoleAssignments.ListByBillingProfile.
-type BillingRoleAssignmentsListByBillingProfileResult struct {
-	BillingRoleAssignmentListResult
-}
-
-// BillingRoleAssignmentsListByInvoiceSectionResponse contains the response from method BillingRoleAssignments.ListByInvoiceSection.
-type BillingRoleAssignmentsListByInvoiceSectionResponse struct {
-	BillingRoleAssignmentsListByInvoiceSectionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingRoleAssignmentsListByInvoiceSectionResult contains the result from method BillingRoleAssignments.ListByInvoiceSection.
-type BillingRoleAssignmentsListByInvoiceSectionResult struct {
-	BillingRoleAssignmentListResult
-}
-
-// BillingRoleDefinitionsGetByBillingAccountResponse contains the response from method BillingRoleDefinitions.GetByBillingAccount.
-type BillingRoleDefinitionsGetByBillingAccountResponse struct {
-	BillingRoleDefinitionsGetByBillingAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingRoleDefinitionsGetByBillingAccountResult contains the result from method BillingRoleDefinitions.GetByBillingAccount.
-type BillingRoleDefinitionsGetByBillingAccountResult struct {
-	BillingRoleDefinition
-}
-
-// BillingRoleDefinitionsGetByBillingProfileResponse contains the response from method BillingRoleDefinitions.GetByBillingProfile.
-type BillingRoleDefinitionsGetByBillingProfileResponse struct {
-	BillingRoleDefinitionsGetByBillingProfileResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingRoleDefinitionsGetByBillingProfileResult contains the result from method BillingRoleDefinitions.GetByBillingProfile.
-type BillingRoleDefinitionsGetByBillingProfileResult struct {
-	BillingRoleDefinition
-}
-
-// BillingRoleDefinitionsGetByInvoiceSectionResponse contains the response from method BillingRoleDefinitions.GetByInvoiceSection.
-type BillingRoleDefinitionsGetByInvoiceSectionResponse struct {
-	BillingRoleDefinitionsGetByInvoiceSectionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingRoleDefinitionsGetByInvoiceSectionResult contains the result from method BillingRoleDefinitions.GetByInvoiceSection.
-type BillingRoleDefinitionsGetByInvoiceSectionResult struct {
-	BillingRoleDefinition
-}
-
-// BillingRoleDefinitionsListByBillingAccountResponse contains the response from method BillingRoleDefinitions.ListByBillingAccount.
-type BillingRoleDefinitionsListByBillingAccountResponse struct {
-	BillingRoleDefinitionsListByBillingAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingRoleDefinitionsListByBillingAccountResult contains the result from method BillingRoleDefinitions.ListByBillingAccount.
-type BillingRoleDefinitionsListByBillingAccountResult struct {
-	BillingRoleDefinitionListResult
-}
-
-// BillingRoleDefinitionsListByBillingProfileResponse contains the response from method BillingRoleDefinitions.ListByBillingProfile.
-type BillingRoleDefinitionsListByBillingProfileResponse struct {
-	BillingRoleDefinitionsListByBillingProfileResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingRoleDefinitionsListByBillingProfileResult contains the result from method BillingRoleDefinitions.ListByBillingProfile.
-type BillingRoleDefinitionsListByBillingProfileResult struct {
-	BillingRoleDefinitionListResult
-}
-
-// BillingRoleDefinitionsListByInvoiceSectionResponse contains the response from method BillingRoleDefinitions.ListByInvoiceSection.
-type BillingRoleDefinitionsListByInvoiceSectionResponse struct {
-	BillingRoleDefinitionsListByInvoiceSectionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingRoleDefinitionsListByInvoiceSectionResult contains the result from method BillingRoleDefinitions.ListByInvoiceSection.
-type BillingRoleDefinitionsListByInvoiceSectionResult struct {
-	BillingRoleDefinitionListResult
-}
-
-// BillingSubscriptionsGetResponse contains the response from method BillingSubscriptions.Get.
-type BillingSubscriptionsGetResponse struct {
-	BillingSubscriptionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingSubscriptionsGetResult contains the result from method BillingSubscriptions.Get.
-type BillingSubscriptionsGetResult struct {
-	BillingSubscription
-}
-
-// BillingSubscriptionsListByBillingAccountResponse contains the response from method BillingSubscriptions.ListByBillingAccount.
-type BillingSubscriptionsListByBillingAccountResponse struct {
-	BillingSubscriptionsListByBillingAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingSubscriptionsListByBillingAccountResult contains the result from method BillingSubscriptions.ListByBillingAccount.
-type BillingSubscriptionsListByBillingAccountResult struct {
-	BillingSubscriptionsListResult
-}
-
-// BillingSubscriptionsListByBillingProfileResponse contains the response from method BillingSubscriptions.ListByBillingProfile.
-type BillingSubscriptionsListByBillingProfileResponse struct {
-	BillingSubscriptionsListByBillingProfileResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingSubscriptionsListByBillingProfileResult contains the result from method BillingSubscriptions.ListByBillingProfile.
-type BillingSubscriptionsListByBillingProfileResult struct {
-	BillingSubscriptionsListResult
-}
-
-// BillingSubscriptionsListByCustomerResponse contains the response from method BillingSubscriptions.ListByCustomer.
-type BillingSubscriptionsListByCustomerResponse struct {
-	BillingSubscriptionsListByCustomerResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingSubscriptionsListByCustomerResult contains the result from method BillingSubscriptions.ListByCustomer.
-type BillingSubscriptionsListByCustomerResult struct {
-	BillingSubscriptionsListResult
-}
-
-// BillingSubscriptionsListByInvoiceSectionResponse contains the response from method BillingSubscriptions.ListByInvoiceSection.
-type BillingSubscriptionsListByInvoiceSectionResponse struct {
-	BillingSubscriptionsListByInvoiceSectionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingSubscriptionsListByInvoiceSectionResult contains the result from method BillingSubscriptions.ListByInvoiceSection.
-type BillingSubscriptionsListByInvoiceSectionResult struct {
-	BillingSubscriptionsListResult
-}
-
-// BillingSubscriptionsMovePollerResponse contains the response from method BillingSubscriptions.Move.
-type BillingSubscriptionsMovePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *BillingSubscriptionsMovePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l BillingSubscriptionsMovePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (BillingSubscriptionsMoveResponse, error) {
-	respType := BillingSubscriptionsMoveResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.BillingSubscription)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a BillingSubscriptionsMovePollerResponse from the provided client and resume token.
-func (l *BillingSubscriptionsMovePollerResponse) Resume(ctx context.Context, client *BillingSubscriptionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("BillingSubscriptionsClient.Move", token, client.pl, client.moveHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &BillingSubscriptionsMovePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// BillingSubscriptionsMoveResponse contains the response from method BillingSubscriptions.Move.
-type BillingSubscriptionsMoveResponse struct {
-	BillingSubscriptionsMoveResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingSubscriptionsMoveResult contains the result from method BillingSubscriptions.Move.
-type BillingSubscriptionsMoveResult struct {
-	BillingSubscription
-}
-
-// BillingSubscriptionsUpdateResponse contains the response from method BillingSubscriptions.Update.
-type BillingSubscriptionsUpdateResponse struct {
-	BillingSubscriptionsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// BillingSubscriptionsUpdateResult contains the result from method BillingSubscriptions.Update.
-type BillingSubscriptionsUpdateResult struct {
-	BillingSubscription
+// AddressClientValidateResponse contains the response from method AddressClient.Validate.
+type AddressClientValidateResponse struct {
+	ValidateAddressResponse
 }
 
-// BillingSubscriptionsValidateMoveResponse contains the response from method BillingSubscriptions.ValidateMove.
-type BillingSubscriptionsValidateMoveResponse struct {
-	BillingSubscriptionsValidateMoveResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// AgreementsClientGetResponse contains the response from method AgreementsClient.Get.
+type AgreementsClientGetResponse struct {
+	Agreement
 }
 
-// BillingSubscriptionsValidateMoveResult contains the result from method BillingSubscriptions.ValidateMove.
-type BillingSubscriptionsValidateMoveResult struct {
-	ValidateSubscriptionTransferEligibilityResult
+// AgreementsClientListByBillingAccountResponse contains the response from method AgreementsClient.ListByBillingAccount.
+type AgreementsClientListByBillingAccountResponse struct {
+	AgreementListResult
 }
 
-// CustomersGetResponse contains the response from method Customers.Get.
-type CustomersGetResponse struct {
-	CustomersGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// AvailableBalancesClientGetResponse contains the response from method AvailableBalancesClient.Get.
+type AvailableBalancesClientGetResponse struct {
+	AvailableBalance
 }
 
-// CustomersGetResult contains the result from method Customers.Get.
-type CustomersGetResult struct {
+// CustomersClientGetResponse contains the response from method CustomersClient.Get.
+type CustomersClientGetResponse struct {
 	Customer
 }
 
-// CustomersListByBillingAccountResponse contains the response from method Customers.ListByBillingAccount.
-type CustomersListByBillingAccountResponse struct {
-	CustomersListByBillingAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CustomersListByBillingAccountResult contains the result from method Customers.ListByBillingAccount.
-type CustomersListByBillingAccountResult struct {
+// CustomersClientListByBillingAccountResponse contains the response from method CustomersClient.ListByBillingAccount.
+type CustomersClientListByBillingAccountResponse struct {
 	CustomerListResult
 }
 
-// CustomersListByBillingProfileResponse contains the response from method Customers.ListByBillingProfile.
-type CustomersListByBillingProfileResponse struct {
-	CustomersListByBillingProfileResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// CustomersListByBillingProfileResult contains the result from method Customers.ListByBillingProfile.
-type CustomersListByBillingProfileResult struct {
+// CustomersClientListByBillingProfileResponse contains the response from method CustomersClient.ListByBillingProfile.
+type CustomersClientListByBillingProfileResponse struct {
 	CustomerListResult
 }
 
-// EnrollmentAccountsGetResponse contains the response from method EnrollmentAccounts.Get.
-type EnrollmentAccountsGetResponse struct {
-	EnrollmentAccountsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EnrollmentAccountsGetResult contains the result from method EnrollmentAccounts.Get.
-type EnrollmentAccountsGetResult struct {
+// EnrollmentAccountsClientGetResponse contains the response from method EnrollmentAccountsClient.Get.
+type EnrollmentAccountsClientGetResponse struct {
 	EnrollmentAccountSummary
 }
 
-// EnrollmentAccountsListResponse contains the response from method EnrollmentAccounts.List.
-type EnrollmentAccountsListResponse struct {
-	EnrollmentAccountsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// EnrollmentAccountsListResult contains the result from method EnrollmentAccounts.List.
-type EnrollmentAccountsListResult struct {
+// EnrollmentAccountsClientListResponse contains the response from method EnrollmentAccountsClient.List.
+type EnrollmentAccountsClientListResponse struct {
 	EnrollmentAccountListResult
 }
 
-// InstructionsGetResponse contains the response from method Instructions.Get.
-type InstructionsGetResponse struct {
-	InstructionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// InstructionsGetResult contains the result from method Instructions.Get.
-type InstructionsGetResult struct {
+// InstructionsClientGetResponse contains the response from method InstructionsClient.Get.
+type InstructionsClientGetResponse struct {
 	Instruction
 }
 
-// InstructionsListByBillingProfileResponse contains the response from method Instructions.ListByBillingProfile.
-type InstructionsListByBillingProfileResponse struct {
-	InstructionsListByBillingProfileResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// InstructionsListByBillingProfileResult contains the result from method Instructions.ListByBillingProfile.
-type InstructionsListByBillingProfileResult struct {
+// InstructionsClientListByBillingProfileResponse contains the response from method InstructionsClient.ListByBillingProfile.
+type InstructionsClientListByBillingProfileResponse struct {
 	InstructionListResult
 }
 
-// InstructionsPutResponse contains the response from method Instructions.Put.
-type InstructionsPutResponse struct {
-	InstructionsPutResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// InstructionsPutResult contains the result from method Instructions.Put.
-type InstructionsPutResult struct {
+// InstructionsClientPutResponse contains the response from method InstructionsClient.Put.
+type InstructionsClientPutResponse struct {
 	Instruction
 }
 
-// InvoiceSectionsCreateOrUpdatePollerResponse contains the response from method InvoiceSections.CreateOrUpdate.
-type InvoiceSectionsCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *InvoiceSectionsCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l InvoiceSectionsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (InvoiceSectionsCreateOrUpdateResponse, error) {
-	respType := InvoiceSectionsCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.InvoiceSection)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a InvoiceSectionsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *InvoiceSectionsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *InvoiceSectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("InvoiceSectionsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &InvoiceSectionsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// InvoiceSectionsCreateOrUpdateResponse contains the response from method InvoiceSections.CreateOrUpdate.
-type InvoiceSectionsCreateOrUpdateResponse struct {
-	InvoiceSectionsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// InvoiceSectionsCreateOrUpdateResult contains the result from method InvoiceSections.CreateOrUpdate.
-type InvoiceSectionsCreateOrUpdateResult struct {
+// InvoiceSectionsClientCreateOrUpdateResponse contains the response from method InvoiceSectionsClient.CreateOrUpdate.
+type InvoiceSectionsClientCreateOrUpdateResponse struct {
 	InvoiceSection
 }
 
-// InvoiceSectionsGetResponse contains the response from method InvoiceSections.Get.
-type InvoiceSectionsGetResponse struct {
-	InvoiceSectionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// InvoiceSectionsGetResult contains the result from method InvoiceSections.Get.
-type InvoiceSectionsGetResult struct {
+// InvoiceSectionsClientGetResponse contains the response from method InvoiceSectionsClient.Get.
+type InvoiceSectionsClientGetResponse struct {
 	InvoiceSection
 }
 
-// InvoiceSectionsListByBillingProfileResponse contains the response from method InvoiceSections.ListByBillingProfile.
-type InvoiceSectionsListByBillingProfileResponse struct {
-	InvoiceSectionsListByBillingProfileResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// InvoiceSectionsListByBillingProfileResult contains the result from method InvoiceSections.ListByBillingProfile.
-type InvoiceSectionsListByBillingProfileResult struct {
+// InvoiceSectionsClientListByBillingProfileResponse contains the response from method InvoiceSectionsClient.ListByBillingProfile.
+type InvoiceSectionsClientListByBillingProfileResponse struct {
 	InvoiceSectionListResult
 }
 
-// InvoicesDownloadBillingSubscriptionInvoicePollerResponse contains the response from method Invoices.DownloadBillingSubscriptionInvoice.
-type InvoicesDownloadBillingSubscriptionInvoicePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *InvoicesDownloadBillingSubscriptionInvoicePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l InvoicesDownloadBillingSubscriptionInvoicePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (InvoicesDownloadBillingSubscriptionInvoiceResponse, error) {
-	respType := InvoicesDownloadBillingSubscriptionInvoiceResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DownloadURL)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a InvoicesDownloadBillingSubscriptionInvoicePollerResponse from the provided client and resume token.
-func (l *InvoicesDownloadBillingSubscriptionInvoicePollerResponse) Resume(ctx context.Context, client *InvoicesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("InvoicesClient.DownloadBillingSubscriptionInvoice", token, client.pl, client.downloadBillingSubscriptionInvoiceHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &InvoicesDownloadBillingSubscriptionInvoicePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// InvoicesDownloadBillingSubscriptionInvoiceResponse contains the response from method Invoices.DownloadBillingSubscriptionInvoice.
-type InvoicesDownloadBillingSubscriptionInvoiceResponse struct {
-	InvoicesDownloadBillingSubscriptionInvoiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// InvoicesDownloadBillingSubscriptionInvoiceResult contains the result from method Invoices.DownloadBillingSubscriptionInvoice.
-type InvoicesDownloadBillingSubscriptionInvoiceResult struct {
+// InvoicesClientDownloadBillingSubscriptionInvoiceResponse contains the response from method InvoicesClient.DownloadBillingSubscriptionInvoice.
+type InvoicesClientDownloadBillingSubscriptionInvoiceResponse struct {
 	DownloadURL
 }
 
-// InvoicesDownloadInvoicePollerResponse contains the response from method Invoices.DownloadInvoice.
-type InvoicesDownloadInvoicePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *InvoicesDownloadInvoicePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l InvoicesDownloadInvoicePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (InvoicesDownloadInvoiceResponse, error) {
-	respType := InvoicesDownloadInvoiceResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DownloadURL)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a InvoicesDownloadInvoicePollerResponse from the provided client and resume token.
-func (l *InvoicesDownloadInvoicePollerResponse) Resume(ctx context.Context, client *InvoicesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("InvoicesClient.DownloadInvoice", token, client.pl, client.downloadInvoiceHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &InvoicesDownloadInvoicePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// InvoicesDownloadInvoiceResponse contains the response from method Invoices.DownloadInvoice.
-type InvoicesDownloadInvoiceResponse struct {
-	InvoicesDownloadInvoiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// InvoicesDownloadInvoiceResult contains the result from method Invoices.DownloadInvoice.
-type InvoicesDownloadInvoiceResult struct {
+// InvoicesClientDownloadInvoiceResponse contains the response from method InvoicesClient.DownloadInvoice.
+type InvoicesClientDownloadInvoiceResponse struct {
 	DownloadURL
 }
 
-// InvoicesDownloadMultipleBillingProfileInvoicesPollerResponse contains the response from method Invoices.DownloadMultipleBillingProfileInvoices.
-type InvoicesDownloadMultipleBillingProfileInvoicesPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *InvoicesDownloadMultipleBillingProfileInvoicesPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l InvoicesDownloadMultipleBillingProfileInvoicesPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (InvoicesDownloadMultipleBillingProfileInvoicesResponse, error) {
-	respType := InvoicesDownloadMultipleBillingProfileInvoicesResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DownloadURL)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a InvoicesDownloadMultipleBillingProfileInvoicesPollerResponse from the provided client and resume token.
-func (l *InvoicesDownloadMultipleBillingProfileInvoicesPollerResponse) Resume(ctx context.Context, client *InvoicesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("InvoicesClient.DownloadMultipleBillingProfileInvoices", token, client.pl, client.downloadMultipleBillingProfileInvoicesHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &InvoicesDownloadMultipleBillingProfileInvoicesPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// InvoicesDownloadMultipleBillingProfileInvoicesResponse contains the response from method Invoices.DownloadMultipleBillingProfileInvoices.
-type InvoicesDownloadMultipleBillingProfileInvoicesResponse struct {
-	InvoicesDownloadMultipleBillingProfileInvoicesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// InvoicesDownloadMultipleBillingProfileInvoicesResult contains the result from method Invoices.DownloadMultipleBillingProfileInvoices.
-type InvoicesDownloadMultipleBillingProfileInvoicesResult struct {
+// InvoicesClientDownloadMultipleBillingProfileInvoicesResponse contains the response from method InvoicesClient.DownloadMultipleBillingProfileInvoices.
+type InvoicesClientDownloadMultipleBillingProfileInvoicesResponse struct {
 	DownloadURL
 }
 
-// InvoicesDownloadMultipleBillingSubscriptionInvoicesPollerResponse contains the response from method Invoices.DownloadMultipleBillingSubscriptionInvoices.
-type InvoicesDownloadMultipleBillingSubscriptionInvoicesPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *InvoicesDownloadMultipleBillingSubscriptionInvoicesPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l InvoicesDownloadMultipleBillingSubscriptionInvoicesPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (InvoicesDownloadMultipleBillingSubscriptionInvoicesResponse, error) {
-	respType := InvoicesDownloadMultipleBillingSubscriptionInvoicesResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.DownloadURL)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a InvoicesDownloadMultipleBillingSubscriptionInvoicesPollerResponse from the provided client and resume token.
-func (l *InvoicesDownloadMultipleBillingSubscriptionInvoicesPollerResponse) Resume(ctx context.Context, client *InvoicesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("InvoicesClient.DownloadMultipleBillingSubscriptionInvoices", token, client.pl, client.downloadMultipleBillingSubscriptionInvoicesHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &InvoicesDownloadMultipleBillingSubscriptionInvoicesPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// InvoicesDownloadMultipleBillingSubscriptionInvoicesResponse contains the response from method Invoices.DownloadMultipleBillingSubscriptionInvoices.
-type InvoicesDownloadMultipleBillingSubscriptionInvoicesResponse struct {
-	InvoicesDownloadMultipleBillingSubscriptionInvoicesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// InvoicesDownloadMultipleBillingSubscriptionInvoicesResult contains the result from method Invoices.DownloadMultipleBillingSubscriptionInvoices.
-type InvoicesDownloadMultipleBillingSubscriptionInvoicesResult struct {
+// InvoicesClientDownloadMultipleBillingSubscriptionInvoicesResponse contains the response from method InvoicesClient.DownloadMultipleBillingSubscriptionInvoices.
+type InvoicesClientDownloadMultipleBillingSubscriptionInvoicesResponse struct {
 	DownloadURL
 }
 
-// InvoicesGetByIDResponse contains the response from method Invoices.GetByID.
-type InvoicesGetByIDResponse struct {
-	InvoicesGetByIDResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// InvoicesGetByIDResult contains the result from method Invoices.GetByID.
-type InvoicesGetByIDResult struct {
+// InvoicesClientGetByIDResponse contains the response from method InvoicesClient.GetByID.
+type InvoicesClientGetByIDResponse struct {
 	Invoice
 }
 
-// InvoicesGetBySubscriptionAndInvoiceIDResponse contains the response from method Invoices.GetBySubscriptionAndInvoiceID.
-type InvoicesGetBySubscriptionAndInvoiceIDResponse struct {
-	InvoicesGetBySubscriptionAndInvoiceIDResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// InvoicesGetBySubscriptionAndInvoiceIDResult contains the result from method Invoices.GetBySubscriptionAndInvoiceID.
-type InvoicesGetBySubscriptionAndInvoiceIDResult struct {
+// InvoicesClientGetBySubscriptionAndInvoiceIDResponse contains the response from method InvoicesClient.GetBySubscriptionAndInvoiceID.
+type InvoicesClientGetBySubscriptionAndInvoiceIDResponse struct {
 	Invoice
 }
 
-// InvoicesGetResponse contains the response from method Invoices.Get.
-type InvoicesGetResponse struct {
-	InvoicesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// InvoicesGetResult contains the result from method Invoices.Get.
-type InvoicesGetResult struct {
+// InvoicesClientGetResponse contains the response from method InvoicesClient.Get.
+type InvoicesClientGetResponse struct {
 	Invoice
 }
 
-// InvoicesListByBillingAccountResponse contains the response from method Invoices.ListByBillingAccount.
-type InvoicesListByBillingAccountResponse struct {
-	InvoicesListByBillingAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// InvoicesListByBillingAccountResult contains the result from method Invoices.ListByBillingAccount.
-type InvoicesListByBillingAccountResult struct {
+// InvoicesClientListByBillingAccountResponse contains the response from method InvoicesClient.ListByBillingAccount.
+type InvoicesClientListByBillingAccountResponse struct {
 	InvoiceListResult
 }
 
-// InvoicesListByBillingProfileResponse contains the response from method Invoices.ListByBillingProfile.
-type InvoicesListByBillingProfileResponse struct {
-	InvoicesListByBillingProfileResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// InvoicesListByBillingProfileResult contains the result from method Invoices.ListByBillingProfile.
-type InvoicesListByBillingProfileResult struct {
+// InvoicesClientListByBillingProfileResponse contains the response from method InvoicesClient.ListByBillingProfile.
+type InvoicesClientListByBillingProfileResponse struct {
 	InvoiceListResult
 }
 
-// InvoicesListByBillingSubscriptionResponse contains the response from method Invoices.ListByBillingSubscription.
-type InvoicesListByBillingSubscriptionResponse struct {
-	InvoicesListByBillingSubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// InvoicesListByBillingSubscriptionResult contains the result from method Invoices.ListByBillingSubscription.
-type InvoicesListByBillingSubscriptionResult struct {
+// InvoicesClientListByBillingSubscriptionResponse contains the response from method InvoicesClient.ListByBillingSubscription.
+type InvoicesClientListByBillingSubscriptionResponse struct {
 	InvoiceListResult
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PoliciesGetByBillingProfileResponse contains the response from method Policies.GetByBillingProfile.
-type PoliciesGetByBillingProfileResponse struct {
-	PoliciesGetByBillingProfileResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PeriodsClientGetResponse contains the response from method PeriodsClient.Get.
+type PeriodsClientGetResponse struct {
+	Period
 }
 
-// PoliciesGetByBillingProfileResult contains the result from method Policies.GetByBillingProfile.
-type PoliciesGetByBillingProfileResult struct {
+// PeriodsClientListResponse contains the response from method PeriodsClient.List.
+type PeriodsClientListResponse struct {
+	PeriodsListResult
+}
+
+// PermissionsClientListByBillingAccountResponse contains the response from method PermissionsClient.ListByBillingAccount.
+type PermissionsClientListByBillingAccountResponse struct {
+	PermissionsListResult
+}
+
+// PermissionsClientListByBillingProfileResponse contains the response from method PermissionsClient.ListByBillingProfile.
+type PermissionsClientListByBillingProfileResponse struct {
+	PermissionsListResult
+}
+
+// PermissionsClientListByCustomerResponse contains the response from method PermissionsClient.ListByCustomer.
+type PermissionsClientListByCustomerResponse struct {
+	PermissionsListResult
+}
+
+// PermissionsClientListByInvoiceSectionsResponse contains the response from method PermissionsClient.ListByInvoiceSections.
+type PermissionsClientListByInvoiceSectionsResponse struct {
+	PermissionsListResult
+}
+
+// PoliciesClientGetByBillingProfileResponse contains the response from method PoliciesClient.GetByBillingProfile.
+type PoliciesClientGetByBillingProfileResponse struct {
 	Policy
 }
 
-// PoliciesGetByCustomerResponse contains the response from method Policies.GetByCustomer.
-type PoliciesGetByCustomerResponse struct {
-	PoliciesGetByCustomerResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PoliciesGetByCustomerResult contains the result from method Policies.GetByCustomer.
-type PoliciesGetByCustomerResult struct {
+// PoliciesClientGetByCustomerResponse contains the response from method PoliciesClient.GetByCustomer.
+type PoliciesClientGetByCustomerResponse struct {
 	CustomerPolicy
 }
 
-// PoliciesUpdateCustomerResponse contains the response from method Policies.UpdateCustomer.
-type PoliciesUpdateCustomerResponse struct {
-	PoliciesUpdateCustomerResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PoliciesUpdateCustomerResult contains the result from method Policies.UpdateCustomer.
-type PoliciesUpdateCustomerResult struct {
+// PoliciesClientUpdateCustomerResponse contains the response from method PoliciesClient.UpdateCustomer.
+type PoliciesClientUpdateCustomerResponse struct {
 	CustomerPolicy
 }
 
-// PoliciesUpdateResponse contains the response from method Policies.Update.
-type PoliciesUpdateResponse struct {
-	PoliciesUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PoliciesUpdateResult contains the result from method Policies.Update.
-type PoliciesUpdateResult struct {
+// PoliciesClientUpdateResponse contains the response from method PoliciesClient.Update.
+type PoliciesClientUpdateResponse struct {
 	Policy
 }
 
-// ProductsGetResponse contains the response from method Products.Get.
-type ProductsGetResponse struct {
-	ProductsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductsGetResult contains the result from method Products.Get.
-type ProductsGetResult struct {
+// ProductsClientGetResponse contains the response from method ProductsClient.Get.
+type ProductsClientGetResponse struct {
 	Product
 }
 
-// ProductsListByBillingAccountResponse contains the response from method Products.ListByBillingAccount.
-type ProductsListByBillingAccountResponse struct {
-	ProductsListByBillingAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductsListByBillingAccountResult contains the result from method Products.ListByBillingAccount.
-type ProductsListByBillingAccountResult struct {
+// ProductsClientListByBillingAccountResponse contains the response from method ProductsClient.ListByBillingAccount.
+type ProductsClientListByBillingAccountResponse struct {
 	ProductsListResult
 }
 
-// ProductsListByBillingProfileResponse contains the response from method Products.ListByBillingProfile.
-type ProductsListByBillingProfileResponse struct {
-	ProductsListByBillingProfileResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductsListByBillingProfileResult contains the result from method Products.ListByBillingProfile.
-type ProductsListByBillingProfileResult struct {
+// ProductsClientListByBillingProfileResponse contains the response from method ProductsClient.ListByBillingProfile.
+type ProductsClientListByBillingProfileResponse struct {
 	ProductsListResult
 }
 
-// ProductsListByCustomerResponse contains the response from method Products.ListByCustomer.
-type ProductsListByCustomerResponse struct {
-	ProductsListByCustomerResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductsListByCustomerResult contains the result from method Products.ListByCustomer.
-type ProductsListByCustomerResult struct {
+// ProductsClientListByCustomerResponse contains the response from method ProductsClient.ListByCustomer.
+type ProductsClientListByCustomerResponse struct {
 	ProductsListResult
 }
 
-// ProductsListByInvoiceSectionResponse contains the response from method Products.ListByInvoiceSection.
-type ProductsListByInvoiceSectionResponse struct {
-	ProductsListByInvoiceSectionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductsListByInvoiceSectionResult contains the result from method Products.ListByInvoiceSection.
-type ProductsListByInvoiceSectionResult struct {
+// ProductsClientListByInvoiceSectionResponse contains the response from method ProductsClient.ListByInvoiceSection.
+type ProductsClientListByInvoiceSectionResponse struct {
 	ProductsListResult
 }
 
-// ProductsMoveResponse contains the response from method Products.Move.
-type ProductsMoveResponse struct {
-	ProductsMoveResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductsMoveResult contains the result from method Products.Move.
-type ProductsMoveResult struct {
+// ProductsClientMoveResponse contains the response from method ProductsClient.Move.
+type ProductsClientMoveResponse struct {
 	Product
 	// Location contains the information returned from the Location header response.
 	Location *string
@@ -1228,62 +243,167 @@ type ProductsMoveResult struct {
 	RetryAfter *int32
 }
 
-// ProductsUpdateResponse contains the response from method Products.Update.
-type ProductsUpdateResponse struct {
-	ProductsUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductsUpdateResult contains the result from method Products.Update.
-type ProductsUpdateResult struct {
+// ProductsClientUpdateResponse contains the response from method ProductsClient.Update.
+type ProductsClientUpdateResponse struct {
 	Product
 }
 
-// ProductsValidateMoveResponse contains the response from method Products.ValidateMove.
-type ProductsValidateMoveResponse struct {
-	ProductsValidateMoveResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ProductsValidateMoveResult contains the result from method Products.ValidateMove.
-type ProductsValidateMoveResult struct {
+// ProductsClientValidateMoveResponse contains the response from method ProductsClient.ValidateMove.
+type ProductsClientValidateMoveResponse struct {
 	ValidateProductTransferEligibilityResult
 }
 
-// ReservationsListByBillingAccountResponse contains the response from method Reservations.ListByBillingAccount.
-type ReservationsListByBillingAccountResponse struct {
-	ReservationsListByBillingAccountResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ProfilesClientCreateOrUpdateResponse contains the response from method ProfilesClient.CreateOrUpdate.
+type ProfilesClientCreateOrUpdateResponse struct {
+	Profile
 }
 
-// ReservationsListByBillingAccountResult contains the result from method Reservations.ListByBillingAccount.
-type ReservationsListByBillingAccountResult struct {
+// ProfilesClientGetResponse contains the response from method ProfilesClient.Get.
+type ProfilesClientGetResponse struct {
+	Profile
+}
+
+// ProfilesClientListByBillingAccountResponse contains the response from method ProfilesClient.ListByBillingAccount.
+type ProfilesClientListByBillingAccountResponse struct {
+	ProfileListResult
+}
+
+// PropertyClientGetResponse contains the response from method PropertyClient.Get.
+type PropertyClientGetResponse struct {
+	Property
+}
+
+// PropertyClientUpdateResponse contains the response from method PropertyClient.Update.
+type PropertyClientUpdateResponse struct {
+	Property
+}
+
+// ReservationsClientListByBillingAccountResponse contains the response from method ReservationsClient.ListByBillingAccount.
+type ReservationsClientListByBillingAccountResponse struct {
 	ReservationsListResult
 }
 
-// ReservationsListByBillingProfileResponse contains the response from method Reservations.ListByBillingProfile.
-type ReservationsListByBillingProfileResponse struct {
-	ReservationsListByBillingProfileResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ReservationsListByBillingProfileResult contains the result from method Reservations.ListByBillingProfile.
-type ReservationsListByBillingProfileResult struct {
+// ReservationsClientListByBillingProfileResponse contains the response from method ReservationsClient.ListByBillingProfile.
+type ReservationsClientListByBillingProfileResponse struct {
 	ReservationsListResult
 }
 
-// TransactionsListByInvoiceResponse contains the response from method Transactions.ListByInvoice.
-type TransactionsListByInvoiceResponse struct {
-	TransactionsListByInvoiceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// RoleAssignmentsClientDeleteByBillingAccountResponse contains the response from method RoleAssignmentsClient.DeleteByBillingAccount.
+type RoleAssignmentsClientDeleteByBillingAccountResponse struct {
+	RoleAssignment
 }
 
-// TransactionsListByInvoiceResult contains the result from method Transactions.ListByInvoice.
-type TransactionsListByInvoiceResult struct {
+// RoleAssignmentsClientDeleteByBillingProfileResponse contains the response from method RoleAssignmentsClient.DeleteByBillingProfile.
+type RoleAssignmentsClientDeleteByBillingProfileResponse struct {
+	RoleAssignment
+}
+
+// RoleAssignmentsClientDeleteByInvoiceSectionResponse contains the response from method RoleAssignmentsClient.DeleteByInvoiceSection.
+type RoleAssignmentsClientDeleteByInvoiceSectionResponse struct {
+	RoleAssignment
+}
+
+// RoleAssignmentsClientGetByBillingAccountResponse contains the response from method RoleAssignmentsClient.GetByBillingAccount.
+type RoleAssignmentsClientGetByBillingAccountResponse struct {
+	RoleAssignment
+}
+
+// RoleAssignmentsClientGetByBillingProfileResponse contains the response from method RoleAssignmentsClient.GetByBillingProfile.
+type RoleAssignmentsClientGetByBillingProfileResponse struct {
+	RoleAssignment
+}
+
+// RoleAssignmentsClientGetByInvoiceSectionResponse contains the response from method RoleAssignmentsClient.GetByInvoiceSection.
+type RoleAssignmentsClientGetByInvoiceSectionResponse struct {
+	RoleAssignment
+}
+
+// RoleAssignmentsClientListByBillingAccountResponse contains the response from method RoleAssignmentsClient.ListByBillingAccount.
+type RoleAssignmentsClientListByBillingAccountResponse struct {
+	RoleAssignmentListResult
+}
+
+// RoleAssignmentsClientListByBillingProfileResponse contains the response from method RoleAssignmentsClient.ListByBillingProfile.
+type RoleAssignmentsClientListByBillingProfileResponse struct {
+	RoleAssignmentListResult
+}
+
+// RoleAssignmentsClientListByInvoiceSectionResponse contains the response from method RoleAssignmentsClient.ListByInvoiceSection.
+type RoleAssignmentsClientListByInvoiceSectionResponse struct {
+	RoleAssignmentListResult
+}
+
+// RoleDefinitionsClientGetByBillingAccountResponse contains the response from method RoleDefinitionsClient.GetByBillingAccount.
+type RoleDefinitionsClientGetByBillingAccountResponse struct {
+	RoleDefinition
+}
+
+// RoleDefinitionsClientGetByBillingProfileResponse contains the response from method RoleDefinitionsClient.GetByBillingProfile.
+type RoleDefinitionsClientGetByBillingProfileResponse struct {
+	RoleDefinition
+}
+
+// RoleDefinitionsClientGetByInvoiceSectionResponse contains the response from method RoleDefinitionsClient.GetByInvoiceSection.
+type RoleDefinitionsClientGetByInvoiceSectionResponse struct {
+	RoleDefinition
+}
+
+// RoleDefinitionsClientListByBillingAccountResponse contains the response from method RoleDefinitionsClient.ListByBillingAccount.
+type RoleDefinitionsClientListByBillingAccountResponse struct {
+	RoleDefinitionListResult
+}
+
+// RoleDefinitionsClientListByBillingProfileResponse contains the response from method RoleDefinitionsClient.ListByBillingProfile.
+type RoleDefinitionsClientListByBillingProfileResponse struct {
+	RoleDefinitionListResult
+}
+
+// RoleDefinitionsClientListByInvoiceSectionResponse contains the response from method RoleDefinitionsClient.ListByInvoiceSection.
+type RoleDefinitionsClientListByInvoiceSectionResponse struct {
+	RoleDefinitionListResult
+}
+
+// SubscriptionsClientGetResponse contains the response from method SubscriptionsClient.Get.
+type SubscriptionsClientGetResponse struct {
+	Subscription
+}
+
+// SubscriptionsClientListByBillingAccountResponse contains the response from method SubscriptionsClient.ListByBillingAccount.
+type SubscriptionsClientListByBillingAccountResponse struct {
+	SubscriptionsListResult
+}
+
+// SubscriptionsClientListByBillingProfileResponse contains the response from method SubscriptionsClient.ListByBillingProfile.
+type SubscriptionsClientListByBillingProfileResponse struct {
+	SubscriptionsListResult
+}
+
+// SubscriptionsClientListByCustomerResponse contains the response from method SubscriptionsClient.ListByCustomer.
+type SubscriptionsClientListByCustomerResponse struct {
+	SubscriptionsListResult
+}
+
+// SubscriptionsClientListByInvoiceSectionResponse contains the response from method SubscriptionsClient.ListByInvoiceSection.
+type SubscriptionsClientListByInvoiceSectionResponse struct {
+	SubscriptionsListResult
+}
+
+// SubscriptionsClientMoveResponse contains the response from method SubscriptionsClient.Move.
+type SubscriptionsClientMoveResponse struct {
+	Subscription
+}
+
+// SubscriptionsClientUpdateResponse contains the response from method SubscriptionsClient.Update.
+type SubscriptionsClientUpdateResponse struct {
+	Subscription
+}
+
+// SubscriptionsClientValidateMoveResponse contains the response from method SubscriptionsClient.ValidateMove.
+type SubscriptionsClientValidateMoveResponse struct {
+	ValidateSubscriptionTransferEligibilityResult
+}
+
+// TransactionsClientListByInvoiceResponse contains the response from method TransactionsClient.ListByInvoice.
+type TransactionsClientListByInvoiceResponse struct {
 	TransactionListResult
 }

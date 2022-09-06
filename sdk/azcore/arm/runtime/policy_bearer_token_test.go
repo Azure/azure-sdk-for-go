@@ -15,7 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -30,29 +29,25 @@ const (
 )
 
 type mockCredential struct {
-	getTokenImpl func(ctx context.Context, options azpolicy.TokenRequestOptions) (*azcore.AccessToken, error)
+	getTokenImpl func(ctx context.Context, options azpolicy.TokenRequestOptions) (azcore.AccessToken, error)
 }
 
-func (mc mockCredential) GetToken(ctx context.Context, options azpolicy.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (mc mockCredential) GetToken(ctx context.Context, options azpolicy.TokenRequestOptions) (azcore.AccessToken, error) {
 	if mc.getTokenImpl != nil {
 		return mc.getTokenImpl(ctx, options)
 	}
-	return &azcore.AccessToken{Token: "***", ExpiresOn: time.Now().Add(time.Hour)}, nil
-}
-
-func (mc mockCredential) NewAuthenticationPolicy() azpolicy.Policy {
-	return mc
+	return azcore.AccessToken{Token: "***", ExpiresOn: time.Now().Add(time.Hour)}, nil
 }
 
 func (mc mockCredential) Do(req *azpolicy.Request) (*http.Response, error) {
 	return nil, nil
 }
 
-func newTestPipeline(opts *azpolicy.ClientOptions) pipeline.Pipeline {
+func newTestPipeline(opts *azpolicy.ClientOptions) runtime.Pipeline {
 	return runtime.NewPipeline("testmodule", "v0.1.0", runtime.PipelineOptions{}, opts)
 }
 
-func defaultTestPipeline(srv azpolicy.Transporter, scope string) pipeline.Pipeline {
+func defaultTestPipeline(srv azpolicy.Transporter, scope string) (runtime.Pipeline, error) {
 	retryOpts := azpolicy.RetryOptions{
 		MaxRetryDelay: 500 * time.Millisecond,
 		RetryDelay:    time.Millisecond,
@@ -63,7 +58,7 @@ func defaultTestPipeline(srv azpolicy.Transporter, scope string) pipeline.Pipeli
 		mockCredential{},
 		runtime.PipelineOptions{},
 		&arm.ClientOptions{
-			ClientOptions: azcore.ClientOptions{
+			ClientOptions: azpolicy.ClientOptions{
 				Retry:     retryOpts,
 				Transport: srv,
 			},
@@ -75,7 +70,10 @@ func TestBearerPolicy_SuccessGetToken(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	pipeline := defaultTestPipeline(srv, scope)
+	pipeline, err := defaultTestPipeline(srv, scope)
+	if err != nil {
+		t.Fatal(err)
+	}
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
@@ -95,8 +93,8 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 	defer close()
 	expectedErr := errors.New("oops")
 	failCredential := mockCredential{}
-	failCredential.getTokenImpl = func(ctx context.Context, options azpolicy.TokenRequestOptions) (*azcore.AccessToken, error) {
-		return nil, expectedErr
+	failCredential.getTokenImpl = func(ctx context.Context, options azpolicy.TokenRequestOptions) (azcore.AccessToken, error) {
+		return azcore.AccessToken{}, expectedErr
 	}
 	b := NewBearerTokenPolicy(failCredential, nil)
 	pipeline := newTestPipeline(&azpolicy.ClientOptions{
@@ -124,7 +122,10 @@ func TestBearerTokenPolicy_TokenExpired(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespShortLived)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	pipeline := defaultTestPipeline(srv, scope)
+	pipeline, err := defaultTestPipeline(srv, scope)
+	if err != nil {
+		t.Fatal(err)
+	}
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
@@ -151,7 +152,7 @@ func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
 		MaxRetries:    3,
 	}
 	b := NewBearerTokenPolicy(mockCredential{}, nil)
-	pipeline := newTestPipeline(&azpolicy.ClientOptions{Transport: srv, Retry: retryOpts, PerRetryPolicies: []pipeline.Policy{b}})
+	pipeline := newTestPipeline(&azpolicy.ClientOptions{Transport: srv, Retry: retryOpts, PerRetryPolicies: []azpolicy.Policy{b}})
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
@@ -166,6 +167,7 @@ func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
 }
 
 func TestBearerTokenWithAuxiliaryTenants(t *testing.T) {
+	t.Skip("this feature isn't implemented yet")
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
@@ -180,11 +182,11 @@ func TestBearerTokenWithAuxiliaryTenants(t *testing.T) {
 	b := NewBearerTokenPolicy(
 		mockCredential{},
 		&armpolicy.BearerTokenOptions{
-			Scopes:           []string{scope},
-			AuxiliaryTenants: []string{"tenant1", "tenant2", "tenant3"},
+			Scopes: []string{scope},
+			//AuxiliaryTenants: []string{"tenant1", "tenant2", "tenant3"},
 		},
 	)
-	pipeline := newTestPipeline(&azpolicy.ClientOptions{Transport: srv, Retry: retryOpts, PerRetryPolicies: []pipeline.Policy{b}})
+	pipeline := newTestPipeline(&azpolicy.ClientOptions{Transport: srv, Retry: retryOpts, PerRetryPolicies: []azpolicy.Policy{b}})
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)

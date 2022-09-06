@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,183 +12,198 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armkubernetesconfiguration"
 )
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/GetFluxConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/GetFluxConfiguration.json
 func ExampleFluxConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armkubernetesconfiguration.NewFluxConfigurationsClient("subId1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
-		"<cluster-name>",
-		"<flux-configuration-name>",
+		"rg1",
+		"Microsoft.Kubernetes",
+		"connectedClusters",
+		"clusterName1",
+		"srs-fluxconfig",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("FluxConfiguration.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/CreateFluxConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/CreateFluxConfiguration.json
 func ExampleFluxConfigurationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armkubernetesconfiguration.NewFluxConfigurationsClient("subId1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
-		"<cluster-name>",
-		"<flux-configuration-name>",
+		"rg1",
+		"Microsoft.Kubernetes",
+		"connectedClusters",
+		"clusterName1",
+		"srs-fluxconfig",
 		armkubernetesconfiguration.FluxConfiguration{
 			Properties: &armkubernetesconfiguration.FluxConfigurationProperties{
 				GitRepository: &armkubernetesconfiguration.GitRepositoryDefinition{
-					HTTPSCACert: to.StringPtr("<httpscacert>"),
+					HTTPSCACert: to.Ptr("ZXhhbXBsZWNlcnRpZmljYXRl"),
 					RepositoryRef: &armkubernetesconfiguration.RepositoryRefDefinition{
-						Branch: to.StringPtr("<branch>"),
+						Branch: to.Ptr("master"),
 					},
-					SyncIntervalInSeconds: to.Int64Ptr(600),
-					TimeoutInSeconds:      to.Int64Ptr(600),
-					URL:                   to.StringPtr("<url>"),
+					SyncIntervalInSeconds: to.Ptr[int64](600),
+					TimeoutInSeconds:      to.Ptr[int64](600),
+					URL:                   to.Ptr("https://github.com/Azure/arc-k8s-demo"),
 				},
 				Kustomizations: map[string]*armkubernetesconfiguration.KustomizationDefinition{
 					"srs-kustomization1": {
-						Path:                  to.StringPtr("<path>"),
-						DependsOn:             []*armkubernetesconfiguration.DependsOnDefinition{},
-						SyncIntervalInSeconds: to.Int64Ptr(600),
-						TimeoutInSeconds:      to.Int64Ptr(600),
+						Path:                  to.Ptr("./test/path"),
+						DependsOn:             []*string{},
+						SyncIntervalInSeconds: to.Ptr[int64](600),
+						TimeoutInSeconds:      to.Ptr[int64](600),
 					},
 					"srs-kustomization2": {
-						Path: to.StringPtr("<path>"),
-						DependsOn: []*armkubernetesconfiguration.DependsOnDefinition{
-							{
-								KustomizationName: to.StringPtr("<kustomization-name>"),
-							}},
-						Prune:                  to.BoolPtr(false),
-						RetryIntervalInSeconds: to.Int64Ptr(600),
-						SyncIntervalInSeconds:  to.Int64Ptr(600),
-						TimeoutInSeconds:       to.Int64Ptr(600),
+						Path: to.Ptr("./other/test/path"),
+						DependsOn: []*string{
+							to.Ptr("srs-kustomization1")},
+						Prune:                  to.Ptr(false),
+						RetryIntervalInSeconds: to.Ptr[int64](600),
+						SyncIntervalInSeconds:  to.Ptr[int64](600),
+						TimeoutInSeconds:       to.Ptr[int64](600),
 					},
 				},
-				Namespace:  to.StringPtr("<namespace>"),
-				Scope:      armkubernetesconfiguration.ScopeTypeCluster.ToPtr(),
-				SourceKind: armkubernetesconfiguration.SourceKindTypeGitRepository.ToPtr(),
-				Suspend:    to.BoolPtr(false),
+				Namespace:  to.Ptr("srs-namespace"),
+				Scope:      to.Ptr(armkubernetesconfiguration.ScopeTypeCluster),
+				SourceKind: to.Ptr(armkubernetesconfiguration.SourceKindTypeGitRepository),
+				Suspend:    to.Ptr(false),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("FluxConfiguration.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/PatchFluxConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/PatchFluxConfiguration.json
 func ExampleFluxConfigurationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armkubernetesconfiguration.NewFluxConfigurationsClient("subId1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
-		"<cluster-name>",
-		"<flux-configuration-name>",
+		"rg1",
+		"Microsoft.Kubernetes",
+		"connectedClusters",
+		"clusterName1",
+		"srs-fluxconfig",
 		armkubernetesconfiguration.FluxConfigurationPatch{
 			Properties: &armkubernetesconfiguration.FluxConfigurationPatchProperties{
 				GitRepository: &armkubernetesconfiguration.GitRepositoryPatchDefinition{
-					URL: to.StringPtr("<url>"),
+					URL: to.Ptr("https://github.com/jonathan-innis/flux2-kustomize-helm-example.git"),
 				},
 				Kustomizations: map[string]*armkubernetesconfiguration.KustomizationPatchDefinition{
-					"srs-kustomization1": {},
+					"srs-kustomization1": nil,
 					"srs-kustomization2": {
-						Path:                  to.StringPtr("<path>"),
-						DependsOn:             []*armkubernetesconfiguration.DependsOnDefinition{},
-						SyncIntervalInSeconds: to.Int64Ptr(300),
+						Path:                  to.Ptr("./test/alt-path"),
+						SyncIntervalInSeconds: to.Ptr[int64](300),
 					},
 					"srs-kustomization3": {
-						Path:                  to.StringPtr("<path>"),
-						SyncIntervalInSeconds: to.Int64Ptr(300),
+						Path:                  to.Ptr("./test/another-path"),
+						SyncIntervalInSeconds: to.Ptr[int64](300),
 					},
 				},
-				Suspend: to.BoolPtr(true),
+				Suspend: to.Ptr(true),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("FluxConfiguration.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/DeleteFluxConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/DeleteFluxConfiguration.json
 func ExampleFluxConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
-	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
-		"<cluster-name>",
-		"<flux-configuration-name>",
-		&armkubernetesconfiguration.FluxConfigurationsBeginDeleteOptions{ForceDelete: nil})
+	client, err := armkubernetesconfiguration.NewFluxConfigurationsClient("subId1", cred, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	poller, err := client.BeginDelete(ctx,
+		"rg1",
+		"Microsoft.Kubernetes",
+		"connectedClusters",
+		"clusterName1",
+		"srs-fluxconfig",
+		&armkubernetesconfiguration.FluxConfigurationsClientBeginDeleteOptions{ForceDelete: nil})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/preview/2022-01-01-preview/examples/ListFluxConfigurations.json
-func ExampleFluxConfigurationsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/ListFluxConfigurations.json
+func ExampleFluxConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armkubernetesconfiguration.NewFluxConfigurationsClient("<subscription-id>", cred, nil)
-	pager := client.List("<resource-group-name>",
-		armkubernetesconfiguration.Enum0MicrosoftKubernetes,
-		armkubernetesconfiguration.Enum1ConnectedClusters,
-		"<cluster-name>",
+	client, err := armkubernetesconfiguration.NewFluxConfigurationsClient("subId1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("rg1",
+		"Microsoft.Kubernetes",
+		"connectedClusters",
+		"clusterName1",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("FluxConfiguration.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

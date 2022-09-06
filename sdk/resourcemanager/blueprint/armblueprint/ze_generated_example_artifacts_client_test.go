@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,64 +17,30 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/blueprint/armblueprint"
 )
 
-// x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/ARMTemplateArtifact_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/ARMTemplateArtifact_Create.json
 func ExampleArtifactsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblueprint.NewArtifactsClient(cred, nil)
-	res, err := client.CreateOrUpdate(ctx,
-		"<resource-scope>",
-		"<blueprint-name>",
-		"<artifact-name>",
+	client, err := armblueprint.NewArtifactsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = client.CreateOrUpdate(ctx,
+		"providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
+		"storageTemplate",
 		&armblueprint.TemplateArtifact{
-			Artifact: armblueprint.Artifact{
-				Kind: armblueprint.ArtifactKindTemplate.ToPtr(),
-			},
+			Kind: to.Ptr(armblueprint.ArtifactKindTemplate),
 			Properties: &armblueprint.TemplateArtifactProperties{
 				Parameters: map[string]*armblueprint.ParameterValue{
 					"storageAccountType": {
-						Value: map[string]interface{}{
-							"0":  "[",
-							"1":  "p",
-							"2":  "a",
-							"3":  "r",
-							"4":  "a",
-							"5":  "m",
-							"6":  "e",
-							"7":  "t",
-							"8":  "e",
-							"9":  "r",
-							"10": "s",
-							"11": "(",
-							"12": "'",
-							"13": "s",
-							"14": "t",
-							"15": "o",
-							"16": "r",
-							"17": "a",
-							"18": "g",
-							"19": "e",
-							"20": "A",
-							"21": "c",
-							"22": "c",
-							"23": "o",
-							"24": "u",
-							"25": "n",
-							"26": "t",
-							"27": "T",
-							"28": "y",
-							"29": "p",
-							"30": "e",
-							"31": "'",
-							"32": ")",
-							"33": "]",
-						},
+						Value: "[parameters('storageAccountType')]",
 					},
 				},
-				ResourceGroup: to.StringPtr("<resource-group>"),
+				ResourceGroup: to.Ptr("storageRG"),
 				Template: map[string]interface{}{
 					"contentVersion": "1.0.0.0",
 					"outputs": map[string]interface{}{
@@ -119,66 +85,78 @@ func ExampleArtifactsClient_CreateOrUpdate() {
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("ArtifactClassification.GetArtifact().ID: %s\n", *res.GetArtifact().ID)
 }
 
-// x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/ARMTemplateArtifact_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/ARMTemplateArtifact_Get.json
 func ExampleArtifactsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblueprint.NewArtifactsClient(cred, nil)
+	client, err := armblueprint.NewArtifactsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-scope>",
-		"<blueprint-name>",
-		"<artifact-name>",
+		"providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
+		"storageTemplate",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("ArtifactClassification.GetArtifact().ID: %s\n", *res.GetArtifact().ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/ARMTemplateArtifact_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/ARMTemplateArtifact_Delete.json
 func ExampleArtifactsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblueprint.NewArtifactsClient(cred, nil)
+	client, err := armblueprint.NewArtifactsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Delete(ctx,
-		"<resource-scope>",
-		"<blueprint-name>",
-		"<artifact-name>",
+		"providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
+		"storageTemplate",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("ArtifactClassification.GetArtifact().ID: %s\n", *res.GetArtifact().ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Artifact_List.json
-func ExampleArtifactsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/blueprint/resource-manager/Microsoft.Blueprint/preview/2018-11-01-preview/examples/managementGroupBPDef/Artifact_List.json
+func ExampleArtifactsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armblueprint.NewArtifactsClient(cred, nil)
-	pager := client.List("<resource-scope>",
-		"<blueprint-name>",
+	client, err := armblueprint.NewArtifactsClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("ArtifactClassification.GetArtifact().ID: %s\n", *v.GetArtifact().ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

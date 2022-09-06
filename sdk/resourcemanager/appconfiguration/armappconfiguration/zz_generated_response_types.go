@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,471 +8,122 @@
 
 package armappconfiguration
 
-import (
-	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"net/http"
-	"time"
-)
-
-// ConfigurationStoresCreatePollerResponse contains the response from method ConfigurationStores.Create.
-type ConfigurationStoresCreatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ConfigurationStoresCreatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ConfigurationStoresCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ConfigurationStoresCreateResponse, error) {
-	respType := ConfigurationStoresCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ConfigurationStore)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ConfigurationStoresCreatePollerResponse from the provided client and resume token.
-func (l *ConfigurationStoresCreatePollerResponse) Resume(ctx context.Context, client *ConfigurationStoresClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ConfigurationStoresClient.Create", token, client.pl, client.createHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &ConfigurationStoresCreatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// ConfigurationStoresCreateResponse contains the response from method ConfigurationStores.Create.
-type ConfigurationStoresCreateResponse struct {
-	ConfigurationStoresCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConfigurationStoresCreateResult contains the result from method ConfigurationStores.Create.
-type ConfigurationStoresCreateResult struct {
+// ConfigurationStoresClientCreateResponse contains the response from method ConfigurationStoresClient.Create.
+type ConfigurationStoresClientCreateResponse struct {
 	ConfigurationStore
 }
 
-// ConfigurationStoresDeletePollerResponse contains the response from method ConfigurationStores.Delete.
-type ConfigurationStoresDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ConfigurationStoresDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ConfigurationStoresClientDeleteResponse contains the response from method ConfigurationStoresClient.Delete.
+type ConfigurationStoresClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ConfigurationStoresDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ConfigurationStoresDeleteResponse, error) {
-	respType := ConfigurationStoresDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
+// ConfigurationStoresClientGetDeletedResponse contains the response from method ConfigurationStoresClient.GetDeleted.
+type ConfigurationStoresClientGetDeletedResponse struct {
+	DeletedConfigurationStore
 }
 
-// Resume rehydrates a ConfigurationStoresDeletePollerResponse from the provided client and resume token.
-func (l *ConfigurationStoresDeletePollerResponse) Resume(ctx context.Context, client *ConfigurationStoresClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ConfigurationStoresClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &ConfigurationStoresDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// ConfigurationStoresDeleteResponse contains the response from method ConfigurationStores.Delete.
-type ConfigurationStoresDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConfigurationStoresGetResponse contains the response from method ConfigurationStores.Get.
-type ConfigurationStoresGetResponse struct {
-	ConfigurationStoresGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConfigurationStoresGetResult contains the result from method ConfigurationStores.Get.
-type ConfigurationStoresGetResult struct {
+// ConfigurationStoresClientGetResponse contains the response from method ConfigurationStoresClient.Get.
+type ConfigurationStoresClientGetResponse struct {
 	ConfigurationStore
 }
 
-// ConfigurationStoresListByResourceGroupResponse contains the response from method ConfigurationStores.ListByResourceGroup.
-type ConfigurationStoresListByResourceGroupResponse struct {
-	ConfigurationStoresListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConfigurationStoresListByResourceGroupResult contains the result from method ConfigurationStores.ListByResourceGroup.
-type ConfigurationStoresListByResourceGroupResult struct {
+// ConfigurationStoresClientListByResourceGroupResponse contains the response from method ConfigurationStoresClient.ListByResourceGroup.
+type ConfigurationStoresClientListByResourceGroupResponse struct {
 	ConfigurationStoreListResult
 }
 
-// ConfigurationStoresListKeysResponse contains the response from method ConfigurationStores.ListKeys.
-type ConfigurationStoresListKeysResponse struct {
-	ConfigurationStoresListKeysResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ConfigurationStoresClientListDeletedResponse contains the response from method ConfigurationStoresClient.ListDeleted.
+type ConfigurationStoresClientListDeletedResponse struct {
+	DeletedConfigurationStoreListResult
 }
 
-// ConfigurationStoresListKeysResult contains the result from method ConfigurationStores.ListKeys.
-type ConfigurationStoresListKeysResult struct {
+// ConfigurationStoresClientListKeysResponse contains the response from method ConfigurationStoresClient.ListKeys.
+type ConfigurationStoresClientListKeysResponse struct {
 	APIKeyListResult
 }
 
-// ConfigurationStoresListResponse contains the response from method ConfigurationStores.List.
-type ConfigurationStoresListResponse struct {
-	ConfigurationStoresListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConfigurationStoresListResult contains the result from method ConfigurationStores.List.
-type ConfigurationStoresListResult struct {
+// ConfigurationStoresClientListResponse contains the response from method ConfigurationStoresClient.List.
+type ConfigurationStoresClientListResponse struct {
 	ConfigurationStoreListResult
 }
 
-// ConfigurationStoresRegenerateKeyResponse contains the response from method ConfigurationStores.RegenerateKey.
-type ConfigurationStoresRegenerateKeyResponse struct {
-	ConfigurationStoresRegenerateKeyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// ConfigurationStoresClientPurgeDeletedResponse contains the response from method ConfigurationStoresClient.PurgeDeleted.
+type ConfigurationStoresClientPurgeDeletedResponse struct {
+	// placeholder for future response values
 }
 
-// ConfigurationStoresRegenerateKeyResult contains the result from method ConfigurationStores.RegenerateKey.
-type ConfigurationStoresRegenerateKeyResult struct {
+// ConfigurationStoresClientRegenerateKeyResponse contains the response from method ConfigurationStoresClient.RegenerateKey.
+type ConfigurationStoresClientRegenerateKeyResponse struct {
 	APIKey
 }
 
-// ConfigurationStoresUpdatePollerResponse contains the response from method ConfigurationStores.Update.
-type ConfigurationStoresUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ConfigurationStoresUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ConfigurationStoresUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ConfigurationStoresUpdateResponse, error) {
-	respType := ConfigurationStoresUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ConfigurationStore)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ConfigurationStoresUpdatePollerResponse from the provided client and resume token.
-func (l *ConfigurationStoresUpdatePollerResponse) Resume(ctx context.Context, client *ConfigurationStoresClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("ConfigurationStoresClient.Update", token, client.pl, client.updateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &ConfigurationStoresUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// ConfigurationStoresUpdateResponse contains the response from method ConfigurationStores.Update.
-type ConfigurationStoresUpdateResponse struct {
-	ConfigurationStoresUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ConfigurationStoresUpdateResult contains the result from method ConfigurationStores.Update.
-type ConfigurationStoresUpdateResult struct {
+// ConfigurationStoresClientUpdateResponse contains the response from method ConfigurationStoresClient.Update.
+type ConfigurationStoresClientUpdateResponse struct {
 	ConfigurationStore
 }
 
-// KeyValuesCreateOrUpdateResponse contains the response from method KeyValues.CreateOrUpdate.
-type KeyValuesCreateOrUpdateResponse struct {
-	KeyValuesCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyValuesCreateOrUpdateResult contains the result from method KeyValues.CreateOrUpdate.
-type KeyValuesCreateOrUpdateResult struct {
+// KeyValuesClientCreateOrUpdateResponse contains the response from method KeyValuesClient.CreateOrUpdate.
+type KeyValuesClientCreateOrUpdateResponse struct {
 	KeyValue
 }
 
-// KeyValuesDeletePollerResponse contains the response from method KeyValues.Delete.
-type KeyValuesDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *KeyValuesDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// KeyValuesClientDeleteResponse contains the response from method KeyValuesClient.Delete.
+type KeyValuesClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l KeyValuesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (KeyValuesDeleteResponse, error) {
-	respType := KeyValuesDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a KeyValuesDeletePollerResponse from the provided client and resume token.
-func (l *KeyValuesDeletePollerResponse) Resume(ctx context.Context, client *KeyValuesClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("KeyValuesClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &KeyValuesDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// KeyValuesDeleteResponse contains the response from method KeyValues.Delete.
-type KeyValuesDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyValuesGetResponse contains the response from method KeyValues.Get.
-type KeyValuesGetResponse struct {
-	KeyValuesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyValuesGetResult contains the result from method KeyValues.Get.
-type KeyValuesGetResult struct {
+// KeyValuesClientGetResponse contains the response from method KeyValuesClient.Get.
+type KeyValuesClientGetResponse struct {
 	KeyValue
 }
 
-// KeyValuesListByConfigurationStoreResponse contains the response from method KeyValues.ListByConfigurationStore.
-type KeyValuesListByConfigurationStoreResponse struct {
-	KeyValuesListByConfigurationStoreResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyValuesListByConfigurationStoreResult contains the result from method KeyValues.ListByConfigurationStore.
-type KeyValuesListByConfigurationStoreResult struct {
+// KeyValuesClientListByConfigurationStoreResponse contains the response from method KeyValuesClient.ListByConfigurationStore.
+type KeyValuesClientListByConfigurationStoreResponse struct {
 	KeyValueListResult
 }
 
-// OperationsCheckNameAvailabilityResponse contains the response from method Operations.CheckNameAvailability.
-type OperationsCheckNameAvailabilityResponse struct {
-	OperationsCheckNameAvailabilityResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsCheckNameAvailabilityResult contains the result from method Operations.CheckNameAvailability.
-type OperationsCheckNameAvailabilityResult struct {
+// OperationsClientCheckNameAvailabilityResponse contains the response from method OperationsClient.CheckNameAvailability.
+type OperationsClientCheckNameAvailabilityResponse struct {
 	NameAvailabilityStatus
 }
 
-// OperationsListResponse contains the response from method Operations.List.
-type OperationsListResponse struct {
-	OperationsListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsListResult contains the result from method Operations.List.
-type OperationsListResult struct {
+// OperationsClientListResponse contains the response from method OperationsClient.List.
+type OperationsClientListResponse struct {
 	OperationDefinitionListResult
 }
 
-// PrivateEndpointConnectionsCreateOrUpdatePollerResponse contains the response from method PrivateEndpointConnections.CreateOrUpdate.
-type PrivateEndpointConnectionsCreateOrUpdatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsCreateOrUpdatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// OperationsClientRegionalCheckNameAvailabilityResponse contains the response from method OperationsClient.RegionalCheckNameAvailability.
+type OperationsClientRegionalCheckNameAvailabilityResponse struct {
+	NameAvailabilityStatus
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsCreateOrUpdateResponse, error) {
-	respType := PrivateEndpointConnectionsCreateOrUpdateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a PrivateEndpointConnectionsCreateOrUpdatePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &PrivateEndpointConnectionsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// PrivateEndpointConnectionsCreateOrUpdateResponse contains the response from method PrivateEndpointConnections.CreateOrUpdate.
-type PrivateEndpointConnectionsCreateOrUpdateResponse struct {
-	PrivateEndpointConnectionsCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsCreateOrUpdateResult contains the result from method PrivateEndpointConnections.CreateOrUpdate.
-type PrivateEndpointConnectionsCreateOrUpdateResult struct {
+// PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.CreateOrUpdate.
+type PrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsDeletePollerResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeletePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *PrivateEndpointConnectionsDeletePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsDeleteResponse, error) {
-	respType := PrivateEndpointConnectionsDeleteResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a PrivateEndpointConnectionsDeletePollerResponse from the provided client and resume token.
-func (l *PrivateEndpointConnectionsDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.pl, client.deleteHandleError)
-	if err != nil {
-		return err
-	}
-	poller := &PrivateEndpointConnectionsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// PrivateEndpointConnectionsDeleteResponse contains the response from method PrivateEndpointConnections.Delete.
-type PrivateEndpointConnectionsDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsGetResponse contains the response from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResponse struct {
-	PrivateEndpointConnectionsGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsGetResult contains the result from method PrivateEndpointConnections.Get.
-type PrivateEndpointConnectionsGetResult struct {
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsListByConfigurationStoreResponse contains the response from method PrivateEndpointConnections.ListByConfigurationStore.
-type PrivateEndpointConnectionsListByConfigurationStoreResponse struct {
-	PrivateEndpointConnectionsListByConfigurationStoreResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateEndpointConnectionsListByConfigurationStoreResult contains the result from method PrivateEndpointConnections.ListByConfigurationStore.
-type PrivateEndpointConnectionsListByConfigurationStoreResult struct {
+// PrivateEndpointConnectionsClientListByConfigurationStoreResponse contains the response from method PrivateEndpointConnectionsClient.ListByConfigurationStore.
+type PrivateEndpointConnectionsClientListByConfigurationStoreResponse struct {
 	PrivateEndpointConnectionListResult
 }
 
-// PrivateLinkResourcesGetResponse contains the response from method PrivateLinkResources.Get.
-type PrivateLinkResourcesGetResponse struct {
-	PrivateLinkResourcesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkResourcesGetResult contains the result from method PrivateLinkResources.Get.
-type PrivateLinkResourcesGetResult struct {
+// PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResponse struct {
 	PrivateLinkResource
 }
 
-// PrivateLinkResourcesListByConfigurationStoreResponse contains the response from method PrivateLinkResources.ListByConfigurationStore.
-type PrivateLinkResourcesListByConfigurationStoreResponse struct {
-	PrivateLinkResourcesListByConfigurationStoreResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PrivateLinkResourcesListByConfigurationStoreResult contains the result from method PrivateLinkResources.ListByConfigurationStore.
-type PrivateLinkResourcesListByConfigurationStoreResult struct {
+// PrivateLinkResourcesClientListByConfigurationStoreResponse contains the response from method PrivateLinkResourcesClient.ListByConfigurationStore.
+type PrivateLinkResourcesClientListByConfigurationStoreResponse struct {
 	PrivateLinkResourceListResult
 }

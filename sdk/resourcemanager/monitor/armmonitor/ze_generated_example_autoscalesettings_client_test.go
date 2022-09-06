@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,387 +19,410 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/listAutoscaleSetting.json
-func ExampleAutoscaleSettingsClient_ListByResourceGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/listAutoscaleSetting.json
+func ExampleAutoscaleSettingsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewAutoscaleSettingsClient("<subscription-id>", cred, nil)
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	client, err := armmonitor.NewAutoscaleSettingsClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByResourceGroupPager("TestingMetricsScaleSet",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("AutoscaleSettingResource.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/createOrUpdateAutoscaleSetting.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/createOrUpdateAutoscaleSetting.json
 func ExampleAutoscaleSettingsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewAutoscaleSettingsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewAutoscaleSettingsClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<autoscale-setting-name>",
+		"TestingMetricsScaleSet",
+		"MySetting",
 		armmonitor.AutoscaleSettingResource{
-			Resource: armmonitor.Resource{
-				Location: to.StringPtr("<location>"),
-				Tags:     map[string]*string{},
-			},
+			Location: to.Ptr("West US"),
+			Tags:     map[string]*string{},
 			Properties: &armmonitor.AutoscaleSetting{
-				Enabled: to.BoolPtr(true),
+				Enabled: to.Ptr(true),
 				Notifications: []*armmonitor.AutoscaleNotification{
 					{
 						Email: &armmonitor.EmailNotification{
 							CustomEmails: []*string{
-								to.StringPtr("gu@ms.com"),
-								to.StringPtr("ge@ns.net")},
-							SendToSubscriptionAdministrator:    to.BoolPtr(true),
-							SendToSubscriptionCoAdministrators: to.BoolPtr(true),
+								to.Ptr("gu@ms.com"),
+								to.Ptr("ge@ns.net")},
+							SendToSubscriptionAdministrator:    to.Ptr(true),
+							SendToSubscriptionCoAdministrators: to.Ptr(true),
 						},
-						Operation: to.StringPtr("<operation>"),
+						Operation: to.Ptr("Scale"),
 						Webhooks: []*armmonitor.WebhookNotification{
 							{
 								Properties: map[string]*string{},
-								ServiceURI: to.StringPtr("<service-uri>"),
+								ServiceURI: to.Ptr("http://myservice.com"),
 							}},
 					}},
 				Profiles: []*armmonitor.AutoscaleProfile{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("adios"),
 						Capacity: &armmonitor.ScaleCapacity{
-							Default: to.StringPtr("<default>"),
-							Maximum: to.StringPtr("<maximum>"),
-							Minimum: to.StringPtr("<minimum>"),
+							Default: to.Ptr("1"),
+							Maximum: to.Ptr("10"),
+							Minimum: to.Ptr("1"),
 						},
 						FixedDate: &armmonitor.TimeWindow{
-							End:      to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:30:00Z"); return t }()),
-							Start:    to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:00:00Z"); return t }()),
-							TimeZone: to.StringPtr("<time-zone>"),
+							End:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:30:00Z"); return t }()),
+							Start:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:00:00Z"); return t }()),
+							TimeZone: to.Ptr("UTC"),
 						},
 						Rules: []*armmonitor.ScaleRule{
 							{
 								MetricTrigger: &armmonitor.MetricTrigger{
-									DividePerInstance: to.BoolPtr(false),
-									MetricName:        to.StringPtr("<metric-name>"),
-									MetricResourceURI: to.StringPtr("<metric-resource-uri>"),
-									Operator:          armmonitor.ComparisonOperationTypeGreaterThan.ToPtr(),
-									Statistic:         armmonitor.MetricStatisticTypeAverage.ToPtr(),
-									Threshold:         to.Float64Ptr(10),
-									TimeAggregation:   armmonitor.TimeAggregationTypeAverage.ToPtr(),
-									TimeGrain:         to.StringPtr("<time-grain>"),
-									TimeWindow:        to.StringPtr("<time-window>"),
+									DividePerInstance: to.Ptr(false),
+									MetricName:        to.Ptr("Percentage CPU"),
+									MetricResourceURI: to.Ptr("/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/TestingMetricsScaleSet/providers/Microsoft.Compute/virtualMachineScaleSets/testingsc"),
+									Operator:          to.Ptr(armmonitor.ComparisonOperationTypeGreaterThan),
+									Statistic:         to.Ptr(armmonitor.MetricStatisticTypeAverage),
+									Threshold:         to.Ptr[float64](10),
+									TimeAggregation:   to.Ptr(armmonitor.TimeAggregationTypeAverage),
+									TimeGrain:         to.Ptr("PT1M"),
+									TimeWindow:        to.Ptr("PT5M"),
 								},
 								ScaleAction: &armmonitor.ScaleAction{
-									Type:      armmonitor.ScaleTypeChangeCount.ToPtr(),
-									Cooldown:  to.StringPtr("<cooldown>"),
-									Direction: armmonitor.ScaleDirectionIncrease.ToPtr(),
-									Value:     to.StringPtr("<value>"),
+									Type:      to.Ptr(armmonitor.ScaleTypeChangeCount),
+									Cooldown:  to.Ptr("PT5M"),
+									Direction: to.Ptr(armmonitor.ScaleDirectionIncrease),
+									Value:     to.Ptr("1"),
 								},
 							},
 							{
 								MetricTrigger: &armmonitor.MetricTrigger{
-									DividePerInstance: to.BoolPtr(false),
-									MetricName:        to.StringPtr("<metric-name>"),
-									MetricResourceURI: to.StringPtr("<metric-resource-uri>"),
-									Operator:          armmonitor.ComparisonOperationTypeGreaterThan.ToPtr(),
-									Statistic:         armmonitor.MetricStatisticTypeAverage.ToPtr(),
-									Threshold:         to.Float64Ptr(15),
-									TimeAggregation:   armmonitor.TimeAggregationTypeAverage.ToPtr(),
-									TimeGrain:         to.StringPtr("<time-grain>"),
-									TimeWindow:        to.StringPtr("<time-window>"),
+									DividePerInstance: to.Ptr(false),
+									MetricName:        to.Ptr("Percentage CPU"),
+									MetricResourceURI: to.Ptr("/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/TestingMetricsScaleSet/providers/Microsoft.Compute/virtualMachineScaleSets/testingsc"),
+									Operator:          to.Ptr(armmonitor.ComparisonOperationTypeGreaterThan),
+									Statistic:         to.Ptr(armmonitor.MetricStatisticTypeAverage),
+									Threshold:         to.Ptr[float64](15),
+									TimeAggregation:   to.Ptr(armmonitor.TimeAggregationTypeAverage),
+									TimeGrain:         to.Ptr("PT2M"),
+									TimeWindow:        to.Ptr("PT5M"),
 								},
 								ScaleAction: &armmonitor.ScaleAction{
-									Type:      armmonitor.ScaleTypeChangeCount.ToPtr(),
-									Cooldown:  to.StringPtr("<cooldown>"),
-									Direction: armmonitor.ScaleDirectionDecrease.ToPtr(),
-									Value:     to.StringPtr("<value>"),
+									Type:      to.Ptr(armmonitor.ScaleTypeChangeCount),
+									Cooldown:  to.Ptr("PT6M"),
+									Direction: to.Ptr(armmonitor.ScaleDirectionDecrease),
+									Value:     to.Ptr("2"),
 								},
 							}},
 					},
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("saludos"),
 						Capacity: &armmonitor.ScaleCapacity{
-							Default: to.StringPtr("<default>"),
-							Maximum: to.StringPtr("<maximum>"),
-							Minimum: to.StringPtr("<minimum>"),
+							Default: to.Ptr("1"),
+							Maximum: to.Ptr("10"),
+							Minimum: to.Ptr("1"),
 						},
 						Recurrence: &armmonitor.Recurrence{
-							Frequency: armmonitor.RecurrenceFrequencyWeek.ToPtr(),
+							Frequency: to.Ptr(armmonitor.RecurrenceFrequencyWeek),
 							Schedule: &armmonitor.RecurrentSchedule{
 								Days: []*string{
-									to.StringPtr("1")},
+									to.Ptr("1")},
 								Hours: []*int32{
-									to.Int32Ptr(5)},
+									to.Ptr[int32](5)},
 								Minutes: []*int32{
-									to.Int32Ptr(15)},
-								TimeZone: to.StringPtr("<time-zone>"),
+									to.Ptr[int32](15)},
+								TimeZone: to.Ptr("UTC"),
 							},
 						},
 						Rules: []*armmonitor.ScaleRule{
 							{
 								MetricTrigger: &armmonitor.MetricTrigger{
-									DividePerInstance: to.BoolPtr(false),
-									MetricName:        to.StringPtr("<metric-name>"),
-									MetricResourceURI: to.StringPtr("<metric-resource-uri>"),
-									Operator:          armmonitor.ComparisonOperationTypeGreaterThan.ToPtr(),
-									Statistic:         armmonitor.MetricStatisticTypeAverage.ToPtr(),
-									Threshold:         to.Float64Ptr(10),
-									TimeAggregation:   armmonitor.TimeAggregationTypeAverage.ToPtr(),
-									TimeGrain:         to.StringPtr("<time-grain>"),
-									TimeWindow:        to.StringPtr("<time-window>"),
+									DividePerInstance: to.Ptr(false),
+									MetricName:        to.Ptr("Percentage CPU"),
+									MetricResourceURI: to.Ptr("/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/TestingMetricsScaleSet/providers/Microsoft.Compute/virtualMachineScaleSets/testingsc"),
+									Operator:          to.Ptr(armmonitor.ComparisonOperationTypeGreaterThan),
+									Statistic:         to.Ptr(armmonitor.MetricStatisticTypeAverage),
+									Threshold:         to.Ptr[float64](10),
+									TimeAggregation:   to.Ptr(armmonitor.TimeAggregationTypeAverage),
+									TimeGrain:         to.Ptr("PT1M"),
+									TimeWindow:        to.Ptr("PT5M"),
 								},
 								ScaleAction: &armmonitor.ScaleAction{
-									Type:      armmonitor.ScaleTypeChangeCount.ToPtr(),
-									Cooldown:  to.StringPtr("<cooldown>"),
-									Direction: armmonitor.ScaleDirectionIncrease.ToPtr(),
-									Value:     to.StringPtr("<value>"),
+									Type:      to.Ptr(armmonitor.ScaleTypeChangeCount),
+									Cooldown:  to.Ptr("PT5M"),
+									Direction: to.Ptr(armmonitor.ScaleDirectionIncrease),
+									Value:     to.Ptr("1"),
 								},
 							},
 							{
 								MetricTrigger: &armmonitor.MetricTrigger{
-									DividePerInstance: to.BoolPtr(false),
-									MetricName:        to.StringPtr("<metric-name>"),
-									MetricResourceURI: to.StringPtr("<metric-resource-uri>"),
-									Operator:          armmonitor.ComparisonOperationTypeGreaterThan.ToPtr(),
-									Statistic:         armmonitor.MetricStatisticTypeAverage.ToPtr(),
-									Threshold:         to.Float64Ptr(15),
-									TimeAggregation:   armmonitor.TimeAggregationTypeAverage.ToPtr(),
-									TimeGrain:         to.StringPtr("<time-grain>"),
-									TimeWindow:        to.StringPtr("<time-window>"),
+									DividePerInstance: to.Ptr(false),
+									MetricName:        to.Ptr("Percentage CPU"),
+									MetricResourceURI: to.Ptr("/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/TestingMetricsScaleSet/providers/Microsoft.Compute/virtualMachineScaleSets/testingsc"),
+									Operator:          to.Ptr(armmonitor.ComparisonOperationTypeGreaterThan),
+									Statistic:         to.Ptr(armmonitor.MetricStatisticTypeAverage),
+									Threshold:         to.Ptr[float64](15),
+									TimeAggregation:   to.Ptr(armmonitor.TimeAggregationTypeAverage),
+									TimeGrain:         to.Ptr("PT2M"),
+									TimeWindow:        to.Ptr("PT5M"),
 								},
 								ScaleAction: &armmonitor.ScaleAction{
-									Type:      armmonitor.ScaleTypeChangeCount.ToPtr(),
-									Cooldown:  to.StringPtr("<cooldown>"),
-									Direction: armmonitor.ScaleDirectionDecrease.ToPtr(),
-									Value:     to.StringPtr("<value>"),
+									Type:      to.Ptr(armmonitor.ScaleTypeChangeCount),
+									Cooldown:  to.Ptr("PT6M"),
+									Direction: to.Ptr(armmonitor.ScaleDirectionDecrease),
+									Value:     to.Ptr("2"),
 								},
 							}},
 					}},
-				TargetResourceURI: to.StringPtr("<target-resource-uri>"),
+				TargetResourceURI: to.Ptr("/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/TestingMetricsScaleSet/providers/Microsoft.Compute/virtualMachineScaleSets/testingsc"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("AutoscaleSettingResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/deleteAutoscaleSetting.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/deleteAutoscaleSetting.json
 func ExampleAutoscaleSettingsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewAutoscaleSettingsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewAutoscaleSettingsClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<autoscale-setting-name>",
+		"TestingMetricsScaleSet",
+		"MySetting",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/getAutoscaleSetting.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/getAutoscaleSetting.json
 func ExampleAutoscaleSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewAutoscaleSettingsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewAutoscaleSettingsClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<autoscale-setting-name>",
+		"TestingMetricsScaleSet",
+		"MySetting",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("AutoscaleSettingResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/patchAutoscaleSetting.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/patchAutoscaleSetting.json
 func ExampleAutoscaleSettingsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewAutoscaleSettingsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewAutoscaleSettingsClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<autoscale-setting-name>",
+		"TestingMetricsScaleSet",
+		"MySetting",
 		armmonitor.AutoscaleSettingResourcePatch{
 			Properties: &armmonitor.AutoscaleSetting{
-				Enabled: to.BoolPtr(true),
+				Enabled: to.Ptr(true),
 				Notifications: []*armmonitor.AutoscaleNotification{
 					{
 						Email: &armmonitor.EmailNotification{
 							CustomEmails: []*string{
-								to.StringPtr("gu@ms.com"),
-								to.StringPtr("ge@ns.net")},
-							SendToSubscriptionAdministrator:    to.BoolPtr(true),
-							SendToSubscriptionCoAdministrators: to.BoolPtr(true),
+								to.Ptr("gu@ms.com"),
+								to.Ptr("ge@ns.net")},
+							SendToSubscriptionAdministrator:    to.Ptr(true),
+							SendToSubscriptionCoAdministrators: to.Ptr(true),
 						},
-						Operation: to.StringPtr("<operation>"),
+						Operation: to.Ptr("Scale"),
 						Webhooks: []*armmonitor.WebhookNotification{
 							{
 								Properties: map[string]*string{},
-								ServiceURI: to.StringPtr("<service-uri>"),
+								ServiceURI: to.Ptr("http://myservice.com"),
 							}},
 					}},
 				Profiles: []*armmonitor.AutoscaleProfile{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("adios"),
 						Capacity: &armmonitor.ScaleCapacity{
-							Default: to.StringPtr("<default>"),
-							Maximum: to.StringPtr("<maximum>"),
-							Minimum: to.StringPtr("<minimum>"),
+							Default: to.Ptr("1"),
+							Maximum: to.Ptr("10"),
+							Minimum: to.Ptr("1"),
 						},
 						FixedDate: &armmonitor.TimeWindow{
-							End:      to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:30:00Z"); return t }()),
-							Start:    to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:00:00Z"); return t }()),
-							TimeZone: to.StringPtr("<time-zone>"),
+							End:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:30:00Z"); return t }()),
+							Start:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:00:00Z"); return t }()),
+							TimeZone: to.Ptr("UTC"),
 						},
 						Rules: []*armmonitor.ScaleRule{
 							{
 								MetricTrigger: &armmonitor.MetricTrigger{
-									DividePerInstance: to.BoolPtr(false),
-									MetricName:        to.StringPtr("<metric-name>"),
-									MetricResourceURI: to.StringPtr("<metric-resource-uri>"),
-									Operator:          armmonitor.ComparisonOperationTypeGreaterThan.ToPtr(),
-									Statistic:         armmonitor.MetricStatisticTypeAverage.ToPtr(),
-									Threshold:         to.Float64Ptr(10),
-									TimeAggregation:   armmonitor.TimeAggregationTypeAverage.ToPtr(),
-									TimeGrain:         to.StringPtr("<time-grain>"),
-									TimeWindow:        to.StringPtr("<time-window>"),
+									DividePerInstance: to.Ptr(false),
+									MetricName:        to.Ptr("Percentage CPU"),
+									MetricResourceURI: to.Ptr("/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/TestingMetricsScaleSet/providers/Microsoft.Compute/virtualMachineScaleSets/testingsc"),
+									Operator:          to.Ptr(armmonitor.ComparisonOperationTypeGreaterThan),
+									Statistic:         to.Ptr(armmonitor.MetricStatisticTypeAverage),
+									Threshold:         to.Ptr[float64](10),
+									TimeAggregation:   to.Ptr(armmonitor.TimeAggregationTypeAverage),
+									TimeGrain:         to.Ptr("PT1M"),
+									TimeWindow:        to.Ptr("PT5M"),
 								},
 								ScaleAction: &armmonitor.ScaleAction{
-									Type:      armmonitor.ScaleTypeChangeCount.ToPtr(),
-									Cooldown:  to.StringPtr("<cooldown>"),
-									Direction: armmonitor.ScaleDirectionIncrease.ToPtr(),
-									Value:     to.StringPtr("<value>"),
+									Type:      to.Ptr(armmonitor.ScaleTypeChangeCount),
+									Cooldown:  to.Ptr("PT5M"),
+									Direction: to.Ptr(armmonitor.ScaleDirectionIncrease),
+									Value:     to.Ptr("1"),
 								},
 							},
 							{
 								MetricTrigger: &armmonitor.MetricTrigger{
-									DividePerInstance: to.BoolPtr(false),
-									MetricName:        to.StringPtr("<metric-name>"),
-									MetricResourceURI: to.StringPtr("<metric-resource-uri>"),
-									Operator:          armmonitor.ComparisonOperationTypeGreaterThan.ToPtr(),
-									Statistic:         armmonitor.MetricStatisticTypeAverage.ToPtr(),
-									Threshold:         to.Float64Ptr(15),
-									TimeAggregation:   armmonitor.TimeAggregationTypeAverage.ToPtr(),
-									TimeGrain:         to.StringPtr("<time-grain>"),
-									TimeWindow:        to.StringPtr("<time-window>"),
+									DividePerInstance: to.Ptr(false),
+									MetricName:        to.Ptr("Percentage CPU"),
+									MetricResourceURI: to.Ptr("/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/TestingMetricsScaleSet/providers/Microsoft.Compute/virtualMachineScaleSets/testingsc"),
+									Operator:          to.Ptr(armmonitor.ComparisonOperationTypeGreaterThan),
+									Statistic:         to.Ptr(armmonitor.MetricStatisticTypeAverage),
+									Threshold:         to.Ptr[float64](15),
+									TimeAggregation:   to.Ptr(armmonitor.TimeAggregationTypeAverage),
+									TimeGrain:         to.Ptr("PT2M"),
+									TimeWindow:        to.Ptr("PT5M"),
 								},
 								ScaleAction: &armmonitor.ScaleAction{
-									Type:      armmonitor.ScaleTypeChangeCount.ToPtr(),
-									Cooldown:  to.StringPtr("<cooldown>"),
-									Direction: armmonitor.ScaleDirectionDecrease.ToPtr(),
-									Value:     to.StringPtr("<value>"),
+									Type:      to.Ptr(armmonitor.ScaleTypeChangeCount),
+									Cooldown:  to.Ptr("PT6M"),
+									Direction: to.Ptr(armmonitor.ScaleDirectionDecrease),
+									Value:     to.Ptr("2"),
 								},
 							}},
 					},
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("saludos"),
 						Capacity: &armmonitor.ScaleCapacity{
-							Default: to.StringPtr("<default>"),
-							Maximum: to.StringPtr("<maximum>"),
-							Minimum: to.StringPtr("<minimum>"),
+							Default: to.Ptr("1"),
+							Maximum: to.Ptr("10"),
+							Minimum: to.Ptr("1"),
 						},
 						Recurrence: &armmonitor.Recurrence{
-							Frequency: armmonitor.RecurrenceFrequencyWeek.ToPtr(),
+							Frequency: to.Ptr(armmonitor.RecurrenceFrequencyWeek),
 							Schedule: &armmonitor.RecurrentSchedule{
 								Days: []*string{
-									to.StringPtr("1")},
+									to.Ptr("1")},
 								Hours: []*int32{
-									to.Int32Ptr(5)},
+									to.Ptr[int32](5)},
 								Minutes: []*int32{
-									to.Int32Ptr(15)},
-								TimeZone: to.StringPtr("<time-zone>"),
+									to.Ptr[int32](15)},
+								TimeZone: to.Ptr("UTC"),
 							},
 						},
 						Rules: []*armmonitor.ScaleRule{
 							{
 								MetricTrigger: &armmonitor.MetricTrigger{
-									DividePerInstance: to.BoolPtr(false),
-									MetricName:        to.StringPtr("<metric-name>"),
-									MetricResourceURI: to.StringPtr("<metric-resource-uri>"),
-									Operator:          armmonitor.ComparisonOperationTypeGreaterThan.ToPtr(),
-									Statistic:         armmonitor.MetricStatisticTypeAverage.ToPtr(),
-									Threshold:         to.Float64Ptr(10),
-									TimeAggregation:   armmonitor.TimeAggregationTypeAverage.ToPtr(),
-									TimeGrain:         to.StringPtr("<time-grain>"),
-									TimeWindow:        to.StringPtr("<time-window>"),
+									DividePerInstance: to.Ptr(false),
+									MetricName:        to.Ptr("Percentage CPU"),
+									MetricResourceURI: to.Ptr("/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/TestingMetricsScaleSet/providers/Microsoft.Compute/virtualMachineScaleSets/testingsc"),
+									Operator:          to.Ptr(armmonitor.ComparisonOperationTypeGreaterThan),
+									Statistic:         to.Ptr(armmonitor.MetricStatisticTypeAverage),
+									Threshold:         to.Ptr[float64](10),
+									TimeAggregation:   to.Ptr(armmonitor.TimeAggregationTypeAverage),
+									TimeGrain:         to.Ptr("PT1M"),
+									TimeWindow:        to.Ptr("PT5M"),
 								},
 								ScaleAction: &armmonitor.ScaleAction{
-									Type:      armmonitor.ScaleTypeChangeCount.ToPtr(),
-									Cooldown:  to.StringPtr("<cooldown>"),
-									Direction: armmonitor.ScaleDirectionIncrease.ToPtr(),
-									Value:     to.StringPtr("<value>"),
+									Type:      to.Ptr(armmonitor.ScaleTypeChangeCount),
+									Cooldown:  to.Ptr("PT5M"),
+									Direction: to.Ptr(armmonitor.ScaleDirectionIncrease),
+									Value:     to.Ptr("1"),
 								},
 							},
 							{
 								MetricTrigger: &armmonitor.MetricTrigger{
-									DividePerInstance: to.BoolPtr(false),
-									MetricName:        to.StringPtr("<metric-name>"),
-									MetricResourceURI: to.StringPtr("<metric-resource-uri>"),
-									Operator:          armmonitor.ComparisonOperationTypeGreaterThan.ToPtr(),
-									Statistic:         armmonitor.MetricStatisticTypeAverage.ToPtr(),
-									Threshold:         to.Float64Ptr(15),
-									TimeAggregation:   armmonitor.TimeAggregationTypeAverage.ToPtr(),
-									TimeGrain:         to.StringPtr("<time-grain>"),
-									TimeWindow:        to.StringPtr("<time-window>"),
+									DividePerInstance: to.Ptr(false),
+									MetricName:        to.Ptr("Percentage CPU"),
+									MetricResourceURI: to.Ptr("/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/TestingMetricsScaleSet/providers/Microsoft.Compute/virtualMachineScaleSets/testingsc"),
+									Operator:          to.Ptr(armmonitor.ComparisonOperationTypeGreaterThan),
+									Statistic:         to.Ptr(armmonitor.MetricStatisticTypeAverage),
+									Threshold:         to.Ptr[float64](15),
+									TimeAggregation:   to.Ptr(armmonitor.TimeAggregationTypeAverage),
+									TimeGrain:         to.Ptr("PT2M"),
+									TimeWindow:        to.Ptr("PT5M"),
 								},
 								ScaleAction: &armmonitor.ScaleAction{
-									Type:      armmonitor.ScaleTypeChangeCount.ToPtr(),
-									Cooldown:  to.StringPtr("<cooldown>"),
-									Direction: armmonitor.ScaleDirectionDecrease.ToPtr(),
-									Value:     to.StringPtr("<value>"),
+									Type:      to.Ptr(armmonitor.ScaleTypeChangeCount),
+									Cooldown:  to.Ptr("PT6M"),
+									Direction: to.Ptr(armmonitor.ScaleDirectionDecrease),
+									Value:     to.Ptr("2"),
 								},
 							}},
 					}},
-				TargetResourceURI: to.StringPtr("<target-resource-uri>"),
+				TargetResourceURI: to.Ptr("/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/TestingMetricsScaleSet/providers/Microsoft.Compute/virtualMachineScaleSets/testingsc"),
 			},
 			Tags: map[string]*string{
-				"$type": to.StringPtr("Microsoft.WindowsAzure.Management.Common.Storage.CasePreservedDictionary"),
+				"$type": to.Ptr("Microsoft.WindowsAzure.Management.Common.Storage.CasePreservedDictionary"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("AutoscaleSettingResource.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/listAutoscaleSettingBySubscription.json
-func ExampleAutoscaleSettingsClient_ListBySubscription() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/listAutoscaleSettingBySubscription.json
+func ExampleAutoscaleSettingsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armmonitor.NewAutoscaleSettingsClient("<subscription-id>", cred, nil)
-	pager := client.ListBySubscription(nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armmonitor.NewAutoscaleSettingsClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListBySubscriptionPager(nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("AutoscaleSettingResource.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }

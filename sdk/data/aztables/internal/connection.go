@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -25,7 +25,7 @@ func NewConnection(endpoint string, options *azcore.ClientOptions) *Connection {
 	if options != nil {
 		cp = *options
 	}
-	return &Connection{u: endpoint, p: runtime.NewPipeline(module, version, nil, nil, &cp)}
+	return &Connection{u: endpoint, p: runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &cp)}
 }
 
 // Endpoint returns the connection's endpoint.

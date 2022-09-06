@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,10 +11,10 @@ package armcostmanagement
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,76 +25,89 @@ import (
 // GenerateDetailedCostReportOperationStatusClient contains the methods for the GenerateDetailedCostReportOperationStatus group.
 // Don't use this type directly, use NewGenerateDetailedCostReportOperationStatusClient() instead.
 type GenerateDetailedCostReportOperationStatusClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewGenerateDetailedCostReportOperationStatusClient creates a new instance of GenerateDetailedCostReportOperationStatusClient with the specified values.
-func NewGenerateDetailedCostReportOperationStatusClient(credential azcore.TokenCredential, options *arm.ClientOptions) *GenerateDetailedCostReportOperationStatusClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewGenerateDetailedCostReportOperationStatusClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*GenerateDetailedCostReportOperationStatusClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &GenerateDetailedCostReportOperationStatusClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &GenerateDetailedCostReportOperationStatusClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
-// Get - Get the status of the specified operation. This link is provided in the GenerateDetailedCostReport creation request response header.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *GenerateDetailedCostReportOperationStatusClient) Get(ctx context.Context, operationID string, scope string, options *GenerateDetailedCostReportOperationStatusGetOptions) (GenerateDetailedCostReportOperationStatusGetResponse, error) {
+// Get - Get the status of the specified operation. This link is provided in the GenerateDetailedCostReport creation request
+// response header.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
+// operationID - The target operation Id.
+// scope - The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/' for subscription
+// scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for
+// Billing Account scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope, '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}'
+// for EnrollmentAccount
+// scope. Also, Modern Commerce Account scopes are '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for billingAccount
+// scope,
+// '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billingProfile
+// scope,
+// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+// for invoiceSection scope, and
+// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for partners.
+// options - GenerateDetailedCostReportOperationStatusClientGetOptions contains the optional parameters for the GenerateDetailedCostReportOperationStatusClient.Get
+// method.
+func (client *GenerateDetailedCostReportOperationStatusClient) Get(ctx context.Context, operationID string, scope string, options *GenerateDetailedCostReportOperationStatusClientGetOptions) (GenerateDetailedCostReportOperationStatusClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, operationID, scope, options)
 	if err != nil {
-		return GenerateDetailedCostReportOperationStatusGetResponse{}, err
+		return GenerateDetailedCostReportOperationStatusClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return GenerateDetailedCostReportOperationStatusGetResponse{}, err
+		return GenerateDetailedCostReportOperationStatusClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return GenerateDetailedCostReportOperationStatusGetResponse{}, client.getHandleError(resp)
+		return GenerateDetailedCostReportOperationStatusClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *GenerateDetailedCostReportOperationStatusClient) getCreateRequest(ctx context.Context, operationID string, scope string, options *GenerateDetailedCostReportOperationStatusGetOptions) (*policy.Request, error) {
+func (client *GenerateDetailedCostReportOperationStatusClient) getCreateRequest(ctx context.Context, operationID string, scope string, options *GenerateDetailedCostReportOperationStatusClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.CostManagement/operationStatus/{operationId}"
 	if operationID == "" {
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *GenerateDetailedCostReportOperationStatusClient) getHandleResponse(resp *http.Response) (GenerateDetailedCostReportOperationStatusGetResponse, error) {
-	result := GenerateDetailedCostReportOperationStatusGetResponse{RawResponse: resp}
+func (client *GenerateDetailedCostReportOperationStatusClient) getHandleResponse(resp *http.Response) (GenerateDetailedCostReportOperationStatusClientGetResponse, error) {
+	result := GenerateDetailedCostReportOperationStatusClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GenerateDetailedCostReportOperationStatuses); err != nil {
-		return GenerateDetailedCostReportOperationStatusGetResponse{}, runtime.NewResponseError(err, resp)
+		return GenerateDetailedCostReportOperationStatusClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *GenerateDetailedCostReportOperationStatusClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

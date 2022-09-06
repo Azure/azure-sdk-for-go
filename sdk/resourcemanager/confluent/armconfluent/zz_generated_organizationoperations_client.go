@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,10 +10,10 @@ package armconfluent
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -22,68 +22,84 @@ import (
 // OrganizationOperationsClient contains the methods for the OrganizationOperations group.
 // Don't use this type directly, use NewOrganizationOperationsClient() instead.
 type OrganizationOperationsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewOrganizationOperationsClient creates a new instance of OrganizationOperationsClient with the specified values.
-func NewOrganizationOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *OrganizationOperationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewOrganizationOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*OrganizationOperationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &OrganizationOperationsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &OrganizationOperationsClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
-// List - List all operations provided by Microsoft.Confluent.
-// If the operation fails it returns the *ResourceProviderDefaultErrorResponse error type.
-func (client *OrganizationOperationsClient) List(options *OrganizationOperationsListOptions) *OrganizationOperationsListPager {
-	return &OrganizationOperationsListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+// NewListPager - List all operations provided by Microsoft.Confluent.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
+// options - OrganizationOperationsClientListOptions contains the optional parameters for the OrganizationOperationsClient.List
+// method.
+func (client *OrganizationOperationsClient) NewListPager(options *OrganizationOperationsClientListOptions) *runtime.Pager[OrganizationOperationsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[OrganizationOperationsClientListResponse]{
+		More: func(page OrganizationOperationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp OrganizationOperationsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.OperationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *OrganizationOperationsClientListResponse) (OrganizationOperationsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return OrganizationOperationsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return OrganizationOperationsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return OrganizationOperationsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
-func (client *OrganizationOperationsClient) listCreateRequest(ctx context.Context, options *OrganizationOperationsListOptions) (*policy.Request, error) {
+func (client *OrganizationOperationsClient) listCreateRequest(ctx context.Context, options *OrganizationOperationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Confluent/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *OrganizationOperationsClient) listHandleResponse(resp *http.Response) (OrganizationOperationsListResponse, error) {
-	result := OrganizationOperationsListResponse{RawResponse: resp}
+func (client *OrganizationOperationsClient) listHandleResponse(resp *http.Response) (OrganizationOperationsClientListResponse, error) {
+	result := OrganizationOperationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
-		return OrganizationOperationsListResponse{}, runtime.NewResponseError(err, resp)
+		return OrganizationOperationsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// listHandleError handles the List error response.
-func (client *OrganizationOperationsClient) listHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ResourceProviderDefaultErrorResponse{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

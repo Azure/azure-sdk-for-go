@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,10 +10,10 @@ package armmonitor
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -23,72 +23,73 @@ import (
 // VMInsightsClient contains the methods for the VMInsights group.
 // Don't use this type directly, use NewVMInsightsClient() instead.
 type VMInsightsClient struct {
-	ep string
-	pl runtime.Pipeline
+	host string
+	pl   runtime.Pipeline
 }
 
 // NewVMInsightsClient creates a new instance of VMInsightsClient with the specified values.
-func NewVMInsightsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *VMInsightsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewVMInsightsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*VMInsightsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &VMInsightsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &VMInsightsClient{
+		host: ep,
+		pl:   pl,
+	}
+	return client, nil
 }
 
 // GetOnboardingStatus - Retrieves the VM Insights onboarding status for the specified resource or resource scope.
-// If the operation fails it returns the *ResponseWithError error type.
-func (client *VMInsightsClient) GetOnboardingStatus(ctx context.Context, resourceURI string, options *VMInsightsGetOnboardingStatusOptions) (VMInsightsGetOnboardingStatusResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-11-27-preview
+// resourceURI - The fully qualified Azure Resource manager identifier of the resource, or scope, whose status to retrieve.
+// options - VMInsightsClientGetOnboardingStatusOptions contains the optional parameters for the VMInsightsClient.GetOnboardingStatus
+// method.
+func (client *VMInsightsClient) GetOnboardingStatus(ctx context.Context, resourceURI string, options *VMInsightsClientGetOnboardingStatusOptions) (VMInsightsClientGetOnboardingStatusResponse, error) {
 	req, err := client.getOnboardingStatusCreateRequest(ctx, resourceURI, options)
 	if err != nil {
-		return VMInsightsGetOnboardingStatusResponse{}, err
+		return VMInsightsClientGetOnboardingStatusResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VMInsightsGetOnboardingStatusResponse{}, err
+		return VMInsightsClientGetOnboardingStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VMInsightsGetOnboardingStatusResponse{}, client.getOnboardingStatusHandleError(resp)
+		return VMInsightsClientGetOnboardingStatusResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getOnboardingStatusHandleResponse(resp)
 }
 
 // getOnboardingStatusCreateRequest creates the GetOnboardingStatus request.
-func (client *VMInsightsClient) getOnboardingStatusCreateRequest(ctx context.Context, resourceURI string, options *VMInsightsGetOnboardingStatusOptions) (*policy.Request, error) {
+func (client *VMInsightsClient) getOnboardingStatusCreateRequest(ctx context.Context, resourceURI string, options *VMInsightsClientGetOnboardingStatusOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/vmInsightsOnboardingStatuses/default"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-27-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getOnboardingStatusHandleResponse handles the GetOnboardingStatus response.
-func (client *VMInsightsClient) getOnboardingStatusHandleResponse(resp *http.Response) (VMInsightsGetOnboardingStatusResponse, error) {
-	result := VMInsightsGetOnboardingStatusResponse{RawResponse: resp}
+func (client *VMInsightsClient) getOnboardingStatusHandleResponse(resp *http.Response) (VMInsightsClientGetOnboardingStatusResponse, error) {
+	result := VMInsightsClientGetOnboardingStatusResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VMInsightsOnboardingStatus); err != nil {
-		return VMInsightsGetOnboardingStatusResponse{}, runtime.NewResponseError(err, resp)
+		return VMInsightsClientGetOnboardingStatusResponse{}, err
 	}
 	return result, nil
-}
-
-// getOnboardingStatusHandleError handles the GetOnboardingStatus error response.
-func (client *VMInsightsClient) getOnboardingStatusHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	errType := ResponseWithError{raw: string(body)}
-	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
-		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
-	}
-	return runtime.NewResponseError(&errType, resp)
 }

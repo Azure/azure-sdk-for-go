@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,150 +19,174 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata"
 )
 
-// x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-11-01/examples/ListSubscriptionSqlServerInstance.json
-func ExampleSQLServerInstancesClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/ListSubscriptionSqlServerInstance.json
+func ExampleSQLServerInstancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armazurearcdata.NewSQLServerInstancesClient("<subscription-id>", cred, nil)
-	pager := client.List(nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	client, err := armazurearcdata.NewSQLServerInstancesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager(nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("SQLServerInstance.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-11-01/examples/ListByResourceGroupSqlServerInstance.json
-func ExampleSQLServerInstancesClient_ListByResourceGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/ListByResourceGroupSqlServerInstance.json
+func ExampleSQLServerInstancesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armazurearcdata.NewSQLServerInstancesClient("<subscription-id>", cred, nil)
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	client, err := armazurearcdata.NewSQLServerInstancesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByResourceGroupPager("testrg",
 		nil)
-	for pager.NextPage(ctx) {
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("SQLServerInstance.ID: %s\n", *v.ID)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-11-01/examples/GetSqlServerInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/GetSqlServerInstance.json
 func ExampleSQLServerInstancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armazurearcdata.NewSQLServerInstancesClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewSQLServerInstancesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<sql-server-instance-name>",
+		"testrg",
+		"testsqlServerInstance",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("SQLServerInstance.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-11-01/examples/CreateOrUpdateSqlServerInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/CreateOrUpdateSqlServerInstance.json
 func ExampleSQLServerInstancesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armazurearcdata.NewSQLServerInstancesClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewSQLServerInstancesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<sql-server-instance-name>",
+		"testrg",
+		"testsqlServerInstance",
 		armazurearcdata.SQLServerInstance{
-			TrackedResource: armazurearcdata.TrackedResource{
-				Location: to.StringPtr("<location>"),
-				Tags: map[string]*string{
-					"mytag": to.StringPtr("myval"),
-				},
+			Location: to.Ptr("northeurope"),
+			Tags: map[string]*string{
+				"mytag": to.Ptr("myval"),
 			},
 			Properties: &armazurearcdata.SQLServerInstanceProperties{
-				AzureDefenderStatus:            armazurearcdata.DefenderStatusProtected.ToPtr(),
-				AzureDefenderStatusLastUpdated: to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t }()),
-				Collation:                      to.StringPtr("<collation>"),
-				ContainerResourceID:            to.StringPtr("<container-resource-id>"),
-				CurrentVersion:                 to.StringPtr("<current-version>"),
-				Edition:                        armazurearcdata.EditionTypeDeveloper.ToPtr(),
-				InstanceName:                   to.StringPtr("<instance-name>"),
-				LicenseType:                    armazurearcdata.ArcSQLServerLicenseTypeFree.ToPtr(),
-				PatchLevel:                     to.StringPtr("<patch-level>"),
-				ProductID:                      to.StringPtr("<product-id>"),
-				Status:                         armazurearcdata.ConnectionStatusConnected.ToPtr(),
-				TCPDynamicPorts:                to.StringPtr("<tcpdynamic-ports>"),
-				TCPStaticPorts:                 to.StringPtr("<tcpstatic-ports>"),
-				VCore:                          to.StringPtr("<vcore>"),
-				Version:                        armazurearcdata.SQLVersionSQLServer2017.ToPtr(),
+				AzureDefenderStatus:            to.Ptr(armazurearcdata.DefenderStatusProtected),
+				AzureDefenderStatusLastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t }()),
+				Collation:                      to.Ptr("collation"),
+				ContainerResourceID:            to.Ptr("Resource id of hosting Arc Machine"),
+				CurrentVersion:                 to.Ptr("2012"),
+				Edition:                        to.Ptr(armazurearcdata.EditionTypeDeveloper),
+				HostType:                       to.Ptr(armazurearcdata.HostTypePhysicalServer),
+				InstanceName:                   to.Ptr("name of instance"),
+				LicenseType:                    to.Ptr(armazurearcdata.ArcSQLServerLicenseTypeFree),
+				PatchLevel:                     to.Ptr("patchlevel"),
+				ProductID:                      to.Ptr("sql id"),
+				Status:                         to.Ptr(armazurearcdata.ConnectionStatusRegistered),
+				TCPDynamicPorts:                to.Ptr("1433"),
+				TCPStaticPorts:                 to.Ptr("1433"),
+				VCore:                          to.Ptr("4"),
+				Version:                        to.Ptr(armazurearcdata.SQLVersionSQLServer2012),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("SQLServerInstance.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-11-01/examples/DeleteSqlServerInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/DeleteSqlServerInstance.json
 func ExampleSQLServerInstancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armazurearcdata.NewSQLServerInstancesClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewSQLServerInstancesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<sql-server-instance-name>",
+		"testrg",
+		"testsqlServerInstance",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-11-01/examples/UpdateSqlServerInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurearcdata/resource-manager/Microsoft.AzureArcData/preview/2022-03-01-preview/examples/UpdateSqlServerInstance.json
 func ExampleSQLServerInstancesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armazurearcdata.NewSQLServerInstancesClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewSQLServerInstancesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<sql-server-instance-name>",
+		"testrg",
+		"testsqlServerInstance",
 		armazurearcdata.SQLServerInstanceUpdate{
 			Tags: map[string]*string{
-				"mytag": to.StringPtr("myval"),
+				"mytag": to.Ptr("myval"),
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("SQLServerInstance.ID: %s\n", *res.ID)
+	// TODO: use response item
+	_ = res
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -7,28 +7,29 @@
 package policy
 
 import (
-	"context"
-	"net/http"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 )
 
 // Policy represents an extensibility point for the Pipeline that can mutate the specified
 // Request and react to the received Response.
-type Policy = pipeline.Policy
+type Policy = exported.Policy
 
 // Transporter represents an HTTP pipeline transport used to send HTTP requests and receive responses.
-type Transporter = pipeline.Transporter
+type Transporter = exported.Transporter
 
 // Request is an abstraction over the creation of an HTTP request as it passes through the pipeline.
 // Don't use this type directly, use runtime.NewRequest() instead.
-type Request = pipeline.Request
+type Request = exported.Request
 
 // ClientOptions contains optional settings for a client's pipeline.
 // All zero-value fields will be initialized with default values.
 type ClientOptions struct {
+	// Cloud specifies a cloud for the client. The default is Azure Public Cloud.
+	Cloud cloud.Configuration
+
 	// Logging configures the built-in logging policy.
 	Logging LogOptions
 
@@ -68,7 +69,8 @@ type LogOptions struct {
 }
 
 // RetryOptions configures the retry policy's behavior.
-// Call NewRetryOptions() to create an instance with default values.
+// Zero-value fields will have their specified default values applied during use.
+// This allows for modification of a subset of fields.
 type RetryOptions struct {
 	// MaxRetries specifies the maximum number of attempts a failed operation will be retried
 	// before producing an error.
@@ -81,6 +83,7 @@ type RetryOptions struct {
 	TryTimeout time.Duration
 
 	// RetryDelay specifies the initial amount of delay to use before retrying an operation.
+	// The value is used only if the HTTP response does not contain a Retry-After header.
 	// The delay increases exponentially with each retry up to the maximum specified by MaxRetryDelay.
 	// The default value is four seconds.  A value less than zero means no delay between retries.
 	RetryDelay time.Duration
@@ -91,14 +94,21 @@ type RetryOptions struct {
 	MaxRetryDelay time.Duration
 
 	// StatusCodes specifies the HTTP status codes that indicate the operation should be retried.
-	// The default value is the status codes in StatusCodesForRetry.
-	// Specifying an empty slice will cause retries to happen only for transport errors.
+	// A nil slice will use the following values.
+	//   http.StatusRequestTimeout      408
+	//   http.StatusTooManyRequests     429
+	//   http.StatusInternalServerError 500
+	//   http.StatusBadGateway          502
+	//   http.StatusServiceUnavailable  503
+	//   http.StatusGatewayTimeout      504
+	// Specifying values will replace the default values.
+	// Specifying an empty slice will disable retries for HTTP status codes.
 	StatusCodes []int
 }
 
 // TelemetryOptions configures the telemetry policy's behavior.
 type TelemetryOptions struct {
-	// ApplicationID is an application-specific identification string used in telemetry.
+	// ApplicationID is an application-specific identification string to add to the User-Agent.
 	// It has a maximum length of 24 characters and must not contain any spaces.
 	ApplicationID string
 
@@ -110,25 +120,9 @@ type TelemetryOptions struct {
 type TokenRequestOptions struct {
 	// Scopes contains the list of permission scopes required for the token.
 	Scopes []string
-	// TenantID contains the tenant ID to use in a multi-tenant authentication scenario, if TenantID is set
-	// it will override the tenant ID that was added at credential creation time.
-	TenantID string
 }
 
 // BearerTokenOptions configures the bearer token policy's behavior.
 type BearerTokenOptions struct {
 	// placeholder for future options
-}
-
-// WithHTTPHeader adds the specified http.Header to the parent context.
-// Use this to specify custom HTTP headers at the API-call level.
-// Any overlapping headers will have their values replaced with the values specified here.
-func WithHTTPHeader(parent context.Context, header http.Header) context.Context {
-	return context.WithValue(parent, shared.CtxWithHTTPHeaderKey{}, header)
-}
-
-// WithRetryOptions adds the specified RetryOptions to the parent context.
-// Use this to specify custom RetryOptions at the API-call level.
-func WithRetryOptions(parent context.Context, options RetryOptions) context.Context {
-	return context.WithValue(parent, shared.CtxWithRetryOptionsKey{}, options)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,42 +25,60 @@ import (
 // PublicKeysClient contains the methods for the PublicKeys group.
 // Don't use this type directly, use NewPublicKeysClient() instead.
 type PublicKeysClient struct {
-	ep             string
-	pl             runtime.Pipeline
+	host           string
 	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewPublicKeysClient creates a new instance of PublicKeysClient with the specified values.
-func NewPublicKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PublicKeysClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+// subscriptionID - The Subscription Id
+// credential - used to authorize requests. Usually a credential from azidentity.
+// options - pass nil to accept the default values.
+func NewPublicKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PublicKeysClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Host) == 0 {
-		cp.Host = arm.AzurePublicCloud
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
 	}
-	return &PublicKeysClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
+	}
+	client := &PublicKeysClient{
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
+	}
+	return client, nil
 }
 
 // Get - This method gets the public keys.
-// If the operation fails it returns a generic error.
-func (client *PublicKeysClient) Get(ctx context.Context, publicKeyName string, resourceGroupName string, dataManagerName string, options *PublicKeysGetOptions) (PublicKeysGetResponse, error) {
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
+// publicKeyName - Name of the public key.
+// resourceGroupName - The Resource Group Name
+// dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
+// 3 and 24 characters in length and use any alphanumeric and underscore only
+// options - PublicKeysClientGetOptions contains the optional parameters for the PublicKeysClient.Get method.
+func (client *PublicKeysClient) Get(ctx context.Context, publicKeyName string, resourceGroupName string, dataManagerName string, options *PublicKeysClientGetOptions) (PublicKeysClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, publicKeyName, resourceGroupName, dataManagerName, options)
 	if err != nil {
-		return PublicKeysGetResponse{}, err
+		return PublicKeysClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PublicKeysGetResponse{}, err
+		return PublicKeysClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return PublicKeysGetResponse{}, client.getHandleError(resp)
+		return PublicKeysClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PublicKeysClient) getCreateRequest(ctx context.Context, publicKeyName string, resourceGroupName string, dataManagerName string, options *PublicKeysGetOptions) (*policy.Request, error) {
+func (client *PublicKeysClient) getCreateRequest(ctx context.Context, publicKeyName string, resourceGroupName string, dataManagerName string, options *PublicKeysClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridData/dataManagers/{dataManagerName}/publicKeys/{publicKeyName}"
 	if publicKeyName == "" {
 		return nil, errors.New("parameter publicKeyName cannot be empty")
@@ -77,54 +96,64 @@ func (client *PublicKeysClient) getCreateRequest(ctx context.Context, publicKeyN
 		return nil, errors.New("parameter dataManagerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataManagerName}", url.PathEscape(dataManagerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PublicKeysClient) getHandleResponse(resp *http.Response) (PublicKeysGetResponse, error) {
-	result := PublicKeysGetResponse{RawResponse: resp}
+func (client *PublicKeysClient) getHandleResponse(resp *http.Response) (PublicKeysClientGetResponse, error) {
+	result := PublicKeysClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicKey); err != nil {
-		return PublicKeysGetResponse{}, runtime.NewResponseError(err, resp)
+		return PublicKeysClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// getHandleError handles the Get error response.
-func (client *PublicKeysClient) getHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
-}
-
-// ListByDataManager - This method gets the list view of public keys, however it will only have one element.
-// If the operation fails it returns a generic error.
-func (client *PublicKeysClient) ListByDataManager(resourceGroupName string, dataManagerName string, options *PublicKeysListByDataManagerOptions) *PublicKeysListByDataManagerPager {
-	return &PublicKeysListByDataManagerPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByDataManagerCreateRequest(ctx, resourceGroupName, dataManagerName, options)
+// NewListByDataManagerPager - This method gets the list view of public keys, however it will only have one element.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
+// resourceGroupName - The Resource Group Name
+// dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
+// 3 and 24 characters in length and use any alphanumeric and underscore only
+// options - PublicKeysClientListByDataManagerOptions contains the optional parameters for the PublicKeysClient.ListByDataManager
+// method.
+func (client *PublicKeysClient) NewListByDataManagerPager(resourceGroupName string, dataManagerName string, options *PublicKeysClientListByDataManagerOptions) *runtime.Pager[PublicKeysClientListByDataManagerResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PublicKeysClientListByDataManagerResponse]{
+		More: func(page PublicKeysClientListByDataManagerResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PublicKeysListByDataManagerResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.PublicKeyList.NextLink)
+		Fetcher: func(ctx context.Context, page *PublicKeysClientListByDataManagerResponse) (PublicKeysClientListByDataManagerResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByDataManagerCreateRequest(ctx, resourceGroupName, dataManagerName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PublicKeysClientListByDataManagerResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PublicKeysClientListByDataManagerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PublicKeysClientListByDataManagerResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByDataManagerHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByDataManagerCreateRequest creates the ListByDataManager request.
-func (client *PublicKeysClient) listByDataManagerCreateRequest(ctx context.Context, resourceGroupName string, dataManagerName string, options *PublicKeysListByDataManagerOptions) (*policy.Request, error) {
+func (client *PublicKeysClient) listByDataManagerCreateRequest(ctx context.Context, resourceGroupName string, dataManagerName string, options *PublicKeysClientListByDataManagerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridData/dataManagers/{dataManagerName}/publicKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -138,34 +167,22 @@ func (client *PublicKeysClient) listByDataManagerCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter dataManagerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataManagerName}", url.PathEscape(dataManagerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByDataManagerHandleResponse handles the ListByDataManager response.
-func (client *PublicKeysClient) listByDataManagerHandleResponse(resp *http.Response) (PublicKeysListByDataManagerResponse, error) {
-	result := PublicKeysListByDataManagerResponse{RawResponse: resp}
+func (client *PublicKeysClient) listByDataManagerHandleResponse(resp *http.Response) (PublicKeysClientListByDataManagerResponse, error) {
+	result := PublicKeysClientListByDataManagerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicKeyList); err != nil {
-		return PublicKeysListByDataManagerResponse{}, runtime.NewResponseError(err, resp)
+		return PublicKeysClientListByDataManagerResponse{}, err
 	}
 	return result, nil
-}
-
-// listByDataManagerHandleError handles the ListByDataManager error response.
-func (client *PublicKeysClient) listByDataManagerHandleError(resp *http.Response) error {
-	body, err := runtime.Payload(resp)
-	if err != nil {
-		return runtime.NewResponseError(err, resp)
-	}
-	if len(body) == 0 {
-		return runtime.NewResponseError(errors.New(resp.Status), resp)
-	}
-	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -271,7 +271,7 @@ func TestUnit_Processor_Run_startPosition(t *testing.T) {
 		processor.consumerClientDetails.EventHubName,
 		processor.consumerClientDetails.ConsumerGroup, nil)
 	require.NoError(t, err)
-	require.Equal(t, int64(202), checkpoints[0].SequenceNumber)
+	require.Equal(t, int64(202), *checkpoints[0].SequenceNumber)
 
 	partClient := processor.NextPartitionClient(context.Background())
 	require.Equal(t, "amqp.annotation.x-opt-sequence-number > '202'", partClient.innerClient.offsetExpression)
@@ -286,7 +286,7 @@ func TestUnit_Processor_Run_startPosition(t *testing.T) {
 		processor.consumerClientDetails.ConsumerGroup, nil)
 	require.NoError(t, err)
 	require.Equal(t, 1, len(checkpoints))
-	require.Equal(t, int64(405), checkpoints[0].SequenceNumber)
+	require.Equal(t, int64(405), *checkpoints[0].SequenceNumber)
 }
 
 func syncMapToNormalMap(src *sync.Map) map[string]*ProcessorPartitionClient {

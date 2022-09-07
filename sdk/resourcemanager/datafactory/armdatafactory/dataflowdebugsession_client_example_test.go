@@ -28,29 +28,25 @@ func ExampleDataFlowDebugSessionClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		armdatafactory.CreateDataFlowDebugSessionRequest{
-			IntegrationRuntime: &armdatafactory.IntegrationRuntimeDebugResource{
-				Name: to.Ptr("ir1"),
-				Properties: &armdatafactory.ManagedIntegrationRuntime{
-					Type: to.Ptr(armdatafactory.IntegrationRuntimeTypeManaged),
-					TypeProperties: &armdatafactory.ManagedIntegrationRuntimeTypeProperties{
-						ComputeProperties: &armdatafactory.IntegrationRuntimeComputeProperties{
-							DataFlowProperties: &armdatafactory.IntegrationRuntimeDataFlowProperties{
-								ComputeType: to.Ptr(armdatafactory.DataFlowComputeTypeGeneral),
-								CoreCount:   to.Ptr[int32](48),
-								TimeToLive:  to.Ptr[int32](10),
-							},
-							Location: to.Ptr("AutoResolve"),
+	poller, err := client.BeginCreate(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.CreateDataFlowDebugSessionRequest{
+		IntegrationRuntime: &armdatafactory.IntegrationRuntimeDebugResource{
+			Name: to.Ptr("ir1"),
+			Properties: &armdatafactory.ManagedIntegrationRuntime{
+				Type: to.Ptr(armdatafactory.IntegrationRuntimeTypeManaged),
+				TypeProperties: &armdatafactory.ManagedIntegrationRuntimeTypeProperties{
+					ComputeProperties: &armdatafactory.IntegrationRuntimeComputeProperties{
+						DataFlowProperties: &armdatafactory.IntegrationRuntimeDataFlowProperties{
+							ComputeType: to.Ptr(armdatafactory.DataFlowComputeTypeGeneral),
+							CoreCount:   to.Ptr[int32](48),
+							TimeToLive:  to.Ptr[int32](10),
 						},
+						Location: to.Ptr("AutoResolve"),
 					},
 				},
 			},
-			TimeToLive: to.Ptr[int32](60),
 		},
-		nil)
+		TimeToLive: to.Ptr[int32](60),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -73,9 +69,7 @@ func ExampleDataFlowDebugSessionClient_NewQueryByFactoryPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewQueryByFactoryPager("exampleResourceGroup",
-		"exampleFactoryName",
-		nil)
+	pager := client.NewQueryByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -99,94 +93,90 @@ func ExampleDataFlowDebugSessionClient_AddDataFlow() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.AddDataFlow(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		armdatafactory.DataFlowDebugPackage{
-			DataFlow: &armdatafactory.DataFlowDebugResource{
-				Name: to.Ptr("dataflow1"),
-				Properties: &armdatafactory.MappingDataFlow{
-					Type: to.Ptr("MappingDataFlow"),
-					TypeProperties: &armdatafactory.MappingDataFlowTypeProperties{
-						Script: to.Ptr("\n\nsource(output(\n		Column_1 as string\n	),\n	allowSchemaDrift: true,\n	validateSchema: false) ~> source1"),
-						Sinks:  []*armdatafactory.DataFlowSink{},
-						Sources: []*armdatafactory.DataFlowSource{
-							{
-								Name: to.Ptr("source1"),
-								Dataset: &armdatafactory.DatasetReference{
-									Type:          to.Ptr(armdatafactory.DatasetReferenceTypeDatasetReference),
-									ReferenceName: to.Ptr("DelimitedText2"),
-								},
-							}},
-						Transformations: []*armdatafactory.Transformation{},
-					},
+	res, err := client.AddDataFlow(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.DataFlowDebugPackage{
+		DataFlow: &armdatafactory.DataFlowDebugResource{
+			Name: to.Ptr("dataflow1"),
+			Properties: &armdatafactory.MappingDataFlow{
+				Type: to.Ptr("MappingDataFlow"),
+				TypeProperties: &armdatafactory.MappingDataFlowTypeProperties{
+					Script: to.Ptr("\n\nsource(output(\n		Column_1 as string\n	),\n	allowSchemaDrift: true,\n	validateSchema: false) ~> source1"),
+					Sinks:  []*armdatafactory.DataFlowSink{},
+					Sources: []*armdatafactory.DataFlowSource{
+						{
+							Name: to.Ptr("source1"),
+							Dataset: &armdatafactory.DatasetReference{
+								Type:          to.Ptr(armdatafactory.DatasetReferenceTypeDatasetReference),
+								ReferenceName: to.Ptr("DelimitedText2"),
+							},
+						}},
+					Transformations: []*armdatafactory.Transformation{},
 				},
 			},
-			Datasets: []*armdatafactory.DatasetDebugResource{
-				{
-					Name: to.Ptr("dataset1"),
-					Properties: &armdatafactory.DelimitedTextDataset{
-						Type: to.Ptr("DelimitedText"),
-						Schema: []interface{}{
-							map[string]interface{}{
-								"type": "String",
-							},
-						},
-						Annotations: []interface{}{},
-						LinkedServiceName: &armdatafactory.LinkedServiceReference{
-							Type:          to.Ptr(armdatafactory.LinkedServiceReferenceTypeLinkedServiceReference),
-							ReferenceName: to.Ptr("linkedService5"),
-						},
-						TypeProperties: &armdatafactory.DelimitedTextDatasetTypeProperties{
-							ColumnDelimiter:  ",",
-							EscapeChar:       "\\",
-							FirstRowAsHeader: true,
-							Location: &armdatafactory.AzureBlobStorageLocation{
-								Type:      to.Ptr("AzureBlobStorageLocation"),
-								FileName:  "Ansiencoding.csv",
-								Container: "dataflow-sample-data",
-							},
-							QuoteChar: "\"",
-						},
-					},
-				}},
-			DebugSettings: &armdatafactory.DataFlowDebugPackageDebugSettings{
-				DatasetParameters: map[string]interface{}{
-					"Movies": map[string]interface{}{
-						"path": "abc",
-					},
-					"Output": map[string]interface{}{
-						"time": "def",
-					},
-				},
-				Parameters: map[string]interface{}{
-					"sourcePath": "Toy",
-				},
-				SourceSettings: []*armdatafactory.DataFlowSourceSetting{
-					{
-						RowLimit:   to.Ptr[int32](1000),
-						SourceName: to.Ptr("source1"),
-					},
-					{
-						RowLimit:   to.Ptr[int32](222),
-						SourceName: to.Ptr("source2"),
-					}},
-			},
-			LinkedServices: []*armdatafactory.LinkedServiceDebugResource{
-				{
-					Name: to.Ptr("linkedService1"),
-					Properties: &armdatafactory.AzureBlobStorageLinkedService{
-						Type:        to.Ptr("AzureBlobStorage"),
-						Annotations: []interface{}{},
-						TypeProperties: &armdatafactory.AzureBlobStorageLinkedServiceTypeProperties{
-							ConnectionString:    "DefaultEndpointsProtocol=https;AccountName=<storageName>;EndpointSuffix=core.windows.net;",
-							EncryptedCredential: to.Ptr("<credential>"),
-						},
-					},
-				}},
-			SessionID: to.Ptr("f06ed247-9d07-49b2-b05e-2cb4a2fc871e"),
 		},
-		nil)
+		Datasets: []*armdatafactory.DatasetDebugResource{
+			{
+				Name: to.Ptr("dataset1"),
+				Properties: &armdatafactory.DelimitedTextDataset{
+					Type: to.Ptr("DelimitedText"),
+					Schema: []interface{}{
+						map[string]interface{}{
+							"type": "String",
+						},
+					},
+					Annotations: []interface{}{},
+					LinkedServiceName: &armdatafactory.LinkedServiceReference{
+						Type:          to.Ptr(armdatafactory.LinkedServiceReferenceTypeLinkedServiceReference),
+						ReferenceName: to.Ptr("linkedService5"),
+					},
+					TypeProperties: &armdatafactory.DelimitedTextDatasetTypeProperties{
+						ColumnDelimiter:  ",",
+						EscapeChar:       "\\",
+						FirstRowAsHeader: true,
+						Location: &armdatafactory.AzureBlobStorageLocation{
+							Type:      to.Ptr("AzureBlobStorageLocation"),
+							FileName:  "Ansiencoding.csv",
+							Container: "dataflow-sample-data",
+						},
+						QuoteChar: "\"",
+					},
+				},
+			}},
+		DebugSettings: &armdatafactory.DataFlowDebugPackageDebugSettings{
+			DatasetParameters: map[string]interface{}{
+				"Movies": map[string]interface{}{
+					"path": "abc",
+				},
+				"Output": map[string]interface{}{
+					"time": "def",
+				},
+			},
+			Parameters: map[string]interface{}{
+				"sourcePath": "Toy",
+			},
+			SourceSettings: []*armdatafactory.DataFlowSourceSetting{
+				{
+					RowLimit:   to.Ptr[int32](1000),
+					SourceName: to.Ptr("source1"),
+				},
+				{
+					RowLimit:   to.Ptr[int32](222),
+					SourceName: to.Ptr("source2"),
+				}},
+		},
+		LinkedServices: []*armdatafactory.LinkedServiceDebugResource{
+			{
+				Name: to.Ptr("linkedService1"),
+				Properties: &armdatafactory.AzureBlobStorageLinkedService{
+					Type:        to.Ptr("AzureBlobStorage"),
+					Annotations: []interface{}{},
+					TypeProperties: &armdatafactory.AzureBlobStorageLinkedServiceTypeProperties{
+						ConnectionString:    "DefaultEndpointsProtocol=https;AccountName=<storageName>;EndpointSuffix=core.windows.net;",
+						EncryptedCredential: to.Ptr("<credential>"),
+					},
+				},
+			}},
+		SessionID: to.Ptr("f06ed247-9d07-49b2-b05e-2cb4a2fc871e"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -205,13 +195,9 @@ func ExampleDataFlowDebugSessionClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		armdatafactory.DeleteDataFlowDebugSessionRequest{
-			SessionID: to.Ptr("91fb57e0-8292-47be-89ff-c8f2d2bb2a7e"),
-		},
-		nil)
+	_, err = client.Delete(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.DeleteDataFlowDebugSessionRequest{
+		SessionID: to.Ptr("91fb57e0-8292-47be-89ff-c8f2d2bb2a7e"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -228,18 +214,14 @@ func ExampleDataFlowDebugSessionClient_BeginExecuteCommand() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginExecuteCommand(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		armdatafactory.DataFlowDebugCommandRequest{
-			Command: to.Ptr(armdatafactory.DataFlowDebugCommandTypeExecutePreviewQuery),
-			CommandPayload: &armdatafactory.DataFlowDebugCommandPayload{
-				RowLimits:  to.Ptr[int32](100),
-				StreamName: to.Ptr("source1"),
-			},
-			SessionID: to.Ptr("f06ed247-9d07-49b2-b05e-2cb4a2fc871e"),
+	poller, err := client.BeginExecuteCommand(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.DataFlowDebugCommandRequest{
+		Command: to.Ptr(armdatafactory.DataFlowDebugCommandTypeExecutePreviewQuery),
+		CommandPayload: &armdatafactory.DataFlowDebugCommandPayload{
+			RowLimits:  to.Ptr[int32](100),
+			StreamName: to.Ptr("source1"),
 		},
-		nil)
+		SessionID: to.Ptr("f06ed247-9d07-49b2-b05e-2cb4a2fc871e"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

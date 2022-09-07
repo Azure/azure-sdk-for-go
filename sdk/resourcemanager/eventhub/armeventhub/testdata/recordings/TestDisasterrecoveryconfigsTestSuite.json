@@ -1,0 +1,981 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg?api-version=2021-04-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "westus"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "225",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 07 Sep 2022 09:09:40 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1192",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220907T090941Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg",
+        "name": "go-sdk-test-rg",
+        "type": "Microsoft.Resources/resourceGroups",
+        "location": "westus",
+        "properties": {
+          "provisioningState": "Succeeded"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc?api-version=2022-01-01-preview",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "65",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armeventhub/v1.1.0-beta.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "westus",
+        "sku": {
+          "name": "Standard",
+          "tier": "Standard"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 07 Sep 2022 09:09:47 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": [
+          "Service-Bus-Resource-Provider/CH3",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Server-SB": "Service-Bus-Resource-Provider/CH3",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-resource-requests": "49",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000_M11CH3_M11CH3",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220907T090947Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "sku": {
+          "name": "Standard",
+          "tier": "Standard",
+          "capacity": 1
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc",
+        "name": "namespacen2cSmPHc",
+        "type": "Microsoft.EventHub/Namespaces",
+        "location": "West US",
+        "tags": {},
+        "properties": {
+          "minimumTlsVersion": "1.2",
+          "publicNetworkAccess": "Enabled",
+          "disableLocalAuth": false,
+          "zoneRedundant": false,
+          "isAutoInflateEnabled": false,
+          "maximumThroughputUnits": 0,
+          "kafkaEnabled": true,
+          "provisioningState": "Created",
+          "metricId": "00000000-0000-0000-0000-000000000000:namespacen2csmphc",
+          "createdAt": "2022-09-07T09:09:46.13Z",
+          "updatedAt": "2022-09-07T09:09:46.13Z",
+          "serviceBusEndpoint": "https://namespacen2cSmPHc.servicebus.windows.net:443/",
+          "status": "Activating"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc?api-version=2022-01-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armeventhub/v1.1.0-beta.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 07 Sep 2022 09:09:47 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": [
+          "Service-Bus-Resource-Provider/SN1",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Server-SB": "Service-Bus-Resource-Provider/SN1",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11981",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000_M4SN1_M4SN1",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220907T090948Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "sku": {
+          "name": "Standard",
+          "tier": "Standard",
+          "capacity": 1
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc",
+        "name": "namespacen2cSmPHc",
+        "type": "Microsoft.EventHub/Namespaces",
+        "location": "West US",
+        "tags": {},
+        "properties": {
+          "minimumTlsVersion": "1.2",
+          "publicNetworkAccess": "Enabled",
+          "disableLocalAuth": false,
+          "zoneRedundant": false,
+          "isAutoInflateEnabled": false,
+          "maximumThroughputUnits": 0,
+          "kafkaEnabled": true,
+          "provisioningState": "Created",
+          "metricId": "00000000-0000-0000-0000-000000000000:namespacen2csmphc",
+          "createdAt": "2022-09-07T09:09:46.13Z",
+          "updatedAt": "2022-09-07T09:09:46.13Z",
+          "serviceBusEndpoint": "https://namespacen2cSmPHc.servicebus.windows.net:443/",
+          "status": "Activating"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc?api-version=2022-01-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armeventhub/v1.1.0-beta.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 07 Sep 2022 09:10:17 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": [
+          "Service-Bus-Resource-Provider/SN1",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Server-SB": "Service-Bus-Resource-Provider/SN1",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11980",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000_M4SN1_M4SN1",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220907T091018Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "sku": {
+          "name": "Standard",
+          "tier": "Standard",
+          "capacity": 1
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc",
+        "name": "namespacen2cSmPHc",
+        "type": "Microsoft.EventHub/Namespaces",
+        "location": "West US",
+        "tags": {},
+        "properties": {
+          "minimumTlsVersion": "1.2",
+          "publicNetworkAccess": "Enabled",
+          "disableLocalAuth": false,
+          "zoneRedundant": false,
+          "isAutoInflateEnabled": false,
+          "maximumThroughputUnits": 0,
+          "kafkaEnabled": true,
+          "provisioningState": "Created",
+          "metricId": "00000000-0000-0000-0000-000000000000:namespacen2csmphc",
+          "createdAt": "2022-09-07T09:09:46.13Z",
+          "updatedAt": "2022-09-07T09:09:46.13Z",
+          "serviceBusEndpoint": "https://namespacen2cSmPHc.servicebus.windows.net:443/",
+          "status": "Activating"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc?api-version=2022-01-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armeventhub/v1.1.0-beta.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 07 Sep 2022 09:10:49 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": [
+          "Service-Bus-Resource-Provider/SN1",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Server-SB": "Service-Bus-Resource-Provider/SN1",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11979",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000_M4SN1_M4SN1",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220907T091049Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "sku": {
+          "name": "Standard",
+          "tier": "Standard",
+          "capacity": 1
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc",
+        "name": "namespacen2cSmPHc",
+        "type": "Microsoft.EventHub/Namespaces",
+        "location": "West US",
+        "tags": {},
+        "properties": {
+          "minimumTlsVersion": "1.2",
+          "publicNetworkAccess": "Enabled",
+          "disableLocalAuth": false,
+          "zoneRedundant": false,
+          "isAutoInflateEnabled": false,
+          "maximumThroughputUnits": 0,
+          "kafkaEnabled": true,
+          "provisioningState": "Succeeded",
+          "metricId": "00000000-0000-0000-0000-000000000000:namespacen2csmphc",
+          "createdAt": "2022-09-07T09:09:46.13Z",
+          "updatedAt": "2022-09-07T09:10:37.25Z",
+          "serviceBusEndpoint": "https://namespacen2cSmPHc.servicebus.windows.net:443/",
+          "status": "Active"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacensecondcSmPHc?api-version=2022-01-01-preview",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "66",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armeventhub/v1.1.0-beta.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "westus2",
+        "sku": {
+          "name": "Standard",
+          "tier": "Standard"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 07 Sep 2022 09:10:53 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": [
+          "Service-Bus-Resource-Provider/SN1",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Server-SB": "Service-Bus-Resource-Provider/SN1",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-resource-requests": "48",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000_M4SN1_M4SN1",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220907T091053Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "sku": {
+          "name": "Standard",
+          "tier": "Standard",
+          "capacity": 1
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacensecondcSmPHc",
+        "name": "namespacensecondcSmPHc",
+        "type": "Microsoft.EventHub/Namespaces",
+        "location": "West US 2",
+        "tags": {},
+        "properties": {
+          "minimumTlsVersion": "1.2",
+          "publicNetworkAccess": "Enabled",
+          "disableLocalAuth": false,
+          "zoneRedundant": false,
+          "isAutoInflateEnabled": false,
+          "maximumThroughputUnits": 0,
+          "kafkaEnabled": true,
+          "provisioningState": "Created",
+          "metricId": "00000000-0000-0000-0000-000000000000:namespacensecondcsmphc",
+          "createdAt": "2022-09-07T09:10:52.15Z",
+          "updatedAt": "2022-09-07T09:10:52.15Z",
+          "serviceBusEndpoint": "https://namespacensecondcSmPHc.servicebus.windows.net:443/",
+          "status": "Activating"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacensecondcSmPHc?api-version=2022-01-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armeventhub/v1.1.0-beta.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 07 Sep 2022 09:10:53 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": [
+          "Service-Bus-Resource-Provider/SN1",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Server-SB": "Service-Bus-Resource-Provider/SN1",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11978",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000_M4SN1_M4SN1",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220907T091054Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "sku": {
+          "name": "Standard",
+          "tier": "Standard",
+          "capacity": 1
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacensecondcSmPHc",
+        "name": "namespacensecondcSmPHc",
+        "type": "Microsoft.EventHub/Namespaces",
+        "location": "West US 2",
+        "tags": {},
+        "properties": {
+          "minimumTlsVersion": "1.2",
+          "publicNetworkAccess": "Enabled",
+          "disableLocalAuth": false,
+          "zoneRedundant": false,
+          "isAutoInflateEnabled": false,
+          "maximumThroughputUnits": 0,
+          "kafkaEnabled": true,
+          "provisioningState": "Created",
+          "metricId": "00000000-0000-0000-0000-000000000000:namespacensecondcsmphc",
+          "createdAt": "2022-09-07T09:10:52.15Z",
+          "updatedAt": "2022-09-07T09:10:52.15Z",
+          "serviceBusEndpoint": "https://namespacensecondcSmPHc.servicebus.windows.net:443/",
+          "status": "Activating"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacensecondcSmPHc?api-version=2022-01-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armeventhub/v1.1.0-beta.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 07 Sep 2022 09:11:24 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": [
+          "Service-Bus-Resource-Provider/SN1",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Server-SB": "Service-Bus-Resource-Provider/SN1",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11977",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000_M4SN1_M4SN1",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220907T091124Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "sku": {
+          "name": "Standard",
+          "tier": "Standard",
+          "capacity": 1
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacensecondcSmPHc",
+        "name": "namespacensecondcSmPHc",
+        "type": "Microsoft.EventHub/Namespaces",
+        "location": "West US 2",
+        "tags": {},
+        "properties": {
+          "minimumTlsVersion": "1.2",
+          "publicNetworkAccess": "Enabled",
+          "disableLocalAuth": false,
+          "zoneRedundant": false,
+          "isAutoInflateEnabled": false,
+          "maximumThroughputUnits": 0,
+          "kafkaEnabled": true,
+          "provisioningState": "Created",
+          "metricId": "00000000-0000-0000-0000-000000000000:namespacensecondcsmphc",
+          "createdAt": "2022-09-07T09:10:52.15Z",
+          "updatedAt": "2022-09-07T09:10:52.15Z",
+          "serviceBusEndpoint": "https://namespacensecondcSmPHc.servicebus.windows.net:443/",
+          "status": "Activating"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacensecondcSmPHc?api-version=2022-01-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armeventhub/v1.1.0-beta.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 07 Sep 2022 09:11:54 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": [
+          "Service-Bus-Resource-Provider/CH3",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Server-SB": "Service-Bus-Resource-Provider/CH3",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11976",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000_M9CH3_M9CH3",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220907T091155Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "sku": {
+          "name": "Standard",
+          "tier": "Standard",
+          "capacity": 1
+        },
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacensecondcSmPHc",
+        "name": "namespacensecondcSmPHc",
+        "type": "Microsoft.EventHub/Namespaces",
+        "location": "West US 2",
+        "tags": {},
+        "properties": {
+          "minimumTlsVersion": "1.2",
+          "publicNetworkAccess": "Enabled",
+          "disableLocalAuth": false,
+          "zoneRedundant": false,
+          "isAutoInflateEnabled": false,
+          "maximumThroughputUnits": 0,
+          "kafkaEnabled": true,
+          "provisioningState": "Succeeded",
+          "metricId": "00000000-0000-0000-0000-000000000000:namespacensecondcsmphc",
+          "createdAt": "2022-09-07T09:10:52.15Z",
+          "updatedAt": "2022-09-07T09:11:42.5Z",
+          "serviceBusEndpoint": "https://namespacensecondcSmPHc.servicebus.windows.net:443/",
+          "status": "Active"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc/authorizationRules/authorizat2cSmPHc?api-version=2022-01-01-preview",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "43",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armeventhub/v1.1.0-beta.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": {
+        "properties": {
+          "rights": [
+            "Listen",
+            "Send"
+          ]
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 07 Sep 2022 09:12:01 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": [
+          "Service-Bus-Resource-Provider/CH3",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Server-SB": "Service-Bus-Resource-Provider/CH3",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1191",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000_M9CH3_M9CH3",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220907T091202Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc/authorizationRules/authorizat2cSmPHc",
+        "name": "authorizat2cSmPHc",
+        "type": "Microsoft.EventHub/Namespaces/AuthorizationRules",
+        "location": "West US",
+        "properties": {
+          "rights": [
+            "Listen",
+            "Send"
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc/disasterRecoveryConfigs/checkNameAvailability?api-version=2022-01-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "36",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armeventhub/v1.1.0-beta.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": {
+        "name": "sdk-DisasterRecovery-9474"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 07 Sep 2022 09:12:03 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": [
+          "Service-Bus-Resource-Provider/CH3",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Server-SB": "Service-Bus-Resource-Provider/CH3",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1195",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000_M9CH3_M9CH3",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220907T091203Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "nameAvailable": true,
+        "reason": "None"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc/disasterRecoveryConfigs/alias2cSmPHc?api-version=2022-01-01-preview",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "182",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armeventhub/v1.1.0-beta.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": {
+        "properties": {
+          "partnerNamespace": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacensecondcSmPHc"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 07 Sep 2022 09:12:11 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": [
+          "Service-Bus-Resource-Provider/CH3",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Server-SB": "Service-Bus-Resource-Provider/CH3",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1190",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000_M9CH3_M9CH3",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220907T091211Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc/disasterRecoveryConfigs/alias2cSmPHc",
+        "name": "alias2cSmPHc",
+        "type": "Microsoft.EventHub/Namespaces/disasterrecoveryconfigs",
+        "properties": {
+          "provisioningState": "Accepted",
+          "partnerNamespace": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacensecondcSmPHc",
+          "role": "Primary",
+          "type": "MetadataReplication"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc/disasterRecoveryConfigs?api-version=2022-01-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armeventhub/v1.1.0-beta.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 07 Sep 2022 09:12:11 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": [
+          "Service-Bus-Resource-Provider/CH3",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Server-SB": "Service-Bus-Resource-Provider/CH3",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11975",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000_M9CH3_M9CH3",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220907T091211Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc/disasterRecoveryConfigs/alias2cSmPHc",
+            "name": "alias2cSmPHc",
+            "type": "Microsoft.EventHub/Namespaces/disasterrecoveryconfigs",
+            "properties": {
+              "provisioningState": "Accepted",
+              "partnerNamespace": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacensecondcSmPHc",
+              "role": "Primary",
+              "type": "MetadataReplication"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc/disasterRecoveryConfigs/alias2cSmPHc/authorizationRules/authorizat2cSmPHc?api-version=2022-01-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armeventhub/v1.1.0-beta.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 07 Sep 2022 09:12:12 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": [
+          "Service-Bus-Resource-Provider/CH3",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Server-SB": "Service-Bus-Resource-Provider/CH3",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11974",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000_M9CH3_M9CH3",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220907T091212Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc/disasterRecoveryConfigs/alias2cSmPHc/authorizationRules/authorizat2cSmPHc",
+        "name": "authorizat2cSmPHc",
+        "type": "Microsoft.EventHub/Namespaces/AuthorizationRules",
+        "location": "West US",
+        "properties": {
+          "rights": [
+            "Listen",
+            "Send"
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc/disasterRecoveryConfigs/alias2cSmPHc?api-version=2022-01-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armeventhub/v1.1.0-beta.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 07 Sep 2022 09:12:13 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": [
+          "Service-Bus-Resource-Provider/CH3",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Server-SB": "Service-Bus-Resource-Provider/CH3",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11973",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000_M9CH3_M9CH3",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220907T091213Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc/disasterRecoveryConfigs/alias2cSmPHc",
+        "name": "alias2cSmPHc",
+        "type": "Microsoft.EventHub/Namespaces/disasterrecoveryconfigs",
+        "properties": {
+          "provisioningState": "Accepted",
+          "partnerNamespace": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacensecondcSmPHc",
+          "role": "Primary",
+          "type": "MetadataReplication"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc/disasterRecoveryConfigs/alias2cSmPHc/authorizationRules?api-version=2022-01-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armeventhub/v1.1.0-beta.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 07 Sep 2022 09:12:14 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": [
+          "Service-Bus-Resource-Provider/CH3",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Server-SB": "Service-Bus-Resource-Provider/CH3",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11972",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000_M9CH3_M9CH3",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220907T091214Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc/disasterRecoveryConfigs/alias2cSmPHc/authorizationRules/RootManageSharedAccessKey",
+            "name": "RootManageSharedAccessKey",
+            "type": "Microsoft.EventHub/Namespaces/AuthorizationRules",
+            "location": "West US",
+            "properties": {
+              "rights": [
+                "Listen",
+                "Manage",
+                "Send"
+              ]
+            }
+          },
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc/disasterRecoveryConfigs/alias2cSmPHc/authorizationRules/authorizat2cSmPHc",
+            "name": "authorizat2cSmPHc",
+            "type": "Microsoft.EventHub/Namespaces/AuthorizationRules",
+            "location": "West US",
+            "properties": {
+              "rights": [
+                "Listen",
+                "Send"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacen2cSmPHc/disasterRecoveryConfigs/alias2cSmPHc/authorizationRules/authorizat2cSmPHc/listKeys?api-version=2022-01-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-armeventhub/v1.1.0-beta.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 07 Sep 2022 09:12:15 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": [
+          "Service-Bus-Resource-Provider/CH3",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Server-SB": "Service-Bus-Resource-Provider/CH3",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1194",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000_M9CH3_M9CH3",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220907T091215Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "aliasPrimaryConnectionString": "Endpoint=sb://alias2csmphc.servicebus.windows.net/;SharedAccessKeyName=authorizat2cSmPHc;SharedAccessKey=auF/yFbms5/Z67oEWbfaa0GbHE8sYFj3fSJlVSdE/SA=",
+        "aliasSecondaryConnectionString": "Endpoint=sb://alias2csmphc.servicebus.windows.net/;SharedAccessKeyName=authorizat2cSmPHc;SharedAccessKey=gK54\u002BfEVzu7cvNPz\u002BRg9Vw3LT5LhIgRL0YlEGi25DNQ=",
+        "primaryKey": "auF/yFbms5/Z67oEWbfaa0GbHE8sYFj3fSJlVSdE/SA=",
+        "secondaryKey": "gK54\u002BfEVzu7cvNPz\u002BRg9Vw3LT5LhIgRL0YlEGi25DNQ=",
+        "keyName": "authorizat2cSmPHc"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.EventHub/namespaces/namespacensecondcSmPHc/disasterRecoveryConfigs/alias2cSmPHc/failover?api-version=2022-01-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-armeventhub/v1.1.0-beta.1 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Wed, 07 Sep 2022 09:12:16 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": [
+          "Service-Bus-Resource-Provider/CH3",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Server-SB": "Service-Bus-Resource-Provider/CH3",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1193",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000_M9CH3_M9CH3",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220907T091216Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg?api-version=2021-04-01",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Wed, 07 Sep 2022 09:12:19 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1HTzoyRFNESzoyRFRFU1Q6MkQxNTAtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2021-04-01",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-deletes": "14991",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220907T091219Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "recordingRandomSeed": "1662541240"
+  }
+}

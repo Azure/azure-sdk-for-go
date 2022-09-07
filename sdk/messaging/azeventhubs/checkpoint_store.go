@@ -56,8 +56,8 @@ type CheckpointStoreAddress struct {
 // CheckpointData tracks latest offset and sequence number that have been
 // processed by the client.
 type CheckpointData struct {
-	Offset         int64
-	SequenceNumber int64
+	Offset         *int64
+	SequenceNumber *int64
 }
 
 // ListCheckpointsOptions contains optional parameters for the ListCheckpoints function

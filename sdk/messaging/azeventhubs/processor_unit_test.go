@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
@@ -239,7 +240,7 @@ func TestUnit_Processor_Run_startPosition(t *testing.T) {
 			PartitionID:             "a",
 		},
 		CheckpointData: CheckpointData{
-			SequenceNumber: 202,
+			SequenceNumber: to.Ptr[int64](202),
 		},
 	}, nil)
 	require.NoError(t, err)

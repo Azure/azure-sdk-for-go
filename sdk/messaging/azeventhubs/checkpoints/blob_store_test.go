@@ -9,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/blob"
@@ -35,8 +36,8 @@ func TestBlobStore_Checkpoints(t *testing.T) {
 			PartitionID:             "partition-id",
 		},
 		CheckpointData: azeventhubs.CheckpointData{
-			Offset:         101,
-			SequenceNumber: 202,
+			Offset:         to.Ptr[int64](101),
+			SequenceNumber: to.Ptr[int64](202),
 		},
 	}, nil)
 	require.NoError(t, err)
@@ -52,8 +53,8 @@ func TestBlobStore_Checkpoints(t *testing.T) {
 			PartitionID:             "partition-id",
 		},
 		CheckpointData: azeventhubs.CheckpointData{
-			Offset:         101,
-			SequenceNumber: 202,
+			Offset:         to.Ptr[int64](101),
+			SequenceNumber: to.Ptr[int64](202),
 		},
 	}, checkpoints[0])
 }

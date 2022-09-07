@@ -32,7 +32,8 @@ func (p *ProcessorPartitionClient) UpdateCheckpoint(ctx context.Context, latestE
 			PartitionID:             p.partitionID,
 		},
 		CheckpointData: CheckpointData{
-			SequenceNumber: latestEvent.SequenceNumber,
+			SequenceNumber: &latestEvent.SequenceNumber,
+			Offset:         latestEvent.Offset,
 		},
 	}, nil)
 }

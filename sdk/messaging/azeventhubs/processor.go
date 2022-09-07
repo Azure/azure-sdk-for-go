@@ -283,8 +283,14 @@ func (p *Processor) addPartitionClient(ctx context.Context, ownership Ownership,
 		return nil
 	}
 
+	sp, err := p.getStartPosition(checkpoints, ownership)
+
+	if err != nil {
+		return err
+	}
+
 	partClient, err := p.consumerClient.NewPartitionClient(ownership.PartitionID, &NewPartitionClientOptions{
-		StartPosition: p.getStartPosition(checkpoints, ownership),
+		StartPosition: sp,
 	})
 
 	if err != nil {
@@ -311,13 +317,21 @@ func (p *Processor) addPartitionClient(ctx context.Context, ownership Ownership,
 	}
 }
 
-func (p *Processor) getStartPosition(checkpoints map[string]Checkpoint, ownership Ownership) StartPosition {
+func (p *Processor) getStartPosition(checkpoints map[string]Checkpoint, ownership Ownership) (StartPosition, error) {
 	startPosition := p.defaultStartPositions.Default
 	cp, hasCheckpoint := checkpoints[ownership.PartitionID]
 
 	if hasCheckpoint {
-		startPosition = StartPosition{
-			SequenceNumber: &cp.SequenceNumber,
+		if cp.Offset != nil {
+			startPosition = StartPosition{
+				Offset: cp.Offset,
+			}
+		} else if cp.SequenceNumber != nil {
+			startPosition = StartPosition{
+				SequenceNumber: cp.SequenceNumber,
+			}
+		} else {
+			return StartPosition{}, fmt.Errorf("invalid checkpoint for %s, no offset or sequence number", ownership.PartitionID)
 		}
 	} else if p.defaultStartPositions.PerPartition != nil {
 		defaultStartPosition, exists := p.defaultStartPositions.PerPartition[ownership.PartitionID]
@@ -327,7 +341,7 @@ func (p *Processor) getStartPosition(checkpoints map[string]Checkpoint, ownershi
 		}
 	}
 
-	return startPosition
+	return startPosition, nil
 }
 
 func (p *Processor) getCheckpointsMap(ctx context.Context) (map[string]Checkpoint, error) {

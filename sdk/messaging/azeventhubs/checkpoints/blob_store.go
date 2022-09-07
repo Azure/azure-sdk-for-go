@@ -338,16 +338,23 @@ func newCheckpointData(metadata map[string]*string) (azeventhubs.CheckpointData,
 	}
 
 	return azeventhubs.CheckpointData{
-		Offset:         offset,
-		SequenceNumber: sequenceNumber,
+		Offset:         &offset,
+		SequenceNumber: &sequenceNumber,
 	}, nil
 }
 
 func newCheckpointBlobMetadata(cpd azeventhubs.CheckpointData) map[string]string {
-	return map[string]string{
-		"sequencenumber": strconv.FormatInt(cpd.SequenceNumber, 10),
-		"offset":         strconv.FormatInt(cpd.Offset, 10),
+	m := map[string]string{}
+
+	if cpd.SequenceNumber != nil {
+		m["sequencenumber"] = strconv.FormatInt(*cpd.SequenceNumber, 10)
 	}
+
+	if cpd.Offset != nil {
+		m["offset"] = strconv.FormatInt(*cpd.Offset, 10)
+	}
+
+	return m
 }
 
 func newOwnershipData(b *blob.BlobItemInternal) (azeventhubs.OwnershipData, error) {

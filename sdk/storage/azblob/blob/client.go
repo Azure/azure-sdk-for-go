@@ -278,15 +278,15 @@ func (b *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 		o.BlockSize = DefaultDownloadBlockSize
 	}
 
-	count := o.Count
+	count := o.Range.Count
 	if count == CountToEnd { // If size not specified, calculate it
 		// If we don't have the length at all, get it
-		downloadBlobOptions := o.getDownloadBlobOptions(0, CountToEnd, nil)
+		downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{}, nil)
 		dr, err := b.DownloadStream(ctx, downloadBlobOptions)
 		if err != nil {
 			return 0, err
 		}
-		count = *dr.ContentLength - o.Offset
+		count = *dr.ContentLength - o.Range.Offset
 	}
 
 	if count <= 0 {
@@ -305,7 +305,10 @@ func (b *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 		Parallelism:   o.Parallelism,
 		Operation: func(chunkStart int64, count int64, ctx context.Context) error {
 
-			downloadBlobOptions := o.getDownloadBlobOptions(chunkStart+o.Offset, count, nil)
+			downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{
+				Offset: chunkStart + o.Range.Offset,
+				Count:  count,
+			}, nil)
 			dr, err := b.DownloadStream(ctx, downloadBlobOptions)
 			if err != nil {
 				return err
@@ -351,21 +354,10 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		return DownloadStreamResponse{}, err
 	}
 
-	offset := int64(0)
-	count := int64(CountToEnd)
-
-	if o.Offset != nil {
-		offset = *o.Offset
-	}
-
-	if o.Count != nil {
-		count = *o.Count
-	}
-
 	return DownloadStreamResponse{
 		client:                     b,
 		BlobClientDownloadResponse: dr,
-		getInfo:                    httpGetterInfo{Offset: offset, Count: count, ETag: dr.ETag},
+		getInfo:                    httpGetterInfo{Range: o.Range, ETag: dr.ETag},
 		ObjectReplicationRules:     deserializeORSPolicies(dr.ObjectReplicationRules),
 		cpkInfo:                    o.CpkInfo,
 		cpkScope:                   o.CpkScopeInfo,
@@ -391,7 +383,7 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	// 1. Calculate the size of the destination file
 	var size int64
 
-	count := do.Count
+	count := do.Range.Count
 	if count == CountToEnd {
 		// Try to get Azure blob's size
 		getBlobPropertiesOptions := do.getBlobPropertiesOptions()
@@ -399,7 +391,7 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 		if err != nil {
 			return 0, err
 		}
-		size = *props.ContentLength - do.Offset
+		size = *props.ContentLength - do.Range.Offset
 	} else {
 		size = count
 	}

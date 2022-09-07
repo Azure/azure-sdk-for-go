@@ -49,6 +49,11 @@ type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
 // Tags represent map of blob index tags
 type Tags = generated.BlobTag
 
+// HTTPRange defines a range of bytes within an HTTP resource, starting at offset and
+// ending at offset+count. A zero-value HTTPRange indicates the entire resource. An HTTPRange
+// which has an offset but no zero value count indicates from the offset to the resource's end.
+type HTTPRange = exported.HTTPRange
+
 // Request Model Declaration -------------------------------------------------------------------------------------------
 
 // DownloadStreamOptions contains the optional parameters for the Client.Download method.
@@ -57,9 +62,8 @@ type DownloadStreamOptions struct {
 	// range is less than or equal to 4 MB in size.
 	RangeGetContentMD5 *bool
 
-	// Optional, you can specify whether a particular range of the blob is read
-	Offset *int64
-	Count  *int64
+	// Range specifies a range of bytes.  The default value is all bytes.
+	Range HTTPRange
 
 	AccessConditions *AccessConditions
 	CpkInfo          *CpkInfo
@@ -71,20 +75,9 @@ func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, 
 		return nil, nil, nil, nil
 	}
 
-	offset := int64(0)
-	count := int64(CountToEnd)
-
-	if o.Offset != nil {
-		offset = *o.Offset
-	}
-
-	if o.Count != nil {
-		count = *o.Count
-	}
-
 	basics := generated.BlobClientDownloadOptions{
 		RangeGetContentMD5: o.RangeGetContentMD5,
-		Range:              shared.HTTPRange{Offset: offset, Count: count}.Format(),
+		Range:              exported.FormatHTTPRange(o.Range),
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
@@ -95,11 +88,8 @@ func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, 
 
 // downloadOptions contains common options used by the DownloadBuffer and DownloadFile functions.
 type downloadOptions struct {
-	// Count is the number of bytes to download.  Specify 0 to download the entire blob (this is the default).
-	Count int64
-
-	// Offset is the byte offset within the blob to start the download.  The default value is zero.
-	Offset int64
+	// Range specifies a range of bytes.  The default value is all bytes.
+	Range HTTPRange
 
 	// BlockSize specifies the block size to use for each parallel download; the default size is DefaultDownloadBlockSize.
 	BlockSize int64
@@ -131,7 +121,7 @@ func (o *downloadOptions) getBlobPropertiesOptions() *GetPropertiesOptions {
 	}
 }
 
-func (o *downloadOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMD5 *bool) *DownloadStreamOptions {
+func (o *downloadOptions) getDownloadBlobOptions(rnge HTTPRange, rangeGetContentMD5 *bool) *DownloadStreamOptions {
 	if o == nil {
 		return nil
 	}
@@ -139,19 +129,15 @@ func (o *downloadOptions) getDownloadBlobOptions(offSet, count int64, rangeGetCo
 		AccessConditions:   o.AccessConditions,
 		CpkInfo:            o.CpkInfo,
 		CpkScopeInfo:       o.CpkScopeInfo,
-		Offset:             &offSet,
-		Count:              &count,
+		Range:              o.Range,
 		RangeGetContentMD5: rangeGetContentMD5,
 	}
 }
 
 // DownloadBufferOptions contains the optional parameters for the DownloadBuffer method.
 type DownloadBufferOptions struct {
-	// Count is the number of bytes to download.  Specify 0 to download the entire blob (this is the default).
-	Count int64
-
-	// Offset is the byte offset within the blob to start the download.  The default value is zero.
-	Offset int64
+	// Range specifies a range of bytes.  The default value is all bytes.
+	Range HTTPRange
 
 	// BlockSize specifies the block size to use for each parallel download; the default size is DefaultDownloadBlockSize.
 	BlockSize int64
@@ -177,11 +163,8 @@ type DownloadBufferOptions struct {
 
 // DownloadFileOptions contains the optional parameters for the DownloadFile method.
 type DownloadFileOptions struct {
-	// Count is the number of bytes to download.  Specify 0 to download the entire blob (this is the default).
-	Count int64
-
-	// Offset is the byte offset within the blob to start the download.  The default value is zero.
-	Offset int64
+	// Range specifies a range of bytes.  The default value is all bytes.
+	Range HTTPRange
 
 	// BlockSize specifies the block size to use for each parallel download; the default size is DefaultDownloadBlockSize.
 	BlockSize int64

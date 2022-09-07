@@ -14,8 +14,8 @@ import (
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
 )
 
@@ -54,12 +54,17 @@ func Example_pageblob_Client() {
 	_, err = pageBlobClient.UploadPages(
 		context.TODO(),
 		streaming.NopCloser(bytes.NewReader(page)),
-		&pageblob.UploadPagesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(2 * pageblob.PageBytes))},
-	)
+		&pageblob.UploadPagesOptions{
+			Range: blob.HTTPRange{
+				Count: int64(2 * pageblob.PageBytes),
+			},
+		})
 	handleError(err)
 
 	pager := pageBlobClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{
-		Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(10 * pageblob.PageBytes)),
+		Range: blob.HTTPRange{
+			Count: int64(10 * pageblob.PageBytes),
+		},
 	})
 
 	for pager.More() {
@@ -72,11 +77,13 @@ func Example_pageblob_Client() {
 		}
 	}
 
-	_, err = pageBlobClient.ClearPages(context.TODO(), 0, 1*pageblob.PageBytes, nil)
+	_, err = pageBlobClient.ClearPages(context.TODO(), blob.HTTPRange{Count: 1 * pageblob.PageBytes}, nil)
 	handleError(err)
 
 	pager = pageBlobClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{
-		Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(10 * pageblob.PageBytes)),
+		Range: blob.HTTPRange{
+			Count: int64(10 * pageblob.PageBytes),
+		},
 	})
 
 	for pager.More() {

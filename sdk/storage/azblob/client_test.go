@@ -15,6 +15,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
@@ -220,8 +221,10 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 		blobName,
 		destFile,
 		&blob.DownloadFileOptions{
-			Count:       int64(downloadCount),
-			Offset:      int64(downloadOffset),
+			Range: azblob.HTTPRange{
+				Count:  int64(downloadCount),
+				Offset: int64(downloadOffset),
+			},
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
@@ -378,8 +381,10 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 		containerName,
 		blobName,
 		destBuffer, &blob.DownloadBufferOptions{
-			Count:       int64(downloadCount),
-			Offset:      int64(downloadOffset),
+			Range: azblob.HTTPRange{
+				Count:  int64(downloadCount),
+				Offset: int64(downloadOffset),
+			},
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.

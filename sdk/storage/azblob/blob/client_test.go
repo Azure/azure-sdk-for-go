@@ -18,6 +18,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
@@ -658,7 +659,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourceIfMatchFalse() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	randomEtag := "a"
+	randomEtag := azcore.ETag("a")
 	accessConditions := blob.SourceModifiedAccessConditions{
 		SourceIfMatch: &randomEtag,
 	}
@@ -691,7 +692,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourceIfNoneMatchTrue() {
 
 	options := blob.StartCopyFromURLOptions{
 		SourceModifiedAccessConditions: &blob.SourceModifiedAccessConditions{
-			SourceIfNoneMatch: to.Ptr("a"),
+			SourceIfNoneMatch: to.Ptr(azcore.ETag("a")),
 		},
 	}
 
@@ -1375,7 +1376,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSnapshotIfMatchFalse() {
 	options := blob.CreateSnapshotOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
-				IfMatch: to.Ptr("garbage"),
+				IfMatch: to.Ptr(azcore.ETag("garbage")),
 			},
 		},
 	}
@@ -1396,7 +1397,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSnapshotIfNoneMatchTrue() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	randomEtag := "garbage"
+	randomEtag := azcore.ETag("garbage")
 	access := blob.ModifiedAccessConditions{
 		IfNoneMatch: &randomEtag,
 	}
@@ -2387,7 +2388,7 @@ func (s *BlobRecordedTestsSuite) TestBlobGetPropsAndMetadataIfMatchFalse() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	eTag := "garbage"
+	eTag := azcore.ETag("garbage")
 	getBlobPropertiesOptions := blob.GetPropertiesOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: &eTag},
@@ -2415,7 +2416,7 @@ func (s *BlobRecordedTestsSuite) TestBlobGetPropsAndMetadataIfNoneMatchTrue() {
 	_, err = bbClient.SetMetadata(context.Background(), testcommon.BasicMetadata, nil)
 	_require.Nil(err)
 
-	eTag := "garbage"
+	eTag := azcore.ETag("garbage")
 	getBlobPropertiesOptions := blob.GetPropertiesOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: &eTag},
@@ -2660,7 +2661,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetPropertiesIfMatchFalse() {
 
 	_, err = bbClient.SetHTTPHeaders(context.Background(), blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
 		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
-			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: to.Ptr("garbage")},
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: to.Ptr(azcore.ETag("garbage"))},
 		}})
 	_require.NotNil(err)
 }
@@ -2680,7 +2681,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetPropertiesIfNoneMatchTrue() {
 
 	_, err = bbClient.SetHTTPHeaders(context.Background(), blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
 		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
-			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr("garbage")},
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr(azcore.ETag("garbage"))},
 		}})
 	_require.Nil(err)
 
@@ -2940,7 +2941,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetMetadataIfMatchFalse() {
 
 	setBlobMetadataOptions := blob.SetMetadataOptions{
 		AccessConditions: &blob.AccessConditions{
-			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: to.Ptr("garbage")},
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: to.Ptr(azcore.ETag("garbage"))},
 		},
 	}
 	_, err = bbClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
@@ -2962,7 +2963,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetMetadataIfNoneMatchTrue() {
 
 	setBlobMetadataOptions := blob.SetMetadataOptions{
 		AccessConditions: &blob.AccessConditions{
-			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr("garbage")},
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr(azcore.ETag("garbage"))},
 		},
 	}
 	_, err = bbClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)

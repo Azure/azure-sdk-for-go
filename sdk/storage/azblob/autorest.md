@@ -244,3 +244,54 @@ directive:
   transform: >
     $.properties.ImmutabilityPolicyMode["x-ms-enum"].name = "ImmutabilityPolicyMode";
 ```
+
+### use azcore.ETag
+
+``` yaml
+directive:
+- from: zz_models.go
+  where: $
+  transform: >-
+    return $.
+      replace(/import "time"/, `import (\n\t"time"\n\t"github.com/Azure/azure-sdk-for-go/sdk/azcore"\n)`).
+      replace(/Etag\s+\*string/g, `ETag *azcore.ETag`).
+      replace(/IfMatch\s+\*string/g, `IfMatch *azcore.ETag`).
+      replace(/IfNoneMatch\s+\*string/g, `IfNoneMatch *azcore.ETag`).
+      replace(/SourceIfMatch\s+\*string/g, `SourceIfMatch *azcore.ETag`).
+      replace(/SourceIfNoneMatch\s+\*string/g, `SourceIfNoneMatch *azcore.ETag`);
+
+- from: zz_response_types.go
+  where: $
+  transform: >-
+    return $.
+      replace(/"time"/, `"time"\n\t"github.com/Azure/azure-sdk-for-go/sdk/azcore"`).
+      replace(/ETag\s+\*string/g, `ETag *azcore.ETag`);
+
+- from:
+  - zz_appendblob_client.go
+  - zz_blob_client.go
+  - zz_blockblob_client.go
+  - zz_container_client.go
+  - zz_pageblob_client.go
+  where: $
+  transform: >-
+    return $.
+      replace(/"github\.com\/Azure\/azure\-sdk\-for\-go\/sdk\/azcore\/policy"/, `"github.com/Azure/azure-sdk-for-go/sdk/azcore"\n\t"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"`).
+      replace(/result\.ETag\s+=\s+&val/g, `result.ETag = (*azcore.ETag)(&val)`).
+      replace(/\*modifiedAccessConditions.IfMatch/g, `string(*modifiedAccessConditions.IfMatch)`).
+      replace(/\*modifiedAccessConditions.IfNoneMatch/g, `string(*modifiedAccessConditions.IfNoneMatch)`).
+      replace(/\*sourceModifiedAccessConditions.SourceIfMatch/g, `string(*sourceModifiedAccessConditions.SourceIfMatch)`).
+      replace(/\*sourceModifiedAccessConditions.SourceIfNoneMatch/g, `string(*sourceModifiedAccessConditions.SourceIfNoneMatch)`);
+```
+
+### Unsure why this casing changed, but fixing it
+
+``` yaml
+directive:
+- from: zz_models.go
+  where: $
+  transform: >-
+    return $.
+      replace(/SignedOid\s+\*string/g, `SignedOID *string`).
+      replace(/SignedTid\s+\*string/g, `SignedTID *string`);
+```

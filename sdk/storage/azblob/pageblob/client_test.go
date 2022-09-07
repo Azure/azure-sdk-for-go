@@ -13,6 +13,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
@@ -891,7 +892,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobCreatePageIfMatchFalse() {
 	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
 
 	sequenceNumber := int64(0)
-	eTag := "garbage"
+	eTag := azcore.ETag("garbage")
 	createPageBlobOptions := pageblob.CreateOptions{
 		SequenceNumber: &sequenceNumber,
 		Metadata:       testcommon.BasicMetadata,
@@ -922,7 +923,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobCreatePageIfNoneMatchTrue() {
 	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
 
 	sequenceNumber := int64(0)
-	eTag := "garbage"
+	eTag := azcore.ETag("garbage")
 	createPageBlobOptions := pageblob.CreateOptions{
 		SequenceNumber: &sequenceNumber,
 		Metadata:       testcommon.BasicMetadata,
@@ -1257,7 +1258,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesIfMatchFalse() {
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
 	offset, count := int64(0), int64(pageblob.PageBytes)
-	eTag := "garbage"
+	eTag := azcore.ETag("garbage")
 	uploadPagesOptions := pageblob.UploadPagesOptions{
 		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
 		AccessConditions: &blob.AccessConditions{
@@ -1291,7 +1292,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesIfNoneMatchTrue() {
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
 	offset, count := int64(0), int64(pageblob.PageBytes)
-	eTag := "garbage"
+	eTag := azcore.ETag("garbage")
 	uploadPagesOptions := pageblob.UploadPagesOptions{
 		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
 		AccessConditions: &blob.AccessConditions{
@@ -1790,7 +1791,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfMatchFalse() {
 	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	eTag := "garbage"
+	eTag := azcore.ETag("garbage")
 	clearPageOptions := pageblob.ClearPagesOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
@@ -1810,7 +1811,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfNoneMatchTrue() {
 	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	eTag := "garbage"
+	eTag := azcore.ETag("garbage")
 	clearPageOptions := pageblob.ClearPagesOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
@@ -2353,7 +2354,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesIfMatchFalse() {
 
 	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)), AccessConditions: &blob.AccessConditions{
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
-			IfMatch: to.Ptr("garbage"),
+			IfMatch: to.Ptr(azcore.ETag("garbage")),
 		},
 	}})
 	for pager.More() {
@@ -2374,7 +2375,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesIfNoneMatchTrue() {
 
 	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)), AccessConditions: &blob.AccessConditions{
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
-			IfNoneMatch: to.Ptr("garbage"),
+			IfNoneMatch: to.Ptr(azcore.ETag("garbage")),
 		},
 	}})
 	for pager.More() {
@@ -2649,7 +2650,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfMatchFalse() {
 		Snapshot: to.Ptr(snapshotStr),
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
-				IfMatch: to.Ptr("garbage"),
+				IfMatch: to.Ptr(azcore.ETag("garbage")),
 			},
 		}})
 
@@ -2676,7 +2677,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
 		PrevSnapshot: to.Ptr(snapshotStr),
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
-				IfNoneMatch: to.Ptr("garbage"),
+				IfNoneMatch: to.Ptr(azcore.ETag("garbage")),
 			},
 		}})
 
@@ -2950,7 +2951,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobResizeIfMatchFalse() {
 	blobName := testcommon.GenerateBlobName(testName)
 	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
 
-	eTag := "garbage"
+	eTag := azcore.ETag("garbage")
 	resizePageBlobOptions := pageblob.ResizeOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
@@ -2977,7 +2978,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobResizeIfNoneMatchTrue() {
 	blobName := testcommon.GenerateBlobName(testName)
 	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
 
-	eTag := "garbage"
+	eTag := azcore.ETag("garbage")
 	resizePageBlobOptions := pageblob.ResizeOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
@@ -3263,7 +3264,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobSetSequenceNumberIfMatchFalse() {
 	blobName := testcommon.GenerateBlobName(testName)
 	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
 
-	eTag := "garbage"
+	eTag := azcore.ETag("garbage")
 	actionType := pageblob.SequenceNumberActionTypeIncrement
 	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
 		ActionType: &actionType,
@@ -3292,7 +3293,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobSetSequenceNumberIfNoneMatchTrue() 
 	blobName := testcommon.GenerateBlobName(testName)
 	pbClient := createNewPageBlob(context.Background(), _require, "src"+blobName, containerClient)
 
-	eTag := "garbage"
+	eTag := azcore.ETag("garbage")
 	actionType := pageblob.SequenceNumberActionTypeIncrement
 	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
 		ActionType: &actionType,

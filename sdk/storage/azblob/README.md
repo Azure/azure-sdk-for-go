@@ -232,9 +232,13 @@ Three different clients are provided to interact with the various components of 
 
 3. **`BlobClient`**
     * `AppendBlobClient`, `BlockBlobClient`, and `PageBlobClient`
-    * Get and set blob properties.
+    * Get and set blob properties and metadata.
     * Perform CRUD operations on a given blob.
     * `BlobLeaseClient` to support blob lease management.
+
+### About metadata
+Metadata name/value pairs are valid HTTP headers and should adhere to all restrictions governing HTTP headers. Metadata names must be valid HTTP header names and valid C# identifiers, may contain only ASCII characters, and should be treated as case-insensitive. Base64-encode or URL-encode metadata values containing non-ASCII characters.
+
 
 ### Example
 

@@ -1426,7 +1426,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestSetBlobMetadataReturnsVID() {
 	_require.NotNil(resp.VersionID)
 
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		Include: []container.ListBlobsIncludeItem{container.ListBlobsIncludeItemMetadata},
+		Include: container.ListBlobsInclude{Metadata: true},
 	})
 
 	if pager.More() {

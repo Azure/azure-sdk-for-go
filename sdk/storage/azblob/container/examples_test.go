@@ -226,7 +226,7 @@ func Example_container_ClientListBlobsFlat() {
 	handleError(err)
 
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		Include: []container.ListBlobsIncludeItem{container.ListBlobsIncludeItemSnapshots, container.ListBlobsIncludeItemVersions},
+		Include: container.ListBlobsInclude{Snapshots: true, Versions: true},
 	})
 
 	for pager.More() {
@@ -256,10 +256,7 @@ func Example_container_ClientListBlobsHierarchy() {
 
 	maxResults := int32(5)
 	pager := containerClient.NewListBlobsHierarchyPager("/", &container.ListBlobsHierarchyOptions{
-		Include: []container.ListBlobsIncludeItem{
-			container.ListBlobsIncludeItemMetadata,
-			container.ListBlobsIncludeItemTags,
-		},
+		Include:    container.ListBlobsInclude{Metadata: true, Tags: true},
 		MaxResults: &maxResults,
 	})
 

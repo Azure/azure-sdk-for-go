@@ -197,7 +197,7 @@ func Example_client_NewListContainersPager() {
 	handleError(err)
 
 	pager := client.NewListContainersPager(&azblob.ListContainersOptions{
-		Include: azblob.ListContainersDetail{Metadata: true, Deleted: true},
+		Include: azblob.ListContainersInclude{Metadata: true, Deleted: true},
 	})
 
 	for pager.More() {
@@ -308,7 +308,7 @@ func Example_client_NewListBlobsPager() {
 	handleError(err)
 
 	pager := client.NewListBlobsPager("testcontainer", &azblob.ListBlobsOptions{
-		Include: []azblob.ListBlobsIncludeItem{azblob.ListBlobsIncludeItemVersions, azblob.ListBlobsIncludeItemDeleted},
+		Include: container.ListBlobsInclude{Deleted: true, Versions: true},
 	})
 
 	for pager.More() {

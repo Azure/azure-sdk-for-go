@@ -1708,7 +1708,7 @@ func (s *BlockBlobRecordedTestsSuite) TestDeleteSpecificBlobVersion() {
 	}
 
 	listPager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		Include: []container.ListBlobsIncludeItem{container.ListBlobsIncludeItemVersions},
+		Include: container.ListBlobsInclude{Versions: true},
 	})
 
 	found := make([]*container.BlobItem, 0)
@@ -1732,7 +1732,7 @@ func (s *BlockBlobRecordedTestsSuite) TestDeleteSpecificBlobVersion() {
 	}
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		Include: []container.ListBlobsIncludeItem{container.ListBlobsIncludeItemVersions},
+		Include: container.ListBlobsInclude{Versions: true},
 	})
 
 	found = make([]*container.BlobItem, 0)
@@ -1821,7 +1821,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 	_require.NotNil(csResp.VersionID)
 
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		Include: []container.ListBlobsIncludeItem{container.ListBlobsIncludeItemSnapshots},
+		Include: container.ListBlobsInclude{Snapshots: true},
 	})
 
 	found := make([]*container.BlobItem, 0)
@@ -1841,7 +1841,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 	//_require.Equal(deleteResp.RawResponse.StatusCode, 202)
 
 	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		Include: []container.ListBlobsIncludeItem{container.ListBlobsIncludeItemSnapshots, container.ListBlobsIncludeItemVersions},
+		Include: container.ListBlobsInclude{Snapshots: true, Versions: true},
 	})
 
 	found = make([]*container.BlobItem, 0)
@@ -2464,9 +2464,8 @@ func (s *BlockBlobUnrecordedTestsSuite) TestListBlobReturnsTags() {
 	_require.Nil(err)
 	// _require.Equal(resp.RawResponse.StatusCode,204)
 
-	include := []container.ListBlobsIncludeItem{container.ListBlobsIncludeItemTags}
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		Include: include,
+		Include: container.ListBlobsInclude{Tags: true},
 	})
 
 	found := make([]*container.BlobItem, 0)

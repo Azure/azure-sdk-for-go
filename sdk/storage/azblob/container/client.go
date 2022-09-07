@@ -203,7 +203,7 @@ func (c *Client) SetAccessPolicy(ctx context.Context, containerACL []*SignedIden
 func (c *Client) NewListBlobsFlatPager(o *ListBlobsFlatOptions) *runtime.Pager[ListBlobsFlatResponse] {
 	listOptions := generated.ContainerClientListBlobFlatSegmentOptions{}
 	if o != nil {
-		listOptions.Include = o.Include
+		listOptions.Include = o.Include.format()
 		listOptions.Marker = o.Marker
 		listOptions.Maxresults = o.MaxResults
 		listOptions.Prefix = o.Prefix

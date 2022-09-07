@@ -308,7 +308,7 @@ func Example_client_NewListBlobsPager() {
 	handleError(err)
 
 	pager := client.NewListBlobsPager("testcontainer", &azblob.ListBlobsOptions{
-		Include: []azblob.ListBlobsIncludeItem{azblob.ListBlobsIncludeItemVersions, azblob.ListBlobsIncludeItemDeleted},
+		Include: container.ListBlobsDetail{Deleted: true, Versions: true},
 	})
 
 	for pager.More() {

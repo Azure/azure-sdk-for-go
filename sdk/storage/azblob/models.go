@@ -30,6 +30,9 @@ type DownloadStreamOptions = blob.DownloadStreamOptions
 // ListBlobsOptions contains the optional parameters for the container.Client.ListBlobFlatSegment method.
 type ListBlobsOptions = container.ListBlobsFlatOptions
 
+// ListBlobsDetail indicates what additional information the service should return with each blob.
+type ListBlobsDetail = container.ListBlobsDetail
+
 // ListContainersOptions contains the optional parameters for the container.Client.ListContainers operation
 type ListContainersOptions = service.ListContainersOptions
 
@@ -56,9 +59,6 @@ type CpkScopeInfo = generated.ContainerCpkScopeInfo
 
 // AccessConditions identifies blob-specific access conditions which you optionally set.
 type AccessConditions = exported.BlobAccessConditions
-
-// ListBlobsIncludeItem defines values for ListBlobsIncludeItem
-type ListBlobsIncludeItem = generated.ListBlobsIncludeItem
 
 // ListContainersDetail indicates what additional information the service should return with each container.
 type ListContainersDetail = service.ListContainersDetail

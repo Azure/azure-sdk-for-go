@@ -3188,8 +3188,8 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadStreamToBlobProperties() {
 	// Perform UploadStream
 	_, err = bbClient.UploadStream(context.Background(), blobContentReader,
 		&blockblob.UploadStreamOptions{
-			BufferSize:  bufferSize,
-			MaxBuffers:  maxBuffers,
+			BlockSize:   bufferSize,
+			Concurrency: maxBuffers,
 			Metadata:    testcommon.BasicMetadata,
 			Tags:        testcommon.BasicBlobTagsMap,
 			HTTPHeaders: &testcommon.BasicHeaders,

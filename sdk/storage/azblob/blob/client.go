@@ -302,7 +302,7 @@ func (b *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 		OperationName: "downloadBlobToWriterAt",
 		TransferSize:  count,
 		ChunkSize:     o.BlockSize,
-		Parallelism:   o.Parallelism,
+		Concurrency:   o.Concurrency,
 		Operation: func(chunkStart int64, count int64, ctx context.Context) error {
 
 			downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{

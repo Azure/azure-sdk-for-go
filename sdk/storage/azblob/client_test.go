@@ -92,7 +92,7 @@ func performUploadStreamToBlockBlobTest(t *testing.T, _require *require.Assertio
 
 	// Perform UploadStream
 	_, err = client.UploadStream(ctx, containerName, blobName, blobContentReader,
-		&blockblob.UploadStreamOptions{BufferSize: bufferSize, MaxBuffers: maxBuffers})
+		&blockblob.UploadStreamOptions{BlockSize: bufferSize, Concurrency: maxBuffers})
 
 	// Assert that upload was successful
 	_require.Equal(err, nil)
@@ -193,7 +193,7 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 	_, err = client.UploadFile(context.Background(), containerName, blobName, file,
 		&blockblob.UploadFileOptions{
 			BlockSize:   int64(blockSize),
-			Parallelism: uint16(parallelism),
+			Concurrency: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
 				_require.Equal(bytesTransferred > 0 && bytesTransferred <= int64(fileSize), true)
@@ -226,7 +226,7 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 				Offset: int64(downloadOffset),
 			},
 			BlockSize:   int64(blockSize),
-			Parallelism: uint16(parallelism),
+			Concurrency: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
 				_require.Equal(bytesTransferred > 0 && bytesTransferred <= int64(fileSize), true)
@@ -359,7 +359,7 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 	_, err = client.UploadBuffer(context.Background(), containerName, blobName, bytesToUpload,
 		&blockblob.UploadBufferOptions{
 			BlockSize:   int64(blockSize),
-			Parallelism: uint16(parallelism),
+			Concurrency: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
 				_require.Equal(bytesTransferred > 0 && bytesTransferred <= int64(blobSize), true)
@@ -386,7 +386,7 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 				Offset: int64(downloadOffset),
 			},
 			BlockSize:   int64(blockSize),
-			Parallelism: uint16(parallelism),
+			Concurrency: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
 				_require.Equal(bytesTransferred > 0 && bytesTransferred <= int64(blobSize), true)
@@ -512,7 +512,7 @@ func (s *AZBlobUnrecordedTestsSuite) TestBasicDoBatchTransfer() {
 		err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
 			TransferSize: test.transferSize,
 			ChunkSize:    test.chunkSize,
-			Parallelism:  test.parallelism,
+			Concurrency:  test.parallelism,
 			Operation: func(offset int64, chunkSize int64, ctx context.Context) error {
 				atomic.AddInt64(&totalSizeCount, chunkSize)
 				atomic.AddInt64(&runCount, 1)
@@ -557,7 +557,7 @@ func (s *AZBlobUnrecordedTestsSuite) TestDoBatchTransferWithError() {
 	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
 		TransferSize: 5,
 		ChunkSize:    1,
-		Parallelism:  5,
+		Concurrency:  5,
 		Operation: func(offset int64, chunkSize int64, ctx context.Context) error {
 			// simulate doing some work (HTTP call in real scenarios)
 			// later chunks later longer to finish

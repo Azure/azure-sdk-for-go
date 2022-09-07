@@ -93,7 +93,7 @@ func Example() {
 	// List methods returns a pager object which can be used to iterate over the results of a paging operation.
 	// To iterate over a page use the NextPage(context.Context) to fetch the next page of results.
 	// PageResponse() can be used to iterate over the results of the specific page.
-	pager := client.NewListBlobsPager(containerName, nil)
+	pager := client.NewListBlobsFlatPager(containerName, nil)
 	for pager.More() {
 		resp, err := pager.NextPage(context.TODO())
 		handleError(err)
@@ -249,7 +249,7 @@ func Example_client_UploadFile() {
 	_, err = client.UploadFile(context.TODO(), "testcontainer", "virtual/dir/path/"+fileName, fileHandler,
 		&azblob.UploadFileOptions{
 			BlockSize:   int64(1024),
-			Parallelism: uint16(3),
+			Concurrency: uint16(3),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
 				fmt.Println(bytesTransferred)
@@ -307,7 +307,7 @@ func Example_client_NewListBlobsPager() {
 	client, err := azblob.NewClient(serviceURL, cred, nil)
 	handleError(err)
 
-	pager := client.NewListBlobsPager("testcontainer", &azblob.ListBlobsOptions{
+	pager := client.NewListBlobsFlatPager("testcontainer", &azblob.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Deleted: true, Versions: true},
 	})
 

@@ -43,6 +43,9 @@
 # PRLabel: %Service Bus
 /sdk/messaging/azservicebus   @richardpark-msft @jhendrixMSFT
 
+# PRLabel: %Event Hubs
+/sdk/messaging/azeventhubs   @richardpark-msft @jhendrixMSFT
+
 # PRLabel: %Service Bus
 /sdk/messaging/internal       @richardpark-msft @jhendrixMSFT
 

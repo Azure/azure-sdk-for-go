@@ -15,6 +15,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
@@ -654,7 +655,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfMatchFalse() {
 		Metadata:    testcommon.BasicMetadata,
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
-				IfMatch: to.Ptr("garbage"),
+				IfMatch: to.Ptr(azcore.ETag("garbage")),
 			},
 		},
 	}
@@ -677,7 +678,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfNoneMatchTrue() {
 	abName := testcommon.GenerateBlobName(testName)
 	abClient := createNewAppendBlob(context.Background(), _require, abName, containerClient)
 
-	eTag := "garbage"
+	eTag := azcore.ETag("garbage")
 	createAppendBlobOptions := appendblob.CreateOptions{
 		HTTPHeaders: &testcommon.BasicHeaders,
 		Metadata:    testcommon.BasicMetadata,
@@ -961,7 +962,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfMatchFalse() {
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &appendblob.AppendBlockOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
-				IfMatch: to.Ptr("garbage"),
+				IfMatch: to.Ptr(azcore.ETag("garbage")),
 			},
 		},
 	})
@@ -985,7 +986,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobAppendBlockIfNoneMatchTrue() {
 	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &appendblob.AppendBlockOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
-				IfNoneMatch: to.Ptr("garbage"),
+				IfNoneMatch: to.Ptr(azcore.ETag("garbage")),
 			},
 		},
 	})

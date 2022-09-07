@@ -7,8 +7,10 @@
 package blockblob
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
 // UploadResponse contains the response from method Client.Upload.
@@ -38,7 +40,7 @@ type uploadFromReaderResponse struct {
 	Date *time.Time
 
 	// ETag contains the information returned from the ETag header response.
-	ETag *string
+	ETag *azcore.ETag
 
 	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
 	EncryptionKeySHA256 *string

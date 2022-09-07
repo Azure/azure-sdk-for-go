@@ -491,7 +491,7 @@ func Example_blob_AccessConditions() {
 		streaming.NopCloser(strings.NewReader("Text-3")),
 		&blockblob.UploadOptions{
 			AccessConditions: &blob.AccessConditions{
-				ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr(string(azcore.ETagAny))},
+				ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr(azcore.ETagAny)},
 			},
 		}))
 }

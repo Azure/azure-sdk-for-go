@@ -122,7 +122,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 			if *ctnr.Name == containerName {
 				_require.NotNil(ctnr.Properties)
 				_require.NotNil(ctnr.Properties.LastModified)
-				_require.NotNil(ctnr.Properties.Etag)
+				_require.NotNil(ctnr.Properties.ETag)
 				_require.Equal(*ctnr.Properties.LeaseStatus, container.LeaseStatusTypeUnlocked)
 				_require.Equal(*ctnr.Properties.LeaseState, container.LeaseStateTypeAvailable)
 				_require.Nil(ctnr.Properties.LeaseDuration)
@@ -184,7 +184,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionStri
 			if *ctnr.Name == containerName {
 				_require.NotNil(ctnr.Properties)
 				_require.NotNil(ctnr.Properties.LastModified)
-				_require.NotNil(ctnr.Properties.Etag)
+				_require.NotNil(ctnr.Properties.ETag)
 				_require.Equal(*ctnr.Properties.LeaseStatus, container.LeaseStatusTypeUnlocked)
 				_require.Equal(*ctnr.Properties.LeaseState, container.LeaseStateTypeAvailable)
 				_require.Nil(ctnr.Properties.LeaseDuration)

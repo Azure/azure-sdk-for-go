@@ -362,14 +362,10 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		count = *o.Count
 	}
 
-	eTag := ""
-	if dr.ETag != nil {
-		eTag = *dr.ETag
-	}
 	return DownloadStreamResponse{
 		client:                     b,
 		BlobClientDownloadResponse: dr,
-		getInfo:                    httpGetterInfo{Offset: offset, Count: count, ETag: eTag},
+		getInfo:                    httpGetterInfo{Offset: offset, Count: count, ETag: dr.ETag},
 		ObjectReplicationRules:     deserializeORSPolicies(dr.ObjectReplicationRules),
 		cpkInfo:                    o.CpkInfo,
 		cpkScope:                   o.CpkScopeInfo,

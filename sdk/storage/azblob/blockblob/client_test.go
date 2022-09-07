@@ -18,6 +18,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
@@ -749,7 +750,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfMatchFalse() {
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
 
-	ifMatch := "garbage"
+	ifMatch := azcore.ETag("garbage")
 	uploadBlockBlobOptions := blockblob.UploadOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
@@ -782,7 +783,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfNoneMatchTrue() {
 	body := bytes.NewReader(content)
 	rsc := streaming.NopCloser(body)
 
-	ifNoneMatch := "garbage"
+	ifNoneMatch := azcore.ETag("garbage")
 	uploadBlockBlobOptions := blockblob.UploadOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
@@ -980,7 +981,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListIfMatchFalse() {
 	_, err := bbClient.CommitBlockList(context.Background(), blockIDs, nil) // The bbClient must actually exist to have a modifed time
 	_require.Nil(err)
 
-	eTag := "garbage"
+	eTag := azcore.ETag("garbage")
 	commitBlockListOptions := blockblob.CommitBlockListOptions{
 		AccessConditions: &blob.AccessConditions{ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: &eTag}},
 	}
@@ -998,7 +999,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListIfNoneMatchTrue() {
 	_, err := bbClient.CommitBlockList(context.Background(), blockIDs, nil) // The bbClient must actually exist to have a modifed time
 	_require.Nil(err)
 
-	eTag := "garbage"
+	eTag := azcore.ETag("garbage")
 	commitBlockListOptions := blockblob.CommitBlockListOptions{
 		AccessConditions: &blob.AccessConditions{ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: &eTag}},
 	}

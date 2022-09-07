@@ -106,9 +106,8 @@ type StageBlockFromURLOptions struct {
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
 	SourceContentCRC64 []byte
 
-	Offset *int64
-
-	Count *int64
+	// Range specifies a range of bytes.  The default value is all bytes.
+	Range blob.HTTPRange
 
 	CpkInfo *blob.CpkInfo
 
@@ -124,7 +123,7 @@ func (o *StageBlockFromURLOptions) format() (*generated.BlockBlobClientStageBloc
 		CopySourceAuthorization: o.CopySourceAuthorization,
 		SourceContentMD5:        o.SourceContentMD5,
 		SourceContentcrc64:      o.SourceContentCRC64,
-		SourceRange:             shared.GetSourceRange(o.Offset, o.Count),
+		SourceRange:             exported.FormatHTTPRange(o.Range),
 	}
 
 	return options, o.CpkInfo, o.CpkScopeInfo, o.LeaseAccessConditions, o.SourceModifiedAccessConditions

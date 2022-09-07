@@ -29,3 +29,8 @@ type URLParts = sas.URLParts
 func ParseURL(u string) (URLParts, error) {
 	return sas.ParseURL(u)
 }
+
+// HTTPRange defines a range of bytes within an HTTP resource, starting at offset and
+// ending at offset+count. A zero-value HTTPRange indicates the entire resource. An HTTPRange
+// which has an offset but no zero value count indicates from the offset to the resource's end.
+type HTTPRange = exported.HTTPRange

@@ -1467,7 +1467,9 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataNegativeOffset() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	options := blob.DownloadStreamOptions{
-		Offset: to.Ptr[int64](-1),
+		Range: blob.HTTPRange{
+			Offset: -1,
+		},
 	}
 	_, err = bbClient.DownloadStream(context.Background(), &options)
 	_require.Nil(err)
@@ -1487,7 +1489,9 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataOffsetOutOfRange() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	options := blob.DownloadStreamOptions{
-		Offset: to.Ptr(int64(len(testcommon.BlockBlobDefaultData))),
+		Range: blob.HTTPRange{
+			Offset: int64(len(testcommon.BlockBlobDefaultData)),
+		},
 	}
 	_, err = bbClient.DownloadStream(context.Background(), &options)
 	_require.NotNil(err)
@@ -1508,7 +1512,9 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataCountNegative() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	options := blob.DownloadStreamOptions{
-		Count: to.Ptr[int64](-2),
+		Range: blob.HTTPRange{
+			Count: -2,
+		},
 	}
 	_, err = bbClient.DownloadStream(context.Background(), &options)
 	_require.Nil(err)
@@ -1527,9 +1533,7 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataCountZero() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	options := blob.DownloadStreamOptions{
-		Count: to.Ptr[int64](0),
-	}
+	options := blob.DownloadStreamOptions{}
 	resp, err := bbClient.DownloadStream(context.Background(), &options)
 	_require.Nil(err)
 
@@ -1552,9 +1556,10 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataCountExact() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	count := int64(len(testcommon.BlockBlobDefaultData))
 	options := blob.DownloadStreamOptions{
-		Count: &count,
+		Range: blob.HTTPRange{
+			Count: int64(len(testcommon.BlockBlobDefaultData)),
+		},
 	}
 	resp, err := bbClient.DownloadStream(context.Background(), &options)
 	_require.Nil(err)
@@ -1578,7 +1583,9 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataCountOutOfRange() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	options := blob.DownloadStreamOptions{
-		Count: to.Ptr(int64((len(testcommon.BlockBlobDefaultData)) * 2)),
+		Range: blob.HTTPRange{
+			Count: int64((len(testcommon.BlockBlobDefaultData)) * 2),
+		},
 	}
 	resp, err := bbClient.DownloadStream(context.Background(), &options)
 	_require.Nil(err)
@@ -1601,10 +1608,7 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataEmptyRangeStruct() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	options := blob.DownloadStreamOptions{
-		Count:  to.Ptr[int64](0),
-		Offset: to.Ptr[int64](0),
-	}
+	options := blob.DownloadStreamOptions{}
 	resp, err := bbClient.DownloadStream(context.Background(), &options)
 	_require.Nil(err)
 
@@ -1627,8 +1631,10 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataContentMD5() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	options := blob.DownloadStreamOptions{
-		Count:              to.Ptr[int64](3),
-		Offset:             to.Ptr[int64](10),
+		Range: blob.HTTPRange{
+			Count:  3,
+			Offset: 10,
+		},
 		RangeGetContentMD5: to.Ptr(true),
 	}
 	resp, err := bbClient.DownloadStream(context.Background(), &options)

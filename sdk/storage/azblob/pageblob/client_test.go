@@ -103,8 +103,9 @@ func (s *PageBlobRecordedTestsSuite) TestPutGetPages() {
 	offset, count := int64(0), int64(1024)
 	reader, _ := testcommon.GenerateData(1024)
 	putResp, err := pbClient.UploadPages(context.Background(), reader, &pageblob.UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		Range: blob.HTTPRange{
+			Count: count,
+		},
 	})
 	_require.Nil(err)
 	_require.NotNil(putResp.LastModified)
@@ -118,8 +119,9 @@ func (s *PageBlobRecordedTestsSuite) TestPutGetPages() {
 	_require.Equal((*putResp.Date).IsZero(), false)
 
 	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{
-		Offset: to.Ptr(int64(0)),
-		Count:  to.Ptr(int64(1023)),
+		Range: blob.HTTPRange{
+			Count: 1023,
+		},
 	})
 
 	for pager.More() {
@@ -316,8 +318,9 @@ func (s *PageBlobUnrecordedTestsSuite) TestClearDiffPages() {
 	contentSize := 2 * 1024
 	r := testcommon.GetReaderToGeneratedBytes(contentSize)
 	_, err = pbClient.UploadPages(context.Background(), r, &pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(0)),
-		Count:  to.Ptr(int64(contentSize)),
+		Range: blob.HTTPRange{
+			Count: int64(contentSize),
+		},
 	})
 	_require.Nil(err)
 
@@ -325,12 +328,18 @@ func (s *PageBlobUnrecordedTestsSuite) TestClearDiffPages() {
 	_require.Nil(err)
 
 	r1 := testcommon.GetReaderToGeneratedBytes(contentSize)
-	_, err = pbClient.UploadPages(context.Background(), r1, &pageblob.UploadPagesOptions{Offset: to.Ptr(int64(contentSize)), Count: to.Ptr(int64(contentSize))})
+	_, err = pbClient.UploadPages(context.Background(), r1, &pageblob.UploadPagesOptions{
+		Range: blob.HTTPRange{
+			Offset: int64(contentSize),
+			Count:  int64(contentSize),
+		},
+	})
 	_require.Nil(err)
 
 	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
-		Offset:       to.Ptr(int64(0)),
-		Count:        to.Ptr(int64(4096)),
+		Range: blob.HTTPRange{
+			Count: 4096,
+		},
 		PrevSnapshot: snapshotResp.Snapshot,
 	})
 
@@ -349,12 +358,13 @@ func (s *PageBlobUnrecordedTestsSuite) TestClearDiffPages() {
 		}
 	}
 
-	_, err = pbClient.ClearPages(context.Background(), int64(2048), int64(2048), nil)
+	_, err = pbClient.ClearPages(context.Background(), blob.HTTPRange{Offset: 2048, Count: 2048}, nil)
 	_require.Nil(err)
 
 	pager = pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
-		Offset:       to.Ptr(int64(0)),
-		Count:        to.Ptr(int64(4096)),
+		Range: blob.HTTPRange{
+			Count: 4096,
+		},
 		PrevSnapshot: snapshotResp.Snapshot,
 	})
 
@@ -405,7 +415,12 @@ func (s *PageBlobUnrecordedTestsSuite) TestIncrementalCopy() {
 	contentSize := 1024
 	r := testcommon.GetReaderToGeneratedBytes(contentSize)
 	offset, count := int64(0), int64(contentSize)
-	_, err = srcBlob.UploadPages(context.Background(), r, &pageblob.UploadPagesOptions{Offset: to.Ptr(offset), Count: to.Ptr(count)})
+	_, err = srcBlob.UploadPages(context.Background(), r, &pageblob.UploadPagesOptions{
+		Range: blob.HTTPRange{
+			Offset: offset,
+			Count:  count,
+		},
+	})
 	_require.Nil(err)
 
 	snapshotResp, err := srcBlob.CreateSnapshot(context.Background(), nil)
@@ -988,8 +1003,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobPutPagesInvalidRange() {
 
 	contentSize := 1024
 	r := testcommon.GetReaderToGeneratedBytes(contentSize)
-	offset, count := int64(0), int64(contentSize/2)
-	uploadPagesOptions := pageblob.UploadPagesOptions{Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count))}
+	uploadPagesOptions := pageblob.UploadPagesOptions{Range: blob.HTTPRange{Count: int64(contentSize / 2)}}
 	_, err = pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
 	_require.NotNil(err)
 }
@@ -1019,9 +1033,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesEmptyBody() {
 	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
 
 	r := bytes.NewReader([]byte{})
-	offset, count := int64(0), int64(0)
-	uploadPagesOptions := pageblob.UploadPagesOptions{Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count))}
-	_, err = pbClient.UploadPages(context.Background(), streaming.NopCloser(r), &uploadPagesOptions)
+	_, err = pbClient.UploadPages(context.Background(), streaming.NopCloser(r), nil)
 	_require.NotNil(err)
 }
 
@@ -1039,8 +1051,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesNonExistentBlob() {
 	pbClient := getPageBlobClient(blobName, containerClient)
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
-	uploadPagesOptions := pageblob.UploadPagesOptions{Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count))}
+	uploadPagesOptions := pageblob.UploadPagesOptions{Range: blob.HTTPRange{Count: pageblob.PageBytes}}
 	_, err = pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
 	_require.NotNil(err)
 
@@ -1049,10 +1060,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesNonExistentBlob() {
 
 func validateUploadPages(_require *require.Assertions, pbClient *pageblob.Client) {
 	// This will only validate a single put page at 0-PageBlobPageBytes-1
-	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{
-		Offset: to.Ptr(int64(0)),
-		Count:  to.Ptr(int64(blob.CountToEnd)),
-	})
+	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{})
 
 	for pager.More() {
 		pageListResp, err := pager.NextPage(context.Background())
@@ -1089,9 +1097,10 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesIfModifiedSinceTrue() {
 	currentTime := testcommon.GetRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
 	_, err = pbClient.UploadPages(context.Background(), r, &pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -1123,9 +1132,10 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesIfModifiedSinceFalse() {
 	currentTime := testcommon.GetRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
 	_, err = pbClient.UploadPages(context.Background(), r, &pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -1157,9 +1167,10 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesIfUnmodifiedSinceTrue() {
 	currentTime := testcommon.GetRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
 	_, err = pbClient.UploadPages(context.Background(), r, &pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -1191,9 +1202,10 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesIfUnmodifiedSinceFalse() {
 	currentTime := testcommon.GetRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
 	_, err = pbClient.UploadPages(context.Background(), r, &pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -1225,9 +1237,10 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesIfMatchTrue() {
 	resp, _ := pbClient.GetProperties(context.Background(), nil)
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
 	_, err = pbClient.UploadPages(context.Background(), r, &pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfMatch: resp.ETag,
@@ -1257,10 +1270,11 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesIfMatchFalse() {
 	_require.NotNil(pageBlobCreateResponse.Date)
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
 	eTag := azcore.ETag("garbage")
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfMatch: &eTag,
@@ -1291,10 +1305,11 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesIfNoneMatchTrue() {
 	_require.NotNil(pageBlobCreateResponse.Date)
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
 	eTag := azcore.ETag("garbage")
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
@@ -1327,9 +1342,10 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesIfNoneMatchFalse() {
 	resp, _ := pbClient.GetProperties(context.Background(), nil)
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
@@ -1356,10 +1372,11 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesIfSequenceNumberLessThanTru
 	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
 	ifSequenceNumberLessThan := int64(10)
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
 		SequenceNumberAccessConditions: &pageblob.SequenceNumberAccessConditions{
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 		},
@@ -1393,10 +1410,11 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesIfSequenceNumberLessThanFal
 	_require.Nil(err)
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
 	ifSequenceNumberLessThan := int64(1)
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
 		SequenceNumberAccessConditions: &pageblob.SequenceNumberAccessConditions{
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 		},
@@ -1421,10 +1439,11 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesIfSequenceNumberLessThanNeg
 	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
 	ifSequenceNumberLessThanOrEqualTo := int64(-1)
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
 		SequenceNumberAccessConditions: &pageblob.SequenceNumberAccessConditions{
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
@@ -1459,10 +1478,11 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesIfSequenceNumberLTETrue() {
 	_require.Nil(err)
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
 	ifSequenceNumberLessThanOrEqualTo := int64(1)
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
 		SequenceNumberAccessConditions: &pageblob.SequenceNumberAccessConditions{
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
@@ -1496,10 +1516,11 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesIfSequenceNumberLTEqualFals
 	_require.Nil(err)
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
 	ifSequenceNumberLessThanOrEqualTo := int64(1)
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
 		SequenceNumberAccessConditions: &pageblob.SequenceNumberAccessConditions{
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
@@ -1524,10 +1545,11 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesIfSequenceNumberLTENegOne()
 	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
 	ifSequenceNumberLessThanOrEqualTo := int64(-1)
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
 		SequenceNumberAccessConditions: &pageblob.SequenceNumberAccessConditions{
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
@@ -1559,10 +1581,11 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesIfSequenceNumberEqualTrue()
 	_require.Nil(err)
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
 	ifSequenceNumberEqualTo := int64(1)
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
 		SequenceNumberAccessConditions: &pageblob.SequenceNumberAccessConditions{
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
@@ -1587,10 +1610,11 @@ func (s *PageBlobRecordedTestsSuite) TestBlobPutPagesIfSequenceNumberEqualFalse(
 	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
 	ifSequenceNumberEqualTo := int64(1)
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
 		SequenceNumberAccessConditions: &pageblob.SequenceNumberAccessConditions{
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
@@ -1640,9 +1664,10 @@ func setupClearPagesTest(t *testing.T, _require *require.Assertions, testName st
 	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
 	}
 	_, err = pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
 	_require.Nil(err)
@@ -1651,7 +1676,7 @@ func setupClearPagesTest(t *testing.T, _require *require.Assertions, testName st
 }
 
 func validateClearPagesTest(_require *require.Assertions, pbClient *pageblob.Client) {
-	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0))})
+	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{})
 	for pager.More() {
 		pageListResp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
@@ -1669,7 +1694,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesInvalidRange() {
 	containerClient, pbClient := setupClearPagesTest(s.T(), _require, testName)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	_, err := pbClient.ClearPages(context.Background(), int64(0), int64(pageblob.PageBytes+1), nil)
+	_, err := pbClient.ClearPages(context.Background(), blob.HTTPRange{Count: pageblob.PageBytes + 1}, nil)
 	_require.NotNil(err)
 }
 
@@ -1684,7 +1709,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfModifiedSinceTrue() {
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 
-	_, err = pbClient.ClearPages(context.Background(), int64(0), int64(pageblob.PageBytes), &pageblob.ClearPagesOptions{
+	_, err = pbClient.ClearPages(context.Background(), blob.HTTPRange{Count: pageblob.PageBytes}, &pageblob.ClearPagesOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -1705,7 +1730,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfModifiedSinceFalse() {
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 
-	_, err = pbClient.ClearPages(context.Background(), int64(0), int64(pageblob.PageBytes), &pageblob.ClearPagesOptions{
+	_, err = pbClient.ClearPages(context.Background(), blob.HTTPRange{Count: pageblob.PageBytes}, &pageblob.ClearPagesOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -1728,7 +1753,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfUnmodifiedSinceTrue() {
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 
-	_, err = pbClient.ClearPages(context.Background(), int64(0), int64(pageblob.PageBytes), &pageblob.ClearPagesOptions{
+	_, err = pbClient.ClearPages(context.Background(), blob.HTTPRange{Count: pageblob.PageBytes}, &pageblob.ClearPagesOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -1751,7 +1776,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfUnmodifiedSinceFalse() 
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 
-	_, err = pbClient.ClearPages(context.Background(), int64(0), int64(pageblob.PageBytes), &pageblob.ClearPagesOptions{
+	_, err = pbClient.ClearPages(context.Background(), blob.HTTPRange{Count: pageblob.PageBytes}, &pageblob.ClearPagesOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -1779,7 +1804,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfMatchTrue() {
 			},
 		},
 	}
-	_, err = pbClient.ClearPages(context.Background(), int64(0), int64(pageblob.PageBytes), &clearPageOptions)
+	_, err = pbClient.ClearPages(context.Background(), blob.HTTPRange{Count: pageblob.PageBytes}, &clearPageOptions)
 	_require.Nil(err)
 
 	validateClearPagesTest(_require, pbClient)
@@ -1799,7 +1824,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfMatchFalse() {
 			},
 		},
 	}
-	_, err := pbClient.ClearPages(context.Background(), int64(0), int64(pageblob.PageBytes), &clearPageOptions)
+	_, err := pbClient.ClearPages(context.Background(), blob.HTTPRange{Count: pageblob.PageBytes}, &clearPageOptions)
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
@@ -1819,7 +1844,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfNoneMatchTrue() {
 			},
 		},
 	}
-	_, err := pbClient.ClearPages(context.Background(), int64(0), int64(pageblob.PageBytes), &clearPageOptions)
+	_, err := pbClient.ClearPages(context.Background(), blob.HTTPRange{Count: pageblob.PageBytes}, &clearPageOptions)
 	_require.Nil(err)
 
 	validateClearPagesTest(_require, pbClient)
@@ -1840,7 +1865,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfNoneMatchFalse() {
 			},
 		},
 	}
-	_, err := pbClient.ClearPages(context.Background(), int64(0), int64(pageblob.PageBytes), &clearPageOptions)
+	_, err := pbClient.ClearPages(context.Background(), blob.HTTPRange{Count: pageblob.PageBytes}, &clearPageOptions)
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
@@ -1858,7 +1883,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfSequenceNumberLessThanT
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 		},
 	}
-	_, err := pbClient.ClearPages(context.Background(), int64(0), int64(pageblob.PageBytes), &clearPageOptions)
+	_, err := pbClient.ClearPages(context.Background(), blob.HTTPRange{Count: pageblob.PageBytes}, &clearPageOptions)
 	_require.Nil(err)
 
 	validateClearPagesTest(_require, pbClient)
@@ -1885,7 +1910,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfSequenceNumberLessThanF
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 		},
 	}
-	_, err = pbClient.ClearPages(context.Background(), int64(0), int64(pageblob.PageBytes), &clearPageOptions)
+	_, err = pbClient.ClearPages(context.Background(), blob.HTTPRange{Count: pageblob.PageBytes}, &clearPageOptions)
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.SequenceNumberConditionNotMet)
@@ -1903,7 +1928,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfSequenceNumberLessThanN
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 		},
 	}
-	_, err := pbClient.ClearPages(context.Background(), int64(0), int64(pageblob.PageBytes), &clearPageOptions)
+	_, err := pbClient.ClearPages(context.Background(), blob.HTTPRange{Count: pageblob.PageBytes}, &clearPageOptions)
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidInput)
@@ -1921,7 +1946,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfSequenceNumberLTETrue()
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
 	}
-	_, err := pbClient.ClearPages(context.Background(), int64(0), int64(pageblob.PageBytes), &clearPageOptions)
+	_, err := pbClient.ClearPages(context.Background(), blob.HTTPRange{Count: pageblob.PageBytes}, &clearPageOptions)
 	_require.Nil(err)
 
 	validateClearPagesTest(_require, pbClient)
@@ -1948,7 +1973,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfSequenceNumberLTEFalse(
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
 	}
-	_, err = pbClient.ClearPages(context.Background(), int64(0), int64(pageblob.PageBytes), &clearPageOptions)
+	_, err = pbClient.ClearPages(context.Background(), blob.HTTPRange{Count: pageblob.PageBytes}, &clearPageOptions)
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.SequenceNumberConditionNotMet)
@@ -1966,7 +1991,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfSequenceNumberLTENegOne
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
 	}
-	_, err := pbClient.ClearPages(context.Background(), int64(0), int64(pageblob.PageBytes), &clearPageOptions) // This will cause the library to set the value of the header to 0
+	_, err := pbClient.ClearPages(context.Background(), blob.HTTPRange{Count: pageblob.PageBytes}, &clearPageOptions) // This will cause the library to set the value of the header to 0
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidInput)
@@ -1993,7 +2018,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfSequenceNumberEqualTrue
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
 	}
-	_, err = pbClient.ClearPages(context.Background(), int64(0), int64(pageblob.PageBytes), &clearPageOptions)
+	_, err = pbClient.ClearPages(context.Background(), blob.HTTPRange{Count: pageblob.PageBytes}, &clearPageOptions)
 	_require.Nil(err)
 
 	validateClearPagesTest(_require, pbClient)
@@ -2020,7 +2045,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfSequenceNumberEqualFals
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
 	}
-	_, err = pbClient.ClearPages(context.Background(), int64(0), int64(pageblob.PageBytes), &clearPageOptions)
+	_, err = pbClient.ClearPages(context.Background(), blob.HTTPRange{Count: pageblob.PageBytes}, &clearPageOptions)
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.SequenceNumberConditionNotMet)
@@ -2038,7 +2063,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfSequenceNumberEqualNegO
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
 	}
-	_, err := pbClient.ClearPages(context.Background(), int64(0), int64(pageblob.PageBytes), &clearPageOptions) // This will cause the library to set the value of the header to 0
+	_, err := pbClient.ClearPages(context.Background(), blob.HTTPRange{Count: pageblob.PageBytes}, &clearPageOptions) // This will cause the library to set the value of the header to 0
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidInput)
@@ -2055,9 +2080,10 @@ func setupGetPageRangesTest(t *testing.T, _require *require.Assertions, testName
 	pbClient = createNewPageBlob(context.Background(), _require, blobName, containerClient)
 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
 	}
 	_, err = pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
 	_require.Nil(err)
@@ -2087,7 +2113,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesEmptyBlob() {
 	blobName := testcommon.GenerateBlobName(testName)
 	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
 
-	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0))})
+	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{})
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
@@ -2105,7 +2131,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesEmptyRange() {
 	containerClient, pbClient := setupGetPageRangesTest(s.T(), _require, testName)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0))})
+	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{})
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
@@ -2124,7 +2150,12 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesInvalidRange() {
 	containerClient, pbClient := setupGetPageRangesTest(s.T(), _require, testName)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(-2)), Count: to.Ptr(int64(500))})
+	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{
+		Range: blob.HTTPRange{
+			Offset: -2,
+			Count:  500,
+		},
+	})
 	for pager.More() {
 		_, err := pager.NextPage(context.Background())
 		_require.Nil(err)
@@ -2143,12 +2174,15 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesNonContiguousRanges() 
 	r, _ := testcommon.GenerateData(pageblob.PageBytes)
 	offset, count := int64(2*pageblob.PageBytes), int64(pageblob.PageBytes)
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		Offset: to.Ptr(int64(offset)), Count: to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Offset: offset,
+			Count:  count,
+		},
 	}
 	_, err := pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
 	_require.Nil(err)
 
-	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0))})
+	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{})
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
@@ -2169,7 +2203,6 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesNonContiguousRanges() 
 			break
 		}
 	}
-
 }
 
 func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesNotPageAligned() {
@@ -2178,7 +2211,11 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesNotPageAligned() {
 	containerClient, pbClient := setupGetPageRangesTest(s.T(), _require, testName)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(2000))})
+	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{
+		Range: blob.HTTPRange{
+			Count: 2000,
+		},
+	})
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
@@ -2187,7 +2224,6 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesNotPageAligned() {
 			break
 		}
 	}
-
 }
 
 func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesSnapshot() {
@@ -2201,7 +2237,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesSnapshot() {
 	_require.NotNil(resp.Snapshot)
 
 	snapshotURL, _ := pbClient.WithSnapshot(*resp.Snapshot)
-	pager := snapshotURL.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0))})
+	pager := snapshotURL.NewGetPageRangesPager(nil)
 	for pager.More() {
 		resp2, err := pager.NextPage(context.Background())
 		_require.Nil(err)
@@ -2211,7 +2247,6 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesSnapshot() {
 			break
 		}
 	}
-
 }
 
 func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesIfModifiedSinceTrue() {
@@ -2225,7 +2260,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesIfModifiedSinceTrue() 
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 
-	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)), AccessConditions: &blob.AccessConditions{
+	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{AccessConditions: &blob.AccessConditions{
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfModifiedSince: &currentTime,
 		},
@@ -2252,7 +2287,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesIfModifiedSinceFalse()
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 
-	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)), AccessConditions: &blob.AccessConditions{
+	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{AccessConditions: &blob.AccessConditions{
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfModifiedSince: &currentTime,
 		},
@@ -2279,7 +2314,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesIfUnmodifiedSinceTrue(
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 
-	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)), AccessConditions: &blob.AccessConditions{
+	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{AccessConditions: &blob.AccessConditions{
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfUnmodifiedSince: &currentTime,
 		},
@@ -2306,7 +2341,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 
-	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)), AccessConditions: &blob.AccessConditions{
+	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{AccessConditions: &blob.AccessConditions{
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfUnmodifiedSince: &currentTime,
 		},
@@ -2331,7 +2366,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesIfMatchTrue() {
 	resp, err := pbClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
 
-	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)), AccessConditions: &blob.AccessConditions{
+	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{AccessConditions: &blob.AccessConditions{
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfMatch: resp.ETag,
 		},
@@ -2352,7 +2387,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesIfMatchFalse() {
 	containerClient, pbClient := setupGetPageRangesTest(s.T(), _require, testName)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)), AccessConditions: &blob.AccessConditions{
+	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{AccessConditions: &blob.AccessConditions{
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfMatch: to.Ptr(azcore.ETag("garbage")),
 		},
@@ -2373,7 +2408,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesIfNoneMatchTrue() {
 	containerClient, pbClient := setupGetPageRangesTest(s.T(), _require, testName)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)), AccessConditions: &blob.AccessConditions{
+	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{AccessConditions: &blob.AccessConditions{
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfNoneMatch: to.Ptr(azcore.ETag("garbage")),
 		},
@@ -2396,7 +2431,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesIfNoneMatchFalse() {
 
 	resp, _ := pbClient.GetProperties(context.Background(), nil)
 
-	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)), AccessConditions: &blob.AccessConditions{
+	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{AccessConditions: &blob.AccessConditions{
 		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfNoneMatch: resp.ETag,
 		},
@@ -2425,10 +2460,10 @@ func setupDiffPageRangesTest(t *testing.T, _require *require.Assertions, testNam
 	pbClient = createNewPageBlob(context.Background(), _require, blobName, containerClient)
 
 	r := testcommon.GetReaderToGeneratedBytes(pageblob.PageBytes)
-	offset, count := int64(0), int64(pageblob.PageBytes)
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		Offset: to.Ptr(offset),
-		Count:  to.Ptr(count),
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
 	}
 	_, err = pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
 	_require.Nil(err)
@@ -2438,8 +2473,11 @@ func setupDiffPageRangesTest(t *testing.T, _require *require.Assertions, testNam
 	snapshot = *resp.Snapshot
 
 	r = testcommon.GetReaderToGeneratedBytes(pageblob.PageBytes)
-	offset, count = int64(0), int64(pageblob.PageBytes)
-	uploadPagesOptions = pageblob.UploadPagesOptions{Offset: to.Ptr(offset), Count: to.Ptr(count)}
+	uploadPagesOptions = pageblob.UploadPagesOptions{
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
+	}
 	_, err = pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
 	_require.Nil(err)
 	return
@@ -2474,7 +2512,6 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangesNonExistentSnapshot
 	snapshotTime, _ := time.Parse(blob.SnapshotTimeFormat, snapshot)
 	snapshotTime = snapshotTime.Add(time.Minute)
 	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
-		Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)),
 		PrevSnapshot: to.Ptr(snapshotTime.Format(blob.SnapshotTimeFormat))})
 	for pager.More() {
 		_, err := pager.NextPage(context.Background())
@@ -2493,7 +2530,13 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeInvalidRange() {
 	testName := s.T().Name()
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(s.T(), _require, testName)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{Offset: to.Ptr(int64(-22)), Count: to.Ptr(int64(14)), Snapshot: &snapshot})
+	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
+		Range: blob.HTTPRange{
+			Count:  14,
+			Offset: -22,
+		},
+		Snapshot: &snapshot,
+	})
 	for pager.More() {
 		_, err := pager.NextPage(context.Background())
 		_require.Nil(err)
@@ -2513,7 +2556,6 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfModifiedSinceTrue(
 	currentTime := testcommon.GetRelativeTimeGMT(-10)
 
 	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
-		Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)),
 		Snapshot: to.Ptr(snapshot),
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &currentTime}},
@@ -2538,7 +2580,6 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfModifiedSinceFalse
 	currentTime := testcommon.GetRelativeTimeGMT(10)
 
 	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
-		Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)),
 		Snapshot: to.Ptr(snapshot),
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
@@ -2567,7 +2608,6 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTru
 	currentTime := testcommon.GetRelativeTimeGMT(10)
 
 	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
-		Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)),
 		Snapshot: to.Ptr(snapshot),
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
@@ -2593,7 +2633,6 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFal
 	currentTime := testcommon.GetRelativeTimeGMT(-10)
 
 	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
-		Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)),
 		Snapshot: to.Ptr(snapshot),
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
@@ -2646,7 +2685,6 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfMatchFalse() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
-		Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)),
 		Snapshot: to.Ptr(snapshotStr),
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
@@ -2673,7 +2711,6 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
-		Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)),
 		PrevSnapshot: to.Ptr(snapshotStr),
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
@@ -2701,7 +2738,6 @@ func (s *PageBlobUnrecordedTestsSuite) TestBlobDiffPageRangeIfNoneMatchFalse() {
 	resp, _ := pbClient.GetProperties(context.Background(), nil)
 
 	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
-		Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(0)),
 		PrevSnapshot: to.Ptr(snapshot),
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: resp.ETag},
@@ -3616,9 +3652,10 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPK() {
 	pbName := testcommon.GenerateBlobName(testName)
 	pbClient := createNewPageBlobWithCPK(context.Background(), _require, pbName, containerClient, int64(contentSize), &testcommon.TestCPKByValue, nil)
 
-	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		Offset: to.Ptr(offset), Count: to.Ptr(count),
+		Range: blob.HTTPRange{
+			Count: int64(contentSize),
+		},
 		CpkInfo: &testcommon.TestCPKByValue,
 	}
 	uploadResp, err := pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
@@ -3626,7 +3663,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPK() {
 	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 	_require.EqualValues(uploadResp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
 
-	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(blob.CountToEnd))})
+	pager := pbClient.NewGetPageRangesPager(nil)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
@@ -3676,10 +3713,10 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPKScope() {
 	pbName := testcommon.GenerateBlobName(testName)
 	pbClient := createNewPageBlobWithCPK(context.Background(), _require, pbName, containerClient, int64(contentSize), nil, &testcommon.TestCPKByScope)
 
-	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		Offset:       to.Ptr(int64(offset)),
-		Count:        to.Ptr(int64(count)),
+		Range: blob.HTTPRange{
+			Count: int64(contentSize),
+		},
 		CpkScopeInfo: &testcommon.TestCPKByScope,
 	}
 	uploadResp, err := pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
@@ -3687,7 +3724,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPKScope() {
 	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 	_require.EqualValues(uploadResp.EncryptionScope, testcommon.TestCPKByScope.EncryptionScope)
 
-	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{Offset: to.Ptr(int64(0)), Count: to.Ptr(int64(blob.CountToEnd))})
+	pager := pbClient.NewGetPageRangesPager(nil)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.Nil(err)
@@ -3725,10 +3762,11 @@ func (s *PageBlobUnrecordedTestsSuite) TestCreatePageBlobWithTags() {
 
 	pbClient := createNewPageBlob(context.Background(), _require, "src"+testcommon.GenerateBlobName(testName), containerClient)
 
-	contentSize := 1 * 1024
-	offset, count := int64(0), int64(contentSize)
 	putResp, err := pbClient.UploadPages(context.Background(), testcommon.GetReaderToGeneratedBytes(1024), &pageblob.UploadPagesOptions{
-		Offset: to.Ptr(offset), Count: to.Ptr(count)})
+		Range: blob.HTTPRange{
+			Count: 1024,
+		},
+	})
 	_require.Nil(err)
 	//_require.Equal(putResp.RawResponse.StatusCode, 201)
 	_require.Equal(putResp.LastModified.IsZero(), false)
@@ -3825,12 +3863,12 @@ func (s *PageBlobRecordedTestsSuite) TestCreatePageBlobReturnsVID() {
 
 	pbClob := createNewPageBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
 
-	contentSize := 1 * 1024
+	const contentSize = 1 * 1024
 	r, _ := testcommon.GenerateData(contentSize)
-	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := pageblob.UploadPagesOptions{
-		Offset: to.Ptr(offset),
-		Count:  to.Ptr(count),
+		Range: blob.HTTPRange{
+			Count: contentSize,
+		},
 	}
 	putResp, err := pbClob.UploadPages(context.Background(), r, &uploadPagesOptions)
 	_require.Nil(err)

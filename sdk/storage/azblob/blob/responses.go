@@ -39,8 +39,7 @@ func (r *DownloadStreamResponse) NewRetryReader(ctx context.Context, options *Re
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: getInfo.ETag},
 		}
 		options := DownloadStreamOptions{
-			Offset:           &getInfo.Offset,
-			Count:            &getInfo.Count,
+			Range:            getInfo.Range,
 			AccessConditions: accessConditions,
 			CpkInfo:          r.cpkInfo,
 			CpkScopeInfo:     r.cpkScope,

@@ -39,46 +39,6 @@ const (
 	HeaderRange             = "Range"
 )
 
-const CountToEnd = 0
-
-// HTTPRange defines a range of bytes within an HTTP resource, starting at offset and
-// ending at offset+count. A zero-value HttpRange indicates the entire resource. An HttpRange
-// which has an offset but na zero value count indicates from the offset to the resource's end.
-type HTTPRange struct {
-	Offset int64
-	Count  int64
-}
-
-func (r HTTPRange) Format() *string {
-	if r.Offset == 0 && r.Count == 0 { // Do common case first for performance
-		return nil // No specified range
-	}
-	endOffset := "" // if count == CountToEnd (0)
-	if r.Count > 0 {
-		endOffset = strconv.FormatInt((r.Offset+r.Count)-1, 10)
-	}
-	dataRange := fmt.Sprintf("bytes=%v-%s", r.Offset, endOffset)
-	return &dataRange
-}
-
-func GetSourceRange(offset, count *int64) *string {
-	if offset == nil && count == nil {
-		return nil
-	}
-	newOffset := int64(0)
-	newCount := int64(CountToEnd)
-
-	if offset != nil {
-		newOffset = *offset
-	}
-
-	if count != nil {
-		newCount = *count
-	}
-
-	return (&HTTPRange{Offset: newOffset, Count: newCount}).Format()
-}
-
 // CopyOptions returns a zero-value T if opts is nil.
 // If opts is not nil, a copy is made and its address returned.
 func CopyOptions[T any](opts *T) *T {

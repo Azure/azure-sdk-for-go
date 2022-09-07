@@ -1,3 +1,4 @@
+foobar
 # Azure Service Bus Client Module for Go
 
 [Azure Service Bus](https://azure.microsoft.com/services/service-bus/) is a highly-reliable cloud messaging service from Microsoft.

@@ -113,9 +113,8 @@ func TestQueryWorkspace_AdvancedQuerySuccess(t *testing.T) {
 	}
 }
 
-/*func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
+func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
 	client := startLogsTest(t)
-	query := "union * | where TimeGenerated > ago(100d) | project TenantId | summarize count() by TenantId"
 	workspaces := []*string{&workspaceID2}
 	body := azquery.Body{
 		Query:      &query,
@@ -130,10 +129,10 @@ func TestQueryWorkspace_AdvancedQuerySuccess(t *testing.T) {
 	if res.Results.Error != nil {
 		t.Fatal("result error should be nil")
 	}
-	if len(res.Results.Tables[0].Rows) != 2 {
-		t.Fatal("expected 2 results")
+	if len(res.Results.Tables[0].Rows) != 100 {
+		t.Fatalf("expected 100 results, received")
 	}
-}*/
+}
 
 func TestBatch_QuerySuccess(t *testing.T) {
 	client := startLogsTest(t)

@@ -9,13 +9,14 @@ package azquery_test
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
 	"github.com/stretchr/testify/require"
 )
 
-/*func TestQueryResource_BasicQuerySuccess(t *testing.T) {
+func TestQueryResource_BasicQuerySuccess(t *testing.T) {
 	client := startMetricsTest(t)
 	timespan := time.Now().Add(-12*time.Hour).Format(time.RFC3339) + "/" + time.Now().Format(time.RFC3339)
 	res, err := client.QueryResource(context.Background(), resourceURI,
@@ -40,7 +41,7 @@ import (
 	testSerde(t, res.Response.Value[0].Name)
 	testSerde(t, res.Response.Value[0].Timeseries[0])
 	//testSerde(t, res.Response.Value[0].Timeseries[0].Metadatavalues[0])
-}*/
+}
 
 func TestNewListMetricDefinitionsPager_Success(t *testing.T) {
 	client := startMetricsTest(t)

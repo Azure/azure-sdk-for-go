@@ -21,17 +21,17 @@
         "Connection": "keep-alive",
         "Content-Length": "355",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 06 Sep 2022 23:01:48 GMT",
+        "Date": "Wed, 07 Sep 2022 19:46:56 GMT",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
         "Vary": "Accept-Encoding",
-        "Via": "1.1 draft-oms-6b467c4794-zl4zf",
+        "Via": "1.1 draft-oms-6b467c4794-bzfv4",
         "X-Content-Type-Options": "nosniff"
       },
       "ResponseBody": {
         "error": {
           "message": "The request had some invalid properties",
           "code": "BadArgumentError",
-          "correlationId": "6458ec13-66ba-45ea-a34a-19bb72710459",
+          "correlationId": "39818796-cbd0-4c5d-8027-504f84d9c33b",
           "innererror": {
             "code": "SyntaxError",
             "message": "A recognition error occurred in the query.",

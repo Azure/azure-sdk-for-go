@@ -7,27 +7,29 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "522",
+        "Content-Length": "544",
         "Content-Type": "application/json",
         "User-Agent": "azsdk-go-azquery/v0.1.0 (go1.19; Windows_NT)"
       },
       "RequestBody": {
         "query": "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789, \u0027string value\u0027, 10s, decimal(0.10101), dynamic({\u0022a\u0022:123, \u0022b\u0022:\u0022hello\u0022, \u0022c\u0022:[1,2,3], \u0022d\u0022:{}})];range x from 1 to 100 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long",
-        "timespan": "2015-12-31/2016-01-01"
+        "workspaces": [
+          "asdjkfj8k20-gg81-4b0a-9fu2-260c09fn1f68"
+        ]
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Expose-Headers": "Retry-After,Age,WWW-Authenticate,x-resource-identities,x-ms-status-location",
-        "Age": "57",
+        "Age": "55",
         "Connection": "keep-alive",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 07 Sep 2022 19:46:53 GMT",
+        "Date": "Wed, 07 Sep 2022 19:47:01 GMT",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
-        "Via": "1.1 draft-oms-6b467c4794-cq6xn",
+        "Via": "1.1 draft-oms-6b467c4794-d9mgm",
         "X-Content-Type-Options": "nosniff"
       },
       "ResponseBody": {

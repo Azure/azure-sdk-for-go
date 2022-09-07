@@ -23,6 +23,7 @@ import (
 
 // the well-known set of LRO status/provisioning state values.
 const (
+	StatusCompleteed = "Completed"
 	StatusSucceeded  = "Succeeded"
 	StatusCanceled   = "Canceled"
 	StatusFailed     = "Failed"
@@ -31,7 +32,7 @@ const (
 
 // IsTerminalState returns true if the LRO's state is terminal.
 func IsTerminalState(s string) bool {
-	return strings.EqualFold(s, StatusSucceeded) || strings.EqualFold(s, StatusFailed) || strings.EqualFold(s, StatusCanceled)
+	return strings.EqualFold(s, StatusSucceeded) || strings.EqualFold(s, StatusFailed) || strings.EqualFold(s, StatusCanceled) || strings.EqualFold(s, StatusCompleteed)
 }
 
 // Failed returns true if the LRO's state is terminal failure.
@@ -42,6 +43,11 @@ func Failed(s string) bool {
 // Succeeded returns true if the LRO's state is terminal success.
 func Succeeded(s string) bool {
 	return strings.EqualFold(s, StatusSucceeded)
+}
+
+// Completed return true if is terminal completed
+func Completed(s string) bool {
+	return strings.EqualFold(s, StatusCompleteed)
 }
 
 // returns true if the LRO response contains a valid HTTP status code

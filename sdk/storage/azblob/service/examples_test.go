@@ -142,7 +142,7 @@ func Example_service_Client_ListContainers() {
 	handleError(err)
 
 	listContainersOptions := service.ListContainersOptions{
-		Include: service.ListContainersDetail{
+		Include: service.ListContainersInclude{
 			Metadata: true, // Include Metadata
 			Deleted:  true, // Include deleted containers in the result as well
 		},

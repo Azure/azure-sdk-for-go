@@ -86,7 +86,7 @@ func (o *GetPropertiesOptions) format() *generated.ServiceClientGetPropertiesOpt
 
 // ListContainersOptions provides set of configurations for ListContainers operation
 type ListContainersOptions struct {
-	Include ListContainersDetail
+	Include ListContainersInclude
 
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing operation did not return all containers
@@ -104,8 +104,8 @@ type ListContainersOptions struct {
 	Prefix *string
 }
 
-// ListContainersDetail indicates what additional information the service should return with each container.
-type ListContainersDetail struct {
+// ListContainersInclude indicates what additional information the service should return with each container.
+type ListContainersInclude struct {
 	// Tells the service whether to return metadata for each container.
 	Metadata bool
 

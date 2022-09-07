@@ -100,12 +100,12 @@ func (o *GetPropertiesOptions) format() (*generated.ContainerClientGetProperties
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// ListBlobsDetail indicates what additional information the service should return with each blob.
-type ListBlobsDetail struct {
+// ListBlobsInclude indicates what additional information the service should return with each blob.
+type ListBlobsInclude struct {
 	Copy, Metadata, Snapshots, UncommittedBlobs, Deleted, Tags, Versions, LegalHold, ImmutabilityPolicy, DeletedWithVersions bool
 }
 
-func (l ListBlobsDetail) format() []generated.ListBlobsIncludeItem {
+func (l ListBlobsInclude) format() []generated.ListBlobsIncludeItem {
 	if reflect.ValueOf(l).IsZero() {
 		return nil
 	}
@@ -149,7 +149,7 @@ func (l ListBlobsDetail) format() []generated.ListBlobsIncludeItem {
 // ListBlobsFlatOptions contains the optional parameters for the ContainerClient.ListBlobFlatSegment method.
 type ListBlobsFlatOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
-	Include ListBlobsDetail
+	Include ListBlobsInclude
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing
 	// operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used
@@ -171,7 +171,7 @@ type ListBlobsFlatOptions struct {
 // ListBlobsHierarchyOptions provides set of configurations for Client.NewListBlobsHierarchyPager
 type ListBlobsHierarchyOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
-	Include ListBlobsDetail
+	Include ListBlobsInclude
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing
 	// operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used

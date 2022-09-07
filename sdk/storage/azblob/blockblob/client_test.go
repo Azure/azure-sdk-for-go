@@ -1708,7 +1708,7 @@ func (s *BlockBlobRecordedTestsSuite) TestDeleteSpecificBlobVersion() {
 	}
 
 	listPager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		Include: container.ListBlobsDetail{Versions: true},
+		Include: container.ListBlobsInclude{Versions: true},
 	})
 
 	found := make([]*container.BlobItem, 0)
@@ -1732,7 +1732,7 @@ func (s *BlockBlobRecordedTestsSuite) TestDeleteSpecificBlobVersion() {
 	}
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		Include: container.ListBlobsDetail{Versions: true},
+		Include: container.ListBlobsInclude{Versions: true},
 	})
 
 	found = make([]*container.BlobItem, 0)
@@ -1821,7 +1821,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 	_require.NotNil(csResp.VersionID)
 
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		Include: container.ListBlobsDetail{Snapshots: true},
+		Include: container.ListBlobsInclude{Snapshots: true},
 	})
 
 	found := make([]*container.BlobItem, 0)
@@ -1841,7 +1841,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 	//_require.Equal(deleteResp.RawResponse.StatusCode, 202)
 
 	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		Include: container.ListBlobsDetail{Snapshots: true, Versions: true},
+		Include: container.ListBlobsInclude{Snapshots: true, Versions: true},
 	})
 
 	found = make([]*container.BlobItem, 0)
@@ -2465,7 +2465,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestListBlobReturnsTags() {
 	// _require.Equal(resp.RawResponse.StatusCode,204)
 
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		Include: container.ListBlobsDetail{Tags: true},
+		Include: container.ListBlobsInclude{Tags: true},
 	})
 
 	found := make([]*container.BlobItem, 0)

@@ -109,7 +109,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	}(containerClient, context.Background(), nil)
 	_require.Nil(err)
 	prefix := testcommon.ContainerPrefix
-	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersDetail{Metadata: true}}
+	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersInclude{Metadata: true}}
 	pager := svcClient.NewListContainersPager(&listOptions)
 
 	count := 0
@@ -170,7 +170,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionStri
 	}(containerClient, context.Background(), nil)
 	_require.Nil(err)
 	prefix := testcommon.ContainerPrefix
-	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersDetail{Metadata: true}}
+	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersInclude{Metadata: true}}
 	pager := svcClient.NewListContainersPager(&listOptions)
 
 	count := 0

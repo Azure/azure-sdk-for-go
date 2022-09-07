@@ -1244,7 +1244,7 @@ func (s *ContainerRecordedTestsSuite) TestListBlobIncludeMetadata() {
 	}
 
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		Include: container.ListBlobsDetail{Metadata: true},
+		Include: container.ListBlobsInclude{Metadata: true},
 	})
 
 	for pager.More() {
@@ -1264,7 +1264,7 @@ func (s *ContainerRecordedTestsSuite) TestListBlobIncludeMetadata() {
 	//----------------------------------------------------------
 
 	pager1 := containerClient.NewListBlobsHierarchyPager("/", &container.ListBlobsHierarchyOptions{
-		Include: container.ListBlobsDetail{Metadata: true, Tags: true},
+		Include: container.ListBlobsInclude{Metadata: true, Tags: true},
 	})
 
 	for pager1.More() {

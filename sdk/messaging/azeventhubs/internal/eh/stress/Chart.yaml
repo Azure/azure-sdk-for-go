@@ -1,0 +1,14 @@
+apiVersion: v2
+name: goeh
+description: Event Hubs stress tests for Go
+version: 0.1.1
+appVersion: v0.1
+annotations:
+  stressTest: 'true'  # enable auto-discovery of this test via `find-all-stress-packages.ps1`
+  namespace: 'go'
+  dockerbuilddir: '../../..'
+  dockerfile: './Dockerfile'
+dependencies:
+- name: stress-test-addons
+  version: ~0.1.19
+  repository: https://stresstestcharts.blob.core.windows.net/helm/

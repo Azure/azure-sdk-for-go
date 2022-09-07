@@ -3,9 +3,13 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"log"
+	"math/rand"
 	"os"
 	"sort"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/eh/stress/tests"
 )
@@ -13,9 +17,11 @@ import (
 func main() {
 	tests := []struct {
 		name string
-		fn   func() error
+		fn   func(ctx context.Context) error
 	}{
 		{name: "finite", fn: tests.FiniteSendAndReceiveTest},
+		{name: "finiteprocessor", fn: tests.FiniteProcessorTest},
+		{name: "infinite", fn: tests.InfiniteProcessorTest},
 	}
 
 	sort.Slice(tests, func(i, j int) bool {
@@ -38,7 +44,22 @@ func main() {
 
 	for _, test := range tests {
 		if test.name == testName {
-			if err := test.fn(); err != nil {
+			// azlog.SetEvents(azeventhubs.EventAuth, azeventhubs.EventConn, azeventhubs.EventConsumer)
+			// azlog.SetListener(func(e azlog.Event, s string) {
+			// 	log.Printf("[%s] %s", e, s)
+			// })
+
+			defer func() {
+				err := recover()
+
+				if err != nil {
+					log.Printf("FATAL ERROR: %s", err)
+				}
+			}()
+
+			rand.Seed(time.Now().UnixNano())
+
+			if err := test.fn(context.Background()); err != nil {
 				fmt.Printf("ERROR: %s\n", err)
 				os.Exit(1)
 			}

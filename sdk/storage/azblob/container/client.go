@@ -24,6 +24,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -276,20 +277,20 @@ func (c *Client) NewListBlobsHierarchyPager(delimiter string, o *ListBlobsHierar
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at container.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (c *Client) GetSASURL(permissions SASPermissions, start time.Time, expiry time.Time) (string, error) {
+func (c *Client) GetSASURL(permissions sas.ContainerPermissions, start time.Time, expiry time.Time) (string, error) {
 	if c.sharedKey() == nil {
 		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}
 
-	urlParts, err := exported.ParseURL(c.URL())
+	urlParts, err := blob.ParseURL(c.URL())
 	if err != nil {
 		return "", err
 	}
 
 	// Containers do not have snapshots, nor versions.
-	qps, err := SASSignatureValues{
-		Version:       exported.SASVersion,
-		Protocol:      exported.SASProtocolHTTPS,
+	qps, err := sas.BlobSignatureValues{
+		Version:       sas.Version,
+		Protocol:      sas.ProtocolHTTPS,
 		ContainerName: urlParts.ContainerName,
 		Permissions:   permissions.String(),
 		StartTime:     start.UTC(),

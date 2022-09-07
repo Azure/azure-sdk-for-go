@@ -16,7 +16,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 )
 
@@ -164,11 +166,11 @@ func Example_service_Client_GetSASURL() {
 	serviceClient, err := service.NewClientWithSharedKeyCredential("https://<myAccountName>.blob.core.windows.net", cred, nil)
 	handleError(err)
 
-	resources := service.SASResourceTypes{Service: true}
-	permission := service.SASPermissions{Read: true}
+	resources := sas.AccountResourceTypes{Service: true}
+	permission := sas.AccountPermissions{Read: true}
 	start := time.Now()
 	expiry := start.AddDate(1, 0, 0)
-	sasURL, err := serviceClient.GetSASURL(resources, permission, service.SASServices{Blob: true}, start, expiry)
+	sasURL, err := serviceClient.GetSASURL(resources, permission, sas.AccountServices{Blob: true}, start, expiry)
 	handleError(err)
 
 	serviceURL := fmt.Sprintf("https://<myAccountName>.blob.core.windows.net/?%s", sasURL)
@@ -225,23 +227,22 @@ func Example_service_SASSignatureValues_Sign() {
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	handleError(err)
 
-	sasQueryParams, err := service.SASSignatureValues{
-		Protocol:      service.SASProtocolHTTPS,
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
-		Permissions:   to.Ptr(service.SASPermissions{Read: true, List: true}).String(),
-		Services:      to.Ptr(service.SASServices{Blob: true}).String(),
-		ResourceTypes: to.Ptr(service.SASResourceTypes{Container: true, Object: true}).String(),
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.Sign(credential)
 	handleError(err)
 
-	queryParams := sasQueryParams.Encode()
-	sasURL := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, queryParams)
+	sasURL := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, sasQueryParams.Encode())
 
 	// This URL can be used to authenticate requests now
 	serviceClient, err := service.NewClientWithNoCredential(sasURL, nil)
 	handleError(err)
 
 	// You can also break a blob URL up into it's constituent parts
-	blobURLParts, _ := azblob.ParseURL(serviceClient.URL())
+	blobURLParts, _ := blob.ParseURL(serviceClient.URL())
 	fmt.Printf("SAS expiry time = %s\n", blobURLParts.SAS.ExpiryTime())
 }

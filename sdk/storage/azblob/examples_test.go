@@ -400,22 +400,6 @@ func ExampleResponseError() {
 	handleError(err)
 }
 
-// This example demonstrates splitting a URL into its parts so you can examine and modify the URL in an Azure Storage fluent way.
-func ExampleParseURL() {
-	// Here is an example of a blob snapshot.
-	u := "https://myaccount.blob.core.windows.net/mycontainter/ReadMe.txt?" +
-		"snapshot=2011-03-09T01:42:34Z&" +
-		"sv=2015-02-21&sr=b&st=2111-01-09T01:42:34.936Z&se=2222-03-09T01:42:34.936Z&sp=rw&sip=168.1.5.60-168.1.5.70&" +
-		"spr=https,http&si=myIdentifier&ss=bf&srt=s&sig=92836758923659283652983562=="
-
-	// Breaking the URL down into it's parts by conversion to URLParts
-	parts, _ := azblob.ParseURL(u)
-
-	// The URLParts allows access to individual portions of a Blob URL
-	fmt.Printf("Host: %s\nContainerName: %s\nBlobName: %s\nSnapshot: %s\n", parts.Host, parts.ContainerName, parts.BlobName, parts.Snapshot)
-	fmt.Printf("Version: %s\nResource: %s\nStartTime: %s\nExpiryTime: %s\nPermissions: %s\n", parts.SAS.Version(), parts.SAS.Resource(), parts.SAS.StartTime(), parts.SAS.ExpiryTime(), parts.SAS.Permissions())
-}
-
 // This example shows how to perform operations on blob conditionally.
 func Example_blob_AccessConditions() {
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")

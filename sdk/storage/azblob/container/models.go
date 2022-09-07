@@ -50,21 +50,6 @@ type AccessPolicyPermission = exported.AccessPolicyPermission
 // SignedIdentifier - signed identifier
 type SignedIdentifier = generated.SignedIdentifier
 
-// SASProtocol indicates the http/https.
-type SASProtocol = exported.SASProtocol
-
-// IPRange represents a SAS IP range's start IP and (optionally) end IP.
-type IPRange = exported.IPRange
-
-// SASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage container or blob.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
-type SASSignatureValues = exported.BlobSASSignatureValues
-
-// SASPermissions type simplifies creating the permissions string for an Azure Storage container SAS.
-// Initialize an instance of this type and then call its String method to set BlobSASSignatureValues's Permissions field.
-// All permissions descriptions can be found here: https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas#permissions-for-a-directory-container-or-blob
-type SASPermissions = exported.ContainerSASPermissions
-
 // Request Model Declaration -------------------------------------------------------------------------------------------
 
 // CreateOptions contains the optional parameters for the Client.Create method.

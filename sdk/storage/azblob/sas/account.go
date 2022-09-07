@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package exported
+package sas
 
 import (
 	"bytes"
@@ -12,38 +12,43 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 )
 
-// AccountSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account.
+// SharedKeyCredential contains an account's name and its primary or secondary key.
+type SharedKeyCredential = exported.SharedKeyCredential
+
+// AccountSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-an-account-sas
-type AccountSASSignatureValues struct {
-	Version       string      `param:"sv"`  // If not specified, this format to SASVersion
-	Protocol      SASProtocol `param:"spr"` // See the SASProtocol* constants
-	StartTime     time.Time   `param:"st"`  // Not specified if IsZero
-	ExpiryTime    time.Time   `param:"se"`  // Not specified if IsZero
-	Permissions   string      `param:"sp"`  // Create by initializing a AccountSASPermissions and then call String()
-	IPRange       IPRange     `param:"sip"`
-	Services      string      `param:"ss"`  // Create by initializing AccountSASServices and then call String()
-	ResourceTypes string      `param:"srt"` // Create by initializing AccountSASResourceTypes and then call String()
+type AccountSignatureValues struct {
+	Version       string    `param:"sv"`  // If not specified, this format to SASVersion
+	Protocol      Protocol  `param:"spr"` // See the SASProtocol* constants
+	StartTime     time.Time `param:"st"`  // Not specified if IsZero
+	ExpiryTime    time.Time `param:"se"`  // Not specified if IsZero
+	Permissions   string    `param:"sp"`  // Create by initializing a AccountSASPermissions and then call String()
+	IPRange       IPRange   `param:"sip"`
+	Services      string    `param:"ss"`  // Create by initializing AccountSASServices and then call String()
+	ResourceTypes string    `param:"srt"` // Create by initializing AccountSASResourceTypes and then call String()
 }
 
 // Sign uses an account's shared key credential to sign this signature values to produce
 // the proper SAS query parameters.
-func (v AccountSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (SASQueryParameters, error) {
+func (v AccountSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (QueryParameters, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/Constructing-an-Account-SAS
 	if v.ExpiryTime.IsZero() || v.Permissions == "" || v.ResourceTypes == "" || v.Services == "" {
-		return SASQueryParameters{}, errors.New("account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
+		return QueryParameters{}, errors.New("account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
 	}
 	if v.Version == "" {
-		v.Version = SASVersion
+		v.Version = Version
 	}
-	perms := &AccountSASPermissions{}
-	if err := perms.Parse(v.Permissions); err != nil {
-		return SASQueryParameters{}, err
+	perms, err := parseAccountPermissions(v.Permissions)
+	if err != nil {
+		return QueryParameters{}, err
 	}
 	v.Permissions = perms.String()
 
-	startTime, expiryTime, _ := FormatTimesForSASSigning(v.StartTime, v.ExpiryTime, time.Time{})
+	startTime, expiryTime, _ := formatTimesForSigning(v.StartTime, v.ExpiryTime, time.Time{})
 
 	stringToSign := strings.Join([]string{
 		sharedKeyCredential.AccountName(),
@@ -58,11 +63,11 @@ func (v AccountSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential
 		""}, // That is right, the account SAS requires a terminating extra newline
 		"\n")
 
-	signature, err := sharedKeyCredential.computeHMACSHA256(stringToSign)
+	signature, err := exported.ComputeHMACSHA256(sharedKeyCredential, stringToSign)
 	if err != nil {
-		return SASQueryParameters{}, err
+		return QueryParameters{}, err
 	}
-	p := SASQueryParameters{
+	p := QueryParameters{
 		// Common SAS parameters
 		version:     v.Version,
 		protocol:    v.Protocol,
@@ -82,15 +87,15 @@ func (v AccountSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential
 	return p, nil
 }
 
-// AccountSASPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
+// AccountPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's Permissions field.
-type AccountSASPermissions struct {
+type AccountPermissions struct {
 	Read, Write, Delete, DeletePreviousVersion, List, Add, Create, Update, Process, Tag, FilterByTags bool
 }
 
 // String produces the SAS permissions string for an Azure Storage account.
 // Call this method to set AccountSASSignatureValues's Permissions field.
-func (p *AccountSASPermissions) String() string {
+func (p *AccountPermissions) String() string {
 	var buffer bytes.Buffer
 	if p.Read {
 		buffer.WriteRune('r')
@@ -129,8 +134,8 @@ func (p *AccountSASPermissions) String() string {
 }
 
 // Parse initializes the AccountSASPermissions' fields from a string.
-func (p *AccountSASPermissions) Parse(s string) error {
-	*p = AccountSASPermissions{} // Clear out the flags
+func parseAccountPermissions(s string) (AccountPermissions, error) {
+	p := AccountPermissions{} // Clear out the flags
 	for _, r := range s {
 		switch r {
 		case 'r':
@@ -156,21 +161,21 @@ func (p *AccountSASPermissions) Parse(s string) error {
 		case 'f':
 			p.FilterByTags = true
 		default:
-			return fmt.Errorf("invalid permission character: '%v'", r)
+			return AccountPermissions{}, fmt.Errorf("invalid permission character: '%v'", r)
 		}
 	}
-	return nil
+	return p, nil
 }
 
-// AccountSASServices type simplifies creating the services string for an Azure Storage Account SAS.
+// AccountServices type simplifies creating the services string for an Azure Storage Account SAS.
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's Services field.
-type AccountSASServices struct {
+type AccountServices struct {
 	Blob, Queue, File bool
 }
 
 // String produces the SAS services string for an Azure Storage account.
 // Call this method to set AccountSASSignatureValues's Services field.
-func (s *AccountSASServices) String() string {
+func (s *AccountServices) String() string {
 	var buffer bytes.Buffer
 	if s.Blob {
 		buffer.WriteRune('b')
@@ -185,8 +190,8 @@ func (s *AccountSASServices) String() string {
 }
 
 // Parse initializes the AccountSASServices' fields from a string.
-func (s *AccountSASServices) Parse(str string) error {
-	*s = AccountSASServices{} // Clear out the flags
+/*func parseAccountServices(str string) (AccountServices, error) {
+	s := AccountServices{} // Clear out the flags
 	for _, r := range str {
 		switch r {
 		case 'b':
@@ -196,21 +201,21 @@ func (s *AccountSASServices) Parse(str string) error {
 		case 'f':
 			s.File = true
 		default:
-			return fmt.Errorf("invalid service character: '%v'", r)
+			return AccountServices{}, fmt.Errorf("invalid service character: '%v'", r)
 		}
 	}
-	return nil
-}
+	return s, nil
+}*/
 
-// AccountSASResourceTypes type simplifies creating the resource types string for an Azure Storage Account SAS.
+// AccountResourceTypes type simplifies creating the resource types string for an Azure Storage Account SAS.
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's ResourceTypes field.
-type AccountSASResourceTypes struct {
+type AccountResourceTypes struct {
 	Service, Container, Object bool
 }
 
 // String produces the SAS resource types string for an Azure Storage account.
 // Call this method to set AccountSASSignatureValues's ResourceTypes field.
-func (rt *AccountSASResourceTypes) String() string {
+func (rt *AccountResourceTypes) String() string {
 	var buffer bytes.Buffer
 	if rt.Service {
 		buffer.WriteRune('s')
@@ -224,9 +229,9 @@ func (rt *AccountSASResourceTypes) String() string {
 	return buffer.String()
 }
 
-// Parse initializes the AccountSASResourceType's fields from a string.
-func (rt *AccountSASResourceTypes) Parse(s string) error {
-	*rt = AccountSASResourceTypes{} // Clear out the flags
+// Parse initializes the AccountResourceTypes's fields from a string.
+/*func parseAccountResourceTypes(s string) (AccountResourceTypes, error) {
+	rt := AccountResourceTypes{} // Clear out the flags
 	for _, r := range s {
 		switch r {
 		case 's':
@@ -236,8 +241,8 @@ func (rt *AccountSASResourceTypes) Parse(s string) error {
 		case 'o':
 			rt.Object = true
 		default:
-			return fmt.Errorf("invalid resource type: '%v'", r)
+			return AccountResourceTypes{}, fmt.Errorf("invalid resource type: '%v'", r)
 		}
 	}
-	return nil
-}
+	return rt, nil
+}*/

@@ -98,7 +98,7 @@ func (ab *Client) URL() string {
 // WithSnapshot creates a new AppendBlobURL object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
 func (ab *Client) WithSnapshot(snapshot string) (*Client, error) {
-	p, err := exported.ParseURL(ab.URL())
+	p, err := blob.ParseURL(ab.URL())
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +110,7 @@ func (ab *Client) WithSnapshot(snapshot string) (*Client, error) {
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
 // Pass "" to remove the versionID returning a URL to the base blob.
 func (ab *Client) WithVersionID(versionID string) (*Client, error) {
-	p, err := exported.ParseURL(ab.URL())
+	p, err := blob.ParseURL(ab.URL())
 	if err != nil {
 		return nil, err
 	}

@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
 
 func handleError(err error) {
@@ -287,7 +288,7 @@ func Example_container_ClientGetSASURL() {
 	containerClient, err := container.NewClient(containerURL, cred, nil)
 	handleError(err)
 
-	permission := container.SASPermissions{Read: true}
+	permission := sas.ContainerPermissions{Read: true}
 	start := time.Now()
 	expiry := start.AddDate(1, 0, 0)
 	sasURL, err := containerClient.GetSASURL(permission, start, expiry)

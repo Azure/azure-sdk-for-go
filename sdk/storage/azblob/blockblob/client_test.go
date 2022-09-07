@@ -20,12 +20,12 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
@@ -1159,16 +1159,16 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	if err != nil {
 		s.T().Fatal("Couldn't fetch credential because " + err.Error())
 	}
-	sasQueryParams, err := service.SASSignatureValues{
-		Protocol:      service.SASProtocolHTTPS,
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
 		ExpiryTime:    expiryTime,
-		Permissions:   to.Ptr(service.SASPermissions{Read: true, List: true}).String(),
-		Services:      to.Ptr(service.SASServices{Blob: true}).String(),
-		ResourceTypes: to.Ptr(service.SASResourceTypes{Container: true, Object: true}).String(),
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.Sign(credential)
 	_require.Nil(err)
 
-	srcBlobParts, _ := azblob.ParseURL(srcBlob.URL())
+	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
 	srcBlobParts.SAS = sasQueryParams
 	srcBlobURLWithSAS := srcBlobParts.String()
 

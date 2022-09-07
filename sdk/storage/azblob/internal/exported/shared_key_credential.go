@@ -178,6 +178,11 @@ func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, er
 	return cr.String(), nil
 }
 
+// ComputeHMACSHA256 is a helper for computing the signed string outside of this package.
+func ComputeHMACSHA256(cred *SharedKeyCredential, message string) (string, error) {
+	return cred.computeHMACSHA256(message)
+}
+
 // the following content isn't actually exported but must live
 // next to SharedKeyCredential as it uses its unexported methods
 

@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package exported
+package sas
 
 import (
 	"errors"
@@ -12,67 +12,69 @@ import (
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
+)
+
+// TimeFormat represents the format of a SAS start or expiry time. Use it when formatting/parsing a time.Time.
+const (
+	TimeFormat = "2006-01-02T15:04:05Z" // "2017-07-27T00:00:00Z" // ISO 8601
 )
 
 var (
-	SASVersion = "2019-12-12"
-
-	// SASTimeFormats ISO 8601 format.
-	// Please refer to https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas for more details.
-	SASTimeFormats = []string{"2006-01-02T15:04:05.0000000Z", SASTimeFormat, "2006-01-02T15:04Z", "2006-01-02"}
+	// Version is the default version encoded in the SAS token.
+	Version = "2019-12-12"
 )
 
-// SASTimeFormat represents the format of a SAS start or expiry time. Use it when formatting/parsing a time.Time.
-// TODO: do these need to be exported?
-const (
-	SASTimeFormat = "2006-01-02T15:04:05Z" // "2017-07-27T00:00:00Z" // ISO 8601
-)
+// TimeFormats ISO 8601 format.
+// Please refer to https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas for more details.
+var timeFormats = []string{"2006-01-02T15:04:05.0000000Z", TimeFormat, "2006-01-02T15:04Z", "2006-01-02"}
+
+// Protocol indicates the http/https.
+type Protocol string
 
 const (
-	// SASProtocolHTTPS can be specified for a SAS protocol
-	SASProtocolHTTPS SASProtocol = "https"
+	// ProtocolHTTPS can be specified for a SAS protocol
+	ProtocolHTTPS Protocol = "https"
 
-	// SASProtocolHTTPSandHTTP can be specified for a SAS protocol
-	SASProtocolHTTPSandHTTP SASProtocol = "https,http"
+	// ProtocolHTTPSandHTTP can be specified for a SAS protocol
+	ProtocolHTTPSandHTTP Protocol = "https,http"
 )
 
-// SASProtocol indicates the http/https.
-type SASProtocol string
-
-// FormatTimesForSASSigning converts a time.Time to a snapshotTimeFormat string suitable for a
-// SASField's StartTime or ExpiryTime fields. Returns "" if value.IsZero().
-func FormatTimesForSASSigning(startTime, expiryTime, snapshotTime time.Time) (string, string, string) {
+// FormatTimesForSigning converts a time.Time to a snapshotTimeFormat string suitable for a
+// Field's StartTime or ExpiryTime fields. Returns "" if value.IsZero().
+func formatTimesForSigning(startTime, expiryTime, snapshotTime time.Time) (string, string, string) {
 	ss := ""
 	if !startTime.IsZero() {
-		ss = formatSASTimeWithDefaultFormat(&startTime)
+		ss = formatTimeWithDefaultFormat(&startTime)
 	}
 	se := ""
 	if !expiryTime.IsZero() {
-		se = formatSASTimeWithDefaultFormat(&expiryTime)
+		se = formatTimeWithDefaultFormat(&expiryTime)
 	}
 	sh := ""
 	if !snapshotTime.IsZero() {
-		sh = snapshotTime.Format(SnapshotTimeFormat)
+		sh = snapshotTime.Format(exported.SnapshotTimeFormat)
 	}
 	return ss, se, sh
 }
 
-// formatSASTimeWithDefaultFormat format time with ISO 8601 in "yyyy-MM-ddTHH:mm:ssZ".
-func formatSASTimeWithDefaultFormat(t *time.Time) string {
-	return formatSASTime(t, SASTimeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
+// formatTimeWithDefaultFormat format time with ISO 8601 in "yyyy-MM-ddTHH:mm:ssZ".
+func formatTimeWithDefaultFormat(t *time.Time) string {
+	return formatTime(t, TimeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
 }
 
-// formatSASTime format time with given format, use ISO 8601 in "yyyy-MM-ddTHH:mm:ssZ" by default.
-func formatSASTime(t *time.Time, format string) string {
+// formatTime format time with given format, use ISO 8601 in "yyyy-MM-ddTHH:mm:ssZ" by default.
+func formatTime(t *time.Time, format string) string {
 	if format != "" {
 		return t.Format(format)
 	}
-	return t.Format(SASTimeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
+	return t.Format(TimeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
 }
 
-// ParseSASTimeString try to parse sas time string.
-func ParseSASTimeString(val string) (t time.Time, timeFormat string, err error) {
-	for _, sasTimeFormat := range SASTimeFormats {
+// ParseTime try to parse a SAS time string.
+func parseTime(val string) (t time.Time, timeFormat string, err error) {
+	for _, sasTimeFormat := range timeFormats {
 		t, err = time.Parse(sasTimeFormat, val)
 		if err == nil {
 			timeFormat = sasTimeFormat
@@ -107,189 +109,184 @@ func (ipr *IPRange) String() string {
 
 // https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
 
-// SASQueryParameters object represents the components that make up an Azure Storage SAS' query parameters.
-// You parse a map of query parameters into its fields by calling NewSASQueryParameters(). You add the components
+// QueryParameters object represents the components that make up an Azure Storage SAS' query parameters.
+// You parse a map of query parameters into its fields by calling NewQueryParameters(). You add the components
 // to a query parameter map by calling AddToValues().
 // NOTE: Changing any field requires computing a new SAS signature using a XxxSASSignatureValues type.
 // This type defines the components used by all Azure Storage resources (Containers, Blobs, Files, & Queues).
-type SASQueryParameters struct {
+type QueryParameters struct {
 	// All members are immutable or values so copies of this struct are goroutine-safe.
-	version                    string      `param:"sv"`
-	services                   string      `param:"ss"`
-	resourceTypes              string      `param:"srt"`
-	protocol                   SASProtocol `param:"spr"`
-	startTime                  time.Time   `param:"st"`
-	expiryTime                 time.Time   `param:"se"`
-	snapshotTime               time.Time   `param:"snapshot"`
-	ipRange                    IPRange     `param:"sip"`
-	identifier                 string      `param:"si"`
-	resource                   string      `param:"sr"`
-	permissions                string      `param:"sp"`
-	signature                  string      `param:"sig"`
-	cacheControl               string      `param:"rscc"`
-	contentDisposition         string      `param:"rscd"`
-	contentEncoding            string      `param:"rsce"`
-	contentLanguage            string      `param:"rscl"`
-	contentType                string      `param:"rsct"`
-	signedOID                  string      `param:"skoid"`
-	signedTID                  string      `param:"sktid"`
-	signedStart                time.Time   `param:"skt"`
-	signedService              string      `param:"sks"`
-	signedExpiry               time.Time   `param:"ske"`
-	signedVersion              string      `param:"skv"`
-	signedDirectoryDepth       string      `param:"sdd"`
-	preauthorizedAgentObjectID string      `param:"saoid"`
-	agentObjectID              string      `param:"suoid"`
-	correlationID              string      `param:"scid"`
+	version                    string    `param:"sv"`
+	services                   string    `param:"ss"`
+	resourceTypes              string    `param:"srt"`
+	protocol                   Protocol  `param:"spr"`
+	startTime                  time.Time `param:"st"`
+	expiryTime                 time.Time `param:"se"`
+	snapshotTime               time.Time `param:"snapshot"`
+	ipRange                    IPRange   `param:"sip"`
+	identifier                 string    `param:"si"`
+	resource                   string    `param:"sr"`
+	permissions                string    `param:"sp"`
+	signature                  string    `param:"sig"`
+	cacheControl               string    `param:"rscc"`
+	contentDisposition         string    `param:"rscd"`
+	contentEncoding            string    `param:"rsce"`
+	contentLanguage            string    `param:"rscl"`
+	contentType                string    `param:"rsct"`
+	signedOID                  string    `param:"skoid"`
+	signedTID                  string    `param:"sktid"`
+	signedStart                time.Time `param:"skt"`
+	signedService              string    `param:"sks"`
+	signedExpiry               time.Time `param:"ske"`
+	signedVersion              string    `param:"skv"`
+	signedDirectoryDepth       string    `param:"sdd"`
+	preauthorizedAgentObjectID string    `param:"saoid"`
+	agentObjectID              string    `param:"suoid"`
+	correlationID              string    `param:"scid"`
 	// private member used for startTime and expiryTime formatting.
 	stTimeFormat string
 	seTimeFormat string
 }
 
 // PreauthorizedAgentObjectID returns preauthorizedAgentObjectID
-func (p *SASQueryParameters) PreauthorizedAgentObjectID() string {
+func (p *QueryParameters) PreauthorizedAgentObjectID() string {
 	return p.preauthorizedAgentObjectID
 }
 
 // AgentObjectID returns agentObjectID
-func (p *SASQueryParameters) AgentObjectID() string {
+func (p *QueryParameters) AgentObjectID() string {
 	return p.agentObjectID
 }
 
 // SignedCorrelationID returns signedCorrelationID
-func (p *SASQueryParameters) SignedCorrelationID() string {
+func (p *QueryParameters) SignedCorrelationID() string {
 	return p.correlationID
 }
 
 // SignedOID returns signedOID
-func (p *SASQueryParameters) SignedOID() string {
+func (p *QueryParameters) SignedOID() string {
 	return p.signedOID
 }
 
 // SignedTID returns signedTID
-func (p *SASQueryParameters) SignedTID() string {
+func (p *QueryParameters) SignedTID() string {
 	return p.signedTID
 }
 
 // SignedStart returns signedStart
-func (p *SASQueryParameters) SignedStart() time.Time {
+func (p *QueryParameters) SignedStart() time.Time {
 	return p.signedStart
 }
 
 // SignedExpiry returns signedExpiry
-func (p *SASQueryParameters) SignedExpiry() time.Time {
+func (p *QueryParameters) SignedExpiry() time.Time {
 	return p.signedExpiry
 }
 
 // SignedService returns signedService
-func (p *SASQueryParameters) SignedService() string {
+func (p *QueryParameters) SignedService() string {
 	return p.signedService
 }
 
 // SignedVersion returns signedVersion
-func (p *SASQueryParameters) SignedVersion() string {
+func (p *QueryParameters) SignedVersion() string {
 	return p.signedVersion
 }
 
 // SnapshotTime returns snapshotTime
-func (p *SASQueryParameters) SnapshotTime() time.Time {
+func (p *QueryParameters) SnapshotTime() time.Time {
 	return p.snapshotTime
 }
 
 // Version returns version
-func (p *SASQueryParameters) Version() string {
+func (p *QueryParameters) Version() string {
 	return p.version
 }
 
 // Services returns services
-func (p *SASQueryParameters) Services() string {
+func (p *QueryParameters) Services() string {
 	return p.services
 }
 
 // ResourceTypes returns resourceTypes
-func (p *SASQueryParameters) ResourceTypes() string {
+func (p *QueryParameters) ResourceTypes() string {
 	return p.resourceTypes
 }
 
 // Protocol returns protocol
-func (p *SASQueryParameters) Protocol() SASProtocol {
+func (p *QueryParameters) Protocol() Protocol {
 	return p.protocol
 }
 
 // StartTime returns startTime
-func (p *SASQueryParameters) StartTime() time.Time {
+func (p *QueryParameters) StartTime() time.Time {
 	return p.startTime
 }
 
 // ExpiryTime returns expiryTime
-func (p *SASQueryParameters) ExpiryTime() time.Time {
+func (p *QueryParameters) ExpiryTime() time.Time {
 	return p.expiryTime
 }
 
 // IPRange returns ipRange
-func (p *SASQueryParameters) IPRange() IPRange {
+func (p *QueryParameters) IPRange() IPRange {
 	return p.ipRange
 }
 
 // Identifier returns identifier
-func (p *SASQueryParameters) Identifier() string {
+func (p *QueryParameters) Identifier() string {
 	return p.identifier
 }
 
 // Resource returns resource
-func (p *SASQueryParameters) Resource() string {
+func (p *QueryParameters) Resource() string {
 	return p.resource
 }
 
 // Permissions returns permissions
-func (p *SASQueryParameters) Permissions() string {
+func (p *QueryParameters) Permissions() string {
 	return p.permissions
 }
 
 // Signature returns signature
-func (p *SASQueryParameters) Signature() string {
+func (p *QueryParameters) Signature() string {
 	return p.signature
 }
 
 // CacheControl returns cacheControl
-func (p *SASQueryParameters) CacheControl() string {
+func (p *QueryParameters) CacheControl() string {
 	return p.cacheControl
 }
 
 // ContentDisposition returns contentDisposition
-func (p *SASQueryParameters) ContentDisposition() string {
+func (p *QueryParameters) ContentDisposition() string {
 	return p.contentDisposition
 }
 
 // ContentEncoding returns contentEncoding
-func (p *SASQueryParameters) ContentEncoding() string {
+func (p *QueryParameters) ContentEncoding() string {
 	return p.contentEncoding
 }
 
 // ContentLanguage returns contentLanguage
-func (p *SASQueryParameters) ContentLanguage() string {
+func (p *QueryParameters) ContentLanguage() string {
 	return p.contentLanguage
 }
 
 // ContentType returns sontentType
-func (p *SASQueryParameters) ContentType() string {
+func (p *QueryParameters) ContentType() string {
 	return p.contentType
 }
 
 // SignedDirectoryDepth returns signedDirectoryDepth
-func (p *SASQueryParameters) SignedDirectoryDepth() string {
+func (p *QueryParameters) SignedDirectoryDepth() string {
 	return p.signedDirectoryDepth
 }
 
 // Encode encodes the SAS query parameters into URL encoded form sorted by key.
-func (p *SASQueryParameters) Encode() string {
+func (p *QueryParameters) Encode() string {
 	v := url.Values{}
-	p.addToValues(v)
-	return v.Encode()
-}
 
-// AddToValues adds the SAS components to the specified query parameters map.
-func (p *SASQueryParameters) addToValues(v url.Values) url.Values {
 	if p.version != "" {
 		v.Add("sv", p.version)
 	}
@@ -303,10 +300,10 @@ func (p *SASQueryParameters) addToValues(v url.Values) url.Values {
 		v.Add("spr", string(p.protocol))
 	}
 	if !p.startTime.IsZero() {
-		v.Add("st", formatSASTime(&(p.startTime), p.stTimeFormat))
+		v.Add("st", formatTime(&(p.startTime), p.stTimeFormat))
 	}
 	if !p.expiryTime.IsZero() {
-		v.Add("se", formatSASTime(&(p.expiryTime), p.seTimeFormat))
+		v.Add("se", formatTime(&(p.expiryTime), p.seTimeFormat))
 	}
 	if len(p.ipRange.Start) > 0 {
 		v.Add("sip", p.ipRange.String())
@@ -323,8 +320,8 @@ func (p *SASQueryParameters) addToValues(v url.Values) url.Values {
 	if p.signedOID != "" {
 		v.Add("skoid", p.signedOID)
 		v.Add("sktid", p.signedTID)
-		v.Add("skt", p.signedStart.Format(SASTimeFormat))
-		v.Add("ske", p.signedExpiry.Format(SASTimeFormat))
+		v.Add("skt", p.signedStart.Format(TimeFormat))
+		v.Add("ske", p.signedExpiry.Format(TimeFormat))
 		v.Add("sks", p.signedService)
 		v.Add("skv", p.signedVersion)
 	}
@@ -358,15 +355,16 @@ func (p *SASQueryParameters) addToValues(v url.Values) url.Values {
 	if p.correlationID != "" {
 		v.Add("scid", p.correlationID)
 	}
-	return v
+
+	return v.Encode()
 }
 
-// NewSASQueryParameters creates and initializes a SASQueryParameters object based on the
+// NewQueryParameters creates and initializes a QueryParameters object based on the
 // query parameter map's passed-in values. If deleteSASParametersFromValues is true,
 // all SAS-related query parameters are removed from the passed-in map. If
 // deleteSASParametersFromValues is false, the map passed-in map is unaltered.
-func NewSASQueryParameters(values url.Values, deleteSASParametersFromValues bool) SASQueryParameters {
-	p := SASQueryParameters{}
+func NewQueryParameters(values url.Values, deleteSASParametersFromValues bool) QueryParameters {
+	p := QueryParameters{}
 	for k, v := range values {
 		val := v[0]
 		isSASKey := true
@@ -378,13 +376,13 @@ func NewSASQueryParameters(values url.Values, deleteSASParametersFromValues bool
 		case "srt":
 			p.resourceTypes = val
 		case "spr":
-			p.protocol = SASProtocol(val)
+			p.protocol = Protocol(val)
 		case "snapshot":
-			p.snapshotTime, _ = time.Parse(SnapshotTimeFormat, val)
+			p.snapshotTime, _ = time.Parse(exported.SnapshotTimeFormat, val)
 		case "st":
-			p.startTime, p.stTimeFormat, _ = ParseSASTimeString(val)
+			p.startTime, p.stTimeFormat, _ = parseTime(val)
 		case "se":
-			p.expiryTime, p.seTimeFormat, _ = ParseSASTimeString(val)
+			p.expiryTime, p.seTimeFormat, _ = parseTime(val)
 		case "sip":
 			dashIndex := strings.Index(val, "-")
 			if dashIndex == -1 {
@@ -416,9 +414,9 @@ func NewSASQueryParameters(values url.Values, deleteSASParametersFromValues bool
 		case "sktid":
 			p.signedTID = val
 		case "skt":
-			p.signedStart, _ = time.Parse(SASTimeFormat, val)
+			p.signedStart, _ = time.Parse(TimeFormat, val)
 		case "ske":
-			p.signedExpiry, _ = time.Parse(SASTimeFormat, val)
+			p.signedExpiry, _ = time.Parse(TimeFormat, val)
 		case "sks":
 			p.signedService = val
 		case "skv":

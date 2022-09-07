@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package exported
+package sas
 
 import (
 	"fmt"
@@ -20,11 +20,11 @@ func TestSAS(t *testing.T) {
 	_url := fmt.Sprintf("https://teststorageaccount.blob.core.windows.net/testcontainer/testpath?%s", sas)
 	_uri, err := url.Parse(_url)
 	require.NoError(t, err)
-	sasQueryParams := NewSASQueryParameters(_uri.Query(), true)
+	sasQueryParams := NewQueryParameters(_uri.Query(), true)
 	validateSAS(t, sas, sasQueryParams)
 }
 
-func validateSAS(t *testing.T, sas string, parameters SASQueryParameters) {
+func validateSAS(t *testing.T, sas string, parameters QueryParameters) {
 	sasCompMap := make(map[string]string)
 	for _, sasComp := range strings.Split(sas, "&") {
 		comp := strings.Split(sasComp, "=")
@@ -36,18 +36,18 @@ func validateSAS(t *testing.T, sas string, parameters SASQueryParameters) {
 	require.Equal(t, parameters.ResourceTypes(), sasCompMap["srt"])
 	require.Equal(t, string(parameters.Protocol()), sasCompMap["spr"])
 	if _, ok := sasCompMap["st"]; ok {
-		startTime, _, err := ParseSASTimeString(sasCompMap["st"])
+		startTime, _, err := parseTime(sasCompMap["st"])
 		require.NoError(t, err)
 		require.Equal(t, parameters.StartTime(), startTime)
 	}
 	if _, ok := sasCompMap["se"]; ok {
-		endTime, _, err := ParseSASTimeString(sasCompMap["se"])
+		endTime, _, err := parseTime(sasCompMap["se"])
 		require.NoError(t, err)
 		require.Equal(t, parameters.ExpiryTime(), endTime)
 	}
 
 	if _, ok := sasCompMap["snapshot"]; ok {
-		snapshotTime, _, err := ParseSASTimeString(sasCompMap["snapshot"])
+		snapshotTime, _, err := parseTime(sasCompMap["snapshot"])
 		require.NoError(t, err)
 		require.Equal(t, parameters.SnapshotTime(), snapshotTime)
 	}
@@ -70,14 +70,14 @@ func validateSAS(t *testing.T, sas string, parameters SASQueryParameters) {
 	require.Equal(t, parameters.SignedTID(), sasCompMap["sktid"])
 
 	if _, ok := sasCompMap["skt"]; ok {
-		signedStart, _, err := ParseSASTimeString(sasCompMap["skt"])
+		signedStart, _, err := parseTime(sasCompMap["skt"])
 		require.NoError(t, err)
 		require.Equal(t, parameters.SignedStart(), signedStart)
 	}
 	require.Equal(t, parameters.SignedService(), sasCompMap["sks"])
 
 	if _, ok := sasCompMap["ske"]; ok {
-		signedExpiry, _, err := ParseSASTimeString(sasCompMap["ske"])
+		signedExpiry, _, err := parseTime(sasCompMap["ske"])
 		require.NoError(t, err)
 		require.Equal(t, parameters.SignedExpiry(), signedExpiry)
 	}

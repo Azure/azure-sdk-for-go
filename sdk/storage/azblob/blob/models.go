@@ -43,24 +43,8 @@ type CpkScopeInfo = generated.CpkScopeInfo
 // HTTPHeaders contains a group of parameters for the BlobClient.SetHTTPHeaders method.
 type HTTPHeaders = generated.BlobHTTPHeaders
 
-// SASProtocol indicates the http/https.
-type SASProtocol = exported.SASProtocol
-
-// IPRange represents a SAS IP range's start IP and (optionally) end IP.
-type IPRange = exported.IPRange
-
-// SASQueryParameters object represents the components that make up an Azure Storage SAS' query parameters.
-// You parse a map of query parameters into its fields by calling Sign(). You add the components
-// to a query parameter map by calling AddToValues().
-// NOTE: Changing any field requires computing a new SAS signature using a XxxSASSignatureValues type.
-type SASQueryParameters = exported.SASQueryParameters
-
 // SourceModifiedAccessConditions contains a group of parameters for the BlobClient.StartCopyFromURL method.
 type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
-
-// SASPermissions type simplifies creating the permissions string for an Azure Storage blob SAS.
-// Initialize an instance of this type and then call its String method to set BlobSASSignatureValues's Permissions field.
-type SASPermissions = exported.BlobSASPermissions
 
 // Tags represent map of blob index tags
 type Tags = generated.BlobTag

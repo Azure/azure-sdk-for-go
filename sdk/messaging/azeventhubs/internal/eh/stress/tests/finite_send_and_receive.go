@@ -112,14 +112,14 @@ func sendEventsToPartition(cs string, hubName string, partitionID string, messag
 	for i := 0; i < messageLimit; i++ {
 		ed := &azeventhubs.EventData{
 			Body: extraBytes,
-			ApplicationProperties: map[string]interface{}{
+			Properties: map[string]interface{}{
 				numProperty:       i,
 				partitionProperty: partitionID,
 			},
 		}
 
 		if i == (messageLimit - 1) {
-			ed.ApplicationProperties[endProperty] = messageLimit
+			ed.Properties[endProperty] = messageLimit
 		}
 
 		err := batch.AddEventData(ed, nil)
@@ -233,8 +233,8 @@ func consumeEventsFromPartition(cs string, hubName string, partProps azeventhubs
 			}
 
 			for _, event := range events {
-				eventPartitionID := event.ApplicationProperties[partitionProperty].(string)
-				num := event.ApplicationProperties[numProperty].(int64)
+				eventPartitionID := event.Properties[partitionProperty].(string)
+				num := event.Properties[numProperty].(int64)
 
 				if eventPartitionID != partProps.PartitionID {
 					return false, fmt.Errorf("message with ID %s, with num %d, had a partition %s but we only were reading from partition %s", *event.MessageID, num, eventPartitionID, partProps.PartitionID)
@@ -248,7 +248,7 @@ func consumeEventsFromPartition(cs string, hubName string, partProps azeventhubs
 					return false, fmt.Errorf("duplicate message with sequence number %d was received. First occurrence with num %d, second with num %d", event.SequenceNumber, val, num)
 				}
 
-				expectedMessageCount, exists := event.ApplicationProperties[endProperty].(int64)
+				expectedMessageCount, exists := event.Properties[endProperty].(int64)
 
 				if exists {
 					if len(sequenceNumbers) != int(expectedMessageCount) {

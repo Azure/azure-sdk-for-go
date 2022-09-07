@@ -56,7 +56,7 @@ type PartitionClient struct {
 
 	offsetExpression string
 
-	links *internal.Links[amqpwrap.AMQPReceiverCloser]
+	links internal.LinksForPartitionClient[amqpwrap.AMQPReceiverCloser]
 }
 
 // ReceiveEventsOptions contains optional parameters for the ReceiveEvents function
@@ -64,7 +64,8 @@ type ReceiveEventsOptions struct {
 	// For future expansion
 }
 
-// ReceiveEvents receives events until the context has expired or been cancelled.
+// ReceiveEvents receives events until 'count' events have been received or the context has
+// expired or been cancelled.
 func (cc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options *ReceiveEventsOptions) ([]*ReceivedEventData, error) {
 	var events []*ReceivedEventData
 
@@ -90,14 +91,25 @@ func (cc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 				prefetched := getAllPrefetched(lwid.Link, count-len(events))
 
 				for _, amqpMsg := range prefetched {
-					events = append(events, newReceivedEventData(amqpMsg))
+					re, err := newReceivedEventData(amqpMsg)
+
+					if err != nil {
+						return err
+					}
+
+					events = append(events, re)
 				}
 
 				// this lets cancel errors just return
 				return err
 			}
 
-			receivedEvent := newReceivedEventData(amqpMessage)
+			receivedEvent, err := newReceivedEventData(amqpMessage)
+
+			if err != nil {
+				return err
+			}
+
 			events = append(events, receivedEvent)
 
 			if len(events) == count {
@@ -117,7 +129,11 @@ func (cc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 
 // Close closes the consumer's link and the underlying AMQP connection.
 func (cc *PartitionClient) Close(ctx context.Context) error {
-	return cc.links.Close(ctx)
+	if cc.links != nil {
+		return cc.links.Close(ctx)
+	}
+
+	return nil
 }
 
 func (s *PartitionClient) getEntityPath(partitionID string) string {
@@ -150,6 +166,12 @@ func (s *PartitionClient) newEventHubConsumerLink(ctx context.Context, session a
 	}
 
 	return receiver, nil
+}
+
+func (pc *PartitionClient) init(ctx context.Context) error {
+	return pc.links.Retry(ctx, EventConsumer, "Init", pc.partitionID, pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPReceiverCloser]) error {
+		return nil
+	})
 }
 
 type partitionClientArgs struct {

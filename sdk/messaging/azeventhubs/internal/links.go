@@ -28,6 +28,14 @@ type LinkWithID[LinkT AMQPLink] struct {
 	Link LinkT
 }
 
+// LinksForPartitionClient are the functions that the PartitionClient uses within Links[T]
+// (for unit testing only)
+type LinksForPartitionClient[LinkT AMQPLink] interface {
+	RecoverIfNeeded(ctx context.Context, partitionID string, lwid *LinkWithID[LinkT], err error) error
+	Retry(ctx context.Context, eventName log.Event, operation string, partitionID string, retryOptions exported.RetryOptions, fn func(ctx context.Context, lwid LinkWithID[LinkT]) error) error
+	Close(ctx context.Context) error
+}
+
 type Links[LinkT AMQPLink] struct {
 	ns NamespaceForAMQPLinks
 

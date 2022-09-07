@@ -60,28 +60,6 @@ type StorageServiceProperties = generated.StorageServiceProperties
 // StorageServiceStats - Stats for the storage service.
 type StorageServiceStats = generated.StorageServiceStats
 
-// SASResourceTypes type simplifies creating the resource types string for an Azure Storage Account SAS.
-// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's ResourceTypes field.
-type SASResourceTypes = exported.AccountSASResourceTypes
-
-// SASServices type simplifies creating the services string for an Azure Storage Account SAS.
-// Initialize an instance of this type and then call its String method to set SASServices' Services field.
-type SASServices = exported.AccountSASServices
-
-// SASPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
-// Initialize an instance of this type and then call its String method to set AccountSASSignatureValues' Permissions field.
-type SASPermissions = exported.AccountSASPermissions
-
-// SASProtocol indicates the http/https.
-type SASProtocol = exported.SASProtocol
-
-// IPRange represents a SAS IP range's start IP and (optionally) end IP.
-type IPRange = exported.IPRange
-
-// SASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-an-account-sas
-type SASSignatureValues = exported.AccountSASSignatureValues
-
 // ---------------------------------------------------------------------------------------------------------------------
 
 // GetAccountInfoOptions provides set of options for Client.GetAccountInfo
@@ -108,7 +86,7 @@ func (o *GetPropertiesOptions) format() *generated.ServiceClientGetPropertiesOpt
 
 // ListContainersOptions provides set of configurations for ListContainers operation
 type ListContainersOptions struct {
-	Include ListContainersDetail
+	Include ListContainersInclude
 
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing operation did not return all containers
@@ -126,8 +104,8 @@ type ListContainersOptions struct {
 	Prefix *string
 }
 
-// ListContainersDetail indicates what additional information the service should return with each container.
-type ListContainersDetail struct {
+// ListContainersInclude indicates what additional information the service should return with each container.
+type ListContainersInclude struct {
 	// Tells the service whether to return metadata for each container.
 	Metadata bool
 

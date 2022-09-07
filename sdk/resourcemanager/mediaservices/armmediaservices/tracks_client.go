@@ -57,7 +57,7 @@ func NewTracksClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // BeginCreateOrUpdate - Create or update a Track in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
@@ -79,7 +79,7 @@ func (client *TracksClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 
 // CreateOrUpdate - Create or update a Track in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 func (client *TracksClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, parameters AssetTrack, options *TracksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, assetName, trackName, parameters, options)
 	if err != nil {
@@ -123,7 +123,7 @@ func (client *TracksClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -131,7 +131,7 @@ func (client *TracksClient) createOrUpdateCreateRequest(ctx context.Context, res
 
 // BeginDelete - Deletes a Track in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
@@ -151,7 +151,7 @@ func (client *TracksClient) BeginDelete(ctx context.Context, resourceGroupName s
 
 // Delete - Deletes a Track in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 func (client *TracksClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, options *TracksClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, assetName, trackName, options)
 	if err != nil {
@@ -195,7 +195,7 @@ func (client *TracksClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -203,7 +203,7 @@ func (client *TracksClient) deleteCreateRequest(ctx context.Context, resourceGro
 
 // Get - Get the details of a Track in the Asset
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
@@ -252,7 +252,7 @@ func (client *TracksClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -269,7 +269,7 @@ func (client *TracksClient) getHandleResponse(resp *http.Response) (TracksClient
 
 // NewListPager - Lists the Tracks in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
@@ -320,7 +320,7 @@ func (client *TracksClient) listCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -337,7 +337,7 @@ func (client *TracksClient) listHandleResponse(resp *http.Response) (TracksClien
 
 // BeginUpdate - Updates an existing Track in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
@@ -358,7 +358,7 @@ func (client *TracksClient) BeginUpdate(ctx context.Context, resourceGroupName s
 
 // Update - Updates an existing Track in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 func (client *TracksClient) update(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, parameters AssetTrack, options *TracksClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, assetName, trackName, parameters, options)
 	if err != nil {
@@ -402,7 +402,7 @@ func (client *TracksClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -414,7 +414,7 @@ func (client *TracksClient) updateCreateRequest(ctx context.Context, resourceGro
 // may not be reflected immediately. CDN cache may also need to be purged if
 // applicable.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
@@ -439,7 +439,7 @@ func (client *TracksClient) BeginUpdateTrackData(ctx context.Context, resourceGr
 // may not be reflected immediately. CDN cache may also need to be purged if
 // applicable.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 func (client *TracksClient) updateTrackData(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, options *TracksClientBeginUpdateTrackDataOptions) (*http.Response, error) {
 	req, err := client.updateTrackDataCreateRequest(ctx, resourceGroupName, accountName, assetName, trackName, options)
 	if err != nil {
@@ -483,7 +483,7 @@ func (client *TracksClient) updateTrackDataCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

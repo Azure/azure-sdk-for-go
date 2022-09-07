@@ -9,7 +9,10 @@
 
 package generated
 
-import "time"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"time"
+)
 
 // AccessPolicy - An Access policy
 type AccessPolicy struct {
@@ -563,7 +566,7 @@ type BlobPrefix struct {
 // BlobPropertiesInternal - Properties of a blob
 type BlobPropertiesInternal struct {
 	// REQUIRED
-	Etag *string `xml:"Etag"`
+	ETag *azcore.ETag `xml:"Etag"`
 
 	// REQUIRED
 	LastModified         *time.Time     `xml:"Last-Modified"`
@@ -1056,7 +1059,7 @@ type ContainerItem struct {
 // ContainerProperties - Properties of a container
 type ContainerProperties struct {
 	// REQUIRED
-	Etag *string `xml:"Etag"`
+	ETag *azcore.ETag `xml:"Etag"`
 
 	// REQUIRED
 	LastModified           *time.Time `xml:"Last-Modified"`
@@ -1278,11 +1281,11 @@ type Metrics struct {
 // ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
 type ModifiedAccessConditions struct {
 	// Specify an ETag value to operate only on blobs with a matching value.
-	IfMatch *string
+	IfMatch *azcore.ETag
 	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
 	IfModifiedSince *time.Time
 	// Specify an ETag value to operate only on blobs without a matching value.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 	// Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
 	IfTags *string
 	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
@@ -1653,11 +1656,11 @@ type SignedIdentifier struct {
 // SourceModifiedAccessConditions contains a group of parameters for the BlobClient.StartCopyFromURL method.
 type SourceModifiedAccessConditions struct {
 	// Specify an ETag value to operate only on blobs with a matching value.
-	SourceIfMatch *string
+	SourceIfMatch *azcore.ETag
 	// Specify this header value to operate only on a blob if it has been modified since the specified date/time.
 	SourceIfModifiedSince *time.Time
 	// Specify an ETag value to operate only on blobs without a matching value.
-	SourceIfNoneMatch *string
+	SourceIfNoneMatch *azcore.ETag
 	// Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
 	SourceIfTags *string
 	// Specify this header value to operate only on a blob if it has not been modified since the specified date/time.

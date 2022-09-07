@@ -13,6 +13,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
@@ -32,7 +33,7 @@ type httpGetterInfo struct {
 
 	// ETag specifies the resource's etag that should be used when creating
 	// the HTTP GET request's If-Match header
-	ETag string
+	ETag *azcore.ETag
 }
 
 // RetryReaderOptions configures the retry reader's behavior.

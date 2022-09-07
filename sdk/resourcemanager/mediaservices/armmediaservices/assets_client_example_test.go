@@ -19,8 +19,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assets-list-in-date-range.json
-func ExampleAssetsClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assets-list-in-date-range.json
+func ExampleAssetsClient_NewListPager_listAssetCreatedInADateRange() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,12 +30,10 @@ func ExampleAssetsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("contoso",
-		"contosomedia",
-		&armmediaservices.AssetsClientListOptions{Filter: to.Ptr("properties/created gt 2012-06-01 and properties/created lt 2013-07-01"),
-			Top:     nil,
-			Orderby: to.Ptr("properties/created"),
-		})
+	pager := client.NewListPager("contoso", "contosomedia", &armmediaservices.AssetsClientListOptions{Filter: to.Ptr("properties/created gt 2012-06-01 and properties/created lt 2013-07-01"),
+		Top:     nil,
+		Orderby: to.Ptr("properties/created"),
+	})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -48,7 +46,61 @@ func ExampleAssetsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assets-get-by-name.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assets-list-by-date.json
+func ExampleAssetsClient_NewListPager_listAssetOrderedByDate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmediaservices.NewAssetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("contoso", "contosomedia", &armmediaservices.AssetsClientListOptions{Filter: nil,
+		Top:     nil,
+		Orderby: to.Ptr("properties/created"),
+	})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assets-list-all.json
+func ExampleAssetsClient_NewListPager_listAllAssets() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmediaservices.NewAssetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListPager("contoso", "contosomedia", &armmediaservices.AssetsClientListOptions{Filter: nil,
+		Top:     nil,
+		Orderby: nil,
+	})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assets-get-by-name.json
 func ExampleAssetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,11 +111,7 @@ func ExampleAssetsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"contoso",
-		"contosomedia",
-		"ClimbingMountAdams",
-		nil)
+	res, err := client.Get(ctx, "contoso", "contosomedia", "ClimbingMountAdams", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -71,7 +119,7 @@ func ExampleAssetsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assets-create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assets-create.json
 func ExampleAssetsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,17 +130,12 @@ func ExampleAssetsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx,
-		"contoso",
-		"contosomedia",
-		"ClimbingMountLogan",
-		armmediaservices.Asset{
-			Properties: &armmediaservices.AssetProperties{
-				Description:        to.Ptr("A documentary showing the ascent of Mount Logan"),
-				StorageAccountName: to.Ptr("storage0"),
-			},
+	res, err := client.CreateOrUpdate(ctx, "contoso", "contosomedia", "ClimbingMountLogan", armmediaservices.Asset{
+		Properties: &armmediaservices.AssetProperties{
+			Description:        to.Ptr("A documentary showing the ascent of Mount Logan"),
+			StorageAccountName: to.Ptr("storage0"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -100,7 +143,7 @@ func ExampleAssetsClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assets-delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assets-delete.json
 func ExampleAssetsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,17 +154,13 @@ func ExampleAssetsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"contoso",
-		"contosomedia",
-		"ClimbingMountAdams",
-		nil)
+	_, err = client.Delete(ctx, "contoso", "contosomedia", "ClimbingMountAdams", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assets-update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assets-update.json
 func ExampleAssetsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,16 +171,11 @@ func ExampleAssetsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx,
-		"contoso",
-		"contosomedia",
-		"ClimbingMountBaker",
-		armmediaservices.Asset{
-			Properties: &armmediaservices.AssetProperties{
-				Description: to.Ptr("A documentary showing the ascent of Mount Baker in HD"),
-			},
+	res, err := client.Update(ctx, "contoso", "contosomedia", "ClimbingMountBaker", armmediaservices.Asset{
+		Properties: &armmediaservices.AssetProperties{
+			Description: to.Ptr("A documentary showing the ascent of Mount Baker in HD"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -149,7 +183,7 @@ func ExampleAssetsClient_Update() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assets-list-sas-urls.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assets-list-sas-urls.json
 func ExampleAssetsClient_ListContainerSas() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,15 +194,10 @@ func ExampleAssetsClient_ListContainerSas() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListContainerSas(ctx,
-		"contoso",
-		"contosomedia",
-		"ClimbingMountBaker",
-		armmediaservices.ListContainerSasInput{
-			ExpiryTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T10:00:00.007Z"); return t }()),
-			Permissions: to.Ptr(armmediaservices.AssetContainerPermissionReadWrite),
-		},
-		nil)
+	res, err := client.ListContainerSas(ctx, "contoso", "contosomedia", "ClimbingMountBaker", armmediaservices.ListContainerSasInput{
+		ExpiryTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T10:00:00.007Z"); return t }()),
+		Permissions: to.Ptr(armmediaservices.AssetContainerPermissionReadWrite),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -176,7 +205,7 @@ func ExampleAssetsClient_ListContainerSas() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assets-get-encryption-keys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assets-get-encryption-keys.json
 func ExampleAssetsClient_GetEncryptionKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,11 +216,7 @@ func ExampleAssetsClient_GetEncryptionKey() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetEncryptionKey(ctx,
-		"contoso",
-		"contosomedia",
-		"ClimbingMountSaintHelens",
-		nil)
+	res, err := client.GetEncryptionKey(ctx, "contoso", "contosomedia", "ClimbingMountSaintHelens", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -199,7 +224,7 @@ func ExampleAssetsClient_GetEncryptionKey() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assets-list-streaming-locators.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assets-list-streaming-locators.json
 func ExampleAssetsClient_ListStreamingLocators() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,11 +235,7 @@ func ExampleAssetsClient_ListStreamingLocators() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListStreamingLocators(ctx,
-		"contoso",
-		"contosomedia",
-		"ClimbingMountSaintHelens",
-		nil)
+	res, err := client.ListStreamingLocators(ctx, "contoso", "contosomedia", "ClimbingMountSaintHelens", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

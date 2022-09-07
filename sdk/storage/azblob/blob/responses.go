@@ -36,7 +36,7 @@ func (r *DownloadStreamResponse) NewRetryReader(ctx context.Context, options *Re
 
 	return newRetryReader(ctx, r.Body, r.getInfo, func(ctx context.Context, getInfo httpGetterInfo) (io.ReadCloser, error) {
 		accessConditions := &AccessConditions{
-			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &getInfo.ETag},
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: getInfo.ETag},
 		}
 		options := DownloadStreamOptions{
 			Offset:           &getInfo.Offset,

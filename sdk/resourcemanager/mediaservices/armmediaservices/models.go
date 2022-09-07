@@ -462,6 +462,18 @@ type AssetsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AsyncOperationResult - The status of an async operation.
+type AsyncOperationResult struct {
+	// The error object
+	Error *ErrorDetail `json:"error,omitempty"`
+
+	// Operation Id of the async operation.
+	Name *string `json:"name,omitempty"`
+
+	// Operation status of the async operation.
+	Status *AsyncOperationStatus `json:"status,omitempty"`
+}
+
 // AudioClassification provides polymorphic access to related types.
 // Call the interface's GetAudio() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -598,6 +610,27 @@ func (a *AudioOverlay) GetOverlay() *Overlay {
 type AudioTrack struct {
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
+
+	// The DASH specific setting for the audio track.
+	DashSettings *DashSettings `json:"dashSettings,omitempty"`
+
+	// The display name of the audio track on a video player. In HLS, this maps to the NAME attribute of EXT-X-MEDIA.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The file name to the source file. This file is located in the storage container of the asset.
+	FileName *string `json:"fileName,omitempty"`
+
+	// The HLS specific setting for the audio track.
+	HlsSettings *HlsSettings `json:"hlsSettings,omitempty"`
+
+	// The RFC5646 language code for the audio track.
+	LanguageCode *string `json:"languageCode,omitempty"`
+
+	// The MPEG-4 audio track ID for the audio track.
+	Mpeg4TrackID *int32 `json:"mpeg4TrackId,omitempty"`
+
+	// READ-ONLY; The stream bit rate for the audio track.
+	BitRate *int32 `json:"bitRate,omitempty" azure:"ro"`
 }
 
 // GetTrackBase implements the TrackBaseClassification interface for type AudioTrack.
@@ -687,6 +720,16 @@ type CheckNameAvailabilityInput struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// ClearKeyEncryptionConfiguration - Class to specify ClearKey configuration of common encryption schemes in Streaming Policy
+type ClearKeyEncryptionConfiguration struct {
+	// Template for the URL of the custom service delivering content keys to end user players. Not required when using Azure Media
+	// Services for issuing licenses. The template supports replaceable tokens that
+	// the service will update at runtime with the value specific to the request. The currently supported token value is {AlternativeMediaId},
+	// which is replaced with the value of
+	// StreamingLocatorId.AlternativeMediaId.
+	CustomKeysAcquisitionURLTemplate *string `json:"customKeysAcquisitionUrlTemplate,omitempty"`
+}
+
 // ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
 type ClientBeginCreateOrUpdateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -770,6 +813,9 @@ func (c *Codec) GetCodec() *Codec { return c }
 
 // CommonEncryptionCbcs - Class for CommonEncryptionCbcs encryption scheme
 type CommonEncryptionCbcs struct {
+	// Optional configuration supporting ClearKey in CommonEncryptionCbcs encryption scheme.
+	ClearKeyEncryptionConfiguration *ClearKeyEncryptionConfiguration `json:"clearKeyEncryptionConfiguration,omitempty"`
+
 	// Representing which tracks should not be encrypted
 	ClearTracks []*TrackSelection `json:"clearTracks,omitempty"`
 
@@ -785,6 +831,9 @@ type CommonEncryptionCbcs struct {
 
 // CommonEncryptionCenc - Class for envelope encryption scheme
 type CommonEncryptionCenc struct {
+	// Optional configuration supporting ClearKey in CommonEncryptionCenc encryption scheme.
+	ClearKeyEncryptionConfiguration *ClearKeyEncryptionConfiguration `json:"clearKeyEncryptionConfiguration,omitempty"`
+
 	// Representing which tracks should not be encrypted
 	ClearTracks []*TrackSelection `json:"clearTracks,omitempty"`
 
@@ -1080,6 +1129,9 @@ type ContentKeyPolicyPlayReadyLicense struct {
 
 	// The relative expiration date of license.
 	RelativeExpirationDate *string `json:"relativeExpirationDate,omitempty"`
+
+	// The security level.
+	SecurityLevel *SecurityLevel `json:"securityLevel,omitempty"`
 }
 
 // ContentKeyPolicyPlayReadyPlayRight - Configures the Play Right in the PlayReady license.
@@ -1368,6 +1420,12 @@ type CrossSiteAccessPolicies struct {
 
 	// The content of crossdomain.xml used by Silverlight.
 	CrossDomainPolicy *string `json:"crossDomainPolicy,omitempty"`
+}
+
+// DashSettings - The DASH setting for a track.
+type DashSettings struct {
+	// The role for the DASH setting.
+	Role *string `json:"role,omitempty"`
 }
 
 // DefaultKey - Class to specify properties of default content key for each encryption scheme
@@ -1930,7 +1988,7 @@ type Hls struct {
 	FragmentsPerTsSegment *int32 `json:"fragmentsPerTsSegment,omitempty"`
 }
 
-// HlsSettings - The HLS setting for a text track.
+// HlsSettings - The HLS setting for a track.
 type HlsSettings struct {
 	// The characteristics for the HLS setting.
 	Characteristics *string `json:"characteristics,omitempty"`
@@ -2968,6 +3026,11 @@ type LiveEventTranscription struct {
 	OutputTranscriptionTrack *LiveEventOutputTranscriptionTrack `json:"outputTranscriptionTrack,omitempty"`
 }
 
+// LiveEventsClientAsyncOperationOptions contains the optional parameters for the LiveEventsClient.AsyncOperation method.
+type LiveEventsClientAsyncOperationOptions struct {
+	// placeholder for future optional parameters
+}
+
 // LiveEventsClientBeginAllocateOptions contains the optional parameters for the LiveEventsClient.BeginAllocate method.
 type LiveEventsClientBeginAllocateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -3019,6 +3082,11 @@ type LiveEventsClientGetOptions struct {
 
 // LiveEventsClientListOptions contains the optional parameters for the LiveEventsClient.List method.
 type LiveEventsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LiveEventsClientOperationLocationOptions contains the optional parameters for the LiveEventsClient.OperationLocation method.
+type LiveEventsClientOperationLocationOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3074,6 +3142,13 @@ type LiveOutputProperties struct {
 	// The initial timestamp that the live output will start at, any content before this value will not be archived.
 	OutputSnapTime *int64 `json:"outputSnapTime,omitempty"`
 
+	// ISO 8601 time between 1 minute to the duration of archiveWindowLength to control seek-able window length during Live. The
+	// service won't use this property once LiveOutput stops. The archived VOD will
+	// have full content with original ArchiveWindowLength. For example, use PT1H30M to indicate 1 hour and 30 minutes of rewind
+	// window length. Service will use implicit default value 30m only if Live Event
+	// enables LL.
+	RewindWindowLength *string `json:"rewindWindowLength,omitempty"`
+
 	// READ-ONLY; The creation time the live output.
 	Created *time.Time `json:"created,omitempty" azure:"ro"`
 
@@ -3085,6 +3160,11 @@ type LiveOutputProperties struct {
 
 	// READ-ONLY; The resource state of the live output.
 	ResourceState *LiveOutputResourceState `json:"resourceState,omitempty" azure:"ro"`
+}
+
+// LiveOutputsClientAsyncOperationOptions contains the optional parameters for the LiveOutputsClient.AsyncOperation method.
+type LiveOutputsClientAsyncOperationOptions struct {
+	// placeholder for future optional parameters
 }
 
 // LiveOutputsClientBeginCreateOptions contains the optional parameters for the LiveOutputsClient.BeginCreate method.
@@ -3106,6 +3186,12 @@ type LiveOutputsClientGetOptions struct {
 
 // LiveOutputsClientListOptions contains the optional parameters for the LiveOutputsClient.List method.
 type LiveOutputsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LiveOutputsClientOperationLocationOptions contains the optional parameters for the LiveOutputsClient.OperationLocation
+// method.
+type LiveOutputsClientOperationLocationOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4159,6 +4245,12 @@ type StreamingEndpointSKUInfoListResult struct {
 	Value []*ArmStreamingEndpointSKUInfo `json:"value,omitempty"`
 }
 
+// StreamingEndpointsClientAsyncOperationOptions contains the optional parameters for the StreamingEndpointsClient.AsyncOperation
+// method.
+type StreamingEndpointsClientAsyncOperationOptions struct {
+	// placeholder for future optional parameters
+}
+
 // StreamingEndpointsClientBeginCreateOptions contains the optional parameters for the StreamingEndpointsClient.BeginCreate
 // method.
 type StreamingEndpointsClientBeginCreateOptions struct {
@@ -4209,6 +4301,12 @@ type StreamingEndpointsClientGetOptions struct {
 
 // StreamingEndpointsClientListOptions contains the optional parameters for the StreamingEndpointsClient.List method.
 type StreamingEndpointsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StreamingEndpointsClientOperationLocationOptions contains the optional parameters for the StreamingEndpointsClient.OperationLocation
+// method.
+type StreamingEndpointsClientOperationLocationOptions struct {
 	// placeholder for future optional parameters
 }
 

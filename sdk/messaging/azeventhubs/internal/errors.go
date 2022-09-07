@@ -59,8 +59,8 @@ func TransformError(err error) error {
 		return err
 	}
 
-	if isLockLostError(err) {
-		return exported.NewError(exported.CodeLockLost, err)
+	if isOwnershipLostError(err) {
+		return exported.NewError(exported.CodeOwnershipLost, err)
 	}
 
 	rk := GetRecoveryKind(err)
@@ -333,4 +333,9 @@ func isLockLostError(err error) bool {
 	}
 
 	return false
+}
+
+func isOwnershipLostError(err error) bool {
+	var amqpError *amqp.Error
+	return errors.As(err, &amqpError) && amqpError.Condition == "amqp:link:stolen"
 }

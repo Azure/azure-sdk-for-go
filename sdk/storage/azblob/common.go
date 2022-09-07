@@ -31,6 +31,6 @@ func ParseURL(u string) (URLParts, error) {
 }
 
 // HTTPRange defines a range of bytes within an HTTP resource, starting at offset and
-// ending at offset+count. A zero-value HttpRange indicates the entire resource. An HttpRange
-// which has an offset but na zero value count indicates from the offset to the resource's end.
+// ending at offset+count. A zero-value HTTPRange indicates the entire resource. An HTTPRange
+// which has an offset but no zero value count indicates from the offset to the resource's end.
 type HTTPRange = exported.HTTPRange

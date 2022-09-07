@@ -24,6 +24,7 @@ func TestIsTerminalState(t *testing.T) {
 	require.True(t, IsTerminalState("Succeeded"), "Succeeded is a terminal state")
 	require.True(t, IsTerminalState("failed"), "failed is a terminal state")
 	require.True(t, IsTerminalState("canceled"), "canceled is a terminal state")
+	require.True(t, IsTerminalState("Completed"), "Completed is a terminal state")
 }
 
 func TestStatusCodeValid(t *testing.T) {
@@ -90,6 +91,7 @@ func TestIsValidURL(t *testing.T) {
 func TestFailed(t *testing.T) {
 	require.False(t, Failed("Succeeded"))
 	require.False(t, Failed("Updating"))
+	require.False(t, Failed("Completed"))
 	require.True(t, Failed("failed"))
 }
 

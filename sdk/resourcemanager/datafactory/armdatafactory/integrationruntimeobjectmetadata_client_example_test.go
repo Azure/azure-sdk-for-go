@@ -14,7 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeObjectMetadata_Refresh.json
@@ -28,11 +28,7 @@ func ExampleIntegrationRuntimeObjectMetadataClient_BeginRefresh() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRefresh(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"testactivityv2",
-		nil)
+	poller, err := client.BeginRefresh(ctx, "exampleResourceGroup", "exampleFactoryName", "testactivityv2", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -55,14 +51,10 @@ func ExampleIntegrationRuntimeObjectMetadataClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"testactivityv2",
-		&armdatafactory.IntegrationRuntimeObjectMetadataClientGetOptions{GetMetadataRequest: &armdatafactory.GetSsisObjectMetadataRequest{
-			MetadataPath: to.Ptr("ssisFolders"),
-		},
-		})
+	res, err := client.Get(ctx, "exampleResourceGroup", "exampleFactoryName", "testactivityv2", &armdatafactory.IntegrationRuntimeObjectMetadataClientGetOptions{GetMetadataRequest: &armdatafactory.GetSsisObjectMetadataRequest{
+		MetadataPath: to.Ptr("ssisFolders"),
+	},
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

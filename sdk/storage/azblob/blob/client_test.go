@@ -1513,7 +1513,7 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataCountNegative() {
 
 	options := blob.DownloadStreamOptions{
 		Range: blob.HTTPRange{
-			Offset: -2,
+			Count: -2,
 		},
 	}
 	_, err = bbClient.DownloadStream(context.Background(), &options)

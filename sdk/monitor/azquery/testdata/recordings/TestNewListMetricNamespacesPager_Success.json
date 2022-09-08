@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://management.azure.com/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-gracewilcoxazquery/providers/Microsoft.AppConfiguration/configurationStores/gracewilcoxazquery/providers/microsoft.insights/metricNamespaces?api-version=2017-12-01-preview\u0026startTime=2022-08-01T15%3A53%3A00Z",
+      "RequestUri": "https://management.azure.com/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example/providers/microsoft.insights/metricNamespaces?api-version=2017-12-01-preview\u0026startTime=2022-08-01T15%3A53%3A00Z",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -12,14 +12,13 @@
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Request-Context",
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 07 Sep 2022 19:47:09 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
+        "Content-Type": "application/json",
+        "Date": "Thu, 08 Sep 2022 00:01:53 GMT",
         "Request-Context": "appId=cid-v1:b021da79-5252-4375-9df5-2e17c1dcd822",
+        "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
         "Vary": [
@@ -27,10 +26,11 @@
           "Accept-Encoding"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "9a82271e-993f-494f-a8c7-1d0f5e4ef685",
+        "x-ms-correlation-request-id": "05d5400e-d66c-4033-a03a-2aef97b799c4",
         "x-ms-ratelimit-remaining-subscription-reads": "11998",
-        "x-ms-request-id": "{9a82271e-993f-494f-a8c7-1d0f5e4ef685}",
-        "x-ms-routing-request-id": "CENTRALUS:20220907T194710Z:9a82271e-993f-494f-a8c7-1d0f5e4ef685"
+        "x-ms-request-id": "{05d5400e-d66c-4033-a03a-2aef97b799c4}",
+        "x-ms-routing-request-id": "CENTRALUS:20220908T000153Z:05d5400e-d66c-4033-a03a-2aef97b799c4",
+        "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "value": [

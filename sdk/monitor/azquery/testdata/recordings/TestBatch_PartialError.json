@@ -40,11 +40,11 @@
         "Connection": "keep-alive",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 07 Sep 2022 19:47:04 GMT",
+        "Date": "Thu, 08 Sep 2022 00:01:45 GMT",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
-        "Via": "1.1 draft-oms-6b467c4794-pxvv9",
+        "Via": "1.1 draft-oms-6b467c4794-sqjlz",
         "X-Content-Type-Options": "nosniff"
       },
       "ResponseBody": {
@@ -53,7 +53,7 @@
             "id": "2",
             "status": 200,
             "headers": {
-              "Age": "56",
+              "Age": "2",
               "request-context": "appId=cid-v1:70941e4f-7e8f-40b7-b730-183893db0297"
             },
             "body": {
@@ -1523,7 +1523,7 @@
               "error": {
                 "message": "The request had some invalid properties",
                 "code": "BadArgumentError",
-                "correlationId": "e0987f64-1285-4115-8b0a-5ab58682ef6a",
+                "correlationId": "a12493cb-d21e-4723-833c-56d9f85a606b",
                 "innererror": {
                   "code": "SyntaxError",
                   "message": "A recognition error occurred in the query.",

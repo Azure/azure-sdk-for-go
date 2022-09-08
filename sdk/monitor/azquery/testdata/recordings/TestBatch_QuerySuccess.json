@@ -40,11 +40,11 @@
         "Connection": "keep-alive",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 07 Sep 2022 19:47:02 GMT",
+        "Date": "Thu, 08 Sep 2022 00:01:42 GMT",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
         "Transfer-Encoding": "chunked",
         "Vary": "Accept-Encoding",
-        "Via": "1.1 draft-oms-6b467c4794-cgstm",
+        "Via": "1.1 draft-oms-6b467c4794-gctzg",
         "X-Content-Type-Options": "nosniff"
       },
       "ResponseBody": {
@@ -52,10 +52,6 @@
           {
             "id": "1",
             "status": 200,
-            "headers": {
-              "Age": "55",
-              "request-context": "appId=cid-v1:70941e4f-7e8f-40b7-b730-183893db0297"
-            },
             "body": {
               "tables": [
                 {
@@ -1519,10 +1515,6 @@
           {
             "id": "2",
             "status": 200,
-            "headers": {
-              "Age": "55",
-              "request-context": "appId=cid-v1:70941e4f-7e8f-40b7-b730-183893db0297"
-            },
             "body": {
               "tables": [
                 {

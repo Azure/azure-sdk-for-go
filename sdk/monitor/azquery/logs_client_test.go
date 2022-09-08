@@ -169,10 +169,7 @@ func TestBatch_PartialError(t *testing.T) {
 	if len(res.BatchResponse.Responses) != 2 {
 		t.Fatal("expected two responses")
 	}
-	//TODO more checks
 }
-
-//func TestQueryWorkspace_BasicQueryFailure(t *testing.T)
 
 func TestLogConstants(t *testing.T) {
 	batchMethod := []azquery.BatchQueryRequestMethod{azquery.BatchQueryRequestMethodPOST}

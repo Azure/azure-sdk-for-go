@@ -34,7 +34,9 @@ var (
 )
 
 func TestMain(m *testing.M) {
-	workspaceID, workspaceID2, resourceURI = os.Getenv("WORKSPACE_ID"), os.Getenv("WORKSPACE_ID2"), os.Getenv("RESOURCE_URI")
+	if recording.GetRecordMode() == recording.LiveMode || recording.GetRecordMode() == recording.RecordingMode {
+		workspaceID, workspaceID2, resourceURI = os.Getenv("WORKSPACE_ID"), os.Getenv("WORKSPACE_ID2"), os.Getenv("RESOURCE_URI")
+	}
 	if workspaceID == "" {
 		if recording.GetRecordMode() != recording.PlaybackMode {
 			panic("no value for WORKSPACE_ID")
@@ -70,27 +72,15 @@ func TestMain(m *testing.M) {
 		}
 	}
 	if recording.GetRecordMode() == recording.RecordingMode {
-		/*err := recording.AddURISanitizer(fakeWorkspaceID, workspaceID, nil)
-		if err != nil {
-			panic(err)
-		}*/
-		err = recording.AddBodyRegexSanitizer(fakeWorkspaceID, workspaceID, nil)
+		err := recording.AddGeneralRegexSanitizer(fakeWorkspaceID, workspaceID, nil)
 		if err != nil {
 			panic(err)
 		}
-		/*err = recording.AddURISanitizer(fakeWorkspaceID2, workspaceID2, nil)
-		if err != nil {
-			panic(err)
-		}*/
-		err = recording.AddBodyRegexSanitizer(fakeWorkspaceID2, workspaceID2, nil)
+		err = recording.AddGeneralRegexSanitizer(fakeWorkspaceID2, workspaceID2, nil)
 		if err != nil {
 			panic(err)
 		}
-		/*err = recording.AddURISanitizer(fakeResourceURI, resourceURI, nil)
-		if err != nil {
-			panic(err)
-		}*/
-		err = recording.AddBodyRegexSanitizer(fakeResourceURI, resourceURI, nil)
+		err = recording.AddGeneralRegexSanitizer(fakeResourceURI, resourceURI, nil)
 		if err != nil {
 			panic(err)
 		}

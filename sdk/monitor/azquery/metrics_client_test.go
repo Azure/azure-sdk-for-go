@@ -9,7 +9,6 @@ package azquery_test
 import (
 	"context"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
@@ -18,7 +17,7 @@ import (
 
 func TestQueryResource_BasicQuerySuccess(t *testing.T) {
 	client := startMetricsTest(t)
-	timespan := time.Now().Add(-12*time.Hour).Format(time.RFC3339) + "/" + time.Now().Format(time.RFC3339)
+	timespan := "PT12H"
 	res, err := client.QueryResource(context.Background(), resourceURI,
 		&azquery.MetricsClientQueryResourceOptions{Timespan: to.Ptr(timespan),
 			Interval:        to.Ptr("PT1M"),

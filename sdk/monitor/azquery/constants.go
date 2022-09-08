@@ -173,6 +173,7 @@ func PossibleNamespaceClassificationValues() []NamespaceClassification {
 	}
 }
 
+// ResultType - Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's description for details.
 type ResultType string
 
 const (

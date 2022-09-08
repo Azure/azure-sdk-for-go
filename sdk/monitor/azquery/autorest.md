@@ -86,6 +86,9 @@ directive:
   - from: swagger-document
     where: $.definitions.batchQueryResponse
     transform: $["description"] = "Contains the batch query response and the headers, id, and status of the request"
+  - from: constants.go
+    where: $
+    transform: return $.replace(/type ResultType string/, "//ResultType - Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's description for details.\ntype ResultType string");
 
   # delete unused error models
   - from: models.go

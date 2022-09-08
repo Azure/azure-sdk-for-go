@@ -83,7 +83,7 @@ func FiniteProcessorTest(ctx context.Context) error {
 		return err
 	}
 
-	const numMessages = 1000
+	const numMessages = 10000
 
 	// start producing messages. We'll send out bursts, so we can validate that things are
 	// progressing the way we expect.

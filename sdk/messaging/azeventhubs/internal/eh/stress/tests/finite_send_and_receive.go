@@ -17,7 +17,7 @@ const endProperty = "End"
 const numProperty = "Number"
 const partitionProperty = "Partition"
 
-const messageLimit = 1000
+const messageLimit = 10000
 const extraBytes = 1024
 
 func FiniteSendAndReceiveTest(ctx context.Context) error {

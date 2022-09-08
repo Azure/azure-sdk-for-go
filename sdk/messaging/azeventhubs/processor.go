@@ -47,6 +47,13 @@ type NewProcessorOptions struct {
 	// default value) if a checkpoint is not found in the CheckpointStore.
 	// The default position is Latest.
 	StartPositions StartPositions
+
+	// OwnerLevel is the priority for partition clients created by this Processor, also known as
+	// the 'epoch' level.
+	// When used, a partition client with a higher OwnerLevel will take ownership of a partition
+	// from partition clients with a lower OwnerLevel.
+	// Default is 0.
+	OwnerLevel int64
 }
 
 // StartPositions are used if there is no checkpoint for a partition in
@@ -67,6 +74,7 @@ type Processor struct {
 	ownershipUpdateInterval time.Duration
 	defaultStartPositions   StartPositions
 	checkpointStore         CheckpointStore
+	ownerLevel              int64
 
 	// consumerClient is actually a *azeventhubs.ConsumerClient
 	// it's an interface here to make testing easier.
@@ -127,6 +135,7 @@ func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore
 	}
 
 	return &Processor{
+		ownerLevel:              options.OwnerLevel,
 		ownershipUpdateInterval: updateInterval,
 		consumerClient:          consumerClient,
 		checkpointStore:         checkpointStore,
@@ -291,6 +300,7 @@ func (p *Processor) addPartitionClient(ctx context.Context, ownership Ownership,
 
 	partClient, err := p.consumerClient.NewPartitionClient(ownership.PartitionID, &NewPartitionClientOptions{
 		StartPosition: sp,
+		OwnerLevel:    &p.ownerLevel,
 	})
 
 	if err != nil {

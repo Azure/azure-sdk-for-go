@@ -9,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/stretchr/testify/require"
 )
@@ -29,8 +30,8 @@ func Test_InMemoryCheckpointStore_Checkpoints(t *testing.T) {
 				PartitionID:             "100",
 			},
 			CheckpointData: CheckpointData{
-				Offset:         i,
-				SequenceNumber: i + 1,
+				Offset:         to.Ptr(i),
+				SequenceNumber: to.Ptr(i + 1),
 			},
 		}, nil)
 		require.NoError(t, err)
@@ -47,8 +48,8 @@ func Test_InMemoryCheckpointStore_Checkpoints(t *testing.T) {
 					PartitionID:             "100",
 				},
 				CheckpointData: CheckpointData{
-					Offset:         i,
-					SequenceNumber: i + 1,
+					Offset:         to.Ptr(i),
+					SequenceNumber: to.Ptr(i + 1),
 				},
 			},
 		}, checkpoints)

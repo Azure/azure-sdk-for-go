@@ -1,0 +1,21 @@
+{{- include "stress-test-addons.deploy-job-template.from-pod" (list . "stress.deploy-example") -}}
+{{- define "stress.deploy-example" -}}
+metadata:
+  labels:
+    testName: "go-eventhubs"
+spec:
+  # uncomment to deploy to the southeastasia region.
+  # nodeSelector:
+  #   sku: 'southeastasia'
+  containers:
+    - name: main
+      # az acr list -g rg-stress-cluster-test --subscription "Azure SDK Developer Playground" --query "[0].loginServer"
+      image:  {{ .Values.image }}
+      command: ['/app/stress']
+      imagePullPolicy: Always
+      args: 
+      # (this is injected automatically. The full list of scenarios is in `../values.yaml`)
+      - {{ .Stress.Scenario }}
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
+{{- end -}}
+

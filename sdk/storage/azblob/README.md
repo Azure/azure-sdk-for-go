@@ -217,7 +217,7 @@ Learn more about the various types of blobs from the following links.
 
 The [blob][blob] client contains APIs common to all blob types.  This includes APIs for deleting and undeleting a blob, setting metadata, and more.
 
-The [lease][lease] package contains clients for managing leases on blobs and containers.  Please see the [reference docs](https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob#remarks) for general information on leases.
+The [lease][lease] package contains clients for managing leases on blobs and containers.  Please see the [reference docs](https://docs.microsoft.com/rest/api/storageservices/lease-blob#remarks) for general information on leases.
 
 The [container][container] client contains APIs specific to containers.  This includes APIs setting access policies or properties, and more.
 

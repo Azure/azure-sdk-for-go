@@ -70,6 +70,10 @@
             "CoverageGoal": 0.40
         },
         {
+            "Name": "monitor/azquery",
+            "CoverageGoal": 0.80
+        },
+        {
             "Name": "resourcemanager",
             "CoverageGoal": 0.0
         }

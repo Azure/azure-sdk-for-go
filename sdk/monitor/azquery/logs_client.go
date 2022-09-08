@@ -25,7 +25,6 @@ type LogsClient struct {
 	pl runtime.Pipeline
 }
 
-
 // Batch - Executes a batch of Analytics queries for data. Here [https://dev.loganalytics.io/documentation/Using-the-API]
 // is an example for using POST with an Analytics query.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -50,7 +49,7 @@ func (client *LogsClient) Batch(ctx context.Context, body BatchRequest, options 
 // batchCreateRequest creates the Batch request.
 func (client *LogsClient) batchCreateRequest(ctx context.Context, body BatchRequest, options *LogsClientBatchOptions) (*policy.Request, error) {
 	urlPath := "/$batch"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(	host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +95,7 @@ func (client *LogsClient) queryWorkspaceCreateRequest(ctx context.Context, works
 		return nil, errors.New("parameter workspaceID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceId}", url.PathEscape(workspaceID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(	host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -115,4 +114,3 @@ func (client *LogsClient) queryWorkspaceHandleResponse(resp *http.Response) (Log
 	}
 	return result, nil
 }
-

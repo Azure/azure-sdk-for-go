@@ -15,17 +15,17 @@ const host = "https://api.loganalytics.io/v1"
 type AggregationType string
 
 const (
-	AggregationTypeNone AggregationType = "None"
+	AggregationTypeNone    AggregationType = "None"
 	AggregationTypeAverage AggregationType = "Average"
-	AggregationTypeCount AggregationType = "Count"
+	AggregationTypeCount   AggregationType = "Count"
 	AggregationTypeMinimum AggregationType = "Minimum"
 	AggregationTypeMaximum AggregationType = "Maximum"
-	AggregationTypeTotal AggregationType = "Total"
+	AggregationTypeTotal   AggregationType = "Total"
 )
 
 // PossibleAggregationTypeValues returns the possible values for the AggregationType const type.
 func PossibleAggregationTypeValues() []AggregationType {
-	return []AggregationType{	
+	return []AggregationType{
 		AggregationTypeNone,
 		AggregationTypeAverage,
 		AggregationTypeCount,
@@ -44,7 +44,7 @@ const (
 
 // PossibleBatchQueryRequestMethodValues returns the possible values for the BatchQueryRequestMethod const type.
 func PossibleBatchQueryRequestMethodValues() []BatchQueryRequestMethod {
-	return []BatchQueryRequestMethod{	
+	return []BatchQueryRequestMethod{
 		BatchQueryRequestMethodPOST,
 	}
 }
@@ -58,7 +58,7 @@ const (
 
 // PossibleBatchQueryRequestPathValues returns the possible values for the BatchQueryRequestPath const type.
 func PossibleBatchQueryRequestPathValues() []BatchQueryRequestPath {
-	return []BatchQueryRequestPath{	
+	return []BatchQueryRequestPath{
 		BatchQueryRequestPathQuery,
 	}
 }
@@ -67,21 +67,21 @@ func PossibleBatchQueryRequestPathValues() []BatchQueryRequestPath {
 type LogsColumnType string
 
 const (
-	LogsColumnTypeBool LogsColumnType = "bool"
+	LogsColumnTypeBool     LogsColumnType = "bool"
 	LogsColumnTypeDatetime LogsColumnType = "datetime"
-	LogsColumnTypeDecimal LogsColumnType = "decimal"
-	LogsColumnTypeDynamic LogsColumnType = "dynamic"
-	LogsColumnTypeGUID LogsColumnType = "guid"
-	LogsColumnTypeInt LogsColumnType = "int"
-	LogsColumnTypeLong LogsColumnType = "long"
-	LogsColumnTypeReal LogsColumnType = "real"
-	LogsColumnTypeString LogsColumnType = "string"
+	LogsColumnTypeDecimal  LogsColumnType = "decimal"
+	LogsColumnTypeDynamic  LogsColumnType = "dynamic"
+	LogsColumnTypeGUID     LogsColumnType = "guid"
+	LogsColumnTypeInt      LogsColumnType = "int"
+	LogsColumnTypeLong     LogsColumnType = "long"
+	LogsColumnTypeReal     LogsColumnType = "real"
+	LogsColumnTypeString   LogsColumnType = "string"
 	LogsColumnTypeTimespan LogsColumnType = "timespan"
 )
 
 // PossibleLogsColumnTypeValues returns the possible values for the LogsColumnType const type.
 func PossibleLogsColumnTypeValues() []LogsColumnType {
-	return []LogsColumnType{	
+	return []LogsColumnType{
 		LogsColumnTypeBool,
 		LogsColumnTypeDatetime,
 		LogsColumnTypeDecimal,
@@ -100,15 +100,15 @@ type MetricClass string
 
 const (
 	MetricClassAvailability MetricClass = "Availability"
-	MetricClassErrors MetricClass = "Errors"
-	MetricClassLatency MetricClass = "Latency"
-	MetricClassSaturation MetricClass = "Saturation"
+	MetricClassErrors       MetricClass = "Errors"
+	MetricClassLatency      MetricClass = "Latency"
+	MetricClassSaturation   MetricClass = "Saturation"
 	MetricClassTransactions MetricClass = "Transactions"
 )
 
 // PossibleMetricClassValues returns the possible values for the MetricClass const type.
 func PossibleMetricClassValues() []MetricClass {
-	return []MetricClass{	
+	return []MetricClass{
 		MetricClassAvailability,
 		MetricClassErrors,
 		MetricClassLatency,
@@ -121,24 +121,24 @@ func PossibleMetricClassValues() []MetricClass {
 type MetricUnit string
 
 const (
-	MetricUnitBitsPerSecond MetricUnit = "BitsPerSecond"
-	MetricUnitByteSeconds MetricUnit = "ByteSeconds"
-	MetricUnitBytes MetricUnit = "Bytes"
+	MetricUnitBitsPerSecond  MetricUnit = "BitsPerSecond"
+	MetricUnitByteSeconds    MetricUnit = "ByteSeconds"
+	MetricUnitBytes          MetricUnit = "Bytes"
 	MetricUnitBytesPerSecond MetricUnit = "BytesPerSecond"
-	MetricUnitCores MetricUnit = "Cores"
-	MetricUnitCount MetricUnit = "Count"
+	MetricUnitCores          MetricUnit = "Cores"
+	MetricUnitCount          MetricUnit = "Count"
 	MetricUnitCountPerSecond MetricUnit = "CountPerSecond"
-	MetricUnitMilliCores MetricUnit = "MilliCores"
-	MetricUnitMilliSeconds MetricUnit = "MilliSeconds"
-	MetricUnitNanoCores MetricUnit = "NanoCores"
-	MetricUnitPercent MetricUnit = "Percent"
-	MetricUnitSeconds MetricUnit = "Seconds"
-	MetricUnitUnspecified MetricUnit = "Unspecified"
+	MetricUnitMilliCores     MetricUnit = "MilliCores"
+	MetricUnitMilliSeconds   MetricUnit = "MilliSeconds"
+	MetricUnitNanoCores      MetricUnit = "NanoCores"
+	MetricUnitPercent        MetricUnit = "Percent"
+	MetricUnitSeconds        MetricUnit = "Seconds"
+	MetricUnitUnspecified    MetricUnit = "Unspecified"
 )
 
 // PossibleMetricUnitValues returns the possible values for the MetricUnit const type.
 func PossibleMetricUnitValues() []MetricUnit {
-	return []MetricUnit{	
+	return []MetricUnit{
 		MetricUnitBitsPerSecond,
 		MetricUnitByteSeconds,
 		MetricUnitBytes,
@@ -159,14 +159,14 @@ func PossibleMetricUnitValues() []MetricUnit {
 type NamespaceClassification string
 
 const (
-	NamespaceClassificationCustom NamespaceClassification = "Custom"
+	NamespaceClassificationCustom   NamespaceClassification = "Custom"
 	NamespaceClassificationPlatform NamespaceClassification = "Platform"
-	NamespaceClassificationQos NamespaceClassification = "Qos"
+	NamespaceClassificationQos      NamespaceClassification = "Qos"
 )
 
 // PossibleNamespaceClassificationValues returns the possible values for the NamespaceClassification const type.
 func PossibleNamespaceClassificationValues() []NamespaceClassification {
-	return []NamespaceClassification{	
+	return []NamespaceClassification{
 		NamespaceClassificationCustom,
 		NamespaceClassificationPlatform,
 		NamespaceClassificationQos,
@@ -176,15 +176,14 @@ func PossibleNamespaceClassificationValues() []NamespaceClassification {
 type ResultType string
 
 const (
-	ResultTypeData ResultType = "Data"
+	ResultTypeData     ResultType = "Data"
 	ResultTypeMetadata ResultType = "Metadata"
 )
 
 // PossibleResultTypeValues returns the possible values for the ResultType const type.
 func PossibleResultTypeValues() []ResultType {
-	return []ResultType{	
+	return []ResultType{
 		ResultTypeData,
 		ResultTypeMetadata,
 	}
 }
-

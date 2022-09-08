@@ -33,4 +33,3 @@ type MetricsClientListMetricNamespacesResponse struct {
 type MetricsClientQueryResourceResponse struct {
 	Response
 }
-

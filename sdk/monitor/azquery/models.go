@@ -39,8 +39,8 @@ type BatchQueryResponse struct {
 
 	// Dictionary of
 	Headers map[string]*string `json:"headers,omitempty"`
-	ID *string `json:"id,omitempty"`
-	Status *int32 `json:"status,omitempty"`
+	ID      *string            `json:"id,omitempty"`
+	Status  *int32             `json:"status,omitempty"`
 }
 
 // BatchQueryResults - Contains the tables, columns & rows resulting from a query.
@@ -76,7 +76,7 @@ type Body struct {
 	Query *string `json:"query,omitempty"`
 
 	// Optional. The timespan over which to query data. This is an ISO8601 time period value. This timespan is applied in addition
-// to any that are specified in the query expression.
+	// to any that are specified in the query expression.
 	Timespan *string `json:"timespan,omitempty"`
 
 	// A list of workspaces that are included in the query.
@@ -130,8 +130,6 @@ type ErrorInfo struct {
 	// Inner error details if they exist.
 	Innererror *ErrorInfo `json:"innererror,omitempty"`
 }
-
-
 
 // LocalizableString - The localizable string class.
 type LocalizableString struct {
@@ -286,7 +284,7 @@ type MetricValue struct {
 	Average *float64 `json:"average,omitempty"`
 
 	// the number of samples in the time range. Can be used to determine the number of values that contributed to the average
-// value.
+	// value.
 	Count *float64 `json:"count,omitempty"`
 
 	// the greatest value in the time range.
@@ -317,25 +315,25 @@ type MetricsClientQueryResourceOptions struct {
 	// The list of aggregation types (comma separated) to retrieve.
 	Aggregation *string
 	// The $filter is used to reduce the set of metric data returned. Example: Metric contains metadata A, B and C. - Return all
-// time series of C where A = a1 and B = b1 or b2 $filter=A eq 'a1' and B eq 'b1'
-// or B eq 'b2' and C eq '' - Invalid variant: $filter=A eq 'a1' and B eq 'b1' and C eq '' or B = 'b2' This is invalid because
-// the logical or operator cannot separate two different metadata names. -
-// Return all time series where A = a1, B = b1 and C = c1: $filter=A eq 'a1' and B eq 'b1' and C eq 'c1' - Return all time
-// series where A = a1 $filter=A eq 'a1' and B eq '' and C eq ''. Special case:
-// When dimension name or dimension value uses round brackets. Eg: When dimension name is dim (test) 1 Instead of using $filter=
-// "dim (test) 1 eq '' " use $filter= "dim %2528test%2529 1 eq '' " When
-// dimension name is dim (test) 3 and dimension value is dim3 (test) val Instead of using $filter= "dim (test) 3 eq 'dim3
-// (test) val' " use $filter= "dim %2528test%2529 3 eq 'dim3 %2528test%2529 val' "
+	// time series of C where A = a1 and B = b1 or b2 $filter=A eq 'a1' and B eq 'b1'
+	// or B eq 'b2' and C eq '' - Invalid variant: $filter=A eq 'a1' and B eq 'b1' and C eq '' or B = 'b2' This is invalid because
+	// the logical or operator cannot separate two different metadata names. -
+	// Return all time series where A = a1, B = b1 and C = c1: $filter=A eq 'a1' and B eq 'b1' and C eq 'c1' - Return all time
+	// series where A = a1 $filter=A eq 'a1' and B eq '' and C eq ''. Special case:
+	// When dimension name or dimension value uses round brackets. Eg: When dimension name is dim (test) 1 Instead of using $filter=
+	// "dim (test) 1 eq '' " use $filter= "dim %2528test%2529 1 eq '' " When
+	// dimension name is dim (test) 3 and dimension value is dim3 (test) val Instead of using $filter= "dim (test) 3 eq 'dim3
+	// (test) val' " use $filter= "dim %2528test%2529 3 eq 'dim3 %2528test%2529 val' "
 	Filter *string
 	// The interval (i.e. timegrain) of the query.
 	Interval *string
 	// The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself has a comma in it then use
-// %2 to indicate it. Eg: 'Metric,Name1' should be 'Metric%2Name1'
+	// %2 to indicate it. Eg: 'Metric,Name1' should be 'Metric%2Name1'
 	Metricnames *string
 	// Metric namespace to query metric definitions for.
 	Metricnamespace *string
 	// The aggregation to use for sorting results and the direction of the sort. Only one order can be specified. Examples: sum
-// asc.
+	// asc.
 	Orderby *string
 	// Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's description for details.
 	ResultType *ResultType
@@ -348,8 +346,8 @@ type MetricsClientQueryResourceOptions struct {
 // Response - The response to a metrics query.
 type Response struct {
 	// REQUIRED; The timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by
-// '/'. This may be adjusted in the future and returned back from what was originally
-// requested.
+	// '/'. This may be adjusted in the future and returned back from what was originally
+	// requested.
 	Timespan *string `json:"timespan,omitempty"`
 
 	// REQUIRED; the value of the collection.
@@ -359,8 +357,8 @@ type Response struct {
 	Cost *int32 `json:"cost,omitempty"`
 
 	// The interval (window size) for which the metric data was returned in. This may be adjusted in the future and returned back
-// from what was originally requested. This is not present if a metadata request
-// was made.
+	// from what was originally requested. This is not present if a metadata request
+	// was made.
 	Interval *string `json:"interval,omitempty"`
 
 	// The namespace of the metrics being queried
@@ -405,4 +403,3 @@ type TimeSeriesElement struct {
 	// the metadata values returned if $filter was specified in the call.
 	Metadatavalues []*MetadataValue `json:"metadatavalues,omitempty"`
 }
-

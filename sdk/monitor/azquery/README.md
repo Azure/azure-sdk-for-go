@@ -29,7 +29,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 This document demonstrates using [azidentity.NewDefaultAzureCredential][default_cred_ref] to authenticate. This credential type works in both local development and production environments. We recommend using a [managed identity][managed_identity] in production.
 
-[Client][client_docs] accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credential types.
+Client accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credential types.
 
 #### Create a logs client
 
@@ -42,7 +42,7 @@ import (
 func main() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		// TODO: handle error
+		panic(err)
 	}
 
 	client := azkeys.NewLogsClient(cred, nil)
@@ -60,7 +60,7 @@ import (
 func main() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		// TODO: handle error
+		panic(err)
 	}
 
 	client := azkeys.NewMetricsClient(cred, nil)
@@ -92,14 +92,14 @@ Each set of metric values is a time series with the following characteristics:
 
 ### Timespan
 
-It's best practice to always query with a timespan to prevent excessive queries of the entire logs or metrics data set. Logs uses the [ISO8601 Time Interval Standard](https://en.wikipedia.org/wiki/ISO_8601#Time_intervals)
+It's best practice to always query with a timespan to prevent excessive queries of the entire logs or metrics data set. Logs uses the [ISO8601 Time Interval Standard][time_intervals]
 
 The timespan can be the following string formats:
 ```
 <start>/<end> such as "2007-03-01T13:00:00Z/2008-05-11T15:30:00Z"
 <start>/<duration> such as "2007-03-01T13:00:00Z/P1Y2M10DT2H30M"
 <duration>/<end> such as "P1Y2M10DT2H30M/2008-05-11T15:30:00Z"
-<duration> such as "P1Y2M10DT2H30M"
+<duration> such as "P1Y2M10DT2H30M" // 1 year, 2 months, 10 days, 2 hours, 20 minutes
 ```
 
 ## Examples
@@ -123,7 +123,7 @@ timespan := "2022-08-30/2022-08-31"
 
 res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, nil)
 if err != nil {
-	// TODO: handle error
+	panic(err)
 }
 _ = res
 ```
@@ -174,7 +174,7 @@ batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
 
 res, err := client.Batch(context.TODO(), batchRequest, nil)
 if err != nil {
-	// TODO: handle error
+	panic(err)
 }
 _ = res
 ```
@@ -229,29 +229,29 @@ additionalWorkspaces := []*string{&workspaceID2, &workspaceID3}
 
 res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan), Workspaces: additionalWorkspaces}, nil)
 if err != nil {
-	// TODO: handle error
+	panic(err)
 }
 _ = res
 ```
 
 #### Increase wait time, include statistics, include render (visualization)
 
-By default, the azure service will run your query for up to three minutes. To increase the default timeout, update the wait time in seconds in LogsClientQueryWorkspaceOptions Prefer string. Max wait time the service will allow is ten minutes.
+By default, the Azure Monitor Query service will run your query for up to three minutes. To increase the default timeout, set `wait` to desired number of seconds in LogsClientQueryWorkspaceOptions Prefer string. Max wait time the service will allow is ten minutes (600 seconds).
 
-To get logs query execution statistics, such as CPU and memory consumption, set include-statistics to true in LogsClientQueryWorkspaceOptions Prefer string.
+To get logs query execution statistics, such as CPU and memory consumption, set `include-statistics` to true in LogsClientQueryWorkspaceOptions Prefer string.
 
-To get visualization data for logs queries, set include-render to true in LogsClientQueryWorkspaceOptions Prefer string.
+To get visualization data for logs queries, set `include-render` to true in LogsClientQueryWorkspaceOptions Prefer string.
 
 ```go
 client := azquery.NewLogsClient(cred, nil)
 timespan := "2022-08-30/2022-08-31"
-prefer := "wait=180,include-statistics=true,include-render=true"
+prefer := "wait=600,include-statistics=true,include-render=true"
 options := &azquery.LogsClientQueryWorkspaceOptions{Prefer: &prefer}
 
 res, err := client.QueryWorkspace(context.TODO(), workspaceID,
 	azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, options)
 if err != nil {
-	// TODO: handle error
+	panic(err)
 }
 _ = res
 ```
@@ -272,7 +272,7 @@ res, err := client.QueryResource(context.Background(), resourceURI,
 		Metricnamespace: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
 	})
 if err != nil {
-	// TODO: handle error
+	panic(err)
 }
 _ = res
 ```
@@ -307,8 +307,6 @@ MetricsResults
 ```
 
 ## Troubleshooting
-
-More troubleshooting steps coming soon.
 
 ### Logging
 
@@ -348,17 +346,7 @@ comments.
 [azure_sub]: https://azure.microsoft.com/free/
 [azure_monitor_create_using_portal]: https://docs.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
 [azure_monitor_overview]: https://docs.microsoft.com/azure/azure-monitor/overview
-[azure_subscription]: https://azure.microsoft.com/free/java
-[changelog]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/CHANGELOG.md
-[DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[kusto_query_language]: https://docs.microsoft.com/azure/data-explorer/kusto/query/
-[log_levels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
-[msdocs_apiref]: https://docs.microsoft.com/java/api/com.azure.monitor.query?view=azure-java-stable
-[package]: https://search.maven.org/artifact/com.azure/azure-monitor-query
-[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/src/samples/java/README.md
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query/src
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[time_intervals]: https://en.wikipedia.org/wiki/ISO_8601#Time_intervals
 
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/

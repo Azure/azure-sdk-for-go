@@ -24,7 +24,7 @@ type LogsClientOptions struct {
 	azcore.ClientOptions
 }
 
-// NewLogsClient creates a client that accesses a monitor.
+// NewLogsClient creates a client that accesses Azure Monitor logs data.
 func NewLogsClient(credential azcore.TokenCredential, options *LogsClientOptions) *LogsClient {
 	if options == nil {
 		options = &LogsClientOptions{}
@@ -34,7 +34,7 @@ func NewLogsClient(credential azcore.TokenCredential, options *LogsClientOptions
 	return &LogsClient{pl: pl}
 }
 
-// NewMetricsClient creates a client that accesses a monitor.
+// NewMetricsClient creates a client that accesses Azure Monitor metrics data.
 func NewMetricsClient(credential azcore.TokenCredential, options *MetricsClientOptions) *MetricsClient {
 	if options == nil {
 		options = &MetricsClientOptions{}

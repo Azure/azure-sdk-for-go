@@ -9,6 +9,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
@@ -291,6 +292,7 @@ func (p *Processor) addPartitionClient(ctx context.Context, ownership Ownership,
 
 	partClient, err := p.consumerClient.NewPartitionClient(ownership.PartitionID, &NewPartitionClientOptions{
 		StartPosition: sp,
+		OwnerLevel:    to.Ptr[int64](0),
 	})
 
 	if err != nil {

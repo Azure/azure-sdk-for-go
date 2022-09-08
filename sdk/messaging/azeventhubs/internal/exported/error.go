@@ -17,7 +17,7 @@ const (
 
 	// CodeOwnershipLost means that a partition that you were reading from was opened
 	// by another link with a higher epoch/owner level.
-	CodeOwnershipLost = "ownershiplost"
+	CodeOwnershipLost Code = "ownershiplost"
 )
 
 // Error represents an Event Hub specific error.

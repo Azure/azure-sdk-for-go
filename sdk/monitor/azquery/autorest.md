@@ -76,6 +76,17 @@ directive:
     where: $.definitions.batchQueryRequest.properties.method
     transform: $["x-ms-client-default"] = "POST"
 
+  # add descriptions for models and constants that don't have them
+  - from: swagger-document
+    where: $.definitions.batchQueryRequest.properties.path
+    transform: $["description"] = "The query path of a single request in a batch, defaults to /query"
+  - from: swagger-document
+    where: $.definitions.batchQueryRequest.properties.method
+    transform: $["description"] = "The method of a single request in a batch, defaults to POST"
+  - from: swagger-document
+    where: $.definitions.batchQueryResponse
+    transform: $["description"] = "Contains the batch query response and the headers, id, and status of the request"
+
   # delete unused error models
   - from: models.go
     where: $

@@ -24,10 +24,15 @@ type BatchQueryRequest struct {
 
 	// Dictionary of
 	Headers map[string]*string `json:"headers,omitempty"`
+
+	// The method of a single request in a batch, defaults to POST
 	Method *BatchQueryRequestMethod `json:"method,omitempty"`
+
+	// The query path of a single request in a batch, defaults to /query
 	Path *BatchQueryRequestPath `json:"path,omitempty"`
 }
 
+// BatchQueryResponse - Contains the batch query response and the headers, id, and status of the request
 type BatchQueryResponse struct {
 	// Contains the tables, columns & rows resulting from a query.
 	Body *BatchQueryResults `json:"body,omitempty"`

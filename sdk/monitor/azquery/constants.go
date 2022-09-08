@@ -35,6 +35,7 @@ func PossibleAggregationTypeValues() []AggregationType {
 	}
 }
 
+// BatchQueryRequestMethod - The method of a single request in a batch, defaults to POST
 type BatchQueryRequestMethod string
 
 const (
@@ -48,6 +49,7 @@ func PossibleBatchQueryRequestMethodValues() []BatchQueryRequestMethod {
 	}
 }
 
+// BatchQueryRequestPath - The query path of a single request in a batch, defaults to /query
 type BatchQueryRequestPath string
 
 const (

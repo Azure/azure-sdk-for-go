@@ -14,10 +14,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// ClientOptions contains optional settings for Client.
+// MetricsClientOptions contains optional settings for MetricsClient.
 type MetricsClientOptions struct {
 	azcore.ClientOptions
 }
+
+// LogsClientOptions contains optional settings for LogsClient.
 type LogsClientOptions struct {
 	azcore.ClientOptions
 }

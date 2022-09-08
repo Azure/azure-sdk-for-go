@@ -22,7 +22,7 @@ var kustoQuery3 string
 func ExampleNewLogsClient() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		// TODO: handle error
+		panic(err)
 	}
 
 	client := azquery.NewLogsClient(cred, nil)
@@ -32,7 +32,7 @@ func ExampleNewLogsClient() {
 func ExampleNewMetricsClient() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		// TODO: handle error
+		panic(err)
 	}
 
 	client := azquery.NewMetricsClient(cred, nil)
@@ -46,7 +46,7 @@ func ExampleLogsClient_QueryWorkspace() {
 	res, err := client.QueryWorkspace(context.TODO(), workspaceID,
 		azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, nil)
 	if err != nil {
-		// TODO: handle error
+		panic(err)
 	}
 	_ = res
 }
@@ -63,7 +63,7 @@ func ExampleLogsClient_Batch() {
 
 	res, err := client.Batch(context.TODO(), batchRequest, nil)
 	if err != nil {
-		// TODO: handle error
+		panic(err)
 	}
 	_ = res
 }
@@ -82,7 +82,7 @@ func ExampleMetricsClient_QueryResource() {
 			Metricnamespace: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
 		})
 	if err != nil {
-		// TODO: handle error
+		panic(err)
 	}
 	_ = res
 }

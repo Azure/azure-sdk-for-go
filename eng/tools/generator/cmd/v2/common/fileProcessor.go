@@ -137,14 +137,9 @@ func CleanSDKGeneratedFiles(path string) error {
 }
 
 // replace repo commit with local path in autorest.md file
-func ChangeConfigWithLocalPath(path, specPath, specRPName string) error {
+func ChangeConfigWithLocalPath(path, readmeFile, readmeGoFile string) error {
 	log.Printf("Replacing repo commit with local path in autorest.md ...")
 	b, err := ioutil.ReadFile(path)
-	if err != nil {
-		return err
-	}
-
-	specPath, err = filepath.Abs(specPath)
 	if err != nil {
 		return err
 	}
@@ -152,8 +147,8 @@ func ChangeConfigWithLocalPath(path, specPath, specRPName string) error {
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
 		if strings.Contains(line, autorest_md_file_suffix) {
-			lines[i] = fmt.Sprintf("- %s", filepath.Join(specPath, specRPName, "resource-manager", "readme.md"))
-			lines[i+1] = fmt.Sprintf("- %s", filepath.Join(specPath, specRPName, "resource-manager", "readme.go.md"))
+			lines[i] = fmt.Sprintf("- %s", readmeFile)
+			lines[i+1] = fmt.Sprintf("- %s", readmeGoFile)
 			break
 		}
 	}

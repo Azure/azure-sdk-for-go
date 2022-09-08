@@ -5,12 +5,12 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 	"math/rand"
 	"os"
 	"sort"
 	"time"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/eh/stress/tests"
 )
 
@@ -44,19 +44,10 @@ func main() {
 
 	for _, test := range tests {
 		if test.name == testName {
-			// azlog.SetEvents(azeventhubs.EventAuth, azeventhubs.EventConn, azeventhubs.EventConsumer)
-			// azlog.SetListener(func(e azlog.Event, s string) {
-			// 	log.Printf("[%s] %s", e, s)
-			// })
-
-			defer func() {
-				err := recover()
-
-				if err != nil {
-					log.Printf("FATAL ERROR: %s", err)
-				}
-			}()
-
+			//azlog.SetEvents(azeventhubs.EventAuth, azeventhubs.EventConn, azeventhubs.EventConsumer)
+			azlog.SetListener(func(e azlog.Event, s string) {
+				//log.Printf("[%s] %s", e, s)
+			})
 			rand.Seed(time.Now().UnixNano())
 
 			if err := test.fn(context.Background()); err != nil {

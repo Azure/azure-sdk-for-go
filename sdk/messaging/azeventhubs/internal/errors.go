@@ -79,7 +79,11 @@ func TransformError(err error) error {
 	}
 }
 
-func IsDetachError(err error) bool {
+func IsQuickRecoveryError(err error) bool {
+	if isOwnershipLostError(err) {
+		return false
+	}
+
 	var de *amqp.DetachError
 	return errors.As(err, &de)
 }
@@ -167,9 +171,12 @@ func GetRecoveryKind(err error) RecoveryKind {
 		return RecoveryKindFatal
 	}
 
+	if isOwnershipLostError(err) {
+		return RecoveryKindFatal
+	}
+
 	// check the "special" AMQP errors that aren't condition-based.
-	if errors.Is(err, amqp.ErrLinkClosed) ||
-		IsDetachError(err) {
+	if errors.Is(err, amqp.ErrLinkClosed) || IsQuickRecoveryError(err) {
 		return RecoveryKindLink
 	}
 
@@ -336,6 +343,12 @@ func isLockLostError(err error) bool {
 }
 
 func isOwnershipLostError(err error) bool {
-	var amqpError *amqp.Error
-	return errors.As(err, &amqpError) && amqpError.Condition == "amqp:link:stolen"
+	var de *amqp.DetachError
+
+	if errors.As(err, &de) {
+		var amqpError *amqp.Error
+		return errors.As(de.RemoteError, &amqpError) && amqpError.Condition == "amqp:link:stolen"
+	}
+
+	return false
 }

@@ -28,9 +28,7 @@ func ExampleLinkedServicesClient_NewListByFactoryPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByFactoryPager("exampleResourceGroup",
-		"exampleFactoryName",
-		nil)
+	pager := client.NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -44,7 +42,7 @@ func ExampleLinkedServicesClient_NewListByFactoryPager() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Create.json
-func ExampleLinkedServicesClient_CreateOrUpdate() {
+func ExampleLinkedServicesClient_CreateOrUpdate_linkedServicesCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -54,22 +52,47 @@ func ExampleLinkedServicesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleLinkedService",
-		armdatafactory.LinkedServiceResource{
-			Properties: &armdatafactory.AzureStorageLinkedService{
-				Type: to.Ptr("AzureStorage"),
-				TypeProperties: &armdatafactory.AzureStorageLinkedServiceTypeProperties{
-					ConnectionString: map[string]interface{}{
-						"type":  "SecureString",
-						"value": "DefaultEndpointsProtocol=https;AccountName=examplestorageaccount;AccountKey=<storage key>",
-					},
+	res, err := client.CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleLinkedService", armdatafactory.LinkedServiceResource{
+		Properties: &armdatafactory.AzureStorageLinkedService{
+			Type: to.Ptr("AzureStorage"),
+			TypeProperties: &armdatafactory.AzureStorageLinkedServiceTypeProperties{
+				ConnectionString: map[string]interface{}{
+					"type":  "SecureString",
+					"value": "DefaultEndpointsProtocol=https;AccountName=examplestorageaccount;AccountKey=<storage key>",
 				},
 			},
 		},
-		&armdatafactory.LinkedServicesClientCreateOrUpdateOptions{IfMatch: nil})
+	}, &armdatafactory.LinkedServicesClientCreateOrUpdateOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Update.json
+func ExampleLinkedServicesClient_CreateOrUpdate_linkedServicesUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armdatafactory.NewLinkedServicesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleLinkedService", armdatafactory.LinkedServiceResource{
+		Properties: &armdatafactory.AzureStorageLinkedService{
+			Type:        to.Ptr("AzureStorage"),
+			Description: to.Ptr("Example description"),
+			TypeProperties: &armdatafactory.AzureStorageLinkedServiceTypeProperties{
+				ConnectionString: map[string]interface{}{
+					"type":  "SecureString",
+					"value": "DefaultEndpointsProtocol=https;AccountName=examplestorageaccount;AccountKey=<storage key>",
+				},
+			},
+		},
+	}, &armdatafactory.LinkedServicesClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -88,11 +111,7 @@ func ExampleLinkedServicesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleLinkedService",
-		&armdatafactory.LinkedServicesClientGetOptions{IfNoneMatch: nil})
+	res, err := client.Get(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleLinkedService", &armdatafactory.LinkedServicesClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -111,11 +130,7 @@ func ExampleLinkedServicesClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleLinkedService",
-		nil)
+	_, err = client.Delete(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleLinkedService", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

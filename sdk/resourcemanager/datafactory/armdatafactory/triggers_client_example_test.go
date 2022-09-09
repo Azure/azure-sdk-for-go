@@ -30,9 +30,7 @@ func ExampleTriggersClient_NewListByFactoryPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByFactoryPager("exampleResourceGroup",
-		"exampleFactoryName",
-		nil)
+	pager := client.NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -56,13 +54,9 @@ func ExampleTriggersClient_QueryByFactory() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.QueryByFactory(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		armdatafactory.TriggerFilterParameters{
-			ParentTriggerName: to.Ptr("exampleTrigger"),
-		},
-		nil)
+	res, err := client.QueryByFactory(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.TriggerFilterParameters{
+		ParentTriggerName: to.Ptr("exampleTrigger"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -71,7 +65,7 @@ func ExampleTriggersClient_QueryByFactory() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Create.json
-func ExampleTriggersClient_CreateOrUpdate() {
+func ExampleTriggersClient_CreateOrUpdate_triggersCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -81,37 +75,77 @@ func ExampleTriggersClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleTrigger",
-		armdatafactory.TriggerResource{
-			Properties: &armdatafactory.ScheduleTrigger{
-				Type: to.Ptr("ScheduleTrigger"),
-				Pipelines: []*armdatafactory.TriggerPipelineReference{
-					{
-						Parameters: map[string]interface{}{
-							"OutputBlobNameList": []interface{}{
-								"exampleoutput.csv",
-							},
+	res, err := client.CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", armdatafactory.TriggerResource{
+		Properties: &armdatafactory.ScheduleTrigger{
+			Type: to.Ptr("ScheduleTrigger"),
+			Pipelines: []*armdatafactory.TriggerPipelineReference{
+				{
+					Parameters: map[string]interface{}{
+						"OutputBlobNameList": []interface{}{
+							"exampleoutput.csv",
 						},
-						PipelineReference: &armdatafactory.PipelineReference{
-							Type:          to.Ptr(armdatafactory.PipelineReferenceTypePipelineReference),
-							ReferenceName: to.Ptr("examplePipeline"),
-						},
-					}},
-				TypeProperties: &armdatafactory.ScheduleTriggerTypeProperties{
-					Recurrence: &armdatafactory.ScheduleTriggerRecurrence{
-						EndTime:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:55:13.8441801Z"); return t }()),
-						Frequency: to.Ptr(armdatafactory.RecurrenceFrequencyMinute),
-						Interval:  to.Ptr[int32](4),
-						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:39:13.8441801Z"); return t }()),
-						TimeZone:  to.Ptr("UTC"),
 					},
+					PipelineReference: &armdatafactory.PipelineReference{
+						Type:          to.Ptr(armdatafactory.PipelineReferenceTypePipelineReference),
+						ReferenceName: to.Ptr("examplePipeline"),
+					},
+				}},
+			TypeProperties: &armdatafactory.ScheduleTriggerTypeProperties{
+				Recurrence: &armdatafactory.ScheduleTriggerRecurrence{
+					EndTime:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:55:13.8441801Z"); return t }()),
+					Frequency: to.Ptr(armdatafactory.RecurrenceFrequencyMinute),
+					Interval:  to.Ptr[int32](4),
+					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:39:13.8441801Z"); return t }()),
+					TimeZone:  to.Ptr("UTC"),
 				},
 			},
 		},
-		&armdatafactory.TriggersClientCreateOrUpdateOptions{IfMatch: nil})
+	}, &armdatafactory.TriggersClientCreateOrUpdateOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Update.json
+func ExampleTriggersClient_CreateOrUpdate_triggersUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armdatafactory.NewTriggersClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", armdatafactory.TriggerResource{
+		Properties: &armdatafactory.ScheduleTrigger{
+			Type:        to.Ptr("ScheduleTrigger"),
+			Description: to.Ptr("Example description"),
+			Pipelines: []*armdatafactory.TriggerPipelineReference{
+				{
+					Parameters: map[string]interface{}{
+						"OutputBlobNameList": []interface{}{
+							"exampleoutput.csv",
+						},
+					},
+					PipelineReference: &armdatafactory.PipelineReference{
+						Type:          to.Ptr(armdatafactory.PipelineReferenceTypePipelineReference),
+						ReferenceName: to.Ptr("examplePipeline"),
+					},
+				}},
+			TypeProperties: &armdatafactory.ScheduleTriggerTypeProperties{
+				Recurrence: &armdatafactory.ScheduleTriggerRecurrence{
+					EndTime:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:55:14.905167Z"); return t }()),
+					Frequency: to.Ptr(armdatafactory.RecurrenceFrequencyMinute),
+					Interval:  to.Ptr[int32](4),
+					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:39:14.905167Z"); return t }()),
+					TimeZone:  to.Ptr("UTC"),
+				},
+			},
+		},
+	}, &armdatafactory.TriggersClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -130,11 +164,7 @@ func ExampleTriggersClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleTrigger",
-		&armdatafactory.TriggersClientGetOptions{IfNoneMatch: nil})
+	res, err := client.Get(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", &armdatafactory.TriggersClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -153,11 +183,7 @@ func ExampleTriggersClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleTrigger",
-		nil)
+	_, err = client.Delete(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -174,11 +200,7 @@ func ExampleTriggersClient_BeginSubscribeToEvents() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginSubscribeToEvents(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleTrigger",
-		nil)
+	poller, err := client.BeginSubscribeToEvents(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -201,11 +223,7 @@ func ExampleTriggersClient_GetEventSubscriptionStatus() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetEventSubscriptionStatus(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleTrigger",
-		nil)
+	res, err := client.GetEventSubscriptionStatus(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -224,11 +242,7 @@ func ExampleTriggersClient_BeginUnsubscribeFromEvents() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUnsubscribeFromEvents(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleTrigger",
-		nil)
+	poller, err := client.BeginUnsubscribeFromEvents(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -251,11 +265,7 @@ func ExampleTriggersClient_BeginStart() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStart(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleTrigger",
-		nil)
+	poller, err := client.BeginStart(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -276,11 +286,7 @@ func ExampleTriggersClient_BeginStop() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStop(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleTrigger",
-		nil)
+	poller, err := client.BeginStop(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

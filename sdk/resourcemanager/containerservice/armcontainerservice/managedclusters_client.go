@@ -477,7 +477,6 @@ func (client *ManagedClustersClient) getUpgradeProfileHandleResponse(resp *http.
 }
 
 // NewListPager - Gets a list of managed clusters in the specified subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-07-01
 // options - ManagedClustersClientListOptions contains the optional parameters for the ManagedClustersClient.List method.
 func (client *ManagedClustersClient) NewListPager(options *ManagedClustersClientListOptions) *runtime.Pager[ManagedClustersClientListResponse] {
@@ -536,7 +535,6 @@ func (client *ManagedClustersClient) listHandleResponse(resp *http.Response) (Ma
 }
 
 // NewListByResourceGroupPager - Lists managed clusters in the specified subscription and resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-07-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ManagedClustersClientListByResourceGroupOptions contains the optional parameters for the ManagedClustersClient.ListByResourceGroup
@@ -785,7 +783,6 @@ func (client *ManagedClustersClient) listClusterUserCredentialsHandleResponse(re
 
 // NewListOutboundNetworkDependenciesEndpointsPager - Gets a list of egress endpoints (network endpoints of all outbound dependencies)
 // in the specified managed cluster. The operation returns properties of each egress endpoint.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-07-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the managed cluster resource.

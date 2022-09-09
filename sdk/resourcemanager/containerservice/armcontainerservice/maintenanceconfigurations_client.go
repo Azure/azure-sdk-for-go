@@ -234,7 +234,6 @@ func (client *MaintenanceConfigurationsClient) getHandleResponse(resp *http.Resp
 }
 
 // NewListByManagedClusterPager - Gets a list of maintenance configurations in the specified managed cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-07-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the managed cluster resource.

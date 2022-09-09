@@ -461,7 +461,6 @@ func (client *Client) importDataCreateRequest(ctx context.Context, resourceGroup
 }
 
 // NewListByResourceGroupPager - Lists all Redis caches in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // options - ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
@@ -525,7 +524,6 @@ func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (Cl
 }
 
 // NewListBySubscriptionPager - Gets all Redis caches in the specified subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-05-01
 // options - ClientListBySubscriptionOptions contains the optional parameters for the Client.ListBySubscription method.
 func (client *Client) NewListBySubscriptionPager(options *ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse] {
@@ -640,7 +638,6 @@ func (client *Client) listKeysHandleResponse(resp *http.Response) (ClientListKey
 }
 
 // NewListUpgradeNotificationsPager - Gets any upgrade notifications for a Redis cache.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // name - The name of the Redis cache.

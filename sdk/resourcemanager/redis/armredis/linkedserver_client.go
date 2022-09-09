@@ -255,7 +255,6 @@ func (client *LinkedServerClient) getHandleResponse(resp *http.Response) (Linked
 }
 
 // NewListPager - Gets the list of linked servers associated with this redis cache (requires Premium SKU).
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // name - The name of the redis cache.

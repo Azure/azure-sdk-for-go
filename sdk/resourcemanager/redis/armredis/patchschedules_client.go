@@ -233,7 +233,6 @@ func (client *PatchSchedulesClient) getHandleResponse(resp *http.Response) (Patc
 }
 
 // NewListByRedisResourcePager - Gets all patch schedules in the specified redis cache (there is only one).
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // cacheName - The name of the Redis cache.

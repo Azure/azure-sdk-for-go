@@ -57,7 +57,6 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 }
 
 // NewListByRedisCachePager - Gets the private link resources that need to be created for a redis cache.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // cacheName - The name of the Redis cache.

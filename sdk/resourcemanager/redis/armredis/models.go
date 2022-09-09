@@ -104,42 +104,6 @@ type ClientRegenerateKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CommonProperties - Create/Update/Get common properties of the redis cache.
-type CommonProperties struct {
-	// Specifies whether the non-ssl Redis server port (6379) is enabled.
-	EnableNonSSLPort *bool `json:"enableNonSslPort,omitempty"`
-
-	// Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2')
-	MinimumTLSVersion *TLSVersion `json:"minimumTlsVersion,omitempty"`
-
-	// Whether or not public endpoint access is allowed for this cache. Value is optional but if passed in, must be 'Enabled'
-	// or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method.
-	// Default value is 'Enabled'
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
-
-	// All Redis Settings. Few possible keys:
-	// rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
-	// etc.
-	RedisConfiguration *CommonPropertiesRedisConfiguration `json:"redisConfiguration,omitempty"`
-
-	// Redis version. This should be in the form 'major[.minor]' (only 'major' is required) or the value 'latest' which refers
-	// to the latest stable Redis version that is available. Supported versions: 4.0,
-	// 6.0 (latest). Default value is 'latest'.
-	RedisVersion *string `json:"redisVersion,omitempty"`
-
-	// The number of replicas to be created per primary.
-	ReplicasPerMaster *int32 `json:"replicasPerMaster,omitempty"`
-
-	// The number of replicas to be created per primary.
-	ReplicasPerPrimary *int32 `json:"replicasPerPrimary,omitempty"`
-
-	// The number of shards to be created on a Premium Cluster Cache.
-	ShardCount *int32 `json:"shardCount,omitempty"`
-
-	// A dictionary of tenant settings
-	TenantSettings map[string]*string `json:"tenantSettings,omitempty"`
-}
-
 // CommonPropertiesRedisConfiguration - All Redis Settings. Few possible keys:
 // rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
 // etc.
@@ -214,53 +178,6 @@ type CreateParameters struct {
 
 	// A list of availability zones denoting where the resource needs to come from.
 	Zones []*string `json:"zones,omitempty"`
-}
-
-// CreateProperties - Properties supplied to Create Redis operation.
-type CreateProperties struct {
-	// REQUIRED; The SKU of the Redis cache to deploy.
-	SKU *SKU `json:"sku,omitempty"`
-
-	// Specifies whether the non-ssl Redis server port (6379) is enabled.
-	EnableNonSSLPort *bool `json:"enableNonSslPort,omitempty"`
-
-	// Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2')
-	MinimumTLSVersion *TLSVersion `json:"minimumTlsVersion,omitempty"`
-
-	// Whether or not public endpoint access is allowed for this cache. Value is optional but if passed in, must be 'Enabled'
-	// or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method.
-	// Default value is 'Enabled'
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
-
-	// All Redis Settings. Few possible keys:
-	// rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
-	// etc.
-	RedisConfiguration *CommonPropertiesRedisConfiguration `json:"redisConfiguration,omitempty"`
-
-	// Redis version. This should be in the form 'major[.minor]' (only 'major' is required) or the value 'latest' which refers
-	// to the latest stable Redis version that is available. Supported versions: 4.0,
-	// 6.0 (latest). Default value is 'latest'.
-	RedisVersion *string `json:"redisVersion,omitempty"`
-
-	// The number of replicas to be created per primary.
-	ReplicasPerMaster *int32 `json:"replicasPerMaster,omitempty"`
-
-	// The number of replicas to be created per primary.
-	ReplicasPerPrimary *int32 `json:"replicasPerPrimary,omitempty"`
-
-	// The number of shards to be created on a Premium Cluster Cache.
-	ShardCount *int32 `json:"shardCount,omitempty"`
-
-	// Static IP address. Optionally, may be specified when deploying a Redis cache inside an existing Azure Virtual Network;
-	// auto assigned by default.
-	StaticIP *string `json:"staticIP,omitempty"`
-
-	// The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format:
-	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
-	SubnetID *string `json:"subnetId,omitempty"`
-
-	// A dictionary of tenant settings
-	TenantSettings map[string]*string `json:"tenantSettings,omitempty"`
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -598,36 +515,6 @@ type OperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// OperationStatus - Asynchronous operation status
-type OperationStatus struct {
-	// REQUIRED; Operation status.
-	Status *string `json:"status,omitempty"`
-
-	// The end time of the operation.
-	EndTime *time.Time `json:"endTime,omitempty"`
-
-	// If present, details of the operation error.
-	Error *ErrorDetailAutoGenerated `json:"error,omitempty"`
-
-	// Fully qualified ID for the async operation.
-	ID *string `json:"id,omitempty"`
-
-	// Name of the async operation.
-	Name *string `json:"name,omitempty"`
-
-	// The operations list.
-	Operations []*OperationStatusResult `json:"operations,omitempty"`
-
-	// Percent of the operation that is complete.
-	PercentComplete *float32 `json:"percentComplete,omitempty"`
-
-	// Additional properties from RP, only when operation is successful
-	Properties map[string]interface{} `json:"properties,omitempty"`
-
-	// The start time of the operation.
-	StartTime *time.Time `json:"startTime,omitempty"`
-}
-
 // OperationStatusResult - The current status of an async operation.
 type OperationStatusResult struct {
 	// REQUIRED; Operation status.
@@ -825,77 +712,6 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
 }
 
-// Properties of the redis cache.
-type Properties struct {
-	// REQUIRED; The SKU of the Redis cache to deploy.
-	SKU *SKU `json:"sku,omitempty"`
-
-	// Specifies whether the non-ssl Redis server port (6379) is enabled.
-	EnableNonSSLPort *bool `json:"enableNonSslPort,omitempty"`
-
-	// Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2')
-	MinimumTLSVersion *TLSVersion `json:"minimumTlsVersion,omitempty"`
-
-	// Whether or not public endpoint access is allowed for this cache. Value is optional but if passed in, must be 'Enabled'
-	// or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method.
-	// Default value is 'Enabled'
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
-
-	// All Redis Settings. Few possible keys:
-	// rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
-	// etc.
-	RedisConfiguration *CommonPropertiesRedisConfiguration `json:"redisConfiguration,omitempty"`
-
-	// Redis version. This should be in the form 'major[.minor]' (only 'major' is required) or the value 'latest' which refers
-	// to the latest stable Redis version that is available. Supported versions: 4.0,
-	// 6.0 (latest). Default value is 'latest'.
-	RedisVersion *string `json:"redisVersion,omitempty"`
-
-	// The number of replicas to be created per primary.
-	ReplicasPerMaster *int32 `json:"replicasPerMaster,omitempty"`
-
-	// The number of replicas to be created per primary.
-	ReplicasPerPrimary *int32 `json:"replicasPerPrimary,omitempty"`
-
-	// The number of shards to be created on a Premium Cluster Cache.
-	ShardCount *int32 `json:"shardCount,omitempty"`
-
-	// Static IP address. Optionally, may be specified when deploying a Redis cache inside an existing Azure Virtual Network;
-	// auto assigned by default.
-	StaticIP *string `json:"staticIP,omitempty"`
-
-	// The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format:
-	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
-	SubnetID *string `json:"subnetId,omitempty"`
-
-	// A dictionary of tenant settings
-	TenantSettings map[string]*string `json:"tenantSettings,omitempty"`
-
-	// READ-ONLY; The keys of the Redis cache - not set if this object is not the response to Create or Update redis cache
-	AccessKeys *AccessKeys `json:"accessKeys,omitempty" azure:"ro"`
-
-	// READ-ONLY; Redis host name.
-	HostName *string `json:"hostName,omitempty" azure:"ro"`
-
-	// READ-ONLY; List of the Redis instances associated with the cache
-	Instances []*InstanceDetails `json:"instances,omitempty" azure:"ro"`
-
-	// READ-ONLY; List of the linked servers associated with the cache
-	LinkedServers []*LinkedServer `json:"linkedServers,omitempty" azure:"ro"`
-
-	// READ-ONLY; Redis non-SSL port.
-	Port *int32 `json:"port,omitempty" azure:"ro"`
-
-	// READ-ONLY; List of private endpoint connection associated with the specified redis cache
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
-
-	// READ-ONLY; Redis instance provisioning status.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; Redis SSL port.
-	SSLPort *int32 `json:"sslPort,omitempty" azure:"ro"`
-}
-
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
@@ -1026,45 +842,6 @@ type UpdateParameters struct {
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// UpdateProperties - Patchable properties of the redis cache.
-type UpdateProperties struct {
-	// Specifies whether the non-ssl Redis server port (6379) is enabled.
-	EnableNonSSLPort *bool `json:"enableNonSslPort,omitempty"`
-
-	// Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2')
-	MinimumTLSVersion *TLSVersion `json:"minimumTlsVersion,omitempty"`
-
-	// Whether or not public endpoint access is allowed for this cache. Value is optional but if passed in, must be 'Enabled'
-	// or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method.
-	// Default value is 'Enabled'
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
-
-	// All Redis Settings. Few possible keys:
-	// rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
-	// etc.
-	RedisConfiguration *CommonPropertiesRedisConfiguration `json:"redisConfiguration,omitempty"`
-
-	// Redis version. This should be in the form 'major[.minor]' (only 'major' is required) or the value 'latest' which refers
-	// to the latest stable Redis version that is available. Supported versions: 4.0,
-	// 6.0 (latest). Default value is 'latest'.
-	RedisVersion *string `json:"redisVersion,omitempty"`
-
-	// The number of replicas to be created per primary.
-	ReplicasPerMaster *int32 `json:"replicasPerMaster,omitempty"`
-
-	// The number of replicas to be created per primary.
-	ReplicasPerPrimary *int32 `json:"replicasPerPrimary,omitempty"`
-
-	// The SKU of the Redis cache to deploy.
-	SKU *SKU `json:"sku,omitempty"`
-
-	// The number of shards to be created on a Premium Cluster Cache.
-	ShardCount *int32 `json:"shardCount,omitempty"`
-
-	// A dictionary of tenant settings
-	TenantSettings map[string]*string `json:"tenantSettings,omitempty"`
 }
 
 // UpgradeNotification - Properties of upgrade notification.

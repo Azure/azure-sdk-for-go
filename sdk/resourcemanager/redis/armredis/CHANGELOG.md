@@ -1,5 +1,15 @@
 # Release History
 
+## 3.0.0 (2022-09-09)
+### Breaking Changes
+
+- Struct `CommonProperties` has been removed
+- Struct `CreateProperties` has been removed
+- Struct `OperationStatus` has been removed
+- Struct `Properties` has been removed
+- Struct `UpdateProperties` has been removed
+
+
 ## 2.0.0 (2022-09-01)
 ### Breaking Changes
 

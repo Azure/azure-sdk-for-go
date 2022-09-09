@@ -175,7 +175,7 @@ for pager.More() {
 
 All Blob service operations will return an
 [*azcore.ResponseError][azcore_response_error] on failure with a
-populated `ErrorCode` field.  Many of these errors are recoverable.
+populated `ErrorCode` field. Many of these errors are recoverable.
 The [bloberror][blob_error] package provides the possible Storage error codes
 along with various helper facilities for error handling.
 
@@ -215,13 +215,13 @@ Learn more about the various types of blobs from the following links.
 - [blockblob][block_blob] - [REST docs](https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-block-blobs)
 - [pageblob][page_blob] - [REST docs](https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs#about-page-blobs)
 
-The [blob][blob] client contains APIs common to all blob types.  This includes APIs for deleting and undeleting a blob, setting metadata, and more.
+The [blob][blob] package contains APIs common to all blob types.  This includes APIs for deleting and undeleting a blob, setting metadata, and more.
 
 The [lease][lease] package contains clients for managing leases on blobs and containers.  Please see the [reference docs](https://docs.microsoft.com/rest/api/storageservices/lease-blob#remarks) for general information on leases.
 
-The [container][container] client contains APIs specific to containers.  This includes APIs setting access policies or properties, and more.
+The [container][container] package contains APIs specific to containers.  This includes APIs setting access policies or properties, and more.
 
-The [service][service] client contains APIs specific to blob service.  This includes APIs for manipulating containers, retrieving account information, and more.
+The [service][service] package contains APIs specific to blob service.  This includes APIs for manipulating containers, retrieving account information, and more.
 
 The [sas][sas] package contains utilities to aid in the creation and manipulation of Shared Access Signature tokens.
 See the package's documentation for more information.
@@ -260,15 +260,15 @@ additional questions or comments.
 [storage_ad]: https://docs.microsoft.com/azure/storage/common/storage-auth-aad
 [azcore_response_error]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore#ResponseError
 [samples]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/storage/azblob/examples_test.go
-[append_blob]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/appendblob
-[blob]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/blob
-[blob_error]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/bloberror
-[block_blob]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/blockblob
-[container]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/container
+[append_blob]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/appendblob/client.go
+[blob]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/blob/client.go
+[blob_error]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/bloberror/error_codes.go
+[block_blob]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/blockblob/client.go
+[container]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/container/client.go
 [lease]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/lease
-[page_blob]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/pageblob
+[page_blob]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/pageblob/client.go
 [sas]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/sas
-[service]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/service
+[service]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob/service/client.go
 [storage_contrib]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/

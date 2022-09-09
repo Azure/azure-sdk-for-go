@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakemhsm/keys/key3126998794/create?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/key3126998794/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -17,7 +17,7 @@
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://local\u0022",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-request-id": "ba2d282a-f712-11ec-b85d-6045bda27deb",
@@ -26,7 +26,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakemhsm/keys/key3126998794/create?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/key3126998794/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -72,13 +72,13 @@
             "encrypt",
             "decrypt"
           ],
-          "kid": "https://fakemhsm/keys/key3126998794/0936ca53b7a4067439cfdc2536171c5c",
+          "kid": "https://fakemhsm.local/keys/key3126998794/0936ca53b7a4067439cfdc2536171c5c",
           "kty": "oct-HSM"
         }
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/key3126998794/0936ca53b7a4067439cfdc2536171c5c/encrypt?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/key3126998794/0936ca53b7a4067439cfdc2536171c5c/encrypt?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -110,12 +110,12 @@
       "ResponseBody": {
         "alg": "A256CBCPAD",
         "iv": "MDEyMzQ1Njc4OUFCQ0RFRg",
-        "kid": "https://fakemhsm/keys/key3126998794/0936ca53b7a4067439cfdc2536171c5c",
+        "kid": "https://fakemhsm.local/keys/key3126998794/0936ca53b7a4067439cfdc2536171c5c",
         "value": "TKaJmBWLJPLuuED8gEtw7g"
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/key3126998794//decrypt?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/key3126998794//decrypt?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -146,7 +146,7 @@
       },
       "ResponseBody": {
         "alg": "A256CBCPAD",
-        "kid": "https://fakemhsm/keys/key3126998794/0936ca53b7a4067439cfdc2536171c5c",
+        "kid": "https://fakemhsm.local/keys/key3126998794/0936ca53b7a4067439cfdc2536171c5c",
         "value": "cGxhaW50ZXh0"
       }
     }

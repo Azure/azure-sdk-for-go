@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakemhsm/keys/testrotatekey4115012563/create?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testrotatekey4115012563/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -17,7 +17,7 @@
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://local\u0022",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-request-id": "8dcd6ffa-f64b-11ec-b395-6045bd86d5ca",
@@ -26,7 +26,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakemhsm/keys/testrotatekey4115012563/create?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testrotatekey4115012563/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -68,7 +68,7 @@
             "verify",
             "sign"
           ],
-          "kid": "https://fakemhsm/keys/testrotatekey4115012563/e1fb86aec0064940bd138f152792dd1d",
+          "kid": "https://fakemhsm.local/keys/testrotatekey4115012563/e1fb86aec0064940bd138f152792dd1d",
           "kty": "EC-HSM",
           "x": "oTxIiZqq35Q4wkEn98ce4fKVyiq3Uy_Xqm1tj7jx_xY",
           "y": "TbbJ6MGYPLmN3GyZEZ37cUDrGe8gFzen_3g65GNPZPU"
@@ -76,7 +76,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/testrotatekey4115012563/rotationpolicy?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testrotatekey4115012563/rotationpolicy?api-version=7.3",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -135,7 +135,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/testrotatekey4115012563/rotationpolicy?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testrotatekey4115012563/rotationpolicy?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -179,7 +179,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/testrotatekey4115012563/rotate?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testrotatekey4115012563/rotate?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -219,7 +219,7 @@
             "verify",
             "sign"
           ],
-          "kid": "https://fakemhsm/keys/testrotatekey4115012563/201499bbf06a43729fe0e0f243cde2a4",
+          "kid": "https://fakemhsm.local/keys/testrotatekey4115012563/201499bbf06a43729fe0e0f243cde2a4",
           "kty": "EC-HSM",
           "x": "J1-wCMWcJnjRVGuQA5QtbjJH1Gc2Bbw0s2A6kb8L9TE",
           "y": "JujMRqmlk2zHZu0uX8E0eik9Jk46IGbRKZCN5qn2jhc"
@@ -227,7 +227,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/keynonexistent/rotate?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/keynonexistent/rotate?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -252,12 +252,12 @@
       "ResponseBody": {
         "error": {
           "code": "KeyNotFound",
-          "message": "Key not found: Key not found: https://fakemhsm/keys/keynonexistent (Activity ID: 8e916892-f64b-11ec-b395-6045bd86d5ca)"
+          "message": "Key not found: Key not found: https://fakemhsm.local/keys/keynonexistent (Activity ID: 8e916892-f64b-11ec-b395-6045bd86d5ca)"
         }
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/testrotatekey4115012563?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testrotatekey4115012563?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -297,12 +297,12 @@
             "verify",
             "sign"
           ],
-          "kid": "https://fakemhsm/keys/testrotatekey4115012563/201499bbf06a43729fe0e0f243cde2a4",
+          "kid": "https://fakemhsm.local/keys/testrotatekey4115012563/201499bbf06a43729fe0e0f243cde2a4",
           "kty": "EC-HSM",
           "x": "J1-wCMWcJnjRVGuQA5QtbjJH1Gc2Bbw0s2A6kb8L9TE",
           "y": "JujMRqmlk2zHZu0uX8E0eik9Jk46IGbRKZCN5qn2jhc"
         },
-        "recoveryId": "https://fakemhsm/deletedkeys/testrotatekey4115012563",
+        "recoveryId": "https://fakemhsm.local/deletedkeys/testrotatekey4115012563",
         "scheduledPurgeDate": 1656961291
       }
     }

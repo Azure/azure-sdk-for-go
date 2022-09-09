@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakemhsm/keys/key2946000937/create?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/key2946000937/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -17,7 +17,7 @@
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://local\u0022",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-request-id": "84027074-f64b-11ec-b395-6045bd86d5ca",
@@ -26,7 +26,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakemhsm/keys/key2946000937/create?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/key2946000937/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -68,7 +68,7 @@
             "verify",
             "sign"
           ],
-          "kid": "https://fakemhsm/keys/key2946000937/72048371586e45baa718a88e2dd9e70d",
+          "kid": "https://fakemhsm.local/keys/key2946000937/72048371586e45baa718a88e2dd9e70d",
           "kty": "EC-HSM",
           "x": "fsjgR6oX7UFv_TxlrZ4Xwu-2rzBZiTDEtA5mgtJtHr8",
           "y": "tvN29xQHlMyPWxt4mI37zUNz_UqLMXmx9CnKZ_lDV5M"
@@ -76,7 +76,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/key2946000937?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/key2946000937?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -115,17 +115,17 @@
             "verify",
             "sign"
           ],
-          "kid": "https://fakemhsm/keys/key2946000937/72048371586e45baa718a88e2dd9e70d",
+          "kid": "https://fakemhsm.local/keys/key2946000937/72048371586e45baa718a88e2dd9e70d",
           "kty": "EC-HSM",
           "x": "fsjgR6oX7UFv_TxlrZ4Xwu-2rzBZiTDEtA5mgtJtHr8",
           "y": "tvN29xQHlMyPWxt4mI37zUNz_UqLMXmx9CnKZ_lDV5M"
         },
-        "recoveryId": "https://fakemhsm/deletedkeys/key2946000937",
+        "recoveryId": "https://fakemhsm.local/deletedkeys/key2946000937",
         "scheduledPurgeDate": 1656961274
       }
     },
     {
-      "RequestUri": "https://fakemhsm/deletedkeys/key2946000937?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/deletedkeys/key2946000937?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -165,17 +165,17 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakemhsm/keys/key2946000937/72048371586e45baa718a88e2dd9e70d",
+          "kid": "https://fakemhsm.local/keys/key2946000937/72048371586e45baa718a88e2dd9e70d",
           "kty": "EC-HSM",
           "x": "fsjgR6oX7UFv_TxlrZ4Xwu-2rzBZiTDEtA5mgtJtHr8",
           "y": "tvN29xQHlMyPWxt4mI37zUNz_UqLMXmx9CnKZ_lDV5M"
         },
-        "recoveryId": "https://fakemhsm/deletedkeys/key2946000937",
+        "recoveryId": "https://fakemhsm.local/deletedkeys/key2946000937",
         "scheduledPurgeDate": 1656961274
       }
     },
     {
-      "RequestUri": "https://fakemhsm/deletedkeys/key2946000937/recover?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/deletedkeys/key2946000937/recover?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -214,7 +214,7 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakemhsm/keys/key2946000937/72048371586e45baa718a88e2dd9e70d",
+          "kid": "https://fakemhsm.local/keys/key2946000937/72048371586e45baa718a88e2dd9e70d",
           "kty": "EC-HSM",
           "x": "fsjgR6oX7UFv_TxlrZ4Xwu-2rzBZiTDEtA5mgtJtHr8",
           "y": "tvN29xQHlMyPWxt4mI37zUNz_UqLMXmx9CnKZ_lDV5M"
@@ -222,7 +222,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/key2946000937/72048371586e45baa718a88e2dd9e70d?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/key2946000937/72048371586e45baa718a88e2dd9e70d?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -261,7 +261,7 @@
             "verify",
             "sign"
           ],
-          "kid": "https://fakemhsm/keys/key2946000937/72048371586e45baa718a88e2dd9e70d",
+          "kid": "https://fakemhsm.local/keys/key2946000937/72048371586e45baa718a88e2dd9e70d",
           "kty": "EC-HSM",
           "x": "fsjgR6oX7UFv_TxlrZ4Xwu-2rzBZiTDEtA5mgtJtHr8",
           "y": "tvN29xQHlMyPWxt4mI37zUNz_UqLMXmx9CnKZ_lDV5M"
@@ -269,7 +269,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/key2946000937?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/key2946000937?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -308,12 +308,12 @@
             "verify",
             "sign"
           ],
-          "kid": "https://fakemhsm/keys/key2946000937/72048371586e45baa718a88e2dd9e70d",
+          "kid": "https://fakemhsm.local/keys/key2946000937/72048371586e45baa718a88e2dd9e70d",
           "kty": "EC-HSM",
           "x": "fsjgR6oX7UFv_TxlrZ4Xwu-2rzBZiTDEtA5mgtJtHr8",
           "y": "tvN29xQHlMyPWxt4mI37zUNz_UqLMXmx9CnKZ_lDV5M"
         },
-        "recoveryId": "https://fakemhsm/deletedkeys/key2946000937",
+        "recoveryId": "https://fakemhsm.local/deletedkeys/key2946000937",
         "scheduledPurgeDate": 1656961275
       }
     }

@@ -12,7 +12,6 @@ import (
 	"crypto/md5"
 	"encoding/base64"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"io"
 	"strconv"
 	"strings"
@@ -27,6 +26,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
@@ -2050,7 +2050,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
 
 	_, err = bbClient.Upload(context.Background(), r, nil)
 	_require.Nil(err)
-	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 	blobLeaseClient, err := lease.NewBlobClient(bbClient, &lease.BlobClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
@@ -2067,7 +2066,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
 	_, err = bbClient.SetTags(ctx, blobTagsMap, &blob.SetTagsOptions{AccessConditions: &blob.AccessConditions{
 		LeaseAccessConditions: &blob.LeaseAccessConditions{LeaseID: blobLeaseClient.LeaseID()}}})
 	_require.Nil(err)
-	// _require.Equal(blobSetTagsResponse.RawResponse.StatusCode, 204)
 
 	_, err = bbClient.GetTags(ctx, nil)
 	_require.NotNil(err)
@@ -2076,7 +2074,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
 		LeaseAccessConditions: &blob.LeaseAccessConditions{LeaseID: blobLeaseClient.LeaseID()}}})
 	_require.Nil(err)
 
-	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
 	blobTagsSet := blobGetTagsResponse.BlobTagSet
 	_require.NotNil(blobTagsSet)
 	_require.Len(blobTagsSet, 3)

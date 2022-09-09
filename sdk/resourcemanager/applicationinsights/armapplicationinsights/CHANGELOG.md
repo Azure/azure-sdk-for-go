@@ -1,5 +1,28 @@
 # Release History
 
+## 2.0.0-beta.2 (2022-09-09)
+### Breaking Changes
+
+- Type of `WorkbookErrorDefinition.InnerError` has been changed from `interface{}` to `*WorkbookInnerErrorTrace`
+
+### Features Added
+
+- New const `WebTestKindStandard`
+- New function `NewOperationsClient(azcore.TokenCredential, *arm.ClientOptions) (*OperationsClient, error)`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New struct `ErrorFieldContract`
+- New struct `HeaderField`
+- New struct `OperationsClient`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `WebTestPropertiesRequest`
+- New struct `WebTestPropertiesValidationRules`
+- New struct `WebTestPropertiesValidationRulesContentValidation`
+- New field `Details` in struct `ErrorResponse`
+- New field `Request` in struct `WebTestProperties`
+- New field `ValidationRules` in struct `WebTestProperties`
+
+
 ## 2.0.0-beta.1 (2022-06-02)
 ### Breaking Changes
 

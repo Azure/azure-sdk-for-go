@@ -52,7 +52,12 @@ type GenerateParam struct {
 }
 
 func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string) ([]GenerateResult, []error) {
-	absReadme := filepath.Join(ctx.SpecPath, readme)
+	absReadme, err := filepath.Abs(filepath.Join(ctx.SpecPath, readme))
+	if err != nil {
+		return nil, []error{
+			fmt.Errorf("cannot get absolute path for spec path '%s': %+v", ctx.SpecPath, err),
+		}
+	}
 	absReadmeGo := filepath.Join(filepath.Dir(absReadme), "readme.go.md")
 	ctx.SpecReadmeFile = absReadme
 	ctx.SpecReadmeGoFile = absReadmeGo

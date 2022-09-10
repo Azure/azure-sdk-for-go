@@ -34,6 +34,8 @@ func Example_producing() {
 
 	defer producerClient.Close(context.TODO())
 
+	events := createEventsForSample()
+
 	// Other examples:
 	//
 	// sending a batch to a specific partition:
@@ -52,8 +54,6 @@ func Example_producing() {
 	if err != nil {
 		panic(err)
 	}
-
-	events := createEventsForSample()
 
 	for i := 0; i < len(events); i++ {
 		err = batch.AddEventData(events[i], nil)

@@ -63,9 +63,9 @@ type uploadFromReaderResponse struct {
 	// VersionID contains the information returned from the x-ms-version-id header response.
 	VersionID *string
 
-	// XMSContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
+	// ContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
 	// Will be a part of response only if uploading data >= internal.MaxUploadBlobBytes (= 256 * 1024 * 1024 // 256MB)
-	XMSContentCRC64 []byte
+	ContentCRC64 []byte
 }
 
 func toUploadReaderAtResponseFromUploadResponse(resp UploadResponse) uploadFromReaderResponse {
@@ -97,7 +97,7 @@ func toUploadReaderAtResponseFromCommitBlockListResponse(resp CommitBlockListRes
 		RequestID:           resp.RequestID,
 		Version:             resp.Version,
 		VersionID:           resp.VersionID,
-		XMSContentCRC64:     resp.XMSContentCRC64,
+		ContentCRC64:        resp.XMSContentCRC64,
 	}
 }
 

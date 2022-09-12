@@ -325,7 +325,7 @@ func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, read
 			if o.BlockSize < blob.DefaultDownloadBlockSize { // If the block size is smaller than 4MB, round up to 4MB
 				o.BlockSize = blob.DefaultDownloadBlockSize
 			}
-			// StageBlock will be called with blockSize blocks and a Parallelism of (BufferSize / BlockSize).
+			// StageBlock will be called with blockSize blocks and a Concurrency of (BufferSize / BlockSize).
 		}
 	}
 
@@ -352,7 +352,7 @@ func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, read
 		OperationName: "uploadFromReader",
 		TransferSize:  readerSize,
 		ChunkSize:     o.BlockSize,
-		Parallelism:   o.Parallelism,
+		Concurrency:   o.Concurrency,
 		Operation: func(offset int64, count int64, ctx context.Context) error {
 			// This function is called once per block.
 			// It is passed this block's offset within the buffer and its count of bytes

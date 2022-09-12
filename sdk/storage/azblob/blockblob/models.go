@@ -193,8 +193,9 @@ type uploadFromReaderOptions struct {
 	CpkInfo      *blob.CpkInfo
 	CpkScopeInfo *blob.CpkScopeInfo
 
-	// Parallelism indicates the maximum number of blocks to upload in parallel (0=default)
-	Parallelism uint16
+	// Concurrency indicates the maximum number of blocks to upload in parallel (0=default)
+	Concurrency uint16
+
 	// Optional header, Specifies the transactional crc64 for the body, to be validated by the service.
 	TransactionalContentCRC64 *[]byte
 	// Specify the transactional md5 for the body, to be validated by the service.
@@ -244,13 +245,17 @@ func (o *uploadFromReaderOptions) getCommitBlockListOptions() *CommitBlockListOp
 // UploadStreamOptions provides set of configurations for UploadStream operation
 type UploadStreamOptions struct {
 	// transferManager provides a transferManager that controls buffer allocation/reuse and
-	// concurrency. This overrides BufferSize and MaxBuffers if set.
+	// concurrency. This overrides BlockSize and MaxConcurrency if set.
 	transferManager      shared.TransferManager
 	transferMangerNotSet bool
-	// BufferSize sizes the buffer used to read data from source. If < 1 MiB, format to 1 MiB.
-	BufferSize int
-	// MaxBuffers defines the number of simultaneous uploads will be performed to upload the file.
-	MaxBuffers       int
+
+	// BlockSize defines the size of the buffer used during upload. The default and mimimum value is 1 MiB.
+	BlockSize int
+
+	// Concurrency defines the number of concurrent uploads to be performed to upload the file.
+	// Each concurrent upload will create a buffer of size BlockSize.  The default value is one.
+	Concurrency int
+
 	HTTPHeaders      *blob.HTTPHeaders
 	Metadata         map[string]string
 	AccessConditions *blob.AccessConditions
@@ -265,16 +270,16 @@ func (u *UploadStreamOptions) format() error {
 		return nil
 	}
 
-	if u.MaxBuffers == 0 {
-		u.MaxBuffers = 1
+	if u.Concurrency == 0 {
+		u.Concurrency = 1
 	}
 
-	if u.BufferSize < _1MiB {
-		u.BufferSize = _1MiB
+	if u.BlockSize < _1MiB {
+		u.BlockSize = _1MiB
 	}
 
 	var err error
-	u.transferManager, err = shared.NewStaticBuffer(u.BufferSize, u.MaxBuffers)
+	u.transferManager, err = shared.NewStaticBuffer(u.BlockSize, u.Concurrency)
 	if err != nil {
 		return fmt.Errorf("bug: default transfer manager could not be created: %s", err)
 	}

@@ -1,15 +1,10 @@
 # Release History
 
-## 0.6.0 (Unreleased)
-
-### Features Added
+## 0.6.0 (2022-09-12)
 
 ### Breaking Changes
+* Verify the challenge resource matches the vault domain.
 * `ParseID()` no longer appends a trailing slash to vault URLs
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.5.0 (2022-05-12)
 

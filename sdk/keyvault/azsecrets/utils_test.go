@@ -24,7 +24,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const fakeVaultURL = "https://fakevault"
+const fakeVaultURL = "https://fakevault.local"
 
 var (
 	secretsToPurge = struct {
@@ -61,6 +61,10 @@ func TestMain(m *testing.M) {
 	}
 	if recording.GetRecordMode() == recording.RecordingMode {
 		err := recording.AddURISanitizer(fakeVaultURL, vaultURL, nil)
+		if err != nil {
+			panic(err)
+		}
+		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "https://local", `resource="(.*)"`, &recording.RecordingOptions{GroupForReplace: "1"})
 		if err != nil {
 			panic(err)
 		}

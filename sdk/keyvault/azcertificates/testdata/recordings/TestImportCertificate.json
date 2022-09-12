@@ -1,13 +1,13 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakevault/certificates/1593022091/import?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/1593022091/import?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-azcertificates/v0.5.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
       },
       "RequestBody": null,
       "StatusCode": 401,
@@ -15,16 +15,16 @@
         "Cache-Control": "no-cache",
         "Content-Length": "97",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 29 Jun 2022 22:33:00 GMT",
+        "Date": "Fri, 02 Sep 2022 22:39:13 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://vault.azure.net\u0022",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://local\u0022",
         "X-Content-Type-Options": "nosniff",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "eastus",
-        "x-ms-keyvault-service-version": "1.9.444.2",
-        "x-ms-request-id": "71889920-90e2-484f-8e81-1a7067382be4"
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.501.1",
+        "x-ms-request-id": "ec9492ba-6f5c-46ee-865f-27ce27a5c179"
       },
       "ResponseBody": {
         "error": {
@@ -34,7 +34,7 @@
       }
     },
     {
-      "RequestUri": "https://fakevault/certificates/1593022091/import?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/1593022091/import?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -42,7 +42,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "3359",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azcertificates/v0.5.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
       },
       "RequestBody": {
         "attributes": {
@@ -53,35 +53,35 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "2188",
+        "Content-Length": "2203",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 29 Jun 2022 22:33:04 GMT",
+        "Date": "Fri, 02 Sep 2022 22:39:13 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "eastus",
-        "x-ms-keyvault-service-version": "1.9.444.2",
-        "x-ms-request-id": "928f501f-1bc3-4a4f-bbac-8278f721e53b"
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.501.1",
+        "x-ms-request-id": "8ee2fb24-ca6c-454d-86ab-3476dd9e04cd"
       },
       "ResponseBody": {
-        "id": "https://fakevault/certificates/1593022091/9f0f9c9f0db14d43bd359014653cb231",
-        "kid": "https://fakevault/keys/1593022091/9f0f9c9f0db14d43bd359014653cb231",
-        "sid": "https://fakevault/secrets/1593022091/9f0f9c9f0db14d43bd359014653cb231",
+        "id": "https://fakevault.local/certificates/1593022091/f9a64fbc0af049159aad8c5d3b88901f",
+        "kid": "https://fakevault.local/keys/1593022091/f9a64fbc0af049159aad8c5d3b88901f",
+        "sid": "https://fakevault.local/secrets/1593022091/f9a64fbc0af049159aad8c5d3b88901f",
         "x5t": "7Hd8wjMNV61gvzAY4LfCGxWwi_I",
         "cer": "MIIDbTCCAlWgAwIBAgIUDFjUOQoN1Og7KiAL7Y2r90yA7DkwDQYJKoZIhvcNAQELBQAwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoMGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDAgFw0yMTA4MDYxNzIwMzdaGA8yMTIxMDcxMzE3MjAzN1owRTELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoMGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMabnSPxruPP2HIDZhPK4ElxRnIV7ZbIcQQyPvhPMOjOWRo4Rl4JHUrLZM\u002B\u002BkdZ/kI6GG8E0AzS1BwA3u/QLAlcsDq2e5Li7oPHn6ihVsTV6wiD3kxhpYwmhRoUaG6rQLpaKRZFLWc3NfbHjuk5TkaH9SctQi2s\u002B2f34ia30m2ZLY8YIoIcyruloEXgqooL5ggQO3HYJgTHYfzfVhqq9Yxn9qclM26RmRr1nP4Gz/ejiQ19kmETwHIDk0RpiEVyw0UDrI1/rZFaV2RsyqWbofeSY4RE92vueMDt/uKmidIvEVK\u002BsVSxPvotKq7RnWRZiHITiL3ToRRzp5qB8NP4nJa8CAwEAAaNTMFEwHQYDVR0OBBYEFOZ9/QBUAX7s3o\u002ByFHUIeluDvCFFMB8GA1UdIwQYMBaAFOZ9/QBUAX7s3o\u002ByFHUIeluDvCFFMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBACWwLnNSWdQei//i\u002BnCZurqu4iUI7qvBoH\u002BXvLnU/6GRZsWqPDDM\u002BWE/Pp1Vx1TxM5asT6STKsPxiNZLSSUGj32EQTv/\u002BR/do0tkqNbbtT9q65qrINcW0vjjQvboCOmqc/1dPGyMgiK5z7TAD3V2yMsIaggL2SlsUPbq0zKzQ6I7yiw0ePM0kmhWrbG8XpNkQCCYCf95\u002B9FkxwrxgEZ2wYrXUw/ulNw7aMkeGSKKmN/Ke0FKylX2i3el5YcS5pyNQQvsQW4QawU9caRelNZbINCZKGJJ826m0qTGofMMH4Hmtu9Vqyo7EEW/nm6LSKRbGEACgpmjr5DG7ufcCCTg2OE=",
         "attributes": {
           "enabled": false,
           "nbf": 1628270437,
           "exp": 4781870437,
-          "created": 1656541984,
-          "updated": 1656541984,
-          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "recoverableDays": 7
+          "created": 1662158354,
+          "updated": 1662158354,
+          "recoveryLevel": "Recoverable\u002BPurgeable",
+          "recoverableDays": 90
         },
         "policy": {
-          "id": "https://fakevault/certificates/1593022091/policy",
+          "id": "https://fakevault.local/certificates/1593022091/policy",
           "key_props": {
             "exportable": true,
             "kty": "RSA",
@@ -115,57 +115,57 @@
           },
           "attributes": {
             "enabled": true,
-            "created": 1656541984,
-            "updated": 1656541984
+            "created": 1662158354,
+            "updated": 1662158354
           }
         }
       }
     },
     {
-      "RequestUri": "https://fakevault/certificates/1593022091?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/1593022091?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.5.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "2309",
+        "Content-Length": "2330",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 29 Jun 2022 22:33:04 GMT",
+        "Date": "Fri, 02 Sep 2022 22:39:13 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "eastus",
-        "x-ms-keyvault-service-version": "1.9.444.2",
-        "x-ms-request-id": "f941cb3c-faec-4443-8474-e24afb9e5da3"
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.501.1",
+        "x-ms-request-id": "4e664d67-9e7b-4892-98be-45bd5f4d282f"
       },
       "ResponseBody": {
-        "recoveryId": "https://fakevault/deletedcertificates/1593022091",
-        "deletedDate": 1656541984,
-        "scheduledPurgeDate": 1657146784,
-        "id": "https://fakevault/certificates/1593022091/9f0f9c9f0db14d43bd359014653cb231",
-        "kid": "https://fakevault/keys/1593022091/9f0f9c9f0db14d43bd359014653cb231",
-        "sid": "https://fakevault/secrets/1593022091/9f0f9c9f0db14d43bd359014653cb231",
+        "recoveryId": "https://fakevault.local/deletedcertificates/1593022091",
+        "deletedDate": 1662158354,
+        "scheduledPurgeDate": 1669934354,
+        "id": "https://fakevault.local/certificates/1593022091/f9a64fbc0af049159aad8c5d3b88901f",
+        "kid": "https://fakevault.local/keys/1593022091/f9a64fbc0af049159aad8c5d3b88901f",
+        "sid": "https://fakevault.local/secrets/1593022091/f9a64fbc0af049159aad8c5d3b88901f",
         "x5t": "7Hd8wjMNV61gvzAY4LfCGxWwi_I",
         "cer": "MIIDbTCCAlWgAwIBAgIUDFjUOQoN1Og7KiAL7Y2r90yA7DkwDQYJKoZIhvcNAQELBQAwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoMGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDAgFw0yMTA4MDYxNzIwMzdaGA8yMTIxMDcxMzE3MjAzN1owRTELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoMGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMabnSPxruPP2HIDZhPK4ElxRnIV7ZbIcQQyPvhPMOjOWRo4Rl4JHUrLZM\u002B\u002BkdZ/kI6GG8E0AzS1BwA3u/QLAlcsDq2e5Li7oPHn6ihVsTV6wiD3kxhpYwmhRoUaG6rQLpaKRZFLWc3NfbHjuk5TkaH9SctQi2s\u002B2f34ia30m2ZLY8YIoIcyruloEXgqooL5ggQO3HYJgTHYfzfVhqq9Yxn9qclM26RmRr1nP4Gz/ejiQ19kmETwHIDk0RpiEVyw0UDrI1/rZFaV2RsyqWbofeSY4RE92vueMDt/uKmidIvEVK\u002BsVSxPvotKq7RnWRZiHITiL3ToRRzp5qB8NP4nJa8CAwEAAaNTMFEwHQYDVR0OBBYEFOZ9/QBUAX7s3o\u002ByFHUIeluDvCFFMB8GA1UdIwQYMBaAFOZ9/QBUAX7s3o\u002ByFHUIeluDvCFFMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBACWwLnNSWdQei//i\u002BnCZurqu4iUI7qvBoH\u002BXvLnU/6GRZsWqPDDM\u002BWE/Pp1Vx1TxM5asT6STKsPxiNZLSSUGj32EQTv/\u002BR/do0tkqNbbtT9q65qrINcW0vjjQvboCOmqc/1dPGyMgiK5z7TAD3V2yMsIaggL2SlsUPbq0zKzQ6I7yiw0ePM0kmhWrbG8XpNkQCCYCf95\u002B9FkxwrxgEZ2wYrXUw/ulNw7aMkeGSKKmN/Ke0FKylX2i3el5YcS5pyNQQvsQW4QawU9caRelNZbINCZKGJJ826m0qTGofMMH4Hmtu9Vqyo7EEW/nm6LSKRbGEACgpmjr5DG7ufcCCTg2OE=",
         "attributes": {
           "enabled": false,
           "nbf": 1628270437,
           "exp": 4781870437,
-          "created": 1656541984,
-          "updated": 1656541984,
-          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "recoverableDays": 7
+          "created": 1662158354,
+          "updated": 1662158354,
+          "recoveryLevel": "Recoverable\u002BPurgeable",
+          "recoverableDays": 90
         },
         "policy": {
-          "id": "https://fakevault/certificates/1593022091/policy",
+          "id": "https://fakevault.local/certificates/1593022091/policy",
           "key_props": {
             "exportable": true,
             "kty": "RSA",
@@ -199,8 +199,8 @@
           },
           "attributes": {
             "enabled": true,
-            "created": 1656541984,
-            "updated": 1656541984
+            "created": 1662158354,
+            "updated": 1662158354
           }
         }
       }

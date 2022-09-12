@@ -20,7 +20,8 @@ type ClientOptions struct {
 	azcore.ClientOptions
 }
 
-// NewClient creates a client that accesses a Key Vault's secrets.
+// NewClient creates a client that accesses a Key Vault's secrets. You should validate that
+// vaultURL references a valid Key Vault. See https://aka.ms/azsdk/blog/vault-uri for details.
 func NewClient(vaultURL string, credential azcore.TokenCredential, options *ClientOptions) *Client {
 	if options == nil {
 		options = &ClientOptions{}

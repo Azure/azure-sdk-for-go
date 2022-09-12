@@ -1,14 +1,9 @@
 # Release History
 
-## 0.9.1 (Unreleased)
-
-### Features Added
+## 0.10.0 (2022-09-12)
 
 ### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Verify the challenge resource matches the vault domain.
 
 ## 0.9.0 (2022-08-09)
 

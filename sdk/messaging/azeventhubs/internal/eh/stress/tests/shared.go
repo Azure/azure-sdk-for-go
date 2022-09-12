@@ -143,11 +143,11 @@ func sendEventsToPartition(ctx context.Context, producerClient *azeventhubs.Prod
 		err := batch.AddEventData(ed, nil)
 
 		if errors.Is(err, azeventhubs.ErrEventDataTooLarge) {
-			if batch.NumMessages() == 0 {
+			if batch.NumEvents() == 0 {
 				return azeventhubs.StartPosition{}, errors.New("single event was too large to fit into batch")
 			}
 
-			log.Printf("[%s] Sending batch with %d messages", partitionID, batch.NumMessages())
+			log.Printf("[%s] Sending batch with %d messages", partitionID, batch.NumEvents())
 			if err := producerClient.SendEventBatch(context.Background(), batch, nil); err != nil {
 				return azeventhubs.StartPosition{}, err
 			}
@@ -167,8 +167,8 @@ func sendEventsToPartition(ctx context.Context, producerClient *azeventhubs.Prod
 		}
 	}
 
-	if batch.NumMessages() > 0 {
-		log.Printf("[%s] Sending last batch with %d messages", partitionID, batch.NumMessages())
+	if batch.NumEvents() > 0 {
+		log.Printf("[%s] Sending last batch with %d messages", partitionID, batch.NumEvents())
 		if err := producerClient.SendEventBatch(ctx, batch, nil); err != nil {
 			return azeventhubs.StartPosition{}, err
 		}

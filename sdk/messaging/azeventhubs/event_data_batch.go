@@ -59,8 +59,8 @@ func (mb *EventDataBatch) NumBytes() uint64 {
 	return mb.currentSize
 }
 
-// NumMessages returns the # of messages in the batch.
-func (mb *EventDataBatch) NumMessages() int32 {
+// NumEvents returns the # of events in the batch.
+func (mb *EventDataBatch) NumEvents() int32 {
 	mb.mu.RLock()
 	defer mb.mu.RUnlock()
 

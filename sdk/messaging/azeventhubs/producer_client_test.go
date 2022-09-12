@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"sort"
+	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -148,6 +149,128 @@ func TestNewProducerClient_SendToAny(t *testing.T) {
 				require.Equal(t, *partitionKey, *receivedEvent.PartitionKey)
 			}
 		})
+	}
+}
+
+func makeByteSlice(index int, total int) []byte {
+	// ie: %0<total>d, so it'll be zero padded up to the length we want
+	text := fmt.Sprintf("%0"+fmt.Sprintf("%d", total)+"d", index)
+	return []byte(text)
+}
+
+func TestProducerClient_SendBatchExample(t *testing.T) {
+	testParams := test.GetConnectionParamsForTest(t)
+
+	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	require.NoError(t, err)
+
+	beforeSend, err := producerClient.GetPartitionProperties(context.Background(), "0", nil)
+	require.NoError(t, err)
+
+	// this is a replicate of the code we use in the example "example_producer_events.go"
+	// just testing to make sure it works the way we expect it to.
+	newBatchOptions := &azeventhubs.NewEventDataBatchOptions{
+		MaxBytes:    300,
+		PartitionID: to.Ptr("0"),
+	}
+
+	const messageSize = 40
+
+	events := []*azeventhubs.EventData{
+		{
+			Body: makeByteSlice(0, messageSize),
+		},
+		{
+			Body: makeByteSlice(1, messageSize),
+		},
+		{
+			Body: makeByteSlice(2, messageSize),
+		},
+		{
+			Body: makeByteSlice(3, messageSize),
+		},
+		{
+			Body: makeByteSlice(4, messageSize),
+		},
+	}
+
+	batchesSentFromExcess := 0
+	var numMessagesPerBatch []int
+
+	// (example start)
+	batch, err := producerClient.NewEventDataBatch(context.TODO(), newBatchOptions)
+
+	if err != nil {
+		panic(err)
+	}
+
+	for i := 0; i < len(events); i++ {
+		err = batch.AddEventData(events[i], nil)
+
+		if errors.Is(err, azeventhubs.ErrEventDataTooLarge) {
+			if batch.NumEvents() == 0 {
+				// This one event is too large for this batch, even on its own. No matter what we do it
+				// will not be sendable at its current size.
+				panic(err)
+			}
+
+			// This batch is full - we can send it and create a new one and continue
+			// packaging and sending events.
+			if err := producerClient.SendEventBatch(context.TODO(), batch, nil); err != nil {
+				panic(err)
+			}
+
+			numMessagesPerBatch = append(numMessagesPerBatch, int(batch.NumEvents()))
+
+			tmpBatch, err := producerClient.NewEventDataBatch(context.TODO(), newBatchOptions)
+
+			if err != nil {
+				panic(err)
+			}
+
+			batch = tmpBatch
+
+			// rewind so we can retry adding this event to a batch
+			i--
+		} else if err != nil {
+			panic(err)
+		}
+	}
+
+	// if we have any events in the last batch, send it
+	if batch.NumEvents() > 0 {
+		if err := producerClient.SendEventBatch(context.TODO(), batch, nil); err != nil {
+			panic(err)
+		}
+
+		batchesSentFromExcess++
+	}
+	// (example end)
+
+	require.Equal(t, 1, batchesSentFromExcess)
+	require.Equal(t, []int{2, 2}, numMessagesPerBatch)
+
+	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+	require.NoError(t, err)
+
+	defer consumerClient.Close(context.Background())
+
+	partitionClient, err := consumerClient.NewPartitionClient("0", &azeventhubs.NewPartitionClientOptions{
+		StartPosition: getStartPosition(beforeSend),
+	})
+	require.NoError(t, err)
+
+	defer partitionClient.Close(context.Background())
+
+	receivedEvents, err := partitionClient.ReceiveEvents(context.Background(), 5, nil)
+	require.NoError(t, err)
+
+	sort.Slice(events, func(i, j int) bool {
+		return strings.Compare(string(receivedEvents[i].Body), string(receivedEvents[j].Body)) < 0
+	})
+
+	for i := 0; i < 5; i++ {
+		require.Equal(t, string(makeByteSlice(i, messageSize)), string(receivedEvents[i].Body))
 	}
 }
 

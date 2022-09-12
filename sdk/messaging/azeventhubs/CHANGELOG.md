@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- EventDataBatch.NumMessages() renamed to EventDataBatch.NumEvents()
+
 ### Bugs Fixed
 
 ### Other Changes

@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package azeventhubs_test
 
 import (
@@ -14,7 +15,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 )
 
-func Example_processor() {
+func Example_consuming_events_using_processor() {
+	// The Processor makes it simpler to do distributed consumption of an Event Hub.
+	// It automatically coordinates with other Processor instances to ensure balanced
+	// allocation of partitions and tracks status, durably, in a CheckpointStore.
+	//
+	// The built-in checkpoint store (available in the `azeventhubs/checkpoints` package) uses
+	// Azure Blob storage.
+
 	ehCS := os.Getenv("EVENTHUB_CONNECTION_STRING")
 	eventHubName := os.Getenv("EVENTHUB_NAME")
 
@@ -22,7 +30,7 @@ func Example_processor() {
 	containerName := os.Getenv("CHECKPOINTSTORE_STORAGE_CONTAINER_NAME")
 
 	// Create the checkpoint store
-	// NOTE: the container must exist before the checkpoint store can be used.
+	// NOTE: the Blob container must exist before the checkpoint store can be used.
 	checkpointStore, err := checkpoints.NewBlobStoreFromConnectionString(storageCS, containerName, nil)
 
 	if err != nil {
@@ -41,7 +49,7 @@ func Example_processor() {
 		panic(err)
 	}
 
-	go func() {
+	dispatchProcessors := func() {
 		// Loop continually - each time we acquire a new partition NextPartitionClient() will
 		// return it.
 		for {
@@ -57,13 +65,16 @@ func Example_processor() {
 				}
 			}()
 		}
-	}()
+	}
+
+	go dispatchProcessors()
 
 	processorCtx, processorCancel := context.WithCancel(context.TODO())
 	defer processorCancel()
 
-	// Launch the load balancer - this will create new ProcessorPartitionClient's, which you can
-	// retrieve by calls to NextPartitionClient, in a loop. This is demonstrated below.
+	// Launch the load balancer. The dispatchProcessors() goroutine, launched
+	// above, will continually receive ProcessorPartitionClients as partitions
+	// are allocated.
 	//
 	// To stop the processor cancel the context that you passed in to Run().
 	if err := processor.Run(processorCtx); err != nil {
@@ -101,6 +112,11 @@ func processEvents(partitionClient *azeventhubs.ProcessorPartitionClient) error 
 		}
 
 		fmt.Printf("Processing %d event(s)\n", len(events))
+
+		for _, event := range events {
+			// process the event in some way
+			fmt.Printf("Event received with body %v\n", event.Body)
+		}
 
 		if len(events) != 0 {
 			// Update the checkpoint with the last event received. If the processor is restarted

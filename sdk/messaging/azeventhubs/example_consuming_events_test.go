@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package azeventhubs_test
 
 import (
@@ -12,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 )
 
-func Example_consuming() {
+func Example_consuming_events() {
 	eventHubNamespace := os.Getenv("EVENTHUB_NAMESPACE") // <ex: myeventhubnamespace.servicebus.windows.net>
 	eventHubName := os.Getenv("EVENTHUB_NAME")
 	eventHubPartitionID := os.Getenv("EVENTHUB_PARTITION")
@@ -55,9 +56,13 @@ func Example_consuming() {
 			panic(err)
 		}
 
-		for _, event := range events {
-			// process the event in some way
-			fmt.Printf("Event received with body %v\n", event.Body)
-		}
+		processConsumedEvents(events)
+	}
+}
+
+func processConsumedEvents(events []*azeventhubs.ReceivedEventData) {
+	for _, event := range events {
+		// process the event in some way
+		fmt.Printf("Event received with body %v\n", event.Body)
 	}
 }

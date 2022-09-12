@@ -112,12 +112,14 @@ func Example() {
 }
 
 func Example_client_NewClient() {
+	// this example uses Azure Active Directory (AAD) to authenticate with Azure Blob Storage
 	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 
+	// https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#DefaultAzureCredential
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	handleError(err)
 
@@ -128,6 +130,7 @@ func Example_client_NewClient() {
 }
 
 func Example_client_NewClientWithSharedKeyCredential() {
+	// this example uses a shared key to authenticate with Azure Blob Storage
 	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
@@ -138,9 +141,29 @@ func Example_client_NewClientWithSharedKeyCredential() {
 	}
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 
+	// shared key authentication requires the storage account name and access key
 	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	handleError(err)
 	serviceClient, err := azblob.NewClientWithSharedKeyCredential(serviceURL, cred, nil)
+	handleError(err)
+	fmt.Println(serviceClient.URL())
+}
+
+func Example_client_NewClientFromConnectionString() {
+	// this example uses a connection string to authenticate with Azure Blob Storage
+	connectionString, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		log.Fatal("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+
+	serviceClient, err := azblob.NewClientFromConnectionString(connectionString, nil)
+	handleError(err)
+	fmt.Println(serviceClient.URL())
+}
+
+func Example_client_anonymous_NewClientWithNoCredential() {
+	// this example uses anonymous access to access a public blob
+	serviceClient, err := azblob.NewClientWithNoCredential("https://azurestoragesamples.blob.core.windows.net/samples/cloud.jpg", nil)
 	handleError(err)
 	fmt.Println(serviceClient.URL())
 }

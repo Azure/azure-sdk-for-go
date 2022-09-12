@@ -76,7 +76,7 @@ Instances of the `azblob.Client` type provide methods for manipulating container
 The storage account is specified when the `azblob.Client` is constructed.
 Use the appropriate client constructor function for the authentication mechanism you wish to use.
 
-Learn more about options for authentication _(including Connection Strings, Shared Key, Shared Key Signatures, Active Directory, and anonymous public access)_ [in our examples.](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/storage/azblob/examples_test.go)
+Learn more about options for authentication _(including Connection Strings, Shared Key, Shared Access Signatures (SAS), Azure Active Directory (AAD), and anonymous public access)_ [in our examples.](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/storage/azblob/examples_test.go)
 
 ### Goroutine safety
 We guarantee that all client instance methods are goroutine-safe and independent of each other ([guideline](https://azure.github.io/azure-sdk/golang_introduction.html#thread-safety)). This ensures that the recommendation of reusing client instances is always safe, even across goroutines.
@@ -125,7 +125,7 @@ _, err = client.UploadFile(context.TODO(), containerName, blobName, file, nil)
 ### Downloading a blob
 
 ```go
-// this example accesses a public blob, so no credentials are required
+// this example accesses a public blob via anonymous access, so no credentials are required
 client, err := azblob.NewClientWithNoCredential("https://azurestoragesamples.blob.core.windows.net/", nil)
 // TODO: handle error
 
@@ -192,10 +192,8 @@ client, err := azblob.NewClientFromConnectionString(connectionString, nil)
 // try to delete the container, avoiding any potential race conditions with an in-progress or completed deletion
 _, err = client.DeleteContainer(context.TODO(), containerName, nil)
 
-if respErr := &(azcore.ResponseError{}); errors.As(err, &respErr) {
-	if respErr.ErrorCode == string(bloberror.ContainerBeingDeleted) || respErr.ErrorCode == string(bloberror.ContainerNotFound) {
-		// ignore any errors if the container is being deleted or already has been deleted
-	}
+if bloberror.HasCode(err, bloberror.ContainerBeingDeleted, bloberror.ContainerNotFound) {
+	// ignore any errors if the container is being deleted or already has been deleted
 } else if err != nil {
 	// TODO: some other error
 }

@@ -167,7 +167,7 @@ func TestResourceVerification(t *testing.T) {
 		{authScope, "https://vault.azure.cn/.default", true},
 		{authScope, "https://myvault.azure.net/.default", true},
 	} {
-		t.Run("", func(t *testing.T) {
+		t.Run(test.resource, func(t *testing.T) {
 			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 			defer close()
 			srv.AppendResponse(

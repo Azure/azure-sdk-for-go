@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBNotebookWorkspaceList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBNotebookWorkspaceList.json
 func ExampleNotebookWorkspacesClient_NewListByDatabaseAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,9 +27,7 @@ func ExampleNotebookWorkspacesClient_NewListByDatabaseAccountPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDatabaseAccountPager("rg1",
-		"ddb1",
-		nil)
+	pager := client.NewListByDatabaseAccountPager("rg1", "ddb1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -42,7 +40,7 @@ func ExampleNotebookWorkspacesClient_NewListByDatabaseAccountPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBNotebookWorkspaceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBNotebookWorkspaceGet.json
 func ExampleNotebookWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,11 +51,7 @@ func ExampleNotebookWorkspacesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"rg1",
-		"ddb1",
-		armcosmos.NotebookWorkspaceNameDefault,
-		nil)
+	res, err := client.Get(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -65,7 +59,7 @@ func ExampleNotebookWorkspacesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBNotebookWorkspaceCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBNotebookWorkspaceCreate.json
 func ExampleNotebookWorkspacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,12 +70,7 @@ func ExampleNotebookWorkspacesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"rg1",
-		"ddb1",
-		armcosmos.NotebookWorkspaceNameDefault,
-		armcosmos.NotebookWorkspaceCreateUpdateParameters{},
-		nil)
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, armcosmos.NotebookWorkspaceCreateUpdateParameters{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -93,7 +82,7 @@ func ExampleNotebookWorkspacesClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBNotebookWorkspaceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBNotebookWorkspaceDelete.json
 func ExampleNotebookWorkspacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,11 +93,7 @@ func ExampleNotebookWorkspacesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"rg1",
-		"ddb1",
-		armcosmos.NotebookWorkspaceNameDefault,
-		nil)
+	poller, err := client.BeginDelete(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -118,7 +103,7 @@ func ExampleNotebookWorkspacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBNotebookWorkspaceListConnectionInfo.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBNotebookWorkspaceListConnectionInfo.json
 func ExampleNotebookWorkspacesClient_ListConnectionInfo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,11 +114,7 @@ func ExampleNotebookWorkspacesClient_ListConnectionInfo() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListConnectionInfo(ctx,
-		"rg1",
-		"ddb1",
-		armcosmos.NotebookWorkspaceNameDefault,
-		nil)
+	res, err := client.ListConnectionInfo(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -141,7 +122,7 @@ func ExampleNotebookWorkspacesClient_ListConnectionInfo() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBNotebookWorkspaceRegenerateAuthToken.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBNotebookWorkspaceRegenerateAuthToken.json
 func ExampleNotebookWorkspacesClient_BeginRegenerateAuthToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,11 +133,7 @@ func ExampleNotebookWorkspacesClient_BeginRegenerateAuthToken() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRegenerateAuthToken(ctx,
-		"rg1",
-		"ddb1",
-		armcosmos.NotebookWorkspaceNameDefault,
-		nil)
+	poller, err := client.BeginRegenerateAuthToken(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -166,7 +143,7 @@ func ExampleNotebookWorkspacesClient_BeginRegenerateAuthToken() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBNotebookWorkspaceStart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBNotebookWorkspaceStart.json
 func ExampleNotebookWorkspacesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,11 +154,7 @@ func ExampleNotebookWorkspacesClient_BeginStart() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStart(ctx,
-		"rg1",
-		"ddb1",
-		armcosmos.NotebookWorkspaceNameDefault,
-		nil)
+	poller, err := client.BeginStart(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

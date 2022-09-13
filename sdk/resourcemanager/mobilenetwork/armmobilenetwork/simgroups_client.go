@@ -242,7 +242,6 @@ func (client *SimGroupsClient) getHandleResponse(resp *http.Response) (SimGroups
 }
 
 // NewListByResourceGroupPager - Gets all the SIM groups in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - SimGroupsClientListByResourceGroupOptions contains the optional parameters for the SimGroupsClient.ListByResourceGroup
@@ -307,7 +306,6 @@ func (client *SimGroupsClient) listByResourceGroupHandleResponse(resp *http.Resp
 }
 
 // NewListBySubscriptionPager - Gets all the SIM groups in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-01-preview
 // options - SimGroupsClientListBySubscriptionOptions contains the optional parameters for the SimGroupsClient.ListBySubscription
 // method.

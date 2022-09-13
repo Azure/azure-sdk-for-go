@@ -11,7 +11,7 @@ package armmobilenetwork
 
 const (
 	moduleName    = "armmobilenetwork"
-	moduleVersion = "v0.6.0"
+	moduleVersion = "v0.6.1"
 )
 
 // BillingSKU - The SKU of the packet core control plane resource. The SKU list may change over time when a new SKU gets added

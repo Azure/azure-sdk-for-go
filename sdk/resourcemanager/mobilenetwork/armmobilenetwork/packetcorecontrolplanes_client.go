@@ -244,7 +244,6 @@ func (client *PacketCoreControlPlanesClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListByResourceGroupPager - Lists all the packet core control planes in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - PacketCoreControlPlanesClientListByResourceGroupOptions contains the optional parameters for the PacketCoreControlPlanesClient.ListByResourceGroup
@@ -309,7 +308,6 @@ func (client *PacketCoreControlPlanesClient) listByResourceGroupHandleResponse(r
 }
 
 // NewListBySubscriptionPager - Lists all the packet core control planes in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-01-preview
 // options - PacketCoreControlPlanesClientListBySubscriptionOptions contains the optional parameters for the PacketCoreControlPlanesClient.ListBySubscription
 // method.

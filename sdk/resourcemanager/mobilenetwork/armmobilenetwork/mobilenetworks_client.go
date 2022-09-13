@@ -243,7 +243,6 @@ func (client *MobileNetworksClient) getHandleResponse(resp *http.Response) (Mobi
 }
 
 // NewListByResourceGroupPager - Lists all the mobile networks in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - MobileNetworksClientListByResourceGroupOptions contains the optional parameters for the MobileNetworksClient.ListByResourceGroup
@@ -308,7 +307,6 @@ func (client *MobileNetworksClient) listByResourceGroupHandleResponse(resp *http
 }
 
 // NewListBySubscriptionPager - Lists all the mobile networks in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-01-preview
 // options - MobileNetworksClientListBySubscriptionOptions contains the optional parameters for the MobileNetworksClient.ListBySubscription
 // method.

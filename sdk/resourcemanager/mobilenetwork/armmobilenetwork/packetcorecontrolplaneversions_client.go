@@ -101,7 +101,6 @@ func (client *PacketCoreControlPlaneVersionsClient) getHandleResponse(resp *http
 }
 
 // NewListByResourceGroupPager - Lists all supported packet core control planes versions.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-01-preview
 // options - PacketCoreControlPlaneVersionsClientListByResourceGroupOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.ListByResourceGroup
 // method.

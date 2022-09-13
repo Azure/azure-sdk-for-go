@@ -257,7 +257,6 @@ func (client *SitesClient) getHandleResponse(resp *http.Response) (SitesClientGe
 }
 
 // NewListByMobileNetworkPager - Lists all sites in the mobile network.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // mobileNetworkName - The name of the mobile network.

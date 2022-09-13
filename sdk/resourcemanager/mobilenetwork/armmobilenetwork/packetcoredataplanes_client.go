@@ -259,7 +259,6 @@ func (client *PacketCoreDataPlanesClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListByPacketCoreControlPlanePager - Lists all the packet core data planes associated with a packet core control plane.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // packetCoreControlPlaneName - The name of the packet core control plane.

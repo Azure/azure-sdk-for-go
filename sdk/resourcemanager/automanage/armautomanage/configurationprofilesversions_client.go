@@ -234,7 +234,6 @@ func (client *ConfigurationProfilesVersionsClient) getHandleResponse(resp *http.
 }
 
 // NewListChildResourcesPager - Retrieve a list of configuration profile version for a configuration profile
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-05-04
 // configurationProfileName - Name of the configuration profile.
 // resourceGroupName - The name of the resource group. The name is case insensitive.

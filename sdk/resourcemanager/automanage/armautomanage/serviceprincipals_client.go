@@ -103,7 +103,6 @@ func (client *ServicePrincipalsClient) getHandleResponse(resp *http.Response) (S
 
 // NewListBySubscriptionPager - Get the Automanage AAD first party Application Service Principal details for the subscription
 // id.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-05-04
 // options - ServicePrincipalsClientListBySubscriptionOptions contains the optional parameters for the ServicePrincipalsClient.ListBySubscription
 // method.

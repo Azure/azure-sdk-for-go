@@ -219,7 +219,6 @@ func (client *ConfigurationProfilesClient) getHandleResponse(resp *http.Response
 }
 
 // NewListByResourceGroupPager - Retrieve a list of configuration profile within a given resource group
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-05-04
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ConfigurationProfilesClientListByResourceGroupOptions contains the optional parameters for the ConfigurationProfilesClient.ListByResourceGroup
@@ -278,7 +277,6 @@ func (client *ConfigurationProfilesClient) listByResourceGroupHandleResponse(res
 }
 
 // NewListBySubscriptionPager - Retrieve a list of configuration profile within a subscription
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-05-04
 // options - ConfigurationProfilesClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfilesClient.ListBySubscription
 // method.

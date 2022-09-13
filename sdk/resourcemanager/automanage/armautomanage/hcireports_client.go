@@ -122,7 +122,6 @@ func (client *HCIReportsClient) getHandleResponse(resp *http.Response) (HCIRepor
 }
 
 // NewListByConfigurationProfileAssignmentsPager - Retrieve a list of reports within a given configuration profile assignment
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-05-04
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the Arc machine.

@@ -234,7 +234,6 @@ func (client *ConfigurationProfileAssignmentsClient) getHandleResponse(resp *htt
 }
 
 // NewListPager - Get list of configuration profile assignments
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-05-04
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ConfigurationProfileAssignmentsClientListOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.List
@@ -293,7 +292,6 @@ func (client *ConfigurationProfileAssignmentsClient) listHandleResponse(resp *ht
 }
 
 // NewListByClusterNamePager - Get list of configuration profile assignments
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-05-04
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the Arc machine.
@@ -357,7 +355,6 @@ func (client *ConfigurationProfileAssignmentsClient) listByClusterNameHandleResp
 }
 
 // NewListByMachineNamePager - Get list of configuration profile assignments
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-05-04
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // machineName - The name of the Arc machine.
@@ -421,7 +418,6 @@ func (client *ConfigurationProfileAssignmentsClient) listByMachineNameHandleResp
 }
 
 // NewListBySubscriptionPager - Get list of configuration profile assignments under a given subscription
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-05-04
 // options - ConfigurationProfileAssignmentsClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListBySubscription
 // method.
@@ -475,7 +471,6 @@ func (client *ConfigurationProfileAssignmentsClient) listBySubscriptionHandleRes
 }
 
 // NewListByVirtualMachinesPager - Get list of configuration profile assignments
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-05-04
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // vmName - The name of the virtual machine.

@@ -55,7 +55,7 @@ In `azblob`, operations that return paginated values return a `*runtime.Pager[T]
 pager := client.NewListBlobsFlatPager("my-container", nil)
 for pager.More() {
 	page, err := pager.NextPage(context.TODO())
-    // process results
+	// process results
 }
 ```
 

@@ -65,7 +65,7 @@ func TransformError(err error) error {
 
 	if isMicrosoftTimeoutError(err) {
 		// one scenario where this error pops up is if you're waiting for an available
-		// session and there are non available. It waits, up to one minute, and then
+		// session and there are none available. It waits, up to one minute, and then
 		// returns this error.
 		return exported.NewError(exported.CodeTimeout, err)
 	}

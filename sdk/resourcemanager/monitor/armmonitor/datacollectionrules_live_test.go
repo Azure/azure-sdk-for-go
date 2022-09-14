@@ -38,6 +38,7 @@ type DatacollectionrulesTestSuite struct {
 }
 
 func (testsuite *DatacollectionrulesTestSuite) SetupSuite() {
+	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/monitor/armmonitor/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.managedClustersName = testutil.GenerateAlphaNumericID(testsuite.T(), "associationaks", 6)
@@ -47,7 +48,6 @@ func (testsuite *DatacollectionrulesTestSuite) SetupSuite() {
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "")
 
-	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/monitor/armmonitor/testdata")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -263,87 +263,91 @@ func (testsuite *DatacollectionrulesTestSuite) TestDatacollectionrule() {
 	// From step DataCollectionRules_Create
 	dataCollectionRulesClient, err := armmonitor.NewDataCollectionRulesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	dataCollectionRulesClientCreateResponse, err := dataCollectionRulesClient.Create(testsuite.ctx, testsuite.resourceGroupName, dataCollectionRuleName, armmonitor.DataCollectionRuleResource{
-		Location: to.Ptr(testsuite.location),
-		Properties: &armmonitor.DataCollectionRuleResourceProperties{
-			DataFlows: []*armmonitor.DataFlow{
-				{
-					Destinations: []*string{
-						to.Ptr("centralWorkspace")},
-					Streams: []*armmonitor.KnownDataFlowStreams{
-						to.Ptr(armmonitor.KnownDataFlowStreamsMicrosoftPerf),
-						to.Ptr(armmonitor.KnownDataFlowStreamsMicrosoftSyslog)},
-				}},
-			DataSources: &armmonitor.DataCollectionRuleDataSources{
-				PerformanceCounters: []*armmonitor.PerfCounterDataSource{
-					{
-						Name: to.Ptr("cloudTeamCoreCounters"),
-						CounterSpecifiers: []*string{
-							to.Ptr("\\Processor(_Total)\\% Processor Time"),
-							to.Ptr("\\Memory\\Committed Bytes"),
-							to.Ptr("\\LogicalDisk(_Total)\\Free Megabytes"),
-							to.Ptr("\\PhysicalDisk(_Total)\\Avg. Disk Queue Length")},
-						SamplingFrequencyInSeconds: to.Ptr[int32](15),
-						Streams: []*armmonitor.KnownPerfCounterDataSourceStreams{
-							to.Ptr(armmonitor.KnownPerfCounterDataSourceStreamsMicrosoftPerf)},
+	dataCollectionRulesClientCreateResponse, err := dataCollectionRulesClient.Create(testsuite.ctx, testsuite.resourceGroupName, dataCollectionRuleName, 
+		&armmonitor.DataCollectionRulesClientCreateOptions{
+			Body:  &armmonitor.DataCollectionRuleResource{
+				Location: to.Ptr(testsuite.location),
+				Properties: &armmonitor.DataCollectionRuleResourceProperties{
+					DataFlows: []*armmonitor.DataFlow{
+						{
+							Destinations: []*string{
+								to.Ptr("centralWorkspace")},
+							Streams: []*armmonitor.KnownDataFlowStreams{
+								to.Ptr(armmonitor.KnownDataFlowStreamsMicrosoftPerf),
+								to.Ptr(armmonitor.KnownDataFlowStreamsMicrosoftSyslog)},
+						}},
+					DataSources: &armmonitor.DataCollectionRuleDataSources{
+						PerformanceCounters: []*armmonitor.PerfCounterDataSource{
+							{
+								Name: to.Ptr("cloudTeamCoreCounters"),
+								CounterSpecifiers: []*string{
+									to.Ptr("\\Processor(_Total)\\% Processor Time"),
+									to.Ptr("\\Memory\\Committed Bytes"),
+									to.Ptr("\\LogicalDisk(_Total)\\Free Megabytes"),
+									to.Ptr("\\PhysicalDisk(_Total)\\Avg. Disk Queue Length")},
+								SamplingFrequencyInSeconds: to.Ptr[int32](15),
+								Streams: []*armmonitor.KnownPerfCounterDataSourceStreams{
+									to.Ptr(armmonitor.KnownPerfCounterDataSourceStreamsMicrosoftPerf)},
+							},
+							{
+								Name: to.Ptr("appTeamExtraCounters"),
+								CounterSpecifiers: []*string{
+									to.Ptr("\\Process(_Total)\\Thread Count")},
+								SamplingFrequencyInSeconds: to.Ptr[int32](30),
+								Streams: []*armmonitor.KnownPerfCounterDataSourceStreams{
+									to.Ptr(armmonitor.KnownPerfCounterDataSourceStreamsMicrosoftPerf)},
+							}},
+						Syslog: []*armmonitor.SyslogDataSource{
+							{
+								Name: to.Ptr("cronSyslog"),
+								FacilityNames: []*armmonitor.KnownSyslogDataSourceFacilityNames{
+									to.Ptr(armmonitor.KnownSyslogDataSourceFacilityNamesCron)},
+								LogLevels: []*armmonitor.KnownSyslogDataSourceLogLevels{
+									to.Ptr(armmonitor.KnownSyslogDataSourceLogLevelsDebug),
+									to.Ptr(armmonitor.KnownSyslogDataSourceLogLevelsCritical),
+									to.Ptr(armmonitor.KnownSyslogDataSourceLogLevelsEmergency)},
+								Streams: []*armmonitor.KnownSyslogDataSourceStreams{
+									to.Ptr(armmonitor.KnownSyslogDataSourceStreamsMicrosoftSyslog)},
+							},
+							{
+								Name: to.Ptr("syslogBase"),
+								FacilityNames: []*armmonitor.KnownSyslogDataSourceFacilityNames{
+									to.Ptr(armmonitor.KnownSyslogDataSourceFacilityNamesSyslog)},
+								LogLevels: []*armmonitor.KnownSyslogDataSourceLogLevels{
+									to.Ptr(armmonitor.KnownSyslogDataSourceLogLevelsAlert),
+									to.Ptr(armmonitor.KnownSyslogDataSourceLogLevelsCritical),
+									to.Ptr(armmonitor.KnownSyslogDataSourceLogLevelsEmergency)},
+								Streams: []*armmonitor.KnownSyslogDataSourceStreams{
+									to.Ptr(armmonitor.KnownSyslogDataSourceStreamsMicrosoftSyslog)},
+							}},
+						WindowsEventLogs: []*armmonitor.WindowsEventLogDataSource{
+							{
+								Name: to.Ptr("cloudSecurityTeamEvents"),
+								Streams: []*armmonitor.KnownWindowsEventLogDataSourceStreams{
+									to.Ptr(armmonitor.KnownWindowsEventLogDataSourceStreamsMicrosoftWindowsEvent)},
+								XPathQueries: []*string{
+									to.Ptr("Security!")},
+							},
+							{
+								Name: to.Ptr("appTeam1AppEvents"),
+								Streams: []*armmonitor.KnownWindowsEventLogDataSourceStreams{
+									to.Ptr(armmonitor.KnownWindowsEventLogDataSourceStreamsMicrosoftWindowsEvent)},
+								XPathQueries: []*string{
+									to.Ptr("System![System[(Level = 1 or Level = 2 or Level = 3)]]"),
+									to.Ptr("Application!*[System[(Level = 1 or Level = 2 or Level = 3)]]")},
+							}},
 					},
-					{
-						Name: to.Ptr("appTeamExtraCounters"),
-						CounterSpecifiers: []*string{
-							to.Ptr("\\Process(_Total)\\Thread Count")},
-						SamplingFrequencyInSeconds: to.Ptr[int32](30),
-						Streams: []*armmonitor.KnownPerfCounterDataSourceStreams{
-							to.Ptr(armmonitor.KnownPerfCounterDataSourceStreamsMicrosoftPerf)},
-					}},
-				Syslog: []*armmonitor.SyslogDataSource{
-					{
-						Name: to.Ptr("cronSyslog"),
-						FacilityNames: []*armmonitor.KnownSyslogDataSourceFacilityNames{
-							to.Ptr(armmonitor.KnownSyslogDataSourceFacilityNamesCron)},
-						LogLevels: []*armmonitor.KnownSyslogDataSourceLogLevels{
-							to.Ptr(armmonitor.KnownSyslogDataSourceLogLevelsDebug),
-							to.Ptr(armmonitor.KnownSyslogDataSourceLogLevelsCritical),
-							to.Ptr(armmonitor.KnownSyslogDataSourceLogLevelsEmergency)},
-						Streams: []*armmonitor.KnownSyslogDataSourceStreams{
-							to.Ptr(armmonitor.KnownSyslogDataSourceStreamsMicrosoftSyslog)},
+					Destinations: &armmonitor.DataCollectionRuleDestinations{
+						LogAnalytics: []*armmonitor.LogAnalyticsDestination{
+							{
+								Name:                to.Ptr("centralWorkspace"),
+								WorkspaceResourceID: to.Ptr(testsuite.workspaceId),
+							}},
 					},
-					{
-						Name: to.Ptr("syslogBase"),
-						FacilityNames: []*armmonitor.KnownSyslogDataSourceFacilityNames{
-							to.Ptr(armmonitor.KnownSyslogDataSourceFacilityNamesSyslog)},
-						LogLevels: []*armmonitor.KnownSyslogDataSourceLogLevels{
-							to.Ptr(armmonitor.KnownSyslogDataSourceLogLevelsAlert),
-							to.Ptr(armmonitor.KnownSyslogDataSourceLogLevelsCritical),
-							to.Ptr(armmonitor.KnownSyslogDataSourceLogLevelsEmergency)},
-						Streams: []*armmonitor.KnownSyslogDataSourceStreams{
-							to.Ptr(armmonitor.KnownSyslogDataSourceStreamsMicrosoftSyslog)},
-					}},
-				WindowsEventLogs: []*armmonitor.WindowsEventLogDataSource{
-					{
-						Name: to.Ptr("cloudSecurityTeamEvents"),
-						Streams: []*armmonitor.KnownWindowsEventLogDataSourceStreams{
-							to.Ptr(armmonitor.KnownWindowsEventLogDataSourceStreamsMicrosoftWindowsEvent)},
-						XPathQueries: []*string{
-							to.Ptr("Security!")},
-					},
-					{
-						Name: to.Ptr("appTeam1AppEvents"),
-						Streams: []*armmonitor.KnownWindowsEventLogDataSourceStreams{
-							to.Ptr(armmonitor.KnownWindowsEventLogDataSourceStreamsMicrosoftWindowsEvent)},
-						XPathQueries: []*string{
-							to.Ptr("System![System[(Level = 1 or Level = 2 or Level = 3)]]"),
-							to.Ptr("Application!*[System[(Level = 1 or Level = 2 or Level = 3)]]")},
-					}},
-			},
-			Destinations: &armmonitor.DataCollectionRuleDestinations{
-				LogAnalytics: []*armmonitor.LogAnalyticsDestination{
-					{
-						Name:                to.Ptr("centralWorkspace"),
-						WorkspaceResourceID: to.Ptr(testsuite.workspaceId),
-					}},
+				},
 			},
 		},
-	}, nil)
+	)
 	testsuite.Require().NoError(err)
 	dataCollectionRuleId = *dataCollectionRulesClientCreateResponse.ID
 
@@ -368,23 +372,27 @@ func (testsuite *DatacollectionrulesTestSuite) TestDatacollectionrule() {
 	testsuite.Require().NoError(err)
 
 	// From step DataCollectionRules_Update
-	_, err = dataCollectionRulesClient.Update(testsuite.ctx, testsuite.resourceGroupName, dataCollectionRuleName, armmonitor.ResourceForUpdate{
-		Tags: map[string]*string{
-			"tag1": to.Ptr("A"),
-			"tag2": to.Ptr("B"),
-			"tag3": to.Ptr("C"),
+	_, err = dataCollectionRulesClient.Update(testsuite.ctx, testsuite.resourceGroupName, dataCollectionRuleName, &armmonitor.DataCollectionRulesClientUpdateOptions{
+		Body: &armmonitor.ResourceForUpdate{
+			Tags: map[string]*string{
+				"tag1": to.Ptr("A"),
+				"tag2": to.Ptr("B"),
+				"tag3": to.Ptr("C"),
+			},
 		},
-	}, nil)
+	})
 	testsuite.Require().NoError(err)
 
 	// From step DataCollectionRuleAssociations_Create
 	dataCollectionRuleAssociationsClient, err := armmonitor.NewDataCollectionRuleAssociationsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = dataCollectionRuleAssociationsClient.Create(testsuite.ctx, testsuite.resourceUri, associationName, armmonitor.DataCollectionRuleAssociationProxyOnlyResource{
-		Properties: &armmonitor.DataCollectionRuleAssociationProxyOnlyResourceProperties{
-			DataCollectionRuleID: to.Ptr(dataCollectionRuleId),
+	_, err = dataCollectionRuleAssociationsClient.Create(testsuite.ctx, testsuite.resourceUri, associationName, &armmonitor.DataCollectionRuleAssociationsClientCreateOptions{
+		Body: &armmonitor.DataCollectionRuleAssociationProxyOnlyResource{
+			Properties: &armmonitor.DataCollectionRuleAssociationProxyOnlyResourceProperties{
+				DataCollectionRuleID: to.Ptr(dataCollectionRuleId),
+			},
 		},
-	}, nil)
+	})
 	testsuite.Require().NoError(err)
 
 	// From step DataCollectionRuleAssociations_ListByResource

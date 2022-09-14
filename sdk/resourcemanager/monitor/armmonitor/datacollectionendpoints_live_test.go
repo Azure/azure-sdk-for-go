@@ -32,13 +32,13 @@ type DatacollectionendpointsTestSuite struct {
 }
 
 func (testsuite *DatacollectionendpointsTestSuite) SetupSuite() {
+	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/monitor/armmonitor/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "")
 
-	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/monitor/armmonitor/testdata")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -61,14 +61,18 @@ func (testsuite *DatacollectionendpointsTestSuite) TestDatacollectionendpoint() 
 	// From step DataCollectionEndpoints_Create
 	dataCollectionEndpointsClient, err := armmonitor.NewDataCollectionEndpointsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = dataCollectionEndpointsClient.Create(testsuite.ctx, testsuite.resourceGroupName, dataCollectionEndpointName, armmonitor.DataCollectionEndpointResource{
-		Location: to.Ptr(testsuite.location),
-		Properties: &armmonitor.DataCollectionEndpointResourceProperties{
-			NetworkACLs: &armmonitor.DataCollectionEndpointNetworkACLs{
-				PublicNetworkAccess: to.Ptr(armmonitor.KnownPublicNetworkAccessOptionsEnabled),
+	_, err = dataCollectionEndpointsClient.Create(testsuite.ctx, testsuite.resourceGroupName, dataCollectionEndpointName, 
+		&armmonitor.DataCollectionEndpointsClientCreateOptions{
+			Body: &armmonitor.DataCollectionEndpointResource{
+				Location: to.Ptr(testsuite.location),
+				Properties: &armmonitor.DataCollectionEndpointResourceProperties{
+					NetworkACLs: &armmonitor.DataCollectionEndpointNetworkACLs{
+						PublicNetworkAccess: to.Ptr(armmonitor.KnownPublicNetworkAccessOptionsEnabled),
+					},
+				},
 			},
 		},
-	}, nil)
+	)
 	testsuite.Require().NoError(err)
 
 	// From step DataCollectionEndpoints_ListBySubscription
@@ -92,13 +96,17 @@ func (testsuite *DatacollectionendpointsTestSuite) TestDatacollectionendpoint() 
 	}
 
 	// From step DataCollectionEndpoints_Update
-	_, err = dataCollectionEndpointsClient.Update(testsuite.ctx, testsuite.resourceGroupName, dataCollectionEndpointName, armmonitor.ResourceForUpdate{
-		Tags: map[string]*string{
-			"tag1": to.Ptr("A"),
-			"tag2": to.Ptr("B"),
-			"tag3": to.Ptr("C"),
+	_, err = dataCollectionEndpointsClient.Update(testsuite.ctx, testsuite.resourceGroupName, dataCollectionEndpointName,
+		&armmonitor.DataCollectionEndpointsClientUpdateOptions{
+			Body: &armmonitor.ResourceForUpdate{
+				Tags: map[string]*string{
+					"tag1": to.Ptr("A"),
+					"tag2": to.Ptr("B"),
+					"tag3": to.Ptr("C"),
+				},
+			},
 		},
-	}, nil)
+	)
 	testsuite.Require().NoError(err)
 
 	// From step DataCollectionRuleAssociations_ListByDataCollectionEndpoint

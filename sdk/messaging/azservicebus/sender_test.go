@@ -17,9 +17,10 @@ import (
 )
 
 func Test_Sender_MessageID(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		EnablePartitioning: to.Ptr(true),
-	})
+	client, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			EnablePartitioning: to.Ptr(true),
+		}})
 	defer cleanup()
 
 	sender, err := client.NewSender(queueName, nil)
@@ -119,9 +120,10 @@ func receiveAll(t *testing.T, receiver *Receiver, expected int) []*ReceivedMessa
 }
 
 func Test_Sender_UsingPartitionedQueue(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		EnablePartitioning: to.Ptr(true),
-	})
+	client, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			EnablePartitioning: to.Ptr(true),
+		}})
 	defer cleanup()
 
 	sender, err := client.NewSender(queueName, nil)

@@ -18,7 +18,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func createClientOptionsForTest(t *testing.T) (*ClientOptions, func()) {
+func enableDebugClientOptions(t *testing.T, baseClientOptions *ClientOptions) (*ClientOptions, func()) {
 	// Setting this variable will cause the SB client to dump out (in TESTS ONLY)
 	// the pre-master-key for your AMQP connection. This allows you decrypt a packet
 	// capture from wireshark.
@@ -27,7 +27,11 @@ func createClientOptionsForTest(t *testing.T) (*ClientOptions, func()) {
 	// Go will write out the key.
 	keyLogFile := os.Getenv("SSLKEYLOGFILE_TEST")
 
-	clientOptions := &ClientOptions{}
+	var clientOptions ClientOptions
+
+	if baseClientOptions != nil {
+		clientOptions = *baseClientOptions
+	}
 
 	if keyLogFile != "" {
 		writer, err := os.Create(keyLogFile)
@@ -40,20 +44,29 @@ func createClientOptionsForTest(t *testing.T) (*ClientOptions, func()) {
 			KeyLogWriter: writer,
 		}
 
-		return clientOptions, func() { _ = writer.Close() }
+		return &clientOptions, func() { _ = writer.Close() }
 	}
 
-	return clientOptions, func() {}
+	return &clientOptions, func() {}
 }
 
-func setupLiveTest(t *testing.T, props *admin.QueueProperties) (*Client, func(), string) {
+type liveTestOptions struct {
+	QueueProperties *admin.QueueProperties
+	ClientOptions   *ClientOptions
+}
+
+func setupLiveTest(t *testing.T, options *liveTestOptions) (*Client, func(), string) {
+	if options == nil {
+		options = &liveTestOptions{}
+	}
+
 	cs := test.GetConnectionString(t)
 
-	clientOptions, flushKeyFn := createClientOptionsForTest(t)
+	clientOptions, flushKeyFn := enableDebugClientOptions(t, options.ClientOptions)
 	serviceBusClient, err := NewClientFromConnectionString(cs, clientOptions)
 	require.NoError(t, err)
 
-	queueName, cleanupQueue := createQueue(t, cs, props)
+	queueName, cleanupQueue := createQueue(t, cs, options.QueueProperties)
 
 	testCleanup := func() {
 		require.NoError(t, serviceBusClient.Close(context.Background()))

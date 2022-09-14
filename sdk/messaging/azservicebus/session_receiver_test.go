@@ -234,6 +234,58 @@ func TestSessionReceiver_nonSessionReceiver(t *testing.T) {
 	require.Contains(t, amqpError.Description, "It is not possible for an entity that requires sessions to create a non-sessionful message receiver.")
 }
 
+func TestSessionReceiver_subscription(t *testing.T) {
+	cs := test.GetConnectionString(t)
+
+	topic, cleanupTopic := createSubscription(t, cs, nil, &admin.SubscriptionProperties{
+		RequiresSession: to.Ptr(true),
+	})
+
+	defer cleanupTopic()
+
+	client, err := NewClientFromConnectionString(cs, &ClientOptions{
+		RetryOptions: RetryOptions{
+			MaxRetries: -1,
+		},
+	})
+	require.NoError(t, err)
+
+	client.acceptNextTimeout = time.Second
+
+	receiver, err := client.AcceptNextSessionForSubscription(context.Background(), topic, "sub", nil)
+	require.Nil(t, receiver)
+
+	var sbError *Error
+	require.ErrorAs(t, err, &sbError)
+	require.Equal(t, CodeTimeout, sbError.Code, "CodeTimeout because there are no sessions (yet)")
+
+	sender, err := client.NewSender(topic, nil)
+	require.NoError(t, err)
+
+	defer sender.Close(context.Background())
+
+	err = sender.SendMessage(context.Background(), &Message{
+		SessionID: to.Ptr("session1"),
+	}, nil)
+	require.NoError(t, err)
+
+	// there's a session this time...
+	receiver, err = client.AcceptNextSessionForSubscription(context.Background(), topic, "sub", nil)
+	require.NoError(t, err)
+
+	defer receiver.Close(context.Background())
+
+	require.Equal(t, "session1", receiver.SessionID())
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+
+	require.Equal(t, "session1", *messages[0].SessionID)
+	require.Equal(t, 1, len(messages))
+
+	err = receiver.CompleteMessage(context.Background(), messages[0], nil)
+	require.NoError(t, err)
+}
+
 func TestSessionReceiver_RenewSessionLock(t *testing.T) {
 	client, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
 		QueueProperties: &admin.QueueProperties{

@@ -107,7 +107,8 @@ func createQueue(t *testing.T, connectionString string, queueProperties *admin.Q
 	}
 }
 
-// createSubscription creates a queue, automatically setting it to delete on idle in 5 minutes.
+// createSubscription creates a topic, automatically setting it to delete on idle in 5 minutes.
+// It also creates a subscription named 'sub'.
 func createSubscription(t *testing.T, connectionString string, topicProperties *admin.TopicProperties, subscriptionProperties *admin.SubscriptionProperties) (string, func()) {
 	nanoSeconds := time.Now().UnixNano()
 	topicName := fmt.Sprintf("topic-%X", nanoSeconds)

@@ -16,6 +16,9 @@ type Account struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
+	// The identity of the resource.
+	Identity *Identity `json:"identity,omitempty"`
+
 	// NetApp Account properties
 	Properties *AccountProperties `json:"properties,omitempty"`
 
@@ -56,8 +59,14 @@ type AccountBackupsClientListOptions struct {
 
 // AccountEncryption - Encryption settings
 type AccountEncryption struct {
-	// Encryption Key Source. Possible values are: 'Microsoft.NetApp'.
-	KeySource *string `json:"keySource,omitempty"`
+	// Identity used to authenticate to KeyVault. Applicable if keySource is 'Microsoft.KeyVault'.
+	Identity *EncryptionIdentity `json:"identity,omitempty"`
+
+	// The encryption keySource (provider). Possible values (case-insensitive): Microsoft.NetApp, Microsoft.KeyVault
+	KeySource *KeySource `json:"keySource,omitempty"`
+
+	// Properties provided by KeVault. Applicable if keySource is 'Microsoft.KeyVault'.
+	KeyVaultProperties *KeyVaultProperties `json:"keyVaultProperties,omitempty"`
 }
 
 // AccountList - List of NetApp account resources
@@ -98,6 +107,9 @@ type AccountProperties struct {
 	// Encryption settings
 	Encryption *AccountEncryption `json:"encryption,omitempty"`
 
+	// READ-ONLY; Shows the status of disableShowmount for all volumes under the subscription, null equals false
+	DisableShowmount *bool `json:"disableShowmount,omitempty" azure:"ro"`
+
 	// READ-ONLY; Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
@@ -110,6 +122,13 @@ type AccountsClientBeginCreateOrUpdateOptions struct {
 
 // AccountsClientBeginDeleteOptions contains the optional parameters for the AccountsClient.BeginDelete method.
 type AccountsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AccountsClientBeginRenewCredentialsOptions contains the optional parameters for the AccountsClient.BeginRenewCredentials
+// method.
+type AccountsClientBeginRenewCredentialsOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -551,21 +570,6 @@ type CheckAvailabilityResponse struct {
 	Reason *InAvailabilityReasonType `json:"reason,omitempty"`
 }
 
-// CloudError - An error response from the service.
-type CloudError struct {
-	// Cloud error body.
-	Error *CloudErrorBody `json:"error,omitempty"`
-}
-
-// CloudErrorBody - An error response from the service.
-type CloudErrorBody struct {
-	// An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
-	Code *string `json:"code,omitempty"`
-
-	// A message describing the error, intended to be suitable for display in a user interface.
-	Message *string `json:"message,omitempty"`
-}
-
 // DailySchedule - Daily Schedule properties
 type DailySchedule struct {
 	// Indicates which hour in UTC timezone a snapshot should be taken
@@ -588,6 +592,16 @@ type Dimension struct {
 
 	// Display name of dimension.
 	Name *string `json:"name,omitempty"`
+}
+
+// EncryptionIdentity - Identity used to authenticate with key vault.
+type EncryptionIdentity struct {
+	// The ARM resource identifier of the user assigned identity used to authenticate with key vault. Applicable if identity.type
+	// has 'UserAssigned'. It should match key of identity.userAssignedIdentities.
+	UserAssignedIdentity *string `json:"userAssignedIdentity,omitempty"`
+
+	// READ-ONLY; The principal ID (object ID) of the identity used to authenticate with key vault. Read-only.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 }
 
 // ExportPolicyRule - Volume Export Policy Rule
@@ -659,6 +673,41 @@ type HourlySchedule struct {
 
 	// Resource size in bytes, current storage usage for the volume in bytes
 	UsedBytes *int64 `json:"usedBytes,omitempty"`
+}
+
+// Identity for the resource.
+type Identity struct {
+	// REQUIRED; The identity type.
+	Type *IdentityType `json:"type,omitempty"`
+
+	// Gets or sets a list of key value pairs that describe the set of User Assigned identities that will be used with this storage
+	// account. The key is the ARM resource identifier of the identity. Only 1
+	// User Assigned identity is permitted here.
+	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+
+	// READ-ONLY; The principal ID of resource identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tenant ID of resource.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
+// KeyVaultProperties - Properties of key vault.
+type KeyVaultProperties struct {
+	// REQUIRED; The name of KeyVault key.
+	KeyName *string `json:"keyName,omitempty"`
+
+	// REQUIRED; The resource ID of KeyVault.
+	KeyVaultResourceID *string `json:"keyVaultResourceId,omitempty"`
+
+	// REQUIRED; The Uri of KeyVault.
+	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
+
+	// READ-ONLY; UUID v4 used to identify the Azure Key Vault configuration
+	KeyVaultID *string `json:"keyVaultId,omitempty" azure:"ro"`
+
+	// READ-ONLY; Status of the KeyVault connection.
+	Status *KeyVaultStatus `json:"status,omitempty" azure:"ro"`
 }
 
 // LdapSearchScopeOpt - LDAP search scope
@@ -961,6 +1010,29 @@ type ReestablishReplicationRequest struct {
 	SourceVolumeID *string `json:"sourceVolumeId,omitempty"`
 }
 
+// RegionInfo - Provides region specific information.
+type RegionInfo struct {
+	// Provides logical availability zone mappings for the subscription for a region.
+	AvailabilityZoneMappings []*RegionInfoAvailabilityZoneMappingsItem `json:"availabilityZoneMappings,omitempty"`
+
+	// Provides storage to network proximity information in the region.
+	StorageToNetworkProximity *RegionStorageToNetworkProximity `json:"storageToNetworkProximity,omitempty"`
+}
+
+type RegionInfoAvailabilityZoneMappingsItem struct {
+	// Logical availability zone.
+	AvailabilityZone *string `json:"availabilityZone,omitempty"`
+
+	// Available availability zone
+	IsAvailable *bool `json:"isAvailable,omitempty"`
+}
+
+// RelocateVolumeRequest - Relocate volume request
+type RelocateVolumeRequest struct {
+	// New creation token for the volume that controls the mount point name
+	CreationToken *string `json:"creationToken,omitempty"`
+}
+
 // Replication properties
 type Replication struct {
 	// REQUIRED; The resource ID of the remote volume.
@@ -1042,6 +1114,11 @@ type ResourceClientCheckNameAvailabilityOptions struct {
 // ResourceClientCheckQuotaAvailabilityOptions contains the optional parameters for the ResourceClient.CheckQuotaAvailability
 // method.
 type ResourceClientCheckQuotaAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceClientQueryRegionInfoOptions contains the optional parameters for the ResourceClient.QueryRegionInfo method.
+type ResourceClientQueryRegionInfoOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1537,11 +1614,17 @@ type TrackedResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// UserAssignedIdentity for the resource.
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the identity.
+	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The principal ID of the identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+}
+
 // Vault information
 type Vault struct {
-	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
-
 	// REQUIRED; Vault Properties
 	Properties *VaultProperties `json:"properties,omitempty"`
 
@@ -1822,7 +1905,7 @@ type VolumePatchProperties struct {
 	UnixPermissions *string `json:"unixPermissions,omitempty"`
 
 	// Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is
-	// 100 GiB. Upper limit is 100TiB. Specified in bytes.
+	// 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
 	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
 }
 
@@ -1850,7 +1933,7 @@ type VolumeProperties struct {
 	SubnetID *string `json:"subnetId,omitempty"`
 
 	// REQUIRED; Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-	// size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
+	// size is 500 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
 	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
 
 	// Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose
@@ -1876,6 +1959,10 @@ type VolumeProperties struct {
 
 	// Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies .
 	DefaultUserQuotaInKiBs *int64 `json:"defaultUserQuotaInKiBs,omitempty"`
+
+	// If enabled (true) the snapshot the volume was created from will be automatically deleted after the volume create operation
+	// has finished. Defaults to false
+	DeleteBaseSnapshot *bool `json:"deleteBaseSnapshot,omitempty"`
 
 	// Flag indicating whether subvolume operations are enabled on the volume
 	EnableSubvolumes *EnableSubvolumes `json:"enableSubvolumes,omitempty"`
@@ -1922,12 +2009,18 @@ type VolumeProperties struct {
 	// The service level of the file system
 	ServiceLevel *ServiceLevel `json:"serviceLevel,omitempty"`
 
+	// Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume
+	SmbAccessBasedEnumeration *SmbAccessBasedEnumeration `json:"smbAccessBasedEnumeration,omitempty"`
+
 	// Enables continuously available share property for smb volume. Only applicable for SMB volume
 	SmbContinuouslyAvailable *bool `json:"smbContinuouslyAvailable,omitempty"`
 
 	// Enables encryption for in-flight smb3 data. Only applicable for SMB/DualProtocol volume. To be used with swagger version
 	// 2020-08-01 or later
 	SmbEncryption *bool `json:"smbEncryption,omitempty"`
+
+	// Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume
+	SmbNonBrowsable *SmbNonBrowsable `json:"smbNonBrowsable,omitempty"`
 
 	// If enabled (true) the volume will contain a read-only snapshot directory which provides access to each of the volume's
 	// snapshots (default to true).
@@ -2180,6 +2273,8 @@ type VolumesClientBeginReestablishReplicationOptions struct {
 
 // VolumesClientBeginRelocateOptions contains the optional parameters for the VolumesClient.BeginRelocate method.
 type VolumesClientBeginRelocateOptions struct {
+	// Relocate volume request
+	Body *RelocateVolumeRequest
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }

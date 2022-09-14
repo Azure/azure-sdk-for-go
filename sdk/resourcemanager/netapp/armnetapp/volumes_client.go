@@ -59,7 +59,7 @@ func NewVolumesClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // BeginAuthorizeReplication - Authorize the replication connection on the source volume
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -83,7 +83,7 @@ func (client *VolumesClient) BeginAuthorizeReplication(ctx context.Context, reso
 
 // AuthorizeReplication - Authorize the replication connection on the source volume
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 func (client *VolumesClient) authorizeReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body AuthorizeRequest, options *VolumesClientBeginAuthorizeReplicationOptions) (*http.Response, error) {
 	req, err := client.authorizeReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 	if err != nil {
@@ -127,14 +127,14 @@ func (client *VolumesClient) authorizeReplicationCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // BeginBreakReplication - Break the replication connection on the destination volume
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -157,7 +157,7 @@ func (client *VolumesClient) BeginBreakReplication(ctx context.Context, resource
 
 // BreakReplication - Break the replication connection on the destination volume
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 func (client *VolumesClient) breakReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginBreakReplicationOptions) (*http.Response, error) {
 	req, err := client.breakReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
@@ -201,7 +201,7 @@ func (client *VolumesClient) breakReplicationCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
@@ -211,7 +211,7 @@ func (client *VolumesClient) breakReplicationCreateRequest(ctx context.Context, 
 
 // BeginCreateOrUpdate - Create or update the specified volume within the capacity pool
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -235,7 +235,7 @@ func (client *VolumesClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 
 // CreateOrUpdate - Create or update the specified volume within the capacity pool
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 func (client *VolumesClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body Volume, options *VolumesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 	if err != nil {
@@ -279,7 +279,7 @@ func (client *VolumesClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -287,7 +287,7 @@ func (client *VolumesClient) createOrUpdateCreateRequest(ctx context.Context, re
 
 // BeginDelete - Delete the specified volume
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -309,7 +309,7 @@ func (client *VolumesClient) BeginDelete(ctx context.Context, resourceGroupName 
 
 // Delete - Delete the specified volume
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 func (client *VolumesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
@@ -356,14 +356,14 @@ func (client *VolumesClient) deleteCreateRequest(ctx context.Context, resourceGr
 	if options != nil && options.ForceDelete != nil {
 		reqQP.Set("forceDelete", strconv.FormatBool(*options.ForceDelete))
 	}
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // BeginDeleteReplication - Delete the replication connection on the destination volume, and send release to the source replication
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -386,7 +386,7 @@ func (client *VolumesClient) BeginDeleteReplication(ctx context.Context, resourc
 
 // DeleteReplication - Delete the replication connection on the destination volume, and send release to the source replication
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 func (client *VolumesClient) deleteReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginDeleteReplicationOptions) (*http.Response, error) {
 	req, err := client.deleteReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
@@ -430,14 +430,14 @@ func (client *VolumesClient) deleteReplicationCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // BeginFinalizeRelocation - Finalizes the relocation of the volume and cleans up the old volume.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -458,7 +458,7 @@ func (client *VolumesClient) BeginFinalizeRelocation(ctx context.Context, resour
 
 // FinalizeRelocation - Finalizes the relocation of the volume and cleans up the old volume.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 func (client *VolumesClient) finalizeRelocation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginFinalizeRelocationOptions) (*http.Response, error) {
 	req, err := client.finalizeRelocationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
@@ -502,14 +502,14 @@ func (client *VolumesClient) finalizeRelocationCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get the details of the specified volume
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -558,7 +558,7 @@ func (client *VolumesClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -574,8 +574,7 @@ func (client *VolumesClient) getHandleResponse(resp *http.Response) (VolumesClie
 }
 
 // NewListPager - List all volumes within the capacity pool
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -632,7 +631,7 @@ func (client *VolumesClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -648,8 +647,7 @@ func (client *VolumesClient) listHandleResponse(resp *http.Response) (VolumesCli
 }
 
 // NewListReplicationsPager - List all replications for a specified volume
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -706,7 +704,7 @@ func (client *VolumesClient) listReplicationsCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -723,7 +721,7 @@ func (client *VolumesClient) listReplicationsHandleResponse(resp *http.Response)
 
 // BeginPoolChange - Moves volume to another pool
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -746,7 +744,7 @@ func (client *VolumesClient) BeginPoolChange(ctx context.Context, resourceGroupN
 
 // PoolChange - Moves volume to another pool
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 func (client *VolumesClient) poolChange(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body PoolChangeRequest, options *VolumesClientBeginPoolChangeOptions) (*http.Response, error) {
 	req, err := client.poolChangeCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 	if err != nil {
@@ -790,14 +788,14 @@ func (client *VolumesClient) poolChangeCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // BeginReInitializeReplication - Re-Initializes the replication connection on the destination volume
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -820,7 +818,7 @@ func (client *VolumesClient) BeginReInitializeReplication(ctx context.Context, r
 
 // ReInitializeReplication - Re-Initializes the replication connection on the destination volume
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 func (client *VolumesClient) reInitializeReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginReInitializeReplicationOptions) (*http.Response, error) {
 	req, err := client.reInitializeReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
@@ -864,7 +862,7 @@ func (client *VolumesClient) reInitializeReplicationCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -872,7 +870,7 @@ func (client *VolumesClient) reInitializeReplicationCreateRequest(ctx context.Co
 // BeginReestablishReplication - Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc
 // or policy-based snapshots
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -897,7 +895,7 @@ func (client *VolumesClient) BeginReestablishReplication(ctx context.Context, re
 // ReestablishReplication - Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
 // snapshots
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 func (client *VolumesClient) reestablishReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body ReestablishReplicationRequest, options *VolumesClientBeginReestablishReplicationOptions) (*http.Response, error) {
 	req, err := client.reestablishReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 	if err != nil {
@@ -941,14 +939,14 @@ func (client *VolumesClient) reestablishReplicationCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // BeginRelocate - Relocates volume to a new stamp
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -968,7 +966,7 @@ func (client *VolumesClient) BeginRelocate(ctx context.Context, resourceGroupNam
 
 // Relocate - Relocates volume to a new stamp
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 func (client *VolumesClient) relocate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginRelocateOptions) (*http.Response, error) {
 	req, err := client.relocateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
@@ -1012,14 +1010,17 @@ func (client *VolumesClient) relocateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	if options != nil && options.Body != nil {
+		return req, runtime.MarshalAsJSON(req, *options.Body)
+	}
 	return req, nil
 }
 
 // ReplicationStatus - Get the status of the replication
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -1069,7 +1070,7 @@ func (client *VolumesClient) replicationStatusCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1086,7 +1087,7 @@ func (client *VolumesClient) replicationStatusHandleResponse(resp *http.Response
 
 // BeginResetCifsPassword - Reset cifs password from volume
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -1107,7 +1108,7 @@ func (client *VolumesClient) BeginResetCifsPassword(ctx context.Context, resourc
 
 // ResetCifsPassword - Reset cifs password from volume
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 func (client *VolumesClient) resetCifsPassword(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginResetCifsPasswordOptions) (*http.Response, error) {
 	req, err := client.resetCifsPasswordCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
@@ -1151,7 +1152,7 @@ func (client *VolumesClient) resetCifsPasswordCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -1159,7 +1160,7 @@ func (client *VolumesClient) resetCifsPasswordCreateRequest(ctx context.Context,
 // BeginResyncReplication - Resync the connection on the destination volume. If the operation is ran on the source volume
 // it will reverse-resync the connection and sync from destination to source.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -1183,7 +1184,7 @@ func (client *VolumesClient) BeginResyncReplication(ctx context.Context, resourc
 // ResyncReplication - Resync the connection on the destination volume. If the operation is ran on the source volume it will
 // reverse-resync the connection and sync from destination to source.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 func (client *VolumesClient) resyncReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginResyncReplicationOptions) (*http.Response, error) {
 	req, err := client.resyncReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
@@ -1227,14 +1228,14 @@ func (client *VolumesClient) resyncReplicationCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // BeginRevert - Revert a volume to the snapshot specified in the body
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -1257,7 +1258,7 @@ func (client *VolumesClient) BeginRevert(ctx context.Context, resourceGroupName 
 
 // Revert - Revert a volume to the snapshot specified in the body
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 func (client *VolumesClient) revert(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumeRevert, options *VolumesClientBeginRevertOptions) (*http.Response, error) {
 	req, err := client.revertCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 	if err != nil {
@@ -1301,7 +1302,7 @@ func (client *VolumesClient) revertCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, runtime.MarshalAsJSON(req, body)
 }
@@ -1309,7 +1310,7 @@ func (client *VolumesClient) revertCreateRequest(ctx context.Context, resourceGr
 // BeginRevertRelocation - Reverts the volume relocation process, cleans up the new volume and starts using the former-existing
 // volume.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -1331,7 +1332,7 @@ func (client *VolumesClient) BeginRevertRelocation(ctx context.Context, resource
 // RevertRelocation - Reverts the volume relocation process, cleans up the new volume and starts using the former-existing
 // volume.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 func (client *VolumesClient) revertRelocation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginRevertRelocationOptions) (*http.Response, error) {
 	req, err := client.revertRelocationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
@@ -1375,14 +1376,14 @@ func (client *VolumesClient) revertRelocationCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // BeginUpdate - Patch the specified volume
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -1405,7 +1406,7 @@ func (client *VolumesClient) BeginUpdate(ctx context.Context, resourceGroupName 
 
 // Update - Patch the specified volume
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
+// Generated from API version 2022-05-01
 func (client *VolumesClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumePatch, options *VolumesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 	if err != nil {
@@ -1449,7 +1450,7 @@ func (client *VolumesClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

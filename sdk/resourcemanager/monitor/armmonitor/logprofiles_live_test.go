@@ -140,7 +140,7 @@ func (testsuite *LogprofilesTestSuite) Prepare() {
 
 // Microsoft.Insights/actionGroups
 func (testsuite *LogprofilesTestSuite) TestActiongroups() {
-	logProfileName := testutil.GenerateAlphaNumericID(testsuite.T(), "logprofilena", 6)
+	logProfileName := "logprofilena"
 	var err error
 	// From step LogProfiles_CreateOrUpdate
 	logProfilesClient, err := armmonitor.NewLogProfilesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)

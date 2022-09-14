@@ -19,7 +19,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "225",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:50:47 GMT",
+        "Date": "Wed, 14 Sep 2022 08:18:15 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -27,7 +27,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-writes": "1178",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T055048Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T081816Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg",
@@ -40,7 +40,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/privateLinkScopes/linkscopena5vwH4y?api-version=2019-10-17-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/privateLinkScopes/linkscopenaMIm8a3?api-version=2019-10-17-preview",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -59,7 +59,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "805",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:50:51 GMT",
+        "Date": "Wed, 14 Sep 2022 08:18:18 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Request-Context": "appId=cid-v1:00000000-0000-0000-0000-000000000000",
@@ -69,12 +69,12 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-writes": "1177",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T055052Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T081819Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/privatelinkscopes/linkscopena5vwH4y",
-        "name": "linkscopena5vwH4y",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/privatelinkscopes/linkscopenaMIm8a3",
+        "name": "linkscopenaMIm8a3",
         "type": "microsoft.insights/privatelinkscopes",
         "location": "global",
         "tags": {},
@@ -83,10 +83,10 @@
         "systemData": {
           "createdBy": "00000000-0000-0000-0000-000000000000",
           "createdByType": "Application",
-          "createdAt": "2022-09-14T05:50:50.9671005Z",
+          "createdAt": "2022-09-14T08:18:17.6065745Z",
           "lastModifiedBy": "00000000-0000-0000-0000-000000000000",
           "lastModifiedByType": "Application",
-          "lastModifiedAt": "2022-09-14T05:50:50.9671005Z"
+          "lastModifiedAt": "2022-09-14T08:18:17.6065745Z"
         },
         "properties": {
           "scopeId": "00000000-0000-0000-0000-000000000000",
@@ -108,28 +108,26 @@
       "ResponseHeaders": {
         "Access-Control-Expose-Headers": "Request-Context",
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
+        "Content-Length": "935",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:50:51 GMT",
+        "Date": "Wed, 14 Sep 2022 08:18:18 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Request-Context": "appId=cid-v1:00000000-0000-0000-0000-000000000000",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11920",
+        "x-ms-ratelimit-remaining-subscription-reads": "11924",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T055052Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T081819Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "value": [
           {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/privatelinkscopes/linkscopena5vwH4y",
-            "name": "linkscopena5vwH4y",
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/privatelinkscopes/linkscopenaMIm8a3",
+            "name": "linkscopenaMIm8a3",
             "type": "microsoft.insights/privatelinkscopes",
             "location": "global",
             "tags": {},
@@ -138,10 +136,10 @@
             "systemData": {
               "createdBy": "00000000-0000-0000-0000-000000000000",
               "createdByType": "Application",
-              "createdAt": "2022-09-14T05:50:50.9671005Z",
+              "createdAt": "2022-09-14T08:18:17.6065745Z",
               "lastModifiedBy": "00000000-0000-0000-0000-000000000000",
               "lastModifiedByType": "Application",
-              "lastModifiedAt": "2022-09-14T05:50:50.9671005Z"
+              "lastModifiedAt": "2022-09-14T08:18:17.6065745Z"
             },
             "properties": {
               "scopeId": "00000000-0000-0000-0000-000000000000",
@@ -166,28 +164,26 @@
       "ResponseHeaders": {
         "Access-Control-Expose-Headers": "Request-Context",
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
+        "Content-Length": "935",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:50:52 GMT",
+        "Date": "Wed, 14 Sep 2022 08:18:18 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Request-Context": "appId=cid-v1:00000000-0000-0000-0000-000000000000",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11919",
+        "x-ms-ratelimit-remaining-subscription-reads": "11923",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T055052Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T081819Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "value": [
           {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/privatelinkscopes/linkscopena5vwH4y",
-            "name": "linkscopena5vwH4y",
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/privatelinkscopes/linkscopenaMIm8a3",
+            "name": "linkscopenaMIm8a3",
             "type": "microsoft.insights/privatelinkscopes",
             "location": "global",
             "tags": {},
@@ -196,10 +192,10 @@
             "systemData": {
               "createdBy": "00000000-0000-0000-0000-000000000000",
               "createdByType": "Application",
-              "createdAt": "2022-09-14T05:50:50.9671005Z",
+              "createdAt": "2022-09-14T08:18:17.6065745Z",
               "lastModifiedBy": "00000000-0000-0000-0000-000000000000",
               "lastModifiedByType": "Application",
-              "lastModifiedAt": "2022-09-14T05:50:50.9671005Z"
+              "lastModifiedAt": "2022-09-14T08:18:17.6065745Z"
             },
             "properties": {
               "scopeId": "00000000-0000-0000-0000-000000000000",
@@ -211,7 +207,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/privateLinkScopes/linkscopena5vwH4y?api-version=2019-10-17-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/privateLinkScopes/linkscopenaMIm8a3?api-version=2019-10-17-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -224,26 +220,24 @@
       "ResponseHeaders": {
         "Access-Control-Expose-Headers": "Request-Context",
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
+        "Content-Length": "805",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:50:52 GMT",
+        "Date": "Wed, 14 Sep 2022 08:18:19 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Request-Context": "appId=cid-v1:00000000-0000-0000-0000-000000000000",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11918",
+        "x-ms-ratelimit-remaining-subscription-reads": "11922",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T055053Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T081820Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/privatelinkscopes/linkscopena5vwH4y",
-        "name": "linkscopena5vwH4y",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/privatelinkscopes/linkscopenaMIm8a3",
+        "name": "linkscopenaMIm8a3",
         "type": "microsoft.insights/privatelinkscopes",
         "location": "global",
         "tags": {},
@@ -252,10 +246,10 @@
         "systemData": {
           "createdBy": "00000000-0000-0000-0000-000000000000",
           "createdByType": "Application",
-          "createdAt": "2022-09-14T05:50:50.9671005Z",
+          "createdAt": "2022-09-14T08:18:17.6065745Z",
           "lastModifiedBy": "00000000-0000-0000-0000-000000000000",
           "lastModifiedByType": "Application",
-          "lastModifiedAt": "2022-09-14T05:50:50.9671005Z"
+          "lastModifiedAt": "2022-09-14T08:18:17.6065745Z"
         },
         "properties": {
           "scopeId": "00000000-0000-0000-0000-000000000000",
@@ -264,7 +258,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/privateLinkScopes/linkscopena5vwH4y?api-version=2019-10-17-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/privateLinkScopes/linkscopenaMIm8a3?api-version=2019-10-17-preview",
       "RequestMethod": "PATCH",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -284,26 +278,24 @@
       "ResponseHeaders": {
         "Access-Control-Expose-Headers": "Request-Context",
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
+        "Content-Length": "854",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:50:54 GMT",
+        "Date": "Wed, 14 Sep 2022 08:18:21 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Request-Context": "appId=cid-v1:00000000-0000-0000-0000-000000000000",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-writes": "1176",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T055055Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T081822Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/privatelinkscopes/linkscopena5vwH4y",
-        "name": "linkscopena5vwH4y",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/privatelinkscopes/linkscopenaMIm8a3",
+        "name": "linkscopenaMIm8a3",
         "type": "microsoft.insights/privatelinkscopes",
         "location": "global",
         "tags": {
@@ -315,10 +307,10 @@
         "systemData": {
           "createdBy": "00000000-0000-0000-0000-000000000000",
           "createdByType": "Application",
-          "createdAt": "2022-09-14T05:50:50.9671005Z",
+          "createdAt": "2022-09-14T08:18:17.6065745Z",
           "lastModifiedBy": "00000000-0000-0000-0000-000000000000",
           "lastModifiedByType": "Application",
-          "lastModifiedAt": "2022-09-14T05:50:53.9670933Z"
+          "lastModifiedAt": "2022-09-14T08:18:20.4503403Z"
         },
         "properties": {
           "scopeId": "00000000-0000-0000-0000-000000000000",
@@ -327,7 +319,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/privateLinkScopes/linkscopena5vwH4y?api-version=2019-10-17-preview",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/privateLinkScopes/linkscopenaMIm8a3?api-version=2019-10-17-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -341,9 +333,9 @@
         "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/privatelinkscopeoperationstatuses/00000000-0000-0000-0000-000000000000?api-version=2019-10-17-preview",
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Wed, 14 Sep 2022 05:50:57 GMT",
+        "Date": "Wed, 14 Sep 2022 08:18:22 GMT",
         "Expires": "-1",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/microsoft.insights/privatelinkscopes/linkscopena5vwh4y/operationresults/00000000-0000-0000-0000-000000000000?api-version=2019-10-17-preview",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/microsoft.insights/privatelinkscopes/linkscopenamim8a3/operationresults/00000000-0000-0000-0000-000000000000?api-version=2019-10-17-preview",
         "Pragma": "no-cache",
         "Request-Context": "appId=cid-v1:00000000-0000-0000-0000-000000000000",
         "Retry-After": "20",
@@ -353,7 +345,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-deletes": "14984",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T055057Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T081823Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": null
@@ -371,29 +363,27 @@
       "ResponseHeaders": {
         "Access-Control-Expose-Headers": "Request-Context",
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
+        "Content-Length": "418",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:51:17 GMT",
+        "Date": "Wed, 14 Sep 2022 08:18:43 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Request-Context": "appId=cid-v1:00000000-0000-0000-0000-000000000000",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "499",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T055118Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T081843Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/privatelinkscopeoperationstatuses/00000000-0000-0000-0000-000000000000",
         "name": "00000000-0000-0000-0000-000000000000",
         "status": "Succeeded",
-        "startTime": "2022-09-14T05:50:56.5381908Z",
-        "endTime": "2022-09-14T05:50:57.6809546Z",
+        "startTime": "2022-09-14T08:18:22.9645699Z",
+        "endTime": "2022-09-14T08:18:23.8519881Z",
         "properties": {
           "scopeId": "00000000-0000-0000-0000-000000000000"
         }
@@ -413,9 +403,9 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Wed, 14 Sep 2022 05:51:19 GMT",
+        "Date": "Wed, 14 Sep 2022 08:18:44 GMT",
         "Expires": "-1",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1HTzoyRFNESzoyRFRFU1Q6MkQ4ODEtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2021-04-01",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1HTzoyRFNESzoyRFRFU1Q6MkQ1MTYtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2021-04-01",
         "Pragma": "no-cache",
         "Retry-After": "15",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -423,12 +413,12 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-deletes": "14983",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T055119Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T081845Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
     }
   ],
   "Variables": {
-    "recordingRandomSeed": "1663133294"
+    "recordingRandomSeed": "1663142233"
   }
 }

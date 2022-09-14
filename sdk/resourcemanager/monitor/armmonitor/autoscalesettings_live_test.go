@@ -312,10 +312,7 @@ func (testsuite *AutoscalesettingsTestSuite) TestAutoscalesettings() {
 	testsuite.Require().NoError(err)
 	_, err = autoscaleSettingsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, autoscaleSettingName, armmonitor.AutoscaleSettingResource{
 		Location: to.Ptr(testsuite.location),
-		Tags: map[string]*string{
-			"key1": to.Ptr("value1"),
-			"key2": to.Ptr("value2"),
-		},
+		Tags:     map[string]*string{},
 		Properties: &armmonitor.AutoscaleSetting{
 			Enabled: to.Ptr(true),
 			Notifications: []*armmonitor.AutoscaleNotification{
@@ -329,9 +326,6 @@ func (testsuite *AutoscalesettingsTestSuite) TestAutoscalesettings() {
 					},
 					Operation: to.Ptr("Scale"),
 				}},
-			PredictiveAutoscalePolicy: &armmonitor.PredictiveAutoscalePolicy{
-				ScaleMode: to.Ptr(armmonitor.PredictiveAutoscalePolicyScaleModeEnabled),
-			},
 			Profiles: []*armmonitor.AutoscaleProfile{
 				{
 					Name: to.Ptr("adios"),
@@ -354,7 +348,7 @@ func (testsuite *AutoscalesettingsTestSuite) TestAutoscalesettings() {
 	// From step AutoscaleSettings_Update
 	_, err = autoscaleSettingsClient.Update(testsuite.ctx, testsuite.resourceGroupName, autoscaleSettingName, armmonitor.AutoscaleSettingResourcePatch{
 		Tags: map[string]*string{
-			"key1": to.Ptr("value1"),
+			"$type": to.Ptr("Microsoft.WindowsAzure.Management.Common.Storage.CasePreservedDictionary"),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -377,12 +371,6 @@ func (testsuite *AutoscalesettingsTestSuite) TestAutoscalesettings() {
 
 	// From step AutoscaleSettings_Get
 	_, err = autoscaleSettingsClient.Get(testsuite.ctx, testsuite.resourceGroupName, autoscaleSettingName, nil)
-	testsuite.Require().NoError(err)
-
-	// From step PredictiveMetric_Get
-	predictiveMetricClient, err := armmonitor.NewPredictiveMetricClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
-	testsuite.Require().NoError(err)
-	_, err = predictiveMetricClient.Get(testsuite.ctx, testsuite.resourceGroupName, autoscaleSettingName, "2021-10-14T22:00:00.000Z/2021-10-16T22:00:00.000Z", "PT1H", "Microsoft.Compute/virtualMachineScaleSets", "PercentageCPU", "Total", nil)
 	testsuite.Require().NoError(err)
 
 	// From step EventCategories_List

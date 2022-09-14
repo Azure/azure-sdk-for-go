@@ -19,7 +19,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "225",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:28:32 GMT",
+        "Date": "Wed, 14 Sep 2022 07:57:33 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -27,7 +27,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-writes": "1198",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T052833Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075733Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg",
@@ -40,7 +40,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Insights/activityLogAlerts/activitylogalertna5vwH4y?api-version=2020-10-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Insights/activityLogAlerts/activitylogalertnaMIm8a3?api-version=2020-10-01",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -77,7 +77,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "645",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:28:36 GMT",
+        "Date": "Wed, 14 Sep 2022 07:57:37 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-IIS/10.0",
@@ -88,14 +88,14 @@
         "x-ms-ratelimit-remaining-subscription-writes": "1197",
         "x-ms-request-id": [
           "00000000-0000-0000-0000-000000000000",
-          "31513724-c80e-4df9-ac53-76814b5849f4"
+          "b1307b1b-7577-4fbe-8759-29c377ba961c"
         ],
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T052836Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075737Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/activityLogAlerts/activitylogalertna5vwH4y",
-        "name": "activitylogalertna5vwH4y",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/activityLogAlerts/activitylogalertnaMIm8a3",
+        "name": "activitylogalertnaMIm8a3",
         "type": "Microsoft.Insights/ActivityLogAlerts",
         "location": "Global",
         "properties": {
@@ -133,34 +133,30 @@
         "api-supported-versions": "2017-03-01-preview, 2017-04-01, 2020-10-01",
         "Arr-Disable-Session-Affinity": "true",
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
+        "Content-Length": "2143",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:28:36 GMT",
+        "Date": "Wed, 14 Sep 2022 07:57:37 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": [
-          "Accept-Encoding",
-          "Accept-Encoding"
-        ],
+        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11999",
         "x-ms-request-id": [
           "00000000-0000-0000-0000-000000000000",
-          "cc1ad2fc-a2a8-49ca-be05-5d53c6610c6b"
+          "c4b798be-47b6-4014-bf0a-1ef013611d24"
         ],
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T052836Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075738Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "value": [
           {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/activityLogAlerts/activitylogalertna5vwH4y",
-            "name": "activitylogalertna5vwH4y",
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/activityLogAlerts/activitylogalertnaMIm8a3",
+            "name": "activitylogalertnaMIm8a3",
             "type": "Microsoft.Insights/ActivityLogAlerts",
             "location": "Global",
             "tags": {},
@@ -246,34 +242,30 @@
         "api-supported-versions": "2017-03-01-preview, 2017-04-01, 2020-10-01",
         "Arr-Disable-Session-Affinity": "true",
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
+        "Content-Length": "785",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:28:36 GMT",
+        "Date": "Wed, 14 Sep 2022 07:57:37 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": [
-          "Accept-Encoding",
-          "Accept-Encoding"
-        ],
+        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11998",
         "x-ms-request-id": [
           "00000000-0000-0000-0000-000000000000",
-          "85f7bd60-700f-45d8-89d7-732f0290b079"
+          "606ba504-15d0-479c-a43d-878413844788"
         ],
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T052836Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075738Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "value": [
           {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/activityLogAlerts/activitylogalertna5vwH4y",
-            "name": "activitylogalertna5vwH4y",
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/activityLogAlerts/activitylogalertnaMIm8a3",
+            "name": "activitylogalertnaMIm8a3",
             "type": "Microsoft.Insights/ActivityLogAlerts",
             "location": "Global",
             "tags": {},
@@ -300,7 +292,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Insights/activityLogAlerts/activitylogalertna5vwH4y?api-version=2020-10-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Insights/activityLogAlerts/activitylogalertnaMIm8a3?api-version=2020-10-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -314,32 +306,28 @@
         "api-supported-versions": "2017-03-01-preview, 2017-04-01, 2020-10-01",
         "Arr-Disable-Session-Affinity": "true",
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
+        "Content-Length": "660",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:28:36 GMT",
+        "Date": "Wed, 14 Sep 2022 07:57:38 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": [
-          "Accept-Encoding",
-          "Accept-Encoding"
-        ],
+        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11997",
         "x-ms-request-id": [
           "00000000-0000-0000-0000-000000000000",
-          "f81c30d9-4307-44ff-84b5-d206579cf7f5"
+          "589603ca-23b6-4163-8b5b-e55a1126fd48"
         ],
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T052837Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075738Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/activityLogAlerts/activitylogalertna5vwH4y",
-        "name": "activitylogalertna5vwH4y",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/activityLogAlerts/activitylogalertnaMIm8a3",
+        "name": "activitylogalertnaMIm8a3",
         "type": "Microsoft.Insights/ActivityLogAlerts",
         "location": "Global",
         "tags": {},
@@ -364,7 +352,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Insights/activityLogAlerts/activitylogalertna5vwH4y?api-version=2020-10-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Insights/activityLogAlerts/activitylogalertnaMIm8a3?api-version=2020-10-01",
       "RequestMethod": "PATCH",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -388,32 +376,28 @@
         "api-supported-versions": "2017-03-01-preview, 2017-04-01, 2020-10-01",
         "Arr-Disable-Session-Affinity": "true",
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
+        "Content-Length": "709",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:28:39 GMT",
+        "Date": "Wed, 14 Sep 2022 07:57:40 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": [
-          "Accept-Encoding",
-          "Accept-Encoding"
-        ],
+        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-writes": "1196",
         "x-ms-request-id": [
           "00000000-0000-0000-0000-000000000000",
-          "053e53ee-51cc-41b3-a5b4-9e44b3bf9d0b"
+          "620d6422-5db2-4554-ba97-93177d5f432f"
         ],
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T052840Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075740Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/activityLogAlerts/activitylogalertna5vwH4y",
-        "name": "activitylogalertna5vwH4y",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/activityLogAlerts/activitylogalertnaMIm8a3",
+        "name": "activitylogalertnaMIm8a3",
         "type": "Microsoft.Insights/ActivityLogAlerts",
         "location": "Global",
         "tags": {
@@ -441,7 +425,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Insights/activityLogAlerts/activitylogalertna5vwH4y?api-version=2020-10-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Insights/activityLogAlerts/activitylogalertnaMIm8a3?api-version=2020-10-01",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -456,7 +440,7 @@
         "Arr-Disable-Session-Affinity": "true",
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Wed, 14 Sep 2022 05:28:43 GMT",
+        "Date": "Wed, 14 Sep 2022 07:57:44 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-IIS/10.0",
@@ -467,9 +451,9 @@
         "x-ms-ratelimit-remaining-subscription-deletes": "14997",
         "x-ms-request-id": [
           "00000000-0000-0000-0000-000000000000",
-          "09144349-485b-42bd-a8e8-83a5e01abc41"
+          "a2317f27-1263-4303-bdc8-6463db5f6e27"
         ],
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T052843Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075744Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": null
@@ -488,9 +472,9 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Wed, 14 Sep 2022 05:28:44 GMT",
+        "Date": "Wed, 14 Sep 2022 07:57:45 GMT",
         "Expires": "-1",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1HTzoyRFNESzoyRFRFU1Q6MkQzMTItRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2021-04-01",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1HTzoyRFNESzoyRFRFU1Q6MkQyODItRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2021-04-01",
         "Pragma": "no-cache",
         "Retry-After": "15",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -498,12 +482,12 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-deletes": "14996",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T052845Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075746Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
     }
   ],
   "Variables": {
-    "recordingRandomSeed": "1663133294"
+    "recordingRandomSeed": "1663142233"
   }
 }

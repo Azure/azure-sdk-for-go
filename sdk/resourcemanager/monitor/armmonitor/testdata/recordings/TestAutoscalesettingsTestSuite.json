@@ -19,7 +19,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "225",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:28:46 GMT",
+        "Date": "Wed, 14 Sep 2022 07:57:48 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -27,7 +27,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-writes": "1195",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T052846Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075748Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg",
@@ -106,11 +106,11 @@
       },
       "StatusCode": 201,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkAndSubnet_Create/operationStatuses/08585384735576601778?api-version=2021-04-01",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkAndSubnet_Create/operationStatuses/08585384646156854804?api-version=2021-04-01",
         "Cache-Control": "no-cache",
         "Content-Length": "721",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:28:49 GMT",
+        "Date": "Wed, 14 Sep 2022 07:57:51 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -118,7 +118,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-writes": "1194",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T052849Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075751Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkAndSubnet_Create",
@@ -138,8 +138,8 @@
           },
           "mode": "Incremental",
           "provisioningState": "Accepted",
-          "timestamp": "2022-09-14T05:28:48.7798065Z",
-          "duration": "PT0.0008882S",
+          "timestamp": "2022-09-14T07:57:50.8011627Z",
+          "duration": "PT0.0007656S",
           "correlationId": "00000000-0000-0000-0000-000000000000",
           "providers": [
             {
@@ -159,7 +159,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkAndSubnet_Create/operationStatuses/08585384735576601778?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkAndSubnet_Create/operationStatuses/08585384646156854804?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -170,26 +170,24 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "20",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:28:50 GMT",
+        "Date": "Wed, 14 Sep 2022 07:57:51 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11996",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T052850Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075752Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Running"
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkAndSubnet_Create/operationStatuses/08585384735576601778?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkAndSubnet_Create/operationStatuses/08585384646156854804?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -200,19 +198,17 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "22",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:29:20 GMT",
+        "Date": "Wed, 14 Sep 2022 07:58:21 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11995",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T052921Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075822Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Succeeded"
@@ -230,19 +226,17 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "1092",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:29:20 GMT",
+        "Date": "Wed, 14 Sep 2022 07:58:22 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11994",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T052921Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075823Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkAndSubnet_Create",
@@ -262,8 +256,8 @@
           },
           "mode": "Incremental",
           "provisioningState": "Succeeded",
-          "timestamp": "2022-09-14T05:29:03.0381311Z",
-          "duration": "PT14.2592128S",
+          "timestamp": "2022-09-14T07:58:05.6417913Z",
+          "duration": "PT14.8413942S",
           "correlationId": "00000000-0000-0000-0000-000000000000",
           "providers": [
             {
@@ -354,11 +348,11 @@
       },
       "StatusCode": 201,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkInterface_Create/operationStatuses/08585384735229053615?api-version=2021-04-01",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkInterface_Create/operationStatuses/08585384645810870349?api-version=2021-04-01",
         "Cache-Control": "no-cache",
         "Content-Length": "857",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:29:23 GMT",
+        "Date": "Wed, 14 Sep 2022 07:58:26 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -366,7 +360,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-writes": "1193",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T052924Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075827Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkInterface_Create",
@@ -386,8 +380,8 @@
           },
           "mode": "Incremental",
           "provisioningState": "Accepted",
-          "timestamp": "2022-09-14T05:29:23.4022335Z",
-          "duration": "PT0.0009173S",
+          "timestamp": "2022-09-14T07:58:26.7722082Z",
+          "duration": "PT0.0002044S",
           "correlationId": "00000000-0000-0000-0000-000000000000",
           "providers": [
             {
@@ -407,7 +401,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkInterface_Create/operationStatuses/08585384735229053615?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkInterface_Create/operationStatuses/08585384645810870349?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -418,26 +412,24 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "20",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:29:24 GMT",
+        "Date": "Wed, 14 Sep 2022 07:58:27 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11993",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T052924Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075828Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Running"
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkInterface_Create/operationStatuses/08585384735229053615?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkInterface_Create/operationStatuses/08585384645810870349?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -448,19 +440,17 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "22",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:29:55 GMT",
+        "Date": "Wed, 14 Sep 2022 07:58:58 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11992",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T052955Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075858Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Succeeded"
@@ -478,19 +468,17 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
-        "Content-Length": "1024",
+        "Content-Length": "1023",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:29:55 GMT",
+        "Date": "Wed, 14 Sep 2022 07:58:59 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11991",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T052955Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075859Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkInterface_Create",
@@ -510,8 +498,8 @@
           },
           "mode": "Incremental",
           "provisioningState": "Succeeded",
-          "timestamp": "2022-09-14T05:29:38.5259518Z",
-          "duration": "PT15.1246356S",
+          "timestamp": "2022-09-14T07:58:35.7543169Z",
+          "duration": "PT8.9823131S",
           "correlationId": "00000000-0000-0000-0000-000000000000",
           "providers": [
             {
@@ -676,11 +664,11 @@
       },
       "StatusCode": 201,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384734886159625?api-version=2021-04-01",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384645450194485?api-version=2021-04-01",
         "Cache-Control": "no-cache",
-        "Content-Length": "947",
+        "Content-Length": "946",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:29:59 GMT",
+        "Date": "Wed, 14 Sep 2022 07:59:02 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -688,7 +676,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-writes": "1192",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T052959Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075902Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create",
@@ -715,8 +703,8 @@
           },
           "mode": "Incremental",
           "provisioningState": "Accepted",
-          "timestamp": "2022-09-14T05:29:58.6805807Z",
-          "duration": "PT0.0001299S",
+          "timestamp": "2022-09-14T07:59:01.9103012Z",
+          "duration": "PT0.000604S",
           "correlationId": "00000000-0000-0000-0000-000000000000",
           "providers": [
             {
@@ -736,7 +724,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384734886159625?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384645450194485?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -747,26 +735,24 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "20",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:29:59 GMT",
+        "Date": "Wed, 14 Sep 2022 07:59:03 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11990",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053000Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075903Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Running"
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384734886159625?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384645450194485?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -777,26 +763,24 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "20",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:30:30 GMT",
+        "Date": "Wed, 14 Sep 2022 07:59:33 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11989",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053030Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T075933Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Running"
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384734886159625?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384645450194485?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -807,26 +791,24 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "20",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:31:01 GMT",
+        "Date": "Wed, 14 Sep 2022 08:00:03 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11988",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053101Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080004Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Running"
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384734886159625?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384645450194485?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -837,26 +819,24 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "20",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:31:31 GMT",
+        "Date": "Wed, 14 Sep 2022 08:00:34 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11987",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053131Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080035Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Running"
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384734886159625?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384645450194485?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -867,26 +847,24 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "20",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:32:01 GMT",
+        "Date": "Wed, 14 Sep 2022 08:01:05 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11986",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053202Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080105Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Running"
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384734886159625?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384645450194485?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -897,26 +875,24 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "20",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:32:32 GMT",
+        "Date": "Wed, 14 Sep 2022 08:01:35 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11985",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053232Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080136Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Running"
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384734886159625?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384645450194485?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -927,26 +903,24 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "20",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:33:03 GMT",
+        "Date": "Wed, 14 Sep 2022 08:02:06 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11984",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053304Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080206Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Running"
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384734886159625?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384645450194485?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -957,26 +931,24 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "20",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:33:34 GMT",
+        "Date": "Wed, 14 Sep 2022 08:02:37 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11983",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053334Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080237Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Running"
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384734886159625?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384645450194485?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -987,26 +959,24 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "20",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:34:05 GMT",
+        "Date": "Wed, 14 Sep 2022 08:03:07 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11982",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053405Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080308Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Running"
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384734886159625?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384645450194485?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1017,26 +987,24 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "20",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:34:36 GMT",
+        "Date": "Wed, 14 Sep 2022 08:03:38 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11981",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053436Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080338Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Running"
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384734886159625?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384645450194485?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1047,26 +1015,24 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "20",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:35:06 GMT",
+        "Date": "Wed, 14 Sep 2022 08:04:08 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11980",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053507Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080409Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Running"
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384734886159625?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384645450194485?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1077,26 +1043,24 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "20",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:35:36 GMT",
+        "Date": "Wed, 14 Sep 2022 08:04:38 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11979",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053537Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080439Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Running"
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384734886159625?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384645450194485?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1107,26 +1071,24 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "20",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:36:08 GMT",
+        "Date": "Wed, 14 Sep 2022 08:05:10 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11978",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053608Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080510Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Running"
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384734886159625?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384645450194485?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1137,49 +1099,17 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
-        "Content-Length": "20",
+        "Content-Length": "22",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:36:38 GMT",
+        "Date": "Wed, 14 Sep 2022 08:05:40 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11977",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053638Z:00000000-0000-0000-0000-000000000000"
-      },
-      "ResponseBody": {
-        "status": "Running"
-      }
-    },
-    {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create/operationStatuses/08585384734886159625?api-version=2021-04-01",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.19; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
-        "Content-Length": "22",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:37:09 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11976",
-        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053709Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080541Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Succeeded"
@@ -1197,19 +1127,17 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "1321",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:37:10 GMT",
+        "Date": "Wed, 14 Sep 2022 08:05:41 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11975",
+        "x-ms-ratelimit-remaining-subscription-reads": "11976",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053710Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080541Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/VMSS_Create",
@@ -1236,8 +1164,8 @@
           },
           "mode": "Incremental",
           "provisioningState": "Succeeded",
-          "timestamp": "2022-09-14T05:36:55.4030659Z",
-          "duration": "PT6M56.7226151S",
+          "timestamp": "2022-09-14T08:05:39.0439825Z",
+          "duration": "PT6M37.1342853S",
           "correlationId": "00000000-0000-0000-0000-000000000000",
           "providers": [
             {
@@ -1268,13 +1196,13 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Insights/autoscalesettings/autoscalesettingna5vwH4y?api-version=2022-10-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Insights/autoscalesettings/autoscalesettingnaMIm8a3?api-version=2015-04-01",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "661",
+        "Content-Length": "578",
         "Content-Type": "application/json",
         "User-Agent": "azsdk-go-armmonitor/v0.7.0 (go1.19; Windows_NT)"
       },
@@ -1295,9 +1223,6 @@
               "operation": "Scale"
             }
           ],
-          "predictiveAutoscalePolicy": {
-            "scaleMode": "Enabled"
-          },
           "profiles": [
             {
               "capacity": {
@@ -1315,17 +1240,14 @@
           ],
           "targetResourceUri": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Compute/virtualMachineScaleSets/monitorvmss"
         },
-        "tags": {
-          "key1": "value1",
-          "key2": "value2"
-        }
+        "tags": {}
       },
       "StatusCode": 201,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "989",
+        "Content-Length": "880",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:37:16 GMT",
+        "Date": "Wed, 14 Sep 2022 08:05:46 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-IIS/10.0",
@@ -1334,17 +1256,14 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-writes": "1191",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053716Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080547Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/autoscalesettings/autoscalesettingna5vwH4y",
-        "name": "autoscalesettingna5vwH4y",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/autoscalesettings/autoscalesettingnaMIm8a3",
+        "name": "autoscalesettingnaMIm8a3",
         "type": "Microsoft.Insights/autoscaleSettings",
         "location": "eastus",
-        "tags": {
-          "key1": "value1",
-          "key2": "value2"
-        },
+        "tags": {},
         "properties": {
           "profiles": [
             {
@@ -1363,7 +1282,7 @@
             }
           ],
           "enabled": true,
-          "name": "autoscalesettingna5vwH4y",
+          "name": "autoscalesettingnaMIm8a3",
           "targetResourceUri": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Compute/virtualMachineScaleSets/monitorvmss",
           "notifications": [
             {
@@ -1378,56 +1297,48 @@
               },
               "webhooks": null
             }
-          ],
-          "predictiveAutoscalePolicy": {
-            "scaleMode": "Enabled",
-            "scaleLookAheadTime": null
-          }
+          ]
         }
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Insights/autoscalesettings/autoscalesettingna5vwH4y?api-version=2022-10-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Insights/autoscalesettings/autoscalesettingnaMIm8a3?api-version=2015-04-01",
       "RequestMethod": "PATCH",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "26",
+        "Content-Length": "93",
         "Content-Type": "application/json",
         "User-Agent": "azsdk-go-armmonitor/v0.7.0 (go1.19; Windows_NT)"
       },
       "RequestBody": {
         "tags": {
-          "key1": "value1"
+          "$type": "Microsoft.WindowsAzure.Management.Common.Storage.CasePreservedDictionary"
         }
       },
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
+        "Content-Length": "880",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:37:21 GMT",
+        "Date": "Wed, 14 Sep 2022 08:05:49 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-writes": "1190",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053721Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080550Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/autoscalesettings/autoscalesettingna5vwH4y",
-        "name": "autoscalesettingna5vwH4y",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/autoscalesettings/autoscalesettingnaMIm8a3",
+        "name": "autoscalesettingnaMIm8a3",
         "type": "Microsoft.Insights/autoscaleSettings",
         "location": "eastus",
-        "tags": {
-          "key1": "value1"
-        },
+        "tags": {},
         "properties": {
           "profiles": [
             {
@@ -1446,7 +1357,7 @@
             }
           ],
           "enabled": true,
-          "name": "autoscalesettingna5vwH4y",
+          "name": "autoscalesettingnaMIm8a3",
           "targetResourceUri": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Compute/virtualMachineScaleSets/monitorvmss",
           "notifications": [
             {
@@ -1461,16 +1372,12 @@
               },
               "webhooks": null
             }
-          ],
-          "predictiveAutoscalePolicy": {
-            "scaleMode": "Enabled",
-            "scaleLookAheadTime": null
-          }
+          ]
         }
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Insights/autoscalesettings?api-version=2022-10-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Insights/autoscalesettings?api-version=2015-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1482,31 +1389,27 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
+        "Content-Length": "926",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:37:21 GMT",
+        "Date": "Wed, 14 Sep 2022 08:05:50 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11974",
+        "x-ms-ratelimit-remaining-subscription-reads": "11975",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053721Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080550Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "value": [
           {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/autoscalesettings/autoscalesettingna5vwH4y",
-            "name": "autoscalesettingna5vwH4y",
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/autoscalesettings/autoscalesettingnaMIm8a3",
+            "name": "autoscalesettingnaMIm8a3",
             "type": "Microsoft.Insights/autoscaleSettings",
             "location": "eastus",
-            "tags": {
-              "key1": "value1"
-            },
+            "tags": {},
             "properties": {
               "profiles": [
                 {
@@ -1525,7 +1428,7 @@
                 }
               ],
               "enabled": true,
-              "name": "autoscalesettingna5vwH4y",
+              "name": "autoscalesettingnaMIm8a3",
               "targetResourceUri": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Compute/virtualMachineScaleSets/monitorvmss",
               "targetResourceLocation": "eastus",
               "notifications": [
@@ -1541,18 +1444,14 @@
                   },
                   "webhooks": null
                 }
-              ],
-              "predictiveAutoscalePolicy": {
-                "scaleMode": "Enabled",
-                "scaleLookAheadTime": null
-              }
+              ]
             }
           }
         ]
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Insights/autoscalesettings?api-version=2022-10-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Insights/autoscalesettings?api-version=2015-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1564,31 +1463,27 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
+        "Content-Length": "892",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:37:21 GMT",
+        "Date": "Wed, 14 Sep 2022 08:05:50 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11973",
+        "x-ms-ratelimit-remaining-subscription-reads": "11974",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053721Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080550Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "value": [
           {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/autoscalesettings/autoscalesettingna5vwH4y",
-            "name": "autoscalesettingna5vwH4y",
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/autoscalesettings/autoscalesettingnaMIm8a3",
+            "name": "autoscalesettingnaMIm8a3",
             "type": "Microsoft.Insights/autoscaleSettings",
             "location": "eastus",
-            "tags": {
-              "key1": "value1"
-            },
+            "tags": {},
             "properties": {
               "profiles": [
                 {
@@ -1607,7 +1502,7 @@
                 }
               ],
               "enabled": true,
-              "name": "autoscalesettingna5vwH4y",
+              "name": "autoscalesettingnaMIm8a3",
               "targetResourceUri": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Compute/virtualMachineScaleSets/monitorvmss",
               "notifications": [
                 {
@@ -1622,18 +1517,14 @@
                   },
                   "webhooks": null
                 }
-              ],
-              "predictiveAutoscalePolicy": {
-                "scaleMode": "Enabled",
-                "scaleLookAheadTime": null
-              }
+              ]
             }
           }
         ]
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Insights/autoscalesettings/autoscalesettingna5vwH4y?api-version=2022-10-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Insights/autoscalesettings/autoscalesettingnaMIm8a3?api-version=2015-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1645,29 +1536,25 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
+        "Content-Length": "880",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:37:22 GMT",
+        "Date": "Wed, 14 Sep 2022 08:05:51 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11972",
+        "x-ms-ratelimit-remaining-subscription-reads": "11973",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053722Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080551Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/autoscalesettings/autoscalesettingna5vwH4y",
-        "name": "autoscalesettingna5vwH4y",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/microsoft.insights/autoscalesettings/autoscalesettingnaMIm8a3",
+        "name": "autoscalesettingnaMIm8a3",
         "type": "Microsoft.Insights/autoscaleSettings",
         "location": "eastus",
-        "tags": {
-          "key1": "value1"
-        },
+        "tags": {},
         "properties": {
           "profiles": [
             {
@@ -1686,7 +1573,7 @@
             }
           ],
           "enabled": true,
-          "name": "autoscalesettingna5vwH4y",
+          "name": "autoscalesettingnaMIm8a3",
           "targetResourceUri": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Compute/virtualMachineScaleSets/monitorvmss",
           "notifications": [
             {
@@ -1701,48 +1588,8 @@
               },
               "webhooks": null
             }
-          ],
-          "predictiveAutoscalePolicy": {
-            "scaleMode": "Enabled",
-            "scaleLookAheadTime": null
-          }
+          ]
         }
-      }
-    },
-    {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Insights/autoscalesettings/autoscalesettingna5vwH4y/predictiveMetrics?aggregation=Total\u0026api-version=2022-10-01\u0026interval=PT1H\u0026metricName=PercentageCPU\u0026metricNamespace=Microsoft.Compute%2FvirtualMachineScaleSets\u0026timespan=2021-10-14T22%3A00%3A00.000Z%2F2021-10-16T22%3A00%3A00.000Z",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armmonitor/v0.7.0 (go1.19; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:37:24 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Server": "Microsoft-IIS/10.0",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11971",
-        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053725Z:00000000-0000-0000-0000-000000000000"
-      },
-      "ResponseBody": {
-        "timespan": "2021-10-14T22:00:00.000Z/2021-10-16T22:00:00.000Z",
-        "interval": "PT1H",
-        "metricName": "PercentageCPU;-1",
-        "targetResourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Compute/virtualMachineScaleSets/monitorvmss",
-        "data": []
       }
     },
     {
@@ -1758,23 +1605,19 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
+        "Content-Length": "443",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:37:24 GMT",
+        "Date": "Wed, 14 Sep 2022 08:05:51 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": [
-          "Accept-Encoding",
-          "Accept-Encoding"
-        ],
+        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-tenant-reads": "11999",
-        "x-ms-request-id": "SouthEastAsia_382163dc9a184893b22e8219d475e74f_637987306451652500",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053725Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-request-id": "SouthEastAsia_3309898e6b124f0fb58a3518eac8eb35_637987395516199954",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080551Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "value": [
@@ -1826,20 +1669,18 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
+        "Content-Length": "178432",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 14 Sep 2022 05:37:24 GMT",
+        "Date": "Wed, 14 Sep 2022 08:05:51 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-tenant-reads": "11998",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053725Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080551Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "value": [
@@ -8940,7 +8781,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Insights/autoscalesettings/autoscalesettingna5vwH4y?api-version=2022-10-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Insights/autoscalesettings/autoscalesettingnaMIm8a3?api-version=2015-04-01",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -8953,7 +8794,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Wed, 14 Sep 2022 05:37:28 GMT",
+        "Date": "Wed, 14 Sep 2022 08:05:54 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-IIS/10.0",
@@ -8962,7 +8803,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-deletes": "14995",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053729Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080555Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
     },
@@ -8980,9 +8821,9 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Wed, 14 Sep 2022 05:37:31 GMT",
+        "Date": "Wed, 14 Sep 2022 08:05:57 GMT",
         "Expires": "-1",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1HTzoyRFNESzoyRFRFU1Q6MkQ4NDYtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2021-04-01",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1HTzoyRFNESzoyRFRFU1Q6MkQzNS1FQVNUVVMiLCJqb2JMb2NhdGlvbiI6ImVhc3R1cyJ9?api-version=2021-04-01",
         "Pragma": "no-cache",
         "Retry-After": "15",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -8990,12 +8831,12 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-deletes": "14994",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T053732Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20220914T080558Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
     }
   ],
   "Variables": {
-    "recordingRandomSeed": "1663133294"
+    "recordingRandomSeed": "1663142233"
   }
 }

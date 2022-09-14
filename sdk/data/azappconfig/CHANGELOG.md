@@ -3,12 +3,7 @@
 ## 0.4.1 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Added `NewListSettingsPager`.
 
 ## 0.4.0 (2022-05-18)
 

@@ -223,7 +223,6 @@ func (client *ProximityPlacementGroupsClient) getHandleResponse(resp *http.Respo
 }
 
 // NewListByResourceGroupPager - Lists all proximity placement groups in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // resourceGroupName - The name of the resource group.
 // options - ProximityPlacementGroupsClientListByResourceGroupOptions contains the optional parameters for the ProximityPlacementGroupsClient.ListByResourceGroup
@@ -288,7 +287,6 @@ func (client *ProximityPlacementGroupsClient) listByResourceGroupHandleResponse(
 }
 
 // NewListBySubscriptionPager - Lists all proximity placement groups in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // options - ProximityPlacementGroupsClientListBySubscriptionOptions contains the optional parameters for the ProximityPlacementGroupsClient.ListBySubscription
 // method.

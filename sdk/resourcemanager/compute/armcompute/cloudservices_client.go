@@ -62,12 +62,11 @@ func NewCloudServicesClient(subscriptionID string, credential azcore.TokenCreden
 // Generated from API version 2022-04-04
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
-// parameters - The cloud service object.
 // options - CloudServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the CloudServicesClient.BeginCreateOrUpdate
 // method.
-func (client *CloudServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, parameters CloudService, options *CloudServicesClientBeginCreateOrUpdateOptions) (*runtime.Poller[CloudServicesClientCreateOrUpdateResponse], error) {
+func (client *CloudServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginCreateOrUpdateOptions) (*runtime.Poller[CloudServicesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, cloudServiceName, parameters, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, cloudServiceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -80,8 +79,8 @@ func (client *CloudServicesClient) BeginCreateOrUpdate(ctx context.Context, reso
 // CreateOrUpdate - Create or update a cloud service. Please note some properties can be set only during cloud service creation.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-04
-func (client *CloudServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, parameters CloudService, options *CloudServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, cloudServiceName, parameters, options)
+func (client *CloudServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +95,7 @@ func (client *CloudServicesClient) createOrUpdate(ctx context.Context, resourceG
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CloudServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, parameters CloudService, options *CloudServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *CloudServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -118,7 +117,10 @@ func (client *CloudServicesClient) createOrUpdateCreateRequest(ctx context.Conte
 	reqQP.Set("api-version", "2022-04-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, parameters)
+	if options != nil && options.Parameters != nil {
+		return req, runtime.MarshalAsJSON(req, *options.Parameters)
+	}
+	return req, nil
 }
 
 // BeginDelete - Deletes a cloud service.
@@ -365,7 +367,6 @@ func (client *CloudServicesClient) getInstanceViewHandleResponse(resp *http.Resp
 
 // NewListPager - Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the
 // next page of Cloud Services. Do this till nextLink is null to fetch all the Cloud Services.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-04
 // resourceGroupName - Name of the resource group.
 // options - CloudServicesClientListOptions contains the optional parameters for the CloudServicesClient.List method.
@@ -431,7 +432,6 @@ func (client *CloudServicesClient) listHandleResponse(resp *http.Response) (Clou
 // NewListAllPager - Gets a list of all cloud services in the subscription, regardless of the associated resource group. Use
 // nextLink property in the response to get the next page of Cloud Services. Do this till nextLink
 // is null to fetch all the Cloud Services.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-04
 // options - CloudServicesClientListAllOptions contains the optional parameters for the CloudServicesClient.ListAll method.
 func (client *CloudServicesClient) NewListAllPager(options *CloudServicesClientListAllOptions) *runtime.Pager[CloudServicesClientListAllResponse] {
@@ -823,12 +823,11 @@ func (client *CloudServicesClient) startCreateRequest(ctx context.Context, resou
 // Generated from API version 2022-04-04
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
-// parameters - The cloud service object.
 // options - CloudServicesClientBeginUpdateOptions contains the optional parameters for the CloudServicesClient.BeginUpdate
 // method.
-func (client *CloudServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, parameters CloudServiceUpdate, options *CloudServicesClientBeginUpdateOptions) (*runtime.Poller[CloudServicesClientUpdateResponse], error) {
+func (client *CloudServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginUpdateOptions) (*runtime.Poller[CloudServicesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, cloudServiceName, parameters, options)
+		resp, err := client.update(ctx, resourceGroupName, cloudServiceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -841,8 +840,8 @@ func (client *CloudServicesClient) BeginUpdate(ctx context.Context, resourceGrou
 // Update - Update a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-04
-func (client *CloudServicesClient) update(ctx context.Context, resourceGroupName string, cloudServiceName string, parameters CloudServiceUpdate, options *CloudServicesClientBeginUpdateOptions) (*http.Response, error) {
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudServiceName, parameters, options)
+func (client *CloudServicesClient) update(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginUpdateOptions) (*http.Response, error) {
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -857,7 +856,7 @@ func (client *CloudServicesClient) update(ctx context.Context, resourceGroupName
 }
 
 // updateCreateRequest creates the Update request.
-func (client *CloudServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, parameters CloudServiceUpdate, options *CloudServicesClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *CloudServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -879,5 +878,8 @@ func (client *CloudServicesClient) updateCreateRequest(ctx context.Context, reso
 	reqQP.Set("api-version", "2022-04-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, parameters)
+	if options != nil && options.Parameters != nil {
+		return req, runtime.MarshalAsJSON(req, *options.Parameters)
+	}
+	return req, nil
 }

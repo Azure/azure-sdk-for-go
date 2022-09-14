@@ -274,7 +274,6 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) getHandleResponse(resp 
 }
 
 // NewListPager - The operation to get all run commands of an instance in Virtual Machine Scaleset.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // resourceGroupName - The name of the resource group.
 // vmScaleSetName - The name of the VM scale set.

@@ -218,7 +218,6 @@ func (client *AvailabilitySetsClient) getHandleResponse(resp *http.Response) (Av
 }
 
 // NewListPager - Lists all availability sets in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // resourceGroupName - The name of the resource group.
 // options - AvailabilitySetsClientListOptions contains the optional parameters for the AvailabilitySetsClient.List method.
@@ -283,7 +282,6 @@ func (client *AvailabilitySetsClient) listHandleResponse(resp *http.Response) (A
 
 // NewListAvailableSizesPager - Lists all available virtual machine sizes that can be used to create a new virtual machine
 // in an existing availability set.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // resourceGroupName - The name of the resource group.
 // availabilitySetName - The name of the availability set.
@@ -347,7 +345,6 @@ func (client *AvailabilitySetsClient) listAvailableSizesHandleResponse(resp *htt
 }
 
 // NewListBySubscriptionPager - Lists all availability sets in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // options - AvailabilitySetsClientListBySubscriptionOptions contains the optional parameters for the AvailabilitySetsClient.ListBySubscription
 // method.

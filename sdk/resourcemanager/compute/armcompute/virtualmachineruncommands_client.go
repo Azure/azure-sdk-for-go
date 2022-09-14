@@ -316,7 +316,6 @@ func (client *VirtualMachineRunCommandsClient) getByVirtualMachineHandleResponse
 }
 
 // NewListPager - Lists all available run commands for a subscription in a location.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // location - The location upon which run commands is queried.
 // options - VirtualMachineRunCommandsClientListOptions contains the optional parameters for the VirtualMachineRunCommandsClient.List
@@ -381,7 +380,6 @@ func (client *VirtualMachineRunCommandsClient) listHandleResponse(resp *http.Res
 }
 
 // NewListByVirtualMachinePager - The operation to get all run commands of a Virtual Machine.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // resourceGroupName - The name of the resource group.
 // vmName - The name of the virtual machine containing the run command.

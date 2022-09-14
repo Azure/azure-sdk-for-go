@@ -585,12 +585,6 @@ type CapacityReservationsClientListByCapacityReservationGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CloudError - An error response from the Compute service.
-type CloudError struct {
-	// Api error.
-	Error *APIError `json:"error,omitempty"`
-}
-
 // CloudService - Describes the cloud service.
 type CloudService struct {
 	// REQUIRED; Resource location.
@@ -961,6 +955,8 @@ type CloudServiceVaultSecretGroup struct {
 // CloudServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the CloudServicesClient.BeginCreateOrUpdate
 // method.
 type CloudServicesClientBeginCreateOrUpdateOptions struct {
+	// The cloud service object.
+	Parameters *CloudService
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1018,6 +1014,8 @@ type CloudServicesClientBeginStartOptions struct {
 
 // CloudServicesClientBeginUpdateOptions contains the optional parameters for the CloudServicesClient.BeginUpdate method.
 type CloudServicesClientBeginUpdateOptions struct {
+	// The cloud service object.
+	Parameters *CloudServiceUpdate
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1046,6 +1044,8 @@ type CloudServicesClientListOptions struct {
 // CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions contains the optional parameters for the CloudServicesUpdateDomainClient.BeginWalkUpdateDomain
 // method.
 type CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions struct {
+	// The update domain object.
+	Parameters *UpdateDomain
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1274,6 +1274,11 @@ type CreationData struct {
 
 	// Logical sector size in bytes for Ultra disks. Supported values are 512 ad 4096. 4096 is the default.
 	LogicalSectorSize *int32 `json:"logicalSectorSize,omitempty"`
+
+	// Set this flag to true to get a boost on the performance target of the disk deployed, see here on the respective performance
+	// target. This flag can only be set on disk creation time and cannot be
+	// disabled after enabled.
+	PerformancePlus *bool `json:"performancePlus,omitempty"`
 
 	// If createOption is ImportSecure, this is the URI of a blob to be imported into VM guest state.
 	SecurityDataURI *string `json:"securityDataUri,omitempty"`
@@ -2090,6 +2095,12 @@ type DiskProperties struct {
 	// The Operating System type.
 	OSType *OperatingSystemTypes `json:"osType,omitempty"`
 
+	// Setting this property to true improves reliability and performance of data disks that are frequently (more than 5 times
+	// a day) by detached from one virtual machine and attached to another. This
+	// property should not be set for disks that are not detached and attached frequently as it causes the disks to not align
+	// with the fault domain of the virtual machine.
+	OptimizedForFrequentAttach *bool `json:"optimizedForFrequentAttach,omitempty"`
+
 	// Policy for controlling export on the disk.
 	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 
@@ -2109,6 +2120,9 @@ type DiskProperties struct {
 	// Performance tier of the disk (e.g, P4, S10) as described here: https://azure.microsoft.com/en-us/pricing/details/managed-disks/.
 	// Does not apply to Ultra disks.
 	Tier *string `json:"tier,omitempty"`
+
+	// READ-ONLY; Latest time when bursting was last enabled on a disk.
+	BurstingEnabledTime *time.Time `json:"burstingEnabledTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; The size of the disk in bytes. This field is read only.
 	DiskSizeBytes *int64 `json:"diskSizeBytes,omitempty" azure:"ro"`
@@ -2350,6 +2364,12 @@ type DiskUpdateProperties struct {
 
 	// the Operating System type.
 	OSType *OperatingSystemTypes `json:"osType,omitempty"`
+
+	// Setting this property to true improves reliability and performance of data disks that are frequently (more than 5 times
+	// a day) by detached from one virtual machine and attached to another. This
+	// property should not be set for disks that are not detached and attached frequently as it causes the disks to not align
+	// with the fault domain of the virtual machine.
+	OptimizedForFrequentAttach *bool `json:"optimizedForFrequentAttach,omitempty"`
 
 	// Policy for controlling export on the disk.
 	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
@@ -3448,7 +3468,7 @@ type ImageListResult struct {
 
 // ImageOSDisk - Describes an Operating System disk.
 type ImageOSDisk struct {
-	// REQUIRED; The OS State.
+	// REQUIRED; The OS State. For managed images, use Generalized.
 	OSState *OperatingSystemStateTypes `json:"osState,omitempty"`
 
 	// REQUIRED; This property allows you to specify the type of the OS that is included in the disk if creating a VM from a custom
@@ -5896,7 +5916,7 @@ type SharedGalleryOSDiskImage struct {
 // SharingProfile - Profile for gallery sharing to subscription or tenant
 type SharingProfile struct {
 	// Information of community gallery if current gallery is shared to community.
-	CommunityGalleryInfo interface{} `json:"communityGalleryInfo,omitempty"`
+	CommunityGalleryInfo *CommunityGalleryInfo `json:"communityGalleryInfo,omitempty"`
 
 	// This property allows you to specify the permission of sharing gallery.
 	// Possible values are:
@@ -6045,6 +6065,10 @@ type SnapshotProperties struct {
 
 	// READ-ONLY; The state of the snapshot.
 	DiskState *DiskState `json:"diskState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Incremental snapshots for a disk share an incremental snapshot family id. The Get Page Range Diff API can only
+	// be called on incremental snapshots with the same family id.
+	IncrementalSnapshotFamilyID *string `json:"incrementalSnapshotFamilyId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The disk provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
@@ -6237,6 +6261,9 @@ type SupportedCapabilities struct {
 
 	// CPU architecture supported by an OS disk.
 	Architecture *Architecture `json:"architecture,omitempty"`
+
+	// The disk controllers that an OS disk supports. If set it can be SCSI or SCSI, NVME or NVME, SCSI.
+	DiskControllerTypes *string `json:"diskControllerTypes,omitempty"`
 }
 
 // SystemData - The system meta data relating to this resource.

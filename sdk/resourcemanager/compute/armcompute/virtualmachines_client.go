@@ -691,7 +691,6 @@ func (client *VirtualMachinesClient) instanceViewHandleResponse(resp *http.Respo
 
 // NewListPager - Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response
 // to get the next page of virtual machines.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // resourceGroupName - The name of the resource group.
 // options - VirtualMachinesClientListOptions contains the optional parameters for the VirtualMachinesClient.List method.
@@ -759,7 +758,6 @@ func (client *VirtualMachinesClient) listHandleResponse(resp *http.Response) (Vi
 
 // NewListAllPager - Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response
 // to get the next page of virtual machines.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // options - VirtualMachinesClientListAllOptions contains the optional parameters for the VirtualMachinesClient.ListAll method.
 func (client *VirtualMachinesClient) NewListAllPager(options *VirtualMachinesClientListAllOptions) *runtime.Pager[VirtualMachinesClientListAllResponse] {
@@ -824,7 +822,6 @@ func (client *VirtualMachinesClient) listAllHandleResponse(resp *http.Response) 
 }
 
 // NewListAvailableSizesPager - Lists all available virtual machine sizes to which the specified virtual machine can be resized.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // resourceGroupName - The name of the resource group.
 // vmName - The name of the virtual machine.
@@ -888,7 +885,6 @@ func (client *VirtualMachinesClient) listAvailableSizesHandleResponse(resp *http
 }
 
 // NewListByLocationPager - Gets all the virtual machines under the specified subscription for the specified location.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // location - The location for which virtual machines under the subscription are queried.
 // options - VirtualMachinesClientListByLocationOptions contains the optional parameters for the VirtualMachinesClient.ListByLocation

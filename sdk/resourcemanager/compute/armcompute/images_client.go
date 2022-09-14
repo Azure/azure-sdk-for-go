@@ -243,7 +243,6 @@ func (client *ImagesClient) getHandleResponse(resp *http.Response) (ImagesClient
 
 // NewListPager - Gets the list of Images in the subscription. Use nextLink property in the response to get the next page
 // of Images. Do this till nextLink is null to fetch all the Images.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // options - ImagesClientListOptions contains the optional parameters for the ImagesClient.List method.
 func (client *ImagesClient) NewListPager(options *ImagesClientListOptions) *runtime.Pager[ImagesClientListResponse] {
@@ -302,7 +301,6 @@ func (client *ImagesClient) listHandleResponse(resp *http.Response) (ImagesClien
 }
 
 // NewListByResourceGroupPager - Gets the list of images under a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // resourceGroupName - The name of the resource group.
 // options - ImagesClientListByResourceGroupOptions contains the optional parameters for the ImagesClient.ListByResourceGroup

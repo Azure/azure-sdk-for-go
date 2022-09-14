@@ -241,7 +241,6 @@ func (client *RestorePointCollectionsClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListPager - Gets the list of restore point collections in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // resourceGroupName - The name of the resource group.
 // options - RestorePointCollectionsClientListOptions contains the optional parameters for the RestorePointCollectionsClient.List
@@ -308,7 +307,6 @@ func (client *RestorePointCollectionsClient) listHandleResponse(resp *http.Respo
 // NewListAllPager - Gets the list of restore point collections in the subscription. Use nextLink property in the response
 // to get the next page of restore point collections. Do this till nextLink is not null to fetch all
 // the restore point collections.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // options - RestorePointCollectionsClientListAllOptions contains the optional parameters for the RestorePointCollectionsClient.ListAll
 // method.

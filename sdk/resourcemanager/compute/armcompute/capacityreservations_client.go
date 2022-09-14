@@ -268,7 +268,6 @@ func (client *CapacityReservationsClient) getHandleResponse(resp *http.Response)
 
 // NewListByCapacityReservationGroupPager - Lists all of the capacity reservations in the specified capacity reservation group.
 // Use the nextLink property in the response to get the next page of capacity reservations.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // resourceGroupName - The name of the resource group.
 // capacityReservationGroupName - The name of the capacity reservation group.

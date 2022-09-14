@@ -259,7 +259,6 @@ func (client *DedicatedHostsClient) getHandleResponse(resp *http.Response) (Dedi
 
 // NewListByHostGroupPager - Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property
 // in the response to get the next page of dedicated hosts.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // resourceGroupName - The name of the resource group.
 // hostGroupName - The name of the dedicated host group.
@@ -330,7 +329,7 @@ func (client *DedicatedHostsClient) listByHostGroupHandleResponse(resp *http.Res
 
 // BeginRestart - Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted
 // and is running. To determine the health of VMs deployed on the dedicated host after the
-// restart check the Resource Health Center in the Azure Portal. Please refer to https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview
+// restart check the Resource Health Center in the Azure Portal. Please refer to https://docs.microsoft.com/azure/service-health/resource-health-overview
 // for more details.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
@@ -353,7 +352,7 @@ func (client *DedicatedHostsClient) BeginRestart(ctx context.Context, resourceGr
 
 // Restart - Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and
 // is running. To determine the health of VMs deployed on the dedicated host after the
-// restart check the Resource Health Center in the Azure Portal. Please refer to https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview
+// restart check the Resource Health Center in the Azure Portal. Please refer to https://docs.microsoft.com/azure/service-health/resource-health-overview
 // for more details.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01

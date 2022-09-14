@@ -58,7 +58,7 @@ func NewSnapshotsClient(subscriptionID string, credential azcore.TokenCredential
 
 // BeginCreateOrUpdate - Creates or updates a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 // resourceGroupName - The name of the resource group.
 // snapshotName - The name of the snapshot that is being created. The name can't be changed after the snapshot is created.
 // Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80
@@ -80,7 +80,7 @@ func (client *SnapshotsClient) BeginCreateOrUpdate(ctx context.Context, resource
 
 // CreateOrUpdate - Creates or updates a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 func (client *SnapshotsClient) createOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, options *SnapshotsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, snapshotName, snapshot, options)
 	if err != nil {
@@ -116,7 +116,7 @@ func (client *SnapshotsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, snapshot)
@@ -124,7 +124,7 @@ func (client *SnapshotsClient) createOrUpdateCreateRequest(ctx context.Context, 
 
 // BeginDelete - Deletes a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 // resourceGroupName - The name of the resource group.
 // snapshotName - The name of the snapshot that is being created. The name can't be changed after the snapshot is created.
 // Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80
@@ -144,7 +144,7 @@ func (client *SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupNam
 
 // Delete - Deletes a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 func (client *SnapshotsClient) deleteOperation(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
@@ -180,14 +180,14 @@ func (client *SnapshotsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets information about a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 // resourceGroupName - The name of the resource group.
 // snapshotName - The name of the snapshot that is being created. The name can't be changed after the snapshot is created.
 // Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80
@@ -228,7 +228,7 @@ func (client *SnapshotsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,7 +245,7 @@ func (client *SnapshotsClient) getHandleResponse(resp *http.Response) (Snapshots
 
 // BeginGrantAccess - Grants access to a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 // resourceGroupName - The name of the resource group.
 // snapshotName - The name of the snapshot that is being created. The name can't be changed after the snapshot is created.
 // Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80
@@ -269,7 +269,7 @@ func (client *SnapshotsClient) BeginGrantAccess(ctx context.Context, resourceGro
 
 // GrantAccess - Grants access to a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 func (client *SnapshotsClient) grantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsClientBeginGrantAccessOptions) (*http.Response, error) {
 	req, err := client.grantAccessCreateRequest(ctx, resourceGroupName, snapshotName, grantAccessData, options)
 	if err != nil {
@@ -305,15 +305,14 @@ func (client *SnapshotsClient) grantAccessCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, grantAccessData)
 }
 
 // NewListPager - Lists snapshots under a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 // options - SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.List method.
 func (client *SnapshotsClient) NewListPager(options *SnapshotsClientListOptions) *runtime.Pager[SnapshotsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SnapshotsClientListResponse]{
@@ -355,7 +354,7 @@ func (client *SnapshotsClient) listCreateRequest(ctx context.Context, options *S
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -371,8 +370,7 @@ func (client *SnapshotsClient) listHandleResponse(resp *http.Response) (Snapshot
 }
 
 // NewListByResourceGroupPager - Lists snapshots under a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 // resourceGroupName - The name of the resource group.
 // options - SnapshotsClientListByResourceGroupOptions contains the optional parameters for the SnapshotsClient.ListByResourceGroup
 // method.
@@ -420,7 +418,7 @@ func (client *SnapshotsClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -437,7 +435,7 @@ func (client *SnapshotsClient) listByResourceGroupHandleResponse(resp *http.Resp
 
 // BeginRevokeAccess - Revokes access to a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 // resourceGroupName - The name of the resource group.
 // snapshotName - The name of the snapshot that is being created. The name can't be changed after the snapshot is created.
 // Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80
@@ -460,7 +458,7 @@ func (client *SnapshotsClient) BeginRevokeAccess(ctx context.Context, resourceGr
 
 // RevokeAccess - Revokes access to a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 func (client *SnapshotsClient) revokeAccess(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsClientBeginRevokeAccessOptions) (*http.Response, error) {
 	req, err := client.revokeAccessCreateRequest(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
@@ -496,14 +494,14 @@ func (client *SnapshotsClient) revokeAccessCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // BeginUpdate - Updates (patches) a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 // resourceGroupName - The name of the resource group.
 // snapshotName - The name of the snapshot that is being created. The name can't be changed after the snapshot is created.
 // Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80
@@ -524,7 +522,7 @@ func (client *SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 
 // Update - Updates (patches) a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-02
+// Generated from API version 2022-07-02
 func (client *SnapshotsClient) update(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, snapshotName, snapshot, options)
 	if err != nil {
@@ -560,7 +558,7 @@ func (client *SnapshotsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-02")
+	reqQP.Set("api-version", "2022-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, snapshot)

@@ -557,7 +557,6 @@ func (client *VirtualMachineScaleSetsClient) getInstanceViewHandleResponse(resp 
 }
 
 // NewGetOSUpgradeHistoryPager - Gets list of OS upgrades on a VM scale set instance.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // resourceGroupName - The name of the resource group.
 // vmScaleSetName - The name of the VM scale set.
@@ -627,7 +626,6 @@ func (client *VirtualMachineScaleSetsClient) getOSUpgradeHistoryHandleResponse(r
 }
 
 // NewListPager - Gets a list of all VM scale sets under a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // resourceGroupName - The name of the resource group.
 // options - VirtualMachineScaleSetsClientListOptions contains the optional parameters for the VirtualMachineScaleSetsClient.List
@@ -694,7 +692,6 @@ func (client *VirtualMachineScaleSetsClient) listHandleResponse(resp *http.Respo
 // NewListAllPager - Gets a list of all VM Scale Sets in the subscription, regardless of the associated resource group. Use
 // nextLink property in the response to get the next page of VM Scale Sets. Do this till nextLink is
 // null to fetch all the VM Scale Sets.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // options - VirtualMachineScaleSetsClientListAllOptions contains the optional parameters for the VirtualMachineScaleSetsClient.ListAll
 // method.
@@ -754,7 +751,6 @@ func (client *VirtualMachineScaleSetsClient) listAllHandleResponse(resp *http.Re
 }
 
 // NewListByLocationPager - Gets all the VM scale sets under the specified subscription for the specified location.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // location - The location for which VM scale sets under the subscription are queried.
 // options - VirtualMachineScaleSetsClientListByLocationOptions contains the optional parameters for the VirtualMachineScaleSetsClient.ListByLocation
@@ -820,7 +816,6 @@ func (client *VirtualMachineScaleSetsClient) listByLocationHandleResponse(resp *
 
 // NewListSKUsPager - Gets a list of SKUs available for your VM scale set, including the minimum and maximum VM instances
 // allowed for each SKU.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-03-01
 // resourceGroupName - The name of the resource group.
 // vmScaleSetName - The name of the VM scale set.

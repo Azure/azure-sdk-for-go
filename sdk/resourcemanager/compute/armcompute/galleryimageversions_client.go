@@ -276,7 +276,6 @@ func (client *GalleryImageVersionsClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListByGalleryImagePager - List gallery image versions in a gallery image definition.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-01-03
 // resourceGroupName - The name of the resource group.
 // galleryName - The name of the Shared Image Gallery in which the Image Definition resides.

@@ -10,6 +10,7 @@ import (
 	"net"
 	"sync"
 	"sync/atomic"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
@@ -37,6 +38,10 @@ type Client struct {
 		internal.NamespaceForAMQPLinks
 	}
 	retryOptions RetryOptions
+
+	// acceptNextTimeout controls how long the session accept can take before
+	// the server stops waiting.
+	acceptNextTimeout time.Duration
 }
 
 // ClientOptions contains options for the `NewClient` and `NewClientFromConnectionString`
@@ -262,11 +267,11 @@ func (client *Client) AcceptSessionForSubscription(ctx context.Context, topicNam
 		toReceiverOptions(options))
 
 	if err != nil {
-		return nil, err
+		return nil, internal.TransformError(err)
 	}
 
 	if err := sessionReceiver.init(ctx); err != nil {
-		return nil, err
+		return nil, internal.TransformError(err)
 	}
 
 	client.addCloseable(id, sessionReceiver)
@@ -275,56 +280,24 @@ func (client *Client) AcceptSessionForSubscription(ctx context.Context, topicNam
 
 // AcceptNextSessionForQueue accepts the next available session from a queue.
 // NOTE: this receiver is initialized immediately, not lazily.
-// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
+//
+// If the operation fails and the failure is actionable this function will return
+// an *azservicebus.Error. If, for example, the operation times out because there
+// are no available sessions it will return an *azservicebus.Error where the
+// Code is CodeTimeout.
 func (client *Client) AcceptNextSessionForQueue(ctx context.Context, queueName string, options *SessionReceiverOptions) (*SessionReceiver, error) {
-	id, cleanupOnClose := client.getCleanupForCloseable()
-	sessionReceiver, err := newSessionReceiver(
-		ctx,
-		newSessionReceiverArgs{
-			sessionID:      nil,
-			ns:             client.namespace,
-			entity:         entity{Queue: queueName},
-			cleanupOnClose: cleanupOnClose,
-			retryOptions:   client.retryOptions,
-		}, toReceiverOptions(options))
-
-	if err != nil {
-		return nil, err
-	}
-
-	if err := sessionReceiver.init(ctx); err != nil {
-		return nil, err
-	}
-
-	client.addCloseable(id, sessionReceiver)
-	return sessionReceiver, nil
+	return client.acceptNextSessionForEntity(ctx, entity{Queue: queueName}, options)
 }
 
 // AcceptNextSessionForSubscription accepts the next available session from a subscription.
 // NOTE: this receiver is initialized immediately, not lazily.
-// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
+//
+// If the operation fails and the failure is actionable this function will return
+// an *azservicebus.Error. If, for example, the operation times out because there
+// are no available sessions it will return an *azservicebus.Error where the
+// Code is CodeTimeout.
 func (client *Client) AcceptNextSessionForSubscription(ctx context.Context, topicName string, subscriptionName string, options *SessionReceiverOptions) (*SessionReceiver, error) {
-	id, cleanupOnClose := client.getCleanupForCloseable()
-	sessionReceiver, err := newSessionReceiver(
-		ctx,
-		newSessionReceiverArgs{
-			sessionID:      nil,
-			ns:             client.namespace,
-			entity:         entity{Topic: topicName, Subscription: subscriptionName},
-			cleanupOnClose: cleanupOnClose,
-			retryOptions:   client.retryOptions,
-		}, toReceiverOptions(options))
-
-	if err != nil {
-		return nil, err
-	}
-
-	if err := sessionReceiver.init(ctx); err != nil {
-		return nil, err
-	}
-
-	client.addCloseable(id, sessionReceiver)
-	return sessionReceiver, nil
+	return client.acceptNextSessionForEntity(ctx, entity{Topic: topicName, Subscription: subscriptionName}, options)
 }
 
 // Close closes the current connection Service Bus as well as any Senders or Receivers created
@@ -347,6 +320,31 @@ func (client *Client) Close(ctx context.Context) error {
 	}
 
 	return client.namespace.Close(ctx, true)
+}
+
+func (client *Client) acceptNextSessionForEntity(ctx context.Context, entity entity, options *SessionReceiverOptions) (*SessionReceiver, error) {
+	id, cleanupOnClose := client.getCleanupForCloseable()
+	sessionReceiver, err := newSessionReceiver(
+		ctx,
+		newSessionReceiverArgs{
+			sessionID:         nil,
+			ns:                client.namespace,
+			entity:            entity,
+			cleanupOnClose:    cleanupOnClose,
+			retryOptions:      client.retryOptions,
+			acceptNextTimeout: client.acceptNextTimeout,
+		}, toReceiverOptions(options))
+
+	if err != nil {
+		return nil, internal.TransformError(err)
+	}
+
+	if err := sessionReceiver.init(ctx); err != nil {
+		return nil, internal.TransformError(err)
+	}
+
+	client.addCloseable(id, sessionReceiver)
+	return sessionReceiver, nil
 }
 
 func (client *Client) addCloseable(id uint64, closeable internal.Closeable) {

@@ -5,6 +5,12 @@
 ### Features Added
 * Added `NewListSettingsPager`.
 
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 0.4.0 (2022-05-18)
 
 ### Breaking Changes

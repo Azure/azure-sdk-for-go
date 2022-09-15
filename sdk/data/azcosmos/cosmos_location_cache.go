@@ -34,7 +34,7 @@ type dbAcctLocationsInfo struct {
 	readEndpts                 []url.URL
 }
 
-type locationCache struct {
+type LocationCache struct {
 	locationInfo                      dbAcctLocationsInfo
 	defaultEndpt                      url.URL
 	enableEndptDiscovery              bool
@@ -47,3 +47,25 @@ type locationCache struct {
 	unavailableLocationExpirationTime time.Duration
 }
 
+func (lc *LocationCache) update(writeLocations []string, readLocations []string, prefList []string, enableMultipleWriteLocations bool) {
+
+}
+
+func (lc *LocationCache) ReadEndpoints() []url.URL {
+	if time.Since(lc.lastUpdateTime) > lc.unavailableLocationExpirationTime && len(lc.locationUnavailabilityInfoMap) > 0 {
+		// lc.Update()
+	}
+	return lc.locationInfo.readEndpts
+}
+
+func (lc *LocationCache) WriteEndpoints() []url.URL {
+	if time.Since(lc.lastUpdateTime) > lc.unavailableLocationExpirationTime && len(lc.locationUnavailabilityInfoMap) > 0 {
+		// lc.update()
+	}
+	return lc.locationInfo.writeEndpts
+}
+
+func (lc *LocationCache) GetLocation(uri url.URL) string {
+	// loc := lc.locationInfo.availWriteEndptsByLocation
+	// return loc
+}

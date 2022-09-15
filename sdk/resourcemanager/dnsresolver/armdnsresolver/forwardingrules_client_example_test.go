@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/ForwardingRule_Put.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_Put.json
 func ExampleForwardingRulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,31 +28,26 @@ func ExampleForwardingRulesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx,
-		"sampleResourceGroup",
-		"sampleDnsForwardingRuleset",
-		"sampleForwardingRule",
-		armdnsresolver.ForwardingRule{
-			Properties: &armdnsresolver.ForwardingRuleProperties{
-				DomainName:          to.Ptr("contoso.com."),
-				ForwardingRuleState: to.Ptr(armdnsresolver.ForwardingRuleStateEnabled),
-				Metadata: map[string]*string{
-					"additionalProp1": to.Ptr("value1"),
-				},
-				TargetDNSServers: []*armdnsresolver.TargetDNSServer{
-					{
-						IPAddress: to.Ptr("10.0.0.1"),
-						Port:      to.Ptr[int32](53),
-					},
-					{
-						IPAddress: to.Ptr("10.0.0.2"),
-						Port:      to.Ptr[int32](53),
-					}},
+	res, err := client.CreateOrUpdate(ctx, "sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleForwardingRule", armdnsresolver.ForwardingRule{
+		Properties: &armdnsresolver.ForwardingRuleProperties{
+			DomainName:          to.Ptr("contoso.com."),
+			ForwardingRuleState: to.Ptr(armdnsresolver.ForwardingRuleStateEnabled),
+			Metadata: map[string]*string{
+				"additionalProp1": to.Ptr("value1"),
 			},
+			TargetDNSServers: []*armdnsresolver.TargetDNSServer{
+				{
+					IPAddress: to.Ptr("10.0.0.1"),
+					Port:      to.Ptr[int32](53),
+				},
+				{
+					IPAddress: to.Ptr("10.0.0.2"),
+					Port:      to.Ptr[int32](53),
+				}},
 		},
-		&armdnsresolver.ForwardingRulesClientCreateOrUpdateOptions{IfMatch: nil,
-			IfNoneMatch: nil,
-		})
+	}, &armdnsresolver.ForwardingRulesClientCreateOrUpdateOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -60,7 +55,7 @@ func ExampleForwardingRulesClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/ForwardingRule_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_Patch.json
 func ExampleForwardingRulesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,19 +66,14 @@ func ExampleForwardingRulesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx,
-		"sampleResourceGroup",
-		"sampleDnsForwardingRuleset",
-		"sampleForwardingRule",
-		armdnsresolver.ForwardingRulePatch{
-			Properties: &armdnsresolver.ForwardingRulePatchProperties{
-				ForwardingRuleState: to.Ptr(armdnsresolver.ForwardingRuleStateDisabled),
-				Metadata: map[string]*string{
-					"additionalProp2": to.Ptr("value2"),
-				},
+	res, err := client.Update(ctx, "sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleForwardingRule", armdnsresolver.ForwardingRulePatch{
+		Properties: &armdnsresolver.ForwardingRulePatchProperties{
+			ForwardingRuleState: to.Ptr(armdnsresolver.ForwardingRuleStateDisabled),
+			Metadata: map[string]*string{
+				"additionalProp2": to.Ptr("value2"),
 			},
 		},
-		&armdnsresolver.ForwardingRulesClientUpdateOptions{IfMatch: nil})
+	}, &armdnsresolver.ForwardingRulesClientUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -91,7 +81,7 @@ func ExampleForwardingRulesClient_Update() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/ForwardingRule_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_Delete.json
 func ExampleForwardingRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,17 +92,13 @@ func ExampleForwardingRulesClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"sampleResourceGroup",
-		"sampleDnsForwardingRuleset",
-		"sampleForwardingRule",
-		&armdnsresolver.ForwardingRulesClientDeleteOptions{IfMatch: nil})
+	_, err = client.Delete(ctx, "sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleForwardingRule", &armdnsresolver.ForwardingRulesClientDeleteOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/ForwardingRule_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_Get.json
 func ExampleForwardingRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,11 +109,7 @@ func ExampleForwardingRulesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"sampleResourceGroup",
-		"sampleDnsForwardingRuleset",
-		"sampleForwardingRule",
-		nil)
+	res, err := client.Get(ctx, "sampleResourceGroup", "sampleDnsForwardingRuleset", "sampleForwardingRule", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -135,7 +117,7 @@ func ExampleForwardingRulesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/ForwardingRule_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ForwardingRule_List.json
 func ExampleForwardingRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,9 +128,7 @@ func ExampleForwardingRulesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("sampleResourceGroup",
-		"sampleDnsForwardingRuleset",
-		&armdnsresolver.ForwardingRulesClientListOptions{Top: nil})
+	pager := client.NewListPager("sampleResourceGroup", "sampleDnsForwardingRuleset", &armdnsresolver.ForwardingRulesClientListOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

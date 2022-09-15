@@ -47,7 +47,7 @@ func Example_producing() {
 	// batch, err := producerClient.NewEventDataBatch(context.TODO(), &azeventhubs.NewEventDataBatchOptions{
 	// 	PartitionKey: to.Ptr("partition key"),
 	// })
-	newBatchOptions := &azeventhubs.NewEventDataBatchOptions{}
+	newBatchOptions := &azeventhubs.EventDataBatchOptions{}
 
 	batch, err := producerClient.NewEventDataBatch(context.TODO(), newBatchOptions)
 

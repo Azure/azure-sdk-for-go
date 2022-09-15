@@ -177,9 +177,9 @@ func calcActualSizeForPayload(payload []byte) uint64 {
 	return uint64(vbin32Overhead + len(payload))
 }
 
-func newEventDataBatch(sender amqpwrap.AMQPSenderCloser, options *NewEventDataBatchOptions) (*EventDataBatch, error) {
+func newEventDataBatch(sender amqpwrap.AMQPSenderCloser, options *EventDataBatchOptions) (*EventDataBatch, error) {
 	if options == nil {
-		options = &NewEventDataBatchOptions{}
+		options = &EventDataBatchOptions{}
 	}
 
 	if options.PartitionID != nil && options.PartitionKey != nil {

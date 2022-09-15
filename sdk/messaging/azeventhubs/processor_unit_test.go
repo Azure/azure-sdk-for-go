@@ -141,7 +141,7 @@ func TestUnit_Processor_loadBalancing(t *testing.T) {
 func TestUnit_Processor_Run(t *testing.T) {
 	cps := newCheckpointStoreForTest()
 
-	processor, err := newProcessorImpl(simpleFakeConsumerClient(), cps, &NewProcessorOptions{
+	processor, err := newProcessorImpl(simpleFakeConsumerClient(), cps, &ProcessorOptions{
 		PartitionExpirationDuration: time.Hour,
 	})
 
@@ -182,13 +182,13 @@ func TestUnit_Processor_Run_singleConsumerPerPartition(t *testing.T) {
 			ClientID:                "my-client-id",
 		},
 		getEventHubPropertiesResult: ehProps,
-		newPartitionClientFn: func(partitionID string, options *NewPartitionClientOptions) (*PartitionClient, error) {
+		newPartitionClientFn: func(partitionID string, options *PartitionClientOptions) (*PartitionClient, error) {
 			partitionClientsCreated++
 			return newFakePartitionClient(partitionID, ""), nil
 		},
 	}
 
-	processor, err := newProcessorImpl(cc, cps, &NewProcessorOptions{
+	processor, err := newProcessorImpl(cc, cps, &ProcessorOptions{
 		PartitionExpirationDuration: time.Hour,
 	})
 	require.NoError(t, err)
@@ -247,14 +247,14 @@ func TestUnit_Processor_Run_startPosition(t *testing.T) {
 
 	fakeConsumerClient := simpleFakeConsumerClient()
 
-	fakeConsumerClient.newPartitionClientFn = func(partitionID string, options *NewPartitionClientOptions) (*PartitionClient, error) {
+	fakeConsumerClient.newPartitionClientFn = func(partitionID string, options *PartitionClientOptions) (*PartitionClient, error) {
 		offsetExpr, err := getOffsetExpression(options.StartPosition)
 		require.NoError(t, err)
 
 		return newFakePartitionClient(partitionID, offsetExpr), nil
 	}
 
-	processor, err := newProcessorImpl(fakeConsumerClient, cps, &NewProcessorOptions{
+	processor, err := newProcessorImpl(fakeConsumerClient, cps, &ProcessorOptions{
 		PartitionExpirationDuration: time.Hour,
 	})
 	require.NoError(t, err)
@@ -310,7 +310,7 @@ func TestUnit_Processor_Run_cancellation(t *testing.T) {
 			FullyQualifiedNamespace: "fqdn",
 			ClientID:                "my-client-id",
 		},
-	}, cps, &NewProcessorOptions{
+	}, cps, &ProcessorOptions{
 		PartitionExpirationDuration: time.Hour,
 	})
 
@@ -349,7 +349,7 @@ func newProcessorForTest(t *testing.T, clientID string, cps CheckpointStore) *Pr
 			FullyQualifiedNamespace: "fqdn",
 			ClientID:                clientID,
 		},
-	}, cps, &NewProcessorOptions{
+	}, cps, &ProcessorOptions{
 		PartitionExpirationDuration: time.Hour,
 	})
 	require.NoError(t, err)
@@ -363,7 +363,7 @@ type fakeConsumerClient struct {
 	getEventHubPropertiesErr    error
 
 	partitionClients     map[string]newMockPartitionClientResult
-	newPartitionClientFn func(partitionID string, options *NewPartitionClientOptions) (*PartitionClient, error)
+	newPartitionClientFn func(partitionID string, options *PartitionClientOptions) (*PartitionClient, error)
 }
 
 type newMockPartitionClientResult struct {
@@ -375,7 +375,7 @@ func (cc *fakeConsumerClient) GetEventHubProperties(ctx context.Context, options
 	return cc.getEventHubPropertiesResult, cc.getEventHubPropertiesErr
 }
 
-func (cc *fakeConsumerClient) NewPartitionClient(partitionID string, options *NewPartitionClientOptions) (*PartitionClient, error) {
+func (cc *fakeConsumerClient) NewPartitionClient(partitionID string, options *PartitionClientOptions) (*PartitionClient, error) {
 	if cc.newPartitionClientFn != nil {
 		return cc.newPartitionClientFn(partitionID, options)
 	}

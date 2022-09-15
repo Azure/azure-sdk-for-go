@@ -47,7 +47,7 @@ type ConsumerClientOptions struct {
 
 	// NewWebSocketConn is a function that can create a net.Conn for use with websockets.
 	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
-	NewWebSocketConn func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error)
+	NewWebSocketConn func(ctx context.Context, args WebSocketConnArgs) (net.Conn, error)
 
 	// RetryOptions controls how often operations are retried from this client and any
 	// Receivers and Senders created from this client.
@@ -112,8 +112,8 @@ func NewConsumerClientFromConnectionString(connectionString string, eventHub str
 	}, options)
 }
 
-// NewPartitionClientOptions provides options for the Subscribe function.
-type NewPartitionClientOptions struct {
+// PartitionClientOptions provides options for the Subscribe function.
+type PartitionClientOptions struct {
 	// StartPosition is the position we will start receiving events from,
 	// either an offset (inclusive) with Offset, or receiving events received
 	// after a specific time using EnqueuedTime.
@@ -127,7 +127,7 @@ type NewPartitionClientOptions struct {
 }
 
 // NewPartitionClient creates a client that can receive events from a partition.
-func (cc *ConsumerClient) NewPartitionClient(partitionID string, options *NewPartitionClientOptions) (*PartitionClient, error) {
+func (cc *ConsumerClient) NewPartitionClient(partitionID string, options *PartitionClientOptions) (*PartitionClient, error) {
 	return newPartitionClient(partitionClientArgs{
 		namespace:     cc.namespace,
 		eventHub:      cc.eventHub,

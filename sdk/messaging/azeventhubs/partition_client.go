@@ -186,9 +186,9 @@ type partitionClientArgs struct {
 	retryOptions RetryOptions
 }
 
-func newPartitionClient(args partitionClientArgs, options *NewPartitionClientOptions) (*PartitionClient, error) {
+func newPartitionClient(args partitionClientArgs, options *PartitionClientOptions) (*PartitionClient, error) {
 	if options == nil {
-		options = &NewPartitionClientOptions{}
+		options = &PartitionClientOptions{}
 	}
 
 	offsetExpr, err := getOffsetExpression(options.StartPosition)

@@ -20,8 +20,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 )
 
-// NewWebSocketConnArgs are passed to your web socket creation function (ClientOptions.NewWebSocketConn)
-type NewWebSocketConnArgs = exported.NewWebSocketConnArgs
+// WebSocketConnArgs are passed to your web socket creation function (ClientOptions.NewWebSocketConn)
+type WebSocketConnArgs = exported.WebSocketConnArgs
 
 // RetryOptions represent the options for retries.
 type RetryOptions = exported.RetryOptions
@@ -37,7 +37,7 @@ type ProducerClientOptions struct {
 
 	// NewWebSocketConn is a function that can create a net.Conn for use with websockets.
 	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
-	NewWebSocketConn func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error)
+	NewWebSocketConn func(ctx context.Context, args WebSocketConnArgs) (net.Conn, error)
 
 	// RetryOptions controls how often operations are retried from this client and any
 	// Receivers and Senders created from this client.
@@ -91,8 +91,8 @@ func NewProducerClientFromConnectionString(connectionString string, eventHub str
 	}, options)
 }
 
-// NewEventDataBatchOptions contains optional parameters for the NewEventDataBatch function
-type NewEventDataBatchOptions struct {
+// EventDataBatchOptions contains optional parameters for the NewEventDataBatch function
+type EventDataBatchOptions struct {
 	// MaxBytes overrides the max size (in bytes) for a batch.
 	// By default NewMessageBatch will use the max message size provided by the service.
 	MaxBytes uint64
@@ -109,7 +109,7 @@ type NewEventDataBatchOptions struct {
 
 // NewEventDataBatch can be used to create a batch that contain multiple events.
 // If the operation fails it can return an *azeventhubs.Error type if the failure is actionable.
-func (pc *ProducerClient) NewEventDataBatch(ctx context.Context, options *NewEventDataBatchOptions) (*EventDataBatch, error) {
+func (pc *ProducerClient) NewEventDataBatch(ctx context.Context, options *EventDataBatchOptions) (*EventDataBatch, error) {
 	var batch *EventDataBatch
 
 	partitionID := anyPartitionID

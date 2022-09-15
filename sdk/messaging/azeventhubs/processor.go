@@ -27,9 +27,9 @@ const (
 	ProcessorStrategyGreedy ProcessorStrategy = "greedy"
 )
 
-// NewProcessorOptions are the options for the NewProcessor
+// ProcessorOptions are the options for the NewProcessor
 // function.
-type NewProcessorOptions struct {
+type ProcessorOptions struct {
 	// LoadBalancingStrategy dictates how concurrent Processor instances distribute
 	// ownership of partitions between them.
 	// The default strategy is ProcessorStrategyBalanced.
@@ -90,18 +90,18 @@ type Processor struct {
 
 type consumerClientForProcessor interface {
 	GetEventHubProperties(ctx context.Context, options *GetEventHubPropertiesOptions) (EventHubProperties, error)
-	NewPartitionClient(partitionID string, options *NewPartitionClientOptions) (*PartitionClient, error)
+	NewPartitionClient(partitionID string, options *PartitionClientOptions) (*PartitionClient, error)
 	getDetails() consumerClientDetails
 }
 
 // NewProcessor creates a Processor.
-func NewProcessor(consumerClient *ConsumerClient, checkpointStore CheckpointStore, options *NewProcessorOptions) (*Processor, error) {
+func NewProcessor(consumerClient *ConsumerClient, checkpointStore CheckpointStore, options *ProcessorOptions) (*Processor, error) {
 	return newProcessorImpl(consumerClient, checkpointStore, options)
 }
 
-func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore CheckpointStore, options *NewProcessorOptions) (*Processor, error) {
+func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore CheckpointStore, options *ProcessorOptions) (*Processor, error) {
 	if options == nil {
-		options = &NewProcessorOptions{}
+		options = &ProcessorOptions{}
 	}
 
 	updateInterval := 10 * time.Second
@@ -299,7 +299,7 @@ func (p *Processor) addPartitionClient(ctx context.Context, ownership Ownership,
 		return err
 	}
 
-	partClient, err := p.consumerClient.NewPartitionClient(ownership.PartitionID, &NewPartitionClientOptions{
+	partClient, err := p.consumerClient.NewPartitionClient(ownership.PartitionID, &PartitionClientOptions{
 		StartPosition: sp,
 		OwnerLevel:    &p.ownerLevel,
 	})

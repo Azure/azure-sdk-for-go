@@ -119,7 +119,7 @@ func sendEventsToPartition(ctx context.Context, producerClient *azeventhubs.Prod
 
 	extraBytes := make([]byte, numExtraBytes)
 
-	batch, err := producerClient.NewEventDataBatch(context.Background(), &azeventhubs.NewEventDataBatchOptions{
+	batch, err := producerClient.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
 		PartitionID: &partitionID,
 	})
 
@@ -152,7 +152,7 @@ func sendEventsToPartition(ctx context.Context, producerClient *azeventhubs.Prod
 				return azeventhubs.StartPosition{}, err
 			}
 
-			tempBatch, err := producerClient.NewEventDataBatch(context.Background(), &azeventhubs.NewEventDataBatchOptions{
+			tempBatch, err := producerClient.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
 				PartitionID: &partitionID,
 			})
 

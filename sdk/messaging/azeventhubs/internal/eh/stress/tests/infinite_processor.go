@@ -104,7 +104,7 @@ func InfiniteProcessorTest(ctx context.Context) error {
 
 			defer consumerClient.Close(ctx)
 
-			processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, &azeventhubs.NewProcessorOptions{
+			processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, &azeventhubs.ProcessorOptions{
 				LoadBalancingStrategy: azeventhubs.ProcessorStrategyGreedy,
 			})
 
@@ -184,7 +184,7 @@ func continuallySendEvents(ctx context.Context, producerClient *azeventhubs.Prod
 		default:
 		}
 
-		batch, err := producerClient.NewEventDataBatch(ctx, &azeventhubs.NewEventDataBatchOptions{
+		batch, err := producerClient.NewEventDataBatch(ctx, &azeventhubs.EventDataBatchOptions{
 			PartitionID: &partitionID,
 		})
 

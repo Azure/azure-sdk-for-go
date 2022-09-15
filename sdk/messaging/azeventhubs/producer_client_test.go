@@ -95,7 +95,7 @@ func TestNewProducerClient_SendToAny(t *testing.T) {
 			producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
 			require.NoError(t, err)
 
-			batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.NewEventDataBatchOptions{
+			batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
 				PartitionKey: partitionKey,
 			})
 			require.NoError(t, err)
@@ -169,7 +169,7 @@ func TestProducerClient_SendBatchExample(t *testing.T) {
 
 	// this is a replicate of the code we use in the example "example_producer_events.go"
 	// just testing to make sure it works the way we expect it to.
-	newBatchOptions := &azeventhubs.NewEventDataBatchOptions{
+	newBatchOptions := &azeventhubs.EventDataBatchOptions{
 		MaxBytes:    300,
 		PartitionID: to.Ptr("0"),
 	}
@@ -255,7 +255,7 @@ func TestProducerClient_SendBatchExample(t *testing.T) {
 
 	defer consumerClient.Close(context.Background())
 
-	partitionClient, err := consumerClient.NewPartitionClient("0", &azeventhubs.NewPartitionClientOptions{
+	partitionClient, err := consumerClient.NewPartitionClient("0", &azeventhubs.PartitionClientOptions{
 		StartPosition: getStartPosition(beforeSend),
 	})
 	require.NoError(t, err)
@@ -284,7 +284,7 @@ func receiveEventFromAnyPartition(ctx context.Context, t *testing.T, consumer *a
 
 	for _, partProps := range allPartitions {
 		go func(partProps azeventhubs.PartitionProperties) {
-			partClient, err := consumer.NewPartitionClient(partProps.PartitionID, &azeventhubs.NewPartitionClientOptions{
+			partClient, err := consumer.NewPartitionClient(partProps.PartitionID, &azeventhubs.PartitionClientOptions{
 				StartPosition: getStartPosition(partProps),
 			})
 			require.NoError(t, err)
@@ -367,7 +367,7 @@ func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string,
 		require.NoError(t, err)
 	}()
 
-	batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.NewEventDataBatchOptions{
+	batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
 		PartitionID: &partitionID,
 	})
 	require.NoError(t, err)
@@ -399,7 +399,7 @@ func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string,
 
 	var actualBodies []string
 
-	subscription, err := consumer.NewPartitionClient(partitionID, &azeventhubs.NewPartitionClientOptions{
+	subscription, err := consumer.NewPartitionClient(partitionID, &azeventhubs.PartitionClientOptions{
 		StartPosition: getStartPosition(partProps),
 	})
 	require.NoError(t, err)

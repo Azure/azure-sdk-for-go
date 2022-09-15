@@ -93,7 +93,7 @@ func FiniteProcessorTest(ctx context.Context) error {
 		return err
 	}
 
-	processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, &azeventhubs.NewProcessorOptions{
+	processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, &azeventhubs.ProcessorOptions{
 		LoadBalancingStrategy: azeventhubs.ProcessorStrategyGreedy,
 	})
 

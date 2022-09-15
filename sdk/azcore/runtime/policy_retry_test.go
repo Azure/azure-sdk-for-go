@@ -672,6 +672,21 @@ func TestRetryPolicySuccessWithPerTryTimeoutNoRetryWithBodyDownload(t *testing.T
 	require.Equal(t, largeBody, body)
 }
 
+func TestPipelineNoRetryOn429(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	// initial response is throttling with a long retry-after delay, it should not trigger a retry
+	srv.AppendResponse(mock.WithStatusCode(http.StatusTooManyRequests), mock.WithHeader("Retry-After", "300"))
+	perRetryPolicy := countingPolicy{}
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	require.NoError(t, err)
+	pl := exported.NewPipeline(srv, NewRetryPolicy(nil), &perRetryPolicy)
+	resp, err := pl.Do(req)
+	require.NoError(t, err)
+	require.Equal(t, http.StatusTooManyRequests, resp.StatusCode)
+	require.Equal(t, 1, perRetryPolicy.count)
+}
+
 func newRewindTrackingBody(s string) *rewindTrackingBody {
 	// there are two rewinds that happen before rewinding for a retry
 	// 1. to get the body's size in SetBody()

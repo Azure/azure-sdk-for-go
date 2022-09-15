@@ -43,6 +43,8 @@ func Example_consuming_events_using_processor() {
 		panic(err)
 	}
 
+	defer consumerClient.Close(context.TODO())
+
 	processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, nil)
 
 	if err != nil {

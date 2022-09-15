@@ -807,7 +807,7 @@ func IsLiveOnly(t *testing.T) bool {
 
 // GetVariables returns access to the variables stored by the test proxy for a specific test
 func GetVariables(t *testing.T) map[string]interface{} {
-	name := strings.Split(t.Name(),"/")[0]
+	name := strings.Split(t.Name(), "/")[0]
 	if s, ok := testSuite[name]; ok {
 		return s.variables
 	}

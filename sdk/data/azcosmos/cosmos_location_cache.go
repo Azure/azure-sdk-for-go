@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-type opType int
+const DefaultExpirationTime time.Duration = time.Minute * 5
 
 const (
 	none opType = iota
@@ -17,13 +17,25 @@ const (
 	write
 )
 
+type opType int
+
 type locationUnavailabilityInfo struct {
 	lastCheckTime time.Time
 	unavailableOp opType
 }
 
+type dbAcctLocationsInfo struct {
+	prefLocations              []string
+	availWriteLocations        []string
+	availReadLocations         []string
+	availWriteEndptsByLocation map[string]url.URL
+	availReadEndptsByLocation  map[string]url.URL
+	writeEndpts                []url.URL
+	readEndpts                 []url.URL
+}
+
 type locationCache struct {
-	prefLocations                     []string
+	locationInfo                      dbAcctLocationsInfo
 	defaultEndpt                      url.URL
 	enableEndptDiscovery              bool
 	useMultipleWriteLocations         bool
@@ -34,3 +46,4 @@ type locationCache struct {
 	enableMultipleWriteLocations      bool
 	unavailableLocationExpirationTime time.Duration
 }
+

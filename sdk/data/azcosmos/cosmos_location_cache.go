@@ -23,14 +23,14 @@ type locationUnavailabilityInfo struct {
 }
 
 type locationCache struct {
-	prefLocations             []string
-	defaultEndpt              url.URL
-	enableEndptDiscovery      bool
-	useMultipleWriteLocations bool
-	connLimit                 int
-	mu sync.Mutex // possibly try RWMutex
-	locationUnavailabilityInfoMap map[url.URL]locationUnavailabilityInfo 
-	lastUpdateTime time.Time
-	enableMultipleWriteLocations bool
+	prefLocations                     []string
+	defaultEndpt                      url.URL
+	enableEndptDiscovery              bool
+	useMultipleWriteLocations         bool
+	connLimit                         int
+	mu                                sync.Mutex // possibly try RWMutex
+	locationUnavailabilityInfoMap     map[url.URL]locationUnavailabilityInfo
+	lastUpdateTime                    time.Time
+	enableMultipleWriteLocations      bool
 	unavailableLocationExpirationTime time.Duration
 }

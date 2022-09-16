@@ -59,6 +59,7 @@ type ProducerClient struct {
 const anyPartitionID = ""
 
 // NewProducerClient creates a ProducerClient which uses an azcore.TokenCredential for authentication.
+//
 // The fullyQualifiedNamespace is the Event Hubs namespace name (ex: myeventhub.servicebus.windows.net)
 // The credential is one of the credentials in the `github.com/Azure/azure-sdk-for-go/sdk/azidentity` package.
 func NewProducerClient(fullyQualifiedNamespace string, eventHub string, credential azcore.TokenCredential, options *ProducerClientOptions) (*ProducerClient, error) {
@@ -73,11 +74,13 @@ func NewProducerClient(fullyQualifiedNamespace string, eventHub string, credenti
 //
 // connectionString can be one of the following formats:
 //
-// Connection string, no EntityPath. In this case eventHub cannot be empty.
-// ex: Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>
+// Connection string, no EntityPath. In this case eventHub cannot be empty
+//
+//	Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>
 //
 // Connection string, has EntityPath. In this case eventHub must be empty.
-// ex: Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>
+//
+//	Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;
 func NewProducerClientFromConnectionString(connectionString string, eventHub string, options *ProducerClientOptions) (*ProducerClient, error) {
 	parsedConn, err := parseConn(connectionString, eventHub)
 

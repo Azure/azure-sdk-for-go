@@ -93,10 +93,14 @@ func NewConsumerClient(fullyQualifiedNamespace string, eventHub string, consumer
 // NewConsumerClientFromConnectionString creates a ConsumerClient from a connection string.
 //
 // connectionString can be one of the following formats:
-//   - Connection string, no EntityPath. In this case eventHub cannot be empty.
-//     ex: Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>
-//   - Connection string, has EntityPath. In this case eventHub must be empty.
-//     ex: Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>
+//
+// Connection string, no EntityPath. In this case eventHub cannot be empty
+//
+//	Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>
+//
+// Connection string, has EntityPath. In this case eventHub must be empty.
+//
+//	Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;
 func NewConsumerClientFromConnectionString(connectionString string, eventHub string, consumerGroup string, options *ConsumerClientOptions) (*ConsumerClient, error) {
 	parsedConn, err := parseConn(connectionString, eventHub)
 
@@ -111,7 +115,7 @@ func NewConsumerClientFromConnectionString(connectionString string, eventHub str
 	}, options)
 }
 
-// PartitionClientOptions provides options for the Subscribe function.
+// PartitionClientOptions provides options for the NewPartitionClient function.
 type PartitionClientOptions struct {
 	// StartPosition is the position we will start receiving events from,
 	// either an offset (inclusive) with Offset, or receiving events received
@@ -126,7 +130,7 @@ type PartitionClientOptions struct {
 }
 
 // NewPartitionClient creates a client that can receive events from a partition. By default it starts
-// at the latest point in the partition, which can be changed using the options parameter.
+// at the latest point in the partition. This can be changed using the options parameter.
 func (cc *ConsumerClient) NewPartitionClient(partitionID string, options *PartitionClientOptions) (*PartitionClient, error) {
 	return newPartitionClient(partitionClientArgs{
 		namespace:     cc.namespace,

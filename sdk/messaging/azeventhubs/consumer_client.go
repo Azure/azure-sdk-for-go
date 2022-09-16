@@ -77,10 +77,13 @@ type ConsumerClient struct {
 	clientID string
 }
 
-// NewConsumerClient creates a ConsumerClient which uses an azcore.TokenCredential for authentication.
+// NewConsumerClient creates a ConsumerClient which uses an azcore.TokenCredential for authentication. You
+// MUST call [azeventhubs.ConsumerClient.Close] on this client to avoid leaking resources.
 //
 // The fullyQualifiedNamespace is the Event Hubs namespace name (ex: myeventhub.servicebus.windows.net)
-// The credential is one of the credentials in the [github.com/Azure/azure-sdk-for-go/sdk/azidentity] package.
+// The credential is one of the credentials in the [azidentity] package.
+//
+// [azidentity]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity
 func NewConsumerClient(fullyQualifiedNamespace string, eventHub string, consumerGroup string, credential azcore.TokenCredential, options *ConsumerClientOptions) (*ConsumerClient, error) {
 	return newConsumerClient(consumerClientArgs{
 		consumerGroup:           consumerGroup,
@@ -90,17 +93,19 @@ func NewConsumerClient(fullyQualifiedNamespace string, eventHub string, consumer
 	}, options)
 }
 
-// NewConsumerClientFromConnectionString creates a ConsumerClient from a connection string.
+// NewConsumerClientFromConnectionString creates a ConsumerClient from a connection string. You
+// MUST call [azeventhubs.ConsumerClient.Close] on this client to avoid leaking resources.
 //
-// connectionString can be one of the following formats:
+// connectionString can be one of two formats - with or without an EntityPath key.
 //
-// Connection string, no EntityPath. In this case eventHub cannot be empty
+// When the connection string does not have an entity path, as shown below, the eventHub parameter cannot
+// be empty and should contain the name of your event hub.
 //
 //	Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>
 //
-// Connection string, has EntityPath. In this case eventHub must be empty.
+// When the connection string DOES have an entity path, as shown below, the eventHub parameter must be empty.
 //
-//	Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;
+//	Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>;
 func NewConsumerClientFromConnectionString(connectionString string, eventHub string, consumerGroup string, options *ConsumerClientOptions) (*ConsumerClient, error) {
 	parsedConn, err := parseConn(connectionString, eventHub)
 
@@ -131,6 +136,7 @@ type PartitionClientOptions struct {
 
 // NewPartitionClient creates a client that can receive events from a partition. By default it starts
 // at the latest point in the partition. This can be changed using the options parameter.
+// You MUST call [azeventhubs.PartitionClient.Close] on the returned client to avoid leaking resources.
 func (cc *ConsumerClient) NewPartitionClient(partitionID string, options *PartitionClientOptions) (*PartitionClient, error) {
 	return newPartitionClient(partitionClientArgs{
 		namespace:     cc.namespace,
@@ -181,7 +187,7 @@ func (cc *ConsumerClient) getDetails() consumerClientDetails {
 	}
 }
 
-// Close closes the connection for this client.
+// Close releases resources for this client.
 func (cc *ConsumerClient) Close(ctx context.Context) error {
 	return cc.namespace.Close(ctx, true)
 }

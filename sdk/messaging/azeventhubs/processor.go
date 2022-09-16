@@ -164,7 +164,7 @@ func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore
 }
 
 // NextPartitionClient will get the next owned [PartitionProcessorClient] if one is acquired
-// or will block until a new one arrives or [processor.Run] is cancelled.
+// or will block until a new one arrives or [processor.Run] is cancelled. You MUST call [azeventhubs.ProcessorPartitionClient.Close] on the returned client to avoid leaking resources.
 //
 // This function is safe to call before [processor.Run] has been called and will typically
 // be executed in a goroutine in a loop.

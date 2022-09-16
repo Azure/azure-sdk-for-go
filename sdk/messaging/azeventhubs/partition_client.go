@@ -132,7 +132,7 @@ func (cc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 	return events, nil
 }
 
-// Close closes the consumer's link and the underlying AMQP connection.
+// Close releases resources for this client.
 func (cc *PartitionClient) Close(ctx context.Context) error {
 	if cc.links != nil {
 		return cc.links.Close(ctx)

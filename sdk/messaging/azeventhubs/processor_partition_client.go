@@ -53,7 +53,7 @@ func (p *ProcessorPartitionClient) PartitionID() string {
 	return p.partitionID
 }
 
-// Close closes the partition client.
+// Close releases resources for the partition client.
 // This does not close the ConsumerClient that the Processor was started with.
 func (c *ProcessorPartitionClient) Close(ctx context.Context) error {
 	c.cleanupFn()

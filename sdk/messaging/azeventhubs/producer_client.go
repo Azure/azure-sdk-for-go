@@ -111,6 +111,11 @@ type EventDataBatchOptions struct {
 }
 
 // NewEventDataBatch can be used to create a batch that contain multiple events.
+//
+// This batch contains logic to make sure that the it doesn't exceed the maximum size
+// for the Event Hubs link, using it's [azeventhubs.EventDataBatch.AddEventData] function.
+// A lower size limit can also be configured using the options.
+//
 // If the operation fails it can return an *azeventhubs.Error type if the failure is actionable.
 func (pc *ProducerClient) NewEventDataBatch(ctx context.Context, options *EventDataBatchOptions) (*EventDataBatch, error) {
 	var batch *EventDataBatch

@@ -36,14 +36,16 @@ func Example_producingEvents() {
 
 	events := createEventsForSample()
 
-	// Other examples:
+	// Other options you might consider:
 	//
-	// sending a batch to a specific partition:
+	// Targeting a batch to a specific partition
+	//
 	// batch, err := producerClient.NewEventDataBatch(context.TODO(), &azeventhubs.NewEventDataBatchOptions{
 	// 	PartitionID: to.Ptr("0"),
 	// })
 	//
-	// targeting a batch using a partition key
+	// Targeting a batch using a partition key
+	//
 	// batch, err := producerClient.NewEventDataBatch(context.TODO(), &azeventhubs.NewEventDataBatchOptions{
 	// 	PartitionKey: to.Ptr("partition key"),
 	// })

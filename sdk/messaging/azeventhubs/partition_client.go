@@ -21,6 +21,8 @@ const DefaultConsumerGroup = "$Default"
 
 // StartPosition indicates the position to start receiving events within a partition.
 // The default position is Latest.
+//
+// You can set this in the options for ConsumerClient.
 type StartPosition struct {
 	// Offset will start the consumer after the specified offset. Can be exclusive
 	// or inclusive, based on the Inclusive property.
@@ -48,6 +50,8 @@ type StartPosition struct {
 }
 
 // PartitionClient is used to receive events from an Event Hub partition.
+//
+// This type is instantiated from the [ConsumerClient] type, using [ConsumerClient.NewPartitionClient].
 type PartitionClient struct {
 	retryOptions  RetryOptions
 	eventHub      string

@@ -78,8 +78,9 @@ type ConsumerClient struct {
 }
 
 // NewConsumerClient creates a ConsumerClient which uses an azcore.TokenCredential for authentication.
+//
 // The fullyQualifiedNamespace is the Event Hubs namespace name (ex: myeventhub.servicebus.windows.net)
-// The credential is one of the credentials in the `github.com/Azure/azure-sdk-for-go/sdk/azidentity` package.
+// The credential is one of the credentials in the [github.com/Azure/azure-sdk-for-go/sdk/azidentity] package.
 func NewConsumerClient(fullyQualifiedNamespace string, eventHub string, consumerGroup string, credential azcore.TokenCredential, options *ConsumerClientOptions) (*ConsumerClient, error) {
 	return newConsumerClient(consumerClientArgs{
 		consumerGroup:           consumerGroup,
@@ -92,12 +93,10 @@ func NewConsumerClient(fullyQualifiedNamespace string, eventHub string, consumer
 // NewConsumerClientFromConnectionString creates a ConsumerClient from a connection string.
 //
 // connectionString can be one of the following formats:
-//
-// Connection string, no EntityPath. In this case eventHub cannot be empty.
-// ex: Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>
-//
-// Connection string, has EntityPath. In this case eventHub must be empty.
-// ex: Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>
+//   - Connection string, no EntityPath. In this case eventHub cannot be empty.
+//     ex: Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>
+//   - Connection string, has EntityPath. In this case eventHub must be empty.
+//     ex: Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>
 func NewConsumerClientFromConnectionString(connectionString string, eventHub string, consumerGroup string, options *ConsumerClientOptions) (*ConsumerClient, error) {
 	parsedConn, err := parseConn(connectionString, eventHub)
 
@@ -126,7 +125,8 @@ type PartitionClientOptions struct {
 	OwnerLevel *int64
 }
 
-// NewPartitionClient creates a client that can receive events from a partition.
+// NewPartitionClient creates a client that can receive events from a partition. By default it starts
+// at the latest point in the partition, which can be changed using the options parameter.
 func (cc *ConsumerClient) NewPartitionClient(partitionID string, options *PartitionClientOptions) (*PartitionClient, error) {
 	return newPartitionClient(partitionClientArgs{
 		namespace:     cc.namespace,
@@ -148,8 +148,9 @@ func (cc *ConsumerClient) GetEventHubProperties(ctx context.Context, options *Ge
 	return getEventHubProperties(ctx, cc.namespace, rpcLink.Link, cc.eventHub, options)
 }
 
-// GetPartitionProperties gets properties for a specific partition. This includes data like the last enqueued sequence number, the first sequence
-// number and when an event was last enqueued to the partition.
+// GetPartitionProperties gets properties for a specific partition. This includes data like the
+// last enqueued sequence number, the first sequence number and when an event was last enqueued
+// to the partition.
 func (cc *ConsumerClient) GetPartitionProperties(ctx context.Context, partitionID string, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
 	rpcLink, err := cc.links.GetManagementLink(ctx)
 

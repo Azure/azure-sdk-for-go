@@ -1,5 +1,9 @@
 # Release History
 
+## 1.0.0 (2022-09-16)
+### Other Changes
+
+
 ## 0.1.0 (2022-05-18)
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 0.1.0, which contains breaking changes.

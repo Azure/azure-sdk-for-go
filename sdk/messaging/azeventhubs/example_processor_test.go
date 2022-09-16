@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 )
 
-func Example_consuming_events_using_processor() {
+func Example_consumingEventsUsingProcessor() {
 	// The Processor makes it simpler to do distributed consumption of an Event Hub.
 	// It automatically coordinates with other Processor instances to ensure balanced
 	// allocation of partitions and tracks status, durably, in a CheckpointStore.

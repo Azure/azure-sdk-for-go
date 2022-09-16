@@ -69,8 +69,12 @@ type StartPositions struct {
 	Default StartPosition
 }
 
-// Processor uses a CheckpointStore, combined with a ConsumerClient, to provide
-// automatic load balancing betweeen multiple consumers.
+// Processor uses a ConsumerClient and CheckpointStore to provide automatic
+// load balancing between multiple Processor instances, even in separate
+// processes or on separate machines.
+//
+// See [example_processor_test.go] for an example of typical usage or Run
+// for a more detailed description of how load balancing works.
 type Processor struct {
 	ownershipUpdateInterval time.Duration
 	defaultStartPositions   StartPositions
@@ -95,6 +99,8 @@ type consumerClientForProcessor interface {
 }
 
 // NewProcessor creates a Processor.
+//
+// See [Processor] for more information or the [example_processor_test.go] for an example.
 func NewProcessor(consumerClient *ConsumerClient, checkpointStore CheckpointStore, options *ProcessorOptions) (*Processor, error) {
 	return newProcessorImpl(consumerClient, checkpointStore, options)
 }
@@ -153,13 +159,13 @@ func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore
 	}, nil
 }
 
-// NextPartitionClient will get the next available azeventhubs.PartitionProcessorClient if
-// a partition is available or will block until a new one arrives or processor.Run() is
-// cancelled.
+// NextPartitionClient will get the next owned [PartitionProcessorClient] if one is acquired
+// or will block until a new one arrives or [processor.Run] is cancelled.
 //
-// NOTE: this function will not return any values until processor.Run() is executing. If the
-// Run() function is cancelled (or if this function is cancelled) the returned
-// ProcessorPartitionClient will be nil.
+// This function is safe to call before [processor.Run] has been called and will typically
+// be executed in a goroutine in a loop.
+//
+// See [example_processor_test.go] for an example of typical usage.
 func (p *Processor) NextPartitionClient(ctx context.Context) *ProcessorPartitionClient {
 	<-p.runCalled
 
@@ -171,11 +177,29 @@ func (p *Processor) NextPartitionClient(ctx context.Context) *ProcessorPartition
 	}
 }
 
-// Run runs the load balancing loop. Partitions that are claimed can be read using the
-// DistributedPartitionClient returned from processor.Next().
+// Run handles the load balancing loop, blocking until it encounters fatal errors or the
+// passed in context is cancelled.
 //
-// NOTE: If this function is cancelled the load balancing loop is cancelled and a nil error
-// is returned. processor.NextPartitionClient() will return nil.
+// Run continually checks the passed in CheckpointStore, attempting to distribute partitions
+// fairly between itself and any other active consumers. New [ProcessorPartitionClient] instances
+// are created and will be returned from [Processor.NextPartitionClient] as they are available.
+//
+// When partition ownership is lost [ProcessorPartitionClient]'s will return an errors.
+//
+// Callers will typically create a goroutine, continually calling
+// [Processor.NextPartitionClient] in a loop to get [ProcessorPartitionClient]
+// instances, and then process those in parallel.
+//
+// The main thread will call [Processor.Run], blocking until the context passed
+// to Run is cancelled.
+//
+
+// Run will exit when the passed in context has been cancelled or if there are unrecoverable
+// or persistent errors in load balancing.
+//
+// On cancellation, it will return a nil error.
+//
+// See [example_processor_test.go] for an example of typical usage.
 func (p *Processor) Run(ctx context.Context) error {
 	err := p.runImpl(ctx)
 

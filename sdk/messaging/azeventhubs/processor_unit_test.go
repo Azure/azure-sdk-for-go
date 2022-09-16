@@ -29,6 +29,7 @@ func TestUnit_Processor_loadBalancing(t *testing.T) {
 			PartitionID:             partitionID,
 		}
 	}
+
 	require.Equal(t, ProcessorStrategyBalanced, firstProcessor.lb.strategy)
 
 	allPartitionIDs := []string{"1", "100", "1001"}

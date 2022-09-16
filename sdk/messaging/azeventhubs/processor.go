@@ -183,27 +183,12 @@ func (p *Processor) NextPartitionClient(ctx context.Context) *ProcessorPartition
 	}
 }
 
-// Run handles the load balancing loop, blocking until it encounters fatal errors or the
-// passed in context is cancelled.
+// Run handles the load balancing loop, blocking until the passed in context is cancelled
+// or it encounters an unrecoverable error. On cancellation, it will return a nil error.
 //
-// Run continually checks the passed in CheckpointStore, attempting to distribute partitions
-// fairly between itself and any other active consumers. New [ProcessorPartitionClient] instances
-// are created and will be returned from [Processor.NextPartitionClient] as they are available.
-//
-// When partition ownership is lost [ProcessorPartitionClient]'s will return an errors.
-//
-// Callers will typically create a goroutine, continually calling
-// [Processor.NextPartitionClient] in a loop to get [ProcessorPartitionClient]
-// instances, and then process those in parallel.
-//
-// The main thread will call [Processor.Run], blocking until the context passed
-// to Run is cancelled.
-//
-
-// Run will exit when the passed in context has been cancelled or if there are unrecoverable
-// or persistent errors in load balancing.
-//
-// On cancellation, it will return a nil error.
+// As partitions are claimed new [ProcessorPartitionClient] instances will be returned from
+// [Processor.NextPartitionClient]. This can happen at any time, based on new Processor instances
+// coming online, as well as other Processors exiting.
 //
 // See [example_processor_test.go] for an example of typical usage.
 //

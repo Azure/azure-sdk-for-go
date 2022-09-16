@@ -52,7 +52,7 @@ func Example_consumingEventsUsingProcessor() {
 
 	// Create the Processor
 	//
-	// The Processor is will handle load balancing with other Processor instances, running in separate
+	// The Processor handles load balancing with other Processor instances, running in separate
 	// processes or even on separate machines. Each one will use the checkpointStore to coordinate
 	// state and ownership, dynamically.
 	processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, nil)
@@ -61,12 +61,12 @@ func Example_consumingEventsUsingProcessor() {
 		panic(err)
 	}
 
-	// this will be launched in a goroutine and will just continue to loop
-	// and process partitions.
+	// This function will be launched in a goroutine and will loop and launch
+	// processing of partitions, in parallel.
 	dispatchPartitionClients := func() {
-		// This loop will run and eventually terminate when either:
-		// 1. You cancel the passed in context
-		// 2. The Processor.Run() call is cancelled or terminates.
+		// Our loop will terminate when:
+		// - You cancel the passed in context
+		// - The Processor.Run() call is cancelled or terminates.
 		for {
 			partitionClient := processor.NextPartitionClient(context.TODO())
 
@@ -96,8 +96,8 @@ func Example_consumingEventsUsingProcessor() {
 	processorCtx, processorCancel := context.WithCancel(context.TODO())
 	defer processorCancel()
 
-	// Run the load balancer. The dispatchPartitionClient goroutine, launched
-	// above, will continually receive ProcessorPartitionClients as partitions
+	// Run the load balancer. The dispatchPartitionClients goroutine, launched
+	// above, will continually get new ProcessorPartitionClient's as partitions
 	// are allocated.
 	//
 	// Stopping the processor is as simple as canceling the context that you passed

@@ -28,26 +28,24 @@ func ExampleReservationOrderClient_Calculate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Calculate(ctx,
-		armreservations.PurchaseRequest{
-			Location: to.Ptr("westus"),
-			Properties: &armreservations.PurchaseRequestProperties{
-				AppliedScopeType: to.Ptr(armreservations.AppliedScopeTypeShared),
-				BillingPlan:      to.Ptr(armreservations.ReservationBillingPlanMonthly),
-				BillingScopeID:   to.Ptr("/subscriptions/ed3a1871-612d-abcd-a849-c2542a68be83"),
-				DisplayName:      to.Ptr("TestReservationOrder"),
-				Quantity:         to.Ptr[int32](1),
-				ReservedResourceProperties: &armreservations.PurchaseRequestPropertiesReservedResourceProperties{
-					InstanceFlexibility: to.Ptr(armreservations.InstanceFlexibilityOn),
-				},
-				ReservedResourceType: to.Ptr(armreservations.ReservedResourceTypeVirtualMachines),
-				Term:                 to.Ptr(armreservations.ReservationTermP1Y),
+	res, err := client.Calculate(ctx, armreservations.PurchaseRequest{
+		Location: to.Ptr("westus"),
+		Properties: &armreservations.PurchaseRequestProperties{
+			AppliedScopeType: to.Ptr(armreservations.AppliedScopeTypeShared),
+			BillingPlan:      to.Ptr(armreservations.ReservationBillingPlanMonthly),
+			BillingScopeID:   to.Ptr("/subscriptions/ed3a1871-612d-abcd-a849-c2542a68be83"),
+			DisplayName:      to.Ptr("TestReservationOrder"),
+			Quantity:         to.Ptr[int32](1),
+			ReservedResourceProperties: &armreservations.PurchaseRequestPropertiesReservedResourceProperties{
+				InstanceFlexibility: to.Ptr(armreservations.InstanceFlexibilityOn),
 			},
-			SKU: &armreservations.SKUName{
-				Name: to.Ptr("standard_D1"),
-			},
+			ReservedResourceType: to.Ptr(armreservations.ReservedResourceTypeVirtualMachines),
+			Term:                 to.Ptr(armreservations.ReservationTermP1Y),
 		},
-		nil)
+		SKU: &armreservations.SKUName{
+			Name: to.Ptr("standard_D1"),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -90,28 +88,25 @@ func ExampleReservationOrderClient_BeginPurchase() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginPurchase(ctx,
-		"a075419f-44cc-497f-b68a-14ee811d48b9",
-		armreservations.PurchaseRequest{
-			Location: to.Ptr("westus"),
-			Properties: &armreservations.PurchaseRequestProperties{
-				AppliedScopeType: to.Ptr(armreservations.AppliedScopeTypeShared),
-				BillingPlan:      to.Ptr(armreservations.ReservationBillingPlanMonthly),
-				BillingScopeID:   to.Ptr("/subscriptions/ed3a1871-612d-abcd-a849-c2542a68be83"),
-				DisplayName:      to.Ptr("TestReservationOrder"),
-				Quantity:         to.Ptr[int32](1),
-				Renew:            to.Ptr(false),
-				ReservedResourceProperties: &armreservations.PurchaseRequestPropertiesReservedResourceProperties{
-					InstanceFlexibility: to.Ptr(armreservations.InstanceFlexibilityOn),
-				},
-				ReservedResourceType: to.Ptr(armreservations.ReservedResourceTypeVirtualMachines),
-				Term:                 to.Ptr(armreservations.ReservationTermP1Y),
+	poller, err := client.BeginPurchase(ctx, "a075419f-44cc-497f-b68a-14ee811d48b9", armreservations.PurchaseRequest{
+		Location: to.Ptr("westus"),
+		Properties: &armreservations.PurchaseRequestProperties{
+			AppliedScopeType: to.Ptr(armreservations.AppliedScopeTypeShared),
+			BillingPlan:      to.Ptr(armreservations.ReservationBillingPlanMonthly),
+			BillingScopeID:   to.Ptr("/subscriptions/ed3a1871-612d-abcd-a849-c2542a68be83"),
+			DisplayName:      to.Ptr("TestReservationOrder"),
+			Quantity:         to.Ptr[int32](1),
+			Renew:            to.Ptr(false),
+			ReservedResourceProperties: &armreservations.PurchaseRequestPropertiesReservedResourceProperties{
+				InstanceFlexibility: to.Ptr(armreservations.InstanceFlexibilityOn),
 			},
-			SKU: &armreservations.SKUName{
-				Name: to.Ptr("standard_D1"),
-			},
+			ReservedResourceType: to.Ptr(armreservations.ReservedResourceTypeVirtualMachines),
+			Term:                 to.Ptr(armreservations.ReservationTermP1Y),
 		},
-		nil)
+		SKU: &armreservations.SKUName{
+			Name: to.Ptr("standard_D1"),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -124,7 +119,7 @@ func ExampleReservationOrderClient_BeginPurchase() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/GetReservationOrderDetails.json
-func ExampleReservationOrderClient_Get() {
+func ExampleReservationOrderClient_Get_getReservation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -134,9 +129,26 @@ func ExampleReservationOrderClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"a075419f-44cc-497f-b68a-14ee811d48b9",
-		&armreservations.ReservationOrderClientGetOptions{Expand: nil})
+	res, err := client.Get(ctx, "a075419f-44cc-497f-b68a-14ee811d48b9", &armreservations.ReservationOrderClientGetOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-03-01/examples/GetReservationOrderDetailsWithExpandPlanInformation.json
+func ExampleReservationOrderClient_Get_getReservationWithExpandPayments() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armreservations.NewReservationOrderClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.Get(ctx, "a075419f-44cc-497f-b68a-14ee811d48b9", &armreservations.ReservationOrderClientGetOptions{Expand: to.Ptr("schedule")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -155,12 +167,9 @@ func ExampleReservationOrderClient_ChangeDirectory() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ChangeDirectory(ctx,
-		"a075419f-44cc-497f-b68a-14ee811d48b9",
-		armreservations.ChangeDirectoryRequest{
-			DestinationTenantID: to.Ptr("906655ea-30be-4587-9d12-b50e077b0f32"),
-		},
-		nil)
+	res, err := client.ChangeDirectory(ctx, "a075419f-44cc-497f-b68a-14ee811d48b9", armreservations.ChangeDirectoryRequest{
+		DestinationTenantID: to.Ptr("906655ea-30be-4587-9d12-b50e077b0f32"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

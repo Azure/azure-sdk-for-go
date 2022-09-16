@@ -122,7 +122,7 @@ func processEvents(partitionClient *azeventhubs.ProcessorPartitionClient) error 
 	defer closePartitionResources(partitionClient)
 
 	// [BEGIN] Initialize any resources needed to process the partition
-	if err := initializePartitionResources(); err != nil {
+	if err := initializePartitionResources(partitionClient.PartitionID()); err != nil {
 		return err
 	}
 

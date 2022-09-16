@@ -13,8 +13,9 @@ import (
 )
 
 type Client[T any] struct {
-	inner     *T
-	sharedKey *exported.SharedKeyCredential
+	inner             *T
+	sharedKey         *exported.SharedKeyCredential
+	userDelegationKey *exported.UserDelegationKey
 }
 
 func InnerClient[T any](client *Client[T]) *T {
@@ -47,6 +48,30 @@ func NewBlobClient(blobURL string, pipeline runtime.Pipeline, sharedKey *exporte
 	return &Client[generated.BlobClient]{
 		inner:     generated.NewBlobClient(blobURL, pipeline),
 		sharedKey: sharedKey,
+	}
+}
+
+func NewServiceClientUDK(containerURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential, udk *exported.UserDelegationKey) *Client[generated.ServiceClient] {
+	return &Client[generated.ServiceClient]{
+		inner:             generated.NewServiceClient(containerURL, pipeline),
+		sharedKey:         sharedKey,
+		userDelegationKey: udk,
+	}
+}
+
+func NewContainerClientUDK(containerURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential, udk *exported.UserDelegationKey) *Client[generated.ContainerClient] {
+	return &Client[generated.ContainerClient]{
+		inner:             generated.NewContainerClient(containerURL, pipeline),
+		sharedKey:         sharedKey,
+		userDelegationKey: udk,
+	}
+}
+
+func NewBlobClientUDK(blobURL string, pipeline runtime.Pipeline, sharedKey *exported.SharedKeyCredential, udk *exported.UserDelegationKey) *Client[generated.BlobClient] {
+	return &Client[generated.BlobClient]{
+		inner:             generated.NewBlobClient(blobURL, pipeline),
+		sharedKey:         sharedKey,
+		userDelegationKey: udk,
 	}
 }
 

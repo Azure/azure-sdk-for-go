@@ -81,6 +81,32 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
 }
 
+// NewClientWithUserDelegationCredential obtains a UserDelegationKey object using the base ServiceURL object.
+// OAuth is required for this call, as well as any role that can delegate access to the storage account.
+func NewClientWithUserDelegationCredential(serviceURL string, ctx context.Context, info generated.KeyInfo, timeout *int32, requestID *string) (*Client, error) {
+	url, err := exported.ParseURL(serviceURL)
+	if err != nil {
+		return nil, err
+	}
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, nil)
+	sc := generated.NewServiceClient(serviceURL, pl)
+	opts := GetUserDelegationKeyOptions{
+		RequestID: requestID,
+		Timeout:   timeout,
+	}
+	udk, err := sc.GetUserDelegationKey(ctx, info, &opts)
+	if err != nil {
+		return nil, err
+	}
+
+	return (*Client)(base.NewServiceClientUDK(url.Host, pl, nil, &udk.UserDelegationKey)), nil
+}
+
+func (s Client) GetUserDelegationKey(ctx context.Context, keyInfo generated.KeyInfo, options *GetUserDelegationKeyOptions) GetUserDelegationKeyResponse {
+	resp, _ := s.generated().GetUserDelegationKey(ctx, keyInfo, options)
+	return resp
+}
+
 func (s *Client) generated() *generated.ServiceClient {
 	return base.InnerClient((*base.Client[generated.ServiceClient])(s))
 }

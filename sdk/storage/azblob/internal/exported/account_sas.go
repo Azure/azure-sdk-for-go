@@ -58,7 +58,7 @@ func (v AccountSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential
 		""}, // That is right, the account SAS requires a terminating extra newline
 		"\n")
 
-	signature, err := sharedKeyCredential.computeHMACSHA256(stringToSign)
+	signature, err := sharedKeyCredential.ComputeHMACSHA256(stringToSign)
 	if err != nil {
 		return SASQueryParameters{}, err
 	}

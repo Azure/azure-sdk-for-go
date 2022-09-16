@@ -13,6 +13,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"io"
 	"log"
 	"net/http"
@@ -361,6 +362,52 @@ func Example_container_NewClientWithSharedKeyCredential() {
 	containerClient, err := container.NewClientWithSharedKeyCredential(containerURL, cred, nil)
 	handleError(err)
 	fmt.Println(containerClient.URL())
+}
+
+func Example_service_Client_NewClientWithUserDelegationCredential() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	// Create Managed Identity (OAuth) Credentials using Client ID
+	clientOptions := azcore.ClientOptions{}
+	optsClientID := azidentity.ManagedIdentityCredentialOptions{ClientOptions: clientOptions, ID: azidentity.ClientID("7cf7db0d-...")}
+	cred, err := azidentity.NewManagedIdentityCredential(&optsClientID)
+	if err != nil {
+		log.Fatal(err)
+	}
+	clientOptionsAzBlob := azblob.ClientOptions{} // Same as azcore.ClientOptions using azblob instead
+
+	svcClient, err := azblob.NewClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, &clientOptionsAzBlob)
+
+	// Set current and past time and create key
+	currentTime := time.Now().UTC().Add(-10 * time.Second)
+	pastTime := currentTime.Add(48 * time.Hour)
+	info := generated.KeyInfo{
+		Start:  to.Ptr(currentTime.UTC().Format(azblob.SASTimeFormat)),
+		Expiry: to.Ptr(pastTime.UTC().Format(azblob.SASTimeFormat)),
+	}
+
+	_, err = service.NewClientWithUserDelegationCredential(svcClient.URL(), context.Background(), info, nil, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("User Delegation Key has been created for ", accountName)
+
+	// Create Managed Identity (OAuth) Credentials using Resource ID
+	optsResourceID := azidentity.ManagedIdentityCredentialOptions{ClientOptions: clientOptions, ID: azidentity.ResourceID("/subscriptions/...")}
+	cred, err = azidentity.NewManagedIdentityCredential(&optsResourceID)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	svcClient, err = azblob.NewClient("svcURL", cred, &clientOptionsAzBlob)
+
+	_, err = service.NewClientWithUserDelegationCredential(svcClient.URL(), context.Background(), info, nil, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("User Delegation Key has been created for ", accountName)
 }
 
 func Example_container_NewClientWithNoCredential() {

@@ -21,6 +21,16 @@ func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredentia
 	return exported.NewSharedKeyCredential(accountName, accountKey)
 }
 
+// UserDelegationCredential contains an account's name and its user delegation key.
+type UserDelegationCredential = exported.UserDelegationCredential
+
+// NewUserDelegationCredential creates a new UserDelegationCredential using a Storage account's name and a user delegation key from it
+func NewUserDelegationCredential(accountName string, key generated.UserDelegationKey) *UserDelegationCredential {
+	return exported.NewUserDelegationCredential(accountName, key)
+}
+
+type GetUserDelegationKeyOptions = generated.ServiceClientGetUserDelegationKeyOptions
+
 // AccessConditions identifies container-specific access conditions which you optionally set.
 type AccessConditions = exported.ContainerAccessConditions
 

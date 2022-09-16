@@ -8,6 +8,7 @@ package azblob
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -18,6 +19,19 @@ type SharedKeyCredential = exported.SharedKeyCredential
 func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
 	return exported.NewSharedKeyCredential(accountName, accountKey)
 }
+
+// UserDelegationCredntial contains an account's name and its user delegation key.
+type UserDelegationCredential = exported.UserDelegationCredential
+
+// NewUserDelegationCredential creates a new UserDelegationCredential using a Storage account's name and a user delegation key from it
+func NewUserDelegationCredential(accountName string, key generated.UserDelegationKey) *UserDelegationCredential {
+	return exported.NewUserDelegationCredential(accountName, key)
+}
+
+type UserDelegationKey = generated.UserDelegationKey
+
+// StorageAccountCredential is a wrapper interface for SharedKeyCredential and UserDelegationCredential
+type StorageAccountCredential = exported.StorageAccountCredential
 
 // IPEndpointStyleInfo is used for IP endpoint style URL when working with Azure storage emulator.
 // Ex: "https://10.132.141.33/accountname/containername"
@@ -46,3 +60,6 @@ type SASProtocol = exported.SASProtocol
 
 // IPRange represents a SAS IP range's start IP and (optionally) end IP.
 type IPRange = exported.IPRange
+
+// KeyInfo - Key Information
+type KeyInfo = generated.KeyInfo

@@ -598,3 +598,130 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	//_, err = containerClient2.Create(ctx, nil)
 	//_require.Nil(err)
 }
+
+/*func (s *ServiceRecordedTestsSuite) TestUDKServiceClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+
+	clientOptions := azcore.ClientOptions{}
+	optsClientID := azidentity.ManagedIdentityCredentialOptions{ClientOptions: clientOptions, ID: azidentity.ClientID("7cf7db0d-...")}
+	cred, err := azidentity.NewManagedIdentityCredential(&optsClientID)
+	_require.Nil(err)
+
+	svcClient, err := azblob.NewClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, &azblob.ClientOptions{})
+
+	// Set current and past time
+	currentTime := time.Now().UTC().Add(-10 * time.Second)
+	pastTime := currentTime.Add(48 * time.Hour)
+	info := azblob.KeyInfo{
+		Start:  to.Ptr(currentTime.UTC().Format(azblob.SASTimeFormat)),
+		Expiry: to.Ptr(pastTime.UTC().Format(azblob.SASTimeFormat)),
+	}
+
+	serviceClient, err := service.NewClientWithUserDelegationCredential(svcClient.URL(), context.Background(), info, nil, nil)
+	_require.Nil(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+
+	resources := service.SASResourceTypes{
+		Object:    true,
+		Service:   true,
+		Container: true,
+	}
+	permissions := service.SASPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Update: true,
+		Delete: true,
+	}
+	services := service.SASServices{
+		Blob: true,
+	}
+	start := time.Now().Add(-time.Hour)
+	expiry := start.Add(time.Hour)
+
+	sasUrl, err := serviceClient.GetSASURL(resources, permissions, services, start, expiry)
+	_require.Nil(err)
+
+	cl, err := service.NewClientWithUserDelegationCredential(sasUrl, nil, info, nil, nil)
+	_require.Nil(err)
+
+	_, err = cl.CreateContainer(context.Background(), containerName+"002", nil)
+	_require.Nil(err)
+
+	_, err = cl.DeleteContainer(context.Background(), containerName+"002", nil)
+	_require.Nil(err)
+}*/
+
+/*func (s *ServiceUnrecordedTestsSuite) TestUDKContainerClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	_require.Nil(err)
+
+	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	_require.Nil(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := serviceClient.NewContainerClient(containerName)
+
+	permissions := container.SASPermissions{
+		Read: true,
+		Add:  true,
+	}
+	start := time.Now().Add(-5 * time.Minute).UTC()
+	expiry := time.Now().Add(time.Hour)
+
+	sasUrl, err := containerClient.GetSASURL(permissions, start, expiry)
+	_require.Nil(err)
+
+	containerClient2, err := container.NewClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
+
+	_, err = containerClient2.Create(context.Background(), &container.CreateOptions{Metadata: testcommon.BasicMetadata})
+	_require.NotNil(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthorizationFailure)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestUDKContainerClient2() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	_require.Nil(err)
+
+	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	_require.Nil(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := serviceClient.NewContainerClient(containerName)
+
+	sasUrlReadAdd, err := containerClient.GetSASURL(container.SASPermissions{Read: true, Add: true},
+		time.Now().Add(-5*time.Minute).UTC(), time.Now().Add(time.Hour))
+	_require.Nil(err)
+	_, err = containerClient.Create(context.Background(), &container.CreateOptions{Metadata: testcommon.BasicMetadata})
+	_require.Nil(err)
+
+	containerClient1, err := container.NewClientWithNoCredential(sasUrlReadAdd, nil)
+	_require.Nil(err)
+
+	_, err = containerClient1.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	//validateBlobErrorCode(_require, err, bloberror.AuthorizationFailure)
+	//
+	//sasUrlRCWL, err := containerClient.GetSASURL(container.SASPermissions{Add: true, Create: true, Delete: true, List: true},
+	//	time.Now().Add(-5*time.Minute).UTC(), time.Now().Add(time.Hour))
+	//_require.Nil(err)
+	//
+	//containerClient2, err := container.NewClientWithNoCredential(sasUrlRCWL, nil)
+	//_require.Nil(err)
+	//
+	//_, err = containerClient2.Create(ctx, nil)
+	//_require.Nil(err)
+}*/

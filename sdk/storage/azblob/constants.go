@@ -7,6 +7,7 @@
 package azblob
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
@@ -35,3 +36,5 @@ const (
 func PossibleDeleteSnapshotsOptionTypeValues() []DeleteSnapshotsOptionType {
 	return generated.PossibleDeleteSnapshotsOptionTypeValues()
 }
+
+const SASTimeFormat = exported.SASTimeFormat // "2017-07-27T00:00:00Z" // ISO 8601

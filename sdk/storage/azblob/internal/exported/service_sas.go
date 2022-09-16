@@ -47,9 +47,9 @@ func getDirectoryDepth(path string) string {
 
 // Sign uses an account's StorageAccountCredential to sign this signature values to produce the proper SAS query parameters.
 // See: StorageAccountCredential. Compatible with both UserDelegationCredential and SharedKeyCredential
-func (v BlobSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (SASQueryParameters, error) {
+func (v BlobSASSignatureValues) Sign(credential StorageAccountCredential) (SASQueryParameters, error) {
 	resource := "c"
-	if sharedKeyCredential == nil {
+	if credential == nil {
 		return SASQueryParameters{}, fmt.Errorf("cannot sign SAS query without Shared Key Credential")
 	}
 
@@ -100,31 +100,29 @@ func (v BlobSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (
 
 	signedIdentifier := v.Identifier
 
-	//udk := sharedKeyCredential.getUDKParams()
-	//
-	//if udk != nil {
-	//	udkStart, udkExpiry, _ := FormatTimesForSASSigning(udk.SignedStart, udk.SignedExpiry, time.Time{})
-	//	//I don't like this answer to combining the functions
-	//	//But because signedIdentifier and the user delegation key strings share a place, this is an _OK_ way to do it.
-	//	signedIdentifier = strings.Join([]string{
-	//		udk.SignedOID,
-	//		udk.SignedTID,
-	//		udkStart,
-	//		udkExpiry,
-	//		udk.SignedService,
-	//		udk.SignedVersion,
-	//		v.PreauthorizedAgentObjectId,
-	//		v.AgentObjectID,
-	//		v.CorrelationId,
-	//	}, "\n")
-	//}
+	udk := credential.getUDKParams()
+
+	if udk != nil {
+		udkStart, udkExpiry, _ := FormatTimesForSASSigning(*udk.SignedStart, *udk.SignedExpiry, time.Time{})
+		signedIdentifier = strings.Join([]string{
+			*udk.SignedOID,
+			*udk.SignedTID,
+			udkStart,
+			udkExpiry,
+			*udk.SignedService,
+			*udk.SignedVersion,
+			v.PreauthorizedAgentObjectId,
+			v.AgentObjectId,
+			v.CorrelationId,
+		}, "\n")
+	}
 
 	// String to sign: http://msdn.microsoft.com/en-us/library/azure/dn140255.aspx
 	stringToSign := strings.Join([]string{
 		v.Permissions,
 		startTime,
 		expiryTime,
-		getCanonicalName(sharedKeyCredential.AccountName(), v.ContainerName, v.BlobName, v.Directory),
+		getCanonicalName(credential.AccountName(), v.ContainerName, v.BlobName, v.Directory),
 		signedIdentifier,
 		v.IPRange.String(),
 		string(v.Protocol),
@@ -139,7 +137,7 @@ func (v BlobSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (
 		"\n")
 
 	signature := ""
-	signature, err := sharedKeyCredential.computeHMACSHA256(stringToSign)
+	signature, err := credential.ComputeHMACSHA256(stringToSign)
 	if err != nil {
 		return SASQueryParameters{}, err
 	}
@@ -170,15 +168,15 @@ func (v BlobSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (
 		signature: signature,
 	}
 
-	////User delegation SAS specific parameters
-	//if udk != nil {
-	//	p.signedOID = udk.SignedOID
-	//	p.signedTID = udk.SignedTID
-	//	p.signedStart = udk.SignedStart
-	//	p.signedExpiry = udk.SignedExpiry
-	//	p.signedService = udk.SignedService
-	//	p.signedVersion = udk.SignedVersion
-	//}
+	//User delegation SAS specific parameters
+	if udk != nil {
+		p.signedOID = *udk.SignedOID
+		p.signedTID = *udk.SignedTID
+		p.signedStart = *udk.SignedStart
+		p.signedExpiry = *udk.SignedExpiry
+		p.signedService = *udk.SignedService
+		p.signedVersion = *udk.SignedVersion
+	}
 
 	return p, nil
 }

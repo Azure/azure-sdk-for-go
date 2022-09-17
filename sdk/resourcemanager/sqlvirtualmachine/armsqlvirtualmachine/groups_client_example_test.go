@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2021-11-01-preview/examples/GetSqlVirtualMachineGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/GetSqlVirtualMachineGroup.json
 func ExampleGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,10 +28,7 @@ func ExampleGroupsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"testrg",
-		"testvmgroup",
-		nil)
+	res, err := client.Get(ctx, "testrg", "testvmgroup", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -39,7 +36,7 @@ func ExampleGroupsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2021-11-01-preview/examples/CreateOrUpdateSqlVirtualMachineGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/CreateOrUpdateSqlVirtualMachineGroup.json
 func ExampleGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,29 +47,26 @@ func ExampleGroupsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"testrg",
-		"testvmgroup",
-		armsqlvirtualmachine.Group{
-			Location: to.Ptr("northeurope"),
-			Tags: map[string]*string{
-				"mytag": to.Ptr("myval"),
-			},
-			Properties: &armsqlvirtualmachine.GroupProperties{
-				SQLImageOffer: to.Ptr("SQL2016-WS2016"),
-				SQLImageSKU:   to.Ptr(armsqlvirtualmachine.SQLVMGroupImageSKUEnterprise),
-				WsfcDomainProfile: &armsqlvirtualmachine.WsfcDomainProfile{
-					ClusterBootstrapAccount:  to.Ptr("testrpadmin"),
-					ClusterOperatorAccount:   to.Ptr("testrp@testdomain.com"),
-					DomainFqdn:               to.Ptr("testdomain.com"),
-					OuPath:                   to.Ptr("OU=WSCluster,DC=testdomain,DC=com"),
-					SQLServiceAccount:        to.Ptr("sqlservice@testdomain.com"),
-					StorageAccountPrimaryKey: to.Ptr("<primary storage access key>"),
-					StorageAccountURL:        to.Ptr("https://storgact.blob.core.windows.net/"),
-				},
+	poller, err := client.BeginCreateOrUpdate(ctx, "testrg", "testvmgroup", armsqlvirtualmachine.Group{
+		Location: to.Ptr("northeurope"),
+		Tags: map[string]*string{
+			"mytag": to.Ptr("myval"),
+		},
+		Properties: &armsqlvirtualmachine.GroupProperties{
+			SQLImageOffer: to.Ptr("SQL2016-WS2016"),
+			SQLImageSKU:   to.Ptr(armsqlvirtualmachine.SQLVMGroupImageSKUEnterprise),
+			WsfcDomainProfile: &armsqlvirtualmachine.WsfcDomainProfile{
+				ClusterBootstrapAccount:  to.Ptr("testrpadmin"),
+				ClusterOperatorAccount:   to.Ptr("testrp@testdomain.com"),
+				ClusterSubnetType:        to.Ptr(armsqlvirtualmachine.ClusterSubnetTypeMultiSubnet),
+				DomainFqdn:               to.Ptr("testdomain.com"),
+				OuPath:                   to.Ptr("OU=WSCluster,DC=testdomain,DC=com"),
+				SQLServiceAccount:        to.Ptr("sqlservice@testdomain.com"),
+				StorageAccountPrimaryKey: to.Ptr("<primary storage access key>"),
+				StorageAccountURL:        to.Ptr("https://storgact.blob.core.windows.net/"),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -84,7 +78,7 @@ func ExampleGroupsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2021-11-01-preview/examples/DeleteSqlVirtualMachineGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/DeleteSqlVirtualMachineGroup.json
 func ExampleGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,10 +89,7 @@ func ExampleGroupsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"testrg",
-		"testvmgroup",
-		nil)
+	poller, err := client.BeginDelete(ctx, "testrg", "testvmgroup", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -108,7 +99,7 @@ func ExampleGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2021-11-01-preview/examples/UpdateSqlVirtualMachineGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/UpdateSqlVirtualMachineGroup.json
 func ExampleGroupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,15 +110,11 @@ func ExampleGroupsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"testrg",
-		"testvmgroup",
-		armsqlvirtualmachine.GroupUpdate{
-			Tags: map[string]*string{
-				"mytag": to.Ptr("myval"),
-			},
+	poller, err := client.BeginUpdate(ctx, "testrg", "testvmgroup", armsqlvirtualmachine.GroupUpdate{
+		Tags: map[string]*string{
+			"mytag": to.Ptr("myval"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -139,7 +126,7 @@ func ExampleGroupsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2021-11-01-preview/examples/ListByResourceGroupSqlVirtualMachineGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/ListByResourceGroupSqlVirtualMachineGroup.json
 func ExampleGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,8 +137,7 @@ func ExampleGroupsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("testrg",
-		nil)
+	pager := client.NewListByResourceGroupPager("testrg", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -164,7 +150,7 @@ func ExampleGroupsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2021-11-01-preview/examples/ListSubscriptionSqlVirtualMachineGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/ListSubscriptionSqlVirtualMachineGroup.json
 func ExampleGroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

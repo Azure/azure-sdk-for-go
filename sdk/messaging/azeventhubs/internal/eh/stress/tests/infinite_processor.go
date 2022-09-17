@@ -261,7 +261,7 @@ func testInitialize(ctx context.Context, testData *stressTestData, containerName
 
 	defer producerClient.Close(ctx)
 
-	err = initCheckpointStore(ctx, producerClient, azeventhubs.CheckpointStoreAddress{
+	err = initCheckpointStore(ctx, producerClient, azeventhubs.Checkpoint{
 		ConsumerGroup:           azeventhubs.DefaultConsumerGroup,
 		FullyQualifiedNamespace: testData.Namespace,
 		EventHubName:            testData.HubName,

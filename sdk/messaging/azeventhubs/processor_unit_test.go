@@ -21,13 +21,11 @@ import (
 func TestUnit_Processor_loadBalancing(t *testing.T) {
 	cps := newCheckpointStoreForTest()
 	firstProcessor := newProcessorForTest(t, "first-processor", cps)
-	newAddressForPartition := func(partitionID string) CheckpointStoreAddress {
-		return CheckpointStoreAddress{
-			ConsumerGroup:           "consumer-group",
-			EventHubName:            "event-hub",
-			FullyQualifiedNamespace: "fqdn",
-			PartitionID:             partitionID,
-		}
+	newTestOwnership := func(base Ownership) Ownership {
+		base.ConsumerGroup = "consumer-group"
+		base.EventHubName = "event-hub"
+		base.FullyQualifiedNamespace = "fqdn"
+		return base
 	}
 
 	require.Equal(t, ProcessorStrategyBalanced, firstProcessor.lb.strategy)
@@ -44,21 +42,18 @@ func TestUnit_Processor_loadBalancing(t *testing.T) {
 	require.Equal(t, 3, lbinfo.maxAllowed, "only 1 possible owner (us), so we're allowed all the available partitions")
 
 	expectedOwnerships := []Ownership{
-		{
-			CheckpointStoreAddress: newAddressForPartition("1"),
-			OwnershipData: OwnershipData{
-				OwnerID: "first-processor",
-			}},
-		{
-			CheckpointStoreAddress: newAddressForPartition("100"),
-			OwnershipData: OwnershipData{
-				OwnerID: "first-processor",
-			}},
-		{
-			CheckpointStoreAddress: newAddressForPartition("1001"),
-			OwnershipData: OwnershipData{
-				OwnerID: "first-processor",
-			}},
+		newTestOwnership(Ownership{
+			PartitionID: "1",
+			OwnerID:     "first-processor",
+		}),
+		newTestOwnership(Ownership{
+			PartitionID: "100",
+			OwnerID:     "first-processor",
+		}),
+		newTestOwnership(Ownership{
+			PartitionID: "1001",
+			OwnerID:     "first-processor",
+		}),
 	}
 
 	require.Equal(t, expectedOwnerships, lbinfo.unownedOrExpired)
@@ -74,12 +69,10 @@ func TestUnit_Processor_loadBalancing(t *testing.T) {
 	firstProcessorOwnerships, err := firstProcessor.lb.LoadBalance(context.Background(), allPartitionIDs)
 	require.NoError(t, err)
 
-	expectedLoadBalancingOwnership := updateDynamicData(t, firstProcessorOwnerships[0], Ownership{
-		CheckpointStoreAddress: newAddressForPartition("1001"),
-		OwnershipData: OwnershipData{
-			OwnerID: "first-processor",
-		},
-	}, allPartitionIDs)
+	expectedLoadBalancingOwnership := updateDynamicData(t, firstProcessorOwnerships[0], newTestOwnership(Ownership{
+		PartitionID: "1001",
+		OwnerID:     "first-processor",
+	}), allPartitionIDs)
 	require.Equal(t, []Ownership{expectedLoadBalancingOwnership}, firstProcessorOwnerships)
 
 	// at this point this is our state:
@@ -103,12 +96,10 @@ func TestUnit_Processor_loadBalancing(t *testing.T) {
 	newProcessorOwnerships, err := secondProcessor.lb.LoadBalance(context.Background(), allPartitionIDs)
 	require.NoError(t, err)
 
-	newExpectedLoadBalancingOwnership := updateDynamicData(t, newProcessorOwnerships[0], Ownership{
-		CheckpointStoreAddress: newAddressForPartition("1001"),
-		OwnershipData: OwnershipData{
-			OwnerID: "second-processor",
-		},
-	}, allPartitionIDs)
+	newExpectedLoadBalancingOwnership := updateDynamicData(t, newProcessorOwnerships[0], newTestOwnership(Ownership{
+		PartitionID: "1001",
+		OwnerID:     "second-processor",
+	}), allPartitionIDs)
 
 	require.Equal(t, []Ownership{newExpectedLoadBalancingOwnership}, newProcessorOwnerships)
 	require.NotEqual(t, newExpectedLoadBalancingOwnership.PartitionID, expectedLoadBalancingOwnership.PartitionID, "partitions should not be assigned twice")
@@ -234,15 +225,11 @@ func TestUnit_Processor_Run_startPosition(t *testing.T) {
 	cps := newCheckpointStoreForTest()
 
 	err := cps.UpdateCheckpoint(context.Background(), Checkpoint{
-		CheckpointStoreAddress: CheckpointStoreAddress{
-			ConsumerGroup:           "consumer-group",
-			EventHubName:            "event-hub",
-			FullyQualifiedNamespace: "fqdn",
-			PartitionID:             "a",
-		},
-		CheckpointData: CheckpointData{
-			SequenceNumber: to.Ptr[int64](202),
-		},
+		ConsumerGroup:           "consumer-group",
+		EventHubName:            "event-hub",
+		FullyQualifiedNamespace: "fqdn",
+		PartitionID:             "a",
+		SequenceNumber:          to.Ptr[int64](202),
 	}, nil)
 	require.NoError(t, err)
 

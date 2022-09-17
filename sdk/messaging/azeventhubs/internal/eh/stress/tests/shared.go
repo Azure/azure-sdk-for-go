@@ -197,7 +197,7 @@ func sendEventsToPartition(ctx context.Context, producerClient *azeventhubs.Prod
 	return sp, nil
 }
 
-func initCheckpointStore(ctx context.Context, client propertiesClient, baseAddress azeventhubs.CheckpointStoreAddress, cps azeventhubs.CheckpointStore) error {
+func initCheckpointStore(ctx context.Context, client propertiesClient, baseCheckpoint azeventhubs.Checkpoint, cps azeventhubs.CheckpointStore) error {
 	hubProps, err := client.GetEventHubProperties(ctx, nil)
 
 	if err != nil {
@@ -211,23 +211,18 @@ func initCheckpointStore(ctx context.Context, client propertiesClient, baseAddre
 			return err
 		}
 
-		newAddress := baseAddress
-		newAddress.PartitionID = partitionID
-
-		var checkpointData azeventhubs.CheckpointData
+		newCheckpoint := baseCheckpoint
+		newCheckpoint.PartitionID = partitionID
 
 		if partProps.IsEmpty {
-			checkpointData.Offset = to.Ptr[int64](-1)
-			checkpointData.SequenceNumber = to.Ptr[int64](0)
+			newCheckpoint.Offset = to.Ptr[int64](-1)
+			newCheckpoint.SequenceNumber = to.Ptr[int64](0)
 		} else {
-			checkpointData.Offset = &partProps.LastEnqueuedOffset
-			checkpointData.SequenceNumber = &partProps.LastEnqueuedSequenceNumber
+			newCheckpoint.Offset = &partProps.LastEnqueuedOffset
+			newCheckpoint.SequenceNumber = &partProps.LastEnqueuedSequenceNumber
 		}
 
-		err = cps.UpdateCheckpoint(ctx, azeventhubs.Checkpoint{
-			CheckpointStoreAddress: newAddress,
-			CheckpointData:         checkpointData,
-		}, nil)
+		err = cps.UpdateCheckpoint(ctx, newCheckpoint, nil)
 
 		if err != nil {
 			return err

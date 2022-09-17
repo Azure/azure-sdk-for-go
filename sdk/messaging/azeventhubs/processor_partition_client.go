@@ -34,16 +34,12 @@ func (c *ProcessorPartitionClient) ReceiveEvents(ctx context.Context, count int,
 // start from after this point.
 func (p *ProcessorPartitionClient) UpdateCheckpoint(ctx context.Context, latestEvent *ReceivedEventData) error {
 	return p.checkpointStore.UpdateCheckpoint(ctx, Checkpoint{
-		CheckpointStoreAddress: CheckpointStoreAddress{
-			ConsumerGroup:           p.consumerClientDetails.ConsumerGroup,
-			EventHubName:            p.consumerClientDetails.EventHubName,
-			FullyQualifiedNamespace: p.consumerClientDetails.FullyQualifiedNamespace,
-			PartitionID:             p.partitionID,
-		},
-		CheckpointData: CheckpointData{
-			SequenceNumber: &latestEvent.SequenceNumber,
-			Offset:         latestEvent.Offset,
-		},
+		ConsumerGroup:           p.consumerClientDetails.ConsumerGroup,
+		EventHubName:            p.consumerClientDetails.EventHubName,
+		FullyQualifiedNamespace: p.consumerClientDetails.FullyQualifiedNamespace,
+		PartitionID:             p.partitionID,
+		SequenceNumber:          &latestEvent.SequenceNumber,
+		Offset:                  latestEvent.Offset,
 	}, nil)
 }
 

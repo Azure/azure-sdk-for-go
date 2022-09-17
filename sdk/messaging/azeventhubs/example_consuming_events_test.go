@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 )
 
-func Example_consumingEvents() {
+func Example_consumingEventsUsingConsumerClient() {
 	eventHubNamespace := os.Getenv("EVENTHUB_NAMESPACE") // <ex: myeventhubnamespace.servicebus.windows.net>
 	eventHubName := os.Getenv("EVENTHUB_NAME")
 	eventHubPartitionID := os.Getenv("EVENTHUB_PARTITION")

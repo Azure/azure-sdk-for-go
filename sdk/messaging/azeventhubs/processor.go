@@ -102,7 +102,8 @@ type consumerClientForProcessor interface {
 
 // NewProcessor creates a Processor.
 //
-// More general information can be found on the documentation for the [azeventhubs.Processor] type or the [example_processor_test.go] for an example.
+// More information can be found in the documentation for the [azeventhubs.Processor]
+// type or the [example_processor_test.go] for an example.
 //
 // [example_processor_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go
 func NewProcessor(consumerClient *ConsumerClient, checkpointStore CheckpointStore, options *ProcessorOptions) (*Processor, error) {

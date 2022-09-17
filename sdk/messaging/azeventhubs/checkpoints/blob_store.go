@@ -24,16 +24,16 @@ type BlobStore struct {
 	cc *blob.ContainerClient
 }
 
-// NewBlobStoreOptions contains optional parameters for the New, NewFromConnectionString and NewWithSharedKey
+// BlobStoreOptions contains optional parameters for the New, NewFromConnectionString and NewWithSharedKey
 // functions
-type NewBlobStoreOptions struct {
+type BlobStoreOptions struct {
 	azcore.ClientOptions
 }
 
 // NewBlobStore creates a checkpoint store that stores ownership and checkpoints in
 // Azure Blob storage, using a container URL and a TokenCredential.
 // NOTE: the container must exist before the checkpoint store can be used.
-func NewBlobStore(containerURL string, cred azcore.TokenCredential, options *NewBlobStoreOptions) (*BlobStore, error) {
+func NewBlobStore(containerURL string, cred azcore.TokenCredential, options *BlobStoreOptions) (*BlobStore, error) {
 	cc, err := blob.NewContainerClient(containerURL, cred, toContainerClientOptions(options))
 
 	if err != nil {
@@ -49,7 +49,7 @@ func NewBlobStore(containerURL string, cred azcore.TokenCredential, options *New
 // ownership and checkpoints in Azure Blob storage, using a storage account
 // connection string.
 // NOTE: the container must exist before the checkpoint store can be used.
-func NewBlobStoreFromConnectionString(connectionString string, containerName string, options *NewBlobStoreOptions) (azeventhubs.CheckpointStore, error) {
+func NewBlobStoreFromConnectionString(connectionString string, containerName string, options *BlobStoreOptions) (azeventhubs.CheckpointStore, error) {
 	cc, err := blob.NewContainerClientFromConnectionString(connectionString, containerName, toContainerClientOptions(options))
 
 	if err != nil {
@@ -374,7 +374,7 @@ func newOwnershipBlobMetadata(od azeventhubs.Ownership) map[string]string {
 	}
 }
 
-func toContainerClientOptions(opts *NewBlobStoreOptions) *blob.ClientOptions {
+func toContainerClientOptions(opts *BlobStoreOptions) *blob.ClientOptions {
 	if opts == nil {
 		return nil
 	}

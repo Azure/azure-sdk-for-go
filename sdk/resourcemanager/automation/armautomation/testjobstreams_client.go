@@ -123,7 +123,6 @@ func (client *TestJobStreamsClient) getHandleResponse(resp *http.Response) (Test
 }
 
 // NewListByTestJobPager - Retrieve a list of test job streams identified by runbook name.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-06-30
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.

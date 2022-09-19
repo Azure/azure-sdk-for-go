@@ -285,7 +285,6 @@ func (client *RunbookClient) getContentCreateRequest(ctx context.Context, resour
 }
 
 // NewListByAutomationAccountPager - Retrieve a list of runbooks.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-06-30
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.

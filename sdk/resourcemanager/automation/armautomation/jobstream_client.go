@@ -126,7 +126,6 @@ func (client *JobStreamClient) getHandleResponse(resp *http.Response) (JobStream
 }
 
 // NewListByJobPager - Retrieve a list of jobs streams identified by job name.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-06-01
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.

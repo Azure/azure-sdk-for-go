@@ -255,7 +255,6 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 }
 
 // NewListByAutomationAccountPager - List all private endpoint connections on a Automation account.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.

@@ -189,7 +189,6 @@ func (client *NodeReportsClient) getContentHandleResponse(resp *http.Response) (
 }
 
 // NewListByNodePager - Retrieve the Dsc node report list by node id.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.

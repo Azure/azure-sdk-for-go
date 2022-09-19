@@ -288,7 +288,6 @@ func (client *WebhookClient) getHandleResponse(resp *http.Response) (WebhookClie
 }
 
 // NewListByAutomationAccountPager - Retrieve a list of webhooks.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2015-10-31
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.

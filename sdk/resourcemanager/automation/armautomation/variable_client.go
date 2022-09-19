@@ -232,7 +232,6 @@ func (client *VariableClient) getHandleResponse(resp *http.Response) (VariableCl
 }
 
 // NewListByAutomationAccountPager - Retrieve a list of variables.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.

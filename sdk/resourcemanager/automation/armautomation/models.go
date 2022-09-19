@@ -1078,13 +1078,15 @@ type DscConfigurationClientListByAutomationAccountOptions struct {
 // DscConfigurationClientUpdateWithJSONOptions contains the optional parameters for the DscConfigurationClient.UpdateWithJSON
 // method.
 type DscConfigurationClientUpdateWithJSONOptions struct {
-	// placeholder for future optional parameters
+	// The create or update parameters for configuration.
+	Parameters *DscConfigurationUpdateParameters
 }
 
 // DscConfigurationClientUpdateWithTextOptions contains the optional parameters for the DscConfigurationClient.UpdateWithText
 // method.
 type DscConfigurationClientUpdateWithTextOptions struct {
-	// placeholder for future optional parameters
+	// The create or update parameters for configuration.
+	Parameters *string
 }
 
 // DscConfigurationCreateOrUpdateParameters - The parameters supplied to the create or update configuration operation.

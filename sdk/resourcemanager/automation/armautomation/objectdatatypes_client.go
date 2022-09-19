@@ -57,7 +57,6 @@ func NewObjectDataTypesClient(subscriptionID string, credential azcore.TokenCred
 }
 
 // NewListFieldsByModuleAndTypePager - Retrieve a list of fields of a given type identified by module name.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
@@ -131,7 +130,6 @@ func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeHandleResponse(res
 }
 
 // NewListFieldsByTypePager - Retrieve a list of fields of a given type across all accessible modules.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.

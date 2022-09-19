@@ -364,7 +364,6 @@ func (client *DscConfigurationClient) getContentHandleResponse(resp *http.Respon
 }
 
 // NewListByAutomationAccountPager - Retrieve a list of configurations.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-06-01
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
@@ -451,11 +450,10 @@ func (client *DscConfigurationClient) listByAutomationAccountHandleResponse(resp
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // configurationName - The create or update parameters for configuration.
-// parameters - The create or update parameters for configuration.
 // options - DscConfigurationClientUpdateWithJSONOptions contains the optional parameters for the DscConfigurationClient.UpdateWithJSON
 // method.
-func (client *DscConfigurationClient) UpdateWithJSON(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, parameters DscConfigurationUpdateParameters, options *DscConfigurationClientUpdateWithJSONOptions) (DscConfigurationClientUpdateWithJSONResponse, error) {
-	req, err := client.updateWithJSONCreateRequest(ctx, resourceGroupName, automationAccountName, configurationName, parameters, options)
+func (client *DscConfigurationClient) UpdateWithJSON(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, options *DscConfigurationClientUpdateWithJSONOptions) (DscConfigurationClientUpdateWithJSONResponse, error) {
+	req, err := client.updateWithJSONCreateRequest(ctx, resourceGroupName, automationAccountName, configurationName, options)
 	if err != nil {
 		return DscConfigurationClientUpdateWithJSONResponse{}, err
 	}
@@ -470,7 +468,7 @@ func (client *DscConfigurationClient) UpdateWithJSON(ctx context.Context, resour
 }
 
 // updateWithJSONCreateRequest creates the UpdateWithJSON request.
-func (client *DscConfigurationClient) updateWithJSONCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, parameters DscConfigurationUpdateParameters, options *DscConfigurationClientUpdateWithJSONOptions) (*policy.Request, error) {
+func (client *DscConfigurationClient) updateWithJSONCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, options *DscConfigurationClientUpdateWithJSONOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations/{configurationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -496,7 +494,10 @@ func (client *DscConfigurationClient) updateWithJSONCreateRequest(ctx context.Co
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, parameters)
+	if options != nil && options.Parameters != nil {
+		return req, runtime.MarshalAsJSON(req, *options.Parameters)
+	}
+	return req, nil
 }
 
 // updateWithJSONHandleResponse handles the UpdateWithJSON response.
@@ -514,11 +515,10 @@ func (client *DscConfigurationClient) updateWithJSONHandleResponse(resp *http.Re
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // configurationName - The create or update parameters for configuration.
-// parameters - The create or update parameters for configuration.
 // options - DscConfigurationClientUpdateWithTextOptions contains the optional parameters for the DscConfigurationClient.UpdateWithText
 // method.
-func (client *DscConfigurationClient) UpdateWithText(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, parameters string, options *DscConfigurationClientUpdateWithTextOptions) (DscConfigurationClientUpdateWithTextResponse, error) {
-	req, err := client.updateWithTextCreateRequest(ctx, resourceGroupName, automationAccountName, configurationName, parameters, options)
+func (client *DscConfigurationClient) UpdateWithText(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, options *DscConfigurationClientUpdateWithTextOptions) (DscConfigurationClientUpdateWithTextResponse, error) {
+	req, err := client.updateWithTextCreateRequest(ctx, resourceGroupName, automationAccountName, configurationName, options)
 	if err != nil {
 		return DscConfigurationClientUpdateWithTextResponse{}, err
 	}
@@ -533,7 +533,7 @@ func (client *DscConfigurationClient) UpdateWithText(ctx context.Context, resour
 }
 
 // updateWithTextCreateRequest creates the UpdateWithText request.
-func (client *DscConfigurationClient) updateWithTextCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, parameters string, options *DscConfigurationClientUpdateWithTextOptions) (*policy.Request, error) {
+func (client *DscConfigurationClient) updateWithTextCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, options *DscConfigurationClientUpdateWithTextOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations/{configurationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -559,8 +559,11 @@ func (client *DscConfigurationClient) updateWithTextCreateRequest(ctx context.Co
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	body := streaming.NopCloser(strings.NewReader(parameters))
-	return req, req.SetBody(body, "text/plain; charset=utf-8")
+	if options != nil && options.Parameters != nil {
+		body := streaming.NopCloser(strings.NewReader(*options.Parameters))
+		return req, req.SetBody(body, "text/plain; charset=utf-8")
+	}
+	return req, nil
 }
 
 // updateWithTextHandleResponse handles the UpdateWithText response.

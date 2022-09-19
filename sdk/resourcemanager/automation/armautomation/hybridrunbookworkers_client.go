@@ -250,7 +250,6 @@ func (client *HybridRunbookWorkersClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListByHybridRunbookWorkerGroupPager - Retrieve a list of hybrid runbook workers.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-06-22
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.

@@ -1,5 +1,17 @@
 # Release History
 
+## 0.8.0 (2022-09-19)
+### Breaking Changes
+
+- Function `*DscConfigurationClient.UpdateWithJSON` parameter(s) have been changed from `(context.Context, string, string, string, DscConfigurationUpdateParameters, *DscConfigurationClientUpdateWithJSONOptions)` to `(context.Context, string, string, string, *DscConfigurationClientUpdateWithJSONOptions)`
+- Function `*DscConfigurationClient.UpdateWithText` parameter(s) have been changed from `(context.Context, string, string, string, string, *DscConfigurationClientUpdateWithTextOptions)` to `(context.Context, string, string, string, *DscConfigurationClientUpdateWithTextOptions)`
+
+### Features Added
+
+- New field `Parameters` in struct `DscConfigurationClientUpdateWithJSONOptions`
+- New field `Parameters` in struct `DscConfigurationClientUpdateWithTextOptions`
+
+
 ## 0.7.0 (2022-07-12)
 ### Breaking Changes
 

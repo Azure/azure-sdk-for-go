@@ -320,7 +320,6 @@ func (client *JobClient) getRunbookContentHandleResponse(resp *http.Response) (J
 }
 
 // NewListByAutomationAccountPager - Retrieve a list of jobs.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-06-01
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.

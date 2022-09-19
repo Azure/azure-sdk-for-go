@@ -217,7 +217,6 @@ func (client *AccountClient) getHandleResponse(resp *http.Response) (AccountClie
 }
 
 // NewListPager - Retrieve a list of accounts within a given subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-06-22
 // options - AccountClientListOptions contains the optional parameters for the AccountClient.List method.
 func (client *AccountClient) NewListPager(options *AccountClientListOptions) *runtime.Pager[AccountClientListResponse] {
@@ -276,7 +275,6 @@ func (client *AccountClient) listHandleResponse(resp *http.Response) (AccountCli
 }
 
 // NewListByResourceGroupPager - Retrieve a list of accounts within a given resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-06-22
 // resourceGroupName - Name of an Azure Resource group.
 // options - AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.ListByResourceGroup

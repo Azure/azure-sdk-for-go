@@ -167,7 +167,7 @@ func TestProducerClient_AMQPAnnotatedMessages(t *testing.T) {
 
 	// send the events we need, encoding several AMQP body types and exercising all the fields.
 	{
-		batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.NewEventDataBatchOptions{
+		batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
 			PartitionID: to.Ptr("0"),
 		})
 		require.NoError(t, err)
@@ -240,7 +240,7 @@ func TestProducerClient_AMQPAnnotatedMessages(t *testing.T) {
 
 	defer test.RequireClose(t, consumerClient)
 
-	partitionClient, err := consumerClient.NewPartitionClient("0", &azeventhubs.NewPartitionClientOptions{
+	partitionClient, err := consumerClient.NewPartitionClient("0", &azeventhubs.PartitionClientOptions{
 		StartPosition: getStartPosition(beforeProps),
 	})
 	require.NoError(t, err)

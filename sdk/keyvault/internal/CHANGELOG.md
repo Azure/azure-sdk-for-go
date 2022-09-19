@@ -8,7 +8,7 @@
 ## 0.6.0 (2022-09-12)
 
 ### Breaking Changes
-* Verify the challenge resource matches the vault domain.
+* Verify the challenge resource matches the vault domain. See https://aka.ms/azsdk/blog/vault-uri for more information.
 * `ParseID()` no longer appends a trailing slash to vault URLs
 
 ## 0.5.0 (2022-05-12)

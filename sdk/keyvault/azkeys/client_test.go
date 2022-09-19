@@ -574,6 +574,7 @@ func TestRotateKey(t *testing.T) {
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, createResp.Key.KID)
 
+			timeAfterCreate := to.Ptr("P30D")
 			policy := azkeys.KeyRotationPolicy{
 				Attributes: &azkeys.KeyRotationPolicyAttributes{
 					ExpiryTime: to.Ptr("P90D"),
@@ -584,7 +585,7 @@ func TestRotateKey(t *testing.T) {
 							Type: to.Ptr(azkeys.ActionTypeRotate),
 						},
 						Trigger: &azkeys.LifetimeActionsTrigger{
-							TimeAfterCreate: to.Ptr("P30D"),
+							TimeAfterCreate: timeAfterCreate,
 						},
 					},
 				}}
@@ -596,7 +597,15 @@ func TestRotateKey(t *testing.T) {
 			getResp, err := client.GetKeyRotationPolicy(context.Background(), key, nil)
 			require.NoError(t, err)
 			require.Equal(t, updateResp.Attributes.ExpiryTime, getResp.Attributes.ExpiryTime)
-			require.Equal(t, updateResp.LifetimeActions, getResp.LifetimeActions)
+			require.NotEmpty(t, getResp.LifetimeActions)
+			require.Condition(t, func() bool {
+				for _, action := range getResp.LifetimeActions {
+					if strings.EqualFold(string(*action.Action.Type), string(azkeys.ActionTypeRotate)) && strings.EqualFold(string(*action.Trigger.TimeAfterCreate), *timeAfterCreate) {
+						return true
+					}
+				}
+				return false
+			}, "GetKeyRotationPolicy returned a policy missing the updated action")
 
 			rotateResp, err := client.RotateKey(context.Background(), key, nil)
 			require.NoError(t, err)

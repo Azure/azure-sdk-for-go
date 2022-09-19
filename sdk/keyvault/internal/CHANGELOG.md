@@ -1,6 +1,6 @@
 # Release History
 
-## 0.7.0 (2022-09-16)
+## 0.7.0 (2022-09-20)
 
 ### Breaking Changes
 * Added `*KeyVaultChallengePolicyOptions` parameter to `NewKeyVaultChallengePolicy`

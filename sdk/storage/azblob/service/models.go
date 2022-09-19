@@ -36,6 +36,9 @@ type CreateContainerOptions = container.CreateOptions
 // DeleteContainerOptions contains the optional parameters for the container.Client.Delete method.
 type DeleteContainerOptions = container.DeleteOptions
 
+// RestoreContainerOptions contains the optional parameters for the container.Client.Restore method.
+type RestoreContainerOptions = container.RestoreOptions
+
 // CorsRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
 // domain. Web browsers implement a security restriction known as same-origin policy that
 // prevents a web page from calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin

@@ -84,6 +84,14 @@ func (o *DeleteOptions) format() (*generated.ContainerClientDeleteOptions, *gene
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// RestoreOptions contains the optional parameters for the Client.Restore method.
+type RestoreOptions struct {
+	DeletedContainerName    string
+	DeletedContainerVersion string
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
 // GetPropertiesOptions contains the optional parameters for the ContainerClient.GetProperties method.
 type GetPropertiesOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions

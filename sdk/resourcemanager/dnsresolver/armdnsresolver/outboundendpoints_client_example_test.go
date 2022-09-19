@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/OutboundEndpoint_Put.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/OutboundEndpoint_Put.json
 func ExampleOutboundEndpointsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,24 +28,19 @@ func ExampleOutboundEndpointsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"sampleResourceGroup",
-		"sampleDnsResolver",
-		"sampleOutboundEndpoint",
-		armdnsresolver.OutboundEndpoint{
-			Location: to.Ptr("westus2"),
-			Tags: map[string]*string{
-				"key1": to.Ptr("value1"),
-			},
-			Properties: &armdnsresolver.OutboundEndpointProperties{
-				Subnet: &armdnsresolver.SubResource{
-					ID: to.Ptr("/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork/subnets/sampleSubnet"),
-				},
+	poller, err := client.BeginCreateOrUpdate(ctx, "sampleResourceGroup", "sampleDnsResolver", "sampleOutboundEndpoint", armdnsresolver.OutboundEndpoint{
+		Location: to.Ptr("westus2"),
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
+		},
+		Properties: &armdnsresolver.OutboundEndpointProperties{
+			Subnet: &armdnsresolver.SubResource{
+				ID: to.Ptr("/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork/subnets/sampleSubnet"),
 			},
 		},
-		&armdnsresolver.OutboundEndpointsClientBeginCreateOrUpdateOptions{IfMatch: nil,
-			IfNoneMatch: nil,
-		})
+	}, &armdnsresolver.OutboundEndpointsClientBeginCreateOrUpdateOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -57,7 +52,7 @@ func ExampleOutboundEndpointsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/OutboundEndpoint_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/OutboundEndpoint_Patch.json
 func ExampleOutboundEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,16 +63,11 @@ func ExampleOutboundEndpointsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"sampleResourceGroup",
-		"sampleDnsResolver",
-		"sampleOutboundEndpoint",
-		armdnsresolver.OutboundEndpointPatch{
-			Tags: map[string]*string{
-				"key1": to.Ptr("value1"),
-			},
+	poller, err := client.BeginUpdate(ctx, "sampleResourceGroup", "sampleDnsResolver", "sampleOutboundEndpoint", armdnsresolver.OutboundEndpointPatch{
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
 		},
-		&armdnsresolver.OutboundEndpointsClientBeginUpdateOptions{IfMatch: nil})
+	}, &armdnsresolver.OutboundEndpointsClientBeginUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -89,7 +79,7 @@ func ExampleOutboundEndpointsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/OutboundEndpoint_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/OutboundEndpoint_Delete.json
 func ExampleOutboundEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,11 +90,7 @@ func ExampleOutboundEndpointsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"sampleResourceGroup",
-		"sampleDnsResolver",
-		"sampleOutboundEndpoint",
-		&armdnsresolver.OutboundEndpointsClientBeginDeleteOptions{IfMatch: nil})
+	poller, err := client.BeginDelete(ctx, "sampleResourceGroup", "sampleDnsResolver", "sampleOutboundEndpoint", &armdnsresolver.OutboundEndpointsClientBeginDeleteOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -114,7 +100,7 @@ func ExampleOutboundEndpointsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/OutboundEndpoint_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/OutboundEndpoint_Get.json
 func ExampleOutboundEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,11 +111,7 @@ func ExampleOutboundEndpointsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"sampleResourceGroup",
-		"sampleDnsResolver",
-		"sampleOutboundEndpoint",
-		nil)
+	res, err := client.Get(ctx, "sampleResourceGroup", "sampleDnsResolver", "sampleOutboundEndpoint", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -137,7 +119,7 @@ func ExampleOutboundEndpointsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/OutboundEndpoint_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/OutboundEndpoint_List.json
 func ExampleOutboundEndpointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,9 +130,7 @@ func ExampleOutboundEndpointsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("sampleResourceGroup",
-		"sampleDnsResolver",
-		&armdnsresolver.OutboundEndpointsClientListOptions{Top: nil})
+	pager := client.NewListPager("sampleResourceGroup", "sampleDnsResolver", &armdnsresolver.OutboundEndpointsClientListOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

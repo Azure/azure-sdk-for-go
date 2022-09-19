@@ -3,6 +3,7 @@
 ## 0.4.1 (Unreleased)
 
 ### Features Added
+* Added `NewListSettingsPager`.
 
 ### Breaking Changes
 

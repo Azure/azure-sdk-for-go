@@ -14,11 +14,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 )
 
-// ErrEventDataTooLarge is returned when a message cannot fit into a batch when using EventDataBatch.AddEventData()
+// ErrEventDataTooLarge is returned when a message cannot fit into a batch when using the [azeventhubs.EventDataBatch.AddEventData] function.
 var ErrEventDataTooLarge = errors.New("the EventData could not be added because it is too large for the batch")
 
 type (
-	// EventDataBatch represents a batch of messages to send to Event Hubs in a single message
+	// EventDataBatch is used to efficiently pack up EventData before sending it to Event Hubs.
+	//
+	// EventDataBatch's are not meant to be created directly. Use [azeventhubs.ProducerClient.NewEventDataBatch],
+	// which will create them with the proper size limit for your Event Hub.
 	EventDataBatch struct {
 		mu sync.RWMutex
 
@@ -42,25 +45,33 @@ type AddEventDataOptions struct {
 	// For future expansion
 }
 
-// AddEventData adds an EventData to the batch if the message will not exceed the max size of the batch
-// Returns:
-// - ErrMessageTooLarge if the message cannot fit
-// - a non-nil error for other failures
-// - nil, otherwise
+// AddEventData adds an EventData to the batch, failing if the EventData would
+// cause the EventDataBatch to be too large to send.
+//
+// This size limit was set when the EventDataBatch was created, in options to
+// [azeventhubs.ProducerClient.NewEventDataBatch], or (by default) from Event
+// Hubs itself.
+//
+// Returns ErrMessageTooLarge if the event cannot fit, or a non-nil error for
+// other failures.
 func (b *EventDataBatch) AddEventData(ed *EventData, options *AddEventDataOptions) error {
 	return b.addAMQPMessage(ed.toAMQPMessage())
 }
 
-// AddAMQPAnnotatedMessage adds an EventData to the batch if the message will not exceed the max size of the batch
-// Returns:
-// - ErrMessageTooLarge if the message cannot fit
-// - a non-nil error for other failures
-// - nil, otherwise
+// AddAMQPAnnotatedMessage adds an AMQPAnnotatedMessage to the batch, failing
+// if the AMQPAnnotatedMessage would cause the EventDataBatch to be too large to send.
+//
+// This size limit was set when the EventDataBatch was created, in options to
+// [azeventhubs.ProducerClient.NewEventDataBatch], or (by default) from Event
+// Hubs itself.
+//
+// Returns ErrMessageTooLarge if the message cannot fit, or a non-nil error for
+// other failures.
 func (b *EventDataBatch) AddAMQPAnnotatedMessage(annotatedMessage *AMQPAnnotatedMessage, options *AddEventDataOptions) error {
 	return b.addAMQPMessage(annotatedMessage.toAMQPMessage())
 }
 
-// NumBytes is the number of bytes in the message batch
+// NumBytes is the number of bytes in the batch.
 func (b *EventDataBatch) NumBytes() uint64 {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
@@ -68,7 +79,7 @@ func (b *EventDataBatch) NumBytes() uint64 {
 	return b.currentSize
 }
 
-// NumEvents returns the # of events in the batch.
+// NumEvents returns the number of events in the batch.
 func (b *EventDataBatch) NumEvents() int32 {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
@@ -186,9 +197,9 @@ func calcActualSizeForPayload(payload []byte) uint64 {
 	return uint64(vbin32Overhead + len(payload))
 }
 
-func newEventDataBatch(sender amqpwrap.AMQPSenderCloser, options *NewEventDataBatchOptions) (*EventDataBatch, error) {
+func newEventDataBatch(sender amqpwrap.AMQPSenderCloser, options *EventDataBatchOptions) (*EventDataBatch, error) {
 	if options == nil {
-		options = &NewEventDataBatchOptions{}
+		options = &EventDataBatchOptions{}
 	}
 
 	if options.PartitionID != nil && options.PartitionKey != nil {

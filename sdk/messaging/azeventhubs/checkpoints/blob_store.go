@@ -24,16 +24,16 @@ type BlobStore struct {
 	cc *blob.ContainerClient
 }
 
-// NewBlobStoreOptions contains optional parameters for the New, NewFromConnectionString and NewWithSharedKey
+// BlobStoreOptions contains optional parameters for the New, NewFromConnectionString and NewWithSharedKey
 // functions
-type NewBlobStoreOptions struct {
+type BlobStoreOptions struct {
 	azcore.ClientOptions
 }
 
 // NewBlobStore creates a checkpoint store that stores ownership and checkpoints in
 // Azure Blob storage, using a container URL and a TokenCredential.
 // NOTE: the container must exist before the checkpoint store can be used.
-func NewBlobStore(containerURL string, cred azcore.TokenCredential, options *NewBlobStoreOptions) (*BlobStore, error) {
+func NewBlobStore(containerURL string, cred azcore.TokenCredential, options *BlobStoreOptions) (*BlobStore, error) {
 	cc, err := blob.NewContainerClient(containerURL, cred, toContainerClientOptions(options))
 
 	if err != nil {
@@ -49,7 +49,7 @@ func NewBlobStore(containerURL string, cred azcore.TokenCredential, options *New
 // ownership and checkpoints in Azure Blob storage, using a storage account
 // connection string.
 // NOTE: the container must exist before the checkpoint store can be used.
-func NewBlobStoreFromConnectionString(connectionString string, containerName string, options *NewBlobStoreOptions) (azeventhubs.CheckpointStore, error) {
+func NewBlobStoreFromConnectionString(connectionString string, containerName string, options *BlobStoreOptions) (azeventhubs.CheckpointStore, error) {
 	cc, err := blob.NewContainerClientFromConnectionString(connectionString, containerName, toContainerClientOptions(options))
 
 	if err != nil {
@@ -68,7 +68,7 @@ func (b *BlobStore) ClaimOwnership(ctx context.Context, partitionOwnership []aze
 
 	// TODO: in parallel?
 	for _, po := range partitionOwnership {
-		blobName, err := nameForOwnershipBlob(po.CheckpointStoreAddress)
+		blobName, err := nameForOwnershipBlob(po)
 
 		if err != nil {
 			return nil, err
@@ -80,7 +80,7 @@ func (b *BlobStore) ClaimOwnership(ctx context.Context, partitionOwnership []aze
 			expectedETag = &po.ETag
 		}
 
-		lastModified, etag, err := b.setMetadata(ctx, blobName, newOwnershipBlobMetadata(po.OwnershipData), expectedETag)
+		lastModified, etag, err := b.setMetadata(ctx, blobName, newOwnershipBlobMetadata(po), expectedETag)
 
 		if err != nil {
 			var storageErr *blob.StorageError
@@ -95,14 +95,11 @@ func (b *BlobStore) ClaimOwnership(ctx context.Context, partitionOwnership []aze
 			return nil, err
 		}
 
-		ownerships = append(ownerships, azeventhubs.Ownership{
-			CheckpointStoreAddress: po.CheckpointStoreAddress,
-			OwnershipData: azeventhubs.OwnershipData{
-				ETag:             etag,
-				OwnerID:          po.OwnershipData.OwnerID,
-				LastModifiedTime: *lastModified,
-			},
-		})
+		newOwnership := po
+		newOwnership.ETag = etag
+		newOwnership.LastModifiedTime = *lastModified
+
+		ownerships = append(ownerships, newOwnership)
 	}
 
 	return ownerships, nil
@@ -110,7 +107,7 @@ func (b *BlobStore) ClaimOwnership(ctx context.Context, partitionOwnership []aze
 
 // ListCheckpoints lists all the available checkpoints.
 func (b *BlobStore) ListCheckpoints(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *azeventhubs.ListCheckpointsOptions) ([]azeventhubs.Checkpoint, error) {
-	prefix, err := prefixForCheckpointBlobs(azeventhubs.CheckpointStoreAddress{
+	prefix, err := prefixForCheckpointBlobs(azeventhubs.Checkpoint{
 		FullyQualifiedNamespace: fullyQualifiedNamespace,
 		EventHubName:            eventHubName,
 		ConsumerGroup:           consumerGroup,
@@ -134,21 +131,19 @@ func (b *BlobStore) ListCheckpoints(ctx context.Context, fullyQualifiedNamespace
 
 		for _, blob := range resp.Segment.BlobItems {
 			partitionID := partitionIDRegexp.FindString(*blob.Name)
-			cpdata, err := newCheckpointData(blob.Metadata)
 
-			if err != nil {
+			cp := azeventhubs.Checkpoint{
+				FullyQualifiedNamespace: fullyQualifiedNamespace,
+				EventHubName:            eventHubName,
+				ConsumerGroup:           consumerGroup,
+				PartitionID:             partitionID,
+			}
+
+			if err := updateCheckpoint(blob.Metadata, &cp); err != nil {
 				return nil, err
 			}
 
-			checkpoints = append(checkpoints, azeventhubs.Checkpoint{
-				CheckpointStoreAddress: azeventhubs.CheckpointStoreAddress{
-					FullyQualifiedNamespace: fullyQualifiedNamespace,
-					EventHubName:            eventHubName,
-					ConsumerGroup:           consumerGroup,
-					PartitionID:             partitionID,
-				},
-				CheckpointData: cpdata,
-			})
+			checkpoints = append(checkpoints, cp)
 		}
 	}
 
@@ -163,10 +158,11 @@ var partitionIDRegexp = regexp.MustCompile("[^/]+?$")
 
 // ListOwnership lists all ownerships.
 func (b *BlobStore) ListOwnership(ctx context.Context, fullyQualifiedNamespace string, eventHubName string, consumerGroup string, options *azeventhubs.ListOwnershipOptions) ([]azeventhubs.Ownership, error) {
-	prefix, err := prefixForOwnershipBlobs(azeventhubs.CheckpointStoreAddress{
+	prefix, err := prefixForOwnershipBlobs(azeventhubs.Ownership{
 		FullyQualifiedNamespace: fullyQualifiedNamespace,
 		EventHubName:            eventHubName,
 		ConsumerGroup:           consumerGroup,
+		// ignore partition ID as this is wildcarded.
 	})
 
 	if err != nil {
@@ -187,21 +183,19 @@ func (b *BlobStore) ListOwnership(ctx context.Context, fullyQualifiedNamespace s
 
 		for _, blob := range resp.Segment.BlobItems {
 			partitionID := partitionIDRegexp.FindString(*blob.Name)
-			ownershipData, err := newOwnershipData(blob)
 
-			if err != nil {
+			o := azeventhubs.Ownership{
+				FullyQualifiedNamespace: fullyQualifiedNamespace,
+				EventHubName:            eventHubName,
+				ConsumerGroup:           consumerGroup,
+				PartitionID:             partitionID,
+			}
+
+			if err := updateOwnership(blob, &o); err != nil {
 				return nil, err
 			}
 
-			ownerships = append(ownerships, azeventhubs.Ownership{
-				CheckpointStoreAddress: azeventhubs.CheckpointStoreAddress{
-					FullyQualifiedNamespace: fullyQualifiedNamespace,
-					EventHubName:            eventHubName,
-					ConsumerGroup:           consumerGroup,
-					PartitionID:             partitionID,
-				},
-				OwnershipData: ownershipData,
-			})
+			ownerships = append(ownerships, o)
 		}
 	}
 
@@ -214,13 +208,13 @@ func (b *BlobStore) ListOwnership(ctx context.Context, fullyQualifiedNamespace s
 
 // UpdateCheckpoint updates a specific checkpoint with a sequence and offset.
 func (b *BlobStore) UpdateCheckpoint(ctx context.Context, checkpoint azeventhubs.Checkpoint, options *azeventhubs.UpdateCheckpointOptions) error {
-	blobName, err := nameForCheckpointBlob(checkpoint.CheckpointStoreAddress)
+	blobName, err := nameForCheckpointBlob(checkpoint)
 
 	if err != nil {
 		return err
 	}
 
-	_, _, err = b.setMetadata(ctx, blobName, newCheckpointBlobMetadata(checkpoint.CheckpointData), nil)
+	_, _, err = b.setMetadata(ctx, blobName, newCheckpointBlobMetadata(checkpoint), nil)
 	return err
 }
 
@@ -273,7 +267,7 @@ func (b *BlobStore) setMetadata(ctx context.Context, blobName string, blobMetada
 	}
 }
 
-func nameForCheckpointBlob(a azeventhubs.CheckpointStoreAddress) (string, error) {
+func nameForCheckpointBlob(a azeventhubs.Checkpoint) (string, error) {
 	if a.FullyQualifiedNamespace == "" || a.EventHubName == "" || a.ConsumerGroup == "" || a.PartitionID == "" {
 		return "", errors.New("missing fields for blob name")
 	}
@@ -282,7 +276,7 @@ func nameForCheckpointBlob(a azeventhubs.CheckpointStoreAddress) (string, error)
 	return fmt.Sprintf("%s/%s/%s/checkpoint/%s", a.FullyQualifiedNamespace, a.EventHubName, a.ConsumerGroup, a.PartitionID), nil
 }
 
-func prefixForCheckpointBlobs(a azeventhubs.CheckpointStoreAddress) (string, error) {
+func prefixForCheckpointBlobs(a azeventhubs.Checkpoint) (string, error) {
 	if a.FullyQualifiedNamespace == "" || a.EventHubName == "" || a.ConsumerGroup == "" {
 		return "", errors.New("missing fields for blob prefix")
 	}
@@ -291,7 +285,7 @@ func prefixForCheckpointBlobs(a azeventhubs.CheckpointStoreAddress) (string, err
 	return fmt.Sprintf("%s/%s/%s/checkpoint/", a.FullyQualifiedNamespace, a.EventHubName, a.ConsumerGroup), nil
 }
 
-func nameForOwnershipBlob(a azeventhubs.CheckpointStoreAddress) (string, error) {
+func nameForOwnershipBlob(a azeventhubs.Ownership) (string, error) {
 	if a.FullyQualifiedNamespace == "" || a.EventHubName == "" || a.ConsumerGroup == "" || a.PartitionID == "" {
 		return "", errors.New("missing fields for blob name")
 	}
@@ -300,7 +294,7 @@ func nameForOwnershipBlob(a azeventhubs.CheckpointStoreAddress) (string, error) 
 	return fmt.Sprintf("%s/%s/%s/ownership/%s", a.FullyQualifiedNamespace, a.EventHubName, a.ConsumerGroup, a.PartitionID), nil
 }
 
-func prefixForOwnershipBlobs(a azeventhubs.CheckpointStoreAddress) (string, error) {
+func prefixForOwnershipBlobs(a azeventhubs.Ownership) (string, error) {
 	if a.FullyQualifiedNamespace == "" || a.EventHubName == "" || a.ConsumerGroup == "" {
 		return "", errors.New("missing fields for blob prefix")
 	}
@@ -309,42 +303,41 @@ func prefixForOwnershipBlobs(a azeventhubs.CheckpointStoreAddress) (string, erro
 	return fmt.Sprintf("%s/%s/%s/ownership/", a.FullyQualifiedNamespace, a.EventHubName, a.ConsumerGroup), nil
 }
 
-func newCheckpointData(metadata map[string]*string) (azeventhubs.CheckpointData, error) {
+func updateCheckpoint(metadata map[string]*string, destCheckpoint *azeventhubs.Checkpoint) error {
 	if metadata == nil {
-		return azeventhubs.CheckpointData{}, fmt.Errorf("no checkpoint metadata for blob")
+		return fmt.Errorf("no checkpoint metadata for blob")
 	}
 
 	sequenceNumberStr, ok := metadata["sequencenumber"]
 
 	if !ok || sequenceNumberStr == nil {
-		return azeventhubs.CheckpointData{}, errors.New("sequencenumber is missing from metadata")
+		return errors.New("sequencenumber is missing from metadata")
 	}
 
 	sequenceNumber, err := strconv.ParseInt(*sequenceNumberStr, 10, 64)
 
 	if err != nil {
-		return azeventhubs.CheckpointData{}, fmt.Errorf("sequencenumber could not be parsed as an int64: %s", err.Error())
+		return fmt.Errorf("sequencenumber could not be parsed as an int64: %s", err.Error())
 	}
 
 	offsetStr, ok := metadata["offset"]
 
 	if !ok || offsetStr == nil {
-		return azeventhubs.CheckpointData{}, errors.New("offset is missing from metadata")
+		return errors.New("offset is missing from metadata")
 	}
 
 	offset, err := strconv.ParseInt(*offsetStr, 10, 64)
 
 	if err != nil {
-		return azeventhubs.CheckpointData{}, fmt.Errorf("offset could not be parsed as an int64: %s", err.Error())
+		return fmt.Errorf("offset could not be parsed as an int64: %s", err.Error())
 	}
 
-	return azeventhubs.CheckpointData{
-		Offset:         &offset,
-		SequenceNumber: &sequenceNumber,
-	}, nil
+	destCheckpoint.Offset = &offset
+	destCheckpoint.SequenceNumber = &sequenceNumber
+	return nil
 }
 
-func newCheckpointBlobMetadata(cpd azeventhubs.CheckpointData) map[string]string {
+func newCheckpointBlobMetadata(cpd azeventhubs.Checkpoint) map[string]string {
 	m := map[string]string{}
 
 	if cpd.SequenceNumber != nil {
@@ -358,31 +351,30 @@ func newCheckpointBlobMetadata(cpd azeventhubs.CheckpointData) map[string]string
 	return m
 }
 
-func newOwnershipData(b *blob.BlobItemInternal) (azeventhubs.OwnershipData, error) {
+func updateOwnership(b *blob.BlobItemInternal, destOwnership *azeventhubs.Ownership) error {
 	if b == nil || b.Metadata == nil || b.Properties == nil {
-		return azeventhubs.OwnershipData{}, fmt.Errorf("no ownership metadata for blob")
+		return fmt.Errorf("no ownership metadata for blob")
 	}
 
 	ownerID, ok := b.Metadata["ownerid"]
 
 	if !ok || ownerID == nil {
-		return azeventhubs.OwnershipData{}, errors.New("ownerid is missing from metadata")
+		return errors.New("ownerid is missing from metadata")
 	}
 
-	return azeventhubs.OwnershipData{
-		OwnerID:          *ownerID,
-		LastModifiedTime: *b.Properties.LastModified,
-		ETag:             *b.Properties.Etag,
-	}, nil
+	destOwnership.OwnerID = *ownerID
+	destOwnership.LastModifiedTime = *b.Properties.LastModified
+	destOwnership.ETag = *b.Properties.Etag
+	return nil
 }
 
-func newOwnershipBlobMetadata(od azeventhubs.OwnershipData) map[string]string {
+func newOwnershipBlobMetadata(od azeventhubs.Ownership) map[string]string {
 	return map[string]string{
 		"ownerid": od.OwnerID,
 	}
 }
 
-func toContainerClientOptions(opts *NewBlobStoreOptions) *blob.ClientOptions {
+func toContainerClientOptions(opts *BlobStoreOptions) *blob.ClientOptions {
 	if opts == nil {
 		return nil
 	}

@@ -139,17 +139,13 @@ func (lb *processorLoadBalancer) getAvailablePartitions(ctx context.Context, par
 		}
 
 		unownedOrExpired = append(unownedOrExpired, Ownership{
-			CheckpointStoreAddress: CheckpointStoreAddress{
-				FullyQualifiedNamespace: lb.details.FullyQualifiedNamespace,
-				ConsumerGroup:           lb.details.ConsumerGroup,
-				EventHubName:            lb.details.EventHubName,
-				PartitionID:             partID,
-			},
-			OwnershipData: OwnershipData{
-				OwnerID: lb.details.ClientID,
-				// note that we don't have etag info here since nobody has
-				// ever owned this partition.
-			},
+			FullyQualifiedNamespace: lb.details.FullyQualifiedNamespace,
+			ConsumerGroup:           lb.details.ConsumerGroup,
+			EventHubName:            lb.details.EventHubName,
+			PartitionID:             partID,
+			OwnerID:                 lb.details.ClientID,
+			// note that we don't have etag info here since nobody has
+			// ever owned this partition.
 		})
 	}
 

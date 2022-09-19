@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_Put.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_Put.json
 func ExampleDNSResolversClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,23 +28,19 @@ func ExampleDNSResolversClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"sampleResourceGroup",
-		"sampleDnsResolver",
-		armdnsresolver.DNSResolver{
-			Location: to.Ptr("westus2"),
-			Tags: map[string]*string{
-				"key1": to.Ptr("value1"),
-			},
-			Properties: &armdnsresolver.Properties{
-				VirtualNetwork: &armdnsresolver.SubResource{
-					ID: to.Ptr("/subscriptions/cbb1387e-4b03-44f2-ad41-58d4677b9873/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),
-				},
+	poller, err := client.BeginCreateOrUpdate(ctx, "sampleResourceGroup", "sampleDnsResolver", armdnsresolver.DNSResolver{
+		Location: to.Ptr("westus2"),
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
+		},
+		Properties: &armdnsresolver.Properties{
+			VirtualNetwork: &armdnsresolver.SubResource{
+				ID: to.Ptr("/subscriptions/cbb1387e-4b03-44f2-ad41-58d4677b9873/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),
 			},
 		},
-		&armdnsresolver.DNSResolversClientBeginCreateOrUpdateOptions{IfMatch: nil,
-			IfNoneMatch: nil,
-		})
+	}, &armdnsresolver.DNSResolversClientBeginCreateOrUpdateOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -56,7 +52,7 @@ func ExampleDNSResolversClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_Patch.json
 func ExampleDNSResolversClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,15 +63,11 @@ func ExampleDNSResolversClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"sampleResourceGroup",
-		"sampleDnsResolver",
-		armdnsresolver.Patch{
-			Tags: map[string]*string{
-				"key1": to.Ptr("value1"),
-			},
+	poller, err := client.BeginUpdate(ctx, "sampleResourceGroup", "sampleDnsResolver", armdnsresolver.Patch{
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
 		},
-		&armdnsresolver.DNSResolversClientBeginUpdateOptions{IfMatch: nil})
+	}, &armdnsresolver.DNSResolversClientBeginUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -87,7 +79,7 @@ func ExampleDNSResolversClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_Delete.json
 func ExampleDNSResolversClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,10 +90,7 @@ func ExampleDNSResolversClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"sampleResourceGroup",
-		"sampleDnsResolver",
-		&armdnsresolver.DNSResolversClientBeginDeleteOptions{IfMatch: nil})
+	poller, err := client.BeginDelete(ctx, "sampleResourceGroup", "sampleDnsResolver", &armdnsresolver.DNSResolversClientBeginDeleteOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -111,7 +100,7 @@ func ExampleDNSResolversClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_Get.json
 func ExampleDNSResolversClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,10 +111,7 @@ func ExampleDNSResolversClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"sampleResourceGroup",
-		"sampleDnsResolver",
-		nil)
+	res, err := client.Get(ctx, "sampleResourceGroup", "sampleDnsResolver", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -133,7 +119,7 @@ func ExampleDNSResolversClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_ListByResourceGroup.json
 func ExampleDNSResolversClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,8 +130,7 @@ func ExampleDNSResolversClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("sampleResourceGroup",
-		&armdnsresolver.DNSResolversClientListByResourceGroupOptions{Top: nil})
+	pager := client.NewListByResourceGroupPager("sampleResourceGroup", &armdnsresolver.DNSResolversClientListByResourceGroupOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -158,7 +143,7 @@ func ExampleDNSResolversClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_ListBySubscription.json
 func ExampleDNSResolversClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +167,7 @@ func ExampleDNSResolversClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_ListByVirtualNetwork.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_ListByVirtualNetwork.json
 func ExampleDNSResolversClient_NewListByVirtualNetworkPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,9 +178,7 @@ func ExampleDNSResolversClient_NewListByVirtualNetworkPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByVirtualNetworkPager("sampleResourceGroup",
-		"sampleVirtualNetwork",
-		&armdnsresolver.DNSResolversClientListByVirtualNetworkOptions{Top: nil})
+	pager := client.NewListByVirtualNetworkPager("sampleResourceGroup", "sampleVirtualNetwork", &armdnsresolver.DNSResolversClientListByVirtualNetworkOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

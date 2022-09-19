@@ -53,12 +53,12 @@ func pollStatus(t *testing.T, expectedStatus int, fn func() error) {
 	require.NoError(t, err)
 }
 
-// pollCertOperation polls a certificate operation for up to 40 seconds, stopping when it completes.
+// pollCertOperation polls a certificate operation for up to 2 minutes, stopping when it completes.
 // It fails the test if a poll fails or the operation doesn't complete successfully in the allotted time.
 func pollCertOperation(t *testing.T, client *azcertificates.Client, name string) {
 	var err error
 	var op azcertificates.GetCertificateOperationResponse
-	for i := 0; i < 9; i++ {
+	for i := 0; i < 24; i++ {
 		op, err = client.GetCertificateOperation(ctx, name, nil)
 		require.NoError(t, err)
 		require.NotNil(t, op.Status)
@@ -72,7 +72,7 @@ func pollCertOperation(t *testing.T, client *azcertificates.Client, name string)
 		default:
 			t.Fatalf(`unexpected status "%s"`, s)
 		}
-		if i < 8 {
+		if i < 23 {
 			recording.Sleep(5 * time.Second)
 		} else {
 			t.Fatal("cert creation didn't complete in time")

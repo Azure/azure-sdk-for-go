@@ -21,6 +21,12 @@ const (
 	// This message will be available again after the lock period expires, or, potentially
 	// go to the dead letter queue if delivery attempts have been exceeded.
 	CodeLockLost = exported.CodeLockLost
+
+	// CodeTimeout means the service timed out during an operation.
+	// For instance, if you use ServiceBusClient.AcceptNextSessionForQueue() and there aren't
+	// any available sessions it will eventually time out and return an *azservicebus.Error
+	// with this code.
+	CodeTimeout = exported.CodeTimeout
 )
 
 // Error represents a Service Bus specific error.

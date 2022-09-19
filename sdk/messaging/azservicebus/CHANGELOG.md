@@ -8,6 +8,10 @@
 
 ### Bugs Fixed
 
+- AcceptNextSessionForQueue and AcceptNextSessionForSubscription now return an azservicebus.Error with 
+  Code set to CodeTimeout when they fail due to no sessions being available. Examples for this have 
+  been added for `AcceptNextSessionForQueue`. PR#TBD.
+
 ### Other Changes
 
 ## 1.1.0 (2022-08-09)

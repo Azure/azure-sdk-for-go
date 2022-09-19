@@ -24,21 +24,35 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 )
 
-const headerAuthorization = "Authorization"
-const bearerHeader = "Bearer "
+const (
+	headerAuthorization = "Authorization"
+	challengeMatchError = `challenge resource "%s" doesn't match the requested domain. Set DisableChallengeResourceVerification to true in your client options to disable. See https://aka.ms/azsdk/blog/vault-uri for more information`
+	bearerHeader        = "Bearer "
+)
+
+type KeyVaultChallengePolicyOptions struct {
+	// DisableChallengeResourceVerification controls whether the policy requires the
+	// authentication challenge resource to match the Key Vault or Managed HSM domain
+	DisableChallengeResourceVerification bool
+}
 
 type KeyVaultChallengePolicy struct {
 	// mainResource is the resource to be retrieved using the tenant specified in the credential
-	mainResource *temporal.Resource[azcore.AccessToken, acquiringResourceState]
-	cred         azcore.TokenCredential
-	scope        *string
-	tenantID     *string
+	mainResource            *temporal.Resource[azcore.AccessToken, acquiringResourceState]
+	cred                    azcore.TokenCredential
+	scope                   *string
+	tenantID                *string
+	verifyChallengeResource bool
 }
 
-func NewKeyVaultChallengePolicy(cred azcore.TokenCredential) *KeyVaultChallengePolicy {
+func NewKeyVaultChallengePolicy(cred azcore.TokenCredential, opts *KeyVaultChallengePolicyOptions) *KeyVaultChallengePolicy {
+	if opts == nil {
+		opts = &KeyVaultChallengePolicyOptions{}
+	}
 	return &KeyVaultChallengePolicy{
-		cred:         cred,
-		mainResource: temporal.NewResource(acquire),
+		cred:                    cred,
+		mainResource:            temporal.NewResource(acquire),
+		verifyChallengeResource: !opts.DisableChallengeResourceVerification,
 	}
 }
 
@@ -180,16 +194,18 @@ func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response, req *h
 	if scope == "" {
 		return &challengePolicyError{err: errors.New("could not find a valid resource in the WWW-Authenticate header")}
 	}
-	// the challenge resource's host must match the requested vault's host
-	parsed, err := url.Parse(scope)
-	if err != nil {
-		return &challengePolicyError{err: fmt.Errorf(`invalid challenge resource "%s": %v`, scope, err)}
-	}
-	if !strings.HasSuffix(req.URL.Host, "."+parsed.Host) {
-		return &challengePolicyError{err: fmt.Errorf(`the challenge resource "%s" doesn't match the requested domain`, scope)}
-	}
-	if !strings.HasSuffix(scope, "/.default") {
-		scope += "/.default"
+	if k.verifyChallengeResource {
+		// the challenge resource's host must match the requested vault's host
+		parsed, err := url.Parse(scope)
+		if err != nil {
+			return &challengePolicyError{err: fmt.Errorf(`invalid challenge resource "%s": %v`, scope, err)}
+		}
+		if !strings.HasSuffix(req.URL.Host, "."+parsed.Host) {
+			return &challengePolicyError{err: fmt.Errorf(challengeMatchError, scope)}
+		}
+		if !strings.HasSuffix(scope, "/.default") {
+			scope += "/.default"
+		}
 	}
 	k.scope = &scope
 	return nil

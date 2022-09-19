@@ -24,8 +24,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 )
 
-const headerAuthorization = "Authorization"
-const bearerHeader = "Bearer "
+const (
+	headerAuthorization = "Authorization"
+	challengeMatchError = `challenge resource "%s" doesn't match the requested domain. Set DisableChallengeResourceVerification to true in your client options to disable. See https://aka.ms/azsdk/blog/vault-uri for more information`
+	bearerHeader        = "Bearer "
+)
 
 type KeyVaultChallengePolicyOptions struct {
 	// DisableChallengeResourceVerification controls whether the policy requires the
@@ -198,9 +201,7 @@ func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response, req *h
 			return &challengePolicyError{err: fmt.Errorf(`invalid challenge resource "%s": %v`, scope, err)}
 		}
 		if !strings.HasSuffix(req.URL.Host, "."+parsed.Host) {
-			return &challengePolicyError{
-				err: fmt.Errorf(`challenge resource "%s" doesn't match the requested domain. Set DisableChallengeResourceVerification to true in your client options to disable. See https://aka.ms/azsdk/blog/vault-uri for more information`, scope),
-			}
+			return &challengePolicyError{err: fmt.Errorf(challengeMatchError, scope)}
 		}
 		if !strings.HasSuffix(scope, "/.default") {
 			scope += "/.default"

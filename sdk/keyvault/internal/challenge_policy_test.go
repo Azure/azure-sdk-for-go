@@ -197,7 +197,7 @@ func TestResourceVerification(t *testing.T) {
 			require.NoError(t, err)
 			_, err = pl.Do(req)
 			if test.err {
-				expected := fmt.Sprintf(`the challenge resource "%s" doesn't match the requested domain`, test.resource)
+				expected := fmt.Sprintf(challengeMatchError, test.resource)
 				require.EqualError(t, err, expected)
 				if _, ok := err.(*challengePolicyError); !ok {
 					t.Fatalf("unexpected error type %T", err)

@@ -52,17 +52,6 @@ type ConsumerClientOptions struct {
 	// RetryOptions controls how often operations are retried from this client and any
 	// Receivers and Senders created from this client.
 	RetryOptions RetryOptions
-
-	// StartPosition is the position we will start receiving events from,
-	// either an offset (inclusive) with Offset, or receiving events received
-	// after a specific time using EnqueuedTime.
-	StartPosition StartPosition
-
-	// OwnerLevel is the priority for this consumer, also known as the 'epoch' level.
-	// When used, a consumer with a higher OwnerLevel will take ownership of a partition
-	// from consumers with a lower OwnerLevel.
-	// Default is off.
-	OwnerLevel *uint64
 }
 
 // ConsumerClient can create PartitionClient instances, which can read events from

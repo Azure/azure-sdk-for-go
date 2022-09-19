@@ -54,6 +54,12 @@ type ReceivedEventData struct {
 	// Offset is the offset of the event.
 	Offset *int64
 
+	// RawAMQPMessage is the AMQP message, as received by the client. This can be useful to get access
+	// to properties that are not exposed by ReceivedEventData such as payloads encoded into the
+	// Value or Sequence section, payloads sent as multiple Data sections, as well as Footer
+	// and Header fields.
+	RawAMQPMessage *AMQPAnnotatedMessage
+
 	// SequenceNumber is a unique number assigned to a message by Event Hubs.
 	SequenceNumber int64
 
@@ -100,7 +106,9 @@ func (e *EventData) toAMQPMessage() *amqp.Message {
 // NOTE: this converter assumes that the Body of this message will be the first
 // serialized byte array in the Data section of the messsage.
 func newReceivedEventData(amqpMsg *amqp.Message) (*ReceivedEventData, error) {
-	re := &ReceivedEventData{}
+	re := &ReceivedEventData{
+		RawAMQPMessage: newAMQPAnnotatedMessage(amqpMsg),
+	}
 
 	if len(amqpMsg.Data) == 1 {
 		re.Body = amqpMsg.Data[0]

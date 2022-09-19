@@ -29,16 +29,12 @@ func TestBlobStore_Checkpoints(t *testing.T) {
 	require.Empty(t, checkpoints)
 
 	err = store.UpdateCheckpoint(context.Background(), azeventhubs.Checkpoint{
-		CheckpointStoreAddress: azeventhubs.CheckpointStoreAddress{
-			ConsumerGroup:           "$Default",
-			EventHubName:            "event-hub-name",
-			FullyQualifiedNamespace: "ns.servicebus.windows.net",
-			PartitionID:             "partition-id",
-		},
-		CheckpointData: azeventhubs.CheckpointData{
-			Offset:         to.Ptr[int64](101),
-			SequenceNumber: to.Ptr[int64](202),
-		},
+		ConsumerGroup:           "$Default",
+		EventHubName:            "event-hub-name",
+		FullyQualifiedNamespace: "ns.servicebus.windows.net",
+		PartitionID:             "partition-id",
+		Offset:                  to.Ptr[int64](101),
+		SequenceNumber:          to.Ptr[int64](202),
 	}, nil)
 	require.NoError(t, err)
 
@@ -46,16 +42,12 @@ func TestBlobStore_Checkpoints(t *testing.T) {
 	require.NoError(t, err)
 
 	require.Equal(t, azeventhubs.Checkpoint{
-		CheckpointStoreAddress: azeventhubs.CheckpointStoreAddress{
-			ConsumerGroup:           "$Default",
-			EventHubName:            "event-hub-name",
-			FullyQualifiedNamespace: "ns.servicebus.windows.net",
-			PartitionID:             "partition-id",
-		},
-		CheckpointData: azeventhubs.CheckpointData{
-			Offset:         to.Ptr[int64](101),
-			SequenceNumber: to.Ptr[int64](202),
-		},
+		ConsumerGroup:           "$Default",
+		EventHubName:            "event-hub-name",
+		FullyQualifiedNamespace: "ns.servicebus.windows.net",
+		PartitionID:             "partition-id",
+		Offset:                  to.Ptr[int64](101),
+		SequenceNumber:          to.Ptr[int64](202),
 	}, checkpoints[0])
 }
 
@@ -78,19 +70,13 @@ func TestBlobStore_Ownership(t *testing.T) {
 	require.NoError(t, err)
 	require.Empty(t, ownerships)
 
-	address := azeventhubs.CheckpointStoreAddress{
-		ConsumerGroup:           "$Default",
-		EventHubName:            "event-hub-name",
-		FullyQualifiedNamespace: "ns.servicebus.windows.net",
-		PartitionID:             "partition-id",
-	}
-
 	ownerships, err = store.ClaimOwnership(context.Background(), []azeventhubs.Ownership{
 		{
-			CheckpointStoreAddress: address,
-			OwnershipData: azeventhubs.OwnershipData{
-				OwnerID: "owner-id",
-			},
+			ConsumerGroup:           "$Default",
+			EventHubName:            "event-hub-name",
+			FullyQualifiedNamespace: "ns.servicebus.windows.net",
+			PartitionID:             "partition-id",
+			OwnerID:                 "owner-id",
 		},
 	}, nil)
 	require.NoError(t, err)
@@ -100,23 +86,25 @@ func TestBlobStore_Ownership(t *testing.T) {
 	require.NotZero(t, ownerships[0].LastModifiedTime)
 
 	require.Equal(t, azeventhubs.Ownership{
-		CheckpointStoreAddress: address,
-		OwnershipData: azeventhubs.OwnershipData{
-			OwnerID:          "owner-id",
-			ETag:             ownerships[0].ETag,
-			LastModifiedTime: ownerships[0].LastModifiedTime,
-		},
+		ConsumerGroup:           "$Default",
+		EventHubName:            "event-hub-name",
+		FullyQualifiedNamespace: "ns.servicebus.windows.net",
+		PartitionID:             "partition-id",
+		OwnerID:                 "owner-id",
+		ETag:                    ownerships[0].ETag,
+		LastModifiedTime:        ownerships[0].LastModifiedTime,
 	}, ownerships[0])
 
 	// if we attempt to claim it with a non-matching etag it will fail to claim
 	// but not fail the call.
 	ownerships, err = store.ClaimOwnership(context.Background(), []azeventhubs.Ownership{
 		{
-			CheckpointStoreAddress: address,
-			OwnershipData: azeventhubs.OwnershipData{
-				OwnerID: "owner-id",
-				ETag:    "non-matching-etag",
-			},
+			ConsumerGroup:           "$Default",
+			EventHubName:            "event-hub-name",
+			FullyQualifiedNamespace: "ns.servicebus.windows.net",
+			PartitionID:             "partition-id",
+			OwnerID:                 "owner-id",
+			ETag:                    "non-matching-etag",
 		},
 	}, nil)
 	require.NoError(t, err)
@@ -125,22 +113,24 @@ func TestBlobStore_Ownership(t *testing.T) {
 	// now we'll use the actual etag
 	ownerships, err = store.ClaimOwnership(context.Background(), []azeventhubs.Ownership{
 		{
-			CheckpointStoreAddress: address,
-			OwnershipData: azeventhubs.OwnershipData{
-				OwnerID: "owner-id",
-				ETag:    etagAfterFirstClaim,
-			},
+			ConsumerGroup:           "$Default",
+			EventHubName:            "event-hub-name",
+			FullyQualifiedNamespace: "ns.servicebus.windows.net",
+			PartitionID:             "partition-id",
+			OwnerID:                 "owner-id",
+			ETag:                    etagAfterFirstClaim,
 		},
 	}, nil)
 	require.NoError(t, err)
 
 	require.Equal(t, azeventhubs.Ownership{
-		CheckpointStoreAddress: address,
-		OwnershipData: azeventhubs.OwnershipData{
-			OwnerID:          "owner-id",
-			ETag:             ownerships[0].ETag,
-			LastModifiedTime: ownerships[0].LastModifiedTime,
-		},
+		ConsumerGroup:           "$Default",
+		EventHubName:            "event-hub-name",
+		FullyQualifiedNamespace: "ns.servicebus.windows.net",
+		PartitionID:             "partition-id",
+		OwnerID:                 "owner-id",
+		ETag:                    ownerships[0].ETag,
+		LastModifiedTime:        ownerships[0].LastModifiedTime,
 	}, ownerships[0])
 
 	// etag definitely got updated.
@@ -156,31 +146,29 @@ func TestBlobStore_ListAndClaim(t *testing.T) {
 	store, err := checkpoints.NewBlobStoreFromConnectionString(testData.ConnectionString, testData.ContainerName, nil)
 	require.NoError(t, err)
 
-	address := azeventhubs.CheckpointStoreAddress{
-		ConsumerGroup:           "$Default",
-		EventHubName:            "event-hub-name",
-		FullyQualifiedNamespace: "ns.servicebus.windows.net",
-		PartitionID:             "partition-id",
-	}
-
 	claimedOwnerships, err := store.ClaimOwnership(context.Background(), []azeventhubs.Ownership{
 		{
-			CheckpointStoreAddress: address,
-			OwnershipData: azeventhubs.OwnershipData{
-				OwnerID: "first-client",
-			},
+			ConsumerGroup:           "$Default",
+			EventHubName:            "event-hub-name",
+			FullyQualifiedNamespace: "ns.servicebus.windows.net",
+			PartitionID:             "partition-id",
+			OwnerID:                 "first-client",
 		},
 	}, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, claimedOwnerships)
 
-	listedOwnerships, err := store.ListOwnership(context.Background(), address.FullyQualifiedNamespace, address.EventHubName, address.ConsumerGroup, nil)
+	listedOwnerships, err := store.ListOwnership(context.Background(), "ns.servicebus.windows.net", "event-hub-name", "$Default", nil)
 	require.NoError(t, err)
 
 	require.Equal(t, "first-client", listedOwnerships[0].OwnerID)
 	require.NotEmpty(t, listedOwnerships[0].ETag)
 	require.NotZero(t, listedOwnerships[0].LastModifiedTime)
-	require.Equal(t, address, listedOwnerships[0].CheckpointStoreAddress)
+
+	require.Equal(t, "$Default", listedOwnerships[0].ConsumerGroup)
+	require.Equal(t, "event-hub-name", listedOwnerships[0].EventHubName)
+	require.Equal(t, "ns.servicebus.windows.net", listedOwnerships[0].FullyQualifiedNamespace)
+	require.Equal(t, "partition-id", listedOwnerships[0].PartitionID)
 
 	// update using the etag
 	claimedOwnerships, err = store.ClaimOwnership(context.Background(), listedOwnerships, nil)

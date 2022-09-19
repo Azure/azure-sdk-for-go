@@ -26,39 +26,25 @@ type CheckpointStore interface {
 
 // Ownership tracks which consumer owns a particular partition.
 type Ownership struct {
-	CheckpointStoreAddress
-	OwnershipData
-}
-
-// OwnershipData is data specific to ownership, like the
-// current owner, by ID, and the last time the ownership was
-// updated, which is used to calculate if ownership has expired.
-type OwnershipData struct {
-	OwnerID          string
-	LastModifiedTime time.Time
-	ETag             string
-}
-
-// Checkpoint tracks the last succesfully processed event in a partition.
-type Checkpoint struct {
-	CheckpointStoreAddress
-	CheckpointData
-}
-
-// CheckpointStoreAddress contains the properties needed to uniquely address checkpoints
-// or ownership.
-type CheckpointStoreAddress struct {
 	ConsumerGroup           string
 	EventHubName            string
 	FullyQualifiedNamespace string
 	PartitionID             string
+
+	OwnerID          string    // the owner ID of the Processor
+	LastModifiedTime time.Time // used when calculating if ownership has expired
+	ETag             string    // the ETag, used when attempting to claim or update ownership of a partition.
 }
 
-// CheckpointData tracks latest offset and sequence number that have been
-// processed by the client.
-type CheckpointData struct {
-	Offset         *int64
-	SequenceNumber *int64
+// Checkpoint tracks the last succesfully processed event in a partition.
+type Checkpoint struct {
+	ConsumerGroup           string
+	EventHubName            string
+	FullyQualifiedNamespace string
+	PartitionID             string
+
+	Offset         *int64 // the last succesfully processed Offset.
+	SequenceNumber *int64 // the last succesfully processed SequenceNumber.
 }
 
 // ListCheckpointsOptions contains optional parameters for the ListCheckpoints function

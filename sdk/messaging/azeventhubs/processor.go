@@ -27,9 +27,9 @@ const (
 	ProcessorStrategyGreedy ProcessorStrategy = "greedy"
 )
 
-// NewProcessorOptions are the options for the NewProcessor
+// ProcessorOptions are the options for the NewProcessor
 // function.
-type NewProcessorOptions struct {
+type ProcessorOptions struct {
 	// LoadBalancingStrategy dictates how concurrent Processor instances distribute
 	// ownership of partitions between them.
 	// The default strategy is ProcessorStrategyBalanced.
@@ -69,8 +69,14 @@ type StartPositions struct {
 	Default StartPosition
 }
 
-// Processor uses a CheckpointStore, combined with a ConsumerClient, to provide
-// automatic load balancing betweeen multiple consumers.
+// Processor uses a ConsumerClient and CheckpointStore to provide automatic
+// load balancing between multiple Processor instances, even in separate
+// processes or on separate machines.
+//
+// See [example_processor_test.go] for an example of typical usage or Run
+// for a more detailed description of how load balancing works.
+//
+// [example_processor_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go
 type Processor struct {
 	ownershipUpdateInterval time.Duration
 	defaultStartPositions   StartPositions
@@ -90,18 +96,23 @@ type Processor struct {
 
 type consumerClientForProcessor interface {
 	GetEventHubProperties(ctx context.Context, options *GetEventHubPropertiesOptions) (EventHubProperties, error)
-	NewPartitionClient(partitionID string, options *NewPartitionClientOptions) (*PartitionClient, error)
+	NewPartitionClient(partitionID string, options *PartitionClientOptions) (*PartitionClient, error)
 	getDetails() consumerClientDetails
 }
 
 // NewProcessor creates a Processor.
-func NewProcessor(consumerClient *ConsumerClient, checkpointStore CheckpointStore, options *NewProcessorOptions) (*Processor, error) {
+//
+// More information can be found in the documentation for the [azeventhubs.Processor]
+// type or the [example_processor_test.go] for an example.
+//
+// [example_processor_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go
+func NewProcessor(consumerClient *ConsumerClient, checkpointStore CheckpointStore, options *ProcessorOptions) (*Processor, error) {
 	return newProcessorImpl(consumerClient, checkpointStore, options)
 }
 
-func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore CheckpointStore, options *NewProcessorOptions) (*Processor, error) {
+func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore CheckpointStore, options *ProcessorOptions) (*Processor, error) {
 	if options == nil {
-		options = &NewProcessorOptions{}
+		options = &ProcessorOptions{}
 	}
 
 	updateInterval := 10 * time.Second
@@ -153,13 +164,15 @@ func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore
 	}, nil
 }
 
-// NextPartitionClient will get the next available azeventhubs.PartitionProcessorClient if
-// a partition is available or will block until a new one arrives or processor.Run() is
-// cancelled.
+// NextPartitionClient will get the next owned [PartitionProcessorClient] if one is acquired
+// or will block until a new one arrives or [processor.Run] is cancelled. You MUST call [azeventhubs.ProcessorPartitionClient.Close] on the returned client to avoid leaking resources.
 //
-// NOTE: this function will not return any values until processor.Run() is executing. If the
-// Run() function is cancelled (or if this function is cancelled) the returned
-// ProcessorPartitionClient will be nil.
+// This function is safe to call before [processor.Run] has been called and will typically
+// be executed in a goroutine in a loop.
+//
+// See [example_processor_test.go] for an example of typical usage.
+//
+// [example_processor_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go
 func (p *Processor) NextPartitionClient(ctx context.Context) *ProcessorPartitionClient {
 	<-p.runCalled
 
@@ -171,11 +184,16 @@ func (p *Processor) NextPartitionClient(ctx context.Context) *ProcessorPartition
 	}
 }
 
-// Run runs the load balancing loop. Partitions that are claimed can be read using the
-// DistributedPartitionClient returned from processor.Next().
+// Run handles the load balancing loop, blocking until the passed in context is cancelled
+// or it encounters an unrecoverable error. On cancellation, it will return a nil error.
 //
-// NOTE: If this function is cancelled the load balancing loop is cancelled and a nil error
-// is returned. processor.NextPartitionClient() will return nil.
+// As partitions are claimed new [ProcessorPartitionClient] instances will be returned from
+// [Processor.NextPartitionClient]. This can happen at any time, based on new Processor instances
+// coming online, as well as other Processors exiting.
+//
+// See [example_processor_test.go] for an example of typical usage.
+//
+// [example_processor_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go
 func (p *Processor) Run(ctx context.Context) error {
 	err := p.runImpl(ctx)
 
@@ -299,7 +317,7 @@ func (p *Processor) addPartitionClient(ctx context.Context, ownership Ownership,
 		return err
 	}
 
-	partClient, err := p.consumerClient.NewPartitionClient(ownership.PartitionID, &NewPartitionClientOptions{
+	partClient, err := p.consumerClient.NewPartitionClient(ownership.PartitionID, &PartitionClientOptions{
 		StartPosition: sp,
 		OwnerLevel:    &p.ownerLevel,
 	})

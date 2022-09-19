@@ -104,7 +104,7 @@ func consumeEventsFromPartition(ctx context.Context, consumerClient *azeventhubs
 	// read in 10 second chunks. If we ever end a 10 second chunk with no messages
 	// then we've probably just failed.
 
-	partitionClient, err := consumerClient.NewPartitionClient(partitionID, &azeventhubs.NewPartitionClientOptions{
+	partitionClient, err := consumerClient.NewPartitionClient(partitionID, &azeventhubs.PartitionClientOptions{
 		StartPosition: startPosition,
 	})
 

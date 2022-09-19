@@ -73,7 +73,7 @@ func FiniteProcessorTest(ctx context.Context) error {
 
 	defer producerClient.Close(ctx)
 
-	err = initCheckpointStore(ctx, producerClient, azeventhubs.CheckpointStoreAddress{
+	err = initCheckpointStore(ctx, producerClient, azeventhubs.Checkpoint{
 		ConsumerGroup:           azeventhubs.DefaultConsumerGroup,
 		FullyQualifiedNamespace: testData.Namespace,
 		EventHubName:            testData.HubName,
@@ -93,7 +93,7 @@ func FiniteProcessorTest(ctx context.Context) error {
 		return err
 	}
 
-	processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, &azeventhubs.NewProcessorOptions{
+	processor, err := azeventhubs.NewProcessor(consumerClient, checkpointStore, &azeventhubs.ProcessorOptions{
 		LoadBalancingStrategy: azeventhubs.ProcessorStrategyGreedy,
 	})
 

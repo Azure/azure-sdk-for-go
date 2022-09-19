@@ -43,7 +43,7 @@ type (
 		tlsConfig     *tls.Config
 		userAgent     string
 
-		newWebSocketConn func(ctx context.Context, args exported.NewWebSocketConnArgs) (net.Conn, error)
+		newWebSocketConn func(ctx context.Context, args exported.WebSocketConnArgs) (net.Conn, error)
 
 		// NOTE: exported only so it can be checked in a test
 		RetryOptions exported.RetryOptions
@@ -117,7 +117,7 @@ func NamespaceWithUserAgent(userAgent string) NamespaceOption {
 }
 
 // NamespaceWithWebSocket configures the namespace and all entities to use wss:// rather than amqps://
-func NamespaceWithWebSocket(newWebSocketConn func(ctx context.Context, args exported.NewWebSocketConnArgs) (net.Conn, error)) NamespaceOption {
+func NamespaceWithWebSocket(newWebSocketConn func(ctx context.Context, args exported.WebSocketConnArgs) (net.Conn, error)) NamespaceOption {
 	return func(ns *Namespace) error {
 		ns.newWebSocketConn = newWebSocketConn
 		return nil
@@ -175,7 +175,7 @@ func (ns *Namespace) newClientImpl(ctx context.Context) (amqpwrap.AMQPClient, er
 	}
 
 	if ns.newWebSocketConn != nil {
-		nConn, err := ns.newWebSocketConn(ctx, exported.NewWebSocketConnArgs{
+		nConn, err := ns.newWebSocketConn(ctx, exported.WebSocketConnArgs{
 			Host: ns.getWSSHostURI() + "$servicebus/websocket",
 		})
 

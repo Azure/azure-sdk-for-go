@@ -311,15 +311,11 @@ const testEventHubName = "event-hub"
 
 func newTestOwnership(partitionID string, ownerID string) Ownership {
 	return Ownership{
-		OwnershipData: OwnershipData{
-			OwnerID: ownerID,
-		},
-		CheckpointStoreAddress: CheckpointStoreAddress{
-			PartitionID:             partitionID,
-			ConsumerGroup:           testConsumerGroup,
-			EventHubName:            testEventHubName,
-			FullyQualifiedNamespace: testEventHubFQDN,
-		},
+		OwnerID:                 ownerID,
+		PartitionID:             partitionID,
+		ConsumerGroup:           testConsumerGroup,
+		EventHubName:            testEventHubName,
+		FullyQualifiedNamespace: testEventHubFQDN,
 	}
 }
 

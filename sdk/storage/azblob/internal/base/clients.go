@@ -26,6 +26,10 @@ func SharedKey[T any](client *Client[T]) *exported.SharedKeyCredential {
 	return client.sharedKey
 }
 
+func UserDelegationKey[T any](client *Client[T]) *exported.UserDelegationKey {
+	return client.userDelegationKey
+}
+
 func NewClient[T any](inner *T) *Client[T] {
 	return &Client[T]{inner: inner}
 }

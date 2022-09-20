@@ -13,27 +13,27 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
-// NewUserDelegationCredential creates a new UserDelegationCredential using a Storage account's name and a user delegation key from it
+// NewUserDelegationCredential creates a new UserDelegationCredential using a Storage account's Name and a user delegation Key from it
 func NewUserDelegationCredential(accountName string, key generated.UserDelegationKey) *UserDelegationCredential {
 	return &UserDelegationCredential{
-		accountName: accountName,
-		accountKey:  key,
+		Name: accountName,
+		Key:  key,
 	}
 }
 
 type UserDelegationCredential struct {
-	accountName string
-	accountKey  generated.UserDelegationKey
+	Name string
+	Key  generated.UserDelegationKey
 }
 
-// AccountName returns the Storage account's name
+// AccountName returns the Storage account's Name
 func (f *UserDelegationCredential) AccountName() string {
-	return f.accountName
+	return f.Name
 }
 
 // ComputeHMAC
 func (f *UserDelegationCredential) ComputeHMACSHA256(message string) (string, error) {
-	bytes, _ := base64.StdEncoding.DecodeString(*f.accountKey.Value)
+	bytes, _ := base64.StdEncoding.DecodeString(*f.Key.Value)
 	h := hmac.New(sha256.New, bytes)
 	_, err := h.Write([]byte(message))
 	return base64.StdEncoding.EncodeToString(h.Sum(nil)), err
@@ -41,7 +41,7 @@ func (f *UserDelegationCredential) ComputeHMACSHA256(message string) (string, er
 
 // Private method to return important parameters for NewSASQueryParameters
 func (f *UserDelegationCredential) getUDKParams() *generated.UserDelegationKey {
-	return &f.accountKey
+	return &f.Key
 }
 
 type UserDelegationKey = generated.UserDelegationKey

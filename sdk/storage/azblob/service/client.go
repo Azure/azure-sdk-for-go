@@ -115,6 +115,10 @@ func (s *Client) sharedKey() *SharedKeyCredential {
 	return base.SharedKey((*base.Client[generated.ServiceClient])(s))
 }
 
+func (s *Client) userDelegationKey() *generated.UserDelegationKey {
+	return base.UserDelegationKey((*base.Client[generated.ServiceClient])(s))
+}
+
 // URL returns the URL endpoint used by the Client object.
 func (s *Client) URL() string {
 	return s.generated().Endpoint()
@@ -253,6 +257,39 @@ func (s *Client) GetSASURL(resources SASResourceTypes, permissions SASPermission
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
 	}.Sign(s.sharedKey())
+	if err != nil {
+		return "", err
+	}
+
+	endpoint := s.URL()
+	if !strings.HasSuffix(endpoint, "/") {
+		endpoint += "/"
+	}
+	endpoint += "?" + qps.Encode()
+
+	return endpoint, nil
+}
+
+// GetUDKSASURL is a convenience method for generating a SAS token for the currently pointed at account.
+// It can only be used if the credential supplied during creation was a UserDelegationKey.
+// This validity can be checked with CanGetAccountSASToken().
+func (s *Client) GetUDKSASURL(resources SASResourceTypes, permissions SASPermissions, services SASServices, start time.Time, expiry time.Time) (string, error) {
+	if s.userDelegationKey() == nil {
+		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
+	}
+
+	udc := UserDelegationCredential{
+		Key: *s.userDelegationKey(),
+	}
+	qps, err := SASSignatureValues{
+		Version:       exported.SASVersion,
+		Protocol:      exported.SASProtocolHTTPS,
+		Permissions:   permissions.String(),
+		Services:      services.String(),
+		ResourceTypes: resources.String(),
+		StartTime:     start.UTC(),
+		ExpiryTime:    expiry.UTC(),
+	}.SignUDK(&udc)
 	if err != nil {
 		return "", err
 	}

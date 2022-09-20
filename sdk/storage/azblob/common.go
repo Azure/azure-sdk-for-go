@@ -30,9 +30,6 @@ func NewUserDelegationCredential(accountName string, key generated.UserDelegatio
 
 type UserDelegationKey = generated.UserDelegationKey
 
-// StorageAccountCredential is a wrapper interface for SharedKeyCredential and UserDelegationCredential
-type StorageAccountCredential = exported.StorageAccountCredential
-
 // IPEndpointStyleInfo is used for IP endpoint style URL when working with Azure storage emulator.
 // Ex: "https://10.132.141.33/accountname/containername"
 type IPEndpointStyleInfo = exported.IPEndpointStyleInfo

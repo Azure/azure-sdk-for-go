@@ -27,7 +27,7 @@ type AccountSASSignatureValues struct {
 	ResourceTypes string      `param:"srt"` // Create by initializing AccountSASResourceTypes and then call String()
 }
 
-// Sign uses an account's shared key credential to sign this signature values to produce
+// Sign uses an account's SharedKeyCredential to sign this signature values to produce
 // the proper SAS query parameters.
 func (v AccountSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (SASQueryParameters, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/Constructing-an-Account-SAS
@@ -77,6 +77,76 @@ func (v AccountSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential
 
 		// Calculated SAS signature
 		signature: signature,
+	}
+
+	return p, nil
+}
+
+// SignUDK uses an account's UserDelegationKey to sign this signature values to produce the proper SAS query parameters.
+func (v AccountSASSignatureValues) SignUDK(userDelegationCredential *UserDelegationCredential) (SASQueryParameters, error) {
+	if userDelegationCredential == nil {
+		return SASQueryParameters{}, fmt.Errorf("cannot sign SAS query without UserDelegationKey")
+	}
+
+	// https://docs.microsoft.com/en-us/rest/api/storageservices/Constructing-an-Account-SAS
+	if v.ExpiryTime.IsZero() || v.Permissions == "" || v.ResourceTypes == "" || v.Services == "" {
+		return SASQueryParameters{}, errors.New("account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
+	}
+	if v.Version == "" {
+		v.Version = SASVersion
+	}
+	perms := &AccountSASPermissions{}
+	if err := perms.Parse(v.Permissions); err != nil {
+		return SASQueryParameters{}, err
+	}
+	v.Permissions = perms.String()
+
+	startTime, expiryTime, _ := FormatTimesForSASSigning(v.StartTime, v.ExpiryTime, time.Time{})
+
+	stringToSign := strings.Join([]string{
+		userDelegationCredential.AccountName(),
+		v.Permissions,
+		v.Services,
+		v.ResourceTypes,
+		startTime,
+		expiryTime,
+		v.IPRange.String(),
+		string(v.Protocol),
+		v.Version,
+		""}, // That is right, the account SAS requires a terminating extra newline
+		"\n")
+
+	signature, err := userDelegationCredential.ComputeHMACSHA256(stringToSign)
+	if err != nil {
+		return SASQueryParameters{}, err
+	}
+	p := SASQueryParameters{
+		// Common SAS parameters
+		version:     v.Version,
+		protocol:    v.Protocol,
+		startTime:   v.StartTime,
+		expiryTime:  v.ExpiryTime,
+		permissions: v.Permissions,
+		ipRange:     v.IPRange,
+
+		// Account-specific SAS parameters
+		services:      v.Services,
+		resourceTypes: v.ResourceTypes,
+
+		// Calculated SAS signature
+		signature: signature,
+	}
+
+	udk := userDelegationCredential.getUDKParams()
+
+	//User delegation SAS specific parameters
+	if udk != nil {
+		p.signedOID = *udk.SignedOID
+		p.signedTID = *udk.SignedTID
+		p.signedStart = *udk.SignedStart
+		p.signedExpiry = *udk.SignedExpiry
+		p.signedService = *udk.SignedService
+		p.signedVersion = *udk.SignedVersion
 	}
 
 	return p, nil

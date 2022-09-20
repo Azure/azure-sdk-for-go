@@ -20,6 +20,8 @@ func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredentia
 	return exported.NewSharedKeyCredential(accountName, accountKey)
 }
 
+type UserDelegationKey = exported.UserDelegationKey
+
 // Request Model Declaration -------------------------------------------------------------------------------------------
 
 // CpkScopeInfo contains a group of parameters for the ContainerClient.Create method.

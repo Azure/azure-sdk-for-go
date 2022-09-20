@@ -48,7 +48,7 @@ type LocationCache struct {
 }
 
 func (lc *LocationCache) update(writeLocations []string, readLocations []string, prefList []string, enableMultipleWriteLocations bool) {
-
+	return
 }
 
 func (lc *LocationCache) ReadEndpoints() []url.URL {
@@ -65,7 +65,32 @@ func (lc *LocationCache) WriteEndpoints() []url.URL {
 	return lc.locationInfo.writeEndpts
 }
 
-func (lc *LocationCache) GetLocation(uri url.URL) string {
-	// loc := lc.locationInfo.availWriteEndptsByLocation
-	// return loc
+func (lc *LocationCache) GetLocation(endpoint url.URL) string {
+	firstLoc := ""
+	for location, uri := range lc.locationInfo.availWriteEndptsByLocation {
+		if uri == endpoint {
+			return location
+		}
+		if firstLoc == "" {
+			firstLoc = location
+		}
+	}
+
+	for location, uri := range lc.locationInfo.availReadEndptsByLocation {
+		if uri == endpoint {
+			return location
+		}
+	}
+
+	if endpoint == lc.defaultEndpt && !lc.CanUseMultipleWriteLocs() {
+		if len(lc.locationInfo.availWriteEndptsByLocation) > 0 {
+			return firstLoc
+		}
+	}
+	return ""
+
+}
+
+func (lc *LocationCache) CanUseMultipleWriteLocs() bool {
+	return lc.useMultipleWriteLocations && lc.enableMultipleWriteLocations
 }

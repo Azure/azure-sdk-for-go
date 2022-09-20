@@ -629,8 +629,7 @@ func (s *ServiceUnrecordedTestsSuite) TestContainerRestore() {
 
 			if *cont.Deleted && *cont.Name == containerName {
 				contRestored = true
-				_, err = svcClient.RestoreContainer(context.Background(), &service.RestoreContainerOptions{
-					DeletedContainerName:    containerName,
+				_, err = svcClient.RestoreContainer(context.Background(), containerName, &service.RestoreContainerOptions{
 					DeletedContainerVersion: *cont.Version,
 				})
 				_require.Nil(err)
@@ -654,11 +653,13 @@ func (s *ServiceUnrecordedTestsSuite) TestContainerRestoreFailures() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	_, err = svcClient.RestoreContainer(context.Background(), nil)
+	testName := s.T().Name()
+	containerName := testcommon.GenerateContainerName(testName)
+
+	_, err = svcClient.RestoreContainer(context.Background(), containerName, nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MissingRequiredHeader)
 
-	_, err = svcClient.RestoreContainer(context.Background(), &service.RestoreContainerOptions{
-		DeletedContainerName:    "",
+	_, err = svcClient.RestoreContainer(context.Background(), "", &service.RestoreContainerOptions{
 		DeletedContainerVersion: "",
 	})
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MissingRequiredHeader)

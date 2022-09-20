@@ -449,30 +449,6 @@ type Properties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// ProxyResource - ARM proxy resource.
-type ProxyResource struct {
-	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// Resource - ARM resource.
-type Resource struct {
-	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
 // ResourceIdentity - Azure Active Directory identity configuration for a resource.
 type ResourceIdentity struct {
 	// The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal
@@ -744,24 +720,6 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
-}
-
-// TrackedResource - ARM tracked top level resource.
-type TrackedResource struct {
-	// REQUIRED; Resource location.
-	Location *string `json:"location,omitempty"`
-
-	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Update - An update to a SQL virtual machine.

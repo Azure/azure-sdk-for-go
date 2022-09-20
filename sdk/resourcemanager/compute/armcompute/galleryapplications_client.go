@@ -257,7 +257,6 @@ func (client *GalleryApplicationsClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListByGalleryPager - List gallery Application Definitions in a gallery.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-01-03
 // resourceGroupName - The name of the resource group.
 // galleryName - The name of the Shared Application Gallery from which Application Definitions are to be listed.

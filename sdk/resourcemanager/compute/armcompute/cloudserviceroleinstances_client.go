@@ -307,7 +307,6 @@ func (client *CloudServiceRoleInstancesClient) getRemoteDesktopFileCreateRequest
 
 // NewListPager - Gets the list of all role instances in a cloud service. Use nextLink property in the response to get the
 // next page of role instances. Do this till nextLink is null to fetch all the role instances.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-04
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.

@@ -113,7 +113,6 @@ func (client *SharedGalleriesClient) getHandleResponse(resp *http.Response) (Sha
 }
 
 // NewListPager - List shared galleries by subscription id or tenant id.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-01-03
 // location - Resource location.
 // options - SharedGalleriesClientListOptions contains the optional parameters for the SharedGalleriesClient.List method.

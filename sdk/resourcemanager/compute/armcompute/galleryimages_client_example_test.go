@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryImage_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/galleryExamples/GalleryImage_Create.json
 func ExampleGalleryImagesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,24 +28,19 @@ func ExampleGalleryImagesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"myResourceGroup",
-		"myGalleryName",
-		"myGalleryImageName",
-		armcompute.GalleryImage{
-			Location: to.Ptr("West US"),
-			Properties: &armcompute.GalleryImageProperties{
-				HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
-				Identifier: &armcompute.GalleryImageIdentifier{
-					Offer:     to.Ptr("myOfferName"),
-					Publisher: to.Ptr("myPublisherName"),
-					SKU:       to.Ptr("mySkuName"),
-				},
-				OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
-				OSType:  to.Ptr(armcompute.OperatingSystemTypesWindows),
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myGalleryName", "myGalleryImageName", armcompute.GalleryImage{
+		Location: to.Ptr("West US"),
+		Properties: &armcompute.GalleryImageProperties{
+			HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
+			Identifier: &armcompute.GalleryImageIdentifier{
+				Offer:     to.Ptr("myOfferName"),
+				Publisher: to.Ptr("myPublisherName"),
+				SKU:       to.Ptr("mySkuName"),
 			},
+			OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
+			OSType:  to.Ptr(armcompute.OperatingSystemTypesWindows),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -57,7 +52,7 @@ func ExampleGalleryImagesClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryImage_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/galleryExamples/GalleryImage_Update.json
 func ExampleGalleryImagesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,23 +63,18 @@ func ExampleGalleryImagesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"myResourceGroup",
-		"myGalleryName",
-		"myGalleryImageName",
-		armcompute.GalleryImageUpdate{
-			Properties: &armcompute.GalleryImageProperties{
-				HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
-				Identifier: &armcompute.GalleryImageIdentifier{
-					Offer:     to.Ptr("myOfferName"),
-					Publisher: to.Ptr("myPublisherName"),
-					SKU:       to.Ptr("mySkuName"),
-				},
-				OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
-				OSType:  to.Ptr(armcompute.OperatingSystemTypesWindows),
+	poller, err := client.BeginUpdate(ctx, "myResourceGroup", "myGalleryName", "myGalleryImageName", armcompute.GalleryImageUpdate{
+		Properties: &armcompute.GalleryImageProperties{
+			HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
+			Identifier: &armcompute.GalleryImageIdentifier{
+				Offer:     to.Ptr("myOfferName"),
+				Publisher: to.Ptr("myPublisherName"),
+				SKU:       to.Ptr("mySkuName"),
 			},
+			OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
+			OSType:  to.Ptr(armcompute.OperatingSystemTypesWindows),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -96,7 +86,7 @@ func ExampleGalleryImagesClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryImage_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/galleryExamples/GalleryImage_Get.json
 func ExampleGalleryImagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,11 +97,7 @@ func ExampleGalleryImagesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"myResourceGroup",
-		"myGalleryName",
-		"myGalleryImageName",
-		nil)
+	res, err := client.Get(ctx, "myResourceGroup", "myGalleryName", "myGalleryImageName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -119,7 +105,7 @@ func ExampleGalleryImagesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryImage_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/galleryExamples/GalleryImage_Delete.json
 func ExampleGalleryImagesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,11 +116,7 @@ func ExampleGalleryImagesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"myResourceGroup",
-		"myGalleryName",
-		"myGalleryImageName",
-		nil)
+	poller, err := client.BeginDelete(ctx, "myResourceGroup", "myGalleryName", "myGalleryImageName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -144,7 +126,7 @@ func ExampleGalleryImagesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryImage_ListByGallery.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/galleryExamples/GalleryImage_ListByGallery.json
 func ExampleGalleryImagesClient_NewListByGalleryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,9 +137,7 @@ func ExampleGalleryImagesClient_NewListByGalleryPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByGalleryPager("myResourceGroup",
-		"myGalleryName",
-		nil)
+	pager := client.NewListByGalleryPager("myResourceGroup", "myGalleryName", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

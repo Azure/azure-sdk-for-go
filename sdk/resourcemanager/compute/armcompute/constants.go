@@ -11,7 +11,7 @@ package armcompute
 
 const (
 	moduleName    = "armcompute"
-	moduleVersion = "v3.0.1"
+	moduleVersion = "v4.0.0"
 )
 
 type AccessLevel string
@@ -340,6 +340,27 @@ func PossibleDiffDiskPlacementValues() []DiffDiskPlacement {
 	return []DiffDiskPlacement{
 		DiffDiskPlacementCacheDisk,
 		DiffDiskPlacementResourceDisk,
+	}
+}
+
+// DiskControllerTypes - Specifies the disk controller type configured for the VM and VirtualMachineScaleSet. This property
+// is only supported for virtual machines whose operating system disk and VM sku supports Generation 2
+// (https://docs.microsoft.com/en-us/azure/virtual-machines/generation-2), please check the HyperVGenerations capability returned
+// as part of VM sku capabilities in the response of Microsoft.Compute SKUs
+// api for the region contains V2 (https://docs.microsoft.com/rest/api/compute/resourceskus/list) .
+// For more information about Disk Controller Types supported please refer to https://aka.ms/azure-diskcontrollertypes.
+type DiskControllerTypes string
+
+const (
+	DiskControllerTypesNVMe DiskControllerTypes = "NVMe"
+	DiskControllerTypesSCSI DiskControllerTypes = "SCSI"
+)
+
+// PossibleDiskControllerTypesValues returns the possible values for the DiskControllerTypes const type.
+func PossibleDiskControllerTypesValues() []DiskControllerTypes {
+	return []DiskControllerTypes{
+		DiskControllerTypesNVMe,
+		DiskControllerTypesSCSI,
 	}
 }
 

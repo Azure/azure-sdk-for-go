@@ -1,5 +1,47 @@
 # Release History
 
+## 4.0.0 (2022-09-20)
+### Breaking Changes
+
+- Function `*CloudServicesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, CloudServiceUpdate, *CloudServicesClientBeginUpdateOptions)` to `(context.Context, string, string, *CloudServicesClientBeginUpdateOptions)`
+- Function `*CloudServicesUpdateDomainClient.BeginWalkUpdateDomain` parameter(s) have been changed from `(context.Context, string, string, int32, UpdateDomain, *CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions)` to `(context.Context, string, string, int32, *CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions)`
+- Function `*CloudServicesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, CloudService, *CloudServicesClientBeginCreateOrUpdateOptions)` to `(context.Context, string, string, *CloudServicesClientBeginCreateOrUpdateOptions)`
+- Type of `VirtualMachineExtensionUpdateProperties.ProtectedSettingsFromKeyVault` has been changed from `interface{}` to `*KeyVaultSecretReference`
+- Type of `VirtualMachineScaleSetExtensionProperties.ProtectedSettingsFromKeyVault` has been changed from `interface{}` to `*KeyVaultSecretReference`
+- Type of `SharingProfile.CommunityGalleryInfo` has been changed from `interface{}` to `*CommunityGalleryInfo`
+- Type of `VirtualMachineExtensionProperties.ProtectedSettingsFromKeyVault` has been changed from `interface{}` to `*KeyVaultSecretReference`
+- Struct `CloudError` has been removed
+
+### Features Added
+
+- New const `DiskControllerTypesSCSI`
+- New const `DiskControllerTypesNVMe`
+- New type alias `DiskControllerTypes`
+- New function `PossibleDiskControllerTypesValues() []DiskControllerTypes`
+- New struct `PriorityMixPolicy`
+- New field `DisableTCPStateTracking` in struct `VirtualMachineNetworkInterfaceConfigurationProperties`
+- New field `Parameters` in struct `CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions`
+- New field `DiskControllerType` in struct `VirtualMachineScaleSetStorageProfile`
+- New field `PriorityMixPolicy` in struct `VirtualMachineScaleSetProperties`
+- New field `EnableVMAgentPlatformUpdates` in struct `LinuxConfiguration`
+- New field `Parameters` in struct `CloudServicesClientBeginCreateOrUpdateOptions`
+- New field `DiskControllerTypes` in struct `SupportedCapabilities`
+- New field `CurrentCapacity` in struct `CapacityReservationUtilization`
+- New field `DiskControllerType` in struct `VirtualMachineScaleSetUpdateStorageProfile`
+- New field `DisableTCPStateTracking` in struct `VirtualMachineScaleSetUpdateNetworkConfigurationProperties`
+- New field `Parameters` in struct `CloudServicesClientBeginUpdateOptions`
+- New field `DisableTCPStateTracking` in struct `VirtualMachineScaleSetNetworkConfigurationProperties`
+- New field `DiskControllerType` in struct `StorageProfile`
+- New field `HardwareProfile` in struct `VirtualMachineScaleSetUpdateVMProfile`
+- New field `PerformancePlus` in struct `CreationData`
+- New field `IncrementalSnapshotFamilyID` in struct `SnapshotProperties`
+- New field `PlatformFaultDomainCount` in struct `CapacityReservationProperties`
+- New field `EnableVMAgentPlatformUpdates` in struct `WindowsConfiguration`
+- New field `OptimizedForFrequentAttach` in struct `DiskUpdateProperties`
+- New field `OptimizedForFrequentAttach` in struct `DiskProperties`
+- New field `BurstingEnabledTime` in struct `DiskProperties`
+
+
 ## 3.0.1 (2022-07-29)
 ### Other Changes
 - Fix wrong module import for live test

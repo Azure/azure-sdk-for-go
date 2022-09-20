@@ -119,7 +119,6 @@ func (client *CommunityGalleryImagesClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListPager - List community gallery images inside a gallery.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-01-03
 // location - Resource location.
 // publicGalleryName - The public name of the community gallery.

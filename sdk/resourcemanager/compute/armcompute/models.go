@@ -511,6 +511,12 @@ type CapacityReservationProperties struct {
 	// READ-ONLY; The Capacity reservation instance view.
 	InstanceView *CapacityReservationInstanceView `json:"instanceView,omitempty" azure:"ro"`
 
+	// READ-ONLY; Specifies the value of fault domain count that Capacity Reservation supports for requested VM size.
+	// NOTE: The fault domain count specified for a resource (like virtual machines scale set) must be less than or equal to this
+	// value if it deploys using capacity reservation.
+	// Minimum api-version: 2022-08-01.
+	PlatformFaultDomainCount *int32 `json:"platformFaultDomainCount,omitempty" azure:"ro"`
+
 	// READ-ONLY; The provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 
@@ -522,7 +528,7 @@ type CapacityReservationProperties struct {
 	ReservationID *string `json:"reservationId,omitempty" azure:"ro"`
 
 	// READ-ONLY; Specifies the time at which the Capacity Reservation resource was created.
-	// Minimum api-version: 2022-03-01.
+	// Minimum api-version: 2021-11-01.
 	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
 
 	// READ-ONLY; A list of all virtual machine resource ids that are associated with the capacity reservation.
@@ -546,6 +552,11 @@ type CapacityReservationUpdate struct {
 
 // CapacityReservationUtilization - Represents the capacity reservation utilization in terms of resources allocated.
 type CapacityReservationUtilization struct {
+	// READ-ONLY; The value provides the current capacity of the VM size which was reserved successfully and for which the customer
+	// is getting billed.
+	// Minimum api-version: 2022-08-01.
+	CurrentCapacity *int32 `json:"currentCapacity,omitempty" azure:"ro"`
+
 	// READ-ONLY; A list of all virtual machines resource ids allocated against the capacity reservation.
 	VirtualMachinesAllocated []*SubResourceReadOnly `json:"virtualMachinesAllocated,omitempty" azure:"ro"`
 }
@@ -583,12 +594,6 @@ type CapacityReservationsClientGetOptions struct {
 // method.
 type CapacityReservationsClientListByCapacityReservationGroupOptions struct {
 	// placeholder for future optional parameters
-}
-
-// CloudError - An error response from the Compute service.
-type CloudError struct {
-	// Api error.
-	Error *APIError `json:"error,omitempty"`
 }
 
 // CloudService - Describes the cloud service.
@@ -961,6 +966,8 @@ type CloudServiceVaultSecretGroup struct {
 // CloudServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the CloudServicesClient.BeginCreateOrUpdate
 // method.
 type CloudServicesClientBeginCreateOrUpdateOptions struct {
+	// The cloud service object.
+	Parameters *CloudService
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1018,6 +1025,8 @@ type CloudServicesClientBeginStartOptions struct {
 
 // CloudServicesClientBeginUpdateOptions contains the optional parameters for the CloudServicesClient.BeginUpdate method.
 type CloudServicesClientBeginUpdateOptions struct {
+	// The cloud service object.
+	Parameters *CloudServiceUpdate
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1046,6 +1055,8 @@ type CloudServicesClientListOptions struct {
 // CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions contains the optional parameters for the CloudServicesUpdateDomainClient.BeginWalkUpdateDomain
 // method.
 type CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions struct {
+	// The update domain object.
+	Parameters *UpdateDomain
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1275,6 +1286,11 @@ type CreationData struct {
 	// Logical sector size in bytes for Ultra disks. Supported values are 512 ad 4096. 4096 is the default.
 	LogicalSectorSize *int32 `json:"logicalSectorSize,omitempty"`
 
+	// Set this flag to true to get a boost on the performance target of the disk deployed, see here on the respective performance
+	// target. This flag can only be set on disk creation time and cannot be
+	// disabled after enabled.
+	PerformancePlus *bool `json:"performancePlus,omitempty"`
+
 	// If createOption is ImportSecure, this is the URI of a blob to be imported into VM guest state.
 	SecurityDataURI *string `json:"securityDataUri,omitempty"`
 
@@ -1338,7 +1354,7 @@ type DataDisk struct {
 
 	// Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a
 	// virtual machine image.
-	// This value cannot be larger than 1023 GB
+	// diskSizeGB is the number of bytes x 1024^3 for the disk and the value cannot be larger than 1023
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 
 	// The source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual machine.
@@ -1629,7 +1645,7 @@ type DedicatedHostProperties struct {
 	ProvisioningTime *time.Time `json:"provisioningTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; Specifies the time at which the Dedicated Host resource was created.
-	// Minimum api-version: 2022-03-01.
+	// Minimum api-version: 2021-11-01.
 	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
 
 	// READ-ONLY; A list of references to all virtual machines in the Dedicated Host.
@@ -2090,6 +2106,12 @@ type DiskProperties struct {
 	// The Operating System type.
 	OSType *OperatingSystemTypes `json:"osType,omitempty"`
 
+	// Setting this property to true improves reliability and performance of data disks that are frequently (more than 5 times
+	// a day) by detached from one virtual machine and attached to another. This
+	// property should not be set for disks that are not detached and attached frequently as it causes the disks to not align
+	// with the fault domain of the virtual machine.
+	OptimizedForFrequentAttach *bool `json:"optimizedForFrequentAttach,omitempty"`
+
 	// Policy for controlling export on the disk.
 	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 
@@ -2109,6 +2131,9 @@ type DiskProperties struct {
 	// Performance tier of the disk (e.g, P4, S10) as described here: https://azure.microsoft.com/en-us/pricing/details/managed-disks/.
 	// Does not apply to Ultra disks.
 	Tier *string `json:"tier,omitempty"`
+
+	// READ-ONLY; Latest time when bursting was last enabled on a disk.
+	BurstingEnabledTime *time.Time `json:"burstingEnabledTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; The size of the disk in bytes. This field is read only.
 	DiskSizeBytes *int64 `json:"diskSizeBytes,omitempty" azure:"ro"`
@@ -2350,6 +2375,12 @@ type DiskUpdateProperties struct {
 
 	// the Operating System type.
 	OSType *OperatingSystemTypes `json:"osType,omitempty"`
+
+	// Setting this property to true improves reliability and performance of data disks that are frequently (more than 5 times
+	// a day) by detached from one virtual machine and attached to another. This
+	// property should not be set for disks that are not detached and attached frequently as it causes the disks to not align
+	// with the fault domain of the virtual machine.
+	OptimizedForFrequentAttach *bool `json:"optimizedForFrequentAttach,omitempty"`
 
 	// Policy for controlling export on the disk.
 	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
@@ -3448,7 +3479,7 @@ type ImageListResult struct {
 
 // ImageOSDisk - Describes an Operating System disk.
 type ImageOSDisk struct {
-	// REQUIRED; The OS State.
+	// REQUIRED; The OS State. For managed images, use Generalized.
 	OSState *OperatingSystemStateTypes `json:"osState,omitempty"`
 
 	// REQUIRED; This property allows you to specify the type of the OS that is included in the disk if creating a VM from a custom
@@ -3752,6 +3783,9 @@ type LinuxConfiguration struct {
 	// Specifies whether password authentication should be disabled.
 	DisablePasswordAuthentication *bool `json:"disablePasswordAuthentication,omitempty"`
 
+	// Indicates whether VMAgent Platform Updates is enabled for the Linux virtual machine. Default value is false.
+	EnableVMAgentPlatformUpdates *bool `json:"enableVMAgentPlatformUpdates,omitempty"`
+
 	// [Preview Feature] Specifies settings related to VM Guest Patching on Linux.
 	PatchSettings *LinuxPatchSettings `json:"patchSettings,omitempty"`
 
@@ -4019,7 +4053,7 @@ type OSDisk struct {
 
 	// Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a
 	// virtual machine image.
-	// This value cannot be larger than 1023 GB
+	// diskSizeGB is the number of bytes x 1024^3 for the disk and the value cannot be larger than 1023
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 
 	// Specifies the encryption settings for the OS Disk.
@@ -4406,6 +4440,20 @@ type Plan struct {
 
 	// The publisher ID.
 	Publisher *string `json:"publisher,omitempty"`
+}
+
+// PriorityMixPolicy - Specifies the target splits for Spot and Regular priority VMs within a scale set with flexible orchestration
+// mode.
+// With this property the customer is able to specify the base number of regular priority VMs created as the VMSS flex instance
+// scales out and the split between Spot and Regular priority VMs after this
+// base target has been reached.
+type PriorityMixPolicy struct {
+	// The base number of regular priority VMs that will be created in this scale set as it scales out.
+	BaseRegularPriorityCount *int32 `json:"baseRegularPriorityCount,omitempty"`
+
+	// The percentage of VM instances, after the base regular priority count has been reached, that are expected to use regular
+	// priority.
+	RegularPriorityPercentageAboveBase *int32 `json:"regularPriorityPercentageAboveBase,omitempty"`
 }
 
 // PrivateEndpoint - The Private Endpoint resource.
@@ -5896,7 +5944,7 @@ type SharedGalleryOSDiskImage struct {
 // SharingProfile - Profile for gallery sharing to subscription or tenant
 type SharingProfile struct {
 	// Information of community gallery if current gallery is shared to community.
-	CommunityGalleryInfo interface{} `json:"communityGalleryInfo,omitempty"`
+	CommunityGalleryInfo *CommunityGalleryInfo `json:"communityGalleryInfo,omitempty"`
 
 	// This property allows you to specify the permission of sharing gallery.
 	// Possible values are:
@@ -6045,6 +6093,10 @@ type SnapshotProperties struct {
 
 	// READ-ONLY; The state of the snapshot.
 	DiskState *DiskState `json:"diskState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Incremental snapshots for a disk share an incremental snapshot family id. The Get Page Range Diff API can only
+	// be called on incremental snapshots with the same family id.
+	IncrementalSnapshotFamilyID *string `json:"incrementalSnapshotFamilyId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The disk provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
@@ -6202,6 +6254,15 @@ type StorageProfile struct {
 	// For more information about disks, see About disks and VHDs for Azure virtual machines [https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview].
 	DataDisks []*DataDisk `json:"dataDisks,omitempty"`
 
+	// Specifies the disk controller type configured for the VM.
+	// NOTE: This property will be set to the default disk controller type if not specified provided virtual machine is being
+	// created as a hyperVGeneration: V2 based on the capabilities of the operating
+	// system disk and VM size from the the specified minimum api version.
+	// You need to deallocate the VM before updating its disk controller type unless you are updating the VM size in the VM configuration
+	// which implicitly deallocates and reallocates the VM.
+	// Minimum api-version: 2022-08-01
+	DiskControllerType *DiskControllerTypes `json:"diskControllerType,omitempty"`
+
 	// Specifies information about the image to use. You can specify information about platform images, marketplace images, or
 	// virtual machine images. This element is required when you want to use a platform
 	// image, marketplace image, or virtual machine image, but is not used in other creation operations.
@@ -6237,6 +6298,9 @@ type SupportedCapabilities struct {
 
 	// CPU architecture supported by an OS disk.
 	Architecture *Architecture `json:"architecture,omitempty"`
+
+	// The disk controllers that an OS disk supports. If set it can be SCSI or SCSI, NVME or NVME, SCSI.
+	DiskControllerTypes *string `json:"diskControllerTypes,omitempty"`
 }
 
 // SystemData - The system meta data relating to this resource.
@@ -6845,7 +6909,7 @@ type VirtualMachineExtensionProperties struct {
 	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
 
 	// The extensions protected settings that are passed by reference, and consumed from key vault
-	ProtectedSettingsFromKeyVault interface{} `json:"protectedSettingsFromKeyVault,omitempty"`
+	ProtectedSettingsFromKeyVault *KeyVaultSecretReference `json:"protectedSettingsFromKeyVault,omitempty"`
 
 	// The name of the extension handler publisher.
 	Publisher *string `json:"publisher,omitempty"`
@@ -6894,7 +6958,7 @@ type VirtualMachineExtensionUpdateProperties struct {
 	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
 
 	// The extensions protected settings that are passed by reference, and consumed from key vault
-	ProtectedSettingsFromKeyVault interface{} `json:"protectedSettingsFromKeyVault,omitempty"`
+	ProtectedSettingsFromKeyVault *KeyVaultSecretReference `json:"protectedSettingsFromKeyVault,omitempty"`
 
 	// The name of the extension handler publisher.
 	Publisher *string `json:"publisher,omitempty"`
@@ -7276,8 +7340,11 @@ type VirtualMachineNetworkInterfaceConfigurationProperties struct {
 	DNSSettings *VirtualMachineNetworkInterfaceDNSSettingsConfiguration `json:"dnsSettings,omitempty"`
 
 	// Specify what happens to the network interface when the VM is deleted
-	DeleteOption      *DeleteOptions `json:"deleteOption,omitempty"`
-	DscpConfiguration *SubResource   `json:"dscpConfiguration,omitempty"`
+	DeleteOption *DeleteOptions `json:"deleteOption,omitempty"`
+
+	// Specifies whether the network interface is disabled for tcp state tracking.
+	DisableTCPStateTracking *bool        `json:"disableTcpStateTracking,omitempty"`
+	DscpConfiguration       *SubResource `json:"dscpConfiguration,omitempty"`
 
 	// Specifies whether the network interface is accelerated networking-enabled.
 	EnableAcceleratedNetworking *bool `json:"enableAcceleratedNetworking,omitempty"`
@@ -7470,7 +7537,7 @@ type VirtualMachineProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; Specifies the time at which the Virtual Machine resource was created.
-	// Minimum api-version: 2022-03-01.
+	// Minimum api-version: 2021-11-01.
 	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
 
 	// READ-ONLY; Specifies the VM unique ID which is a 128-bits identifier that is encoded and stored in all Azure IaaS VMs SMBIOS
@@ -7767,7 +7834,7 @@ type VirtualMachineScaleSetDataDisk struct {
 
 	// Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a
 	// virtual machine image.
-	// This value cannot be larger than 1023 GB
+	// diskSizeGB is the number of bytes x 1024^3 for the disk and the value cannot be larger than 1023
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 
 	// The managed disk parameters.
@@ -7836,7 +7903,7 @@ type VirtualMachineScaleSetExtensionProperties struct {
 	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
 
 	// The extensions protected settings that are passed by reference, and consumed from key vault
-	ProtectedSettingsFromKeyVault interface{} `json:"protectedSettingsFromKeyVault,omitempty"`
+	ProtectedSettingsFromKeyVault *KeyVaultSecretReference `json:"protectedSettingsFromKeyVault,omitempty"`
 
 	// Collection of extension names after which this extension needs to be provisioned.
 	ProvisionAfterExtensions []*string `json:"provisionAfterExtensions,omitempty"`
@@ -7912,7 +7979,7 @@ type VirtualMachineScaleSetExtensionsClientListOptions struct {
 
 // VirtualMachineScaleSetHardwareProfile - Specifies the hardware settings for the virtual machine scale set.
 type VirtualMachineScaleSetHardwareProfile struct {
-	// Specifies the properties for customizing the size of the virtual machine. Minimum api-version: 2022-03-01.
+	// Specifies the properties for customizing the size of the virtual machine. Minimum api-version: 2021-11-01.
 	// Please follow the instructions in VM Customization [https://aka.ms/vmcustomization] for more details.
 	VMSizeProperties *VMSizeProperties `json:"vmSizeProperties,omitempty"`
 }
@@ -8097,6 +8164,9 @@ type VirtualMachineScaleSetNetworkConfigurationProperties struct {
 	// Specify what happens to the network interface when the VM is deleted
 	DeleteOption *DeleteOptions `json:"deleteOption,omitempty"`
 
+	// Specifies whether the network interface is disabled for tcp state tracking.
+	DisableTCPStateTracking *bool `json:"disableTcpStateTracking,omitempty"`
+
 	// Specifies whether the network interface is accelerated networking-enabled.
 	EnableAcceleratedNetworking *bool `json:"enableAcceleratedNetworking,omitempty"`
 
@@ -8156,9 +8226,9 @@ type VirtualMachineScaleSetOSDisk struct {
 	// Specifies the ephemeral disk Settings for the operating system disk used by the virtual machine scale set.
 	DiffDiskSettings *DiffDiskSettings `json:"diffDiskSettings,omitempty"`
 
-	// Specifies the size of the operating system disk in gigabytes. This element can be used to overwrite the size of the disk
-	// in a virtual machine image.
-	// This value cannot be larger than 1023 GB
+	// Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a
+	// virtual machine image.
+	// diskSizeGB is the number of bytes x 1024^3 for the disk and the value cannot be larger than 1023
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 
 	// Specifies information about the unmanaged user image to base the scale set on.
@@ -8270,6 +8340,9 @@ type VirtualMachineScaleSetProperties struct {
 	// Fault Domain count for each placement group.
 	PlatformFaultDomainCount *int32 `json:"platformFaultDomainCount,omitempty"`
 
+	// Specifies the desired targets for mixing Spot and Regular priority VMs within the same VMSS Flex instance.
+	PriorityMixPolicy *PriorityMixPolicy `json:"priorityMixPolicy,omitempty"`
+
 	// Specifies information about the proximity placement group that the virtual machine scale set should be assigned to.
 	// Minimum api-version: 2018-04-01.
 	ProximityPlacementGroup *SubResource `json:"proximityPlacementGroup,omitempty"`
@@ -8300,7 +8373,7 @@ type VirtualMachineScaleSetProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; Specifies the time at which the Virtual Machine Scale Set resource was created.
-	// Minimum api-version: 2022-03-01.
+	// Minimum api-version: 2021-11-01.
 	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
 
 	// READ-ONLY; Specifies the ID which uniquely identifies a Virtual Machine Scale Set.
@@ -8420,7 +8493,8 @@ type VirtualMachineScaleSetSKUCapacity struct {
 type VirtualMachineScaleSetStorageProfile struct {
 	// Specifies the parameters that are used to add data disks to the virtual machines in the scale set.
 	// For more information about disks, see About disks and VHDs for Azure virtual machines [https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview].
-	DataDisks []*VirtualMachineScaleSetDataDisk `json:"dataDisks,omitempty"`
+	DataDisks          []*VirtualMachineScaleSetDataDisk `json:"dataDisks,omitempty"`
+	DiskControllerType *string                           `json:"diskControllerType,omitempty"`
 
 	// Specifies information about the image to use. You can specify information about platform images, marketplace images, or
 	// virtual machine images. This element is required when you want to use a platform
@@ -8515,6 +8589,9 @@ type VirtualMachineScaleSetUpdateNetworkConfigurationProperties struct {
 	// Specify what happens to the network interface when the VM is deleted
 	DeleteOption *DeleteOptions `json:"deleteOption,omitempty"`
 
+	// Specifies whether the network interface is disabled for tcp state tracking.
+	DisableTCPStateTracking *bool `json:"disableTcpStateTracking,omitempty"`
+
 	// Specifies whether the network interface is accelerated networking-enabled.
 	EnableAcceleratedNetworking *bool `json:"enableAcceleratedNetworking,omitempty"`
 
@@ -8564,9 +8641,9 @@ type VirtualMachineScaleSetUpdateOSDisk struct {
 	// delete option for Ephemeral OS Disk.
 	DeleteOption *DiskDeleteOptionTypes `json:"deleteOption,omitempty"`
 
-	// Specifies the size of the operating system disk in gigabytes. This element can be used to overwrite the size of the disk
-	// in a virtual machine image.
-	// This value cannot be larger than 1023 GB
+	// Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a
+	// virtual machine image.
+	// diskSizeGB is the number of bytes x 1024^3 for the disk and the value cannot be larger than 1023
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 
 	// The Source User Image VirtualHardDisk. This VirtualHardDisk will be copied before using it to attach to the Virtual Machine.
@@ -8665,7 +8742,8 @@ type VirtualMachineScaleSetUpdatePublicIPAddressConfigurationProperties struct {
 // VirtualMachineScaleSetUpdateStorageProfile - Describes a virtual machine scale set storage profile.
 type VirtualMachineScaleSetUpdateStorageProfile struct {
 	// The data disks.
-	DataDisks []*VirtualMachineScaleSetDataDisk `json:"dataDisks,omitempty"`
+	DataDisks          []*VirtualMachineScaleSetDataDisk `json:"dataDisks,omitempty"`
+	DiskControllerType *string                           `json:"diskControllerType,omitempty"`
 
 	// The image reference.
 	ImageReference *ImageReference `json:"imageReference,omitempty"`
@@ -8685,6 +8763,10 @@ type VirtualMachineScaleSetUpdateVMProfile struct {
 
 	// The virtual machine scale set extension profile.
 	ExtensionProfile *VirtualMachineScaleSetExtensionProfile `json:"extensionProfile,omitempty"`
+
+	// Specifies the hardware profile related details of a scale set.
+	// Minimum api-version: 2021-11-01.
+	HardwareProfile *VirtualMachineScaleSetHardwareProfile `json:"hardwareProfile,omitempty"`
 
 	// The license type, which is for bring your own license scenario.
 	LicenseType *string `json:"licenseType,omitempty"`
@@ -8931,7 +9013,7 @@ type VirtualMachineScaleSetVMProfile struct {
 	ExtensionProfile *VirtualMachineScaleSetExtensionProfile `json:"extensionProfile,omitempty"`
 
 	// Specifies the hardware profile related details of a scale set.
-	// Minimum api-version: 2022-03-01.
+	// Minimum api-version: 2021-11-01.
 	HardwareProfile *VirtualMachineScaleSetHardwareProfile `json:"hardwareProfile,omitempty"`
 
 	// Specifies that the image or disk that is being used was licensed on-premises.
@@ -9713,6 +9795,9 @@ type WindowsConfiguration struct {
 	// Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true.
 	// For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning.
 	EnableAutomaticUpdates *bool `json:"enableAutomaticUpdates,omitempty"`
+
+	// Indicates whether VMAgent Platform Updates is enabled for the Windows virtual machine. Default value is false.
+	EnableVMAgentPlatformUpdates *bool `json:"enableVMAgentPlatformUpdates,omitempty"`
 
 	// [Preview Feature] Specifies settings related to VM Guest Patching on Windows.
 	PatchSettings *PatchSettings `json:"patchSettings,omitempty"`

@@ -1,5 +1,15 @@
 # Release History
 
+## 0.8.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 0.8.1 (2022-09-20)
 
 ### Features Added

@@ -5,8 +5,6 @@
 
 - Function `*AlertsClient.Simulate` has been removed
 - Struct `AlertsClientSimulateOptions` has been removed
-- Struct `CloudError` has been removed
-- Struct `CloudErrorBody` has been removed
 - Struct `ConnectorPropertiesOrganizationalData` has been removed
 - Field `OrganizationalData` of struct `ConnectorProperties` has been removed
 - Field `CloudName` of struct `ConnectorProperties` has been removed

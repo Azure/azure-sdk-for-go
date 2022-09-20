@@ -18,6 +18,11 @@ import (
 // ClientOptions contains optional settings for Client.
 type ClientOptions struct {
 	azcore.ClientOptions
+
+	// DisableChallengeResourceVerification controls whether the policy requires the
+	// authentication challenge resource to match the Key Vault or Managed HSM domain.
+	// See https://aka.ms/azsdk/blog/vault-uri for more information.
+	DisableChallengeResourceVerification bool
 }
 
 // NewClient creates a client that accesses a Key Vault's certificates. You should validate that
@@ -26,7 +31,12 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	authPolicy := internal.NewKeyVaultChallengePolicy(credential)
+	authPolicy := internal.NewKeyVaultChallengePolicy(
+		credential,
+		&internal.KeyVaultChallengePolicyOptions{
+			DisableChallengeResourceVerification: options.DisableChallengeResourceVerification,
+		},
+	)
 	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	return &Client{endpoint: vaultURL, pl: pl}
 }

@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto
 
 go 1.18
 

@@ -1,11 +1,6 @@
 # Release History
 
-## 2.0.0 (2022-09-15)
-### Breaking Changes
-
-- Struct `CloudError` has been removed
-- Struct `CloudErrorBody` has been removed
-
+## 1.1.0 (2022-09-15)
 ### Features Added
 
 - New const `AzureSKUNameStandardEC8AsV51TBPS`

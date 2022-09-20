@@ -300,12 +300,6 @@ type AccountEntityProperties struct {
 	UpnSuffix *string `json:"upnSuffix,omitempty" azure:"ro"`
 }
 
-// ActionPropertiesBase - Action property bag base.
-type ActionPropertiesBase struct {
-	// REQUIRED; Logic App Resource Id, /subscriptions/{my-subscription}/resourceGroups/{my-resource-group}/providers/Microsoft.Logic/workflows/{my-workflow-id}.
-	LogicAppResourceID *string `json:"logicAppResourceId,omitempty"`
-}
-
 // ActionRequest - Action for alert rule.
 type ActionRequest struct {
 	// Etag of the azure resource
@@ -698,60 +692,6 @@ type AlertRuleTemplateDataSource struct {
 
 	// The data types used by the alert rule template
 	DataTypes []*string `json:"dataTypes,omitempty"`
-}
-
-// AlertRuleTemplatePropertiesBase - Base alert rule template property bag.
-type AlertRuleTemplatePropertiesBase struct {
-	// the number of alert rules that were created by this template
-	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
-
-	// The description of the alert rule template.
-	Description *string `json:"description,omitempty"`
-
-	// The display name for alert rule template.
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// The required data sources for this template
-	RequiredDataConnectors []*AlertRuleTemplateDataSource `json:"requiredDataConnectors,omitempty"`
-
-	// The alert rule template status.
-	Status *TemplateStatus `json:"status,omitempty"`
-
-	// READ-ONLY; The time that this alert rule template has been added.
-	CreatedDateUTC *time.Time `json:"createdDateUTC,omitempty" azure:"ro"`
-
-	// READ-ONLY; The last time that this alert rule template has been updated.
-	LastUpdatedDateUTC *time.Time `json:"lastUpdatedDateUTC,omitempty" azure:"ro"`
-}
-
-// AlertRuleTemplateWithMitreProperties - Alert rule template with MITRE property bag.
-type AlertRuleTemplateWithMitreProperties struct {
-	// the number of alert rules that were created by this template
-	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
-
-	// The description of the alert rule template.
-	Description *string `json:"description,omitempty"`
-
-	// The display name for alert rule template.
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// The required data sources for this template
-	RequiredDataConnectors []*AlertRuleTemplateDataSource `json:"requiredDataConnectors,omitempty"`
-
-	// The alert rule template status.
-	Status *TemplateStatus `json:"status,omitempty"`
-
-	// The tactics of the alert rule
-	Tactics []*AttackTactic `json:"tactics,omitempty"`
-
-	// The techniques of the alert rule
-	Techniques []*string `json:"techniques,omitempty"`
-
-	// READ-ONLY; The time that this alert rule template has been added.
-	CreatedDateUTC *time.Time `json:"createdDateUTC,omitempty" azure:"ro"`
-
-	// READ-ONLY; The last time that this alert rule template has been updated.
-	LastUpdatedDateUTC *time.Time `json:"lastUpdatedDateUTC,omitempty" azure:"ro"`
 }
 
 // AlertRuleTemplatesClientGetOptions contains the optional parameters for the AlertRuleTemplatesClient.Get method.
@@ -1999,24 +1939,6 @@ type ConnectedEntity struct {
 	TargetEntityID *string `json:"targetEntityId,omitempty"`
 }
 
-// ConnectivityCriteria - Setting for the connector check connectivity
-type ConnectivityCriteria struct {
-	// type of connectivity
-	Type *ConnectivityType `json:"type,omitempty"`
-
-	// Queries for checking connectivity
-	Value []*string `json:"value,omitempty"`
-}
-
-// ConnectorInstructionModelBase - Instruction step details
-type ConnectorInstructionModelBase struct {
-	// REQUIRED; The kind of the setting
-	Type *SettingType `json:"type,omitempty"`
-
-	// The parameters for the setting
-	Parameters interface{} `json:"parameters,omitempty"`
-}
-
 // ContentPathMap - The mapping of content type to a repo path.
 type ContentPathMap struct {
 	// Content type.
@@ -2058,24 +1980,6 @@ type CustomEntityQuery struct {
 
 // GetCustomEntityQuery implements the CustomEntityQueryClassification interface for type CustomEntityQuery.
 func (c *CustomEntityQuery) GetCustomEntityQuery() *CustomEntityQuery { return c }
-
-// Customs permissions required for the connector
-type Customs struct {
-	// Customs permissions description
-	Description *string `json:"description,omitempty"`
-
-	// Customs permissions name
-	Name *string `json:"name,omitempty"`
-}
-
-// CustomsPermission - Customs permissions required for the connector
-type CustomsPermission struct {
-	// Customs permissions description
-	Description *string `json:"description,omitempty"`
-
-	// Customs permissions name
-	Name *string `json:"name,omitempty"`
-}
 
 // DNSEntity - Represents a dns entity.
 type DNSEntity struct {
@@ -2224,18 +2128,6 @@ type DataConnectorRequirementsState struct {
 
 	// License state for this connector
 	LicenseState *DataConnectorLicenseState `json:"licenseState,omitempty"`
-}
-
-// DataConnectorTenantID - Properties data connector on tenant level.
-type DataConnectorTenantID struct {
-	// REQUIRED; The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
-}
-
-// DataConnectorWithAlertsProperties - Data connector properties.
-type DataConnectorWithAlertsProperties struct {
-	// The available data types for the connector.
-	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
 }
 
 // DataConnectorsCheckRequirementsClassification provides polymorphic access to related types.
@@ -2696,16 +2588,6 @@ type EntityAnalyticsProperties struct {
 	EntityProviders []*EntityProviders `json:"entityProviders,omitempty"`
 }
 
-// EntityCommonProperties - Entity common property bag.
-type EntityCommonProperties struct {
-	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
-	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
-}
-
 // EntityEdges - The edge that connects the entity to the other entity.
 type EntityEdges struct {
 	// A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -2900,21 +2782,6 @@ type EntityQueryItem struct {
 
 // GetEntityQueryItem implements the EntityQueryItemClassification interface for type EntityQueryItem.
 func (e *EntityQueryItem) GetEntityQueryItem() *EntityQueryItem { return e }
-
-// EntityQueryItemProperties - An properties abstract Query item for entity
-type EntityQueryItemProperties struct {
-	// Data types for template
-	DataTypes []*EntityQueryItemPropertiesDataTypesItem `json:"dataTypes,omitempty"`
-
-	// The query applied only to entities matching to all filters
-	EntitiesFilter interface{} `json:"entitiesFilter,omitempty"`
-
-	// The type of the entity
-	InputEntityType *EntityType `json:"inputEntityType,omitempty"`
-
-	// Data types for template
-	RequiredInputFieldsSets [][]*string `json:"requiredInputFieldsSets,omitempty"`
-}
 
 type EntityQueryItemPropertiesDataTypesItem struct {
 	// Data type name
@@ -3663,18 +3530,6 @@ type GetQueriesResponse struct {
 type GitHubResourceInfo struct {
 	// GitHub application installation id.
 	AppInstallationID *string `json:"appInstallationId,omitempty"`
-}
-
-// GraphQueries - The graph query to show the current data status
-type GraphQueries struct {
-	// The base query for the graph
-	BaseQuery *string `json:"baseQuery,omitempty"`
-
-	// The legend for the graph
-	Legend *string `json:"legend,omitempty"`
-
-	// the metric that the query is checking
-	MetricName *string `json:"metricName,omitempty"`
 }
 
 // GroupingConfiguration - Grouping configuration property bag.
@@ -4435,18 +4290,6 @@ type InsightsTableResultColumnsItem struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// InstructionSteps - Instruction steps to enable the connector
-type InstructionSteps struct {
-	// Instruction step description
-	Description *string `json:"description,omitempty"`
-
-	// Instruction step details
-	Instructions []*InstructionStepsInstructionsItem `json:"instructions,omitempty"`
-
-	// Instruction step title
-	Title *string `json:"title,omitempty"`
-}
-
 type InstructionStepsInstructionsItem struct {
 	// REQUIRED; The kind of the setting
 	Type *SettingType `json:"type,omitempty"`
@@ -4646,15 +4489,6 @@ type IoTDeviceEntityProperties struct {
 
 	// READ-ONLY; The zone location of the device within a site
 	Zone *string `json:"zone,omitempty" azure:"ro"`
-}
-
-// LastDataReceivedDataType - Data type for last data received
-type LastDataReceivedDataType struct {
-	// Query for indicate last data received
-	LastDataReceivedQuery *string `json:"lastDataReceivedQuery,omitempty"`
-
-	// Name of the data type to show in the graph. can be use with {{graphQueriesTableName}} placeholder
-	Name *string `json:"name,omitempty"`
 }
 
 // MCASCheckRequirements - Represents MCAS (Microsoft Cloud App Security) requirements check request.
@@ -5732,21 +5566,6 @@ func (m *MicrosoftSecurityIncidentCreationAlertRule) GetAlertRule() *AlertRule {
 	}
 }
 
-// MicrosoftSecurityIncidentCreationAlertRuleCommonProperties - MicrosoftSecurityIncidentCreation rule common property bag.
-type MicrosoftSecurityIncidentCreationAlertRuleCommonProperties struct {
-	// REQUIRED; The alerts' productName on which the cases will be generated
-	ProductFilter *MicrosoftSecurityProductName `json:"productFilter,omitempty"`
-
-	// the alerts' displayNames on which the cases will not be generated
-	DisplayNamesExcludeFilter []*string `json:"displayNamesExcludeFilter,omitempty"`
-
-	// the alerts' displayNames on which the cases will be generated
-	DisplayNamesFilter []*string `json:"displayNamesFilter,omitempty"`
-
-	// the alerts' severities on which the cases will be generated
-	SeveritiesFilter []*AlertSeverity `json:"severitiesFilter,omitempty"`
-}
-
 // MicrosoftSecurityIncidentCreationAlertRuleProperties - MicrosoftSecurityIncidentCreation rule property bag.
 type MicrosoftSecurityIncidentCreationAlertRuleProperties struct {
 	// REQUIRED; The display name for alerts created by this alert rule.
@@ -6735,30 +6554,6 @@ func (p *PropertyConditionProperties) GetAutomationRuleCondition() *AutomationRu
 	}
 }
 
-// QueryBasedAlertRuleTemplateProperties - Query based alert rule template base property bag.
-type QueryBasedAlertRuleTemplateProperties struct {
-	// The alert details override settings
-	AlertDetailsOverride *AlertDetailsOverride `json:"alertDetailsOverride,omitempty"`
-
-	// Dictionary of string key-value pairs of columns to be attached to the alert
-	CustomDetails map[string]*string `json:"customDetails,omitempty"`
-
-	// Array of the entity mappings of the alert rule
-	EntityMappings []*EntityMapping `json:"entityMappings,omitempty"`
-
-	// The event grouping settings.
-	EventGroupingSettings *EventGroupingSettings `json:"eventGroupingSettings,omitempty"`
-
-	// The query that creates alerts for this rule.
-	Query *string `json:"query,omitempty"`
-
-	// The severity for alerts created by this alert rule.
-	Severity *AlertSeverity `json:"severity,omitempty"`
-
-	// The version of this template - in format , where all are numbers. For example .
-	Version *string `json:"version,omitempty"`
-}
-
 // RegistryKeyEntity - Represents a registry key entity.
 type RegistryKeyEntity struct {
 	// REQUIRED; The kind of the entity.
@@ -6973,66 +6768,6 @@ type RequiredPermissions struct {
 	Write *bool `json:"write,omitempty"`
 }
 
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ResourceProvider - Resource provider permissions required for the connector
-type ResourceProvider struct {
-	// Permission description text
-	PermissionsDisplayText *string `json:"permissionsDisplayText,omitempty"`
-
-	// Provider name
-	Provider *ProviderName `json:"provider,omitempty"`
-
-	// Permission provider display name
-	ProviderDisplayName *string `json:"providerDisplayName,omitempty"`
-
-	// Required permissions for the connector
-	RequiredPermissions *RequiredPermissions `json:"requiredPermissions,omitempty"`
-
-	// Permission provider scope
-	Scope *PermissionProviderScope `json:"scope,omitempty"`
-}
-
-// ResourceWithEtag - An azure resource object with an Etag property
-type ResourceWithEtag struct {
-	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// SampleQueries - The sample queries for the connector
-type SampleQueries struct {
-	// The sample query description
-	Description *string `json:"description,omitempty"`
-
-	// the sample query
-	Query *string `json:"query,omitempty"`
-}
-
 // ScheduledAlertRule - Represents scheduled alert rule.
 type ScheduledAlertRule struct {
 	// REQUIRED; The kind of the alert rule
@@ -7067,39 +6802,6 @@ func (s *ScheduledAlertRule) GetAlertRule() *AlertRule {
 		Type:       s.Type,
 		SystemData: s.SystemData,
 	}
-}
-
-// ScheduledAlertRuleCommonProperties - Scheduled alert rule template property bag.
-type ScheduledAlertRuleCommonProperties struct {
-	// The alert details override settings
-	AlertDetailsOverride *AlertDetailsOverride `json:"alertDetailsOverride,omitempty"`
-
-	// Dictionary of string key-value pairs of columns to be attached to the alert
-	CustomDetails map[string]*string `json:"customDetails,omitempty"`
-
-	// Array of the entity mappings of the alert rule
-	EntityMappings []*EntityMapping `json:"entityMappings,omitempty"`
-
-	// The event grouping settings.
-	EventGroupingSettings *EventGroupingSettings `json:"eventGroupingSettings,omitempty"`
-
-	// The query that creates alerts for this rule.
-	Query *string `json:"query,omitempty"`
-
-	// The frequency (in ISO 8601 duration format) for this alert rule to run.
-	QueryFrequency *string `json:"queryFrequency,omitempty"`
-
-	// The period (in ISO 8601 duration format) that this alert rule looks at.
-	QueryPeriod *string `json:"queryPeriod,omitempty"`
-
-	// The severity for alerts created by this alert rule.
-	Severity *AlertSeverity `json:"severity,omitempty"`
-
-	// The operation against the threshold that triggers alert rule.
-	TriggerOperator *TriggerOperator `json:"triggerOperator,omitempty"`
-
-	// The threshold triggers this alert rule.
-	TriggerThreshold *int32 `json:"triggerThreshold,omitempty"`
 }
 
 // ScheduledAlertRuleProperties - Scheduled alert rule base property bag.

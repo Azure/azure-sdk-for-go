@@ -28,14 +28,12 @@ func ExampleAzureReservationAPIClient_GetCatalog() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetCatalog(ctx,
-		"23bc208b-083f-4901-ae85-4f98c0c3b4b6",
-		&armreservations.AzureReservationAPIClientGetCatalogOptions{ReservedResourceType: to.Ptr("VirtualMachines"),
-			Location:    to.Ptr("eastus"),
-			PublisherID: nil,
-			OfferID:     nil,
-			PlanID:      nil,
-		})
+	res, err := client.GetCatalog(ctx, "23bc208b-083f-4901-ae85-4f98c0c3b4b6", &armreservations.AzureReservationAPIClientGetCatalogOptions{ReservedResourceType: to.Ptr("VirtualMachines"),
+		Location:    to.Ptr("eastus"),
+		PublisherID: nil,
+		OfferID:     nil,
+		PlanID:      nil,
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -54,9 +52,7 @@ func ExampleAzureReservationAPIClient_GetAppliedReservationList() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetAppliedReservationList(ctx,
-		"23bc208b-083f-4901-ae85-4f98c0c3b4b6",
-		nil)
+	res, err := client.GetAppliedReservationList(ctx, "23bc208b-083f-4901-ae85-4f98c0c3b4b6", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

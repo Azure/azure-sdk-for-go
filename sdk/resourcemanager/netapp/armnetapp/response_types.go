@@ -49,6 +49,11 @@ type AccountsClientListResponse struct {
 	AccountList
 }
 
+// AccountsClientRenewCredentialsResponse contains the response from method AccountsClient.RenewCredentials.
+type AccountsClientRenewCredentialsResponse struct {
+	// placeholder for future response values
+}
+
 // AccountsClientUpdateResponse contains the response from method AccountsClient.Update.
 type AccountsClientUpdateResponse struct {
 	Account
@@ -157,6 +162,11 @@ type ResourceClientCheckNameAvailabilityResponse struct {
 // ResourceClientCheckQuotaAvailabilityResponse contains the response from method ResourceClient.CheckQuotaAvailability.
 type ResourceClientCheckQuotaAvailabilityResponse struct {
 	CheckAvailabilityResponse
+}
+
+// ResourceClientQueryRegionInfoResponse contains the response from method ResourceClient.QueryRegionInfo.
+type ResourceClientQueryRegionInfoResponse struct {
+	RegionInfo
 }
 
 // ResourceQuotaLimitsClientGetResponse contains the response from method ResourceQuotaLimitsClient.Get.

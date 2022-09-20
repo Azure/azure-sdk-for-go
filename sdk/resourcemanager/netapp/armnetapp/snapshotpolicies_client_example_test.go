@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/SnapshotPolicies_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/SnapshotPolicies_List.json
 func ExampleSnapshotPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,9 +28,7 @@ func ExampleSnapshotPoliciesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("myRG",
-		"account1",
-		nil)
+	pager := client.NewListPager("myRG", "account1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,7 +41,7 @@ func ExampleSnapshotPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/SnapshotPolicies_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/SnapshotPolicies_Get.json
 func ExampleSnapshotPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,11 +52,7 @@ func ExampleSnapshotPoliciesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"myRG",
-		"account1",
-		"snapshotPolicyName",
-		nil)
+	res, err := client.Get(ctx, "myRG", "account1", "snapshotPolicyName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,7 +60,7 @@ func ExampleSnapshotPoliciesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/SnapshotPolicies_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/SnapshotPolicies_Create.json
 func ExampleSnapshotPoliciesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,38 +71,33 @@ func ExampleSnapshotPoliciesClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Create(ctx,
-		"myRG",
-		"account1",
-		"snapshotPolicyName",
-		armnetapp.SnapshotPolicy{
-			Location: to.Ptr("eastus"),
-			Properties: &armnetapp.SnapshotPolicyProperties{
-				DailySchedule: &armnetapp.DailySchedule{
-					Hour:            to.Ptr[int32](14),
-					Minute:          to.Ptr[int32](30),
-					SnapshotsToKeep: to.Ptr[int32](4),
-				},
-				Enabled: to.Ptr(true),
-				HourlySchedule: &armnetapp.HourlySchedule{
-					Minute:          to.Ptr[int32](50),
-					SnapshotsToKeep: to.Ptr[int32](2),
-				},
-				MonthlySchedule: &armnetapp.MonthlySchedule{
-					DaysOfMonth:     to.Ptr("10,11,12"),
-					Hour:            to.Ptr[int32](14),
-					Minute:          to.Ptr[int32](15),
-					SnapshotsToKeep: to.Ptr[int32](5),
-				},
-				WeeklySchedule: &armnetapp.WeeklySchedule{
-					Day:             to.Ptr("Wednesday"),
-					Hour:            to.Ptr[int32](14),
-					Minute:          to.Ptr[int32](45),
-					SnapshotsToKeep: to.Ptr[int32](3),
-				},
+	res, err := client.Create(ctx, "myRG", "account1", "snapshotPolicyName", armnetapp.SnapshotPolicy{
+		Location: to.Ptr("eastus"),
+		Properties: &armnetapp.SnapshotPolicyProperties{
+			DailySchedule: &armnetapp.DailySchedule{
+				Hour:            to.Ptr[int32](14),
+				Minute:          to.Ptr[int32](30),
+				SnapshotsToKeep: to.Ptr[int32](4),
+			},
+			Enabled: to.Ptr(true),
+			HourlySchedule: &armnetapp.HourlySchedule{
+				Minute:          to.Ptr[int32](50),
+				SnapshotsToKeep: to.Ptr[int32](2),
+			},
+			MonthlySchedule: &armnetapp.MonthlySchedule{
+				DaysOfMonth:     to.Ptr("10,11,12"),
+				Hour:            to.Ptr[int32](14),
+				Minute:          to.Ptr[int32](15),
+				SnapshotsToKeep: to.Ptr[int32](5),
+			},
+			WeeklySchedule: &armnetapp.WeeklySchedule{
+				Day:             to.Ptr("Wednesday"),
+				Hour:            to.Ptr[int32](14),
+				Minute:          to.Ptr[int32](45),
+				SnapshotsToKeep: to.Ptr[int32](3),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -116,7 +105,7 @@ func ExampleSnapshotPoliciesClient_Create() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/SnapshotPolicies_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/SnapshotPolicies_Update.json
 func ExampleSnapshotPoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,38 +116,33 @@ func ExampleSnapshotPoliciesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"myRG",
-		"account1",
-		"snapshotPolicyName",
-		armnetapp.SnapshotPolicyPatch{
-			Location: to.Ptr("eastus"),
-			Properties: &armnetapp.SnapshotPolicyProperties{
-				DailySchedule: &armnetapp.DailySchedule{
-					Hour:            to.Ptr[int32](14),
-					Minute:          to.Ptr[int32](30),
-					SnapshotsToKeep: to.Ptr[int32](4),
-				},
-				Enabled: to.Ptr(true),
-				HourlySchedule: &armnetapp.HourlySchedule{
-					Minute:          to.Ptr[int32](50),
-					SnapshotsToKeep: to.Ptr[int32](2),
-				},
-				MonthlySchedule: &armnetapp.MonthlySchedule{
-					DaysOfMonth:     to.Ptr("10,11,12"),
-					Hour:            to.Ptr[int32](14),
-					Minute:          to.Ptr[int32](15),
-					SnapshotsToKeep: to.Ptr[int32](5),
-				},
-				WeeklySchedule: &armnetapp.WeeklySchedule{
-					Day:             to.Ptr("Wednesday"),
-					Hour:            to.Ptr[int32](14),
-					Minute:          to.Ptr[int32](45),
-					SnapshotsToKeep: to.Ptr[int32](3),
-				},
+	poller, err := client.BeginUpdate(ctx, "myRG", "account1", "snapshotPolicyName", armnetapp.SnapshotPolicyPatch{
+		Location: to.Ptr("eastus"),
+		Properties: &armnetapp.SnapshotPolicyProperties{
+			DailySchedule: &armnetapp.DailySchedule{
+				Hour:            to.Ptr[int32](14),
+				Minute:          to.Ptr[int32](30),
+				SnapshotsToKeep: to.Ptr[int32](4),
+			},
+			Enabled: to.Ptr(true),
+			HourlySchedule: &armnetapp.HourlySchedule{
+				Minute:          to.Ptr[int32](50),
+				SnapshotsToKeep: to.Ptr[int32](2),
+			},
+			MonthlySchedule: &armnetapp.MonthlySchedule{
+				DaysOfMonth:     to.Ptr("10,11,12"),
+				Hour:            to.Ptr[int32](14),
+				Minute:          to.Ptr[int32](15),
+				SnapshotsToKeep: to.Ptr[int32](5),
+			},
+			WeeklySchedule: &armnetapp.WeeklySchedule{
+				Day:             to.Ptr("Wednesday"),
+				Hour:            to.Ptr[int32](14),
+				Minute:          to.Ptr[int32](45),
+				SnapshotsToKeep: to.Ptr[int32](3),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -170,7 +154,7 @@ func ExampleSnapshotPoliciesClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/SnapshotPolicies_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/SnapshotPolicies_Delete.json
 func ExampleSnapshotPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,11 +165,7 @@ func ExampleSnapshotPoliciesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"resourceGroup",
-		"accountName",
-		"snapshotPolicyName",
-		nil)
+	poller, err := client.BeginDelete(ctx, "resourceGroup", "accountName", "snapshotPolicyName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -195,7 +175,7 @@ func ExampleSnapshotPoliciesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/SnapshotPolicies_ListVolumes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/SnapshotPolicies_ListVolumes.json
 func ExampleSnapshotPoliciesClient_ListVolumes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,11 +186,7 @@ func ExampleSnapshotPoliciesClient_ListVolumes() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListVolumes(ctx,
-		"myRG",
-		"account1",
-		"snapshotPolicyName",
-		nil)
+	res, err := client.ListVolumes(ctx, "myRG", "account1", "snapshotPolicyName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Subvolumes_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Subvolumes_List.json
 func ExampleSubvolumesClient_NewListByVolumePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,11 +28,7 @@ func ExampleSubvolumesClient_NewListByVolumePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByVolumePager("myRG",
-		"account1",
-		"pool1",
-		"volume1",
-		nil)
+	pager := client.NewListByVolumePager("myRG", "account1", "pool1", "volume1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -45,7 +41,7 @@ func ExampleSubvolumesClient_NewListByVolumePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Subvolumes_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Subvolumes_Get.json
 func ExampleSubvolumesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,13 +52,7 @@ func ExampleSubvolumesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"myRG",
-		"account1",
-		"pool1",
-		"volume1",
-		"subvolume1",
-		nil)
+	res, err := client.Get(ctx, "myRG", "account1", "pool1", "volume1", "subvolume1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -70,7 +60,7 @@ func ExampleSubvolumesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Subvolumes_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Subvolumes_Create.json
 func ExampleSubvolumesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,18 +71,11 @@ func ExampleSubvolumesClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx,
-		"myRG",
-		"account1",
-		"pool1",
-		"volume1",
-		"subvolume1",
-		armnetapp.SubvolumeInfo{
-			Properties: &armnetapp.SubvolumeProperties{
-				Path: to.Ptr("/subvolumePath"),
-			},
+	poller, err := client.BeginCreate(ctx, "myRG", "account1", "pool1", "volume1", "subvolume1", armnetapp.SubvolumeInfo{
+		Properties: &armnetapp.SubvolumeProperties{
+			Path: to.Ptr("/subvolumePath"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -104,7 +87,7 @@ func ExampleSubvolumesClient_BeginCreate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Subvolumes_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Subvolumes_Update.json
 func ExampleSubvolumesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,18 +98,11 @@ func ExampleSubvolumesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"myRG",
-		"account1",
-		"pool1",
-		"volume1",
-		"subvolume1",
-		armnetapp.SubvolumePatchRequest{
-			Properties: &armnetapp.SubvolumePatchParams{
-				Path: to.Ptr("/subvolumePath"),
-			},
+	poller, err := client.BeginUpdate(ctx, "myRG", "account1", "pool1", "volume1", "subvolume1", armnetapp.SubvolumePatchRequest{
+		Properties: &armnetapp.SubvolumePatchParams{
+			Path: to.Ptr("/subvolumePath"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -138,7 +114,7 @@ func ExampleSubvolumesClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Subvolumes_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Subvolumes_Delete.json
 func ExampleSubvolumesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,13 +125,7 @@ func ExampleSubvolumesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"myRG",
-		"account1",
-		"pool1",
-		"volume1",
-		"subvolume1",
-		nil)
+	poller, err := client.BeginDelete(ctx, "myRG", "account1", "pool1", "volume1", "subvolume1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -165,7 +135,7 @@ func ExampleSubvolumesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Subvolumes_Metadata.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Subvolumes_Metadata.json
 func ExampleSubvolumesClient_BeginGetMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,13 +146,7 @@ func ExampleSubvolumesClient_BeginGetMetadata() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGetMetadata(ctx,
-		"myRG",
-		"account1",
-		"pool1",
-		"volume1",
-		"subvolume1",
-		nil)
+	poller, err := client.BeginGetMetadata(ctx, "myRG", "account1", "pool1", "volume1", "subvolume1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

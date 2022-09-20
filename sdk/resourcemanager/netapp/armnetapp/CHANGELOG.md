@@ -4,8 +4,6 @@
 ### Breaking Changes
 
 - Type of `AccountEncryption.KeySource` has been changed from `*string` to `*KeySource`
-- Struct `CloudError` has been removed
-- Struct `CloudErrorBody` has been removed
 - Field `Location` of struct `Vault` has been removed
 
 ### Features Added

@@ -137,7 +137,7 @@ func ExampleBackupsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "myRG", "account1", "pool1", "volume1", "backup1", &armnetapp.BackupsClientBeginUpdateOptions{Body: &armnetapp.BackupPatch{}})
+	poller, err := client.BeginUpdate(ctx, "myRG", "account1", "pool1", "volume1", "backup1", armnetapp.BackupPatch{}, &armnetapp.BackupsClientBeginUpdateOptions{})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -321,27 +321,6 @@ type BackupPolicy struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// BackupPolicyDetails - Backup policy properties
-type BackupPolicyDetails struct {
-	// Resource location
-	Location *string `json:"location,omitempty"`
-
-	// Backup policy Properties
-	Properties *BackupPolicyProperties `json:"properties,omitempty"`
-
-	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
 // BackupPolicyPatch - Backup policy Details for create and update
 type BackupPolicyPatch struct {
 	// Resource location
@@ -806,27 +785,6 @@ type MonthlySchedule struct {
 	UsedBytes *int64 `json:"usedBytes,omitempty"`
 }
 
-// MountTarget - Mount Target
-type MountTarget struct {
-	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
-
-	// REQUIRED; Mount Target Properties
-	Properties *MountTargetProperties `json:"properties,omitempty"`
-
-	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
 // MountTargetProperties - Mount target properties
 type MountTargetProperties struct {
 	// REQUIRED; UUID v4 used to identify the MountTarget
@@ -976,22 +934,6 @@ type PoolsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
-// location
-type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
 // QuotaAvailabilityRequest - Quota availability request content.
 type QuotaAvailabilityRequest struct {
 	// REQUIRED; Name of the resource to verify.
@@ -1084,21 +1026,6 @@ type ReplicationStatus struct {
 	TotalProgress *string `json:"totalProgress,omitempty"`
 }
 
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
 // ResourceClientCheckFilePathAvailabilityOptions contains the optional parameters for the ResourceClient.CheckFilePathAvailability
 // method.
 type ResourceClientCheckFilePathAvailabilityOptions struct {
@@ -1120,18 +1047,6 @@ type ResourceClientCheckQuotaAvailabilityOptions struct {
 // ResourceClientQueryRegionInfoOptions contains the optional parameters for the ResourceClient.QueryRegionInfo method.
 type ResourceClientQueryRegionInfoOptions struct {
 	// placeholder for future optional parameters
-}
-
-// ResourceIdentity - Identity for the resource.
-type ResourceIdentity struct {
-	// Type of Identity. Supported values are: 'None', 'SystemAssigned'
-	Type *string `json:"type,omitempty"`
-
-	// READ-ONLY; Object id of the identity resource
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The tenant id of the resource
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
 // ResourceNameAvailabilityRequest - Resource name availability request content.
@@ -1266,27 +1181,6 @@ type SnapshotPolicy struct {
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// SnapshotPolicyDetails - Snapshot policy properties
-type SnapshotPolicyDetails struct {
-	// Resource location
-	Location *string `json:"location,omitempty"`
-
-	// Snapshot policy Properties
-	Properties *SnapshotPolicyProperties `json:"properties,omitempty"`
-
-	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource type
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
@@ -1590,28 +1484,6 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
-}
-
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
-// and a 'location'
-type TrackedResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
-
-	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // UserAssignedIdentity for the resource.
@@ -2181,18 +2053,6 @@ type VolumeQuotaRulesProperties struct {
 
 	// READ-ONLY; Gets the status of the VolumeQuotaRule at the time the operation was called.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// VolumeRelocationProperties - Volume relocation properties
-type VolumeRelocationProperties struct {
-	// The id of the bare metal tenant owned by the existing volume
-	OldBareMetalTenantID *string `json:"oldBareMetalTenantId,omitempty"`
-
-	// The id of the old volume that is being relocated
-	OldVolumeID *string `json:"oldVolumeId,omitempty"`
-
-	// Has relocation been requested for this volume
-	RelocationRequested *bool `json:"relocationRequested,omitempty"`
 }
 
 // VolumeRevert - revert a volume to the snapshot

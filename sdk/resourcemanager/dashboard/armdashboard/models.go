@@ -317,6 +317,7 @@ type PrivateEndpointConnectionProperties struct {
 // PrivateEndpointConnectionsClientBeginApproveOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginApprove
 // method.
 type PrivateEndpointConnectionsClientBeginApproveOptions struct {
+	Body *PrivateEndpointConnection
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }

@@ -242,7 +242,6 @@ func (client *GrafanaClient) getHandleResponse(resp *http.Response) (GrafanaClie
 }
 
 // NewListPager - List all resources of workspaces for Grafana under the specified subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-08-01
 // options - GrafanaClientListOptions contains the optional parameters for the GrafanaClient.List method.
 func (client *GrafanaClient) NewListPager(options *GrafanaClientListOptions) *runtime.Pager[GrafanaClientListResponse] {
@@ -301,7 +300,6 @@ func (client *GrafanaClient) listHandleResponse(resp *http.Response) (GrafanaCli
 }
 
 // NewListByResourceGroupPager - List all resources of workspaces for Grafana under the specified resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - GrafanaClientListByResourceGroupOptions contains the optional parameters for the GrafanaClient.ListByResourceGroup

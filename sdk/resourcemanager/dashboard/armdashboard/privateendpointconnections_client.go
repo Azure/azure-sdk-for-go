@@ -63,9 +63,9 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 // privateEndpointConnectionName - The private endpoint connection name of Azure Managed Grafana.
 // options - PrivateEndpointConnectionsClientBeginApproveOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginApprove
 // method.
-func (client *PrivateEndpointConnectionsClient) BeginApprove(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, body PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginApproveOptions) (*runtime.Poller[PrivateEndpointConnectionsClientApproveResponse], error) {
+func (client *PrivateEndpointConnectionsClient) BeginApprove(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginApproveOptions) (*runtime.Poller[PrivateEndpointConnectionsClientApproveResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.approve(ctx, resourceGroupName, workspaceName, privateEndpointConnectionName, body, options)
+		resp, err := client.approve(ctx, resourceGroupName, workspaceName, privateEndpointConnectionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -80,8 +80,8 @@ func (client *PrivateEndpointConnectionsClient) BeginApprove(ctx context.Context
 // Approve - Manual approve private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-08-01
-func (client *PrivateEndpointConnectionsClient) approve(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, body PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginApproveOptions) (*http.Response, error) {
-	req, err := client.approveCreateRequest(ctx, resourceGroupName, workspaceName, privateEndpointConnectionName, body, options)
+func (client *PrivateEndpointConnectionsClient) approve(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginApproveOptions) (*http.Response, error) {
+	req, err := client.approveCreateRequest(ctx, resourceGroupName, workspaceName, privateEndpointConnectionName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +96,7 @@ func (client *PrivateEndpointConnectionsClient) approve(ctx context.Context, res
 }
 
 // approveCreateRequest creates the Approve request.
-func (client *PrivateEndpointConnectionsClient) approveCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, body PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginApproveOptions) (*policy.Request, error) {
+func (client *PrivateEndpointConnectionsClient) approveCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginApproveOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -122,7 +122,10 @@ func (client *PrivateEndpointConnectionsClient) approveCreateRequest(ctx context
 	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, body)
+	if options != nil && options.Body != nil {
+		return req, runtime.MarshalAsJSON(req, *options.Body)
+	}
+	return req, nil
 }
 
 // BeginDelete - Delete private endpoint connection
@@ -258,7 +261,6 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 }
 
 // NewListPager - Get private endpoint connection
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The workspace name of Azure Managed Grafana.

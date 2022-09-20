@@ -117,7 +117,6 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListPager - List all private link resources information for this grafana resource
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The workspace name of Azure Managed Grafana.

@@ -1,5 +1,15 @@
 # Release History
 
+## 2.0.0 (2022-09-20)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.BeginApprove` parameter(s) have been changed from `(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientBeginApproveOptions)` to `(context.Context, string, string, string, *PrivateEndpointConnectionsClientBeginApproveOptions)`
+
+### Features Added
+
+- New field `Body` in struct `PrivateEndpointConnectionsClientBeginApproveOptions`
+
+
 ## 1.0.0 (2022-08-09)
 ### Breaking Changes
 

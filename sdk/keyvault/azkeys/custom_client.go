@@ -20,7 +20,8 @@ type ClientOptions struct {
 	azcore.ClientOptions
 
 	// DisableChallengeResourceVerification controls whether the policy requires the
-	// authentication challenge resource to match the Key Vault or Managed HSM domain
+	// authentication challenge resource to match the Key Vault or Managed HSM domain.
+	// See https://aka.ms/azsdk/blog/vault-uri for more information.
 	DisableChallengeResourceVerification bool
 }
 

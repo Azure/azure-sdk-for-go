@@ -177,24 +177,6 @@ type AgentPoolsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AzureEntityResource - The resource model definition for an Azure Resource Manager resource with an etag.
-type AzureEntityResource struct {
-	// READ-ONLY; Resource Etag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
 // AzureKeyVaultKms - Azure Key Vault key management service settings for the security profile.
 type AzureKeyVaultKms struct {
 	// Whether to enable Azure Key Vault key management service. The default is false.
@@ -258,12 +240,6 @@ type CredentialResults struct {
 	Kubeconfigs []*CredentialResult `json:"kubeconfigs,omitempty" azure:"ro"`
 }
 
-// DiagnosticsProfile - Profile for diagnostics on the container service cluster.
-type DiagnosticsProfile struct {
-	// REQUIRED; Profile for diagnostics on the container service VMs.
-	VMDiagnostics *VMDiagnostics `json:"vmDiagnostics,omitempty"`
-}
-
 // EndpointDependency - A domain name that AKS agent nodes are reaching at.
 type EndpointDependency struct {
 	// The domain name of the dependency.
@@ -286,40 +262,6 @@ type EndpointDetail struct {
 
 	// The protocol used for connection
 	Protocol *string `json:"protocol,omitempty"`
-}
-
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
-
-	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ErrorDetail - The error detail.
-type ErrorDetail struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.).
-type ErrorResponse struct {
-	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // ExtendedLocation - The complex type of the extended location.
@@ -2075,35 +2017,6 @@ type ManagedServiceIdentityUserAssignedIdentitiesValue struct {
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 }
 
-// MasterProfile - Profile for the container service master.
-type MasterProfile struct {
-	// REQUIRED; DNS prefix to be used to create the FQDN for the master pool.
-	DNSPrefix *string `json:"dnsPrefix,omitempty"`
-
-	// REQUIRED; Size of agent VMs.
-	VMSize *ContainerServiceVMSizeTypes `json:"vmSize,omitempty"`
-
-	// Number of masters (VMs) in the container service cluster. Allowed values are 1, 3, and 5. The default value is 1.
-	Count *Count `json:"count,omitempty"`
-
-	// FirstConsecutiveStaticIP used to specify the first static ip of masters.
-	FirstConsecutiveStaticIP *string `json:"firstConsecutiveStaticIP,omitempty"`
-
-	// OS Disk Size in GB to be used to specify the disk size for every machine in this master/agent pool. If you specify 0, it
-	// will apply the default osDisk size according to the vmSize specified.
-	OSDiskSizeGB *int32 `json:"osDiskSizeGB,omitempty"`
-
-	// Storage profile specifies what kind of storage used. Choose from StorageAccount and ManagedDisks. Leave it empty, we will
-	// choose for you based on the orchestrator choice.
-	StorageProfile *ContainerServiceStorageProfileTypes `json:"storageProfile,omitempty"`
-
-	// VNet SubnetID specifies the VNet's subnet identifier.
-	VnetSubnetID *string `json:"vnetSubnetID,omitempty"`
-
-	// READ-ONLY; FQDN for the master pool.
-	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
-}
-
 // NetworkProfile - Profile of network configuration.
 type NetworkProfile struct {
 	// An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified
@@ -2418,21 +2331,6 @@ type ResolvePrivateLinkServiceIDClientPOSTOptions struct {
 	// placeholder for future optional parameters
 }
 
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
 // ResourceReference - A reference to an Azure resource.
 type ResourceReference struct {
 	// The fully qualified Azure resource id.
@@ -2564,18 +2462,6 @@ type SnapshotsClientListOptions struct {
 // SnapshotsClientUpdateTagsOptions contains the optional parameters for the SnapshotsClient.UpdateTags method.
 type SnapshotsClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
-}
-
-// SubResource - Reference to another subresource.
-type SubResource struct {
-	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource that is unique within a resource group. This name can be used to access the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SysctlConfig - Sysctl settings for Linux agent nodes.
@@ -2712,28 +2598,6 @@ type TimeSpan struct {
 	Start *time.Time `json:"start,omitempty"`
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
-// and a 'location'
-type TrackedResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
-
-	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
 // TrustedAccessRole - Trusted access role definition.
 type TrustedAccessRole struct {
 	// READ-ONLY; Name of role, name is unique under a source resource type
@@ -2851,15 +2715,6 @@ type UserAssignedIdentity struct {
 
 	// The resource ID of the user assigned identity.
 	ResourceID *string `json:"resourceId,omitempty"`
-}
-
-// VMDiagnostics - Profile for diagnostics on the container service VMs.
-type VMDiagnostics struct {
-	// REQUIRED; Whether the VM diagnostic agent is provisioned on the VM.
-	Enabled *bool `json:"enabled,omitempty"`
-
-	// READ-ONLY; The URI of the storage account where diagnostics are stored.
-	StorageURI *string `json:"storageUri,omitempty" azure:"ro"`
 }
 
 // WindowsGmsaProfile - Windows gMSA Profile in the managed cluster.

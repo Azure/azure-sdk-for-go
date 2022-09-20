@@ -1,11 +1,6 @@
 # Release History
 
-## 3.0.0-beta.1 (2022-09-17)
-### Breaking Changes
-
-- Struct `CloudError` has been removed
-- Struct `CloudErrorBody` has been removed
-
+## 2.2.0-beta.1 (2022-09-17)
 ### Features Added
 
 - New const `FleetMemberProvisioningStateFailed`

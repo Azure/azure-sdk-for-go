@@ -17,14 +17,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-08-02-preview/examples/SnapshotsList.json
-func ExampleSnapshotsClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-08-02-preview/examples/ManagedClusterSnapshotsList.json
+func ExampleManagedClusterSnapshotsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewSnapshotsClient("subid1", cred, nil)
+	client, err := armcontainerservice.NewManagedClusterSnapshotsClient("subid1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -41,14 +41,14 @@ func ExampleSnapshotsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-08-02-preview/examples/SnapshotsListByResourceGroup.json
-func ExampleSnapshotsClient_NewListByResourceGroupPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-08-02-preview/examples/ManagedClusterSnapshotsListByResourceGroup.json
+func ExampleManagedClusterSnapshotsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewSnapshotsClient("subid1", cred, nil)
+	client, err := armcontainerservice.NewManagedClusterSnapshotsClient("subid1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -65,14 +65,14 @@ func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-08-02-preview/examples/SnapshotsGet.json
-func ExampleSnapshotsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-08-02-preview/examples/ManagedClusterSnapshotsGet.json
+func ExampleManagedClusterSnapshotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewSnapshotsClient("subid1", cred, nil)
+	client, err := armcontainerservice.NewManagedClusterSnapshotsClient("subid1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -84,26 +84,26 @@ func ExampleSnapshotsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-08-02-preview/examples/SnapshotsCreate.json
-func ExampleSnapshotsClient_CreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-08-02-preview/examples/ManagedClusterSnapshotsCreate.json
+func ExampleManagedClusterSnapshotsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewSnapshotsClient("subid1", cred, nil)
+	client, err := armcontainerservice.NewManagedClusterSnapshotsClient("subid1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "rg1", "snapshot1", armcontainerservice.Snapshot{
+	res, err := client.CreateOrUpdate(ctx, "rg1", "snapshot1", armcontainerservice.ManagedClusterSnapshot{
 		Location: to.Ptr("westus"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("val1"),
 			"key2": to.Ptr("val2"),
 		},
-		Properties: &armcontainerservice.SnapshotProperties{
+		Properties: &armcontainerservice.ManagedClusterSnapshotProperties{
 			CreationData: &armcontainerservice.CreationData{
-				SourceResourceID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
+				SourceResourceID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1"),
 			},
 		},
 	}, nil)
@@ -114,14 +114,14 @@ func ExampleSnapshotsClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-08-02-preview/examples/SnapshotsUpdateTags.json
-func ExampleSnapshotsClient_UpdateTags() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-08-02-preview/examples/ManagedClusterSnapshotsUpdateTags.json
+func ExampleManagedClusterSnapshotsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewSnapshotsClient("subid1", cred, nil)
+	client, err := armcontainerservice.NewManagedClusterSnapshotsClient("subid1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -138,14 +138,14 @@ func ExampleSnapshotsClient_UpdateTags() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-08-02-preview/examples/SnapshotsDelete.json
-func ExampleSnapshotsClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerservice/resource-manager/Microsoft.ContainerService/preview/2022-08-02-preview/examples/ManagedClusterSnapshotsDelete.json
+func ExampleManagedClusterSnapshotsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerservice.NewSnapshotsClient("subid1", cred, nil)
+	client, err := armcontainerservice.NewManagedClusterSnapshotsClient("subid1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

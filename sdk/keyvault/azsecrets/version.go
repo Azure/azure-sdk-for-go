@@ -8,5 +8,5 @@ package azsecrets
 
 const (
 	moduleName = "azsecrets"
-	version    = "v0.10.1"
+	version    = "v0.10.2"
 )

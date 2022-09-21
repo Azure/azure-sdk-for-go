@@ -9,10 +9,14 @@
 
 package maintenanceapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/maintenance/mgmt/2018-06-01-preview/maintenance/maintenanceapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/maintenance/mgmt/2021-09-01-preview/maintenance/maintenanceapi"
 
+type ApplyUpdateForResourceGroupClientAPI = original.ApplyUpdateForResourceGroupClientAPI
 type ApplyUpdatesClientAPI = original.ApplyUpdatesClientAPI
 type ConfigurationAssignmentsClientAPI = original.ConfigurationAssignmentsClientAPI
+type ConfigurationAssignmentsWithinSubscriptionClientAPI = original.ConfigurationAssignmentsWithinSubscriptionClientAPI
 type ConfigurationsClientAPI = original.ConfigurationsClientAPI
+type ConfigurationsForResourceGroupClientAPI = original.ConfigurationsForResourceGroupClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type PublicMaintenanceConfigurationsClientAPI = original.PublicMaintenanceConfigurationsClientAPI
 type UpdatesClientAPI = original.UpdatesClientAPI

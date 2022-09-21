@@ -12,7 +12,7 @@ package keyvault
 import (
 	"context"
 
-	original "github.com/Azure/dev/azure-sdk-for-go/services/keyvault/mgmt/2021-10-01/keyvault"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/keyvault/mgmt/2022-07-01/keyvault"
 )
 
 const (
@@ -22,37 +22,46 @@ const (
 type AccessPolicyUpdateKind = original.AccessPolicyUpdateKind
 
 const (
-	AccessPolicyUpdateKindAdd     AccessPolicyUpdateKind = original.AccessPolicyUpdateKindAdd
-	AccessPolicyUpdateKindRemove  AccessPolicyUpdateKind = original.AccessPolicyUpdateKindRemove
-	AccessPolicyUpdateKindReplace AccessPolicyUpdateKind = original.AccessPolicyUpdateKindReplace
+	Add     AccessPolicyUpdateKind = original.Add
+	Remove  AccessPolicyUpdateKind = original.Remove
+	Replace AccessPolicyUpdateKind = original.Replace
 )
 
 type ActionsRequired = original.ActionsRequired
 
 const (
-	ActionsRequiredNone ActionsRequired = original.ActionsRequiredNone
+	None ActionsRequired = original.None
+)
+
+type ActivationStatus = original.ActivationStatus
+
+const (
+	Active       ActivationStatus = original.Active
+	Failed       ActivationStatus = original.Failed
+	NotActivated ActivationStatus = original.NotActivated
+	Unknown      ActivationStatus = original.Unknown
 )
 
 type CertificatePermissions = original.CertificatePermissions
 
 const (
-	CertificatePermissionsAll            CertificatePermissions = original.CertificatePermissionsAll
-	CertificatePermissionsBackup         CertificatePermissions = original.CertificatePermissionsBackup
-	CertificatePermissionsCreate         CertificatePermissions = original.CertificatePermissionsCreate
-	CertificatePermissionsDelete         CertificatePermissions = original.CertificatePermissionsDelete
-	CertificatePermissionsDeleteissuers  CertificatePermissions = original.CertificatePermissionsDeleteissuers
-	CertificatePermissionsGet            CertificatePermissions = original.CertificatePermissionsGet
-	CertificatePermissionsGetissuers     CertificatePermissions = original.CertificatePermissionsGetissuers
-	CertificatePermissionsImport         CertificatePermissions = original.CertificatePermissionsImport
-	CertificatePermissionsList           CertificatePermissions = original.CertificatePermissionsList
-	CertificatePermissionsListissuers    CertificatePermissions = original.CertificatePermissionsListissuers
-	CertificatePermissionsManagecontacts CertificatePermissions = original.CertificatePermissionsManagecontacts
-	CertificatePermissionsManageissuers  CertificatePermissions = original.CertificatePermissionsManageissuers
-	CertificatePermissionsPurge          CertificatePermissions = original.CertificatePermissionsPurge
-	CertificatePermissionsRecover        CertificatePermissions = original.CertificatePermissionsRecover
-	CertificatePermissionsRestore        CertificatePermissions = original.CertificatePermissionsRestore
-	CertificatePermissionsSetissuers     CertificatePermissions = original.CertificatePermissionsSetissuers
-	CertificatePermissionsUpdate         CertificatePermissions = original.CertificatePermissionsUpdate
+	All            CertificatePermissions = original.All
+	Backup         CertificatePermissions = original.Backup
+	Create         CertificatePermissions = original.Create
+	Delete         CertificatePermissions = original.Delete
+	Deleteissuers  CertificatePermissions = original.Deleteissuers
+	Get            CertificatePermissions = original.Get
+	Getissuers     CertificatePermissions = original.Getissuers
+	Import         CertificatePermissions = original.Import
+	List           CertificatePermissions = original.List
+	Listissuers    CertificatePermissions = original.Listissuers
+	Managecontacts CertificatePermissions = original.Managecontacts
+	Manageissuers  CertificatePermissions = original.Manageissuers
+	Purge          CertificatePermissions = original.Purge
+	Recover        CertificatePermissions = original.Recover
+	Restore        CertificatePermissions = original.Restore
+	Setissuers     CertificatePermissions = original.Setissuers
+	Update         CertificatePermissions = original.Update
 )
 
 type CreateMode = original.CreateMode
@@ -65,10 +74,10 @@ const (
 type DeletionRecoveryLevel = original.DeletionRecoveryLevel
 
 const (
-	DeletionRecoveryLevelPurgeable                        DeletionRecoveryLevel = original.DeletionRecoveryLevelPurgeable
-	DeletionRecoveryLevelRecoverable                      DeletionRecoveryLevel = original.DeletionRecoveryLevelRecoverable
-	DeletionRecoveryLevelRecoverableProtectedSubscription DeletionRecoveryLevel = original.DeletionRecoveryLevelRecoverableProtectedSubscription
-	DeletionRecoveryLevelRecoverablePurgeable             DeletionRecoveryLevel = original.DeletionRecoveryLevelRecoverablePurgeable
+	Purgeable                        DeletionRecoveryLevel = original.Purgeable
+	Recoverable                      DeletionRecoveryLevel = original.Recoverable
+	RecoverableProtectedSubscription DeletionRecoveryLevel = original.RecoverableProtectedSubscription
+	RecoverablePurgeable             DeletionRecoveryLevel = original.RecoverablePurgeable
 )
 
 type IdentityType = original.IdentityType
@@ -83,10 +92,10 @@ const (
 type JSONWebKeyCurveName = original.JSONWebKeyCurveName
 
 const (
-	JSONWebKeyCurveNameP256  JSONWebKeyCurveName = original.JSONWebKeyCurveNameP256
-	JSONWebKeyCurveNameP256K JSONWebKeyCurveName = original.JSONWebKeyCurveNameP256K
-	JSONWebKeyCurveNameP384  JSONWebKeyCurveName = original.JSONWebKeyCurveNameP384
-	JSONWebKeyCurveNameP521  JSONWebKeyCurveName = original.JSONWebKeyCurveNameP521
+	P256  JSONWebKeyCurveName = original.P256
+	P256K JSONWebKeyCurveName = original.P256K
+	P384  JSONWebKeyCurveName = original.P384
+	P521  JSONWebKeyCurveName = original.P521
 )
 
 type JSONWebKeyOperation = original.JSONWebKeyOperation
@@ -95,6 +104,7 @@ const (
 	JSONWebKeyOperationDecrypt   JSONWebKeyOperation = original.JSONWebKeyOperationDecrypt
 	JSONWebKeyOperationEncrypt   JSONWebKeyOperation = original.JSONWebKeyOperationEncrypt
 	JSONWebKeyOperationImport    JSONWebKeyOperation = original.JSONWebKeyOperationImport
+	JSONWebKeyOperationRelease   JSONWebKeyOperation = original.JSONWebKeyOperationRelease
 	JSONWebKeyOperationSign      JSONWebKeyOperation = original.JSONWebKeyOperationSign
 	JSONWebKeyOperationUnwrapKey JSONWebKeyOperation = original.JSONWebKeyOperationUnwrapKey
 	JSONWebKeyOperationVerify    JSONWebKeyOperation = original.JSONWebKeyOperationVerify
@@ -104,46 +114,57 @@ const (
 type JSONWebKeyType = original.JSONWebKeyType
 
 const (
-	JSONWebKeyTypeEC     JSONWebKeyType = original.JSONWebKeyTypeEC
-	JSONWebKeyTypeECHSM  JSONWebKeyType = original.JSONWebKeyTypeECHSM
-	JSONWebKeyTypeRSA    JSONWebKeyType = original.JSONWebKeyTypeRSA
-	JSONWebKeyTypeRSAHSM JSONWebKeyType = original.JSONWebKeyTypeRSAHSM
+	EC     JSONWebKeyType = original.EC
+	ECHSM  JSONWebKeyType = original.ECHSM
+	RSA    JSONWebKeyType = original.RSA
+	RSAHSM JSONWebKeyType = original.RSAHSM
 )
 
 type KeyPermissions = original.KeyPermissions
 
 const (
-	KeyPermissionsAll       KeyPermissions = original.KeyPermissionsAll
-	KeyPermissionsBackup    KeyPermissions = original.KeyPermissionsBackup
-	KeyPermissionsCreate    KeyPermissions = original.KeyPermissionsCreate
-	KeyPermissionsDecrypt   KeyPermissions = original.KeyPermissionsDecrypt
-	KeyPermissionsDelete    KeyPermissions = original.KeyPermissionsDelete
-	KeyPermissionsEncrypt   KeyPermissions = original.KeyPermissionsEncrypt
-	KeyPermissionsGet       KeyPermissions = original.KeyPermissionsGet
-	KeyPermissionsImport    KeyPermissions = original.KeyPermissionsImport
-	KeyPermissionsList      KeyPermissions = original.KeyPermissionsList
-	KeyPermissionsPurge     KeyPermissions = original.KeyPermissionsPurge
-	KeyPermissionsRecover   KeyPermissions = original.KeyPermissionsRecover
-	KeyPermissionsRestore   KeyPermissions = original.KeyPermissionsRestore
-	KeyPermissionsSign      KeyPermissions = original.KeyPermissionsSign
-	KeyPermissionsUnwrapKey KeyPermissions = original.KeyPermissionsUnwrapKey
-	KeyPermissionsUpdate    KeyPermissions = original.KeyPermissionsUpdate
-	KeyPermissionsVerify    KeyPermissions = original.KeyPermissionsVerify
-	KeyPermissionsWrapKey   KeyPermissions = original.KeyPermissionsWrapKey
+	KeyPermissionsAll               KeyPermissions = original.KeyPermissionsAll
+	KeyPermissionsBackup            KeyPermissions = original.KeyPermissionsBackup
+	KeyPermissionsCreate            KeyPermissions = original.KeyPermissionsCreate
+	KeyPermissionsDecrypt           KeyPermissions = original.KeyPermissionsDecrypt
+	KeyPermissionsDelete            KeyPermissions = original.KeyPermissionsDelete
+	KeyPermissionsEncrypt           KeyPermissions = original.KeyPermissionsEncrypt
+	KeyPermissionsGet               KeyPermissions = original.KeyPermissionsGet
+	KeyPermissionsGetrotationpolicy KeyPermissions = original.KeyPermissionsGetrotationpolicy
+	KeyPermissionsImport            KeyPermissions = original.KeyPermissionsImport
+	KeyPermissionsList              KeyPermissions = original.KeyPermissionsList
+	KeyPermissionsPurge             KeyPermissions = original.KeyPermissionsPurge
+	KeyPermissionsRecover           KeyPermissions = original.KeyPermissionsRecover
+	KeyPermissionsRelease           KeyPermissions = original.KeyPermissionsRelease
+	KeyPermissionsRestore           KeyPermissions = original.KeyPermissionsRestore
+	KeyPermissionsRotate            KeyPermissions = original.KeyPermissionsRotate
+	KeyPermissionsSetrotationpolicy KeyPermissions = original.KeyPermissionsSetrotationpolicy
+	KeyPermissionsSign              KeyPermissions = original.KeyPermissionsSign
+	KeyPermissionsUnwrapKey         KeyPermissions = original.KeyPermissionsUnwrapKey
+	KeyPermissionsUpdate            KeyPermissions = original.KeyPermissionsUpdate
+	KeyPermissionsVerify            KeyPermissions = original.KeyPermissionsVerify
+	KeyPermissionsWrapKey           KeyPermissions = original.KeyPermissionsWrapKey
+)
+
+type KeyRotationPolicyActionType = original.KeyRotationPolicyActionType
+
+const (
+	Notify KeyRotationPolicyActionType = original.Notify
+	Rotate KeyRotationPolicyActionType = original.Rotate
 )
 
 type ManagedHsmSkuName = original.ManagedHsmSkuName
 
 const (
-	ManagedHsmSkuNameCustomB32  ManagedHsmSkuName = original.ManagedHsmSkuNameCustomB32
-	ManagedHsmSkuNameStandardB1 ManagedHsmSkuName = original.ManagedHsmSkuNameStandardB1
+	CustomB32  ManagedHsmSkuName = original.CustomB32
+	StandardB1 ManagedHsmSkuName = original.StandardB1
 )
 
 type NetworkRuleAction = original.NetworkRuleAction
 
 const (
-	NetworkRuleActionAllow NetworkRuleAction = original.NetworkRuleActionAllow
-	NetworkRuleActionDeny  NetworkRuleAction = original.NetworkRuleActionDeny
+	Allow NetworkRuleAction = original.Allow
+	Deny  NetworkRuleAction = original.Deny
 )
 
 type NetworkRuleBypassOptions = original.NetworkRuleBypassOptions
@@ -167,10 +188,10 @@ const (
 type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
 
 const (
-	PrivateEndpointServiceConnectionStatusApproved     PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusApproved
-	PrivateEndpointServiceConnectionStatusDisconnected PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusDisconnected
-	PrivateEndpointServiceConnectionStatusPending      PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusPending
-	PrivateEndpointServiceConnectionStatusRejected     PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusRejected
+	Approved     PrivateEndpointServiceConnectionStatus = original.Approved
+	Disconnected PrivateEndpointServiceConnectionStatus = original.Disconnected
+	Pending      PrivateEndpointServiceConnectionStatus = original.Pending
+	Rejected     PrivateEndpointServiceConnectionStatus = original.Rejected
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -189,15 +210,22 @@ const (
 type PublicNetworkAccess = original.PublicNetworkAccess
 
 const (
-	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
-	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
+	Disabled PublicNetworkAccess = original.Disabled
+	Enabled  PublicNetworkAccess = original.Enabled
 )
 
-type Reason = original.Reason
+type ReasonForKeyVault = original.ReasonForKeyVault
 
 const (
-	ReasonAccountNameInvalid Reason = original.ReasonAccountNameInvalid
-	ReasonAlreadyExists      Reason = original.ReasonAlreadyExists
+	AccountNameInvalid ReasonForKeyVault = original.AccountNameInvalid
+	AlreadyExists      ReasonForKeyVault = original.AlreadyExists
+)
+
+type ReasonForManagedHsm = original.ReasonForManagedHsm
+
+const (
+	ReasonForManagedHsmAccountNameInvalid ReasonForManagedHsm = original.ReasonForManagedHsmAccountNameInvalid
+	ReasonForManagedHsmAlreadyExists      ReasonForManagedHsm = original.ReasonForManagedHsmAlreadyExists
 )
 
 type SecretPermissions = original.SecretPermissions
@@ -217,8 +245,8 @@ const (
 type SkuName = original.SkuName
 
 const (
-	SkuNamePremium  SkuName = original.SkuNamePremium
-	SkuNameStandard SkuName = original.SkuNameStandard
+	Premium  SkuName = original.Premium
+	Standard SkuName = original.Standard
 )
 
 type StoragePermissions = original.StoragePermissions
@@ -244,13 +272,16 @@ const (
 type VaultProvisioningState = original.VaultProvisioningState
 
 const (
-	VaultProvisioningStateRegisteringDNS VaultProvisioningState = original.VaultProvisioningStateRegisteringDNS
-	VaultProvisioningStateSucceeded      VaultProvisioningState = original.VaultProvisioningStateSucceeded
+	RegisteringDNS VaultProvisioningState = original.RegisteringDNS
+	Succeeded      VaultProvisioningState = original.Succeeded
 )
 
 type AccessPolicyEntry = original.AccessPolicyEntry
+type Action = original.Action
 type Attributes = original.Attributes
 type BaseClient = original.BaseClient
+type CheckMhsmNameAvailabilityParameters = original.CheckMhsmNameAvailabilityParameters
+type CheckMhsmNameAvailabilityResult = original.CheckMhsmNameAvailabilityResult
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
@@ -274,7 +305,10 @@ type KeyListResult = original.KeyListResult
 type KeyListResultIterator = original.KeyListResultIterator
 type KeyListResultPage = original.KeyListResultPage
 type KeyProperties = original.KeyProperties
+type KeyReleasePolicy = original.KeyReleasePolicy
+type KeyRotationPolicyAttributes = original.KeyRotationPolicyAttributes
 type KeysClient = original.KeysClient
+type LifetimeAction = original.LifetimeAction
 type LogSpecification = original.LogSpecification
 type MHSMIPRule = original.MHSMIPRule
 type MHSMNetworkRuleSet = original.MHSMNetworkRuleSet
@@ -293,6 +327,7 @@ type MHSMPrivateLinkResourceProperties = original.MHSMPrivateLinkResourcePropert
 type MHSMPrivateLinkResourcesClient = original.MHSMPrivateLinkResourcesClient
 type MHSMPrivateLinkServiceConnectionState = original.MHSMPrivateLinkServiceConnectionState
 type MHSMVirtualNetworkRule = original.MHSMVirtualNetworkRule
+type ManagedHSMSecurityDomainProperties = original.ManagedHSMSecurityDomainProperties
 type ManagedHsm = original.ManagedHsm
 type ManagedHsmError = original.ManagedHsmError
 type ManagedHsmListResult = original.ManagedHsmListResult
@@ -334,6 +369,7 @@ type Resource = original.Resource
 type ResourceListResult = original.ResourceListResult
 type ResourceListResultIterator = original.ResourceListResultIterator
 type ResourceListResultPage = original.ResourceListResultPage
+type RotationPolicy = original.RotationPolicy
 type Secret = original.Secret
 type SecretAttributes = original.SecretAttributes
 type SecretCreateOrUpdateParameters = original.SecretCreateOrUpdateParameters
@@ -347,6 +383,7 @@ type SecretsClient = original.SecretsClient
 type ServiceSpecification = original.ServiceSpecification
 type Sku = original.Sku
 type SystemData = original.SystemData
+type Trigger = original.Trigger
 type Vault = original.Vault
 type VaultAccessPolicyParameters = original.VaultAccessPolicyParameters
 type VaultAccessPolicyProperties = original.VaultAccessPolicyProperties
@@ -489,6 +526,9 @@ func PossibleAccessPolicyUpdateKindValues() []AccessPolicyUpdateKind {
 func PossibleActionsRequiredValues() []ActionsRequired {
 	return original.PossibleActionsRequiredValues()
 }
+func PossibleActivationStatusValues() []ActivationStatus {
+	return original.PossibleActivationStatusValues()
+}
 func PossibleCertificatePermissionsValues() []CertificatePermissions {
 	return original.PossibleCertificatePermissionsValues()
 }
@@ -513,6 +553,9 @@ func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
 func PossibleKeyPermissionsValues() []KeyPermissions {
 	return original.PossibleKeyPermissionsValues()
 }
+func PossibleKeyRotationPolicyActionTypeValues() []KeyRotationPolicyActionType {
+	return original.PossibleKeyRotationPolicyActionTypeValues()
+}
 func PossibleManagedHsmSkuNameValues() []ManagedHsmSkuName {
 	return original.PossibleManagedHsmSkuNameValues()
 }
@@ -534,8 +577,11 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return original.PossiblePublicNetworkAccessValues()
 }
-func PossibleReasonValues() []Reason {
-	return original.PossibleReasonValues()
+func PossibleReasonForKeyVaultValues() []ReasonForKeyVault {
+	return original.PossibleReasonForKeyVaultValues()
+}
+func PossibleReasonForManagedHsmValues() []ReasonForManagedHsm {
+	return original.PossibleReasonForManagedHsmValues()
 }
 func PossibleSecretPermissionsValues() []SecretPermissions {
 	return original.PossibleSecretPermissionsValues()

@@ -156,9 +156,7 @@ func Example_service_Client_RestoreContainer() {
 		}
 		for _, cont := range resp.ContainerItems {
 			if *cont.Deleted {
-				_, err = serviceClient.RestoreContainer(context.TODO(), *cont.Name, &service.RestoreContainerOptions{
-					DeletedContainerVersion: *cont.Version,
-				})
+				_, err = serviceClient.RestoreContainer(context.TODO(), *cont.Name, *cont.Version, nil)
 				handleError(err)
 			}
 		}

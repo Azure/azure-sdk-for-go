@@ -86,7 +86,7 @@ func (o *DeleteOptions) format() (*generated.ContainerClientDeleteOptions, *gene
 
 // RestoreOptions contains the optional parameters for the Client.Restore method.
 type RestoreOptions struct {
-	DeletedContainerVersion string
+	// placeholder for future options
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

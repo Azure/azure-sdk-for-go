@@ -125,9 +125,9 @@ func (s *Client) DeleteContainer(ctx context.Context, containerName string, opti
 
 // RestoreContainer restores soft-deleted container
 // Operation will only be successful if used within the specified number of days set in the delete retention policy
-func (s *Client) RestoreContainer(ctx context.Context, deletedContainerName string, options *RestoreContainerOptions) (RestoreContainerResponse, error) {
+func (s *Client) RestoreContainer(ctx context.Context, deletedContainerName string, deletedContainerVersion string, options *RestoreContainerOptions) (RestoreContainerResponse, error) {
 	containerClient := s.NewContainerClient(deletedContainerName)
-	containerRestoreResp, err := containerClient.Restore(ctx, options)
+	containerRestoreResp, err := containerClient.Restore(ctx, deletedContainerVersion, options)
 	return containerRestoreResp, err
 }
 

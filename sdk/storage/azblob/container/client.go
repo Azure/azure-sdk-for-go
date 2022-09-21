@@ -162,15 +162,15 @@ func (c *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 
 // Restore operation restore the contents and properties of a soft deleted container to a specified container.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/restore-container.
-func (c *Client) Restore(ctx context.Context, options *RestoreOptions) (RestoreResponse, error) {
+func (c *Client) Restore(ctx context.Context, deletedContainerVersion string, options *RestoreOptions) (RestoreResponse, error) {
 	urlParts, err := blob.ParseURL(c.URL())
 	if err != nil {
 		return RestoreResponse{}, err
 	}
 
-	opts := &generated.ContainerClientRestoreOptions{DeletedContainerName: &urlParts.ContainerName}
-	if options != nil {
-		opts.DeletedContainerVersion = &options.DeletedContainerVersion
+	opts := &generated.ContainerClientRestoreOptions{
+		DeletedContainerName:    &urlParts.ContainerName,
+		DeletedContainerVersion: &deletedContainerVersion,
 	}
 	resp, err := c.generated().Restore(ctx, opts)
 

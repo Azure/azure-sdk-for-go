@@ -9,7 +9,10 @@ package service_test
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -600,62 +603,56 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	//_require.Nil(err)
 }
 
-/*func (s *ServiceRecordedTestsSuite) TestUDKServiceClient() {
+func (s *ServiceRecordedTestsSuite) TestUDKServiceClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 
-	clientOptions := azcore.ClientOptions{}
-	optsClientID := azidentity.ManagedIdentityCredentialOptions{ClientOptions: clientOptions, ID: azidentity.ClientID("7cf7db0d-...")}
+	optsClientID := azidentity.ManagedIdentityCredentialOptions{ID: azidentity.ClientID("7cf7db0d-...")}
 	cred, err := azidentity.NewManagedIdentityCredential(&optsClientID)
 	_require.Nil(err)
 
 	svcClient, err := azblob.NewClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, &azblob.ClientOptions{})
+	_require.Nil(err)
 
-	// Set current and past time
+	// Set current and past time, create KeyInfo
 	currentTime := time.Now().UTC().Add(-10 * time.Second)
 	pastTime := currentTime.Add(48 * time.Hour)
-	info := azblob.KeyInfo{
-		Start:  to.Ptr(currentTime.UTC().Format(azblob.SASTimeFormat)),
-		Expiry: to.Ptr(pastTime.UTC().Format(azblob.SASTimeFormat)),
+	_require.Nil(err)
+	info := generated.KeyInfo{
+		Start:  to.Ptr(currentTime.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(pastTime.UTC().Format(sas.TimeFormat)),
 	}
 
-	serviceClient, err := service.NewClientWithUserDelegationCredential(svcClient.URL(), context.Background(), info, nil, nil)
+	// Get UserDelegationCredential
+	udc, err := service.GetUserDelegationCredential(svcClient.URL(), context.Background(), info, nil, nil)
 	_require.Nil(err)
+
+	csas, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		ExpiryTime:    pastTime.UTC(),
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithUDK(udc)
+	_require.Nil(err)
+
+	sasURL := svcClient.URL()
+	if !strings.HasSuffix(sasURL, "/") {
+		sasURL += "/"
+	}
+	sasURL += "?" + csas.Encode()
 
 	containerName := testcommon.GenerateContainerName(testName)
-
-	resources := service.SASResourceTypes{
-		Object:    true,
-		Service:   true,
-		Container: true,
-	}
-	permissions := service.SASPermissions{
-		Read:   true,
-		Add:    true,
-		Write:  true,
-		Create: true,
-		Update: true,
-		Delete: true,
-	}
-	services := service.SASServices{
-		Blob: true,
-	}
-	start := time.Now().Add(-time.Hour)
-	expiry := start.Add(time.Hour)
-
-	sasUrl, err := serviceClient.GetSASURL(resources, permissions, services, start, expiry)
+	sc, err := service.NewClientWithNoCredential(sasURL, nil)
 	_require.Nil(err)
 
-	cl, err := service.NewClientWithUserDelegationCredential(sasUrl, nil, info, nil, nil)
+	_, err = sc.CreateContainer(context.Background(), containerName+"002", nil)
 	_require.Nil(err)
 
-	_, err = cl.CreateContainer(context.Background(), containerName+"002", nil)
+	_, err = sc.DeleteContainer(context.Background(), containerName+"002", nil)
 	_require.Nil(err)
-
-	_, err = cl.DeleteContainer(context.Background(), containerName+"002", nil)
-	_require.Nil(err)
-}*/
+}
 
 /*func (s *ServiceUnrecordedTestsSuite) TestUDKContainerClient() {
 	_require := require.New(s.T())

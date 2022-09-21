@@ -35,9 +35,9 @@ type AccountSignatureValues struct {
 	ResourceTypes string    `param:"srt"` // Create by initializing AccountSASResourceTypes and then call String()
 }
 
-// Sign uses an account's shared key credential to sign this signature values to produce
+// SignWithSharedKey uses an account's shared key credential to sign this signature values to produce
 // the proper SAS query parameters.
-func (v AccountSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (QueryParameters, error) {
+func (v AccountSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCredential) (QueryParameters, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/Constructing-an-Account-SAS
 	if v.ExpiryTime.IsZero() || v.Permissions == "" || v.ResourceTypes == "" || v.Services == "" {
 		return QueryParameters{}, errors.New("account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
@@ -90,8 +90,8 @@ func (v AccountSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (
 	return p, nil
 }
 
-// SignUDK uses an account's UserDelegationKey to sign this signature values to produce the proper SAS query parameters.
-func (v AccountSignatureValues) SignUDK(userDelegationCredential *UserDelegationCredential) (QueryParameters, error) {
+// SignWithUDK uses an account's UserDelegationKey to sign this signature values to produce the proper SAS query parameters.
+func (v AccountSignatureValues) SignWithUDK(userDelegationCredential *UserDelegationCredential) (QueryParameters, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/Constructing-an-Account-SAS
 	if v.ExpiryTime.IsZero() || v.Permissions == "" || v.ResourceTypes == "" || v.Services == "" {
 		return QueryParameters{}, errors.New("account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")

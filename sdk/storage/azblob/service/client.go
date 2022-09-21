@@ -83,9 +83,9 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
 }
 
-// NewClientWithUserDelegationCredential obtains a UserDelegationKey object using the base ServiceURL object.
+// GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceURL object.
 // OAuth is required for this call, as well as any role that can delegate access to the storage account.
-func NewClientWithUserDelegationCredential(serviceURL string, ctx context.Context, info generated.KeyInfo, timeout *int32, requestID *string) (*Client, error) {
+func GetUserDelegationCredential(serviceURL string, ctx context.Context, info generated.KeyInfo, timeout *int32, requestID *string) (*UserDelegationCredential, error) {
 	url, err := blob.ParseURL(serviceURL)
 	if err != nil {
 		return nil, err
@@ -101,7 +101,7 @@ func NewClientWithUserDelegationCredential(serviceURL string, ctx context.Contex
 		return nil, err
 	}
 
-	return (*Client)(base.NewServiceClientUDK(url.Host, pl, nil, &udk.UserDelegationKey)), nil
+	return NewUserDelegationCredential(url.Host, udk.UserDelegationKey), nil
 }
 
 func (s Client) GetUserDelegationKey(ctx context.Context, keyInfo generated.KeyInfo, options *GetUserDelegationKeyOptions) GetUserDelegationKeyResponse {
@@ -115,10 +115,6 @@ func (s *Client) generated() *generated.ServiceClient {
 
 func (s *Client) sharedKey() *SharedKeyCredential {
 	return base.SharedKey((*base.Client[generated.ServiceClient])(s))
-}
-
-func (s *Client) userDelegationKey() *generated.UserDelegationKey {
-	return base.UserDelegationKey((*base.Client[generated.ServiceClient])(s))
 }
 
 // URL returns the URL endpoint used by the Client object.
@@ -258,40 +254,7 @@ func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.A
 		ResourceTypes: resources.String(),
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
-	}.Sign(s.sharedKey())
-	if err != nil {
-		return "", err
-	}
-
-	endpoint := s.URL()
-	if !strings.HasSuffix(endpoint, "/") {
-		endpoint += "/"
-	}
-	endpoint += "?" + qps.Encode()
-
-	return endpoint, nil
-}
-
-// GetUDKSASURL is a convenience method for generating a SAS token for the currently pointed at account.
-// It can only be used if the credential supplied during creation was a UserDelegationKey.
-// This validity can be checked with CanGetAccountSASToken().
-func (s *Client) GetUDKSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, services sas.AccountServices, start time.Time, expiry time.Time) (string, error) {
-	if s.userDelegationKey() == nil {
-		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
-	}
-
-	udc := UserDelegationCredential{
-		Key: *s.userDelegationKey(),
-	}
-	qps, err := sas.AccountSignatureValues{
-		Version:       sas.Version,
-		Protocol:      sas.ProtocolHTTPS,
-		Permissions:   permissions.String(),
-		Services:      services.String(),
-		ResourceTypes: resources.String(),
-		StartTime:     start.UTC(),
-		ExpiryTime:    expiry.UTC(),
-	}.SignUDK(&udc)
+	}.SignWithSharedKey(s.sharedKey())
 	if err != nil {
 		return "", err
 	}

@@ -9,7 +9,6 @@ package container
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"net/http"
 	"strings"
 	"time"
@@ -91,9 +90,9 @@ func (c *Client) sharedKey() *SharedKeyCredential {
 	return base.SharedKey((*base.Client[generated.ContainerClient])(c))
 }
 
-func (c *Client) userDelegationKey() *UserDelegationKey {
+/*func (c *Client) userDelegationKey() *UserDelegationKey {
 	return base.UserDelegationKey((*base.Client[generated.ContainerClient])(c))
-}
+}*/
 
 // URL returns the URL endpoint used by the Client object.
 func (c *Client) URL() string {
@@ -300,46 +299,7 @@ func (c *Client) GetSASURL(permissions sas.ContainerPermissions, start time.Time
 		Permissions:   permissions.String(),
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
-	}.Sign(c.sharedKey())
-	if err != nil {
-		return "", err
-	}
-
-	endpoint := c.URL()
-	if !strings.HasSuffix(endpoint, "/") {
-		endpoint += "/"
-	}
-	endpoint += "?" + qps.Encode()
-
-	return endpoint, nil
-}
-
-// GetUDKSASURL is a convenience method for generating a SAS token for the currently pointed at container.
-// It can only be used if the credential supplied during creation was a UserDelegationKey.
-func (c *Client) GetUDKSASURL(permissions sas.ContainerPermissions, start time.Time, expiry time.Time) (string, error) {
-	if c.userDelegationKey() == nil {
-		return "", errors.New("GetUDKSASURL can only be signed with a UserDelegationKey")
-	}
-
-	urlParts, err := blob.ParseURL(c.URL())
-	if err != nil {
-		return "", err
-	}
-
-	udc := azblob.UserDelegationCredential{
-		Name: urlParts.Host,
-		Key:  *c.userDelegationKey(),
-	}
-
-	// Containers do not have snapshots, nor versions.
-	qps, err := sas.BlobSignatureValues{
-		Version:       sas.Version,
-		Protocol:      sas.ProtocolHTTPS,
-		ContainerName: urlParts.ContainerName,
-		Permissions:   permissions.String(),
-		StartTime:     start.UTC(),
-		ExpiryTime:    expiry.UTC(),
-	}.SignUDK(&udc)
+	}.SignWithSharedKey(c.sharedKey())
 	if err != nil {
 		return "", err
 	}

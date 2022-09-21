@@ -114,7 +114,7 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
 		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
-	}.Sign(credential)
+	}.SignWithSharedKey(credential)
 	_require.Nil(err)
 
 	parts, err := blob.ParseURL(bbClient.URL())
@@ -156,7 +156,7 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSASUsingCo
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
 		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
-	}.Sign(credential)
+	}.SignWithSharedKey(credential)
 	_require.Nil(err)
 
 	parts, err := blob.ParseURL(bbClient.URL())

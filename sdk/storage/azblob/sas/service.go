@@ -47,8 +47,8 @@ func getDirectoryDepth(path string) string {
 	return fmt.Sprint(strings.Count(path, "/") + 1)
 }
 
-// Sign uses an account's SharedKeyCredential to sign this signature values to produce the proper SAS query parameters.
-func (v BlobSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (QueryParameters, error) {
+// SignWithSharedKey uses an account's SharedKeyCredential to sign this signature values to produce the proper SAS query parameters.
+func (v BlobSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCredential) (QueryParameters, error) {
 	if sharedKeyCredential == nil {
 		return QueryParameters{}, fmt.Errorf("cannot sign SAS query without Shared Key Credential")
 	}
@@ -134,8 +134,8 @@ func (v BlobSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (Que
 	return p, nil
 }
 
-// SignUDK uses an account's UserDelegationCredential to sign this signature values to produce the proper SAS query parameters.
-func (v BlobSignatureValues) SignUDK(userDelegationCredential *UserDelegationCredential) (QueryParameters, error) {
+// SignWithUDK uses an account's UserDelegationCredential to sign this signature values to produce the proper SAS query parameters.
+func (v BlobSignatureValues) SignWithUDK(userDelegationCredential *UserDelegationCredential) (QueryParameters, error) {
 	if userDelegationCredential == nil {
 		return QueryParameters{}, fmt.Errorf("cannot sign SAS query without User Delegation Key")
 	}

@@ -235,7 +235,7 @@ func Example_service_SASSignatureValues_Sign() {
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
 		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
-	}.Sign(credential)
+	}.SignWithSharedKey(credential)
 	handleError(err)
 
 	sasURL := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, sasQueryParams.Encode())
@@ -269,11 +269,11 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 	currentTime := time.Now().UTC().Add(-10 * time.Second)
 	pastTime := currentTime.Add(48 * time.Hour)
 	info := generated.KeyInfo{
-		Start:  to.Ptr(currentTime.UTC().Format(azblob.SASTimeFormat)),
-		Expiry: to.Ptr(pastTime.UTC().Format(azblob.SASTimeFormat)),
+		Start:  to.Ptr(currentTime.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(pastTime.UTC().Format(sas.TimeFormat)),
 	}
 
-	_, err = service.NewClientWithUserDelegationCredential(svcClient.URL(), context.Background(), info, nil, nil)
+	_, err = service.GetUserDelegationCredential(svcClient.URL(), context.Background(), info, nil, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -288,7 +288,7 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 
 	svcClient, err = azblob.NewClient("svcURL", cred, &clientOptionsAzBlob)
 
-	_, err = service.NewClientWithUserDelegationCredential(svcClient.URL(), context.Background(), info, nil, nil)
+	_, err = service.GetUserDelegationCredential(svcClient.URL(), context.Background(), info, nil, nil)
 	if err != nil {
 		log.Fatal(err)
 	}

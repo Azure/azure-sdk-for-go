@@ -14,10 +14,10 @@ import (
 )
 
 // NewUserDelegationCredential creates a new UserDelegationCredential using a Storage account's Name and a user delegation Key from it
-func NewUserDelegationCredential(accountName string, key generated.UserDelegationKey) *UserDelegationCredential {
+func NewUserDelegationCredential(accountName string, udk generated.UserDelegationKey) *UserDelegationCredential {
 	return &UserDelegationCredential{
 		Name: accountName,
-		Key:  key,
+		Key:  udk,
 	}
 }
 

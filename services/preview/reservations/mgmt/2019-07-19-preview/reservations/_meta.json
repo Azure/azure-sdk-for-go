@@ -1,10 +1,10 @@
 {
-  "commit": "3c764635e7d442b3e74caf593029fcd440b3ef82",
+  "commit": "3b374bd103430271a459ce5621d455304e5fae88",
   "readme": "/_/azure-rest-api-specs/specification/reservations/resource-manager/readme.md",
   "tag": "package-preview-2019-07-19",
-  "use": "@microsoft.azure/autorest.go@2.1.187",
+  "use": "@microsoft.azure/autorest.go@2.1.188",
   "repository_url": "https://github.com/Azure/azure-rest-api-specs.git",
-  "autorest_command": "autorest --use=@microsoft.azure/autorest.go@2.1.187 --tag=package-preview-2019-07-19 --go-sdk-folder=/_/azure-sdk-for-go --go --verbose --use-onever --version=2.0.4421 --go.license-header=MICROSOFT_MIT_NO_VERSION /_/azure-rest-api-specs/specification/reservations/resource-manager/readme.md",
+  "autorest_command": "autorest --use=@microsoft.azure/autorest.go@2.1.188 --tag=package-preview-2019-07-19 --go-sdk-folder=/_/azure-sdk-for-go --go --verbose --use-onever --version=2.0.4421 --go.license-header=MICROSOFT_MIT_NO_VERSION /_/azure-rest-api-specs/specification/reservations/resource-manager/readme.md",
   "additional_properties": {
     "additional_options": "--go --verbose --use-onever --version=2.0.4421 --go.license-header=MICROSOFT_MIT_NO_VERSION"
   }

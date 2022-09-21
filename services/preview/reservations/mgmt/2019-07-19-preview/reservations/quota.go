@@ -32,11 +32,8 @@ func NewQuotaClientWithBaseURI(baseURI string) QuotaClient {
 
 // CreateOrUpdate create or update the service limits (quota) of a resource to requested value.
 // Steps:
-//
 // 1. Make the Get request to get the quota information for specific resource.
-//
 // 2. To increase the quota, update the limit field in the response from Get request to new value.
-//
 // 3. Submit the JSON to the quota request API to update the quota.
 // The Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
 // Parameters:
@@ -327,11 +324,8 @@ func (client QuotaClient) ListComplete(ctx context.Context, subscriptionID strin
 
 // Update update the service limits (quota) of a resource to requested value.
 // Steps:
-//
 // 1. Make the Get request to get the quota information for specific resource.
-//
 // 2. To increase the quota, update the limit field in the response from Get request to new value.
-//
 // 3. Submit the JSON to the quota request API to update the quota.
 // The Update quota request may be constructed as follows. The PATCH operation can be used to update the quota.
 // Parameters:

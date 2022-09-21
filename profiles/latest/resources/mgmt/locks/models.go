@@ -12,7 +12,7 @@ package locks
 import (
 	"context"
 
-	original "github.com/Azure/dev/azure-sdk-for-go/services/resources/mgmt/2016-09-01/locks"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/resources/mgmt/2017-04-01/locks"
 )
 
 const (
@@ -29,6 +29,9 @@ const (
 
 type AuthorizationOperationsClient = original.AuthorizationOperationsClient
 type BaseClient = original.BaseClient
+type ErrorAdditionalInfo = original.ErrorAdditionalInfo
+type ErrorDetail = original.ErrorDetail
+type ErrorResponse = original.ErrorResponse
 type ManagementLockListResult = original.ManagementLockListResult
 type ManagementLockListResultIterator = original.ManagementLockListResultIterator
 type ManagementLockListResultPage = original.ManagementLockListResultPage

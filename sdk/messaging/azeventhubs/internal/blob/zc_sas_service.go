@@ -47,7 +47,6 @@ func getDirectoryDepth(path string) string {
 
 // NewSASQueryParameters uses an account's StorageAccountCredential to sign this signature values to produce
 // the proper SAS query parameters.
-
 // See: StorageAccountCredential. Compatible with both UserDelegationCredential and SharedKeyCredential
 func (v BlobSASSignatureValues) NewSASQueryParameters(sharedKeyCredential *SharedKeyCredential) (SASQueryParameters, error) {
 	resource := "c"

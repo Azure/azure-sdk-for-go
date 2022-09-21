@@ -28,6 +28,7 @@ type AccountSASSignatureValues struct {
 }
 
 // Sign uses an account's shared key credential to sign this signature values to produce
+// the proper SAS query parameters.
 func (v AccountSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (SASQueryParameters, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/Constructing-an-Account-SAS
 	if v.ExpiryTime.IsZero() || v.Permissions == "" || v.ResourceTypes == "" || v.Services == "" {

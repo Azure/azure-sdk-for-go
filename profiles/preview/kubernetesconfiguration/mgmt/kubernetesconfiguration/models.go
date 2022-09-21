@@ -12,7 +12,7 @@ package kubernetesconfiguration
 import (
 	"context"
 
-	original "github.com/Azure/dev/azure-sdk-for-go/services/kubernetesconfiguration/mgmt/2022-03-01/kubernetesconfiguration"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/kubernetesconfiguration/mgmt/2022-07-01/kubernetesconfiguration"
 )
 
 const (
@@ -22,27 +22,27 @@ const (
 type AKSIdentityType = original.AKSIdentityType
 
 const (
-	AKSIdentityTypeSystemAssigned AKSIdentityType = original.AKSIdentityTypeSystemAssigned
-	AKSIdentityTypeUserAssigned   AKSIdentityType = original.AKSIdentityTypeUserAssigned
+	SystemAssigned AKSIdentityType = original.SystemAssigned
+	UserAssigned   AKSIdentityType = original.UserAssigned
 )
 
 type ComplianceStateType = original.ComplianceStateType
 
 const (
-	ComplianceStateTypeCompliant    ComplianceStateType = original.ComplianceStateTypeCompliant
-	ComplianceStateTypeFailed       ComplianceStateType = original.ComplianceStateTypeFailed
-	ComplianceStateTypeInstalled    ComplianceStateType = original.ComplianceStateTypeInstalled
-	ComplianceStateTypeNoncompliant ComplianceStateType = original.ComplianceStateTypeNoncompliant
-	ComplianceStateTypePending      ComplianceStateType = original.ComplianceStateTypePending
+	Compliant    ComplianceStateType = original.Compliant
+	Failed       ComplianceStateType = original.Failed
+	Installed    ComplianceStateType = original.Installed
+	Noncompliant ComplianceStateType = original.Noncompliant
+	Pending      ComplianceStateType = original.Pending
 )
 
 type CreatedByType = original.CreatedByType
 
 const (
-	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
-	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
-	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
-	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+	Application     CreatedByType = original.Application
+	Key             CreatedByType = original.Key
+	ManagedIdentity CreatedByType = original.ManagedIdentity
+	User            CreatedByType = original.User
 )
 
 type FluxComplianceState = original.FluxComplianceState
@@ -58,17 +58,17 @@ const (
 type KustomizationValidationType = original.KustomizationValidationType
 
 const (
-	KustomizationValidationTypeClient KustomizationValidationType = original.KustomizationValidationTypeClient
-	KustomizationValidationTypeNone   KustomizationValidationType = original.KustomizationValidationTypeNone
-	KustomizationValidationTypeServer KustomizationValidationType = original.KustomizationValidationTypeServer
+	Client KustomizationValidationType = original.Client
+	None   KustomizationValidationType = original.None
+	Server KustomizationValidationType = original.Server
 )
 
 type LevelType = original.LevelType
 
 const (
-	LevelTypeError       LevelType = original.LevelTypeError
-	LevelTypeInformation LevelType = original.LevelTypeInformation
-	LevelTypeWarning     LevelType = original.LevelTypeWarning
+	Error       LevelType = original.Error
+	Information LevelType = original.Information
+	Warning     LevelType = original.Warning
 )
 
 type MessageLevelType = original.MessageLevelType
@@ -82,14 +82,14 @@ const (
 type OperatorScopeType = original.OperatorScopeType
 
 const (
-	OperatorScopeTypeCluster   OperatorScopeType = original.OperatorScopeTypeCluster
-	OperatorScopeTypeNamespace OperatorScopeType = original.OperatorScopeTypeNamespace
+	Cluster   OperatorScopeType = original.Cluster
+	Namespace OperatorScopeType = original.Namespace
 )
 
 type OperatorType = original.OperatorType
 
 const (
-	OperatorTypeFlux OperatorType = original.OperatorTypeFlux
+	Flux OperatorType = original.Flux
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -129,19 +129,22 @@ const (
 type SkuTier = original.SkuTier
 
 const (
-	SkuTierBasic    SkuTier = original.SkuTierBasic
-	SkuTierFree     SkuTier = original.SkuTierFree
-	SkuTierPremium  SkuTier = original.SkuTierPremium
-	SkuTierStandard SkuTier = original.SkuTierStandard
+	Basic    SkuTier = original.Basic
+	Free     SkuTier = original.Free
+	Premium  SkuTier = original.Premium
+	Standard SkuTier = original.Standard
 )
 
 type SourceKindType = original.SourceKindType
 
 const (
-	SourceKindTypeBucket        SourceKindType = original.SourceKindTypeBucket
-	SourceKindTypeGitRepository SourceKindType = original.SourceKindTypeGitRepository
+	AzureBlob     SourceKindType = original.AzureBlob
+	Bucket        SourceKindType = original.Bucket
+	GitRepository SourceKindType = original.GitRepository
 )
 
+type AzureBlobDefinition = original.AzureBlobDefinition
+type AzureBlobPatchDefinition = original.AzureBlobPatchDefinition
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type BucketDefinition = original.BucketDefinition
@@ -180,6 +183,8 @@ type HelmReleasePropertiesDefinition = original.HelmReleasePropertiesDefinition
 type Identity = original.Identity
 type KustomizationDefinition = original.KustomizationDefinition
 type KustomizationPatchDefinition = original.KustomizationPatchDefinition
+type ManagedIdentityDefinition = original.ManagedIdentityDefinition
+type ManagedIdentityPatchDefinition = original.ManagedIdentityPatchDefinition
 type ObjectReferenceDefinition = original.ObjectReferenceDefinition
 type ObjectStatusConditionDefinition = original.ObjectStatusConditionDefinition
 type ObjectStatusDefinition = original.ObjectStatusDefinition
@@ -207,6 +212,8 @@ type ResourceProviderOperationListPage = original.ResourceProviderOperationListP
 type Scope = original.Scope
 type ScopeCluster = original.ScopeCluster
 type ScopeNamespace = original.ScopeNamespace
+type ServicePrincipalDefinition = original.ServicePrincipalDefinition
+type ServicePrincipalPatchDefinition = original.ServicePrincipalPatchDefinition
 type Sku = original.Sku
 type SourceControlConfiguration = original.SourceControlConfiguration
 type SourceControlConfigurationList = original.SourceControlConfigurationList

@@ -9,6 +9,7 @@ package reservationsapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2022-03-01/reservations"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // BaseClientAPI contains the set of methods on the BaseClient type.
@@ -21,6 +22,7 @@ var _ BaseClientAPI = (*reservations.BaseClient)(nil)
 
 // ClientAPI contains the set of methods on the Client type.
 type ClientAPI interface {
+	Archive(ctx context.Context, reservationOrderID string, reservationID string) (result autorest.Response, err error)
 	AvailableScopes(ctx context.Context, reservationOrderID string, reservationID string, body reservations.AvailableScopeRequest) (result reservations.ReservationAvailableScopesFuture, err error)
 	Get(ctx context.Context, reservationID string, reservationOrderID string, expand string) (result reservations.Response, err error)
 	List(ctx context.Context, reservationOrderID string) (result reservations.ListPage, err error)
@@ -31,6 +33,7 @@ type ClientAPI interface {
 	ListRevisionsComplete(ctx context.Context, reservationID string, reservationOrderID string) (result reservations.ListIterator, err error)
 	Merge(ctx context.Context, reservationOrderID string, body reservations.MergeRequest) (result reservations.ReservationMergeFuture, err error)
 	Split(ctx context.Context, reservationOrderID string, body reservations.SplitRequest) (result reservations.SplitFuture, err error)
+	Unarchive(ctx context.Context, reservationOrderID string, reservationID string) (result autorest.Response, err error)
 	Update(ctx context.Context, reservationOrderID string, reservationID string, parameters reservations.Patch) (result reservations.ReservationUpdateFuture, err error)
 }
 
@@ -55,6 +58,20 @@ type OperationClientAPI interface {
 }
 
 var _ OperationClientAPI = (*reservations.OperationClient)(nil)
+
+// CalculateRefundClientAPI contains the set of methods on the CalculateRefundClient type.
+type CalculateRefundClientAPI interface {
+	Post(ctx context.Context, reservationOrderID string, body reservations.CalculateRefundRequest) (result reservations.CalculateRefundResponse, err error)
+}
+
+var _ CalculateRefundClientAPI = (*reservations.CalculateRefundClient)(nil)
+
+// ReturnClientAPI contains the set of methods on the ReturnClient type.
+type ReturnClientAPI interface {
+	Post(ctx context.Context, reservationOrderID string, body reservations.RefundRequest) (result reservations.RefundResponse, err error)
+}
+
+var _ ReturnClientAPI = (*reservations.ReturnClient)(nil)
 
 // CalculateExchangeClientAPI contains the set of methods on the CalculateExchangeClient type.
 type CalculateExchangeClientAPI interface {

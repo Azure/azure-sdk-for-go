@@ -12,7 +12,7 @@ package managedapplications
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/solutions/mgmt/2018-06-01/managedapplications"
+	original "github.com/Azure/azure-sdk-for-go/services/solutions/mgmt/2019-07-01/managedapplications"
 )
 
 const (
@@ -51,6 +51,22 @@ const (
 	CanNotDelete ApplicationLockLevel = original.CanNotDelete
 	None         ApplicationLockLevel = original.None
 	ReadOnly     ApplicationLockLevel = original.ReadOnly
+)
+
+type ApplicationManagementMode = original.ApplicationManagementMode
+
+const (
+	ApplicationManagementModeManaged      ApplicationManagementMode = original.ApplicationManagementModeManaged
+	ApplicationManagementModeNotSpecified ApplicationManagementMode = original.ApplicationManagementModeNotSpecified
+	ApplicationManagementModeUnmanaged    ApplicationManagementMode = original.ApplicationManagementModeUnmanaged
+)
+
+type DeploymentMode = original.DeploymentMode
+
+const (
+	DeploymentModeComplete     DeploymentMode = original.DeploymentModeComplete
+	DeploymentModeIncremental  DeploymentMode = original.DeploymentModeIncremental
+	DeploymentModeNotSpecified DeploymentMode = original.DeploymentModeNotSpecified
 )
 
 type JitApprovalMode = original.JitApprovalMode
@@ -134,6 +150,7 @@ const (
 	SubstatusTimeout      Substatus = original.SubstatusTimeout
 )
 
+type AllowedUpgradePlansResult = original.AllowedUpgradePlansResult
 type Application = original.Application
 type ApplicationArtifact = original.ApplicationArtifact
 type ApplicationAuthorization = original.ApplicationAuthorization
@@ -147,10 +164,12 @@ type ApplicationDefinitionListResultPage = original.ApplicationDefinitionListRes
 type ApplicationDefinitionPatchable = original.ApplicationDefinitionPatchable
 type ApplicationDefinitionProperties = original.ApplicationDefinitionProperties
 type ApplicationDefinitionsClient = original.ApplicationDefinitionsClient
+type ApplicationDeploymentPolicy = original.ApplicationDeploymentPolicy
 type ApplicationJitAccessPolicy = original.ApplicationJitAccessPolicy
 type ApplicationListResult = original.ApplicationListResult
 type ApplicationListResultIterator = original.ApplicationListResultIterator
 type ApplicationListResultPage = original.ApplicationListResultPage
+type ApplicationManagementPolicy = original.ApplicationManagementPolicy
 type ApplicationNotificationEndpoint = original.ApplicationNotificationEndpoint
 type ApplicationNotificationPolicy = original.ApplicationNotificationPolicy
 type ApplicationPackageContact = original.ApplicationPackageContact
@@ -253,6 +272,12 @@ func PossibleApplicationDefinitionArtifactNameValues() []ApplicationDefinitionAr
 }
 func PossibleApplicationLockLevelValues() []ApplicationLockLevel {
 	return original.PossibleApplicationLockLevelValues()
+}
+func PossibleApplicationManagementModeValues() []ApplicationManagementMode {
+	return original.PossibleApplicationManagementModeValues()
+}
+func PossibleDeploymentModeValues() []DeploymentMode {
+	return original.PossibleDeploymentModeValues()
 }
 func PossibleJitApprovalModeValues() []JitApprovalMode {
 	return original.PossibleJitApprovalModeValues()

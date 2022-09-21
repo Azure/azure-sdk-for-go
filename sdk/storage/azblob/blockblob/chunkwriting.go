@@ -181,14 +181,20 @@ func (c *copier) write(chunk copierChunk) {
 	stageBlockOptions := c.o.getStageBlockOptions()
 	_, err := c.to.StageBlock(c.ctx, chunk.id, shared.NopCloser(bytes.NewReader(chunk.buffer[:chunk.length])), stageBlockOptions)
 	if err != nil {
-		c.errCh <- fmt.Errorf("write error: %w", err)
-		return
+		select {
+		case c.errCh <- err:
+			// failed to stage block, cancel the copy
+		default:
+			// don't block the goroutine if there's a pending error
+		}
 	}
 }
 
 // close commits our blocks to blob storage and closes our writer.
 func (c *copier) close() error {
-	if err := c.waitForFinish(); err != nil {
+	c.wg.Wait()
+
+	if err := c.getErr(); err != nil {
 		return err
 	}
 
@@ -196,44 +202,6 @@ func (c *copier) close() error {
 	commitBlockListOptions := c.o.getCommitBlockListOptions()
 	c.result, err = c.to.CommitBlockList(c.ctx, c.id.issued(), commitBlockListOptions)
 	return err
-}
-
-// waitForFinish waits for all writes to complete while combining errors from errCh
-func (c *copier) waitForFinish() error {
-	var err error
-	done := make(chan struct{})
-	go func() {
-		// when write latencies are long, several errors might have occurred
-		// drain them all as we wait for writes to complete.
-		err = c.drainErrs(done)
-	}()
-
-	c.wg.Wait()
-	close(done)
-	return err
-}
-
-// drainErrs drains all outstanding errors from writes
-func (c *copier) drainErrs(done chan struct{}) error {
-	var err error
-	for {
-		select {
-		case <-done:
-			return err
-		default:
-			if writeErr := c.getErr(); writeErr != nil {
-				err = combineErrs(err, writeErr)
-			}
-		}
-	}
-}
-
-// combineErrs combines err with newErr so multiple errors can be represented
-func combineErrs(err, newErr error) error {
-	if err == nil {
-		return newErr
-	}
-	return fmt.Errorf("%s, %w", err.Error(), newErr)
 }
 
 // id allows the creation of unique IDs based on UUID4 + an int32. This auto-increments.

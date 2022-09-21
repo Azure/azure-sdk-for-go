@@ -9,8 +9,9 @@
 
 package managedapplicationsapi
 
-import original "github.com/Azure/dev/azure-sdk-for-go/services/solutions/mgmt/2017-09-01/managedapplications/managedapplicationsapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/solutions/mgmt/2018-03-01/managedapplications/managedapplicationsapi"
 
 type ApplicationDefinitionsClientAPI = original.ApplicationDefinitionsClientAPI
 type ApplicationsClientAPI = original.ApplicationsClientAPI
 type BaseClientAPI = original.BaseClientAPI
+type JitRequestsClientAPI = original.JitRequestsClientAPI

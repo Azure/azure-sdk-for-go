@@ -12,7 +12,7 @@ package documentdb
 import (
 	"context"
 
-	original "github.com/Azure/dev/azure-sdk-for-go/services/cosmos-db/mgmt/2022-05-15/documentdb"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/cosmos-db/mgmt/2022-08-15/documentdb"
 )
 
 const (
@@ -193,6 +193,13 @@ const (
 	ManagedCassandraResourceIdentityTypeSystemAssigned ManagedCassandraResourceIdentityType = original.ManagedCassandraResourceIdentityTypeSystemAssigned
 )
 
+type MongoRoleDefinitionType = original.MongoRoleDefinitionType
+
+const (
+	BuiltInRole MongoRoleDefinitionType = original.BuiltInRole
+	CustomRole  MongoRoleDefinitionType = original.CustomRole
+)
+
 type NetworkACLBypass = original.NetworkACLBypass
 
 const (
@@ -270,8 +277,8 @@ const (
 type RoleDefinitionType = original.RoleDefinitionType
 
 const (
-	BuiltInRole RoleDefinitionType = original.BuiltInRole
-	CustomRole  RoleDefinitionType = original.CustomRole
+	RoleDefinitionTypeBuiltInRole RoleDefinitionType = original.RoleDefinitionTypeBuiltInRole
+	RoleDefinitionTypeCustomRole  RoleDefinitionType = original.RoleDefinitionTypeCustomRole
 )
 
 type ServerVersion = original.ServerVersion
@@ -370,6 +377,7 @@ const (
 type APIProperties = original.APIProperties
 type ARMProxyResource = original.ARMProxyResource
 type ARMResourceProperties = original.ARMResourceProperties
+type AccountKeyMetadata = original.AccountKeyMetadata
 type AnalyticalStorageConfiguration = original.AnalyticalStorageConfiguration
 type AutoUpgradePolicyResource = original.AutoUpgradePolicyResource
 type AutoscaleSettings = original.AutoscaleSettings
@@ -458,6 +466,7 @@ type DatabaseAccountCreateUpdateParameters = original.DatabaseAccountCreateUpdat
 type DatabaseAccountCreateUpdateProperties = original.DatabaseAccountCreateUpdateProperties
 type DatabaseAccountGetProperties = original.DatabaseAccountGetProperties
 type DatabaseAccountGetResults = original.DatabaseAccountGetResults
+type DatabaseAccountKeysMetadata = original.DatabaseAccountKeysMetadata
 type DatabaseAccountListConnectionStringsResult = original.DatabaseAccountListConnectionStringsResult
 type DatabaseAccountListKeysResult = original.DatabaseAccountListKeysResult
 type DatabaseAccountListReadOnlyKeysResult = original.DatabaseAccountListReadOnlyKeysResult
@@ -556,8 +565,12 @@ type MongoDBDatabaseResource = original.MongoDBDatabaseResource
 type MongoDBResourcesClient = original.MongoDBResourcesClient
 type MongoDBResourcesCreateUpdateMongoDBCollectionFuture = original.MongoDBResourcesCreateUpdateMongoDBCollectionFuture
 type MongoDBResourcesCreateUpdateMongoDBDatabaseFuture = original.MongoDBResourcesCreateUpdateMongoDBDatabaseFuture
+type MongoDBResourcesCreateUpdateMongoRoleDefinitionFuture = original.MongoDBResourcesCreateUpdateMongoRoleDefinitionFuture
+type MongoDBResourcesCreateUpdateMongoUserDefinitionFuture = original.MongoDBResourcesCreateUpdateMongoUserDefinitionFuture
 type MongoDBResourcesDeleteMongoDBCollectionFuture = original.MongoDBResourcesDeleteMongoDBCollectionFuture
 type MongoDBResourcesDeleteMongoDBDatabaseFuture = original.MongoDBResourcesDeleteMongoDBDatabaseFuture
+type MongoDBResourcesDeleteMongoRoleDefinitionFuture = original.MongoDBResourcesDeleteMongoRoleDefinitionFuture
+type MongoDBResourcesDeleteMongoUserDefinitionFuture = original.MongoDBResourcesDeleteMongoUserDefinitionFuture
 type MongoDBResourcesMigrateMongoDBCollectionToAutoscaleFuture = original.MongoDBResourcesMigrateMongoDBCollectionToAutoscaleFuture
 type MongoDBResourcesMigrateMongoDBCollectionToManualThroughputFuture = original.MongoDBResourcesMigrateMongoDBCollectionToManualThroughputFuture
 type MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleFuture = original.MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleFuture
@@ -568,6 +581,14 @@ type MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture = original.MongoDBRes
 type MongoIndex = original.MongoIndex
 type MongoIndexKeys = original.MongoIndexKeys
 type MongoIndexOptions = original.MongoIndexOptions
+type MongoRoleDefinitionCreateUpdateParameters = original.MongoRoleDefinitionCreateUpdateParameters
+type MongoRoleDefinitionGetResults = original.MongoRoleDefinitionGetResults
+type MongoRoleDefinitionListResult = original.MongoRoleDefinitionListResult
+type MongoRoleDefinitionResource = original.MongoRoleDefinitionResource
+type MongoUserDefinitionCreateUpdateParameters = original.MongoUserDefinitionCreateUpdateParameters
+type MongoUserDefinitionGetResults = original.MongoUserDefinitionGetResults
+type MongoUserDefinitionListResult = original.MongoUserDefinitionListResult
+type MongoUserDefinitionResource = original.MongoUserDefinitionResource
 type NotebookWorkspace = original.NotebookWorkspace
 type NotebookWorkspaceConnectionInfoResult = original.NotebookWorkspaceConnectionInfoResult
 type NotebookWorkspaceCreateUpdateParameters = original.NotebookWorkspaceCreateUpdateParameters
@@ -612,6 +633,8 @@ type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
 type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
 type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkServiceConnectionStateProperty = original.PrivateLinkServiceConnectionStateProperty
+type Privilege = original.Privilege
+type PrivilegeResource = original.PrivilegeResource
 type ProxyResource = original.ProxyResource
 type RegionForOnlineOffline = original.RegionForOnlineOffline
 type RegionalServiceResource = original.RegionalServiceResource
@@ -650,6 +673,7 @@ type RestorableSQLResourcesClient = original.RestorableSQLResourcesClient
 type RestorableSQLResourcesGetResult = original.RestorableSQLResourcesGetResult
 type RestorableSQLResourcesListResult = original.RestorableSQLResourcesListResult
 type RestoreParameters = original.RestoreParameters
+type Role = original.Role
 type SQLContainerCreateUpdateParameters = original.SQLContainerCreateUpdateParameters
 type SQLContainerCreateUpdateProperties = original.SQLContainerCreateUpdateProperties
 type SQLContainerGetProperties = original.SQLContainerGetProperties
@@ -1025,6 +1049,9 @@ func PossibleManagedCassandraProvisioningStateValues() []ManagedCassandraProvisi
 }
 func PossibleManagedCassandraResourceIdentityTypeValues() []ManagedCassandraResourceIdentityType {
 	return original.PossibleManagedCassandraResourceIdentityTypeValues()
+}
+func PossibleMongoRoleDefinitionTypeValues() []MongoRoleDefinitionType {
+	return original.PossibleMongoRoleDefinitionTypeValues()
 }
 func PossibleNetworkACLBypassValues() []NetworkACLBypass {
 	return original.PossibleNetworkACLBypassValues()

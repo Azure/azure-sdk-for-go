@@ -9,7 +9,7 @@
 
 package documentdbapi
 
-import original "github.com/Azure/dev/azure-sdk-for-go/services/cosmos-db/mgmt/2022-05-15/documentdb/documentdbapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cosmos-db/mgmt/2022-08-15/documentdb/documentdbapi"
 
 type CassandraClustersClientAPI = original.CassandraClustersClientAPI
 type CassandraDataCentersClientAPI = original.CassandraDataCentersClientAPI

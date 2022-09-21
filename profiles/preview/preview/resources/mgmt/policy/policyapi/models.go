@@ -16,3 +16,5 @@ type DataPolicyManifestsClientAPI = original.DataPolicyManifestsClientAPI
 type DefinitionsClientAPI = original.DefinitionsClientAPI
 type ExemptionsClientAPI = original.ExemptionsClientAPI
 type SetDefinitionsClientAPI = original.SetDefinitionsClientAPI
+type VariableValuesClientAPI = original.VariableValuesClientAPI
+type VariablesClientAPI = original.VariablesClientAPI

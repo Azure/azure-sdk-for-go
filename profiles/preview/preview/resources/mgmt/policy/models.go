@@ -158,6 +158,20 @@ type SetDefinitionListResultPage = original.SetDefinitionListResultPage
 type SetDefinitionProperties = original.SetDefinitionProperties
 type SetDefinitionsClient = original.SetDefinitionsClient
 type SystemData = original.SystemData
+type Variable = original.Variable
+type VariableColumn = original.VariableColumn
+type VariableListResult = original.VariableListResult
+type VariableListResultIterator = original.VariableListResultIterator
+type VariableListResultPage = original.VariableListResultPage
+type VariableProperties = original.VariableProperties
+type VariableValue = original.VariableValue
+type VariableValueColumnValue = original.VariableValueColumnValue
+type VariableValueListResult = original.VariableValueListResult
+type VariableValueListResultIterator = original.VariableValueListResultIterator
+type VariableValueListResultPage = original.VariableValueListResultPage
+type VariableValueProperties = original.VariableValueProperties
+type VariableValuesClient = original.VariableValuesClient
+type VariablesClient = original.VariablesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -221,6 +235,30 @@ func NewSetDefinitionsClient(subscriptionID string) SetDefinitionsClient {
 }
 func NewSetDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) SetDefinitionsClient {
 	return original.NewSetDefinitionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVariableListResultIterator(page VariableListResultPage) VariableListResultIterator {
+	return original.NewVariableListResultIterator(page)
+}
+func NewVariableListResultPage(cur VariableListResult, getNextPage func(context.Context, VariableListResult) (VariableListResult, error)) VariableListResultPage {
+	return original.NewVariableListResultPage(cur, getNextPage)
+}
+func NewVariableValueListResultIterator(page VariableValueListResultPage) VariableValueListResultIterator {
+	return original.NewVariableValueListResultIterator(page)
+}
+func NewVariableValueListResultPage(cur VariableValueListResult, getNextPage func(context.Context, VariableValueListResult) (VariableValueListResult, error)) VariableValueListResultPage {
+	return original.NewVariableValueListResultPage(cur, getNextPage)
+}
+func NewVariableValuesClient(subscriptionID string) VariableValuesClient {
+	return original.NewVariableValuesClient(subscriptionID)
+}
+func NewVariableValuesClientWithBaseURI(baseURI string, subscriptionID string) VariableValuesClient {
+	return original.NewVariableValuesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVariablesClient(subscriptionID string) VariablesClient {
+	return original.NewVariablesClient(subscriptionID)
+}
+func NewVariablesClientWithBaseURI(baseURI string, subscriptionID string) VariablesClient {
+	return original.NewVariablesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

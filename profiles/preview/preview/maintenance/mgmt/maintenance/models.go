@@ -9,7 +9,7 @@
 
 package maintenance
 
-import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/maintenance/mgmt/2021-09-01-preview/maintenance"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/maintenance/mgmt/2022-07-01-preview/maintenance"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -44,12 +44,13 @@ const (
 type Scope = original.Scope
 
 const (
-	Extension          Scope = original.Extension
-	Host               Scope = original.Host
-	InGuestPatch       Scope = original.InGuestPatch
-	OSImage            Scope = original.OSImage
-	SQLDB              Scope = original.SQLDB
-	SQLManagedInstance Scope = original.SQLManagedInstance
+	ScopeExtension          Scope = original.ScopeExtension
+	ScopeHost               Scope = original.ScopeHost
+	ScopeInGuestPatch       Scope = original.ScopeInGuestPatch
+	ScopeOSImage            Scope = original.ScopeOSImage
+	ScopeResource           Scope = original.ScopeResource
+	ScopeSQLDB              Scope = original.ScopeSQLDB
+	ScopeSQLManagedInstance Scope = original.ScopeSQLManagedInstance
 )
 
 type TaskScope = original.TaskScope

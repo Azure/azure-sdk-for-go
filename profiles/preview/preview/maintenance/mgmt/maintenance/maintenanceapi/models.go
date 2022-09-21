@@ -9,7 +9,7 @@
 
 package maintenanceapi
 
-import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/maintenance/mgmt/2021-09-01-preview/maintenance/maintenanceapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/maintenance/mgmt/2022-07-01-preview/maintenance/maintenanceapi"
 
 type ApplyUpdateForResourceGroupClientAPI = original.ApplyUpdateForResourceGroupClientAPI
 type ApplyUpdatesClientAPI = original.ApplyUpdatesClientAPI

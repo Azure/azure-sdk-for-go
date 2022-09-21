@@ -12,11 +12,17 @@ package managedapplications
 import (
 	"context"
 
-	original "github.com/Azure/dev/azure-sdk-for-go/services/solutions/mgmt/2021-02-01-preview/managedapplications"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/solutions/mgmt/2021-07-01/managedapplications"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ActionType = original.ActionType
+
+const (
+	Internal ActionType = original.Internal
 )
 
 type ApplicationArtifactName = original.ApplicationArtifactName
@@ -114,18 +120,23 @@ const (
 	JitSchedulingTypeRecurring    JitSchedulingType = original.JitSchedulingTypeRecurring
 )
 
+type Origin = original.Origin
+
+const (
+	OriginSystem     Origin = original.OriginSystem
+	OriginUser       Origin = original.OriginUser
+	OriginUsersystem Origin = original.OriginUsersystem
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
 	ProvisioningStateAccepted     ProvisioningState = original.ProvisioningStateAccepted
 	ProvisioningStateCanceled     ProvisioningState = original.ProvisioningStateCanceled
-	ProvisioningStateCreated      ProvisioningState = original.ProvisioningStateCreated
-	ProvisioningStateCreating     ProvisioningState = original.ProvisioningStateCreating
 	ProvisioningStateDeleted      ProvisioningState = original.ProvisioningStateDeleted
 	ProvisioningStateDeleting     ProvisioningState = original.ProvisioningStateDeleting
 	ProvisioningStateFailed       ProvisioningState = original.ProvisioningStateFailed
 	ProvisioningStateNotSpecified ProvisioningState = original.ProvisioningStateNotSpecified
-	ProvisioningStateReady        ProvisioningState = original.ProvisioningStateReady
 	ProvisioningStateRunning      ProvisioningState = original.ProvisioningStateRunning
 	ProvisioningStateSucceeded    ProvisioningState = original.ProvisioningStateSucceeded
 	ProvisioningStateUpdating     ProvisioningState = original.ProvisioningStateUpdating
@@ -187,7 +198,6 @@ type ApplicationPackageSupportUrls = original.ApplicationPackageSupportUrls
 type ApplicationPatchable = original.ApplicationPatchable
 type ApplicationPolicy = original.ApplicationPolicy
 type ApplicationProperties = original.ApplicationProperties
-type ApplicationPropertiesPatchable = original.ApplicationPropertiesPatchable
 type ApplicationsClient = original.ApplicationsClient
 type ApplicationsCreateOrUpdateByIDFuture = original.ApplicationsCreateOrUpdateByIDFuture
 type ApplicationsCreateOrUpdateFuture = original.ApplicationsCreateOrUpdateFuture
@@ -271,6 +281,9 @@ func NewOperationListResultPage(cur OperationListResult, getNextPage func(contex
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleActionTypeValues() []ActionType {
+	return original.PossibleActionTypeValues()
+}
 func PossibleApplicationArtifactNameValues() []ApplicationArtifactName {
 	return original.PossibleApplicationArtifactNameValues()
 }
@@ -303,6 +316,9 @@ func PossibleJitRequestStateValues() []JitRequestState {
 }
 func PossibleJitSchedulingTypeValues() []JitSchedulingType {
 	return original.PossibleJitSchedulingTypeValues()
+}
+func PossibleOriginValues() []Origin {
+	return original.PossibleOriginValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

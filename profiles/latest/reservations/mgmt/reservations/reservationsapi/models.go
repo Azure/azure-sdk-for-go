@@ -13,9 +13,11 @@ import original "github.com/Azure/dev/azure-sdk-for-go/services/reservations/mgm
 
 type BaseClientAPI = original.BaseClientAPI
 type CalculateExchangeClientAPI = original.CalculateExchangeClientAPI
+type CalculateRefundClientAPI = original.CalculateRefundClientAPI
 type ClientAPI = original.ClientAPI
 type ExchangeClientAPI = original.ExchangeClientAPI
 type OperationClientAPI = original.OperationClientAPI
 type OrderClientAPI = original.OrderClientAPI
 type QuotaClientAPI = original.QuotaClientAPI
 type QuotaRequestStatusClientAPI = original.QuotaRequestStatusClientAPI
+type ReturnClientAPI = original.ReturnClientAPI

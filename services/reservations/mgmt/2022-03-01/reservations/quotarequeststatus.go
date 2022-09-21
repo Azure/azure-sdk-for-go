@@ -119,10 +119,9 @@ func (client QuotaRequestStatusClient) GetResponder(resp *http.Response) (result
 // subscriptionID - azure subscription ID.
 // providerID - azure resource provider ID.
 // location - azure region.
-// filter - | Field                    | Supported operators
-// |---------------------|------------------------
-//
-// |requestSubmitTime | ge, le, eq, gt, lt
+// filter - | Field | Supported operators |
+// |---------------------|------------------------|
+// |requestSubmitTime | ge, le, eq, gt, lt |
 // top - number of records to return.
 // skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
 // contains a nextLink element, the value of the nextLink element includes a skiptoken parameter that specifies

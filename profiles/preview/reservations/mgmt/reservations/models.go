@@ -44,6 +44,18 @@ const (
 	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
+type DisplayProvisioningState = original.DisplayProvisioningState
+
+const (
+	DisplayProvisioningStateCancelled  DisplayProvisioningState = original.DisplayProvisioningStateCancelled
+	DisplayProvisioningStateExpired    DisplayProvisioningState = original.DisplayProvisioningStateExpired
+	DisplayProvisioningStateExpiring   DisplayProvisioningState = original.DisplayProvisioningStateExpiring
+	DisplayProvisioningStateFailed     DisplayProvisioningState = original.DisplayProvisioningStateFailed
+	DisplayProvisioningStatePending    DisplayProvisioningState = original.DisplayProvisioningStatePending
+	DisplayProvisioningStateProcessing DisplayProvisioningState = original.DisplayProvisioningStateProcessing
+	DisplayProvisioningStateSucceeded  DisplayProvisioningState = original.DisplayProvisioningStateSucceeded
+)
+
 type ErrorResponseCode = original.ErrorResponseCode
 
 const (
@@ -92,6 +104,7 @@ const (
 	ErrorResponseCodePatchValuesSameAsExisting                     ErrorResponseCode = original.ErrorResponseCodePatchValuesSameAsExisting
 	ErrorResponseCodePaymentInstrumentNotFound                     ErrorResponseCode = original.ErrorResponseCodePaymentInstrumentNotFound
 	ErrorResponseCodePurchaseError                                 ErrorResponseCode = original.ErrorResponseCodePurchaseError
+	ErrorResponseCodeRefundLimitExceeded                           ErrorResponseCode = original.ErrorResponseCodeRefundLimitExceeded
 	ErrorResponseCodeReRateOnlyAllowedForEA                        ErrorResponseCode = original.ErrorResponseCodeReRateOnlyAllowedForEA
 	ErrorResponseCodeReservationIDNotInReservationOrder            ErrorResponseCode = original.ErrorResponseCodeReservationIDNotInReservationOrder
 	ErrorResponseCodeReservationOrderCreationFailed                ErrorResponseCode = original.ErrorResponseCodeReservationOrderCreationFailed
@@ -100,6 +113,7 @@ const (
 	ErrorResponseCodeReservationOrderNotFound                      ErrorResponseCode = original.ErrorResponseCodeReservationOrderNotFound
 	ErrorResponseCodeRiskCheckFailed                               ErrorResponseCode = original.ErrorResponseCodeRiskCheckFailed
 	ErrorResponseCodeRoleAssignmentCreationFailed                  ErrorResponseCode = original.ErrorResponseCodeRoleAssignmentCreationFailed
+	ErrorResponseCodeSelfServiceRefundNotSupported                 ErrorResponseCode = original.ErrorResponseCodeSelfServiceRefundNotSupported
 	ErrorResponseCodeServerTimeout                                 ErrorResponseCode = original.ErrorResponseCodeServerTimeout
 	ErrorResponseCodeUnauthenticatedRequestsThrottled              ErrorResponseCode = original.ErrorResponseCodeUnauthenticatedRequestsThrottled
 	ErrorResponseCodeUnsupportedReservationTerm                    ErrorResponseCode = original.ErrorResponseCodeUnsupportedReservationTerm
@@ -126,6 +140,35 @@ type Kind = original.Kind
 
 const (
 	KindMicrosoftCompute Kind = original.KindMicrosoftCompute
+)
+
+type Location = original.Location
+
+const (
+	LocationAustraliaeast      Location = original.LocationAustraliaeast
+	LocationAustraliasoutheast Location = original.LocationAustraliasoutheast
+	LocationBrazilsouth        Location = original.LocationBrazilsouth
+	LocationCanadacentral      Location = original.LocationCanadacentral
+	LocationCanadaeast         Location = original.LocationCanadaeast
+	LocationCentralindia       Location = original.LocationCentralindia
+	LocationCentralus          Location = original.LocationCentralus
+	LocationEastasia           Location = original.LocationEastasia
+	LocationEastus             Location = original.LocationEastus
+	LocationEastus2            Location = original.LocationEastus2
+	LocationJapaneast          Location = original.LocationJapaneast
+	LocationJapanwest          Location = original.LocationJapanwest
+	LocationNorthcentralus     Location = original.LocationNorthcentralus
+	LocationNortheurope        Location = original.LocationNortheurope
+	LocationSouthcentralus     Location = original.LocationSouthcentralus
+	LocationSoutheastasia      Location = original.LocationSoutheastasia
+	LocationSouthindia         Location = original.LocationSouthindia
+	LocationUksouth            Location = original.LocationUksouth
+	LocationUkwest             Location = original.LocationUkwest
+	LocationWestcentralus      Location = original.LocationWestcentralus
+	LocationWesteurope         Location = original.LocationWesteurope
+	LocationWestindia          Location = original.LocationWestindia
+	LocationWestus             Location = original.LocationWestus
+	LocationWestus2            Location = original.LocationWestus2
 )
 
 type OperationStatus = original.OperationStatus
@@ -162,24 +205,6 @@ const (
 	ProvisioningStatePendingResourceHold   ProvisioningState = original.ProvisioningStatePendingResourceHold
 	ProvisioningStateSplit                 ProvisioningState = original.ProvisioningStateSplit
 	ProvisioningStateSucceeded             ProvisioningState = original.ProvisioningStateSucceeded
-)
-
-type ProvisioningState1 = original.ProvisioningState1
-
-const (
-	ProvisioningState1BillingFailed         ProvisioningState1 = original.ProvisioningState1BillingFailed
-	ProvisioningState1Cancelled             ProvisioningState1 = original.ProvisioningState1Cancelled
-	ProvisioningState1ConfirmedBilling      ProvisioningState1 = original.ProvisioningState1ConfirmedBilling
-	ProvisioningState1ConfirmedResourceHold ProvisioningState1 = original.ProvisioningState1ConfirmedResourceHold
-	ProvisioningState1Created               ProvisioningState1 = original.ProvisioningState1Created
-	ProvisioningState1Creating              ProvisioningState1 = original.ProvisioningState1Creating
-	ProvisioningState1Expired               ProvisioningState1 = original.ProvisioningState1Expired
-	ProvisioningState1Failed                ProvisioningState1 = original.ProvisioningState1Failed
-	ProvisioningState1Merged                ProvisioningState1 = original.ProvisioningState1Merged
-	ProvisioningState1PendingBilling        ProvisioningState1 = original.ProvisioningState1PendingBilling
-	ProvisioningState1PendingResourceHold   ProvisioningState1 = original.ProvisioningState1PendingResourceHold
-	ProvisioningState1Split                 ProvisioningState1 = original.ProvisioningState1Split
-	ProvisioningState1Succeeded             ProvisioningState1 = original.ProvisioningState1Succeeded
 )
 
 type QuotaRequestState = original.QuotaRequestState
@@ -263,6 +288,26 @@ const (
 	StatusCodeSucceeded              StatusCode = original.StatusCodeSucceeded
 )
 
+type UserFriendlyAppliedScopeType = original.UserFriendlyAppliedScopeType
+
+const (
+	UserFriendlyAppliedScopeTypeManagementGroup UserFriendlyAppliedScopeType = original.UserFriendlyAppliedScopeTypeManagementGroup
+	UserFriendlyAppliedScopeTypeNone            UserFriendlyAppliedScopeType = original.UserFriendlyAppliedScopeTypeNone
+	UserFriendlyAppliedScopeTypeResourceGroup   UserFriendlyAppliedScopeType = original.UserFriendlyAppliedScopeTypeResourceGroup
+	UserFriendlyAppliedScopeTypeShared          UserFriendlyAppliedScopeType = original.UserFriendlyAppliedScopeTypeShared
+	UserFriendlyAppliedScopeTypeSingle          UserFriendlyAppliedScopeType = original.UserFriendlyAppliedScopeTypeSingle
+)
+
+type UserFriendlyRenewState = original.UserFriendlyRenewState
+
+const (
+	UserFriendlyRenewStateNotApplicable UserFriendlyRenewState = original.UserFriendlyRenewStateNotApplicable
+	UserFriendlyRenewStateNotRenewed    UserFriendlyRenewState = original.UserFriendlyRenewStateNotRenewed
+	UserFriendlyRenewStateOff           UserFriendlyRenewState = original.UserFriendlyRenewStateOff
+	UserFriendlyRenewStateOn            UserFriendlyRenewState = original.UserFriendlyRenewStateOn
+	UserFriendlyRenewStateRenewed       UserFriendlyRenewState = original.UserFriendlyRenewStateRenewed
+)
+
 type AppliedReservationList = original.AppliedReservationList
 type AppliedReservations = original.AppliedReservations
 type AppliedReservationsProperties = original.AppliedReservationsProperties
@@ -281,6 +326,10 @@ type CalculatePriceResponse = original.CalculatePriceResponse
 type CalculatePriceResponseProperties = original.CalculatePriceResponseProperties
 type CalculatePriceResponsePropertiesBillingCurrencyTotal = original.CalculatePriceResponsePropertiesBillingCurrencyTotal
 type CalculatePriceResponsePropertiesPricingCurrencyTotal = original.CalculatePriceResponsePropertiesPricingCurrencyTotal
+type CalculateRefundClient = original.CalculateRefundClient
+type CalculateRefundRequest = original.CalculateRefundRequest
+type CalculateRefundRequestProperties = original.CalculateRefundRequestProperties
+type CalculateRefundResponse = original.CalculateRefundResponse
 type Catalog = original.Catalog
 type CatalogMsrp = original.CatalogMsrp
 type ChangeDirectoryRequest = original.ChangeDirectoryRequest
@@ -359,6 +408,14 @@ type QuotaRequestStatusDetails = original.QuotaRequestStatusDetails
 type QuotaRequestSubmitResponse = original.QuotaRequestSubmitResponse
 type QuotaRequestSubmitResponse201 = original.QuotaRequestSubmitResponse201
 type QuotaUpdateFuture = original.QuotaUpdateFuture
+type RefundBillingInformation = original.RefundBillingInformation
+type RefundPolicyError = original.RefundPolicyError
+type RefundPolicyResult = original.RefundPolicyResult
+type RefundPolicyResultProperty = original.RefundPolicyResultProperty
+type RefundRequest = original.RefundRequest
+type RefundRequestProperties = original.RefundRequestProperties
+type RefundResponse = original.RefundResponse
+type RefundResponseProperties = original.RefundResponseProperties
 type RenewPropertiesResponse = original.RenewPropertiesResponse
 type RenewPropertiesResponseBillingCurrencyTotal = original.RenewPropertiesResponseBillingCurrencyTotal
 type RenewPropertiesResponsePricingCurrencyTotal = original.RenewPropertiesResponsePricingCurrencyTotal
@@ -367,6 +424,7 @@ type ReservationMergeFuture = original.ReservationMergeFuture
 type ReservationUpdateFuture = original.ReservationUpdateFuture
 type ResourceName = original.ResourceName
 type Response = original.Response
+type ReturnClient = original.ReturnClient
 type ScopeProperties = original.ScopeProperties
 type ServiceError = original.ServiceError
 type ServiceErrorDetail = original.ServiceErrorDetail
@@ -398,6 +456,12 @@ func NewCalculateExchangeClient() CalculateExchangeClient {
 }
 func NewCalculateExchangeClientWithBaseURI(baseURI string) CalculateExchangeClient {
 	return original.NewCalculateExchangeClientWithBaseURI(baseURI)
+}
+func NewCalculateRefundClient() CalculateRefundClient {
+	return original.NewCalculateRefundClient()
+}
+func NewCalculateRefundClientWithBaseURI(baseURI string) CalculateRefundClient {
+	return original.NewCalculateRefundClientWithBaseURI(baseURI)
 }
 func NewClient() Client {
 	return original.NewClient()
@@ -471,6 +535,12 @@ func NewQuotaRequestStatusClient() QuotaRequestStatusClient {
 func NewQuotaRequestStatusClientWithBaseURI(baseURI string) QuotaRequestStatusClient {
 	return original.NewQuotaRequestStatusClientWithBaseURI(baseURI)
 }
+func NewReturnClient() ReturnClient {
+	return original.NewReturnClient()
+}
+func NewReturnClientWithBaseURI(baseURI string) ReturnClient {
+	return original.NewReturnClientWithBaseURI(baseURI)
+}
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
 }
@@ -482,6 +552,9 @@ func PossibleCalculateExchangeOperationResultStatusValues() []CalculateExchangeO
 }
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()
+}
+func PossibleDisplayProvisioningStateValues() []DisplayProvisioningState {
+	return original.PossibleDisplayProvisioningStateValues()
 }
 func PossibleErrorResponseCodeValues() []ErrorResponseCode {
 	return original.PossibleErrorResponseCodeValues()
@@ -495,14 +568,14 @@ func PossibleInstanceFlexibilityValues() []InstanceFlexibility {
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
 }
+func PossibleLocationValues() []Location {
+	return original.PossibleLocationValues()
+}
 func PossibleOperationStatusValues() []OperationStatus {
 	return original.PossibleOperationStatusValues()
 }
 func PossiblePaymentStatusValues() []PaymentStatus {
 	return original.PossiblePaymentStatusValues()
-}
-func PossibleProvisioningState1Values() []ProvisioningState1 {
-	return original.PossibleProvisioningState1Values()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
@@ -524,6 +597,12 @@ func PossibleResourceTypeValues() []ResourceType {
 }
 func PossibleStatusCodeValues() []StatusCode {
 	return original.PossibleStatusCodeValues()
+}
+func PossibleUserFriendlyAppliedScopeTypeValues() []UserFriendlyAppliedScopeType {
+	return original.PossibleUserFriendlyAppliedScopeTypeValues()
+}
+func PossibleUserFriendlyRenewStateValues() []UserFriendlyRenewState {
+	return original.PossibleUserFriendlyRenewStateValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

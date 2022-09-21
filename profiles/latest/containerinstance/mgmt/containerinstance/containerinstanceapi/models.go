@@ -15,3 +15,4 @@ type ContainerGroupsClientAPI = original.ContainerGroupsClientAPI
 type ContainersClientAPI = original.ContainersClientAPI
 type LocationClientAPI = original.LocationClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type SubnetServiceAssociationLinkClientAPI = original.SubnetServiceAssociationLinkClientAPI

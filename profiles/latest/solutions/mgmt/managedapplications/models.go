@@ -12,7 +12,7 @@ package managedapplications
 import (
 	"context"
 
-	original "github.com/Azure/dev/azure-sdk-for-go/services/solutions/mgmt/2018-03-01/managedapplications"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/solutions/mgmt/2018-06-01/managedapplications"
 )
 
 const (
@@ -51,22 +51,6 @@ const (
 	CanNotDelete ApplicationLockLevel = original.CanNotDelete
 	None         ApplicationLockLevel = original.None
 	ReadOnly     ApplicationLockLevel = original.ReadOnly
-)
-
-type ApplicationManagementMode = original.ApplicationManagementMode
-
-const (
-	ApplicationManagementModeManaged      ApplicationManagementMode = original.ApplicationManagementModeManaged
-	ApplicationManagementModeNotSpecified ApplicationManagementMode = original.ApplicationManagementModeNotSpecified
-	ApplicationManagementModeUnmanaged    ApplicationManagementMode = original.ApplicationManagementModeUnmanaged
-)
-
-type DeploymentMode = original.DeploymentMode
-
-const (
-	DeploymentModeComplete     DeploymentMode = original.DeploymentModeComplete
-	DeploymentModeIncremental  DeploymentMode = original.DeploymentModeIncremental
-	DeploymentModeNotSpecified DeploymentMode = original.DeploymentModeNotSpecified
 )
 
 type JitApprovalMode = original.JitApprovalMode
@@ -167,7 +151,10 @@ type ApplicationJitAccessPolicy = original.ApplicationJitAccessPolicy
 type ApplicationListResult = original.ApplicationListResult
 type ApplicationListResultIterator = original.ApplicationListResultIterator
 type ApplicationListResultPage = original.ApplicationListResultPage
+type ApplicationNotificationEndpoint = original.ApplicationNotificationEndpoint
+type ApplicationNotificationPolicy = original.ApplicationNotificationPolicy
 type ApplicationPackageContact = original.ApplicationPackageContact
+type ApplicationPackageLockingPolicyDefinition = original.ApplicationPackageLockingPolicyDefinition
 type ApplicationPackageSupportUrls = original.ApplicationPackageSupportUrls
 type ApplicationPatchable = original.ApplicationPatchable
 type ApplicationPolicy = original.ApplicationPolicy
@@ -266,12 +253,6 @@ func PossibleApplicationDefinitionArtifactNameValues() []ApplicationDefinitionAr
 }
 func PossibleApplicationLockLevelValues() []ApplicationLockLevel {
 	return original.PossibleApplicationLockLevelValues()
-}
-func PossibleApplicationManagementModeValues() []ApplicationManagementMode {
-	return original.PossibleApplicationManagementModeValues()
-}
-func PossibleDeploymentModeValues() []DeploymentMode {
-	return original.PossibleDeploymentModeValues()
 }
 func PossibleJitApprovalModeValues() []JitApprovalMode {
 	return original.PossibleJitApprovalModeValues()

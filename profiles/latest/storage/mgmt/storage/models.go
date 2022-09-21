@@ -12,7 +12,7 @@ package storage
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-09-01/storage"
+	original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2022-05-01/storage"
 )
 
 const (
@@ -22,9 +22,9 @@ const (
 type AccessTier = original.AccessTier
 
 const (
-	AccessTierCool    AccessTier = original.AccessTierCool
-	AccessTierHot     AccessTier = original.AccessTierHot
-	AccessTierPremium AccessTier = original.AccessTierPremium
+	Cool    AccessTier = original.Cool
+	Hot     AccessTier = original.Hot
+	Premium AccessTier = original.Premium
 )
 
 type AccountExpand = original.AccountExpand
@@ -37,63 +37,66 @@ const (
 type AccountImmutabilityPolicyState = original.AccountImmutabilityPolicyState
 
 const (
-	AccountImmutabilityPolicyStateDisabled AccountImmutabilityPolicyState = original.AccountImmutabilityPolicyStateDisabled
-	AccountImmutabilityPolicyStateLocked   AccountImmutabilityPolicyState = original.AccountImmutabilityPolicyStateLocked
-	AccountImmutabilityPolicyStateUnlocked AccountImmutabilityPolicyState = original.AccountImmutabilityPolicyStateUnlocked
+	Disabled AccountImmutabilityPolicyState = original.Disabled
+	Locked   AccountImmutabilityPolicyState = original.Locked
+	Unlocked AccountImmutabilityPolicyState = original.Unlocked
 )
 
 type AccountStatus = original.AccountStatus
 
 const (
-	AccountStatusAvailable   AccountStatus = original.AccountStatusAvailable
-	AccountStatusUnavailable AccountStatus = original.AccountStatusUnavailable
+	Available   AccountStatus = original.Available
+	Unavailable AccountStatus = original.Unavailable
 )
 
 type AccountType = original.AccountType
 
 const (
-	AccountTypeComputer AccountType = original.AccountTypeComputer
-	AccountTypeUser     AccountType = original.AccountTypeUser
+	Computer AccountType = original.Computer
+	User     AccountType = original.User
 )
 
 type Action = original.Action
 
 const (
-	ActionAllow Action = original.ActionAllow
-)
-
-type Action1 = original.Action1
-
-const (
-	Action1Acquire Action1 = original.Action1Acquire
-	Action1Break   Action1 = original.Action1Break
-	Action1Change  Action1 = original.Action1Change
-	Action1Release Action1 = original.Action1Release
-	Action1Renew   Action1 = original.Action1Renew
+	Allow Action = original.Allow
 )
 
 type AllowedCopyScope = original.AllowedCopyScope
 
 const (
-	AllowedCopyScopeAAD         AllowedCopyScope = original.AllowedCopyScopeAAD
-	AllowedCopyScopePrivateLink AllowedCopyScope = original.AllowedCopyScopePrivateLink
+	AAD         AllowedCopyScope = original.AAD
+	PrivateLink AllowedCopyScope = original.PrivateLink
+)
+
+type AllowedMethods = original.AllowedMethods
+
+const (
+	DELETE  AllowedMethods = original.DELETE
+	GET     AllowedMethods = original.GET
+	HEAD    AllowedMethods = original.HEAD
+	MERGE   AllowedMethods = original.MERGE
+	OPTIONS AllowedMethods = original.OPTIONS
+	PATCH   AllowedMethods = original.PATCH
+	POST    AllowedMethods = original.POST
+	PUT     AllowedMethods = original.PUT
 )
 
 type BlobRestoreProgressStatus = original.BlobRestoreProgressStatus
 
 const (
-	BlobRestoreProgressStatusComplete   BlobRestoreProgressStatus = original.BlobRestoreProgressStatusComplete
-	BlobRestoreProgressStatusFailed     BlobRestoreProgressStatus = original.BlobRestoreProgressStatusFailed
-	BlobRestoreProgressStatusInProgress BlobRestoreProgressStatus = original.BlobRestoreProgressStatusInProgress
+	Complete   BlobRestoreProgressStatus = original.Complete
+	Failed     BlobRestoreProgressStatus = original.Failed
+	InProgress BlobRestoreProgressStatus = original.InProgress
 )
 
 type Bypass = original.Bypass
 
 const (
-	BypassAzureServices Bypass = original.BypassAzureServices
-	BypassLogging       Bypass = original.BypassLogging
-	BypassMetrics       Bypass = original.BypassMetrics
-	BypassNone          Bypass = original.BypassNone
+	AzureServices Bypass = original.AzureServices
+	Logging       Bypass = original.Logging
+	Metrics       Bypass = original.Metrics
+	None          Bypass = original.None
 )
 
 type CreatedByType = original.CreatedByType
@@ -108,8 +111,8 @@ const (
 type DNSEndpointType = original.DNSEndpointType
 
 const (
-	DNSEndpointTypeAzureDNSZone DNSEndpointType = original.DNSEndpointTypeAzureDNSZone
-	DNSEndpointTypeStandard     DNSEndpointType = original.DNSEndpointTypeStandard
+	AzureDNSZone DNSEndpointType = original.AzureDNSZone
+	Standard     DNSEndpointType = original.Standard
 )
 
 type DefaultAction = original.DefaultAction
@@ -131,23 +134,24 @@ const (
 type DirectoryServiceOptions = original.DirectoryServiceOptions
 
 const (
-	DirectoryServiceOptionsAADDS DirectoryServiceOptions = original.DirectoryServiceOptionsAADDS
-	DirectoryServiceOptionsAD    DirectoryServiceOptions = original.DirectoryServiceOptionsAD
-	DirectoryServiceOptionsNone  DirectoryServiceOptions = original.DirectoryServiceOptionsNone
+	DirectoryServiceOptionsAADDS   DirectoryServiceOptions = original.DirectoryServiceOptionsAADDS
+	DirectoryServiceOptionsAADKERB DirectoryServiceOptions = original.DirectoryServiceOptionsAADKERB
+	DirectoryServiceOptionsAD      DirectoryServiceOptions = original.DirectoryServiceOptionsAD
+	DirectoryServiceOptionsNone    DirectoryServiceOptions = original.DirectoryServiceOptionsNone
 )
 
 type EnabledProtocols = original.EnabledProtocols
 
 const (
-	EnabledProtocolsNFS EnabledProtocols = original.EnabledProtocolsNFS
-	EnabledProtocolsSMB EnabledProtocols = original.EnabledProtocolsSMB
+	NFS EnabledProtocols = original.NFS
+	SMB EnabledProtocols = original.SMB
 )
 
 type EncryptionScopeSource = original.EncryptionScopeSource
 
 const (
-	EncryptionScopeSourceMicrosoftKeyVault EncryptionScopeSource = original.EncryptionScopeSourceMicrosoftKeyVault
-	EncryptionScopeSourceMicrosoftStorage  EncryptionScopeSource = original.EncryptionScopeSourceMicrosoftStorage
+	MicrosoftKeyVault EncryptionScopeSource = original.MicrosoftKeyVault
+	MicrosoftStorage  EncryptionScopeSource = original.MicrosoftStorage
 )
 
 type EncryptionScopeState = original.EncryptionScopeState
@@ -160,14 +164,14 @@ const (
 type ExtendedLocationTypes = original.ExtendedLocationTypes
 
 const (
-	ExtendedLocationTypesEdgeZone ExtendedLocationTypes = original.ExtendedLocationTypesEdgeZone
+	EdgeZone ExtendedLocationTypes = original.EdgeZone
 )
 
 type Format = original.Format
 
 const (
-	FormatCsv     Format = original.FormatCsv
-	FormatParquet Format = original.FormatParquet
+	Csv     Format = original.Csv
+	Parquet Format = original.Parquet
 )
 
 type GeoReplicationStatus = original.GeoReplicationStatus
@@ -181,8 +185,8 @@ const (
 type HTTPProtocol = original.HTTPProtocol
 
 const (
-	HTTPProtocolHTTPS     HTTPProtocol = original.HTTPProtocolHTTPS
-	HTTPProtocolHttpshttp HTTPProtocol = original.HTTPProtocolHttpshttp
+	HTTPS     HTTPProtocol = original.HTTPS
+	Httpshttp HTTPProtocol = original.Httpshttp
 )
 
 type IdentityType = original.IdentityType
@@ -204,16 +208,16 @@ const (
 type ImmutabilityPolicyUpdateType = original.ImmutabilityPolicyUpdateType
 
 const (
-	ImmutabilityPolicyUpdateTypeExtend ImmutabilityPolicyUpdateType = original.ImmutabilityPolicyUpdateTypeExtend
-	ImmutabilityPolicyUpdateTypeLock   ImmutabilityPolicyUpdateType = original.ImmutabilityPolicyUpdateTypeLock
-	ImmutabilityPolicyUpdateTypePut    ImmutabilityPolicyUpdateType = original.ImmutabilityPolicyUpdateTypePut
+	Extend ImmutabilityPolicyUpdateType = original.Extend
+	Lock   ImmutabilityPolicyUpdateType = original.Lock
+	Put    ImmutabilityPolicyUpdateType = original.Put
 )
 
 type KeyPermission = original.KeyPermission
 
 const (
-	KeyPermissionFull KeyPermission = original.KeyPermissionFull
-	KeyPermissionRead KeyPermission = original.KeyPermissionRead
+	Full KeyPermission = original.Full
+	Read KeyPermission = original.Read
 )
 
 type KeySource = original.KeySource
@@ -233,11 +237,11 @@ const (
 type Kind = original.Kind
 
 const (
-	KindBlobStorage      Kind = original.KindBlobStorage
-	KindBlockBlobStorage Kind = original.KindBlockBlobStorage
-	KindFileStorage      Kind = original.KindFileStorage
-	KindStorage          Kind = original.KindStorage
-	KindStorageV2        Kind = original.KindStorageV2
+	BlobStorage      Kind = original.BlobStorage
+	BlockBlobStorage Kind = original.BlockBlobStorage
+	FileStorage      Kind = original.FileStorage
+	Storage          Kind = original.Storage
+	StorageV2        Kind = original.StorageV2
 )
 
 type LargeFileSharesState = original.LargeFileSharesState
@@ -247,11 +251,21 @@ const (
 	LargeFileSharesStateEnabled  LargeFileSharesState = original.LargeFileSharesStateEnabled
 )
 
+type LeaseContainerRequestAction = original.LeaseContainerRequestAction
+
+const (
+	Acquire LeaseContainerRequestAction = original.Acquire
+	Break   LeaseContainerRequestAction = original.Break
+	Change  LeaseContainerRequestAction = original.Change
+	Release LeaseContainerRequestAction = original.Release
+	Renew   LeaseContainerRequestAction = original.Renew
+)
+
 type LeaseDuration = original.LeaseDuration
 
 const (
-	LeaseDurationFixed    LeaseDuration = original.LeaseDurationFixed
-	LeaseDurationInfinite LeaseDuration = original.LeaseDurationInfinite
+	Fixed    LeaseDuration = original.Fixed
+	Infinite LeaseDuration = original.Infinite
 )
 
 type LeaseShareAction = original.LeaseShareAction
@@ -284,13 +298,13 @@ const (
 type ListContainersInclude = original.ListContainersInclude
 
 const (
-	ListContainersIncludeDeleted ListContainersInclude = original.ListContainersIncludeDeleted
+	Deleted ListContainersInclude = original.Deleted
 )
 
 type ListKeyExpand = original.ListKeyExpand
 
 const (
-	ListKeyExpandKerb ListKeyExpand = original.ListKeyExpandKerb
+	Kerb ListKeyExpand = original.Kerb
 )
 
 type MigrationState = original.MigrationState
@@ -303,35 +317,35 @@ const (
 type MinimumTLSVersion = original.MinimumTLSVersion
 
 const (
-	MinimumTLSVersionTLS10 MinimumTLSVersion = original.MinimumTLSVersionTLS10
-	MinimumTLSVersionTLS11 MinimumTLSVersion = original.MinimumTLSVersionTLS11
-	MinimumTLSVersionTLS12 MinimumTLSVersion = original.MinimumTLSVersionTLS12
+	TLS10 MinimumTLSVersion = original.TLS10
+	TLS11 MinimumTLSVersion = original.TLS11
+	TLS12 MinimumTLSVersion = original.TLS12
 )
 
 type Name = original.Name
 
 const (
-	NameAccessTimeTracking Name = original.NameAccessTimeTracking
+	AccessTimeTracking Name = original.AccessTimeTracking
 )
 
 type ObjectType = original.ObjectType
 
 const (
-	ObjectTypeBlob      ObjectType = original.ObjectTypeBlob
-	ObjectTypeContainer ObjectType = original.ObjectTypeContainer
+	Blob      ObjectType = original.Blob
+	Container ObjectType = original.Container
 )
 
 type Permissions = original.Permissions
 
 const (
-	PermissionsA Permissions = original.PermissionsA
-	PermissionsC Permissions = original.PermissionsC
-	PermissionsD Permissions = original.PermissionsD
-	PermissionsL Permissions = original.PermissionsL
-	PermissionsP Permissions = original.PermissionsP
-	PermissionsR Permissions = original.PermissionsR
-	PermissionsU Permissions = original.PermissionsU
-	PermissionsW Permissions = original.PermissionsW
+	A Permissions = original.A
+	C Permissions = original.C
+	D Permissions = original.D
+	L Permissions = original.L
+	P Permissions = original.P
+	R Permissions = original.R
+	U Permissions = original.U
+	W Permissions = original.W
 )
 
 type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
@@ -346,17 +360,17 @@ const (
 type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
 
 const (
-	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusApproved
-	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusPending
-	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusRejected
+	Approved PrivateEndpointServiceConnectionStatus = original.Approved
+	Pending  PrivateEndpointServiceConnectionStatus = original.Pending
+	Rejected PrivateEndpointServiceConnectionStatus = original.Rejected
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	ProvisioningStateCreating     ProvisioningState = original.ProvisioningStateCreating
-	ProvisioningStateResolvingDNS ProvisioningState = original.ProvisioningStateResolvingDNS
-	ProvisioningStateSucceeded    ProvisioningState = original.ProvisioningStateSucceeded
+	Creating     ProvisioningState = original.Creating
+	ResolvingDNS ProvisioningState = original.ResolvingDNS
+	Succeeded    ProvisioningState = original.Succeeded
 )
 
 type PublicAccess = original.PublicAccess
@@ -377,46 +391,46 @@ const (
 type Reason = original.Reason
 
 const (
-	ReasonAccountNameInvalid Reason = original.ReasonAccountNameInvalid
-	ReasonAlreadyExists      Reason = original.ReasonAlreadyExists
+	AccountNameInvalid Reason = original.AccountNameInvalid
+	AlreadyExists      Reason = original.AlreadyExists
 )
 
 type ReasonCode = original.ReasonCode
 
 const (
-	ReasonCodeNotAvailableForSubscription ReasonCode = original.ReasonCodeNotAvailableForSubscription
-	ReasonCodeQuotaID                     ReasonCode = original.ReasonCodeQuotaID
+	NotAvailableForSubscription ReasonCode = original.NotAvailableForSubscription
+	QuotaID                     ReasonCode = original.QuotaID
 )
 
 type RootSquashType = original.RootSquashType
 
 const (
-	RootSquashTypeAllSquash    RootSquashType = original.RootSquashTypeAllSquash
-	RootSquashTypeNoRootSquash RootSquashType = original.RootSquashTypeNoRootSquash
-	RootSquashTypeRootSquash   RootSquashType = original.RootSquashTypeRootSquash
+	AllSquash    RootSquashType = original.AllSquash
+	NoRootSquash RootSquashType = original.NoRootSquash
+	RootSquash   RootSquashType = original.RootSquash
 )
 
 type RoutingChoice = original.RoutingChoice
 
 const (
-	RoutingChoiceInternetRouting  RoutingChoice = original.RoutingChoiceInternetRouting
-	RoutingChoiceMicrosoftRouting RoutingChoice = original.RoutingChoiceMicrosoftRouting
+	InternetRouting  RoutingChoice = original.InternetRouting
+	MicrosoftRouting RoutingChoice = original.MicrosoftRouting
 )
 
 type Schedule = original.Schedule
 
 const (
-	ScheduleDaily  Schedule = original.ScheduleDaily
-	ScheduleWeekly Schedule = original.ScheduleWeekly
+	Daily  Schedule = original.Daily
+	Weekly Schedule = original.Weekly
 )
 
 type Services = original.Services
 
 const (
-	ServicesB Services = original.ServicesB
-	ServicesF Services = original.ServicesF
-	ServicesQ Services = original.ServicesQ
-	ServicesT Services = original.ServicesT
+	B Services = original.B
+	F Services = original.F
+	Q Services = original.Q
+	T Services = original.T
 )
 
 type ShareAccessTier = original.ShareAccessTier
@@ -456,14 +470,14 @@ const (
 type SkuName = original.SkuName
 
 const (
-	SkuNamePremiumLRS     SkuName = original.SkuNamePremiumLRS
-	SkuNamePremiumZRS     SkuName = original.SkuNamePremiumZRS
-	SkuNameStandardGRS    SkuName = original.SkuNameStandardGRS
-	SkuNameStandardGZRS   SkuName = original.SkuNameStandardGZRS
-	SkuNameStandardLRS    SkuName = original.SkuNameStandardLRS
-	SkuNameStandardRAGRS  SkuName = original.SkuNameStandardRAGRS
-	SkuNameStandardRAGZRS SkuName = original.SkuNameStandardRAGZRS
-	SkuNameStandardZRS    SkuName = original.SkuNameStandardZRS
+	PremiumLRS     SkuName = original.PremiumLRS
+	PremiumZRS     SkuName = original.PremiumZRS
+	StandardGRS    SkuName = original.StandardGRS
+	StandardGZRS   SkuName = original.StandardGZRS
+	StandardLRS    SkuName = original.StandardLRS
+	StandardRAGRS  SkuName = original.StandardRAGRS
+	StandardRAGZRS SkuName = original.StandardRAGZRS
+	StandardZRS    SkuName = original.StandardZRS
 )
 
 type SkuTier = original.SkuTier
@@ -486,12 +500,12 @@ const (
 type UsageUnit = original.UsageUnit
 
 const (
-	UsageUnitBytes           UsageUnit = original.UsageUnitBytes
-	UsageUnitBytesPerSecond  UsageUnit = original.UsageUnitBytesPerSecond
-	UsageUnitCount           UsageUnit = original.UsageUnitCount
-	UsageUnitCountsPerSecond UsageUnit = original.UsageUnitCountsPerSecond
-	UsageUnitPercent         UsageUnit = original.UsageUnitPercent
-	UsageUnitSeconds         UsageUnit = original.UsageUnitSeconds
+	Bytes           UsageUnit = original.Bytes
+	BytesPerSecond  UsageUnit = original.BytesPerSecond
+	Count           UsageUnit = original.Count
+	CountsPerSecond UsageUnit = original.CountsPerSecond
+	Percent         UsageUnit = original.Percent
+	Seconds         UsageUnit = original.Seconds
 )
 
 type AccessPolicy = original.AccessPolicy
@@ -890,14 +904,14 @@ func PossibleAccountStatusValues() []AccountStatus {
 func PossibleAccountTypeValues() []AccountType {
 	return original.PossibleAccountTypeValues()
 }
-func PossibleAction1Values() []Action1 {
-	return original.PossibleAction1Values()
-}
 func PossibleActionValues() []Action {
 	return original.PossibleActionValues()
 }
 func PossibleAllowedCopyScopeValues() []AllowedCopyScope {
 	return original.PossibleAllowedCopyScopeValues()
+}
+func PossibleAllowedMethodsValues() []AllowedMethods {
+	return original.PossibleAllowedMethodsValues()
 }
 func PossibleBlobRestoreProgressStatusValues() []BlobRestoreProgressStatus {
 	return original.PossibleBlobRestoreProgressStatusValues()
@@ -964,6 +978,9 @@ func PossibleKindValues() []Kind {
 }
 func PossibleLargeFileSharesStateValues() []LargeFileSharesState {
 	return original.PossibleLargeFileSharesStateValues()
+}
+func PossibleLeaseContainerRequestActionValues() []LeaseContainerRequestAction {
+	return original.PossibleLeaseContainerRequestActionValues()
 }
 func PossibleLeaseDurationValues() []LeaseDuration {
 	return original.PossibleLeaseDurationValues()

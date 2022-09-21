@@ -12,7 +12,7 @@ package mysql
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql"
 )
 
 const (

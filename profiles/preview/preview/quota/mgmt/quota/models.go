@@ -12,7 +12,7 @@ package quota
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/quota/mgmt/2021-03-15-preview/quota"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/quota/mgmt/2021-03-15-preview/quota"
 )
 
 const (

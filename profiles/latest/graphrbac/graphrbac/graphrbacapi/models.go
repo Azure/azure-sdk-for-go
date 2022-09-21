@@ -9,7 +9,7 @@
 
 package graphrbacapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/graphrbac/1.6/graphrbac/graphrbacapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/graphrbac/1.6/graphrbac/graphrbacapi"
 
 type ApplicationsClientAPI = original.ApplicationsClientAPI
 type DeletedApplicationsClientAPI = original.DeletedApplicationsClientAPI

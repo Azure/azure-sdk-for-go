@@ -9,7 +9,7 @@
 
 package linksapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links/linksapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links/linksapi"
 
 type OperationsClientAPI = original.OperationsClientAPI
 type ResourceLinksClientAPI = original.ResourceLinksClientAPI

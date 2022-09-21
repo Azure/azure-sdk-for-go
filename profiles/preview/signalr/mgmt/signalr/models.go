@@ -12,7 +12,7 @@ package signalr
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/signalr/mgmt/2020-05-01/signalr"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/signalr/mgmt/2020-05-01/signalr"
 )
 
 const (

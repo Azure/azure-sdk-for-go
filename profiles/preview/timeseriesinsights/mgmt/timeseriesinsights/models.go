@@ -12,7 +12,7 @@ package timeseriesinsights
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/timeseriesinsights/mgmt/2020-05-15/timeseriesinsights"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/timeseriesinsights/mgmt/2020-05-15/timeseriesinsights"
 )
 
 const (

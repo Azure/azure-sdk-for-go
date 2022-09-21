@@ -9,7 +9,7 @@
 
 package netappapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/netapp/mgmt/2017-08-15/netapp/netappapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/netapp/mgmt/2017-08-15/netapp/netappapi"
 
 type AccountsClientAPI = original.AccountsClientAPI
 type MountTargetsClientAPI = original.MountTargetsClientAPI

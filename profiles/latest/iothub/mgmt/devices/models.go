@@ -12,7 +12,7 @@ package devices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2021-07-02/devices"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/iothub/mgmt/2021-07-02/devices"
 )
 
 const (

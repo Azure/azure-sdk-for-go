@@ -9,7 +9,7 @@
 
 package attestation
 
-import original "github.com/Azure/azure-sdk-for-go/services/attestation/2020-10-01/attestation"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/attestation/2020-10-01/attestation"
 
 type CertificateModification = original.CertificateModification
 

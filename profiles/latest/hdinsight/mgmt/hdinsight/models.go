@@ -12,7 +12,7 @@ package hdinsight
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/hdinsight/mgmt/2021-06-01/hdinsight"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/hdinsight/mgmt/2021-06-01/hdinsight"
 )
 
 const (

@@ -9,7 +9,7 @@
 
 package eventhubapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/eventhub/mgmt/2017-04-01/eventhub/eventhubapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/eventhub/mgmt/2017-04-01/eventhub/eventhubapi"
 
 type ConsumerGroupsClientAPI = original.ConsumerGroupsClientAPI
 type DisasterRecoveryConfigsClientAPI = original.DisasterRecoveryConfigsClientAPI

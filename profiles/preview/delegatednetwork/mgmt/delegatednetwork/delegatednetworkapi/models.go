@@ -9,7 +9,7 @@
 
 package delegatednetworkapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/delegatednetwork/mgmt/2021-03-15/delegatednetwork/delegatednetworkapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/delegatednetwork/mgmt/2021-03-15/delegatednetwork/delegatednetworkapi"
 
 type ClientAPI = original.ClientAPI
 type ControllerClientAPI = original.ControllerClientAPI

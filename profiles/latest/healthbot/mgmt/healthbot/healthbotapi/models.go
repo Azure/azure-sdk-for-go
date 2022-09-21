@@ -9,7 +9,7 @@
 
 package healthbotapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/healthbot/mgmt/2020-12-08/healthbot/healthbotapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/healthbot/mgmt/2020-12-08/healthbot/healthbotapi"
 
 type BotsClientAPI = original.BotsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

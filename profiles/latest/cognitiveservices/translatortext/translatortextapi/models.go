@@ -9,6 +9,6 @@
 
 package translatortextapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v3.0/translatortext/translatortextapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v3.0/translatortext/translatortextapi"
 
 type TranslatorClientAPI = original.TranslatorClientAPI

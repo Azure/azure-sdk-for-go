@@ -9,7 +9,7 @@
 
 package blockchainapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/blockchain/mgmt/2018-06-01-preview/blockchain/blockchainapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/blockchain/mgmt/2018-06-01-preview/blockchain/blockchainapi"
 
 type LocationsClientAPI = original.LocationsClientAPI
 type MemberOperationResultsClientAPI = original.MemberOperationResultsClientAPI

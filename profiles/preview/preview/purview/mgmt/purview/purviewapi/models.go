@@ -9,7 +9,7 @@
 
 package purviewapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/purview/mgmt/2020-12-01-preview/purview/purviewapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/purview/mgmt/2020-12-01-preview/purview/purviewapi"
 
 type AccountsClientAPI = original.AccountsClientAPI
 type DefaultAccountsClientAPI = original.DefaultAccountsClientAPI

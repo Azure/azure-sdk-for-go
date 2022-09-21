@@ -9,7 +9,7 @@
 
 package eventgrid
 
-import original "github.com/Azure/azure-sdk-for-go/services/eventgrid/2018-01-01/eventgrid"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/eventgrid/2018-01-01/eventgrid"
 
 type AppAction = original.AppAction
 

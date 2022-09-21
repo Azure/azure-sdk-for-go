@@ -9,7 +9,7 @@
 
 package engagementfabricapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/engagementfabric/mgmt/2018-09-01/engagementfabric/engagementfabricapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/engagementfabric/mgmt/2018-09-01/engagementfabric/engagementfabricapi"
 
 type AccountsClientAPI = original.AccountsClientAPI
 type BaseClientAPI = original.BaseClientAPI

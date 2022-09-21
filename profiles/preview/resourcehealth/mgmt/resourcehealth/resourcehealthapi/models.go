@@ -9,7 +9,7 @@
 
 package resourcehealthapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/resourcehealth/mgmt/2020-05-01/resourcehealth/resourcehealthapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/resourcehealth/mgmt/2020-05-01/resourcehealth/resourcehealthapi"
 
 type AvailabilityStatusesClientAPI = original.AvailabilityStatusesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

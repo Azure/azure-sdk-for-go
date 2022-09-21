@@ -9,7 +9,7 @@
 
 package securityinsightapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/securityinsight/mgmt/2020-01-01/securityinsight/securityinsightapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/securityinsight/mgmt/2020-01-01/securityinsight/securityinsightapi"
 
 type ActionsClientAPI = original.ActionsClientAPI
 type AlertRuleTemplatesClientAPI = original.AlertRuleTemplatesClientAPI

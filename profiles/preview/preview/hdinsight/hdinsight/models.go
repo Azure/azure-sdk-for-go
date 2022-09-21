@@ -9,7 +9,7 @@
 
 package hdinsight
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/hdinsight/2018-11-01-preview/hdinsight"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/hdinsight/2018-11-01-preview/hdinsight"
 
 type ApplicationState = original.ApplicationState
 

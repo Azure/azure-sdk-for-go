@@ -9,7 +9,7 @@
 
 package anomalydetector
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/anomalydetector"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/anomalydetector"
 
 type TimeGranularity = original.TimeGranularity
 

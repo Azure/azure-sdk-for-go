@@ -12,7 +12,7 @@ package appconfiguration
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2021-10-01-preview/appconfiguration"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2021-10-01-preview/appconfiguration"
 )
 
 const (

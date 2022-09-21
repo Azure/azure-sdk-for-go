@@ -12,7 +12,7 @@ package resourceconnector
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/resourceconnector/mgmt/2021-10-31-preview/resourceconnector"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/resourceconnector/mgmt/2021-10-31-preview/resourceconnector"
 )
 
 const (

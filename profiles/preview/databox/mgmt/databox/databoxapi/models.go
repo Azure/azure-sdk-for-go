@@ -9,7 +9,7 @@
 
 package databoxapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/databox/mgmt/2020-11-01/databox/databoxapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/databox/mgmt/2020-11-01/databox/databoxapi"
 
 type JobsClientAPI = original.JobsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

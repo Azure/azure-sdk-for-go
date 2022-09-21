@@ -12,7 +12,7 @@ package postgresqlflexibleservers
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/postgresql/mgmt/2020-11-05-preview/postgresqlflexibleservers"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/postgresql/mgmt/2020-11-05-preview/postgresqlflexibleservers"
 )
 
 const (

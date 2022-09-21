@@ -9,7 +9,7 @@
 
 package softwareplanapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/softwareplan/mgmt/2019-06-01-preview/softwareplan/softwareplanapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/softwareplan/mgmt/2019-06-01-preview/softwareplan/softwareplanapi"
 
 type ClientAPI = original.ClientAPI
 type HybridUseBenefitClientAPI = original.HybridUseBenefitClientAPI

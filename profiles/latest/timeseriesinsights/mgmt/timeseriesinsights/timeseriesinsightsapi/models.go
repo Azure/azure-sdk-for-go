@@ -9,7 +9,7 @@
 
 package timeseriesinsightsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/timeseriesinsights/mgmt/2020-05-15/timeseriesinsights/timeseriesinsightsapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/timeseriesinsights/mgmt/2020-05-15/timeseriesinsights/timeseriesinsightsapi"
 
 type AccessPoliciesClientAPI = original.AccessPoliciesClientAPI
 type EnvironmentsClientAPI = original.EnvironmentsClientAPI

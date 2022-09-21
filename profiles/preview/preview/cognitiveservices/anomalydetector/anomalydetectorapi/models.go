@@ -9,6 +9,6 @@
 
 package anomalydetectorapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/anomalydetector/anomalydetectorapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/anomalydetector/anomalydetectorapi"
 
 type BaseClientAPI = original.BaseClientAPI

@@ -12,7 +12,7 @@ package reservations
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2022-03-01/reservations"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/reservations/mgmt/2022-03-01/reservations"
 )
 
 const (

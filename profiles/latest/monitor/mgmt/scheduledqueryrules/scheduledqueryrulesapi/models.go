@@ -9,6 +9,6 @@
 
 package scheduledqueryrulesapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2021-08-01/scheduledqueryrules/scheduledqueryrulesapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/monitor/mgmt/2021-08-01/scheduledqueryrules/scheduledqueryrulesapi"
 
 type ClientAPI = original.ClientAPI

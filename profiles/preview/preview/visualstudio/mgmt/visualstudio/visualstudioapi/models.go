@@ -9,7 +9,7 @@
 
 package visualstudioapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/visualstudio/mgmt/2014-04-01-preview/visualstudio/visualstudioapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/visualstudio/mgmt/2014-04-01-preview/visualstudio/visualstudioapi"
 
 type AccountsClientAPI = original.AccountsClientAPI
 type ExtensionsClientAPI = original.ExtensionsClientAPI

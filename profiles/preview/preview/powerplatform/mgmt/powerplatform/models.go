@@ -9,7 +9,7 @@
 
 package powerplatform
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/powerplatform/mgmt/2020-10-30/powerplatform"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/powerplatform/mgmt/2020-10-30/powerplatform"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

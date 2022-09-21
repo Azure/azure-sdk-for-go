@@ -9,7 +9,7 @@
 
 package datamigrationapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/datamigration/mgmt/2018-04-19/datamigration/datamigrationapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/datamigration/mgmt/2018-04-19/datamigration/datamigrationapi"
 
 type OperationsClientAPI = original.OperationsClientAPI
 type ProjectsClientAPI = original.ProjectsClientAPI

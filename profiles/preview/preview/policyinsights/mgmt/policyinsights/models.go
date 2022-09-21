@@ -12,7 +12,7 @@ package policyinsights
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2020-07-01-preview/policyinsights"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/policyinsights/mgmt/2020-07-01-preview/policyinsights"
 )
 
 const (

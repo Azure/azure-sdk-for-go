@@ -12,7 +12,7 @@ package hybridcompute
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/hybridcompute/mgmt/2020-08-02/hybridcompute"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/hybridcompute/mgmt/2020-08-02/hybridcompute"
 )
 
 const (

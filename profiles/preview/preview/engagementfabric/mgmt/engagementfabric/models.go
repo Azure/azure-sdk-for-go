@@ -9,7 +9,7 @@
 
 package engagementfabric
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/engagementfabric/mgmt/2018-09-01/engagementfabric"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/engagementfabric/mgmt/2018-09-01/engagementfabric"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

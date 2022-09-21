@@ -12,7 +12,7 @@ package resources
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"
 )
 
 const (

@@ -9,7 +9,7 @@
 
 package sqlapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2014-04-01/sql/sqlapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/sql/mgmt/2014-04-01/sql/sqlapi"
 
 type CapabilitiesClientAPI = original.CapabilitiesClientAPI
 type DataMaskingPoliciesClientAPI = original.DataMaskingPoliciesClientAPI

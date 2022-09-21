@@ -12,7 +12,7 @@ package msi
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/msi/mgmt/2021-09-30-preview/msi"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/msi/mgmt/2021-09-30-preview/msi"
 )
 
 const (

@@ -12,7 +12,7 @@ package policy
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-12-01/policy"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/resources/mgmt/2016-12-01/policy"
 )
 
 const (

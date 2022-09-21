@@ -9,7 +9,7 @@
 
 package automanageapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/automanage/mgmt/2021-04-30-preview/automanage/automanageapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/automanage/mgmt/2021-04-30-preview/automanage/automanageapi"
 
 type BestPracticesClientAPI = original.BestPracticesClientAPI
 type BestPracticesVersionsClientAPI = original.BestPracticesVersionsClientAPI

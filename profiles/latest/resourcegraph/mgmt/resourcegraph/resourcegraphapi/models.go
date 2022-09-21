@@ -9,7 +9,7 @@
 
 package resourcegraphapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/resourcegraph/mgmt/2021-03-01/resourcegraph/resourcegraphapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/resourcegraph/mgmt/2021-03-01/resourcegraph/resourcegraphapi"
 
 type BaseClientAPI = original.BaseClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

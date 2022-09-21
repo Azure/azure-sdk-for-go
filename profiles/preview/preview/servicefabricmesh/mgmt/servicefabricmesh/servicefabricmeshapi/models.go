@@ -9,7 +9,7 @@
 
 package servicefabricmeshapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/servicefabricmesh/mgmt/2018-09-01-preview/servicefabricmesh/servicefabricmeshapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/servicefabricmesh/mgmt/2018-09-01-preview/servicefabricmesh/servicefabricmeshapi"
 
 type ApplicationClientAPI = original.ApplicationClientAPI
 type CodePackageClientAPI = original.CodePackageClientAPI

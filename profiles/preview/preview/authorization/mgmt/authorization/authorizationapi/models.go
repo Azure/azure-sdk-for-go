@@ -9,7 +9,7 @@
 
 package authorizationapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2020-04-01-preview/authorization/authorizationapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/authorization/mgmt/2020-04-01-preview/authorization/authorizationapi"
 
 type ClassicAdministratorsClientAPI = original.ClassicAdministratorsClientAPI
 type DenyAssignmentsClientAPI = original.DenyAssignmentsClientAPI

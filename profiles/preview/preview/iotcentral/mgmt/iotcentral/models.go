@@ -12,7 +12,7 @@ package iotcentral
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/iotcentral/mgmt/2021-11-01-preview/iotcentral"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/iotcentral/mgmt/2021-11-01-preview/iotcentral"
 )
 
 const (

@@ -9,7 +9,7 @@
 
 package hardwaresecuritymodulesapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/hardwaresecuritymodules/mgmt/2021-11-30/hardwaresecuritymodules/hardwaresecuritymodulesapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/hardwaresecuritymodules/mgmt/2021-11-30/hardwaresecuritymodules/hardwaresecuritymodulesapi"
 
 type DedicatedHsmClientAPI = original.DedicatedHsmClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

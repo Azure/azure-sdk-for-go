@@ -9,6 +9,6 @@
 
 package videosearchapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/videosearch/videosearchapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v1.0/videosearch/videosearchapi"
 
 type VideosClientAPI = original.VideosClientAPI

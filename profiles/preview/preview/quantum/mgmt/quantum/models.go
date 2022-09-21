@@ -12,7 +12,7 @@ package quantum
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/quantum/mgmt/2019-11-04-preview/quantum"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/quantum/mgmt/2019-11-04-preview/quantum"
 )
 
 const (

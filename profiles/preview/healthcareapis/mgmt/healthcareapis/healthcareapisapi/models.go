@@ -9,7 +9,7 @@
 
 package healthcareapisapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/healthcareapis/mgmt/2021-11-01/healthcareapis/healthcareapisapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/healthcareapis/mgmt/2021-11-01/healthcareapis/healthcareapisapi"
 
 type DicomServicesClientAPI = original.DicomServicesClientAPI
 type FhirDestinationsClientAPI = original.FhirDestinationsClientAPI

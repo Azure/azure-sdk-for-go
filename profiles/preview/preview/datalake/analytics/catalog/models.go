@@ -12,7 +12,7 @@ package catalog
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2015-10-01-preview/catalog"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/datalake/analytics/2015-10-01-preview/catalog"
 )
 
 const (

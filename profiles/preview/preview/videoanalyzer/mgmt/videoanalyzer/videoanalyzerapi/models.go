@@ -9,7 +9,7 @@
 
 package videoanalyzerapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/videoanalyzer/mgmt/2021-11-01-preview/videoanalyzer/videoanalyzerapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/videoanalyzer/mgmt/2021-11-01-preview/videoanalyzer/videoanalyzerapi"
 
 type AccessPoliciesClientAPI = original.AccessPoliciesClientAPI
 type EdgeModulesClientAPI = original.EdgeModulesClientAPI

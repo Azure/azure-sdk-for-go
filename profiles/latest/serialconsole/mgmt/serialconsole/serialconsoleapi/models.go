@@ -9,6 +9,6 @@
 
 package serialconsoleapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/serialconsole/mgmt/2018-05-01/serialconsole/serialconsoleapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/serialconsole/mgmt/2018-05-01/serialconsole/serialconsoleapi"
 
 type BaseClientAPI = original.BaseClientAPI

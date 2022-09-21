@@ -9,7 +9,7 @@
 
 package signalrapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/signalr/mgmt/2020-05-01/signalr/signalrapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/signalr/mgmt/2020-05-01/signalr/signalrapi"
 
 type ClientAPI = original.ClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

@@ -12,7 +12,7 @@ package batchai
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/batchai/mgmt/2017-09-01-preview/batchai"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/batchai/mgmt/2017-09-01-preview/batchai"
 )
 
 const (

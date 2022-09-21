@@ -9,7 +9,7 @@
 
 package resourcemoverapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/resourcemover/mgmt/2019-10-01-preview/resourcemover/resourcemoverapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/resourcemover/mgmt/2019-10-01-preview/resourcemover/resourcemoverapi"
 
 type MoveCollectionsClientAPI = original.MoveCollectionsClientAPI
 type MoveResourcesClientAPI = original.MoveResourcesClientAPI

@@ -9,7 +9,7 @@
 
 package databricksapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/databricks/mgmt/2021-04-01-preview/databricks/databricksapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/databricks/mgmt/2021-04-01-preview/databricks/databricksapi"
 
 type OperationsClientAPI = original.OperationsClientAPI
 type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI

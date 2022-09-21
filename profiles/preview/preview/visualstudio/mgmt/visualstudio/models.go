@@ -9,7 +9,7 @@
 
 package visualstudio
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/visualstudio/mgmt/2014-04-01-preview/visualstudio"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/visualstudio/mgmt/2014-04-01-preview/visualstudio"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

@@ -9,7 +9,7 @@
 
 package policyinsights
 
-import original "github.com/Azure/azure-sdk-for-go/services/policyinsights/mgmt/2018-04-04/policyinsights"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/policyinsights/mgmt/2018-04-04/policyinsights"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

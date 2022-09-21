@@ -9,7 +9,7 @@
 
 package accesscontrol
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/synapse/2020-08-01-preview/accesscontrol"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/synapse/2020-08-01-preview/accesscontrol"
 
 type BaseClient = original.BaseClient
 type CheckAccessDecision = original.CheckAccessDecision

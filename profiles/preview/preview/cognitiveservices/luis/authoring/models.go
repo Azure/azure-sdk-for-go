@@ -9,7 +9,7 @@
 
 package authoring
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v3.0/luis/authoring"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/cognitiveservices/v3.0/luis/authoring"
 
 type OperationStatusType = original.OperationStatusType
 

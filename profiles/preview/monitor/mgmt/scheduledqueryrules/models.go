@@ -12,7 +12,7 @@ package scheduledqueryrules
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2021-08-01/scheduledqueryrules"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/monitor/mgmt/2021-08-01/scheduledqueryrules"
 )
 
 const (

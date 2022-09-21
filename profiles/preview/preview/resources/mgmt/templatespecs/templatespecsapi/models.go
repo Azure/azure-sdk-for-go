@@ -9,7 +9,7 @@
 
 package templatespecsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2019-06-01-preview/templatespecs/templatespecsapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/resources/mgmt/2019-06-01-preview/templatespecs/templatespecsapi"
 
 type ClientAPI = original.ClientAPI
 type VersionsClientAPI = original.VersionsClientAPI

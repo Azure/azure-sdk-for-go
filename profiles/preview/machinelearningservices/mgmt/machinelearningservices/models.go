@@ -12,7 +12,7 @@ package machinelearningservices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2021-07-01/machinelearningservices"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/machinelearningservices/mgmt/2021-07-01/machinelearningservices"
 )
 
 const (

@@ -9,6 +9,6 @@
 
 package textanalyticsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.1/textanalytics/textanalyticsapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v2.1/textanalytics/textanalyticsapi"
 
 type BaseClientAPI = original.BaseClientAPI

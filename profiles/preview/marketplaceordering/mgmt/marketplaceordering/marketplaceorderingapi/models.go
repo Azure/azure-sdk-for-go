@@ -9,7 +9,7 @@
 
 package marketplaceorderingapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/marketplaceordering/mgmt/2015-06-01/marketplaceordering/marketplaceorderingapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/marketplaceordering/mgmt/2015-06-01/marketplaceordering/marketplaceorderingapi"
 
 type MarketplaceAgreementsClientAPI = original.MarketplaceAgreementsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

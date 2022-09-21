@@ -9,7 +9,7 @@
 
 package recoveryservicesapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-08-01/recoveryservices/recoveryservicesapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/recoveryservices/mgmt/2021-08-01/recoveryservices/recoveryservicesapi"
 
 type BaseClientAPI = original.BaseClientAPI
 type ClientAPI = original.ClientAPI

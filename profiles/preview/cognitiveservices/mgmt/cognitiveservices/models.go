@@ -12,7 +12,7 @@ package cognitiveservices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2022-03-01/cognitiveservices"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/mgmt/2022-03-01/cognitiveservices"
 )
 
 const (

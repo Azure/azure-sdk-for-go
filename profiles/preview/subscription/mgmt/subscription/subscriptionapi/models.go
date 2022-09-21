@@ -9,7 +9,7 @@
 
 package subscriptionapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/subscription/mgmt/2020-09-01/subscription/subscriptionapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/subscription/mgmt/2020-09-01/subscription/subscriptionapi"
 
 type AliasClientAPI = original.AliasClientAPI
 type ClientAPI = original.ClientAPI

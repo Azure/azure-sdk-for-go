@@ -12,7 +12,7 @@ package virtualmachineimagebuilder
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/virtualmachineimagebuilder/mgmt/2019-05-01-preview/virtualmachineimagebuilder"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/virtualmachineimagebuilder/mgmt/2019-05-01-preview/virtualmachineimagebuilder"
 )
 
 const (

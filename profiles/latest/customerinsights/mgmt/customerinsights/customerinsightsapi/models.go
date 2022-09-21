@@ -9,7 +9,7 @@
 
 package customerinsightsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/customerinsights/mgmt/2017-04-26/customerinsights/customerinsightsapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/customerinsights/mgmt/2017-04-26/customerinsights/customerinsightsapi"
 
 type AuthorizationPoliciesClientAPI = original.AuthorizationPoliciesClientAPI
 type ConnectorMappingsClientAPI = original.ConnectorMappingsClientAPI

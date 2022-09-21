@@ -9,7 +9,7 @@
 
 package postgresqlapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql/postgresqlapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql/postgresqlapi"
 
 type CheckNameAvailabilityClientAPI = original.CheckNameAvailabilityClientAPI
 type ConfigurationsClientAPI = original.ConfigurationsClientAPI

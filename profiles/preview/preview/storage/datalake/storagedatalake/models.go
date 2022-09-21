@@ -9,7 +9,7 @@
 
 package storagedatalake
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/storage/datalake/2018-06-17/storagedatalake"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/storage/datalake/2018-06-17/storagedatalake"
 
 const (
 	DefaultDNSSuffix = original.DefaultDNSSuffix

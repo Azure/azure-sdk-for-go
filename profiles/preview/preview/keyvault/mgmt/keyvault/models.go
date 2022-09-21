@@ -12,7 +12,7 @@ package keyvault
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/keyvault/mgmt/2020-04-01-preview/keyvault"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/keyvault/mgmt/2020-04-01-preview/keyvault"
 )
 
 const (

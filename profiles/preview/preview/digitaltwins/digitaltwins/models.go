@@ -12,7 +12,7 @@ package digitaltwins
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/digitaltwins/2020-05-31-preview/digitaltwins"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/digitaltwins/2020-05-31-preview/digitaltwins"
 )
 
 const (

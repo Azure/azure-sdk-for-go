@@ -9,7 +9,7 @@
 
 package deploymentmanager
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/deploymentmanager/mgmt/2019-11-01-preview/deploymentmanager"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/deploymentmanager/mgmt/2019-11-01-preview/deploymentmanager"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

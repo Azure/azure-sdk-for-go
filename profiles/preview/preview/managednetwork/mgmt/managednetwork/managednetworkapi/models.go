@@ -9,7 +9,7 @@
 
 package managednetworkapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/managednetwork/mgmt/2019-06-01-preview/managednetwork/managednetworkapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/managednetwork/mgmt/2019-06-01-preview/managednetwork/managednetworkapi"
 
 type GroupsClientAPI = original.GroupsClientAPI
 type ManagedNetworksClientAPI = original.ManagedNetworksClientAPI

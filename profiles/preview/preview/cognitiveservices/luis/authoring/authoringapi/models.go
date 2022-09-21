@@ -9,7 +9,7 @@
 
 package authoringapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v3.0/luis/authoring/authoringapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/cognitiveservices/v3.0/luis/authoring/authoringapi"
 
 type AppsClientAPI = original.AppsClientAPI
 type AzureAccountsClientAPI = original.AzureAccountsClientAPI

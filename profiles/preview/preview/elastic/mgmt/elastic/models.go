@@ -12,7 +12,7 @@ package elastic
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/elastic/mgmt/2020-07-01-preview/elastic"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/elastic/mgmt/2020-07-01-preview/elastic"
 )
 
 const (

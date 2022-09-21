@@ -9,7 +9,7 @@
 
 package storagecacheapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2022-01-01/storagecache/storagecacheapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/storagecache/mgmt/2022-01-01/storagecache/storagecacheapi"
 
 type AscOperationsClientAPI = original.AscOperationsClientAPI
 type AscUsagesClientAPI = original.AscUsagesClientAPI

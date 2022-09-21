@@ -9,6 +9,6 @@
 
 package formrecognizerapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/formrecognizer/formrecognizerapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/formrecognizer/formrecognizerapi"
 
 type BaseClientAPI = original.BaseClientAPI

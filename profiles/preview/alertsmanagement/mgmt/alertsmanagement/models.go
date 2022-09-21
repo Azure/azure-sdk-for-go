@@ -12,7 +12,7 @@ package alertsmanagement
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/alertsmanagement/mgmt/2019-03-01/alertsmanagement"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/alertsmanagement/mgmt/2019-03-01/alertsmanagement"
 )
 
 const (

@@ -12,7 +12,7 @@ package powerbidedicated
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/powerbidedicated/mgmt/2021-01-01/powerbidedicated"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/powerbidedicated/mgmt/2021-01-01/powerbidedicated"
 )
 
 const (

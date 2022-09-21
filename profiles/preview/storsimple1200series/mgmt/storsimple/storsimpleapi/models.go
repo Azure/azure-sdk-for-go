@@ -9,7 +9,7 @@
 
 package storsimpleapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/storsimple1200series/mgmt/2016-10-01/storsimple/storsimpleapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/storsimple1200series/mgmt/2016-10-01/storsimple/storsimpleapi"
 
 type AccessControlRecordsClientAPI = original.AccessControlRecordsClientAPI
 type AlertsClientAPI = original.AlertsClientAPI

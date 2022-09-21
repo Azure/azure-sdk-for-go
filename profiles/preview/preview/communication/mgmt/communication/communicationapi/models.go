@@ -9,7 +9,7 @@
 
 package communicationapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/communication/mgmt/2020-08-20-preview/communication/communicationapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/communication/mgmt/2020-08-20-preview/communication/communicationapi"
 
 type OperationStatusesClientAPI = original.OperationStatusesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

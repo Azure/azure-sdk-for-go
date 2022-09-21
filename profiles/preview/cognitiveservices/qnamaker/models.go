@@ -9,7 +9,7 @@
 
 package qnamaker
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v4.0/qnamaker"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v4.0/qnamaker"
 
 type EnvironmentType = original.EnvironmentType
 

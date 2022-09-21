@@ -9,7 +9,7 @@
 
 package personalizerapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/personalizer/v1.0/personalizer/personalizerapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/personalizer/v1.0/personalizer/personalizerapi"
 
 type BaseClientAPI = original.BaseClientAPI
 type EvaluationsClientAPI = original.EvaluationsClientAPI

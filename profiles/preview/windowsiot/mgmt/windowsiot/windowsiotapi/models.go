@@ -9,7 +9,7 @@
 
 package windowsiotapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/windowsiot/mgmt/2019-06-01/windowsiot/windowsiotapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/windowsiot/mgmt/2019-06-01/windowsiot/windowsiotapi"
 
 type OperationsClientAPI = original.OperationsClientAPI
 type ServicesClientAPI = original.ServicesClientAPI

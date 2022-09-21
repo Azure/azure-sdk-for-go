@@ -9,7 +9,7 @@
 
 package storagetables
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/storage/tables/2019-02-02-preview/storagetables"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/storage/tables/2019-02-02-preview/storagetables"
 
 const (
 	DefaultVersion = original.DefaultVersion

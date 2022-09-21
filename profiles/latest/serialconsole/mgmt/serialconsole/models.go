@@ -9,7 +9,7 @@
 
 package serialconsole
 
-import original "github.com/Azure/azure-sdk-for-go/services/serialconsole/mgmt/2018-05-01/serialconsole"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/serialconsole/mgmt/2018-05-01/serialconsole"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

@@ -9,7 +9,7 @@
 
 package imagesearch
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/imagesearch"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v1.0/imagesearch"
 
 const (
 	DefaultEndpoint = original.DefaultEndpoint

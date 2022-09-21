@@ -9,6 +9,6 @@
 
 package qnamakerruntimeapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v4.0/qnamakerruntime/qnamakerruntimeapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v4.0/qnamakerruntime/qnamakerruntimeapi"
 
 type RuntimeClientAPI = original.RuntimeClientAPI

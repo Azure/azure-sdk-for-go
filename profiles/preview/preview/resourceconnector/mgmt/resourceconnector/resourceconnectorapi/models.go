@@ -9,6 +9,6 @@
 
 package resourceconnectorapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/resourceconnector/mgmt/2021-10-31-preview/resourceconnector/resourceconnectorapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/resourceconnector/mgmt/2021-10-31-preview/resourceconnector/resourceconnectorapi"
 
 type AppliancesClientAPI = original.AppliancesClientAPI

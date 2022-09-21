@@ -9,7 +9,7 @@
 
 package networkapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-10-01/network/networkapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/network/mgmt/2017-10-01/network/networkapi"
 
 type ApplicationGatewaysClientAPI = original.ApplicationGatewaysClientAPI
 type ApplicationSecurityGroupsClientAPI = original.ApplicationSecurityGroupsClientAPI

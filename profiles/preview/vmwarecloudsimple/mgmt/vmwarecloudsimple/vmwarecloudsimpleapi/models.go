@@ -9,7 +9,7 @@
 
 package vmwarecloudsimpleapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/vmwarecloudsimple/mgmt/2019-04-01/vmwarecloudsimple/vmwarecloudsimpleapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/vmwarecloudsimple/mgmt/2019-04-01/vmwarecloudsimple/vmwarecloudsimpleapi"
 
 type CustomizationPoliciesClientAPI = original.CustomizationPoliciesClientAPI
 type DedicatedCloudNodesClientAPI = original.DedicatedCloudNodesClientAPI

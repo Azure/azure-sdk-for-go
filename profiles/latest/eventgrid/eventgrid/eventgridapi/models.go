@@ -9,6 +9,6 @@
 
 package eventgridapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/eventgrid/2018-01-01/eventgrid/eventgridapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/eventgrid/2018-01-01/eventgrid/eventgridapi"
 
 type BaseClientAPI = original.BaseClientAPI

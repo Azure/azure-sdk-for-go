@@ -9,7 +9,7 @@
 
 package webpubsubapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/webpubsub/mgmt/2021-10-01/webpubsub/webpubsubapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/webpubsub/mgmt/2021-10-01/webpubsub/webpubsubapi"
 
 type ClientAPI = original.ClientAPI
 type HubsClientAPI = original.HubsClientAPI

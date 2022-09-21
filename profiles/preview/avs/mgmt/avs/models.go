@@ -12,7 +12,7 @@ package avs
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/avs/mgmt/2021-12-01/avs"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/avs/mgmt/2021-12-01/avs"
 )
 
 const (

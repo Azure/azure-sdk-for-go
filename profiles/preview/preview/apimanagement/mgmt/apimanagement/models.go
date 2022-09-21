@@ -12,7 +12,7 @@ package apimanagement
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2021-01-01-preview/apimanagement"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/apimanagement/mgmt/2021-01-01-preview/apimanagement"
 )
 
 const (

@@ -9,7 +9,7 @@
 
 package hybridnetworkapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/hybridnetwork/mgmt/2020-01-01-preview/hybridnetwork/hybridnetworkapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/hybridnetwork/mgmt/2020-01-01-preview/hybridnetwork/hybridnetworkapi"
 
 type DevicesClientAPI = original.DevicesClientAPI
 type NetworkFunctionVendorSkusClientAPI = original.NetworkFunctionVendorSkusClientAPI

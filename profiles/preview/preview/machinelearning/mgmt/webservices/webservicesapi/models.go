@@ -9,6 +9,6 @@
 
 package webservicesapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2016-05-01-preview/webservices/webservicesapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/machinelearning/mgmt/2016-05-01-preview/webservices/webservicesapi"
 
 type ClientAPI = original.ClientAPI

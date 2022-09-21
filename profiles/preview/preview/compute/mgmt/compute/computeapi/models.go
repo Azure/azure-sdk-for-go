@@ -9,7 +9,7 @@
 
 package computeapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/compute/mgmt/2020-10-01-preview/compute/computeapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/compute/mgmt/2020-10-01-preview/compute/computeapi"
 
 type AvailabilitySetsClientAPI = original.AvailabilitySetsClientAPI
 type CloudServiceRoleInstancesClientAPI = original.CloudServiceRoleInstancesClientAPI

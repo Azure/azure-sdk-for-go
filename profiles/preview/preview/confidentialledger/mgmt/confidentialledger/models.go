@@ -12,7 +12,7 @@ package confidentialledger
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/confidentialledger/mgmt/2020-12-01-preview/confidentialledger"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/confidentialledger/mgmt/2020-12-01-preview/confidentialledger"
 )
 
 const (

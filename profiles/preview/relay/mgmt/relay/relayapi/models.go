@@ -9,7 +9,7 @@
 
 package relayapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/relay/mgmt/2017-04-01/relay/relayapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/relay/mgmt/2017-04-01/relay/relayapi"
 
 type HybridConnectionsClientAPI = original.HybridConnectionsClientAPI
 type NamespacesClientAPI = original.NamespacesClientAPI

@@ -12,7 +12,7 @@ package datamigration
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2021-10-30-preview/datamigration"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/datamigration/mgmt/2021-10-30-preview/datamigration"
 )
 
 const (

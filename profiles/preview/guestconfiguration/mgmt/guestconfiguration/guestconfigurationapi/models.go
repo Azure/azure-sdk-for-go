@@ -9,7 +9,7 @@
 
 package guestconfigurationapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/guestconfiguration/mgmt/2021-01-25/guestconfiguration/guestconfigurationapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/guestconfiguration/mgmt/2021-01-25/guestconfiguration/guestconfigurationapi"
 
 type AssignmentReportsClientAPI = original.AssignmentReportsClientAPI
 type AssignmentReportsVMSSClientAPI = original.AssignmentReportsVMSSClientAPI

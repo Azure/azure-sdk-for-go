@@ -9,7 +9,7 @@
 
 package faceapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/face/faceapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v1.0/face/faceapi"
 
 type ClientAPI = original.ClientAPI
 type LargeFaceListClientAPI = original.LargeFaceListClientAPI

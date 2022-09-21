@@ -9,7 +9,7 @@
 
 package sql
 
-import original "github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2014-04-01/sql"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/sql/mgmt/2014-04-01/sql"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

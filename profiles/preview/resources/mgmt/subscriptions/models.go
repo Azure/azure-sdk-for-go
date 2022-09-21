@@ -12,7 +12,7 @@ package subscriptions
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2021-01-01/subscriptions"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/resources/mgmt/2021-01-01/subscriptions"
 )
 
 const (

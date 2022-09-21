@@ -12,7 +12,7 @@ package azurestack
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/azurestack/mgmt/2017-06-01/azurestack"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/azurestack/mgmt/2017-06-01/azurestack"
 )
 
 const (

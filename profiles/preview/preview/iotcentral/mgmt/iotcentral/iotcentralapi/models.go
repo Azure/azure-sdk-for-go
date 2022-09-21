@@ -9,7 +9,7 @@
 
 package iotcentralapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/iotcentral/mgmt/2021-11-01-preview/iotcentral/iotcentralapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/iotcentral/mgmt/2021-11-01-preview/iotcentral/iotcentralapi"
 
 type AppsClientAPI = original.AppsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

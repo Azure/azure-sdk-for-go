@@ -9,7 +9,7 @@
 
 package costmanagementapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/costmanagement/mgmt/2019-03-01/costmanagement/costmanagementapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/costmanagement/mgmt/2019-03-01/costmanagement/costmanagementapi"
 
 type CloudConnectorClientAPI = original.CloudConnectorClientAPI
 type ConnectorClientAPI = original.ConnectorClientAPI

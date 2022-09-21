@@ -9,6 +9,6 @@
 
 package skusapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2017-09-01/skus/skusapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/compute/mgmt/2017-09-01/skus/skusapi"
 
 type ResourceSkusClientAPI = original.ResourceSkusClientAPI

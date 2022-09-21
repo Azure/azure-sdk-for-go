@@ -12,7 +12,7 @@ package sql
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2018-06-01-preview/sql"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/sql/mgmt/2018-06-01-preview/sql"
 )
 
 const (

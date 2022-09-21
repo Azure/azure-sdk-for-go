@@ -9,7 +9,7 @@
 
 package dtlapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/devtestlabs/mgmt/2018-09-15/dtl/dtlapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/devtestlabs/mgmt/2018-09-15/dtl/dtlapi"
 
 type ArmTemplatesClientAPI = original.ArmTemplatesClientAPI
 type ArtifactSourcesClientAPI = original.ArtifactSourcesClientAPI

@@ -9,7 +9,7 @@
 
 package autosuggest
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/autosuggest"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v1.0/autosuggest"
 
 const (
 	DefaultEndpoint = original.DefaultEndpoint

@@ -9,7 +9,7 @@
 
 package mapsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/maps/mgmt/2021-02-01/maps/mapsapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/maps/mgmt/2021-02-01/maps/mapsapi"
 
 type AccountsClientAPI = original.AccountsClientAPI
 type ClientAPI = original.ClientAPI

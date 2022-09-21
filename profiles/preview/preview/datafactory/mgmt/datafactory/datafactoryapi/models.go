@@ -9,7 +9,7 @@
 
 package datafactoryapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/datafactory/mgmt/2017-09-01-preview/datafactory/datafactoryapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/datafactory/mgmt/2017-09-01-preview/datafactory/datafactoryapi"
 
 type ActivityRunsClientAPI = original.ActivityRunsClientAPI
 type DatasetsClientAPI = original.DatasetsClientAPI

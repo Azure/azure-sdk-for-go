@@ -12,7 +12,7 @@ package scheduler
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/scheduler/mgmt/2014-08-01-preview/scheduler"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/scheduler/mgmt/2014-08-01-preview/scheduler"
 )
 
 const (

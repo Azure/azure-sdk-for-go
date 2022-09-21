@@ -12,7 +12,7 @@ package mysqlflexibleservers
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2021-05-01/mysqlflexibleservers"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/mysql/mgmt/2021-05-01/mysqlflexibleservers"
 )
 
 const (

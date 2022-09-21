@@ -12,7 +12,7 @@ package delegatednetwork
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/delegatednetwork/mgmt/2020-08-08-preview/delegatednetwork"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/delegatednetwork/mgmt/2020-08-08-preview/delegatednetwork"
 )
 
 const (

@@ -9,7 +9,7 @@
 
 package servicemapapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap/servicemapapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap/servicemapapi"
 
 type ClientGroupsClientAPI = original.ClientGroupsClientAPI
 type MachineGroupsClientAPI = original.MachineGroupsClientAPI

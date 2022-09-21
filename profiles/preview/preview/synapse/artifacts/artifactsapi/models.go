@@ -9,7 +9,7 @@
 
 package artifactsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/synapse/2019-06-01-preview/artifacts/artifactsapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/synapse/2019-06-01-preview/artifacts/artifactsapi"
 
 type BigDataPoolsClientAPI = original.BigDataPoolsClientAPI
 type DataFlowClientAPI = original.DataFlowClientAPI

@@ -9,7 +9,7 @@
 
 package guestconfiguration
 
-import original "github.com/Azure/azure-sdk-for-go/services/guestconfiguration/mgmt/2021-01-25/guestconfiguration"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/guestconfiguration/mgmt/2021-01-25/guestconfiguration"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

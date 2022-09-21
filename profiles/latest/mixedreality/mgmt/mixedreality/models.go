@@ -12,7 +12,7 @@ package mixedreality
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/mixedreality/mgmt/2021-01-01/mixedreality"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/mixedreality/mgmt/2021-01-01/mixedreality"
 )
 
 const (

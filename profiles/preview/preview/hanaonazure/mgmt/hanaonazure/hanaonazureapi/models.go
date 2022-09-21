@@ -9,7 +9,7 @@
 
 package hanaonazureapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/hanaonazure/mgmt/2017-11-03-preview/hanaonazure/hanaonazureapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/hanaonazure/mgmt/2017-11-03-preview/hanaonazure/hanaonazureapi"
 
 type HanaInstancesClientAPI = original.HanaInstancesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

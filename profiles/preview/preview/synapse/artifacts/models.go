@@ -12,7 +12,7 @@ package artifacts
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/synapse/2019-06-01-preview/artifacts"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/synapse/2019-06-01-preview/artifacts"
 )
 
 type AuthenticationType = original.AuthenticationType

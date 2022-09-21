@@ -9,7 +9,7 @@
 
 package managementpartnerapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner/managementpartnerapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner/managementpartnerapi"
 
 type OperationClientAPI = original.OperationClientAPI
 type PartnerClientAPI = original.PartnerClientAPI

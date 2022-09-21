@@ -12,7 +12,7 @@ package datadog
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/datadog/mgmt/2020-02-01-preview/datadog"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/datadog/mgmt/2020-02-01-preview/datadog"
 )
 
 const (

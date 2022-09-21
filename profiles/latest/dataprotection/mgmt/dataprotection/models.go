@@ -12,7 +12,7 @@ package dataprotection
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/dataprotection/mgmt/2021-07-01/dataprotection"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/dataprotection/mgmt/2021-07-01/dataprotection"
 )
 
 const (

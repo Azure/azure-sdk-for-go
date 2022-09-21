@@ -12,7 +12,7 @@ package automation
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/automation/mgmt/2019-06-01/automation"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/automation/mgmt/2019-06-01/automation"
 )
 
 const (

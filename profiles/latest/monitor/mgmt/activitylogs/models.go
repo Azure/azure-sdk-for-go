@@ -12,7 +12,7 @@ package activitylogs
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2020-10-01/activitylogs"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/monitor/mgmt/2020-10-01/activitylogs"
 )
 
 const (

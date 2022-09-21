@@ -12,7 +12,7 @@ package devspaces
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/devspaces/mgmt/2019-04-01/devspaces"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/devspaces/mgmt/2019-04-01/devspaces"
 )
 
 const (

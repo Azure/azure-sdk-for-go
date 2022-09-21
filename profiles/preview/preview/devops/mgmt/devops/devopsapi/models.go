@@ -9,7 +9,7 @@
 
 package devopsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/devops/mgmt/2019-07-01-preview/devops/devopsapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/devops/mgmt/2019-07-01-preview/devops/devopsapi"
 
 type OperationsClientAPI = original.OperationsClientAPI
 type PipelineTemplateDefinitionsClientAPI = original.PipelineTemplateDefinitionsClientAPI

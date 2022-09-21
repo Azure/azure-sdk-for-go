@@ -9,6 +9,6 @@
 
 package locksapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-01-01/locks/locksapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/resources/mgmt/2015-01-01/locks/locksapi"
 
 type ManagementLocksClientAPI = original.ManagementLocksClientAPI

@@ -9,7 +9,7 @@
 
 package enterpriseknowledgegraphserviceapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/enterpriseknowledgegraphservice/2018-12-03/enterpriseknowledgegraphservice/enterpriseknowledgegraphserviceapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/enterpriseknowledgegraphservice/2018-12-03/enterpriseknowledgegraphservice/enterpriseknowledgegraphserviceapi"
 
 type EnterpriseKnowledgeGraphClientAPI = original.EnterpriseKnowledgeGraphClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

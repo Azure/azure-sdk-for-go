@@ -9,7 +9,7 @@
 
 package baremetalinfrastructureapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/baremetalinfrastructure/mgmt/2020-08-06-preview/baremetalinfrastructure/baremetalinfrastructureapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/baremetalinfrastructure/mgmt/2020-08-06-preview/baremetalinfrastructure/baremetalinfrastructureapi"
 
 type AzureBareMetalInstancesClientAPI = original.AzureBareMetalInstancesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

@@ -12,7 +12,7 @@ package templatespecs
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2019-06-01-preview/templatespecs"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/resources/mgmt/2019-06-01-preview/templatespecs"
 )
 
 const (

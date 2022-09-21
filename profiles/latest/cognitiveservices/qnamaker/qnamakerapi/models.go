@@ -9,7 +9,7 @@
 
 package qnamakerapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v4.0/qnamaker/qnamakerapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v4.0/qnamaker/qnamakerapi"
 
 type AlterationsClientAPI = original.AlterationsClientAPI
 type EndpointKeysClientAPI = original.EndpointKeysClientAPI

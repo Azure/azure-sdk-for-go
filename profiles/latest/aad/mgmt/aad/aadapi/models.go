@@ -9,7 +9,7 @@
 
 package aadapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/aad/mgmt/2020-03-01/aad/aadapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/aad/mgmt/2020-03-01/aad/aadapi"
 
 type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
 type PrivateLinkForAzureAdClientAPI = original.PrivateLinkForAzureAdClientAPI

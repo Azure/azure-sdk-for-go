@@ -9,7 +9,7 @@
 
 package confidentialledgerapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/confidentialledger/mgmt/2020-12-01-preview/confidentialledger/confidentialledgerapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/confidentialledger/mgmt/2020-12-01-preview/confidentialledger/confidentialledgerapi"
 
 type LedgerClientAPI = original.LedgerClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

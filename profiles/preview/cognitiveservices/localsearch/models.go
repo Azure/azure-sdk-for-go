@@ -9,7 +9,7 @@
 
 package localsearch
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/localsearch"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v1.0/localsearch"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

@@ -12,7 +12,7 @@ package advisor
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/advisor/mgmt/2020-01-01/advisor"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/advisor/mgmt/2020-01-01/advisor"
 )
 
 const (

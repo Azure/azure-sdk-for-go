@@ -12,7 +12,7 @@ package logic
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2019-05-01/logic"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/logic/mgmt/2019-05-01/logic"
 )
 
 const (

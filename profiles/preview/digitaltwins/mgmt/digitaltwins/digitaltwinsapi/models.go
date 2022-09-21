@@ -9,7 +9,7 @@
 
 package digitaltwinsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/digitaltwins/mgmt/2020-12-01/digitaltwins/digitaltwinsapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/digitaltwins/mgmt/2020-12-01/digitaltwins/digitaltwinsapi"
 
 type ClientAPI = original.ClientAPI
 type EndpointClientAPI = original.EndpointClientAPI

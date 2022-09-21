@@ -9,7 +9,7 @@
 
 package labservicesapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/labservices/mgmt/2018-10-15/labservices/labservicesapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/labservices/mgmt/2018-10-15/labservices/labservicesapi"
 
 type EnvironmentSettingsClientAPI = original.EnvironmentSettingsClientAPI
 type EnvironmentsClientAPI = original.EnvironmentsClientAPI

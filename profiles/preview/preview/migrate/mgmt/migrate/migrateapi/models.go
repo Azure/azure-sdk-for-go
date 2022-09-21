@@ -9,7 +9,7 @@
 
 package migrateapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/migrate/mgmt/2018-09-01-preview/migrate/migrateapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/migrate/mgmt/2018-09-01-preview/migrate/migrateapi"
 
 type DatabaseInstancesClientAPI = original.DatabaseInstancesClientAPI
 type DatabasesClientAPI = original.DatabasesClientAPI

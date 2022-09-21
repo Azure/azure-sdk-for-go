@@ -9,7 +9,7 @@
 
 package migrate
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/migrate/mgmt/2018-09-01-preview/migrate"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/migrate/mgmt/2018-09-01-preview/migrate"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

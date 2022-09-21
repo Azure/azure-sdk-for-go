@@ -9,7 +9,7 @@
 
 package dnsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2016-04-01/dns/dnsapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/dns/mgmt/2016-04-01/dns/dnsapi"
 
 type RecordSetsClientAPI = original.RecordSetsClientAPI
 type ZonesClientAPI = original.ZonesClientAPI

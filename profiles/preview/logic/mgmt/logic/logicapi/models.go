@@ -9,7 +9,7 @@
 
 package logicapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2019-05-01/logic/logicapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/logic/mgmt/2019-05-01/logic/logicapi"
 
 type IntegrationAccountAgreementsClientAPI = original.IntegrationAccountAgreementsClientAPI
 type IntegrationAccountAssembliesClientAPI = original.IntegrationAccountAssembliesClientAPI

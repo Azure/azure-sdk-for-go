@@ -9,7 +9,7 @@
 
 package translatortext
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v3.0/translatortext"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v3.0/translatortext"
 
 type BaseClient = original.BaseClient
 type BreakSentenceResultItem = original.BreakSentenceResultItem

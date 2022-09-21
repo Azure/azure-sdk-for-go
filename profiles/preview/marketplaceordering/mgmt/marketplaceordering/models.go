@@ -12,7 +12,7 @@ package marketplaceordering
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/marketplaceordering/mgmt/2015-06-01/marketplaceordering"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/marketplaceordering/mgmt/2015-06-01/marketplaceordering"
 )
 
 const (

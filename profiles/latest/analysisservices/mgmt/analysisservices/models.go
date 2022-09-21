@@ -12,7 +12,7 @@ package analysisservices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/analysisservices/mgmt/2017-08-01/analysisservices"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/analysisservices/mgmt/2017-08-01/analysisservices"
 )
 
 const (

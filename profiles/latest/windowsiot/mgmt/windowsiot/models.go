@@ -12,7 +12,7 @@ package windowsiot
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/windowsiot/mgmt/2019-06-01/windowsiot"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/windowsiot/mgmt/2019-06-01/windowsiot"
 )
 
 const (

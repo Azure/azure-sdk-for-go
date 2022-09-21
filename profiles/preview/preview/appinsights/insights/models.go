@@ -9,7 +9,7 @@
 
 package insights
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/appinsights/v1/insights"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/appinsights/v1/insights"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

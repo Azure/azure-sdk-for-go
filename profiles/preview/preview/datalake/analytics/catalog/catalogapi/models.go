@@ -9,6 +9,6 @@
 
 package catalogapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2015-10-01-preview/catalog/catalogapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/datalake/analytics/2015-10-01-preview/catalog/catalogapi"
 
 type ClientAPI = original.ClientAPI

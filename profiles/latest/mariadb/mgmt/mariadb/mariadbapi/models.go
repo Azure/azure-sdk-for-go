@@ -9,7 +9,7 @@
 
 package mariadbapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2020-01-01/mariadb/mariadbapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/mariadb/mgmt/2020-01-01/mariadb/mariadbapi"
 
 type AdvisorsClientAPI = original.AdvisorsClientAPI
 type BaseClientAPI = original.BaseClientAPI

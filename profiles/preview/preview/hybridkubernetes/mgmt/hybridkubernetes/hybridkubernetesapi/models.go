@@ -9,7 +9,7 @@
 
 package hybridkubernetesapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/hybridkubernetes/mgmt/2021-04-01-preview/hybridkubernetes/hybridkubernetesapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/hybridkubernetes/mgmt/2021-04-01-preview/hybridkubernetes/hybridkubernetesapi"
 
 type ConnectedClusterClientAPI = original.ConnectedClusterClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

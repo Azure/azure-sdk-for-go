@@ -12,7 +12,7 @@ package skus
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2017-09-01/skus"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/compute/mgmt/2017-09-01/skus"
 )
 
 const (

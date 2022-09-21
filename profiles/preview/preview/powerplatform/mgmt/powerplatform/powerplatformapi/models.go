@@ -9,7 +9,7 @@
 
 package powerplatformapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/powerplatform/mgmt/2020-10-30/powerplatform/powerplatformapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/powerplatform/mgmt/2020-10-30/powerplatform/powerplatformapi"
 
 type EnterprisePoliciesClientAPI = original.EnterprisePoliciesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

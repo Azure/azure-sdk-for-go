@@ -9,7 +9,7 @@
 
 package addonsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2018-03-01/addons/addonsapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/addons/mgmt/2018-03-01/addons/addonsapi"
 
 type OperationsClientAPI = original.OperationsClientAPI
 type SupportPlanTypesClientAPI = original.SupportPlanTypesClientAPI

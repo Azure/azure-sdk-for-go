@@ -9,7 +9,7 @@
 
 package changeanalysisapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/changeanalysis/mgmt/2021-04-01/changeanalysis/changeanalysisapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/changeanalysis/mgmt/2021-04-01/changeanalysis/changeanalysisapi"
 
 type ChangesClientAPI = original.ChangesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

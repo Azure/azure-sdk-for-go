@@ -9,7 +9,7 @@
 
 package migrateapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/migrate/mgmt/2020-01-01/migrate/migrateapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/migrate/mgmt/2020-01-01/migrate/migrateapi"
 
 type HyperVClusterClientAPI = original.HyperVClusterClientAPI
 type HyperVHostClientAPI = original.HyperVHostClientAPI

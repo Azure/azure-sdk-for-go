@@ -12,7 +12,7 @@ package maps
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/maps/mgmt/2021-02-01/maps"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/maps/mgmt/2021-02-01/maps"
 )
 
 const (

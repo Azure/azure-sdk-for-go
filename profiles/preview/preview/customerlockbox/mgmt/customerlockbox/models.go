@@ -12,7 +12,7 @@ package customerlockbox
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/customerlockbox/mgmt/2018-02-28-preview/customerlockbox"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/customerlockbox/mgmt/2018-02-28-preview/customerlockbox"
 )
 
 const (

@@ -12,7 +12,7 @@ package appplatform
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/appplatform/mgmt/2020-07-01/appplatform"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/appplatform/mgmt/2020-07-01/appplatform"
 )
 
 const (

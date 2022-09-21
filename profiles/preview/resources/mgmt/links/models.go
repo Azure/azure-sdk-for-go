@@ -12,7 +12,7 @@ package links
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links"
 )
 
 const (

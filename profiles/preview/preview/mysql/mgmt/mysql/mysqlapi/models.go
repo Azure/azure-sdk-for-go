@@ -9,7 +9,7 @@
 
 package mysqlapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/mysql/mgmt/2017-12-01-preview/mysql/mysqlapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/mysql/mgmt/2017-12-01-preview/mysql/mysqlapi"
 
 type CheckNameAvailabilityClientAPI = original.CheckNameAvailabilityClientAPI
 type ConfigurationsClientAPI = original.ConfigurationsClientAPI

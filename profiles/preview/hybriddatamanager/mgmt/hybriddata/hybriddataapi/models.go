@@ -9,7 +9,7 @@
 
 package hybriddataapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/hybriddatamanager/mgmt/2019-06-01/hybriddata/hybriddataapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/hybriddatamanager/mgmt/2019-06-01/hybriddata/hybriddataapi"
 
 type DataManagersClientAPI = original.DataManagersClientAPI
 type DataServicesClientAPI = original.DataServicesClientAPI

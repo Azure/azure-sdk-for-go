@@ -12,7 +12,7 @@ package costmanagement
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/costmanagement/mgmt/2020-06-01/costmanagement"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/costmanagement/mgmt/2020-06-01/costmanagement"
 )
 
 const (

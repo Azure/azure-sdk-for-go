@@ -9,7 +9,7 @@
 
 package schedulerapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/scheduler/mgmt/2016-03-01/scheduler/schedulerapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/scheduler/mgmt/2016-03-01/scheduler/schedulerapi"
 
 type JobCollectionsClientAPI = original.JobCollectionsClientAPI
 type JobsClientAPI = original.JobsClientAPI

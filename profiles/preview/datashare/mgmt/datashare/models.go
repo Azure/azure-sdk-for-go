@@ -12,7 +12,7 @@ package datashare
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/datashare/mgmt/2019-11-01/datashare"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/datashare/mgmt/2019-11-01/datashare"
 )
 
 const (

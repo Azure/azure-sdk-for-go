@@ -12,7 +12,7 @@ package videoanalyzer
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/videoanalyzer/mgmt/2021-11-01-preview/videoanalyzer"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/videoanalyzer/mgmt/2021-11-01-preview/videoanalyzer"
 )
 
 const (

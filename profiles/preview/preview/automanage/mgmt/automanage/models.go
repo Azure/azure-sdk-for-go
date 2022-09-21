@@ -9,7 +9,7 @@
 
 package automanage
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/automanage/mgmt/2021-04-30-preview/automanage"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/automanage/mgmt/2021-04-30-preview/automanage"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

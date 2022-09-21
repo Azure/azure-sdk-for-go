@@ -9,7 +9,7 @@
 
 package mixedrealityapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/mixedreality/mgmt/2021-03-01-preview/mixedreality/mixedrealityapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/mixedreality/mgmt/2021-03-01-preview/mixedreality/mixedrealityapi"
 
 type BaseClientAPI = original.BaseClientAPI
 type ObjectAnchorsAccountsClientAPI = original.ObjectAnchorsAccountsClientAPI

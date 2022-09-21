@@ -9,7 +9,7 @@
 
 package analysisservicesapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/analysisservices/mgmt/2017-08-01/analysisservices/analysisservicesapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/analysisservices/mgmt/2017-08-01/analysisservices/analysisservicesapi"
 
 type OperationsClientAPI = original.OperationsClientAPI
 type ServersClientAPI = original.ServersClientAPI

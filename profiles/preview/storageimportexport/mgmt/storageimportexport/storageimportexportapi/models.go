@@ -9,7 +9,7 @@
 
 package storageimportexportapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2020-08-01/storageimportexport/storageimportexportapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/storageimportexport/mgmt/2020-08-01/storageimportexport/storageimportexportapi"
 
 type BitLockerKeysClientAPI = original.BitLockerKeysClientAPI
 type JobsClientAPI = original.JobsClientAPI

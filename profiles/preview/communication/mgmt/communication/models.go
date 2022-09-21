@@ -12,7 +12,7 @@ package communication
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/communication/mgmt/2020-08-20/communication"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/communication/mgmt/2020-08-20/communication"
 )
 
 const (

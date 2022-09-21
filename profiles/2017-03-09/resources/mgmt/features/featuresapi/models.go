@@ -9,7 +9,7 @@
 
 package featuresapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-12-01/features/featuresapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/resources/mgmt/2015-12-01/features/featuresapi"
 
 type BaseClientAPI = original.BaseClientAPI
 type ClientAPI = original.ClientAPI

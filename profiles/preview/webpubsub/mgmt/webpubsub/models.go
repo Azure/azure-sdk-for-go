@@ -12,7 +12,7 @@ package webpubsub
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/webpubsub/mgmt/2021-10-01/webpubsub"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/webpubsub/mgmt/2021-10-01/webpubsub"
 )
 
 const (

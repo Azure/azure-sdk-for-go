@@ -12,7 +12,7 @@ package support
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/support/mgmt/2020-04-01/support"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/support/mgmt/2020-04-01/support"
 )
 
 const (

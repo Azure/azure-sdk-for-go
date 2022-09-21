@@ -9,7 +9,7 @@
 
 package streamanalyticsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics/streamanalyticsapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics/streamanalyticsapi"
 
 type ClustersClientAPI = original.ClustersClientAPI
 type FunctionsClientAPI = original.FunctionsClientAPI

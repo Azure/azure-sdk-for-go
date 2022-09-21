@@ -12,7 +12,7 @@ package netapp
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-10-01/netapp"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/netapp/mgmt/2021-10-01/netapp"
 )
 
 const (

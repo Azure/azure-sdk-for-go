@@ -9,7 +9,7 @@
 
 package deploymentmanagerapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/deploymentmanager/mgmt/2019-11-01-preview/deploymentmanager/deploymentmanagerapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/deploymentmanager/mgmt/2019-11-01-preview/deploymentmanager/deploymentmanagerapi"
 
 type ArtifactSourcesClientAPI = original.ArtifactSourcesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

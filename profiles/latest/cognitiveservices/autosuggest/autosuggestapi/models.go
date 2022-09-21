@@ -9,6 +9,6 @@
 
 package autosuggestapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/autosuggest/autosuggestapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v1.0/autosuggest/autosuggestapi"
 
 type BaseClientAPI = original.BaseClientAPI

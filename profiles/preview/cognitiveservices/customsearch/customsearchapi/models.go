@@ -9,6 +9,6 @@
 
 package customsearchapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/customsearch/customsearchapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v1.0/customsearch/customsearchapi"
 
 type CustomInstanceClientAPI = original.CustomInstanceClientAPI

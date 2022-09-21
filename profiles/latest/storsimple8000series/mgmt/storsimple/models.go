@@ -12,7 +12,7 @@ package storsimple
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storsimple8000series/mgmt/2017-06-01/storsimple"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/storsimple8000series/mgmt/2017-06-01/storsimple"
 )
 
 const (

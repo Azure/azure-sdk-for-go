@@ -9,7 +9,7 @@
 
 package azureadexternalidentitiesapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/azureadexternalidentities/mgmt/2021-04-01/azureadexternalidentities/azureadexternalidentitiesapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/azureadexternalidentities/mgmt/2021-04-01/azureadexternalidentities/azureadexternalidentitiesapi"
 
 type B2CTenantsClientAPI = original.B2CTenantsClientAPI
 type GuestUsagesClientAPI = original.GuestUsagesClientAPI

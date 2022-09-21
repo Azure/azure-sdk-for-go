@@ -12,7 +12,7 @@ package resourcemover
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/resourcemover/mgmt/2019-10-01-preview/resourcemover"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/resourcemover/mgmt/2019-10-01-preview/resourcemover"
 )
 
 const (

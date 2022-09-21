@@ -9,7 +9,7 @@
 
 package mysqlapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql/mysqlapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql/mysqlapi"
 
 type AdvisorsClientAPI = original.AdvisorsClientAPI
 type BaseClientAPI = original.BaseClientAPI

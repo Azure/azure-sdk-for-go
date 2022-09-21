@@ -9,7 +9,7 @@
 
 package customprovidersapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/customproviders/mgmt/2018-09-01-preview/customproviders/customprovidersapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/customproviders/mgmt/2018-09-01-preview/customproviders/customprovidersapi"
 
 type AssociationsClientAPI = original.AssociationsClientAPI
 type CustomResourceProviderClientAPI = original.CustomResourceProviderClientAPI

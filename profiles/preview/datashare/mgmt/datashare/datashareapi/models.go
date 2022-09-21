@@ -9,7 +9,7 @@
 
 package datashareapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/datashare/mgmt/2019-11-01/datashare/datashareapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/datashare/mgmt/2019-11-01/datashare/datashareapi"
 
 type AccountsClientAPI = original.AccountsClientAPI
 type ConsumerInvitationsClientAPI = original.ConsumerInvitationsClientAPI

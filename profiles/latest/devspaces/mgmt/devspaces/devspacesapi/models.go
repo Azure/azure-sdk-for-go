@@ -9,7 +9,7 @@
 
 package devspacesapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/devspaces/mgmt/2019-04-01/devspaces/devspacesapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/devspaces/mgmt/2019-04-01/devspaces/devspacesapi"
 
 type ContainerHostMappingsClientAPI = original.ContainerHostMappingsClientAPI
 type ControllersClientAPI = original.ControllersClientAPI

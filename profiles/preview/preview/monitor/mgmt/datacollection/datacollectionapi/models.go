@@ -9,7 +9,7 @@
 
 package datacollectionapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-09-01-preview/datacollection/datacollectionapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/monitor/mgmt/2021-09-01-preview/datacollection/datacollectionapi"
 
 type EndpointsClientAPI = original.EndpointsClientAPI
 type RuleAssociationsClientAPI = original.RuleAssociationsClientAPI

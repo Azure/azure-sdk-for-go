@@ -12,7 +12,7 @@ package labservices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/labservices/mgmt/2018-10-15/labservices"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/labservices/mgmt/2018-10-15/labservices"
 )
 
 const (

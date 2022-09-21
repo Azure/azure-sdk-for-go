@@ -12,7 +12,7 @@ package keyvault
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/keyvault/v7.2-preview/keyvault"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/keyvault/v7.2-preview/keyvault"
 )
 
 type ActionType = original.ActionType

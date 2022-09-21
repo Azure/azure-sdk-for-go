@@ -9,7 +9,7 @@
 
 package iotspacesapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/iotspaces/mgmt/2017-10-01-preview/iotspaces/iotspacesapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/iotspaces/mgmt/2017-10-01-preview/iotspaces/iotspacesapi"
 
 type ClientAPI = original.ClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

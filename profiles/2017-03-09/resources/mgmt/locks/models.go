@@ -12,7 +12,7 @@ package locks
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-01-01/locks"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/resources/mgmt/2015-01-01/locks"
 )
 
 const (

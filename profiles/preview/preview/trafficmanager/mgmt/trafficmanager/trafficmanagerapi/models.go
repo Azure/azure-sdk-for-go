@@ -9,7 +9,7 @@
 
 package trafficmanagerapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/trafficmanager/mgmt/2018-02-01-preview/trafficmanager/trafficmanagerapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/trafficmanager/mgmt/2018-02-01-preview/trafficmanager/trafficmanagerapi"
 
 type EndpointsClientAPI = original.EndpointsClientAPI
 type GeographicHierarchiesClientAPI = original.GeographicHierarchiesClientAPI

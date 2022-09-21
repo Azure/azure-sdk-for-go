@@ -9,6 +9,6 @@
 
 package runtimeapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v3.0/luis/runtime/runtimeapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v3.0/luis/runtime/runtimeapi"
 
 type PredictionClientAPI = original.PredictionClientAPI

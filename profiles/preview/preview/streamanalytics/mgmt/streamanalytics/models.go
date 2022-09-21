@@ -12,7 +12,7 @@ package streamanalytics
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/streamanalytics/mgmt/2020-03-01-preview/streamanalytics"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/streamanalytics/mgmt/2020-03-01-preview/streamanalytics"
 )
 
 const (

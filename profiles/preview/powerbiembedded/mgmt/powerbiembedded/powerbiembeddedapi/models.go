@@ -9,7 +9,7 @@
 
 package powerbiembeddedapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/powerbiembedded/mgmt/2016-01-29/powerbiembedded/powerbiembeddedapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/powerbiembedded/mgmt/2016-01-29/powerbiembedded/powerbiembeddedapi"
 
 type BaseClientAPI = original.BaseClientAPI
 type WorkspaceCollectionsClientAPI = original.WorkspaceCollectionsClientAPI

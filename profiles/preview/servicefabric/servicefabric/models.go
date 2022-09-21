@@ -9,7 +9,7 @@
 
 package servicefabric
 
-import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/7.2/servicefabric"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/servicefabric/7.2/servicefabric"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

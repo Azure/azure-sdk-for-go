@@ -12,7 +12,7 @@ package synapse
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/2021-06-01-preview/synapse"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/synapse/mgmt/2021-06-01-preview/synapse"
 )
 
 const (

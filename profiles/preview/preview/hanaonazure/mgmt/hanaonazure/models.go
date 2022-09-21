@@ -12,7 +12,7 @@ package hanaonazure
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/hanaonazure/mgmt/2017-11-03-preview/hanaonazure"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/hanaonazure/mgmt/2017-11-03-preview/hanaonazure"
 )
 
 const (

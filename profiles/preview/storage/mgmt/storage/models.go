@@ -12,7 +12,7 @@ package storage
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-09-01/storage"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/storage/mgmt/2021-09-01/storage"
 )
 
 const (

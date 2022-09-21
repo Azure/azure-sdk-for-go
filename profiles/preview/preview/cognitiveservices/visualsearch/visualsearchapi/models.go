@@ -9,6 +9,6 @@
 
 package visualsearchapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/visualsearch/visualsearchapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/visualsearch/visualsearchapi"
 
 type ImagesClientAPI = original.ImagesClientAPI

@@ -12,7 +12,7 @@ package frontdoor
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-11-01/frontdoor"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/frontdoor/mgmt/2020-11-01/frontdoor"
 )
 
 const (

@@ -12,7 +12,7 @@ package apimanagement
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/ctrl/2017-03-01/apimanagement"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/apimanagement/ctrl/2017-03-01/apimanagement"
 )
 
 type APIType = original.APIType

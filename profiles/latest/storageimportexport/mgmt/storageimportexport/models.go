@@ -12,7 +12,7 @@ package storageimportexport
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2020-08-01/storageimportexport"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/storageimportexport/mgmt/2020-08-01/storageimportexport"
 )
 
 const (

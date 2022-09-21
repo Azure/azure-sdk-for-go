@@ -12,7 +12,7 @@ package peering
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/peering/mgmt/2020-10-01/peering"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/peering/mgmt/2020-10-01/peering"
 )
 
 const (

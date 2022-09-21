@@ -12,7 +12,7 @@ package containerregistry
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2022-02-01-preview/containerregistry"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/containerregistry/mgmt/2022-02-01-preview/containerregistry"
 )
 
 const (

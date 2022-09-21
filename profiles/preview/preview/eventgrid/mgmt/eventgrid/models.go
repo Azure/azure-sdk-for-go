@@ -12,7 +12,7 @@ package eventgrid
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2021-10-15-preview/eventgrid"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/eventgrid/mgmt/2021-10-15-preview/eventgrid"
 )
 
 const (

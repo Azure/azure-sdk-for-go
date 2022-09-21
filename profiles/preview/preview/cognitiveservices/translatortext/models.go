@@ -9,7 +9,7 @@
 
 package translatortext
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0_preview.1/translatortext"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/cognitiveservices/v1.0_preview.1/translatortext"
 
 type Code = original.Code
 

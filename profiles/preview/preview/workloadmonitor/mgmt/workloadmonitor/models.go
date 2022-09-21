@@ -12,7 +12,7 @@ package workloadmonitor
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/workloadmonitor/mgmt/2020-01-13-preview/workloadmonitor"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/workloadmonitor/mgmt/2020-01-13-preview/workloadmonitor"
 )
 
 const (

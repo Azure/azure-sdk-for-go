@@ -9,7 +9,7 @@
 
 package operationalinsightsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2020-10-01/operationalinsights/operationalinsightsapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/operationalinsights/mgmt/2020-10-01/operationalinsights/operationalinsightsapi"
 
 type ClustersClientAPI = original.ClustersClientAPI
 type DeletedWorkspacesClientAPI = original.DeletedWorkspacesClientAPI

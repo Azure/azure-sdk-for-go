@@ -9,7 +9,7 @@
 
 package logzapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/logz/mgmt/2020-10-01/logz/logzapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/logz/mgmt/2020-10-01/logz/logzapi"
 
 type MonitorClientAPI = original.MonitorClientAPI
 type MonitorsClientAPI = original.MonitorsClientAPI

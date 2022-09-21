@@ -9,7 +9,7 @@
 
 package keyvaultapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/keyvault/mgmt/2020-04-01-preview/keyvault/keyvaultapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/keyvault/mgmt/2020-04-01-preview/keyvault/keyvaultapi"
 
 type ManagedHsmsClientAPI = original.ManagedHsmsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

@@ -9,7 +9,7 @@
 
 package mysqlflexibleserversapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/mysql/mgmt/2021-05-01-preview/mysqlflexibleservers/mysqlflexibleserversapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/mysql/mgmt/2021-05-01-preview/mysqlflexibleservers/mysqlflexibleserversapi"
 
 type BackupsClientAPI = original.BackupsClientAPI
 type CheckNameAvailabilityClientAPI = original.CheckNameAvailabilityClientAPI

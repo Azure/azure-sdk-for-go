@@ -9,7 +9,7 @@
 
 package computeapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2017-12-01/compute/computeapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/compute/mgmt/2017-12-01/compute/computeapi"
 
 type AvailabilitySetsClientAPI = original.AvailabilitySetsClientAPI
 type DisksClientAPI = original.DisksClientAPI

@@ -9,7 +9,7 @@
 
 package elasticapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/elastic/mgmt/2020-07-01-preview/elastic/elasticapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/elastic/mgmt/2020-07-01-preview/elastic/elasticapi"
 
 type DeploymentInfoClientAPI = original.DeploymentInfoClientAPI
 type MonitoredResourcesClientAPI = original.MonitoredResourcesClientAPI

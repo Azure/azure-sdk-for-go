@@ -9,7 +9,7 @@
 
 package dataprotectionapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/dataprotection/mgmt/2021-07-01/dataprotection/dataprotectionapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/dataprotection/mgmt/2021-07-01/dataprotection/dataprotectionapi"
 
 type BackupInstancesClientAPI = original.BackupInstancesClientAPI
 type BackupPoliciesClientAPI = original.BackupPoliciesClientAPI

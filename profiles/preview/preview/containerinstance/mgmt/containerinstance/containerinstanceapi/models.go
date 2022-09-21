@@ -9,7 +9,7 @@
 
 package containerinstanceapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/containerinstance/mgmt/2018-02-01-preview/containerinstance/containerinstanceapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/containerinstance/mgmt/2018-02-01-preview/containerinstance/containerinstanceapi"
 
 type ContainerGroupUsageClientAPI = original.ContainerGroupUsageClientAPI
 type ContainerGroupsClientAPI = original.ContainerGroupsClientAPI

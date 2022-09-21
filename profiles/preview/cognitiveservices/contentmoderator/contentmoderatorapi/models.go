@@ -9,7 +9,7 @@
 
 package contentmoderatorapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/contentmoderator/contentmoderatorapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v1.0/contentmoderator/contentmoderatorapi"
 
 type ImageModerationClientAPI = original.ImageModerationClientAPI
 type ListManagementImageClientAPI = original.ListManagementImageClientAPI

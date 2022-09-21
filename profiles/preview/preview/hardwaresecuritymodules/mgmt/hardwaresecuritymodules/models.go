@@ -12,7 +12,7 @@ package hardwaresecuritymodules
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/hardwaresecuritymodules/mgmt/2018-10-31-preview/hardwaresecuritymodules"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/hardwaresecuritymodules/mgmt/2018-10-31-preview/hardwaresecuritymodules"
 )
 
 const (

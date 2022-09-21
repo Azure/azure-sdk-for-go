@@ -9,7 +9,7 @@
 
 package aadapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/aad/mgmt/2020-07-01-preview/aad/aadapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/aad/mgmt/2020-07-01-preview/aad/aadapi"
 
 type AzureADMetricsClientAPI = original.AzureADMetricsClientAPI
 type PrivateLinkForAzureAdClientAPI = original.PrivateLinkForAzureAdClientAPI

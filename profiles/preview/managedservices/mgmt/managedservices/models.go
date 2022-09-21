@@ -12,7 +12,7 @@ package managedservices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/managedservices/mgmt/2019-06-01/managedservices"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/managedservices/mgmt/2019-06-01/managedservices"
 )
 
 const (

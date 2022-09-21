@@ -12,7 +12,7 @@ package azuredata
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/azuredata/mgmt/2019-07-24-preview/azuredata"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/azuredata/mgmt/2019-07-24-preview/azuredata"
 )
 
 const (

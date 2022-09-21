@@ -12,7 +12,7 @@ package deviceupdate
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/deviceupdate/mgmt/2022-04-01-preview/deviceupdate"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/deviceupdate/mgmt/2022-04-01-preview/deviceupdate"
 )
 
 const (

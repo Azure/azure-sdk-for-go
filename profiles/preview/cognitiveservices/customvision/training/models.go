@@ -9,7 +9,7 @@
 
 package training
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v3.3/customvision/training"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v3.3/customvision/training"
 
 type Classifier = original.Classifier
 

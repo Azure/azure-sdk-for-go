@@ -9,7 +9,7 @@
 
 package inkrecognizer
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/inkrecognizer"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/inkrecognizer"
 
 type Application = original.Application
 

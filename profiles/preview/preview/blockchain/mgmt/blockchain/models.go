@@ -12,7 +12,7 @@ package blockchain
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/blockchain/mgmt/2018-06-01-preview/blockchain"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/blockchain/mgmt/2018-06-01-preview/blockchain"
 )
 
 const (

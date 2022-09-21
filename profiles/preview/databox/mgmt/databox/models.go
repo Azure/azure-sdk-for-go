@@ -12,7 +12,7 @@ package databox
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/databox/mgmt/2020-11-01/databox"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/databox/mgmt/2020-11-01/databox"
 )
 
 const (

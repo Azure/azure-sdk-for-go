@@ -12,7 +12,7 @@ package managednetwork
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/managednetwork/mgmt/2019-06-01-preview/managednetwork"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/managednetwork/mgmt/2019-06-01-preview/managednetwork"
 )
 
 const (

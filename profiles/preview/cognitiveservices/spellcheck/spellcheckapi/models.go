@@ -9,6 +9,6 @@
 
 package spellcheckapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/spellcheck/spellcheckapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v1.0/spellcheck/spellcheckapi"
 
 type BaseClientAPI = original.BaseClientAPI

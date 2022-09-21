@@ -12,7 +12,7 @@ package storagepool
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storagepool/mgmt/2021-08-01/storagepool"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/storagepool/mgmt/2021-08-01/storagepool"
 )
 
 const (

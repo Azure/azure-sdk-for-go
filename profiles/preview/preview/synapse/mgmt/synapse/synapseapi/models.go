@@ -9,7 +9,7 @@
 
 package synapseapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/2021-06-01-preview/synapse/synapseapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/synapse/mgmt/2021-06-01-preview/synapse/synapseapi"
 
 type AzureADOnlyAuthenticationsClientAPI = original.AzureADOnlyAuthenticationsClientAPI
 type BigDataPoolsClientAPI = original.BigDataPoolsClientAPI

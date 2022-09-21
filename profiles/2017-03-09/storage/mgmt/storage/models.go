@@ -9,7 +9,7 @@
 
 package storage
 
-import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2016-01-01/storage"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/storage/mgmt/2016-01-01/storage"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

@@ -12,7 +12,7 @@ package documentdb
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2021-10-15/documentdb"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/cosmos-db/mgmt/2021-10-15/documentdb"
 )
 
 const (

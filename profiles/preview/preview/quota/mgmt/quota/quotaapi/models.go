@@ -9,7 +9,7 @@
 
 package quotaapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/quota/mgmt/2021-03-15-preview/quota/quotaapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/quota/mgmt/2021-03-15-preview/quota/quotaapi"
 
 type ClientAPI = original.ClientAPI
 type OperationClientAPI = original.OperationClientAPI

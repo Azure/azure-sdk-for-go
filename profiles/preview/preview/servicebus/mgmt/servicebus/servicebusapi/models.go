@@ -9,7 +9,7 @@
 
 package servicebusapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus/servicebusapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus/servicebusapi"
 
 type DisasterRecoveryConfigsClientAPI = original.DisasterRecoveryConfigsClientAPI
 type MigrationConfigsClientAPI = original.MigrationConfigsClientAPI

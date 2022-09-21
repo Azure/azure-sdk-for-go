@@ -9,7 +9,7 @@
 
 package customerlockboxapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/customerlockbox/mgmt/2018-02-28-preview/customerlockbox/customerlockboxapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/customerlockbox/mgmt/2018-02-28-preview/customerlockbox/customerlockboxapi"
 
 type OperationsClientAPI = original.OperationsClientAPI
 type RequestsClientAPI = original.RequestsClientAPI

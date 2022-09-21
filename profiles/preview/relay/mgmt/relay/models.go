@@ -12,7 +12,7 @@ package relay
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/relay/mgmt/2017-04-01/relay"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/relay/mgmt/2017-04-01/relay"
 )
 
 const (

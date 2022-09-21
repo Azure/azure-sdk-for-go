@@ -9,6 +9,6 @@
 
 package entitysearchapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/entitysearch/entitysearchapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v1.0/entitysearch/entitysearchapi"
 
 type EntitiesClientAPI = original.EntitiesClientAPI

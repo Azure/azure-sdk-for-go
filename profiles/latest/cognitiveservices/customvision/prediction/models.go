@@ -9,7 +9,7 @@
 
 package prediction
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v3.1/customvision/prediction"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v3.1/customvision/prediction"
 
 type CustomVisionErrorCodes = original.CustomVisionErrorCodes
 

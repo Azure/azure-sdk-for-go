@@ -12,7 +12,7 @@ package servicebus
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 )
 
 const (

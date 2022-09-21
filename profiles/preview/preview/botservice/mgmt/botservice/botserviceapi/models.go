@@ -9,7 +9,7 @@
 
 package botserviceapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2021-05-01-preview/botservice/botserviceapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/botservice/mgmt/2021-05-01-preview/botservice/botserviceapi"
 
 type BotConnectionClientAPI = original.BotConnectionClientAPI
 type BotsClientAPI = original.BotsClientAPI

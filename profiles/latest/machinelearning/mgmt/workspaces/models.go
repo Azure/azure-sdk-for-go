@@ -12,7 +12,7 @@ package workspaces
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2019-10-01/workspaces"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/machinelearning/mgmt/2019-10-01/workspaces"
 )
 
 const (

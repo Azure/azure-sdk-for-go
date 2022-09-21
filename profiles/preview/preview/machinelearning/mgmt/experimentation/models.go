@@ -12,7 +12,7 @@ package experimentation
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2017-05-01-preview/experimentation"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/machinelearning/mgmt/2017-05-01-preview/experimentation"
 )
 
 const (

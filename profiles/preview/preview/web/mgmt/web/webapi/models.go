@@ -9,7 +9,7 @@
 
 package webapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-01-preview/web/webapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/web/mgmt/2015-08-01-preview/web/webapi"
 
 type CertificateOrdersClientAPI = original.CertificateOrdersClientAPI
 type CertificatesClientAPI = original.CertificatesClientAPI

@@ -9,6 +9,6 @@
 
 package edgeorderapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/edgeorder/mgmt/2021-12-01/edgeorder/edgeorderapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/edgeorder/mgmt/2021-12-01/edgeorder/edgeorderapi"
 
 type BaseClientAPI = original.BaseClientAPI

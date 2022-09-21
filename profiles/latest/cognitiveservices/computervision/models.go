@@ -9,7 +9,7 @@
 
 package computervision
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v3.1/computervision"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v3.1/computervision"
 
 type DescriptionExclude = original.DescriptionExclude
 

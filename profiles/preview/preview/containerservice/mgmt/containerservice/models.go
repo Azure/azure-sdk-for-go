@@ -12,7 +12,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2022-03-02-preview/containerservice"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/containerservice/mgmt/2022-03-02-preview/containerservice"
 )
 
 const (

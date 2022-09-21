@@ -9,7 +9,7 @@
 
 package datacatalogapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/datacatalog/mgmt/2016-03-30/datacatalog/datacatalogapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/datacatalog/mgmt/2016-03-30/datacatalog/datacatalogapi"
 
 type ADCCatalogsClientAPI = original.ADCCatalogsClientAPI
 type ADCOperationsClientAPI = original.ADCOperationsClientAPI

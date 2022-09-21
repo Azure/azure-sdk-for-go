@@ -12,7 +12,7 @@ package desktopvirtualization
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2021-09-03-preview/desktopvirtualization"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2021-09-03-preview/desktopvirtualization"
 )
 
 const (

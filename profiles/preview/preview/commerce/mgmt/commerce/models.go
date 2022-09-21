@@ -12,7 +12,7 @@ package commerce
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce"
 )
 
 const (

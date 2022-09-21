@@ -12,7 +12,7 @@ package changeanalysis
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/changeanalysis/mgmt/2021-04-01/changeanalysis"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/changeanalysis/mgmt/2021-04-01/changeanalysis"
 )
 
 const (

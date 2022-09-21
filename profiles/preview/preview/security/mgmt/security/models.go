@@ -12,7 +12,7 @@ package security
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security"
 )
 
 const (

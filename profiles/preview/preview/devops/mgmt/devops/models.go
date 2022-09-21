@@ -12,7 +12,7 @@ package devops
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/devops/mgmt/2019-07-01-preview/devops"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/devops/mgmt/2019-07-01-preview/devops"
 )
 
 const (

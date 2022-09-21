@@ -12,7 +12,7 @@ package authorization
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2020-10-01/authorization"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/authorization/mgmt/2020-10-01/authorization"
 )
 
 const (

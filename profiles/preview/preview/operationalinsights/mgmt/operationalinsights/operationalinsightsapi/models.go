@@ -9,7 +9,7 @@
 
 package operationalinsightsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2020-03-01-preview/operationalinsights/operationalinsightsapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2020-03-01-preview/operationalinsights/operationalinsightsapi"
 
 type AvailableServiceTiersClientAPI = original.AvailableServiceTiersClientAPI
 type ClustersClientAPI = original.ClustersClientAPI

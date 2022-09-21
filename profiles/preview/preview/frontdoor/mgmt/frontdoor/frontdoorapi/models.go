@@ -9,7 +9,7 @@
 
 package frontdoorapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/frontdoor/mgmt/2018-08-01-preview/frontdoor/frontdoorapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/frontdoor/mgmt/2018-08-01-preview/frontdoor/frontdoorapi"
 
 type BaseClientAPI = original.BaseClientAPI
 type EndpointsClientAPI = original.EndpointsClientAPI

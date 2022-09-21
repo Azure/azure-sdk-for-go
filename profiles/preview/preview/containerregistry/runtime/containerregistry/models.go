@@ -9,7 +9,7 @@
 
 package containerregistry
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/runtime/2019-08-15-preview/containerregistry"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/containerregistry/runtime/2019-08-15-preview/containerregistry"
 
 type AccessToken = original.AccessToken
 type AccessTokensClient = original.AccessTokensClient

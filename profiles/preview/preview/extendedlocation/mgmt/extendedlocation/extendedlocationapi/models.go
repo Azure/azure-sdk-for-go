@@ -9,6 +9,6 @@
 
 package extendedlocationapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/extendedlocation/mgmt/2021-03-15-preview/extendedlocation/extendedlocationapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/extendedlocation/mgmt/2021-03-15-preview/extendedlocation/extendedlocationapi"
 
 type CustomLocationsClientAPI = original.CustomLocationsClientAPI

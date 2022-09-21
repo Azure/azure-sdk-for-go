@@ -12,7 +12,7 @@ package hybridkubernetes
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/hybridkubernetes/mgmt/2021-10-01/hybridkubernetes"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/hybridkubernetes/mgmt/2021-10-01/hybridkubernetes"
 )
 
 const (

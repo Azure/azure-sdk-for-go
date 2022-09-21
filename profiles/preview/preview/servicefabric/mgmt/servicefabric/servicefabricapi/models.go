@@ -9,7 +9,7 @@
 
 package servicefabricapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric/servicefabricapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric/servicefabricapi"
 
 type ClusterVersionsClientAPI = original.ClusterVersionsClientAPI
 type ClustersClientAPI = original.ClustersClientAPI

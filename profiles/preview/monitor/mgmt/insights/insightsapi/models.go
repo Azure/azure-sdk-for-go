@@ -9,6 +9,6 @@
 
 package insightsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2020-10-01/insights/insightsapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/monitor/mgmt/2020-10-01/insights/insightsapi"
 
 type ActivityLogAlertsClientAPI = original.ActivityLogAlertsClientAPI

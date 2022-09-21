@@ -12,7 +12,7 @@ package backup
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2022-03-01/backup"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/recoveryservices/mgmt/2022-03-01/backup"
 )
 
 const (

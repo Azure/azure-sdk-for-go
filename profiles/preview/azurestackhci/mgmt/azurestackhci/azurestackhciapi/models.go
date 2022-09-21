@@ -9,7 +9,7 @@
 
 package azurestackhciapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/azurestackhci/mgmt/2022-05-01/azurestackhci/azurestackhciapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/azurestackhci/mgmt/2022-05-01/azurestackhci/azurestackhciapi"
 
 type ArcSettingsClientAPI = original.ArcSettingsClientAPI
 type ClustersClientAPI = original.ClustersClientAPI

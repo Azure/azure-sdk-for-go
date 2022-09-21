@@ -12,7 +12,7 @@ package botservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2021-05-01-preview/botservice"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/botservice/mgmt/2021-05-01-preview/botservice"
 )
 
 const (

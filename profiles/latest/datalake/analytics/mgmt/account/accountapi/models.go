@@ -9,7 +9,7 @@
 
 package accountapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/mgmt/2016-11-01/account/accountapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/datalake/analytics/mgmt/2016-11-01/account/accountapi"
 
 type AccountsClientAPI = original.AccountsClientAPI
 type ComputePoliciesClientAPI = original.ComputePoliciesClientAPI

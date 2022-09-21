@@ -12,7 +12,7 @@ package baremetalinfrastructure
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/baremetalinfrastructure/mgmt/2020-08-06-preview/baremetalinfrastructure"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/baremetalinfrastructure/mgmt/2020-08-06-preview/baremetalinfrastructure"
 )
 
 const (

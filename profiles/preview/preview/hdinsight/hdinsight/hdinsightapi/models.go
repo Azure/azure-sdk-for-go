@@ -9,6 +9,6 @@
 
 package hdinsightapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/hdinsight/2018-11-01-preview/hdinsight/hdinsightapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/hdinsight/2018-11-01-preview/hdinsight/hdinsightapi"
 
 type JobClientAPI = original.JobClientAPI

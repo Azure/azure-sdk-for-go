@@ -12,7 +12,7 @@ package vmwarecloudsimple
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/vmwarecloudsimple/mgmt/2019-04-01/vmwarecloudsimple"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/vmwarecloudsimple/mgmt/2019-04-01/vmwarecloudsimple"
 )
 
 const (

@@ -9,6 +9,6 @@
 
 package inkrecognizerapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/inkrecognizer/inkrecognizerapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/inkrecognizer/inkrecognizerapi"
 
 type ClientAPI = original.ClientAPI

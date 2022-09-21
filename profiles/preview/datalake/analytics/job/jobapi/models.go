@@ -9,7 +9,7 @@
 
 package jobapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/2016-11-01/job/jobapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/datalake/analytics/2016-11-01/job/jobapi"
 
 type ClientAPI = original.ClientAPI
 type PipelineClientAPI = original.PipelineClientAPI

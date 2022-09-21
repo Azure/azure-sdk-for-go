@@ -9,7 +9,7 @@
 
 package postgresqlflexibleserversapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/postgresql/mgmt/2020-11-05-preview/postgresqlflexibleservers/postgresqlflexibleserversapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/postgresql/mgmt/2020-11-05-preview/postgresqlflexibleservers/postgresqlflexibleserversapi"
 
 type CheckNameAvailabilityClientAPI = original.CheckNameAvailabilityClientAPI
 type ConfigurationsClientAPI = original.ConfigurationsClientAPI

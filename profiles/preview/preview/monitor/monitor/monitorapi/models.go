@@ -9,6 +9,6 @@
 
 package monitorapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/monitor/2018-09-01-preview/monitor/monitorapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/monitor/2018-09-01-preview/monitor/monitorapi"
 
 type MetricsClientAPI = original.MetricsClientAPI

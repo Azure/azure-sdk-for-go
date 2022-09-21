@@ -12,7 +12,7 @@ package sqlvirtualmachine
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/sqlvirtualmachine/mgmt/2021-11-01-preview/sqlvirtualmachine"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/sqlvirtualmachine/mgmt/2021-11-01-preview/sqlvirtualmachine"
 )
 
 const (

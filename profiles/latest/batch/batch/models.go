@@ -12,7 +12,7 @@ package batch
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/batch/2020-09-01.12.0/batch"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/batch/2020-09-01.12.0/batch"
 )
 
 type AccessScope = original.AccessScope

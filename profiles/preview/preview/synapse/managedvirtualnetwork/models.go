@@ -12,7 +12,7 @@ package managedvirtualnetwork
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/synapse/2019-06-01-preview/managedvirtualnetwork"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/synapse/2019-06-01-preview/managedvirtualnetwork"
 )
 
 type BaseClient = original.BaseClient

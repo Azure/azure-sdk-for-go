@@ -12,7 +12,7 @@ package hybriddata
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/hybriddatamanager/mgmt/2019-06-01/hybriddata"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/hybriddatamanager/mgmt/2019-06-01/hybriddata"
 )
 
 const (

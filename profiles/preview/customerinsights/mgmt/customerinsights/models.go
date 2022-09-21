@@ -12,7 +12,7 @@ package customerinsights
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/customerinsights/mgmt/2017-04-26/customerinsights"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/customerinsights/mgmt/2017-04-26/customerinsights"
 )
 
 const (

@@ -9,7 +9,7 @@
 
 package authorizationapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization/authorizationapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization/authorizationapi"
 
 type ClassicAdministratorsClientAPI = original.ClassicAdministratorsClientAPI
 type GlobalAdministratorClientAPI = original.GlobalAdministratorClientAPI

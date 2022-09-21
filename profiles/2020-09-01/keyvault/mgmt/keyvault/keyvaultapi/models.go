@@ -9,7 +9,7 @@
 
 package keyvaultapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2019-09-01/keyvault/keyvaultapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/keyvault/mgmt/2019-09-01/keyvault/keyvaultapi"
 
 type KeysClientAPI = original.KeysClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

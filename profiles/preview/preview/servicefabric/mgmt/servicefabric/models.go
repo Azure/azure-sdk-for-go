@@ -12,7 +12,7 @@ package servicefabric
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric"
 )
 
 const (

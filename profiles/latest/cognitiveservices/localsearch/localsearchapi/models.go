@@ -9,6 +9,6 @@
 
 package localsearchapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/localsearch/localsearchapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v1.0/localsearch/localsearchapi"
 
 type LocalClientAPI = original.LocalClientAPI

@@ -12,7 +12,7 @@ package securityinsight
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/securityinsight/mgmt/2020-01-01/securityinsight"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/securityinsight/mgmt/2020-01-01/securityinsight"
 )
 
 const (

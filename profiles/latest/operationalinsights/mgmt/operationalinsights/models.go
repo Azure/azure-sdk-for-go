@@ -12,7 +12,7 @@ package operationalinsights
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2020-10-01/operationalinsights"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/operationalinsights/mgmt/2020-10-01/operationalinsights"
 )
 
 const (

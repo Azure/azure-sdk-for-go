@@ -9,6 +9,6 @@
 
 package managedvirtualnetworkapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/synapse/2019-06-01-preview/managedvirtualnetwork/managedvirtualnetworkapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/synapse/2019-06-01-preview/managedvirtualnetwork/managedvirtualnetworkapi"
 
 type ManagedPrivateEndpointsClientAPI = original.ManagedPrivateEndpointsClientAPI

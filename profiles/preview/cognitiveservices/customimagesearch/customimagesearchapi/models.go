@@ -9,6 +9,6 @@
 
 package customimagesearchapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/customimagesearch/customimagesearchapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v1.0/customimagesearch/customimagesearchapi"
 
 type CustomInstanceClientAPI = original.CustomInstanceClientAPI

@@ -9,7 +9,7 @@
 
 package contentmoderator
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/contentmoderator"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v1.0/contentmoderator"
 
 type StatusEnum = original.StatusEnum
 

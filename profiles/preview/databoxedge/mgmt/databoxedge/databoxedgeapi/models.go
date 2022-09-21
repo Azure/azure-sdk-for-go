@@ -9,7 +9,7 @@
 
 package databoxedgeapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/databoxedge/mgmt/2020-12-01/databoxedge/databoxedgeapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/databoxedge/mgmt/2020-12-01/databoxedge/databoxedgeapi"
 
 type AddonsClientAPI = original.AddonsClientAPI
 type AlertsClientAPI = original.AlertsClientAPI

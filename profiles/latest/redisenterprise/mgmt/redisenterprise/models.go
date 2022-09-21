@@ -12,7 +12,7 @@ package redisenterprise
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/redisenterprise/mgmt/2022-01-01/redisenterprise"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/redisenterprise/mgmt/2022-01-01/redisenterprise"
 )
 
 const (

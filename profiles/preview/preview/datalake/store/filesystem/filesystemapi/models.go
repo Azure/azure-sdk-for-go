@@ -9,6 +9,6 @@
 
 package filesystemapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem/filesystemapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem/filesystemapi"
 
 type ClientAPI = original.ClientAPI

@@ -9,7 +9,7 @@
 
 package siterecoveryapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2018-07-10/siterecovery/siterecoveryapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/recoveryservices/mgmt/2018-07-10/siterecovery/siterecoveryapi"
 
 type MigrationRecoveryPointsClientAPI = original.MigrationRecoveryPointsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

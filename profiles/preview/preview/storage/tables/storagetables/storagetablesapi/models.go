@@ -9,7 +9,7 @@
 
 package storagetablesapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/storage/tables/2019-02-02-preview/storagetables/storagetablesapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/storage/tables/2019-02-02-preview/storagetables/storagetablesapi"
 
 type ServiceClientAPI = original.ServiceClientAPI
 type TableClientAPI = original.TableClientAPI

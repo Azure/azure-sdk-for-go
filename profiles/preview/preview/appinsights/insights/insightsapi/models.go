@@ -9,7 +9,7 @@
 
 package insightsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/appinsights/v1/insights/insightsapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/appinsights/v1/insights/insightsapi"
 
 type EventsClientAPI = original.EventsClientAPI
 type MetadataClientAPI = original.MetadataClientAPI

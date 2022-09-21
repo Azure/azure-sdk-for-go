@@ -9,7 +9,7 @@
 
 package deviceupdateapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/deviceupdate/mgmt/2022-04-01-preview/deviceupdate/deviceupdateapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/deviceupdate/mgmt/2022-04-01-preview/deviceupdate/deviceupdateapi"
 
 type AccountsClientAPI = original.AccountsClientAPI
 type BaseClientAPI = original.BaseClientAPI

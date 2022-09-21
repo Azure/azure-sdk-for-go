@@ -9,7 +9,7 @@
 
 package operationsmanagementapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/operationsmanagement/mgmt/2015-11-01-preview/operationsmanagement/operationsmanagementapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/operationsmanagement/mgmt/2015-11-01-preview/operationsmanagement/operationsmanagementapi"
 
 type ManagementAssociationsClientAPI = original.ManagementAssociationsClientAPI
 type ManagementConfigurationsClientAPI = original.ManagementConfigurationsClientAPI

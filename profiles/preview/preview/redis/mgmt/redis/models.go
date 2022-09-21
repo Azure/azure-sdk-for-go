@@ -12,7 +12,7 @@ package redis
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/redis/mgmt/2019-07-01-preview/redis"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/redis/mgmt/2019-07-01-preview/redis"
 )
 
 const (

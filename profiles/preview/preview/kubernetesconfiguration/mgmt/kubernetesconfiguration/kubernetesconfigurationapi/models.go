@@ -9,7 +9,7 @@
 
 package kubernetesconfigurationapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/kubernetesconfiguration/mgmt/2022-04-02-preview/kubernetesconfiguration/kubernetesconfigurationapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/kubernetesconfiguration/mgmt/2022-04-02-preview/kubernetesconfiguration/kubernetesconfigurationapi"
 
 type ExtensionsClientAPI = original.ExtensionsClientAPI
 type FluxConfigOperationStatusClientAPI = original.FluxConfigOperationStatusClientAPI

@@ -12,7 +12,7 @@ package storagesync
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2020-03-01/storagesync"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/storagesync/mgmt/2020-03-01/storagesync"
 )
 
 const (

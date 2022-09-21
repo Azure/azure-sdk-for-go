@@ -9,7 +9,7 @@
 
 package appplatformapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/appplatform/mgmt/2020-07-01/appplatform/appplatformapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/appplatform/mgmt/2020-07-01/appplatform/appplatformapi"
 
 type AppsClientAPI = original.AppsClientAPI
 type BindingsClientAPI = original.BindingsClientAPI

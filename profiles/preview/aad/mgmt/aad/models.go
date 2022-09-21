@@ -12,7 +12,7 @@ package aad
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/aad/mgmt/2020-03-01/aad"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/aad/mgmt/2020-03-01/aad"
 )
 
 const (

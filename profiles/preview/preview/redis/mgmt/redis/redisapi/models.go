@@ -9,7 +9,7 @@
 
 package redisapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/redis/mgmt/2019-07-01-preview/redis/redisapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/redis/mgmt/2019-07-01-preview/redis/redisapi"
 
 type ClientAPI = original.ClientAPI
 type FirewallRulesClientAPI = original.FirewallRulesClientAPI

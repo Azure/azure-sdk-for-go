@@ -9,7 +9,7 @@
 
 package attestationapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/attestation/2020-10-01/attestation/attestationapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/attestation/2020-10-01/attestation/attestationapi"
 
 type ClientAPI = original.ClientAPI
 type MetadataConfigurationClientAPI = original.MetadataConfigurationClientAPI

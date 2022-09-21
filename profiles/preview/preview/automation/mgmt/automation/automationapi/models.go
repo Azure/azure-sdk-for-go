@@ -9,7 +9,7 @@
 
 package automationapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2021-06-22-preview/automation/automationapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/automation/mgmt/2021-06-22-preview/automation/automationapi"
 
 type AccountClientAPI = original.AccountClientAPI
 type ActivityClientAPI = original.ActivityClientAPI

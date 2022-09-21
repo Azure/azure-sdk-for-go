@@ -9,7 +9,7 @@
 
 package textanalytics
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.1/textanalytics"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v2.1/textanalytics"
 
 type BaseClient = original.BaseClient
 type DetectedLanguage = original.DetectedLanguage

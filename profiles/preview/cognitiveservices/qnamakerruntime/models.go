@@ -9,7 +9,7 @@
 
 package qnamakerruntime
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v4.0/qnamakerruntime"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v4.0/qnamakerruntime"
 
 type ErrorCodeType = original.ErrorCodeType
 

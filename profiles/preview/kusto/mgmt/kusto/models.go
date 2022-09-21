@@ -12,7 +12,7 @@ package kusto
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2022-02-01/kusto"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/kusto/mgmt/2022-02-01/kusto"
 )
 
 const (

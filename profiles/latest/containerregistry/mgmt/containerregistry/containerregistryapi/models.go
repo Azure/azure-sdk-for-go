@@ -9,7 +9,7 @@
 
 package containerregistryapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-05-01/containerregistry/containerregistryapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/containerregistry/mgmt/2019-05-01/containerregistry/containerregistryapi"
 
 type OperationsClientAPI = original.OperationsClientAPI
 type RegistriesClientAPI = original.RegistriesClientAPI

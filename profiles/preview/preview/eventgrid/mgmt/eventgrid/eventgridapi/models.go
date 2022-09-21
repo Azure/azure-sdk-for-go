@@ -9,7 +9,7 @@
 
 package eventgridapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2021-10-15-preview/eventgrid/eventgridapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/eventgrid/mgmt/2021-10-15-preview/eventgrid/eventgridapi"
 
 type ChannelsClientAPI = original.ChannelsClientAPI
 type DomainEventSubscriptionsClientAPI = original.DomainEventSubscriptionsClientAPI

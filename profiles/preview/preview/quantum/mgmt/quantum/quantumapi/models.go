@@ -9,7 +9,7 @@
 
 package quantumapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/quantum/mgmt/2019-11-04-preview/quantum/quantumapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/quantum/mgmt/2019-11-04-preview/quantum/quantumapi"
 
 type OfferingsClientAPI = original.OfferingsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

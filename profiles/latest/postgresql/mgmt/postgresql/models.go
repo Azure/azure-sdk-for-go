@@ -12,7 +12,7 @@ package postgresql
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql"
 )
 
 const (

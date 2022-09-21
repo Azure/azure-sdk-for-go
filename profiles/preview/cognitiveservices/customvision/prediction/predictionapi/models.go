@@ -9,6 +9,6 @@
 
 package predictionapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v3.1/customvision/prediction/predictionapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v3.1/customvision/prediction/predictionapi"
 
 type BaseClientAPI = original.BaseClientAPI

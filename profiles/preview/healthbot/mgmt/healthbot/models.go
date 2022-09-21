@@ -12,7 +12,7 @@ package healthbot
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/healthbot/mgmt/2020-12-08/healthbot"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/healthbot/mgmt/2020-12-08/healthbot"
 )
 
 const (

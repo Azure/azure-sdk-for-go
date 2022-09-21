@@ -12,7 +12,7 @@ package media
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/mediaservices/mgmt/2019-05-01-preview/media"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/mediaservices/mgmt/2019-05-01-preview/media"
 )
 
 const (

@@ -12,7 +12,7 @@ package web
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/web/mgmt/2021-03-01/web"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/web/mgmt/2021-03-01/web"
 )
 
 const (

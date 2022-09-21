@@ -9,7 +9,7 @@
 
 package maintenance
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/maintenance/mgmt/2018-06-01-preview/maintenance"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/maintenance/mgmt/2018-06-01-preview/maintenance"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

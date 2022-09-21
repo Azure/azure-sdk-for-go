@@ -9,7 +9,7 @@
 
 package resourcegraph
 
-import original "github.com/Azure/azure-sdk-for-go/services/resourcegraph/mgmt/2021-03-01/resourcegraph"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/resourcegraph/mgmt/2021-03-01/resourcegraph"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

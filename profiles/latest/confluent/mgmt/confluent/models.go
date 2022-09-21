@@ -12,7 +12,7 @@ package confluent
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/confluent/mgmt/2020-03-01/confluent"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/confluent/mgmt/2020-03-01/confluent"
 )
 
 const (

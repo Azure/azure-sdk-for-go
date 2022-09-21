@@ -9,7 +9,7 @@
 
 package labservicesapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/labservices/mgmt/2021-11-15-preview/labservices/labservicesapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/labservices/mgmt/2021-11-15-preview/labservices/labservicesapi"
 
 type ImagesClientAPI = original.ImagesClientAPI
 type LabPlansClientAPI = original.LabPlansClientAPI

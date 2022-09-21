@@ -9,7 +9,7 @@
 
 package storagepoolapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/storagepool/mgmt/2021-08-01/storagepool/storagepoolapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/storagepool/mgmt/2021-08-01/storagepool/storagepoolapi"
 
 type DiskPoolZonesClientAPI = original.DiskPoolZonesClientAPI
 type DiskPoolsClientAPI = original.DiskPoolsClientAPI

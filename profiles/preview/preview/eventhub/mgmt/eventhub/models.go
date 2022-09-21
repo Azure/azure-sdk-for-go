@@ -12,7 +12,7 @@ package eventhub
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub"
 )
 
 const (

@@ -12,7 +12,7 @@ package compute
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/compute/mgmt/2020-10-01-preview/compute"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/compute/mgmt/2020-10-01-preview/compute"
 )
 
 const (

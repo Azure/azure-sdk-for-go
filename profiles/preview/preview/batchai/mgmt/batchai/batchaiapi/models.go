@@ -9,7 +9,7 @@
 
 package batchaiapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/batchai/mgmt/2017-09-01-preview/batchai/batchaiapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/batchai/mgmt/2017-09-01-preview/batchai/batchaiapi"
 
 type ClustersClientAPI = original.ClustersClientAPI
 type FileServersClientAPI = original.FileServersClientAPI

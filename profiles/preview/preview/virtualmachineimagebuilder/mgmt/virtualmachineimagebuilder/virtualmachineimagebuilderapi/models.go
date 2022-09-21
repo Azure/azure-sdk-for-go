@@ -9,7 +9,7 @@
 
 package virtualmachineimagebuilderapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/virtualmachineimagebuilder/mgmt/2019-05-01-preview/virtualmachineimagebuilder/virtualmachineimagebuilderapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/virtualmachineimagebuilder/mgmt/2019-05-01-preview/virtualmachineimagebuilder/virtualmachineimagebuilderapi"
 
 type OperationsClientAPI = original.OperationsClientAPI
 type VirtualMachineImageTemplatesClientAPI = original.VirtualMachineImageTemplatesClientAPI

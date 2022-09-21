@@ -12,7 +12,7 @@ package dns
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2016-04-01/dns"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/dns/mgmt/2016-04-01/dns"
 )
 
 const (

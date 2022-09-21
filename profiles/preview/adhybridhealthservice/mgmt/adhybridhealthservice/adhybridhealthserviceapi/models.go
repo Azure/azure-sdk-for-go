@@ -9,7 +9,7 @@
 
 package adhybridhealthserviceapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/adhybridhealthservice/mgmt/2014-01-01/adhybridhealthservice/adhybridhealthserviceapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/adhybridhealthservice/mgmt/2014-01-01/adhybridhealthservice/adhybridhealthserviceapi"
 
 type AdDomainServiceMembersClientAPI = original.AdDomainServiceMembersClientAPI
 type AddsServiceClientAPI = original.AddsServiceClientAPI

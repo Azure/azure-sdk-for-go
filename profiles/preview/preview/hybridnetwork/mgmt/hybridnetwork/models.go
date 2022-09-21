@@ -12,7 +12,7 @@ package hybridnetwork
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/hybridnetwork/mgmt/2020-01-01-preview/hybridnetwork"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/hybridnetwork/mgmt/2020-01-01-preview/hybridnetwork"
 )
 
 const (

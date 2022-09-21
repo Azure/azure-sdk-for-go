@@ -9,7 +9,7 @@
 
 package appconfigurationapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/appconfiguration/mgmt/2020-06-01/appconfiguration/appconfigurationapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/appconfiguration/mgmt/2020-06-01/appconfiguration/appconfigurationapi"
 
 type ConfigurationStoresClientAPI = original.ConfigurationStoresClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

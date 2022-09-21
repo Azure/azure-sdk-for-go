@@ -9,6 +9,6 @@
 
 package websearchapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/websearch/websearchapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v1.0/websearch/websearchapi"
 
 type WebClientAPI = original.WebClientAPI

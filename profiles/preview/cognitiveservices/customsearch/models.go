@@ -9,7 +9,7 @@
 
 package customsearch
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/customsearch"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/cognitiveservices/v1.0/customsearch"
 
 const (
 	DefaultEndpoint = original.DefaultEndpoint

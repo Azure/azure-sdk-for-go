@@ -12,7 +12,7 @@ package extendedlocation
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/extendedlocation/mgmt/2021-08-15/extendedlocation"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/extendedlocation/mgmt/2021-08-15/extendedlocation"
 )
 
 const (

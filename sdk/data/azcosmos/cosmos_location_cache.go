@@ -15,13 +15,14 @@ const (
 	none opType = iota
 	read
 	write
+	all
 )
 
 type opType int
 
 type locationUnavailabilityInfo struct {
-	lastCheckTime time.Time
-	unavailableOp opType
+	lastCheckTime  time.Time
+	unavailableOps opType
 }
 
 type dbAcctLocationsInfo struct {
@@ -122,12 +123,12 @@ func (lc *LocationCache) MarkEndptUnavailable(endpoint url.URL, op opType) {
 	lc.mu.Lock()
 	if info, ok := lc.locationUnavailabilityInfoMap[endpoint]; ok {
 		info.lastCheckTime = currTime
-		info.unavailableOp |= op
+		info.unavailableOps |= op
 		lc.locationUnavailabilityInfoMap[endpoint] = info
 	} else {
 		info = locationUnavailabilityInfo{
-			lastCheckTime: currTime,
-			unavailableOp: op,
+			lastCheckTime:  currTime,
+			unavailableOps: op,
 		}
 		lc.locationUnavailabilityInfoMap[endpoint] = info
 	}
@@ -145,5 +146,19 @@ func (lc *LocationCache) RefreshStaleEndpts() {
 		if time.Since(info.lastCheckTime) > lc.unavailableLocationExpirationTime {
 			delete(lc.locationUnavailabilityInfoMap, endpoint)
 		}
+	}
+	lc.mu.Unlock()
+}
+
+func (lc *LocationCache) IsEndptUnavailable(endpoint url.URL, ops opType) bool {
+	lc.mu.Lock()
+	info, ok := lc.locationUnavailabilityInfoMap[endpoint]
+	if ops == none || !ok || ops&info.unavailableOps == 0 {
+		return false
+	} else {
+		if time.Since(info.lastCheckTime) > lc.unavailableLocationExpirationTime {
+			return false
+		}
+		return true
 	}
 }

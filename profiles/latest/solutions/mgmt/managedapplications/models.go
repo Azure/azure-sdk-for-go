@@ -12,11 +12,17 @@ package managedapplications
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/solutions/mgmt/2019-07-01/managedapplications"
+	original "github.com/Azure/azure-sdk-for-go/services/solutions/mgmt/2021-07-01/managedapplications"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ActionType = original.ActionType
+
+const (
+	Internal ActionType = original.Internal
 )
 
 type ApplicationArtifactName = original.ApplicationArtifactName
@@ -59,6 +65,15 @@ const (
 	ApplicationManagementModeManaged      ApplicationManagementMode = original.ApplicationManagementModeManaged
 	ApplicationManagementModeNotSpecified ApplicationManagementMode = original.ApplicationManagementModeNotSpecified
 	ApplicationManagementModeUnmanaged    ApplicationManagementMode = original.ApplicationManagementModeUnmanaged
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type DeploymentMode = original.DeploymentMode
@@ -105,18 +120,23 @@ const (
 	JitSchedulingTypeRecurring    JitSchedulingType = original.JitSchedulingTypeRecurring
 )
 
+type Origin = original.Origin
+
+const (
+	OriginSystem     Origin = original.OriginSystem
+	OriginUser       Origin = original.OriginUser
+	OriginUsersystem Origin = original.OriginUsersystem
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
 	ProvisioningStateAccepted     ProvisioningState = original.ProvisioningStateAccepted
 	ProvisioningStateCanceled     ProvisioningState = original.ProvisioningStateCanceled
-	ProvisioningStateCreated      ProvisioningState = original.ProvisioningStateCreated
-	ProvisioningStateCreating     ProvisioningState = original.ProvisioningStateCreating
 	ProvisioningStateDeleted      ProvisioningState = original.ProvisioningStateDeleted
 	ProvisioningStateDeleting     ProvisioningState = original.ProvisioningStateDeleting
 	ProvisioningStateFailed       ProvisioningState = original.ProvisioningStateFailed
 	ProvisioningStateNotSpecified ProvisioningState = original.ProvisioningStateNotSpecified
-	ProvisioningStateReady        ProvisioningState = original.ProvisioningStateReady
 	ProvisioningStateRunning      ProvisioningState = original.ProvisioningStateRunning
 	ProvisioningStateSucceeded    ProvisioningState = original.ProvisioningStateSucceeded
 	ProvisioningStateUpdating     ProvisioningState = original.ProvisioningStateUpdating
@@ -178,7 +198,6 @@ type ApplicationPackageSupportUrls = original.ApplicationPackageSupportUrls
 type ApplicationPatchable = original.ApplicationPatchable
 type ApplicationPolicy = original.ApplicationPolicy
 type ApplicationProperties = original.ApplicationProperties
-type ApplicationPropertiesPatchable = original.ApplicationPropertiesPatchable
 type ApplicationsClient = original.ApplicationsClient
 type ApplicationsCreateOrUpdateByIDFuture = original.ApplicationsCreateOrUpdateByIDFuture
 type ApplicationsCreateOrUpdateFuture = original.ApplicationsCreateOrUpdateFuture
@@ -216,6 +235,7 @@ type Plan = original.Plan
 type PlanPatchable = original.PlanPatchable
 type Resource = original.Resource
 type Sku = original.Sku
+type SystemData = original.SystemData
 type UpdateAccessDefinition = original.UpdateAccessDefinition
 type UserAssignedResourceIdentity = original.UserAssignedResourceIdentity
 
@@ -261,6 +281,9 @@ func NewOperationListResultPage(cur OperationListResult, getNextPage func(contex
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleActionTypeValues() []ActionType {
+	return original.PossibleActionTypeValues()
+}
 func PossibleApplicationArtifactNameValues() []ApplicationArtifactName {
 	return original.PossibleApplicationArtifactNameValues()
 }
@@ -276,6 +299,9 @@ func PossibleApplicationLockLevelValues() []ApplicationLockLevel {
 func PossibleApplicationManagementModeValues() []ApplicationManagementMode {
 	return original.PossibleApplicationManagementModeValues()
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
 func PossibleDeploymentModeValues() []DeploymentMode {
 	return original.PossibleDeploymentModeValues()
 }
@@ -290,6 +316,9 @@ func PossibleJitRequestStateValues() []JitRequestState {
 }
 func PossibleJitSchedulingTypeValues() []JitSchedulingType {
 	return original.PossibleJitSchedulingTypeValues()
+}
+func PossibleOriginValues() []Origin {
+	return original.PossibleOriginValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

@@ -9,7 +9,7 @@
 
 package insightsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2022-06-01-preview/insights/insightsapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2022-10-01-preview/insights/insightsapi"
 
 type ActionGroupsClientAPI = original.ActionGroupsClientAPI
 type ActivityLogAlertsClientAPI = original.ActivityLogAlertsClientAPI
@@ -31,6 +31,7 @@ type MetricDefinitionsClientAPI = original.MetricDefinitionsClientAPI
 type MetricNamespacesClientAPI = original.MetricNamespacesClientAPI
 type MetricsClientAPI = original.MetricsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type PredictiveMetricClientAPI = original.PredictiveMetricClientAPI
 type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
 type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
 type PrivateLinkScopeOperationStatusClientAPI = original.PrivateLinkScopeOperationStatusClientAPI

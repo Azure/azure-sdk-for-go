@@ -34,6 +34,17 @@ type dbAcctLocationsInfo struct {
 	readEndpts                 []url.URL
 }
 
+type AcctRegion struct {
+	name     string
+	endpoint string // make url?
+	props    map[string]interface{}
+}
+type AcctProperties struct {
+	readRegions                  []AcctRegion
+	writeRegions                 []AcctRegion
+	enableMultipleWriteLocations bool
+}
+
 type LocationCache struct {
 	locationInfo                      dbAcctLocationsInfo
 	defaultEndpt                      url.URL
@@ -47,20 +58,23 @@ type LocationCache struct {
 	unavailableLocationExpirationTime time.Duration
 }
 
-func (lc *LocationCache) update(writeLocations []string, readLocations []string, prefList []string, enableMultipleWriteLocations bool) {
-	return
+func (lc *LocationCache) updateCore() {
+}
+func (lc *LocationCache) updatePrefLocations(prefLocs []string) {
+}
+func (lc *LocationCache) update(writeLocations []AcctRegion, readLocations []AcctRegion, prefList []string, enableMultipleWriteLocations bool) {
 }
 
 func (lc *LocationCache) ReadEndpoints() []url.URL {
 	if time.Since(lc.lastUpdateTime) > lc.unavailableLocationExpirationTime && len(lc.locationUnavailabilityInfoMap) > 0 {
-		// lc.Update()
+		lc.updateCore()
 	}
 	return lc.locationInfo.readEndpts
 }
 
 func (lc *LocationCache) WriteEndpoints() []url.URL {
 	if time.Since(lc.lastUpdateTime) > lc.unavailableLocationExpirationTime && len(lc.locationUnavailabilityInfoMap) > 0 {
-		// lc.update()
+		lc.updateCore()
 	}
 	return lc.locationInfo.writeEndpts
 }
@@ -93,4 +107,43 @@ func (lc *LocationCache) GetLocation(endpoint url.URL) string {
 
 func (lc *LocationCache) CanUseMultipleWriteLocs() bool {
 	return lc.useMultipleWriteLocations && lc.enableMultipleWriteLocations
+}
+
+func (lc *LocationCache) MarkEndptUnavailableForRead(endpoint url.URL) {
+	lc.MarkEndptUnavailable(endpoint, read)
+}
+
+func (lc *LocationCache) MarkEndptUnavailableForWrite(endpoint url.URL) {
+	lc.MarkEndptUnavailable(endpoint, write)
+}
+
+func (lc *LocationCache) MarkEndptUnavailable(endpoint url.URL, op opType) {
+	currTime := time.Now()
+	lc.mu.Lock()
+	if info, ok := lc.locationUnavailabilityInfoMap[endpoint]; ok {
+		info.lastCheckTime = currTime
+		info.unavailableOp |= op
+		lc.locationUnavailabilityInfoMap[endpoint] = info
+	} else {
+		info = locationUnavailabilityInfo{
+			lastCheckTime: currTime,
+			unavailableOp: op,
+		}
+		lc.locationUnavailabilityInfoMap[endpoint] = info
+	}
+	lc.mu.Unlock()
+	lc.updateCore()
+}
+
+func (lc *LocationCache) DbAcctRead(dbAcct AcctProperties) {
+	lc.update(dbAcct.writeRegions, dbAcct.readRegions, nil, dbAcct.enableMultipleWriteLocations)
+}
+
+func (lc *LocationCache) RefreshStaleEndpts() {
+	lc.mu.Lock()
+	for endpoint, info := range lc.locationUnavailabilityInfoMap {
+		if time.Since(info.lastCheckTime) > lc.unavailableLocationExpirationTime {
+			delete(lc.locationUnavailabilityInfoMap, endpoint)
+		}
+	}
 }

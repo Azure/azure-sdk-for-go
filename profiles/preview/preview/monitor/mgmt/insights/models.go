@@ -12,7 +12,7 @@ package insights
 import (
 	"context"
 
-	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/monitor/mgmt/2022-06-01-preview/insights"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/monitor/mgmt/2022-10-01-preview/insights"
 )
 
 const (
@@ -404,6 +404,14 @@ const (
 	OperatorLessThanOrEqual    Operator = original.OperatorLessThanOrEqual
 )
 
+type PredictiveAutoscalePolicyScaleMode = original.PredictiveAutoscalePolicyScaleMode
+
+const (
+	PredictiveAutoscalePolicyScaleModeDisabled     PredictiveAutoscalePolicyScaleMode = original.PredictiveAutoscalePolicyScaleModeDisabled
+	PredictiveAutoscalePolicyScaleModeEnabled      PredictiveAutoscalePolicyScaleMode = original.PredictiveAutoscalePolicyScaleModeEnabled
+	PredictiveAutoscalePolicyScaleModeForecastOnly PredictiveAutoscalePolicyScaleMode = original.PredictiveAutoscalePolicyScaleModeForecastOnly
+)
+
 type ReceiverStatus = original.ReceiverStatus
 
 const (
@@ -520,6 +528,8 @@ type AlertRuleResourcePatch = original.AlertRuleResourcePatch
 type AlertRulesClient = original.AlertRulesClient
 type ArmRoleReceiver = original.ArmRoleReceiver
 type AutomationRunbookReceiver = original.AutomationRunbookReceiver
+type AutoscaleErrorResponse = original.AutoscaleErrorResponse
+type AutoscaleErrorResponseError = original.AutoscaleErrorResponseError
 type AutoscaleNotification = original.AutoscaleNotification
 type AutoscaleProfile = original.AutoscaleProfile
 type AutoscaleSetting = original.AutoscaleSetting
@@ -684,6 +694,10 @@ type OperationListResult = original.OperationListResult
 type OperationStatus = original.OperationStatus
 type OperationsClient = original.OperationsClient
 type PerfCounterDataSource = original.PerfCounterDataSource
+type PredictiveAutoscalePolicy = original.PredictiveAutoscalePolicy
+type PredictiveMetricClient = original.PredictiveMetricClient
+type PredictiveResponse = original.PredictiveResponse
+type PredictiveValue = original.PredictiveValue
 type PrivateEndpointConnection = original.PrivateEndpointConnection
 type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
 type PrivateEndpointConnectionListResultIterator = original.PrivateEndpointConnectionListResultIterator
@@ -931,6 +945,12 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPredictiveMetricClient(subscriptionID string) PredictiveMetricClient {
+	return original.NewPredictiveMetricClient(subscriptionID)
+}
+func NewPredictiveMetricClientWithBaseURI(baseURI string, subscriptionID string) PredictiveMetricClient {
+	return original.NewPredictiveMetricClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
 	return original.NewPrivateEndpointConnectionListResultIterator(page)
 }
@@ -1125,6 +1145,9 @@ func PossibleOnboardingStatusValues() []OnboardingStatus {
 }
 func PossibleOperatorValues() []Operator {
 	return original.PossibleOperatorValues()
+}
+func PossiblePredictiveAutoscalePolicyScaleModeValues() []PredictiveAutoscalePolicyScaleMode {
+	return original.PossiblePredictiveAutoscalePolicyScaleModeValues()
 }
 func PossibleReceiverStatusValues() []ReceiverStatus {
 	return original.PossibleReceiverStatusValues()

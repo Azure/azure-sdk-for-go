@@ -13,12 +13,12 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"io"
 	"sync"
 	"sync/atomic"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
 // blockWriter provides methods to upload blocks that represent a file to a server and commit them.
@@ -181,8 +181,12 @@ func (c *copier) write(chunk copierChunk) {
 	stageBlockOptions := c.o.getStageBlockOptions()
 	_, err := c.to.StageBlock(c.ctx, chunk.id, shared.NopCloser(bytes.NewReader(chunk.buffer[:chunk.length])), stageBlockOptions)
 	if err != nil {
-		c.errCh <- fmt.Errorf("write error: %w", err)
-		return
+		select {
+		case c.errCh <- err:
+			// failed to stage block, cancel the copy
+		default:
+			// don't block the goroutine if there's a pending error
+		}
 	}
 }
 

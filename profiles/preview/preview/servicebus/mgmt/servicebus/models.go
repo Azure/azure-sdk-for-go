@@ -12,7 +12,7 @@ package servicebus
 import (
 	"context"
 
-	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/servicebus/mgmt/2022-01-01-preview/servicebus"
 )
 
 const (
@@ -22,36 +22,36 @@ const (
 type AccessRights = original.AccessRights
 
 const (
-	AccessRightsListen AccessRights = original.AccessRightsListen
-	AccessRightsManage AccessRights = original.AccessRightsManage
-	AccessRightsSend   AccessRights = original.AccessRightsSend
+	Listen        AccessRights = original.Listen
+	Manage        AccessRights = original.Manage
+	SendEnumValue AccessRights = original.SendEnumValue
 )
 
 type CreatedByType = original.CreatedByType
 
 const (
-	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
-	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
-	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
-	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+	Application     CreatedByType = original.Application
+	Key             CreatedByType = original.Key
+	ManagedIdentity CreatedByType = original.ManagedIdentity
+	User            CreatedByType = original.User
 )
 
 type DefaultAction = original.DefaultAction
 
 const (
-	DefaultActionAllow DefaultAction = original.DefaultActionAllow
-	DefaultActionDeny  DefaultAction = original.DefaultActionDeny
+	Allow DefaultAction = original.Allow
+	Deny  DefaultAction = original.Deny
 )
 
 type EndPointProvisioningState = original.EndPointProvisioningState
 
 const (
-	EndPointProvisioningStateCanceled  EndPointProvisioningState = original.EndPointProvisioningStateCanceled
-	EndPointProvisioningStateCreating  EndPointProvisioningState = original.EndPointProvisioningStateCreating
-	EndPointProvisioningStateDeleting  EndPointProvisioningState = original.EndPointProvisioningStateDeleting
-	EndPointProvisioningStateFailed    EndPointProvisioningState = original.EndPointProvisioningStateFailed
-	EndPointProvisioningStateSucceeded EndPointProvisioningState = original.EndPointProvisioningStateSucceeded
-	EndPointProvisioningStateUpdating  EndPointProvisioningState = original.EndPointProvisioningStateUpdating
+	Canceled  EndPointProvisioningState = original.Canceled
+	Creating  EndPointProvisioningState = original.Creating
+	Deleting  EndPointProvisioningState = original.Deleting
+	Failed    EndPointProvisioningState = original.Failed
+	Succeeded EndPointProvisioningState = original.Succeeded
+	Updating  EndPointProvisioningState = original.Updating
 )
 
 type EntityStatus = original.EntityStatus
@@ -78,23 +78,23 @@ const (
 type KeySource = original.KeySource
 
 const (
-	KeySourceMicrosoftKeyVault KeySource = original.KeySourceMicrosoftKeyVault
+	MicrosoftKeyVault KeySource = original.MicrosoftKeyVault
 )
 
 type KeyType = original.KeyType
 
 const (
-	KeyTypePrimaryKey   KeyType = original.KeyTypePrimaryKey
-	KeyTypeSecondaryKey KeyType = original.KeyTypeSecondaryKey
+	PrimaryKey   KeyType = original.PrimaryKey
+	SecondaryKey KeyType = original.SecondaryKey
 )
 
 type ManagedServiceIdentityType = original.ManagedServiceIdentityType
 
 const (
-	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = original.ManagedServiceIdentityTypeNone
-	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = original.ManagedServiceIdentityTypeSystemAssigned
-	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = original.ManagedServiceIdentityTypeSystemAssignedUserAssigned
-	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = original.ManagedServiceIdentityTypeUserAssigned
+	None                       ManagedServiceIdentityType = original.None
+	SystemAssigned             ManagedServiceIdentityType = original.SystemAssigned
+	SystemAssignedUserAssigned ManagedServiceIdentityType = original.SystemAssignedUserAssigned
+	UserAssigned               ManagedServiceIdentityType = original.UserAssigned
 )
 
 type NetworkRuleIPAction = original.NetworkRuleIPAction
@@ -106,10 +106,10 @@ const (
 type PrivateLinkConnectionStatus = original.PrivateLinkConnectionStatus
 
 const (
-	PrivateLinkConnectionStatusApproved     PrivateLinkConnectionStatus = original.PrivateLinkConnectionStatusApproved
-	PrivateLinkConnectionStatusDisconnected PrivateLinkConnectionStatus = original.PrivateLinkConnectionStatusDisconnected
-	PrivateLinkConnectionStatusPending      PrivateLinkConnectionStatus = original.PrivateLinkConnectionStatusPending
-	PrivateLinkConnectionStatusRejected     PrivateLinkConnectionStatus = original.PrivateLinkConnectionStatusRejected
+	Approved     PrivateLinkConnectionStatus = original.Approved
+	Disconnected PrivateLinkConnectionStatus = original.Disconnected
+	Pending      PrivateLinkConnectionStatus = original.Pending
+	Rejected     PrivateLinkConnectionStatus = original.Rejected
 )
 
 type ProvisioningStateDR = original.ProvisioningStateDR
@@ -118,6 +118,14 @@ const (
 	ProvisioningStateDRAccepted  ProvisioningStateDR = original.ProvisioningStateDRAccepted
 	ProvisioningStateDRFailed    ProvisioningStateDR = original.ProvisioningStateDRFailed
 	ProvisioningStateDRSucceeded ProvisioningStateDR = original.ProvisioningStateDRSucceeded
+)
+
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	Disabled           PublicNetworkAccess = original.Disabled
+	Enabled            PublicNetworkAccess = original.Enabled
+	SecuredByPerimeter PublicNetworkAccess = original.SecuredByPerimeter
 )
 
 type PublicNetworkAccessFlag = original.PublicNetworkAccessFlag
@@ -130,17 +138,17 @@ const (
 type RoleDisasterRecovery = original.RoleDisasterRecovery
 
 const (
-	RoleDisasterRecoveryPrimary               RoleDisasterRecovery = original.RoleDisasterRecoveryPrimary
-	RoleDisasterRecoveryPrimaryNotReplicating RoleDisasterRecovery = original.RoleDisasterRecoveryPrimaryNotReplicating
-	RoleDisasterRecoverySecondary             RoleDisasterRecovery = original.RoleDisasterRecoverySecondary
+	Primary               RoleDisasterRecovery = original.Primary
+	PrimaryNotReplicating RoleDisasterRecovery = original.PrimaryNotReplicating
+	Secondary             RoleDisasterRecovery = original.Secondary
 )
 
 type SkuName = original.SkuName
 
 const (
-	SkuNameBasic    SkuName = original.SkuNameBasic
-	SkuNamePremium  SkuName = original.SkuNamePremium
-	SkuNameStandard SkuName = original.SkuNameStandard
+	Basic    SkuName = original.Basic
+	Premium  SkuName = original.Premium
+	Standard SkuName = original.Standard
 )
 
 type SkuTier = original.SkuTier
@@ -149,6 +157,14 @@ const (
 	SkuTierBasic    SkuTier = original.SkuTierBasic
 	SkuTierPremium  SkuTier = original.SkuTierPremium
 	SkuTierStandard SkuTier = original.SkuTierStandard
+)
+
+type TLSVersion = original.TLSVersion
+
+const (
+	OneFullStopOne  TLSVersion = original.OneFullStopOne
+	OneFullStopTwo  TLSVersion = original.OneFullStopTwo
+	OneFullStopZero TLSVersion = original.OneFullStopZero
 )
 
 type UnavailableReason = original.UnavailableReason
@@ -219,6 +235,7 @@ type PrivateLinkResource = original.PrivateLinkResource
 type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
 type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkResourcesListResult = original.PrivateLinkResourcesListResult
+type ProxyResource = original.ProxyResource
 type QueuesClient = original.QueuesClient
 type RegenerateAccessKeyParameters = original.RegenerateAccessKeyParameters
 type Resource = original.Resource
@@ -241,6 +258,7 @@ type SBNamespaceListResultIterator = original.SBNamespaceListResultIterator
 type SBNamespaceListResultPage = original.SBNamespaceListResultPage
 type SBNamespaceProperties = original.SBNamespaceProperties
 type SBNamespaceUpdateParameters = original.SBNamespaceUpdateParameters
+type SBNamespaceUpdateProperties = original.SBNamespaceUpdateProperties
 type SBQueue = original.SBQueue
 type SBQueueListResult = original.SBQueueListResult
 type SBQueueListResultIterator = original.SBQueueListResultIterator
@@ -438,6 +456,9 @@ func PossibleProvisioningStateDRValues() []ProvisioningStateDR {
 func PossiblePublicNetworkAccessFlagValues() []PublicNetworkAccessFlag {
 	return original.PossiblePublicNetworkAccessFlagValues()
 }
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
+}
 func PossibleRoleDisasterRecoveryValues() []RoleDisasterRecovery {
 	return original.PossibleRoleDisasterRecoveryValues()
 }
@@ -446,6 +467,9 @@ func PossibleSkuNameValues() []SkuName {
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
+}
+func PossibleTLSVersionValues() []TLSVersion {
+	return original.PossibleTLSVersionValues()
 }
 func PossibleUnavailableReasonValues() []UnavailableReason {
 	return original.PossibleUnavailableReasonValues()

@@ -12,7 +12,7 @@ package resources
 import (
 	"context"
 
-	original "github.com/Azure/dev/azure-sdk-for-go/services/resources/mgmt/2021-01-01/resources"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/resources/mgmt/2021-04-01/resources"
 )
 
 const (
@@ -102,6 +102,15 @@ const (
 	PropertyChangeTypeDelete   PropertyChangeType = original.PropertyChangeTypeDelete
 	PropertyChangeTypeModify   PropertyChangeType = original.PropertyChangeTypeModify
 	PropertyChangeTypeNoEffect PropertyChangeType = original.PropertyChangeTypeNoEffect
+)
+
+type ProviderAuthorizationConsentState = original.ProviderAuthorizationConsentState
+
+const (
+	ProviderAuthorizationConsentStateConsented    ProviderAuthorizationConsentState = original.ProviderAuthorizationConsentStateConsented
+	ProviderAuthorizationConsentStateNotRequired  ProviderAuthorizationConsentState = original.ProviderAuthorizationConsentStateNotRequired
+	ProviderAuthorizationConsentStateNotSpecified ProviderAuthorizationConsentState = original.ProviderAuthorizationConsentStateNotSpecified
+	ProviderAuthorizationConsentStateRequired     ProviderAuthorizationConsentState = original.ProviderAuthorizationConsentStateRequired
 )
 
 type ProvisioningOperation = original.ProvisioningOperation
@@ -250,19 +259,25 @@ type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
 type ParametersLink = original.ParametersLink
+type Permission = original.Permission
 type Plan = original.Plan
 type Provider = original.Provider
+type ProviderConsentDefinition = original.ProviderConsentDefinition
 type ProviderExtendedLocation = original.ProviderExtendedLocation
 type ProviderListResult = original.ProviderListResult
 type ProviderListResultIterator = original.ProviderListResultIterator
 type ProviderListResultPage = original.ProviderListResultPage
 type ProviderOperationDisplayProperties = original.ProviderOperationDisplayProperties
+type ProviderPermission = original.ProviderPermission
+type ProviderPermissionListResult = original.ProviderPermissionListResult
+type ProviderRegistrationRequest = original.ProviderRegistrationRequest
 type ProviderResourceType = original.ProviderResourceType
 type ProviderResourceTypeListResult = original.ProviderResourceTypeListResult
 type ProviderResourceTypesClient = original.ProviderResourceTypesClient
 type ProvidersClient = original.ProvidersClient
 type Reference = original.Reference
 type Resource = original.Resource
+type RoleDefinition = original.RoleDefinition
 type ScopedDeployment = original.ScopedDeployment
 type ScopedDeploymentWhatIf = original.ScopedDeploymentWhatIf
 type Sku = original.Sku
@@ -415,6 +430,9 @@ func PossibleOnErrorDeploymentTypeValues() []OnErrorDeploymentType {
 }
 func PossiblePropertyChangeTypeValues() []PropertyChangeType {
 	return original.PossiblePropertyChangeTypeValues()
+}
+func PossibleProviderAuthorizationConsentStateValues() []ProviderAuthorizationConsentState {
+	return original.PossibleProviderAuthorizationConsentStateValues()
 }
 func PossibleProvisioningOperationValues() []ProvisioningOperation {
 	return original.PossibleProvisioningOperationValues()

@@ -9,7 +9,7 @@
 
 package resourcesapi
 
-import original "github.com/Azure/dev/azure-sdk-for-go/services/resources/mgmt/2021-01-01/resources/resourcesapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/resources/mgmt/2021-04-01/resources/resourcesapi"
 
 type ClientAPI = original.ClientAPI
 type DeploymentOperationsClientAPI = original.DeploymentOperationsClientAPI

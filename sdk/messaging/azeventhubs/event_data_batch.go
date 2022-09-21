@@ -52,50 +52,63 @@ type AddEventDataOptions struct {
 // [azeventhubs.ProducerClient.NewEventDataBatch], or (by default) from Event
 // Hubs itself.
 //
+// Returns ErrMessageTooLarge if the event cannot fit, or a non-nil error for
+// other failures.
+func (b *EventDataBatch) AddEventData(ed *EventData, options *AddEventDataOptions) error {
+	return b.addAMQPMessage(ed.toAMQPMessage())
+}
+
+// AddAMQPAnnotatedMessage adds an AMQPAnnotatedMessage to the batch, failing
+// if the AMQPAnnotatedMessage would cause the EventDataBatch to be too large to send.
+//
+// This size limit was set when the EventDataBatch was created, in options to
+// [azeventhubs.ProducerClient.NewEventDataBatch], or (by default) from Event
+// Hubs itself.
+//
 // Returns ErrMessageTooLarge if the message cannot fit, or a non-nil error for
 // other failures.
-func (mb *EventDataBatch) AddEventData(ed *EventData, options *AddEventDataOptions) error {
-	return mb.addAMQPMessage(ed.toAMQPMessage())
+func (b *EventDataBatch) AddAMQPAnnotatedMessage(annotatedMessage *AMQPAnnotatedMessage, options *AddEventDataOptions) error {
+	return b.addAMQPMessage(annotatedMessage.toAMQPMessage())
 }
 
 // NumBytes is the number of bytes in the batch.
-func (mb *EventDataBatch) NumBytes() uint64 {
-	mb.mu.RLock()
-	defer mb.mu.RUnlock()
+func (b *EventDataBatch) NumBytes() uint64 {
+	b.mu.RLock()
+	defer b.mu.RUnlock()
 
-	return mb.currentSize
+	return b.currentSize
 }
 
 // NumEvents returns the number of events in the batch.
-func (mb *EventDataBatch) NumEvents() int32 {
-	mb.mu.RLock()
-	defer mb.mu.RUnlock()
+func (b *EventDataBatch) NumEvents() int32 {
+	b.mu.RLock()
+	defer b.mu.RUnlock()
 
-	return int32(len(mb.marshaledMessages))
+	return int32(len(b.marshaledMessages))
 }
 
 // toAMQPMessage converts this batch into a sendable *amqp.Message
 // NOTE: not idempotent!
-func (mb *EventDataBatch) toAMQPMessage() *amqp.Message {
-	mb.mu.Lock()
-	defer mb.mu.Unlock()
+func (b *EventDataBatch) toAMQPMessage() *amqp.Message {
+	b.mu.Lock()
+	defer b.mu.Unlock()
 
-	mb.batchEnvelope.Data = make([][]byte, len(mb.marshaledMessages))
-	mb.batchEnvelope.Format = batchMessageFormat
+	b.batchEnvelope.Data = make([][]byte, len(b.marshaledMessages))
+	b.batchEnvelope.Format = batchMessageFormat
 
-	if mb.partitionKey != nil {
-		if mb.batchEnvelope.Annotations == nil {
-			mb.batchEnvelope.Annotations = make(amqp.Annotations)
+	if b.partitionKey != nil {
+		if b.batchEnvelope.Annotations == nil {
+			b.batchEnvelope.Annotations = make(amqp.Annotations)
 		}
 
-		mb.batchEnvelope.Annotations[partitionKeyAnnotation] = *mb.partitionKey
+		b.batchEnvelope.Annotations[partitionKeyAnnotation] = *b.partitionKey
 	}
 
-	copy(mb.batchEnvelope.Data, mb.marshaledMessages)
-	return mb.batchEnvelope
+	copy(b.batchEnvelope.Data, b.marshaledMessages)
+	return b.batchEnvelope
 }
 
-func (mb *EventDataBatch) addAMQPMessage(msg *amqp.Message) error {
+func (b *EventDataBatch) addAMQPMessage(msg *amqp.Message) error {
 	if msg.Properties.MessageID == nil || msg.Properties.MessageID == "" {
 		uid, err := uuid.New()
 		if err != nil {
@@ -104,12 +117,12 @@ func (mb *EventDataBatch) addAMQPMessage(msg *amqp.Message) error {
 		msg.Properties.MessageID = uid.String()
 	}
 
-	if mb.partitionKey != nil {
+	if b.partitionKey != nil {
 		if msg.Annotations == nil {
 			msg.Annotations = make(amqp.Annotations)
 		}
 
-		msg.Annotations[partitionKeyAnnotation] = *mb.partitionKey
+		msg.Annotations[partitionKeyAnnotation] = *b.partitionKey
 	}
 
 	bin, err := msg.MarshalBinary()
@@ -117,10 +130,10 @@ func (mb *EventDataBatch) addAMQPMessage(msg *amqp.Message) error {
 		return err
 	}
 
-	mb.mu.Lock()
-	defer mb.mu.Unlock()
+	b.mu.Lock()
+	defer b.mu.Unlock()
 
-	if len(mb.marshaledMessages) == 0 {
+	if len(b.marshaledMessages) == 0 {
 		// the first message is special - we use its properties and annotations as the
 		// actual envelope for the batch message.
 		batchEnv, batchEnvLen, err := createBatchEnvelope(msg)
@@ -130,24 +143,24 @@ func (mb *EventDataBatch) addAMQPMessage(msg *amqp.Message) error {
 		}
 
 		// (we'll undo this if it turns out the message was too big)
-		mb.currentSize = uint64(batchEnvLen)
-		mb.batchEnvelope = batchEnv
+		b.currentSize = uint64(batchEnvLen)
+		b.batchEnvelope = batchEnv
 	}
 
 	actualPayloadSize := calcActualSizeForPayload(bin)
 
-	if mb.currentSize+actualPayloadSize > mb.maxBytes {
-		if len(mb.marshaledMessages) == 0 {
+	if b.currentSize+actualPayloadSize > b.maxBytes {
+		if len(b.marshaledMessages) == 0 {
 			// reset our our properties, this didn't end up being our first message.
-			mb.currentSize = 0
-			mb.batchEnvelope = nil
+			b.currentSize = 0
+			b.batchEnvelope = nil
 		}
 
 		return ErrEventDataTooLarge
 	}
 
-	mb.currentSize += actualPayloadSize
-	mb.marshaledMessages = append(mb.marshaledMessages, bin)
+	b.currentSize += actualPayloadSize
+	b.marshaledMessages = append(b.marshaledMessages, bin)
 
 	return nil
 }

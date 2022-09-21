@@ -86,7 +86,7 @@ func TestEventData_newReceivedEventData(t *testing.T) {
 		"application property 1": "application property value 1",
 	}
 
-	require.Equal(t, &ReceivedEventData{
+	expectedEventData := &ReceivedEventData{
 		EventData: EventData{
 			Body:          expectedBody[0],
 			ContentType:   to.Ptr("content type"),
@@ -101,7 +101,30 @@ func TestEventData_newReceivedEventData(t *testing.T) {
 		},
 		Offset:       to.Ptr[int64](102),
 		PartitionKey: to.Ptr("partition key"),
-	}, re)
+		RawAMQPMessage: &AMQPAnnotatedMessage{
+			Properties: &AMQPAnnotatedMessageProperties{
+				ContentType:   to.Ptr("content type"),
+				MessageID:     "message id",
+				CorrelationID: to.Ptr("correlation id"),
+			},
+			Body: AMQPAnnotatedMessageBody{
+				Data: [][]byte{[]byte("hello world")},
+			},
+			ApplicationProperties: map[string]any{
+				"application property 1": "application property value 1",
+			},
+			MessageAnnotations: map[any]any{
+				"hello":                 "world",
+				5:                       "ignored",
+				"x-opt-partition-key":   "partition key",
+				"x-opt-sequence-number": int64(101),
+				"x-opt-offset":          "102",
+				"x-opt-enqueued-time":   now,
+			},
+		},
+	}
+
+	require.Equal(t, expectedEventData, re)
 
 	require.Equal(t, &amqp.Message{
 		Properties: &amqp.MessageProperties{

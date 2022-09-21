@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Raw AMQP message support, including full support for encoding Body (Value, Sequence and also multiple byte slices for Data). See ExampleEventDataBatch_AddEventData_rawAMQPMessages for some concrete examples.
+
 ### Breaking Changes
 
 - EventDataBatch.NumMessages() renamed to EventDataBatch.NumEvents()

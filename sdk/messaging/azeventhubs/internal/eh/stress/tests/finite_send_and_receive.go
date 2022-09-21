@@ -7,75 +7,89 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"os"
 	"sync"
 	"time"
 
-	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
-	"github.com/joho/godotenv"
 )
 
 const endProperty = "End"
 const numProperty = "Number"
 const partitionProperty = "Partition"
 
-const messageLimit = 100000
+const messageLimit = 10000
 const extraBytes = 1024
 
-func FiniteSendAndReceiveTest() error {
-	azlog.SetEvents(azeventhubs.EventAuth, azeventhubs.EventConn, azeventhubs.EventConsumer)
-	azlog.SetListener(func(e azlog.Event, s string) {
-		log.Printf("[%s] %s", e, s)
-	})
+func FiniteSendAndReceiveTest(ctx context.Context) error {
+	testData, err := newStressTestData("finite")
+
+	if err != nil {
+		return err
+	}
+
+	defer testData.Close()
+
+	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testData.ConnectionString, testData.HubName, nil)
+
+	if err != nil {
+		return err
+	}
+
+	defer func() { _ = producerClient.Close(context.Background()) }()
+
+	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testData.ConnectionString, testData.HubName, azeventhubs.DefaultConsumerGroup, nil)
+
+	if err != nil {
+		return err
+	}
 
 	defer func() {
-		err := recover()
+		err := consumerClient.Close(context.Background())
 
 		if err != nil {
-			log.Printf("FATAL ERROR: %s", err)
+			panic(err)
 		}
 	}()
 
-	cs, hubName, err := loadEnvironment()
+	ehProps, err := producerClient.GetEventHubProperties(ctx, nil)
 
 	if err != nil {
-		fmt.Printf("ERROR: %s\n", err)
-		fmt.Printf("Usage: stress\n")
-		os.Exit(1)
+		return err
 	}
 
-	allPartitions, err := getPartitions(cs, hubName)
+	defer func() {
+		err := producerClient.Close(context.Background())
 
-	if err != nil {
-		log.Printf("ERROR: failed to get partition IDs for test: %s", err)
-		os.Exit(1)
-	}
+		if err != nil {
+			panic(err)
+		}
+	}()
 
 	wg := sync.WaitGroup{}
 
-	for _, partition := range allPartitions {
+	for _, tmpPartitionID := range ehProps.PartitionIDs {
 		wg.Add(1)
-		go func(partition azeventhubs.PartitionProperties) {
+
+		go func(partitionID string) {
 			defer wg.Done()
 
-			log.Printf("[p:%s] Starting to send messages to partition", partition.PartitionID)
-			defer log.Printf("[p:%s] Done sending messages to partition", partition.PartitionID)
+			log.Printf("[p:%s] Starting to send messages to partition", partitionID)
 
-			err := sendEventsToPartition(cs, hubName, partition.PartitionID, messageLimit, extraBytes)
+			sp, err := sendEventsToPartition(context.Background(), producerClient, partitionID, messageLimit, extraBytes)
 
 			if err != nil {
-				log.Fatalf("Failed to send events to partition %s: %s", partition.PartitionID, err)
+				log.Fatalf("Failed to send events to partition %s: %s", partitionID, err)
 			}
 
-			log.Printf("[p:%s] Starting to receive messages from partition", partition.PartitionID)
-			defer log.Printf("[p:%s] Done receiving messages from partition", partition.PartitionID)
+			log.Printf("[p:%s] Done sending messages to partition", partitionID)
 
-			if err := consumeEventsFromPartition(cs, hubName, partition, messageLimit); err != nil {
-				log.Fatalf("[p:%s] Failed to receive all events from partition, started at %d: %s", partition.PartitionID, partition.LastEnqueuedSequenceNumber, err)
+			log.Printf("[p:%s] Starting to receive messages from partition", partitionID)
+			defer log.Printf("[p:%s] Done receiving messages from partition", partitionID)
+
+			if err := consumeEventsFromPartition(context.Background(), consumerClient, sp, partitionID, messageLimit); err != nil {
+				log.Fatalf("[p:%s] Failed to receive all events from partition: %s", partitionID, err)
 			}
-		}(partition)
+		}(tmpPartitionID)
 	}
 
 	wg.Wait()
@@ -84,117 +98,27 @@ func FiniteSendAndReceiveTest() error {
 	return nil
 }
 
-func sendEventsToPartition(cs string, hubName string, partitionID string, messageLimit int, numExtraBytes int) error {
-	log.Printf("Sending %d messages to partition ID %s, with messages of size %db", messageLimit, partitionID, numExtraBytes)
-
-	extraBytes := make([]byte, numExtraBytes)
-
-	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(cs, hubName, nil)
-
-	if err != nil {
-		return err
-	}
-
-	batch, err := producerClient.NewEventDataBatch(context.Background(), &azeventhubs.NewEventDataBatchOptions{
-		PartitionID: &partitionID,
-	})
-
-	if err != nil {
-		return err
-	}
-
-	defer func() {
-		if err := producerClient.Close(context.Background()); err != nil {
-			panic(err)
-		}
-	}()
-
-	for i := 0; i < messageLimit; i++ {
-		ed := &azeventhubs.EventData{
-			Body: extraBytes,
-			ApplicationProperties: map[string]interface{}{
-				numProperty:       i,
-				partitionProperty: partitionID,
-			},
-		}
-
-		if i == (messageLimit - 1) {
-			ed.ApplicationProperties[endProperty] = messageLimit
-		}
-
-		err := batch.AddEventData(ed, nil)
-
-		if errors.Is(err, azeventhubs.ErrEventDataTooLarge) {
-			if batch.NumMessages() == 0 {
-				return errors.New("single event was too large to fit into batch")
-			}
-
-			if err := producerClient.SendEventBatch(context.Background(), batch, nil); err != nil {
-				return err
-			}
-
-			tempBatch, err := producerClient.NewEventDataBatch(context.Background(), &azeventhubs.NewEventDataBatchOptions{
-				PartitionID: &partitionID,
-			})
-
-			if err != nil {
-				return err
-			}
-
-			batch = tempBatch
-			i-- // retry adding the same message
-		} else if err != nil {
-			return err
-		}
-	}
-
-	if batch.NumMessages() > 0 {
-		if err := producerClient.SendEventBatch(context.Background(), batch, nil); err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-func consumeEventsFromPartition(cs string, hubName string, partProps azeventhubs.PartitionProperties, numMessages int) error {
-	log.Printf("Starting to consume events from %s, partitionID: %s, startingSequence: %d", hubName, partProps.PartitionID, partProps.LastEnqueuedSequenceNumber)
-
-	startPosition := azeventhubs.StartPosition{
-		//SequenceNumber: &firstPartition.LastEnqueuedSequenceNumber,
-		SequenceNumber: to.Ptr(partProps.LastEnqueuedSequenceNumber),
-		Inclusive:      false,
-	}
-
-	if partProps.IsEmpty {
-		startPosition = azeventhubs.StartPosition{
-			Earliest:  to.Ptr(true),
-			Inclusive: true,
-		}
-	}
-
-	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(cs, hubName, azeventhubs.DefaultConsumerGroup, nil)
-
-	if err != nil {
-		return err
-	}
-
-	defer func() {
-		if err := consumerClient.Close(context.Background()); err != nil {
-			panic(err)
-		}
-	}()
+func consumeEventsFromPartition(ctx context.Context, consumerClient *azeventhubs.ConsumerClient, startPosition azeventhubs.StartPosition, partitionID string, numMessages int) error {
+	log.Printf("[%s] Starting to consume events", partitionID)
 
 	// read in 10 second chunks. If we ever end a 10 second chunk with no messages
 	// then we've probably just failed.
 
-	subscription, err := consumerClient.NewPartitionClient(partProps.PartitionID, &azeventhubs.NewPartitionClientOptions{
+	partitionClient, err := consumerClient.NewPartitionClient(partitionID, &azeventhubs.NewPartitionClientOptions{
 		StartPosition: startPosition,
 	})
 
 	if err != nil {
 		panic(err)
 	}
+
+	defer func() {
+		err := partitionClient.Close(context.Background())
+
+		if err != nil {
+			panic(err)
+		}
+	}()
 
 	sequenceNumbers := map[int64]int64{}
 
@@ -206,7 +130,7 @@ func consumeEventsFromPartition(cs string, hubName string, partProps azeventhubs
 			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 			defer cancel()
 
-			events, err := subscription.ReceiveEvents(ctx, 1000, nil)
+			events, err := partitionClient.ReceiveEvents(ctx, 1000, nil)
 
 			if err != nil {
 				if errors.Is(err, context.DeadlineExceeded) {
@@ -218,7 +142,7 @@ func consumeEventsFromPartition(cs string, hubName string, partProps azeventhubs
 
 			count += len(events)
 
-			log.Printf("[p:%s] Got %d/%d messages", partProps.PartitionID, count, numMessages)
+			log.Printf("[p:%s] Got %d/%d messages", partitionID, count, numMessages)
 
 			if len(events) == 0 {
 				numEmptyBatches++
@@ -233,11 +157,17 @@ func consumeEventsFromPartition(cs string, hubName string, partProps azeventhubs
 			}
 
 			for _, event := range events {
-				eventPartitionID := event.ApplicationProperties[partitionProperty].(string)
-				num := event.ApplicationProperties[numProperty].(int64)
+				_, exists := event.Properties[partitionProperty]
 
-				if eventPartitionID != partProps.PartitionID {
-					return false, fmt.Errorf("message with ID %s, with num %d, had a partition %s but we only were reading from partition %s", *event.MessageID, num, eventPartitionID, partProps.PartitionID)
+				if !exists {
+					panic(fmt.Errorf("[%s] invalid message (seq: %d)- missing %s property: %#v", partitionID, event.SequenceNumber, partitionProperty, event.Properties))
+				}
+
+				eventPartitionID := event.Properties[partitionProperty].(string)
+				num := event.Properties[numProperty].(int64)
+
+				if eventPartitionID != partitionID {
+					return false, fmt.Errorf("message with ID %s, with num %d, had a partition %s but we only were reading from partition %s", *event.MessageID, num, eventPartitionID, partitionID)
 				}
 
 				val, exists := sequenceNumbers[event.SequenceNumber]
@@ -248,7 +178,7 @@ func consumeEventsFromPartition(cs string, hubName string, partProps azeventhubs
 					return false, fmt.Errorf("duplicate message with sequence number %d was received. First occurrence with num %d, second with num %d", event.SequenceNumber, val, num)
 				}
 
-				expectedMessageCount, exists := event.ApplicationProperties[endProperty].(int64)
+				expectedMessageCount, exists := event.Properties[endProperty].(int64)
 
 				if exists {
 					if len(sequenceNumbers) != int(expectedMessageCount) {
@@ -270,53 +200,4 @@ func consumeEventsFromPartition(cs string, hubName string, partProps azeventhubs
 			return nil
 		}
 	}
-}
-
-func getPartitions(cs string, hubName string) (allPartitionProps []azeventhubs.PartitionProperties, err error) {
-	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(cs, hubName, nil)
-
-	if err != nil {
-		return nil, err
-	}
-
-	defer func() { _ = producerClient.Close(context.Background()) }()
-
-	props, err := producerClient.GetEventHubProperties(context.Background(), nil)
-
-	if err != nil {
-		return nil, err
-	}
-
-	for _, partitionID := range props.PartitionIDs {
-		partProps, err := producerClient.GetPartitionProperties(context.Background(), partitionID, nil)
-
-		if err != nil {
-			return nil, err
-		}
-
-		allPartitionProps = append(allPartitionProps, partProps)
-	}
-
-	return allPartitionProps, nil
-}
-
-func loadEnvironment() (string, string, error) {
-	envFilePath := ".env"
-
-	if os.Getenv("ENV_FILE") != "" {
-		envFilePath = os.Getenv("ENV_FILE")
-	}
-
-	if err := godotenv.Load(envFilePath); err != nil {
-		return "", "", err
-	}
-
-	cs := os.Getenv("EVENTHUB_CONNECTION_STRING")
-	hubName := os.Getenv("EVENTHUB_NAME")
-
-	if cs == "" || hubName == "" {
-		return "", "", fmt.Errorf("environment variables EVENTHUB_CONNECTION_STRING and EVENTHUB_NAME needs to be set")
-	}
-
-	return cs, hubName, nil
 }

@@ -1,15 +1,20 @@
 # Release History
 
-## 1.1.3 (Unreleased)
+## 1.1.4 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
-* Adjusted the initial retry delay to 800ms per the Azure SDK guidelines.
+* Don't retry a request if the `Retry-After` delay is greater than the configured `RetryOptions.MaxRetryDelay`.
 
 ### Other Changes
+
+## 1.1.3 (2022-09-01)
+
+### Bugs Fixed
+* Adjusted the initial retry delay to 800ms per the Azure SDK guidelines.
 
 ## 1.1.2 (2022-08-09)
 

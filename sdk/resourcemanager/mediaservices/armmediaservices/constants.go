@@ -11,7 +11,7 @@ package armmediaservices
 
 const (
 	moduleName    = "armmediaservices"
-	moduleVersion = "v3.0.0"
+	moduleVersion = "v3.1.0"
 )
 
 // AacAudioProfile - The encoding profile to be used when encoding audio with AAC.
@@ -128,6 +128,24 @@ func PossibleAssetStorageEncryptionFormatValues() []AssetStorageEncryptionFormat
 	return []AssetStorageEncryptionFormat{
 		AssetStorageEncryptionFormatMediaStorageClientEncryption,
 		AssetStorageEncryptionFormatNone,
+	}
+}
+
+// AsyncOperationStatus - Operation status of the async operation.
+type AsyncOperationStatus string
+
+const (
+	AsyncOperationStatusFailed     AsyncOperationStatus = "Failed"
+	AsyncOperationStatusInProgress AsyncOperationStatus = "InProgress"
+	AsyncOperationStatusSucceeded  AsyncOperationStatus = "Succeeded"
+)
+
+// PossibleAsyncOperationStatusValues returns the possible values for the AsyncOperationStatus const type.
+func PossibleAsyncOperationStatusValues() []AsyncOperationStatus {
+	return []AsyncOperationStatus{
+		AsyncOperationStatusFailed,
+		AsyncOperationStatusInProgress,
+		AsyncOperationStatusSucceeded,
 	}
 }
 
@@ -1281,6 +1299,30 @@ func PossibleRotationValues() []Rotation {
 		RotationRotate180,
 		RotationRotate270,
 		RotationRotate90,
+	}
+}
+
+// SecurityLevel - The security level.
+type SecurityLevel string
+
+const (
+	// SecurityLevelSL150 - For clients under development or test. No protection against unauthorized use.
+	SecurityLevelSL150 SecurityLevel = "SL150"
+	// SecurityLevelSL2000 - For hardened devices and applications consuming commercial content. Software or hardware protection.
+	SecurityLevelSL2000 SecurityLevel = "SL2000"
+	// SecurityLevelSL3000 - For hardened devices only. Hardware protection.
+	SecurityLevelSL3000 SecurityLevel = "SL3000"
+	// SecurityLevelUnknown - Represents a SecurityLevel that is unavailable in current API version.
+	SecurityLevelUnknown SecurityLevel = "Unknown"
+)
+
+// PossibleSecurityLevelValues returns the possible values for the SecurityLevel const type.
+func PossibleSecurityLevelValues() []SecurityLevel {
+	return []SecurityLevel{
+		SecurityLevelSL150,
+		SecurityLevelSL2000,
+		SecurityLevelSL3000,
+		SecurityLevelUnknown,
 	}
 }
 

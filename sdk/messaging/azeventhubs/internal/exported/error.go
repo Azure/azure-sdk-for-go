@@ -15,10 +15,9 @@ const (
 	// require manual intervention.
 	CodeConnectionLost Code = "connlost"
 
-	// CodeLockLost means that the lock token you have for a message has expired.
-	// This message will be available again after the lock period expires, or, potentially
-	// go to the dead letter queue if delivery attempts have been exceeded.
-	CodeLockLost Code = "locklost"
+	// CodeOwnershipLost means that a partition that you were reading from was opened
+	// by another link with a higher epoch/owner level.
+	CodeOwnershipLost Code = "ownershiplost"
 )
 
 // Error represents an Event Hub specific error.

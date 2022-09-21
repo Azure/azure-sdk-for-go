@@ -15,6 +15,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
@@ -108,7 +109,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	}(containerClient, context.Background(), nil)
 	_require.Nil(err)
 	prefix := testcommon.ContainerPrefix
-	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersDetail{Metadata: true}}
+	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersInclude{Metadata: true}}
 	pager := svcClient.NewListContainersPager(&listOptions)
 
 	count := 0
@@ -121,7 +122,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 			if *ctnr.Name == containerName {
 				_require.NotNil(ctnr.Properties)
 				_require.NotNil(ctnr.Properties.LastModified)
-				_require.NotNil(ctnr.Properties.Etag)
+				_require.NotNil(ctnr.Properties.ETag)
 				_require.Equal(*ctnr.Properties.LeaseStatus, container.LeaseStatusTypeUnlocked)
 				_require.Equal(*ctnr.Properties.LeaseState, container.LeaseStateTypeAvailable)
 				_require.Nil(ctnr.Properties.LeaseDuration)
@@ -169,7 +170,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionStri
 	}(containerClient, context.Background(), nil)
 	_require.Nil(err)
 	prefix := testcommon.ContainerPrefix
-	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersDetail{Metadata: true}}
+	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersInclude{Metadata: true}}
 	pager := svcClient.NewListContainersPager(&listOptions)
 
 	count := 0
@@ -183,7 +184,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionStri
 			if *ctnr.Name == containerName {
 				_require.NotNil(ctnr.Properties)
 				_require.NotNil(ctnr.Properties.LastModified)
-				_require.NotNil(ctnr.Properties.Etag)
+				_require.NotNil(ctnr.Properties.ETag)
 				_require.Equal(*ctnr.Properties.LeaseStatus, container.LeaseStatusTypeUnlocked)
 				_require.Equal(*ctnr.Properties.LeaseState, container.LeaseStateTypeAvailable)
 				_require.Nil(ctnr.Properties.LeaseDuration)
@@ -497,12 +498,12 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 
-	resources := service.SASResourceTypes{
+	resources := sas.AccountResourceTypes{
 		Object:    true,
 		Service:   true,
 		Container: true,
 	}
-	permissions := service.SASPermissions{
+	permissions := sas.AccountPermissions{
 		Read:   true,
 		Add:    true,
 		Write:  true,
@@ -510,7 +511,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 		Update: true,
 		Delete: true,
 	}
-	services := service.SASServices{
+	services := sas.AccountServices{
 		Blob: true,
 	}
 	start := time.Now().Add(-time.Hour)
@@ -543,7 +544,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient() {
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := serviceClient.NewContainerClient(containerName)
 
-	permissions := container.SASPermissions{
+	permissions := sas.ContainerPermissions{
 		Read: true,
 		Add:  true,
 	}
@@ -575,7 +576,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := serviceClient.NewContainerClient(containerName)
 
-	sasUrlReadAdd, err := containerClient.GetSASURL(container.SASPermissions{Read: true, Add: true},
+	sasUrlReadAdd, err := containerClient.GetSASURL(sas.ContainerPermissions{Read: true, Add: true},
 		time.Now().Add(-5*time.Minute).UTC(), time.Now().Add(time.Hour))
 	_require.Nil(err)
 	_, err = containerClient.Create(context.Background(), &container.CreateOptions{Metadata: testcommon.BasicMetadata})

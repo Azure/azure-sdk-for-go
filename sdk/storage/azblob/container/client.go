@@ -25,6 +25,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -207,7 +208,7 @@ func (c *Client) SetAccessPolicy(ctx context.Context, containerACL []*SignedIden
 func (c *Client) NewListBlobsFlatPager(o *ListBlobsFlatOptions) *runtime.Pager[ListBlobsFlatResponse] {
 	listOptions := generated.ContainerClientListBlobFlatSegmentOptions{}
 	if o != nil {
-		listOptions.Include = o.Include
+		listOptions.Include = o.Include.format()
 		listOptions.Marker = o.Marker
 		listOptions.Maxresults = o.MaxResults
 		listOptions.Prefix = o.Prefix
@@ -281,20 +282,20 @@ func (c *Client) NewListBlobsHierarchyPager(delimiter string, o *ListBlobsHierar
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at container.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (c *Client) GetSASURL(permissions SASPermissions, start time.Time, expiry time.Time) (string, error) {
+func (c *Client) GetSASURL(permissions sas.ContainerPermissions, start time.Time, expiry time.Time) (string, error) {
 	if c.sharedKey() == nil {
 		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}
 
-	urlParts, err := exported.ParseURL(c.URL())
+	urlParts, err := blob.ParseURL(c.URL())
 	if err != nil {
 		return "", err
 	}
 
 	// Containers do not have snapshots, nor versions.
-	qps, err := SASSignatureValues{
-		Version:       exported.SASVersion,
-		Protocol:      exported.SASProtocolHTTPS,
+	qps, err := sas.BlobSignatureValues{
+		Version:       sas.Version,
+		Protocol:      sas.ProtocolHTTPS,
 		ContainerName: urlParts.ContainerName,
 		Permissions:   permissions.String(),
 		StartTime:     start.UTC(),
@@ -315,12 +316,12 @@ func (c *Client) GetSASURL(permissions SASPermissions, start time.Time, expiry t
 
 // GetUDKSASURL is a convenience method for generating a SAS token for the currently pointed at container.
 // It can only be used if the credential supplied during creation was a UserDelegationKey.
-func (c *Client) GetUDKSASURL(permissions SASPermissions, start time.Time, expiry time.Time) (string, error) {
+func (c *Client) GetUDKSASURL(permissions sas.ContainerPermissions, start time.Time, expiry time.Time) (string, error) {
 	if c.userDelegationKey() == nil {
 		return "", errors.New("GetUDKSASURL can only be signed with a UserDelegationKey")
 	}
 
-	urlParts, err := exported.ParseURL(c.URL())
+	urlParts, err := blob.ParseURL(c.URL())
 	if err != nil {
 		return "", err
 	}
@@ -331,9 +332,9 @@ func (c *Client) GetUDKSASURL(permissions SASPermissions, start time.Time, expir
 	}
 
 	// Containers do not have snapshots, nor versions.
-	qps, err := SASSignatureValues{
-		Version:       exported.SASVersion,
-		Protocol:      exported.SASProtocolHTTPS,
+	qps, err := sas.BlobSignatureValues{
+		Version:       sas.Version,
+		Protocol:      sas.ProtocolHTTPS,
 		ContainerName: urlParts.ContainerName,
 		Permissions:   permissions.String(),
 		StartTime:     start.UTC(),

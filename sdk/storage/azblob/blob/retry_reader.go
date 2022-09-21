@@ -13,7 +13,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // HTTPGetter is a function type that refers to a method that performs an HTTP GET operation.
@@ -22,17 +22,11 @@ type httpGetter func(ctx context.Context, i httpGetterInfo) (io.ReadCloser, erro
 // HTTPGetterInfo is passed to an HTTPGetter function passing it parameters
 // that should be used to make an HTTP GET request.
 type httpGetterInfo struct {
-	// Offset specifies the start offset that should be used when
-	// creating the HTTP GET request's Range header
-	Offset int64
-
-	// Count specifies the count of bytes that should be used to calculate
-	// the end offset when creating the HTTP GET request's Range header
-	Count int64
+	Range HTTPRange
 
 	// ETag specifies the resource's etag that should be used when creating
 	// the HTTP GET request's If-Match header
-	ETag string
+	ETag *azcore.ETag
 }
 
 // RetryReaderOptions configures the retry reader's behavior.
@@ -45,7 +39,7 @@ type RetryReaderOptions struct {
 	MaxRetries int32
 
 	// OnFailedRead, when non-nil, is called after any failure to read. Expected usage is diagnostic logging.
-	OnFailedRead func(failureCount int32, lastError error, offset int64, count int64, willRetry bool)
+	OnFailedRead func(failureCount int32, lastError error, rnge HTTPRange, willRetry bool)
 
 	// EarlyCloseAsError can be set to true to prevent retries after "read on closed response body". By default,
 	// retryReader has the following special behaviour: closing the response body before it is all read is treated as a
@@ -90,7 +84,7 @@ func newRetryReader(ctx context.Context, initialResponse io.ReadCloser, info htt
 		ctx:                ctx,
 		getter:             getter,
 		info:               info,
-		countWasBounded:    info.Count != shared.CountToEnd,
+		countWasBounded:    info.Range.Count != CountToEnd,
 		response:           initialResponse,
 		responseMu:         &sync.Mutex{},
 		retryReaderOptions: o,
@@ -108,7 +102,7 @@ func (s *RetryReader) setResponse(r io.ReadCloser) {
 func (s *RetryReader) Read(p []byte) (n int, err error) {
 	for try := int32(0); ; try++ {
 		//fmt.Println(try)       // Comment out for debugging.
-		if s.countWasBounded && s.info.Count == shared.CountToEnd {
+		if s.countWasBounded && s.info.Range.Count == CountToEnd {
 			// User specified an original count and the remaining bytes are 0, return 0, EOF
 			return 0, io.EOF
 		}
@@ -138,9 +132,9 @@ func (s *RetryReader) Read(p []byte) (n int, err error) {
 
 		// We successfully read data or end EOF.
 		if err == nil || err == io.EOF {
-			s.info.Offset += int64(n) // Increments the start offset in case we need to make a new HTTP request in the future
-			if s.info.Count != shared.CountToEnd {
-				s.info.Count -= int64(n) // Decrement the count in case we need to make a new HTTP request in the future
+			s.info.Range.Offset += int64(n) // Increments the start offset in case we need to make a new HTTP request in the future
+			if s.info.Range.Count != CountToEnd {
+				s.info.Range.Count -= int64(n) // Decrement the count in case we need to make a new HTTP request in the future
 			}
 			return n, err // Return the return to the caller
 		}
@@ -157,7 +151,7 @@ func (s *RetryReader) Read(p []byte) (n int, err error) {
 		// Notify, for logging purposes, of any failures
 		if s.retryReaderOptions.OnFailedRead != nil {
 			failureCount := try + 1 // because try is zero-based
-			s.retryReaderOptions.OnFailedRead(failureCount, err, s.info.Offset, s.info.Count, willRetry)
+			s.retryReaderOptions.OnFailedRead(failureCount, err, s.info.Range, willRetry)
 		}
 
 		if willRetry {

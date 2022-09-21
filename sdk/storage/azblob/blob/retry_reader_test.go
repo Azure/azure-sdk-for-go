@@ -109,7 +109,7 @@ func TestRetryReaderReadWithRetry(t *testing.T) {
 		failureWillRetryCount := 0
 		failureLastReportedFailureCount := int32(-1)
 		var failureLastReportedError error = nil
-		failureMethod := func(failureCount int32, lastError error, offset int64, count int64, willRetry bool) {
+		failureMethod := func(failureCount int32, lastError error, rnge HTTPRange, willRetry bool) {
 			failureMethodNumCalls++
 			if willRetry {
 				failureWillRetryCount++
@@ -128,13 +128,17 @@ func TestRetryReaderReadWithRetry(t *testing.T) {
 
 		getter := func(ctx context.Context, info httpGetterInfo) (io.ReadCloser, error) {
 			r := http.Response{}
-			body.currentByteIndex = int(info.Offset)
+			body.currentByteIndex = int(info.Range.Offset)
 			r.Body = body
 
 			return r.Body, nil
 		}
 
-		httpGetterInfo := httpGetterInfo{Offset: 0, Count: int64(byteCount)}
+		httpGetterInfo := httpGetterInfo{
+			Range: HTTPRange{
+				Count: int64(byteCount),
+			},
+		}
 		initResponse, err := getter(context.Background(), httpGetterInfo)
 		require.NoError(t, err)
 
@@ -180,7 +184,7 @@ func TestRetryReaderWithRetryIoUnexpectedEOF(t *testing.T) {
 		failureWillRetryCount := 0
 		failureLastReportedFailureCount := int32(-1)
 		var failureLastReportedError error = nil
-		failureMethod := func(failureCount int32, lastError error, offset int64, count int64, willRetry bool) {
+		failureMethod := func(failureCount int32, lastError error, rnge HTTPRange, willRetry bool) {
 			failureMethodNumCalls++
 			if willRetry {
 				failureWillRetryCount++
@@ -199,13 +203,17 @@ func TestRetryReaderWithRetryIoUnexpectedEOF(t *testing.T) {
 
 		getter := func(ctx context.Context, info httpGetterInfo) (io.ReadCloser, error) {
 			r := http.Response{}
-			body.currentByteIndex = int(info.Offset)
+			body.currentByteIndex = int(info.Range.Offset)
 			r.Body = body
 
 			return r.Body, nil
 		}
 
-		httpGetterInfo := httpGetterInfo{Offset: 0, Count: int64(byteCount)}
+		httpGetterInfo := httpGetterInfo{
+			Range: HTTPRange{
+				Count: int64(byteCount),
+			},
+		}
 		initResponse, err := getter(context.Background(), httpGetterInfo)
 		require.NoError(t, err)
 
@@ -245,7 +253,7 @@ func TestRetryReaderReadNegativeNormalFail(t *testing.T) {
 	failureWillRetryCount := 0
 	failureLastReportedFailureCount := int32(-1)
 	var failureLastReportedError error = nil
-	failureMethod := func(failureCount int32, lastError error, offset int64, count int64, willRetry bool) {
+	failureMethod := func(failureCount int32, lastError error, rnge HTTPRange, willRetry bool) {
 		failureMethodNumCalls++
 		if willRetry {
 			failureWillRetryCount++
@@ -266,7 +274,7 @@ func TestRetryReaderReadNegativeNormalFail(t *testing.T) {
 
 	getter := func(ctx context.Context, info httpGetterInfo) (io.ReadCloser, error) {
 		r := http.Response{}
-		body.currentByteIndex = int(info.Offset)
+		body.currentByteIndex = int(info.Range.Offset)
 		r.Body = body
 
 		return r.Body, nil
@@ -274,8 +282,14 @@ func TestRetryReaderReadNegativeNormalFail(t *testing.T) {
 
 	rrOptions := RetryReaderOptions{
 		MaxRetries:   1,
-		OnFailedRead: failureMethod}
-	retryReader := newRetryReader(context.Background(), startResponse, httpGetterInfo{Offset: 0, Count: int64(byteCount)}, getter, rrOptions)
+		OnFailedRead: failureMethod,
+	}
+	httpGetterInfo := httpGetterInfo{
+		Range: HTTPRange{
+			Count: int64(byteCount),
+		},
+	}
+	retryReader := newRetryReader(context.Background(), startResponse, httpGetterInfo, getter, rrOptions)
 
 	// should fail
 	can := make([]byte, 1)
@@ -306,13 +320,19 @@ func TestRetryReaderReadCount0(t *testing.T) {
 
 	getter := func(ctx context.Context, info httpGetterInfo) (io.ReadCloser, error) {
 		r := http.Response{}
-		body.currentByteIndex = int(info.Offset)
+		body.currentByteIndex = int(info.Range.Offset)
 		r.Body = body
 
 		return r.Body, nil
 	}
 
-	retryReader := newRetryReader(context.Background(), startResponseBody, httpGetterInfo{Offset: 0, Count: int64(byteCount)}, getter, RetryReaderOptions{MaxRetries: 1})
+	httpGetterInfo := httpGetterInfo{
+		Range: HTTPRange{
+			Count: int64(byteCount),
+		},
+	}
+
+	retryReader := newRetryReader(context.Background(), startResponseBody, httpGetterInfo, getter, RetryReaderOptions{MaxRetries: 1})
 
 	// should consume the only byte
 	can := make([]byte, 1)
@@ -339,13 +359,19 @@ func TestRetryReaderReadNegativeNonRetriableError(t *testing.T) {
 
 	getter := func(ctx context.Context, info httpGetterInfo) (io.ReadCloser, error) {
 		r := http.Response{}
-		body.currentByteIndex = int(info.Offset)
+		body.currentByteIndex = int(info.Range.Offset)
 		r.Body = body
 
 		return r.Body, nil
 	}
 
-	retryReader := newRetryReader(context.Background(), startResponseBody, httpGetterInfo{Offset: 0, Count: int64(byteCount)}, getter, RetryReaderOptions{MaxRetries: 2})
+	httpGetterInfo := httpGetterInfo{
+		Range: HTTPRange{
+			Count: int64(byteCount),
+		},
+	}
+
+	retryReader := newRetryReader(context.Background(), startResponseBody, httpGetterInfo, getter, RetryReaderOptions{MaxRetries: 2})
 
 	dest := make([]byte, 1)
 	_, err := retryReader.Read(dest)
@@ -363,7 +389,7 @@ func TestRetryReaderReadWithForcedRetry(t *testing.T) {
 
 		// use the notification callback, so we know that the retry really did happen
 		failureMethodNumCalls := 0
-		failureMethod := func(failureCount int32, lastError error, offset int64, count int64, willRetry bool) {
+		failureMethod := func(failureCount int32, lastError error, rnge HTTPRange, willRetry bool) {
 			failureMethodNumCalls++
 		}
 
@@ -376,13 +402,17 @@ func TestRetryReaderReadWithForcedRetry(t *testing.T) {
 			body := newSingleUsePerByteReader(randBytes) // make new one every time, since we force closes in this test, and it is unusable after a close
 			body.sleepDuration = sleepDuration
 			r := http.Response{}
-			body.currentByteIndex = int(info.Offset)
+			body.currentByteIndex = int(info.Range.Offset)
 			r.Body = body
 
 			return r.Body, nil
 		}
 
-		httpGetterInfo := httpGetterInfo{Offset: 0, Count: int64(byteCount)}
+		httpGetterInfo := httpGetterInfo{
+			Range: HTTPRange{
+				Count: int64(byteCount),
+			},
+		}
 		initResponse, err := getter(context.Background(), httpGetterInfo)
 		require.NoError(t, err)
 

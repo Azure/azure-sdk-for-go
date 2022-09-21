@@ -30,21 +30,17 @@ func ExamplePipelineRunsClient_QueryByFactory() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.QueryByFactory(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		armdatafactory.RunFilterParameters{
-			Filters: []*armdatafactory.RunQueryFilter{
-				{
-					Operand:  to.Ptr(armdatafactory.RunQueryFilterOperandPipelineName),
-					Operator: to.Ptr(armdatafactory.RunQueryFilterOperatorEquals),
-					Values: []*string{
-						to.Ptr("examplePipeline")},
-				}},
-			LastUpdatedAfter:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:36:44.3345758Z"); return t }()),
-			LastUpdatedBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:49:48.3686473Z"); return t }()),
-		},
-		nil)
+	res, err := client.QueryByFactory(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.RunFilterParameters{
+		Filters: []*armdatafactory.RunQueryFilter{
+			{
+				Operand:  to.Ptr(armdatafactory.RunQueryFilterOperandPipelineName),
+				Operator: to.Ptr(armdatafactory.RunQueryFilterOperatorEquals),
+				Values: []*string{
+					to.Ptr("examplePipeline")},
+			}},
+		LastUpdatedAfter:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:36:44.3345758Z"); return t }()),
+		LastUpdatedBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:49:48.3686473Z"); return t }()),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -63,11 +59,7 @@ func ExamplePipelineRunsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"2f7fdb90-5df1-4b8e-ac2f-064cfa58202b",
-		nil)
+	res, err := client.Get(ctx, "exampleResourceGroup", "exampleFactoryName", "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -86,11 +78,7 @@ func ExamplePipelineRunsClient_Cancel() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Cancel(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"16ac5348-ff82-4f95-a80d-638c1d47b721",
-		&armdatafactory.PipelineRunsClientCancelOptions{IsRecursive: nil})
+	_, err = client.Cancel(ctx, "exampleResourceGroup", "exampleFactoryName", "16ac5348-ff82-4f95-a80d-638c1d47b721", &armdatafactory.PipelineRunsClientCancelOptions{IsRecursive: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

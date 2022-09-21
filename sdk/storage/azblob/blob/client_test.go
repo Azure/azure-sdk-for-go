@@ -18,15 +18,15 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
@@ -78,7 +78,7 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClient() {
 	blobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
 
-	blobURLParts, err := azblob.ParseURL(bbClient.URL())
+	blobURLParts, err := blob.ParseURL(bbClient.URL())
 	_require.Nil(err)
 	_require.Equal(blobURLParts.BlobName, blobName)
 	_require.Equal(blobURLParts.ContainerName, containerName)
@@ -108,19 +108,19 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 
-	sasQueryParams, err := service.SASSignatureValues{
-		Protocol:      service.SASProtocolHTTPS,
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
 		ExpiryTime:    currentTime,
-		Permissions:   to.Ptr(service.SASPermissions{Read: true, List: true}).String(),
-		Services:      to.Ptr(service.SASServices{Blob: true}).String(),
-		ResourceTypes: to.Ptr(service.SASResourceTypes{Container: true, Object: true}).String(),
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.Sign(credential)
 	_require.Nil(err)
 
-	parts, err := exported.ParseURL(bbClient.URL())
+	parts, err := blob.ParseURL(bbClient.URL())
 	_require.Nil(err)
 	parts.SAS = sasQueryParams
-	parts.Snapshot = currentTime.Format(service.SnapshotTimeFormat)
+	parts.Snapshot = currentTime.Format(blob.SnapshotTimeFormat)
 	blobURLParts := parts.String()
 
 	// The snapshot format string is taken from the snapshotTimeFormat value in parsing_urls.go. The field is not public, so
@@ -150,19 +150,19 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSASUsingCo
 
 	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
-	sasQueryParams, err := service.SASSignatureValues{
-		Protocol:      service.SASProtocolHTTPS,
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
 		ExpiryTime:    currentTime,
-		Permissions:   to.Ptr(service.SASPermissions{Read: true, List: true}).String(),
-		Services:      to.Ptr(service.SASServices{Blob: true}).String(),
-		ResourceTypes: to.Ptr(service.SASResourceTypes{Container: true, Object: true}).String(),
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.Sign(credential)
 	_require.Nil(err)
 
-	parts, err := exported.ParseURL(bbClient.URL())
+	parts, err := blob.ParseURL(bbClient.URL())
 	_require.Nil(err)
 	parts.SAS = sasQueryParams
-	parts.Snapshot = currentTime.Format(service.SnapshotTimeFormat)
+	parts.Snapshot = currentTime.Format(blob.SnapshotTimeFormat)
 	blobURLParts := parts.String()
 
 	// The snapshot format string is taken from the snapshotTimeFormat value in parsing_urls.go. The field is not public, so
@@ -659,7 +659,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourceIfMatchFalse() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	randomEtag := "a"
+	randomEtag := azcore.ETag("a")
 	accessConditions := blob.SourceModifiedAccessConditions{
 		SourceIfMatch: &randomEtag,
 	}
@@ -692,7 +692,7 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourceIfNoneMatchTrue() {
 
 	options := blob.StartCopyFromURLOptions{
 		SourceModifiedAccessConditions: &blob.SourceModifiedAccessConditions{
-			SourceIfNoneMatch: to.Ptr("a"),
+			SourceIfNoneMatch: to.Ptr(azcore.ETag("a")),
 		},
 	}
 
@@ -1376,7 +1376,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSnapshotIfMatchFalse() {
 	options := blob.CreateSnapshotOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
-				IfMatch: to.Ptr("garbage"),
+				IfMatch: to.Ptr(azcore.ETag("garbage")),
 			},
 		},
 	}
@@ -1397,7 +1397,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSnapshotIfNoneMatchTrue() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	randomEtag := "garbage"
+	randomEtag := azcore.ETag("garbage")
 	access := blob.ModifiedAccessConditions{
 		IfNoneMatch: &randomEtag,
 	}
@@ -1467,7 +1467,9 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataNegativeOffset() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	options := blob.DownloadStreamOptions{
-		Offset: to.Ptr[int64](-1),
+		Range: blob.HTTPRange{
+			Offset: -1,
+		},
 	}
 	_, err = bbClient.DownloadStream(context.Background(), &options)
 	_require.Nil(err)
@@ -1487,7 +1489,9 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataOffsetOutOfRange() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	options := blob.DownloadStreamOptions{
-		Offset: to.Ptr(int64(len(testcommon.BlockBlobDefaultData))),
+		Range: blob.HTTPRange{
+			Offset: int64(len(testcommon.BlockBlobDefaultData)),
+		},
 	}
 	_, err = bbClient.DownloadStream(context.Background(), &options)
 	_require.NotNil(err)
@@ -1508,7 +1512,9 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataCountNegative() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	options := blob.DownloadStreamOptions{
-		Count: to.Ptr[int64](-2),
+		Range: blob.HTTPRange{
+			Count: -2,
+		},
 	}
 	_, err = bbClient.DownloadStream(context.Background(), &options)
 	_require.Nil(err)
@@ -1527,9 +1533,7 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataCountZero() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	options := blob.DownloadStreamOptions{
-		Count: to.Ptr[int64](0),
-	}
+	options := blob.DownloadStreamOptions{}
 	resp, err := bbClient.DownloadStream(context.Background(), &options)
 	_require.Nil(err)
 
@@ -1552,9 +1556,10 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataCountExact() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	count := int64(len(testcommon.BlockBlobDefaultData))
 	options := blob.DownloadStreamOptions{
-		Count: &count,
+		Range: blob.HTTPRange{
+			Count: int64(len(testcommon.BlockBlobDefaultData)),
+		},
 	}
 	resp, err := bbClient.DownloadStream(context.Background(), &options)
 	_require.Nil(err)
@@ -1578,7 +1583,9 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataCountOutOfRange() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	options := blob.DownloadStreamOptions{
-		Count: to.Ptr(int64((len(testcommon.BlockBlobDefaultData)) * 2)),
+		Range: blob.HTTPRange{
+			Count: int64((len(testcommon.BlockBlobDefaultData)) * 2),
+		},
 	}
 	resp, err := bbClient.DownloadStream(context.Background(), &options)
 	_require.Nil(err)
@@ -1601,10 +1608,7 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataEmptyRangeStruct() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	options := blob.DownloadStreamOptions{
-		Count:  to.Ptr[int64](0),
-		Offset: to.Ptr[int64](0),
-	}
+	options := blob.DownloadStreamOptions{}
 	resp, err := bbClient.DownloadStream(context.Background(), &options)
 	_require.Nil(err)
 
@@ -1627,8 +1631,10 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataContentMD5() {
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
 	options := blob.DownloadStreamOptions{
-		Count:              to.Ptr[int64](3),
-		Offset:             to.Ptr[int64](10),
+		Range: blob.HTTPRange{
+			Count:  3,
+			Offset: 10,
+		},
 		RangeGetContentMD5: to.Ptr(true),
 	}
 	resp, err := bbClient.DownloadStream(context.Background(), &options)
@@ -2388,7 +2394,7 @@ func (s *BlobRecordedTestsSuite) TestBlobGetPropsAndMetadataIfMatchFalse() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	eTag := "garbage"
+	eTag := azcore.ETag("garbage")
 	getBlobPropertiesOptions := blob.GetPropertiesOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: &eTag},
@@ -2416,7 +2422,7 @@ func (s *BlobRecordedTestsSuite) TestBlobGetPropsAndMetadataIfNoneMatchTrue() {
 	_, err = bbClient.SetMetadata(context.Background(), testcommon.BasicMetadata, nil)
 	_require.Nil(err)
 
-	eTag := "garbage"
+	eTag := azcore.ETag("garbage")
 	getBlobPropertiesOptions := blob.GetPropertiesOptions{
 		AccessConditions: &blob.AccessConditions{
 			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: &eTag},
@@ -2661,7 +2667,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetPropertiesIfMatchFalse() {
 
 	_, err = bbClient.SetHTTPHeaders(context.Background(), blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
 		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
-			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: to.Ptr("garbage")},
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: to.Ptr(azcore.ETag("garbage"))},
 		}})
 	_require.NotNil(err)
 }
@@ -2681,7 +2687,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetPropertiesIfNoneMatchTrue() {
 
 	_, err = bbClient.SetHTTPHeaders(context.Background(), blob.HTTPHeaders{BlobContentDisposition: to.Ptr("my_disposition")},
 		&blob.SetHTTPHeadersOptions{AccessConditions: &blob.AccessConditions{
-			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr("garbage")},
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr(azcore.ETag("garbage"))},
 		}})
 	_require.Nil(err)
 
@@ -2941,7 +2947,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetMetadataIfMatchFalse() {
 
 	setBlobMetadataOptions := blob.SetMetadataOptions{
 		AccessConditions: &blob.AccessConditions{
-			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: to.Ptr("garbage")},
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfMatch: to.Ptr(azcore.ETag("garbage"))},
 		},
 	}
 	_, err = bbClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
@@ -2963,7 +2969,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetMetadataIfNoneMatchTrue() {
 
 	setBlobMetadataOptions := blob.SetMetadataOptions{
 		AccessConditions: &blob.AccessConditions{
-			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr("garbage")},
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: to.Ptr(azcore.ETag("garbage"))},
 		},
 	}
 	_, err = bbClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
@@ -3146,7 +3152,7 @@ func (s *BlobRecordedTestsSuite) TestBlobClientPartsSASQueryTimes() {
 				"st=" + url.QueryEscape(StartTimesInputs[i]) + "&" +
 				"sv=2019-10-10"
 
-		parts, _ := azblob.ParseURL(urlString)
+		parts, _ := blob.ParseURL(urlString)
 		_require.Equal(parts.Scheme, "https")
 		_require.Equal(parts.Host, "myaccount.blob.core.windows.net")
 		_require.Equal(parts.ContainerName, "mycontainer")

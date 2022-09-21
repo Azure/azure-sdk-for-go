@@ -897,6 +897,41 @@ func (a *AssetTrackProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type AsyncOperationResult.
+func (a AsyncOperationResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "error", a.Error)
+	populate(objectMap, "name", a.Name)
+	populate(objectMap, "status", a.Status)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AsyncOperationResult.
+func (a *AsyncOperationResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "error":
+			err = unpopulate(val, "Error", &a.Error)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &a.Name)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, "Status", &a.Status)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type Audio.
 func (a Audio) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1033,6 +1068,13 @@ func (a *AudioOverlay) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AudioTrack.
 func (a AudioTrack) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "bitRate", a.BitRate)
+	populate(objectMap, "dashSettings", a.DashSettings)
+	populate(objectMap, "displayName", a.DisplayName)
+	populate(objectMap, "fileName", a.FileName)
+	populate(objectMap, "hlsSettings", a.HlsSettings)
+	populate(objectMap, "languageCode", a.LanguageCode)
+	populate(objectMap, "mpeg4TrackId", a.Mpeg4TrackID)
 	objectMap["@odata.type"] = "#Microsoft.Media.AudioTrack"
 	return json.Marshal(objectMap)
 }
@@ -1046,6 +1088,27 @@ func (a *AudioTrack) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "bitRate":
+			err = unpopulate(val, "BitRate", &a.BitRate)
+			delete(rawMsg, key)
+		case "dashSettings":
+			err = unpopulate(val, "DashSettings", &a.DashSettings)
+			delete(rawMsg, key)
+		case "displayName":
+			err = unpopulate(val, "DisplayName", &a.DisplayName)
+			delete(rawMsg, key)
+		case "fileName":
+			err = unpopulate(val, "FileName", &a.FileName)
+			delete(rawMsg, key)
+		case "hlsSettings":
+			err = unpopulate(val, "HlsSettings", &a.HlsSettings)
+			delete(rawMsg, key)
+		case "languageCode":
+			err = unpopulate(val, "LanguageCode", &a.LanguageCode)
+			delete(rawMsg, key)
+		case "mpeg4TrackId":
+			err = unpopulate(val, "Mpeg4TrackID", &a.Mpeg4TrackID)
+			delete(rawMsg, key)
 		case "@odata.type":
 			err = unpopulate(val, "ODataType", &a.ODataType)
 			delete(rawMsg, key)
@@ -1220,6 +1283,33 @@ func (c *CheckNameAvailabilityInput) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ClearKeyEncryptionConfiguration.
+func (c ClearKeyEncryptionConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "customKeysAcquisitionUrlTemplate", c.CustomKeysAcquisitionURLTemplate)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ClearKeyEncryptionConfiguration.
+func (c *ClearKeyEncryptionConfiguration) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "customKeysAcquisitionUrlTemplate":
+			err = unpopulate(val, "CustomKeysAcquisitionURLTemplate", &c.CustomKeysAcquisitionURLTemplate)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ClipTime.
 func (c ClipTime) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1281,6 +1371,7 @@ func (c *Codec) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CommonEncryptionCbcs.
 func (c CommonEncryptionCbcs) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "clearKeyEncryptionConfiguration", c.ClearKeyEncryptionConfiguration)
 	populate(objectMap, "clearTracks", c.ClearTracks)
 	populate(objectMap, "contentKeys", c.ContentKeys)
 	populate(objectMap, "drm", c.Drm)
@@ -1297,6 +1388,9 @@ func (c *CommonEncryptionCbcs) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "clearKeyEncryptionConfiguration":
+			err = unpopulate(val, "ClearKeyEncryptionConfiguration", &c.ClearKeyEncryptionConfiguration)
+			delete(rawMsg, key)
 		case "clearTracks":
 			err = unpopulate(val, "ClearTracks", &c.ClearTracks)
 			delete(rawMsg, key)
@@ -1320,6 +1414,7 @@ func (c *CommonEncryptionCbcs) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CommonEncryptionCenc.
 func (c CommonEncryptionCenc) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "clearKeyEncryptionConfiguration", c.ClearKeyEncryptionConfiguration)
 	populate(objectMap, "clearTracks", c.ClearTracks)
 	populate(objectMap, "contentKeys", c.ContentKeys)
 	populate(objectMap, "drm", c.Drm)
@@ -1336,6 +1431,9 @@ func (c *CommonEncryptionCenc) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "clearKeyEncryptionConfiguration":
+			err = unpopulate(val, "ClearKeyEncryptionConfiguration", &c.ClearKeyEncryptionConfiguration)
+			delete(rawMsg, key)
 		case "clearTracks":
 			err = unpopulate(val, "ClearTracks", &c.ClearTracks)
 			delete(rawMsg, key)
@@ -1796,6 +1894,7 @@ func (c ContentKeyPolicyPlayReadyLicense) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "playRight", c.PlayRight)
 	populate(objectMap, "relativeBeginDate", c.RelativeBeginDate)
 	populate(objectMap, "relativeExpirationDate", c.RelativeExpirationDate)
+	populate(objectMap, "securityLevel", c.SecurityLevel)
 	return json.Marshal(objectMap)
 }
 
@@ -1837,6 +1936,9 @@ func (c *ContentKeyPolicyPlayReadyLicense) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "relativeExpirationDate":
 			err = unpopulate(val, "RelativeExpirationDate", &c.RelativeExpirationDate)
+			delete(rawMsg, key)
+		case "securityLevel":
+			err = unpopulate(val, "SecurityLevel", &c.SecurityLevel)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2374,6 +2476,33 @@ func (c *CrossSiteAccessPolicies) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DashSettings.
+func (d DashSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "role", d.Role)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DashSettings.
+func (d *DashSettings) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "role":
+			err = unpopulate(val, "Role", &d.Role)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
 		}
 	}
 	return nil
@@ -5149,6 +5278,7 @@ func (l LiveOutputProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "outputSnapTime", l.OutputSnapTime)
 	populate(objectMap, "provisioningState", l.ProvisioningState)
 	populate(objectMap, "resourceState", l.ResourceState)
+	populate(objectMap, "rewindWindowLength", l.RewindWindowLength)
 	return json.Marshal(objectMap)
 }
 
@@ -5190,6 +5320,9 @@ func (l *LiveOutputProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "resourceState":
 			err = unpopulate(val, "ResourceState", &l.ResourceState)
+			delete(rawMsg, key)
+		case "rewindWindowLength":
+			err = unpopulate(val, "RewindWindowLength", &l.RewindWindowLength)
 			delete(rawMsg, key)
 		}
 		if err != nil {

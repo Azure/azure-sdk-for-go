@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 
@@ -63,7 +64,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 			// the request failed for some other reason, don't try any further
 			return resp, nil
 		}
-		err = k.findScopeAndTenant(resp)
+		err = k.findScopeAndTenant(resp, req.Raw())
 		if err != nil {
 			return nil, err
 		}
@@ -92,7 +93,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 		k.mainResource.Expire()
 
 		// Find the scope and tenant again in case they have changed
-		err := k.findScopeAndTenant(resp)
+		err := k.findScopeAndTenant(resp, req.Raw())
 		if err != nil {
 			// Error parsing challenge, doomed to fail. Return
 			return resp, cloneReqErr
@@ -146,7 +147,7 @@ func (c *challengePolicyError) Unwrap() error {
 var _ errorinfo.NonRetriable = (*challengePolicyError)(nil)
 
 // sets the k.scope and k.tenantID from the WWW-Authenticate header
-func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error {
+func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response, req *http.Request) error {
 	authHeader := resp.Header.Get("WWW-Authenticate")
 	if authHeader == "" {
 		return &challengePolicyError{err: errors.New("response has no WWW-Authenticate header for challenge authentication")}
@@ -170,17 +171,27 @@ func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error 
 	}
 
 	k.tenantID = parseTenant(vals["authorization"])
-	if scope, ok := vals["scope"]; ok {
-		k.scope = &scope
-	} else if resource, ok := vals["resource"]; ok {
-		if !strings.HasSuffix(resource, "/.default") {
-			resource += "/.default"
-		}
-		k.scope = &resource
-	} else {
+	scope := ""
+	if v, ok := vals["scope"]; ok {
+		scope = v
+	} else if v, ok := vals["resource"]; ok {
+		scope = v
+	}
+	if scope == "" {
 		return &challengePolicyError{err: errors.New("could not find a valid resource in the WWW-Authenticate header")}
 	}
-
+	// the challenge resource's host must match the requested vault's host
+	parsed, err := url.Parse(scope)
+	if err != nil {
+		return &challengePolicyError{err: fmt.Errorf(`invalid challenge resource "%s": %v`, scope, err)}
+	}
+	if !strings.HasSuffix(req.URL.Host, "."+parsed.Host) {
+		return &challengePolicyError{err: fmt.Errorf(`the challenge resource "%s" doesn't match the requested domain`, scope)}
+	}
+	if !strings.HasSuffix(scope, "/.default") {
+		scope += "/.default"
+	}
+	k.scope = &scope
 	return nil
 }
 

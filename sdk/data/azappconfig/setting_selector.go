@@ -72,7 +72,7 @@ func AllSettingFields() []SettingFields {
 	}
 }
 
-func (sc SettingSelector) toGenerated() *generated.AzureAppConfigurationClientGetRevisionsOptions {
+func (sc SettingSelector) toGeneratedGetRevisions() *generated.AzureAppConfigurationClientGetRevisionsOptions {
 	var dt *string
 	if sc.AcceptDateTime != nil {
 		str := sc.AcceptDateTime.Format(timeFormat)
@@ -85,6 +85,26 @@ func (sc SettingSelector) toGenerated() *generated.AzureAppConfigurationClientGe
 	}
 
 	return &generated.AzureAppConfigurationClientGetRevisionsOptions{
+		After:  dt,
+		Key:    sc.KeyFilter,
+		Label:  sc.LabelFilter,
+		Select: sf,
+	}
+}
+
+func (sc SettingSelector) toGeneratedGetKeyValues() *generated.AzureAppConfigurationClientGetKeyValuesOptions {
+	var dt *string
+	if sc.AcceptDateTime != nil {
+		str := sc.AcceptDateTime.Format(timeFormat)
+		dt = &str
+	}
+
+	sf := make([]generated.Get6ItemsItem, len(sc.Fields))
+	for i := range sc.Fields {
+		sf[i] = (generated.Get6ItemsItem)(sc.Fields[i])
+	}
+
+	return &generated.AzureAppConfigurationClientGetKeyValuesOptions{
 		After:  dt,
 		Key:    sc.KeyFilter,
 		Label:  sc.LabelFilter,

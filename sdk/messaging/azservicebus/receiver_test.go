@@ -716,9 +716,10 @@ func TestReceiverMultiTopic(t *testing.T) {
 }
 
 func TestReceiverMessageLockExpires(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		LockDuration: to.Ptr("PT5S"),
-	})
+	client, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			LockDuration: to.Ptr("PT5S"),
+		}})
 	defer cleanup()
 
 	sender, err := client.NewSender(queueName, nil)

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGremlinDatabaseList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinDatabaseList.json
 func ExampleGremlinResourcesClient_NewListGremlinDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,9 +28,7 @@ func ExampleGremlinResourcesClient_NewListGremlinDatabasesPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListGremlinDatabasesPager("rgName",
-		"ddb1",
-		nil)
+	pager := client.NewListGremlinDatabasesPager("rgName", "ddb1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,7 +41,7 @@ func ExampleGremlinResourcesClient_NewListGremlinDatabasesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGremlinDatabaseGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinDatabaseGet.json
 func ExampleGremlinResourcesClient_GetGremlinDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,11 +52,7 @@ func ExampleGremlinResourcesClient_GetGremlinDatabase() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetGremlinDatabase(ctx,
-		"rg1",
-		"ddb1",
-		"databaseName",
-		nil)
+	res, err := client.GetGremlinDatabase(ctx, "rg1", "ddb1", "databaseName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,7 +60,7 @@ func ExampleGremlinResourcesClient_GetGremlinDatabase() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGremlinDatabaseCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinDatabaseCreateUpdate.json
 func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,21 +71,16 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinDatabase() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateGremlinDatabase(ctx,
-		"rg1",
-		"ddb1",
-		"databaseName",
-		armcosmos.GremlinDatabaseCreateUpdateParameters{
-			Location: to.Ptr("West US"),
-			Tags:     map[string]*string{},
-			Properties: &armcosmos.GremlinDatabaseCreateUpdateProperties{
-				Options: &armcosmos.CreateUpdateOptions{},
-				Resource: &armcosmos.GremlinDatabaseResource{
-					ID: to.Ptr("databaseName"),
-				},
+	poller, err := client.BeginCreateUpdateGremlinDatabase(ctx, "rg1", "ddb1", "databaseName", armcosmos.GremlinDatabaseCreateUpdateParameters{
+		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
+		Properties: &armcosmos.GremlinDatabaseCreateUpdateProperties{
+			Options: &armcosmos.CreateUpdateOptions{},
+			Resource: &armcosmos.GremlinDatabaseResource{
+				ID: to.Ptr("databaseName"),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -103,7 +92,7 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinDatabase() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGremlinDatabaseDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinDatabaseDelete.json
 func ExampleGremlinResourcesClient_BeginDeleteGremlinDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,11 +103,7 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinDatabase() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteGremlinDatabase(ctx,
-		"rg1",
-		"ddb1",
-		"databaseName",
-		nil)
+	poller, err := client.BeginDeleteGremlinDatabase(ctx, "rg1", "ddb1", "databaseName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -128,7 +113,7 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinDatabase() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGremlinDatabaseThroughputGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinDatabaseThroughputGet.json
 func ExampleGremlinResourcesClient_GetGremlinDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,11 +124,7 @@ func ExampleGremlinResourcesClient_GetGremlinDatabaseThroughput() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetGremlinDatabaseThroughput(ctx,
-		"rg1",
-		"ddb1",
-		"databaseName",
-		nil)
+	res, err := client.GetGremlinDatabaseThroughput(ctx, "rg1", "ddb1", "databaseName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -151,7 +132,7 @@ func ExampleGremlinResourcesClient_GetGremlinDatabaseThroughput() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGremlinDatabaseThroughputUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinDatabaseThroughputUpdate.json
 func ExampleGremlinResourcesClient_BeginUpdateGremlinDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,20 +143,15 @@ func ExampleGremlinResourcesClient_BeginUpdateGremlinDatabaseThroughput() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdateGremlinDatabaseThroughput(ctx,
-		"rg1",
-		"ddb1",
-		"databaseName",
-		armcosmos.ThroughputSettingsUpdateParameters{
-			Location: to.Ptr("West US"),
-			Tags:     map[string]*string{},
-			Properties: &armcosmos.ThroughputSettingsUpdateProperties{
-				Resource: &armcosmos.ThroughputSettingsResource{
-					Throughput: to.Ptr[int32](400),
-				},
+	poller, err := client.BeginUpdateGremlinDatabaseThroughput(ctx, "rg1", "ddb1", "databaseName", armcosmos.ThroughputSettingsUpdateParameters{
+		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
+		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
+			Resource: &armcosmos.ThroughputSettingsResource{
+				Throughput: to.Ptr[int32](400),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -187,7 +163,7 @@ func ExampleGremlinResourcesClient_BeginUpdateGremlinDatabaseThroughput() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGremlinDatabaseMigrateToAutoscale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinDatabaseMigrateToAutoscale.json
 func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,11 +174,7 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToAutoscale() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateGremlinDatabaseToAutoscale(ctx,
-		"rg1",
-		"ddb1",
-		"databaseName",
-		nil)
+	poller, err := client.BeginMigrateGremlinDatabaseToAutoscale(ctx, "rg1", "ddb1", "databaseName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -214,7 +186,7 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToAutoscale() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGremlinDatabaseMigrateToManualThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinDatabaseMigrateToManualThroughput.json
 func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,11 +197,7 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToManualThroughput
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateGremlinDatabaseToManualThroughput(ctx,
-		"rg1",
-		"ddb1",
-		"databaseName",
-		nil)
+	poller, err := client.BeginMigrateGremlinDatabaseToManualThroughput(ctx, "rg1", "ddb1", "databaseName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -241,7 +209,7 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToManualThroughput
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGremlinGraphList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinGraphList.json
 func ExampleGremlinResourcesClient_NewListGremlinGraphsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,10 +220,7 @@ func ExampleGremlinResourcesClient_NewListGremlinGraphsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListGremlinGraphsPager("rgName",
-		"ddb1",
-		"databaseName",
-		nil)
+	pager := client.NewListGremlinGraphsPager("rgName", "ddb1", "databaseName", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -268,7 +233,7 @@ func ExampleGremlinResourcesClient_NewListGremlinGraphsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGremlinGraphGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinGraphGet.json
 func ExampleGremlinResourcesClient_GetGremlinGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -279,12 +244,7 @@ func ExampleGremlinResourcesClient_GetGremlinGraph() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetGremlinGraph(ctx,
-		"rgName",
-		"ddb1",
-		"databaseName",
-		"graphName",
-		nil)
+	res, err := client.GetGremlinGraph(ctx, "rgName", "ddb1", "databaseName", "graphName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -292,7 +252,7 @@ func ExampleGremlinResourcesClient_GetGremlinGraph() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGremlinGraphCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinGraphCreateUpdate.json
 func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -303,59 +263,53 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinGraph() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateGremlinGraph(ctx,
-		"rg1",
-		"ddb1",
-		"databaseName",
-		"graphName",
-		armcosmos.GremlinGraphCreateUpdateParameters{
-			Location: to.Ptr("West US"),
-			Tags:     map[string]*string{},
-			Properties: &armcosmos.GremlinGraphCreateUpdateProperties{
-				Options: &armcosmos.CreateUpdateOptions{},
-				Resource: &armcosmos.GremlinGraphResource{
-					ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
-						ConflictResolutionPath: to.Ptr("/path"),
-						Mode:                   to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
-					},
-					DefaultTTL: to.Ptr[int32](100),
-					ID:         to.Ptr("graphName"),
-					IndexingPolicy: &armcosmos.IndexingPolicy{
-						Automatic:     to.Ptr(true),
-						ExcludedPaths: []*armcosmos.ExcludedPath{},
-						IncludedPaths: []*armcosmos.IncludedPath{
-							{
-								Path: to.Ptr("/*"),
-								Indexes: []*armcosmos.Indexes{
-									{
-										DataType:  to.Ptr(armcosmos.DataTypeString),
-										Kind:      to.Ptr(armcosmos.IndexKindRange),
-										Precision: to.Ptr[int32](-1),
-									},
-									{
-										DataType:  to.Ptr(armcosmos.DataTypeNumber),
-										Kind:      to.Ptr(armcosmos.IndexKindRange),
-										Precision: to.Ptr[int32](-1),
-									}},
-							}},
-						IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
-					},
-					PartitionKey: &armcosmos.ContainerPartitionKey{
-						Kind: to.Ptr(armcosmos.PartitionKindHash),
-						Paths: []*string{
-							to.Ptr("/AccountNumber")},
-					},
-					UniqueKeyPolicy: &armcosmos.UniqueKeyPolicy{
-						UniqueKeys: []*armcosmos.UniqueKey{
-							{
-								Paths: []*string{
-									to.Ptr("/testPath")},
-							}},
-					},
+	poller, err := client.BeginCreateUpdateGremlinGraph(ctx, "rg1", "ddb1", "databaseName", "graphName", armcosmos.GremlinGraphCreateUpdateParameters{
+		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
+		Properties: &armcosmos.GremlinGraphCreateUpdateProperties{
+			Options: &armcosmos.CreateUpdateOptions{},
+			Resource: &armcosmos.GremlinGraphResource{
+				ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
+					ConflictResolutionPath: to.Ptr("/path"),
+					Mode:                   to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
+				},
+				DefaultTTL: to.Ptr[int32](100),
+				ID:         to.Ptr("graphName"),
+				IndexingPolicy: &armcosmos.IndexingPolicy{
+					Automatic:     to.Ptr(true),
+					ExcludedPaths: []*armcosmos.ExcludedPath{},
+					IncludedPaths: []*armcosmos.IncludedPath{
+						{
+							Path: to.Ptr("/*"),
+							Indexes: []*armcosmos.Indexes{
+								{
+									DataType:  to.Ptr(armcosmos.DataTypeString),
+									Kind:      to.Ptr(armcosmos.IndexKindRange),
+									Precision: to.Ptr[int32](-1),
+								},
+								{
+									DataType:  to.Ptr(armcosmos.DataTypeNumber),
+									Kind:      to.Ptr(armcosmos.IndexKindRange),
+									Precision: to.Ptr[int32](-1),
+								}},
+						}},
+					IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
+				},
+				PartitionKey: &armcosmos.ContainerPartitionKey{
+					Kind: to.Ptr(armcosmos.PartitionKindHash),
+					Paths: []*string{
+						to.Ptr("/AccountNumber")},
+				},
+				UniqueKeyPolicy: &armcosmos.UniqueKeyPolicy{
+					UniqueKeys: []*armcosmos.UniqueKey{
+						{
+							Paths: []*string{
+								to.Ptr("/testPath")},
+						}},
 				},
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -367,7 +321,7 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinGraph() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGremlinGraphDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinGraphDelete.json
 func ExampleGremlinResourcesClient_BeginDeleteGremlinGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -378,12 +332,7 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinGraph() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteGremlinGraph(ctx,
-		"rg1",
-		"ddb1",
-		"databaseName",
-		"graphName",
-		nil)
+	poller, err := client.BeginDeleteGremlinGraph(ctx, "rg1", "ddb1", "databaseName", "graphName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -393,7 +342,7 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinGraph() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGremlinGraphThroughputGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinGraphThroughputGet.json
 func ExampleGremlinResourcesClient_GetGremlinGraphThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -404,12 +353,7 @@ func ExampleGremlinResourcesClient_GetGremlinGraphThroughput() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetGremlinGraphThroughput(ctx,
-		"rg1",
-		"ddb1",
-		"databaseName",
-		"graphName",
-		nil)
+	res, err := client.GetGremlinGraphThroughput(ctx, "rg1", "ddb1", "databaseName", "graphName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -417,7 +361,7 @@ func ExampleGremlinResourcesClient_GetGremlinGraphThroughput() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGremlinGraphThroughputUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinGraphThroughputUpdate.json
 func ExampleGremlinResourcesClient_BeginUpdateGremlinGraphThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -428,21 +372,15 @@ func ExampleGremlinResourcesClient_BeginUpdateGremlinGraphThroughput() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdateGremlinGraphThroughput(ctx,
-		"rg1",
-		"ddb1",
-		"databaseName",
-		"graphName",
-		armcosmos.ThroughputSettingsUpdateParameters{
-			Location: to.Ptr("West US"),
-			Tags:     map[string]*string{},
-			Properties: &armcosmos.ThroughputSettingsUpdateProperties{
-				Resource: &armcosmos.ThroughputSettingsResource{
-					Throughput: to.Ptr[int32](400),
-				},
+	poller, err := client.BeginUpdateGremlinGraphThroughput(ctx, "rg1", "ddb1", "databaseName", "graphName", armcosmos.ThroughputSettingsUpdateParameters{
+		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
+		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
+			Resource: &armcosmos.ThroughputSettingsResource{
+				Throughput: to.Ptr[int32](400),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -454,7 +392,7 @@ func ExampleGremlinResourcesClient_BeginUpdateGremlinGraphThroughput() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGremlinGraphMigrateToAutoscale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinGraphMigrateToAutoscale.json
 func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -465,12 +403,7 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToAutoscale() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateGremlinGraphToAutoscale(ctx,
-		"rg1",
-		"ddb1",
-		"databaseName",
-		"graphName",
-		nil)
+	poller, err := client.BeginMigrateGremlinGraphToAutoscale(ctx, "rg1", "ddb1", "databaseName", "graphName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -482,7 +415,7 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToAutoscale() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGremlinGraphMigrateToManualThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinGraphMigrateToManualThroughput.json
 func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -493,43 +426,7 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToManualThroughput() 
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateGremlinGraphToManualThroughput(ctx,
-		"rg1",
-		"ddb1",
-		"databaseName",
-		"graphName",
-		nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// TODO: use response item
-	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBGremlinGraphBackupInformation.json
-func ExampleGremlinResourcesClient_BeginRetrieveContinuousBackupInformation() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armcosmos.NewGremlinResourcesClient("subid", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := client.BeginRetrieveContinuousBackupInformation(ctx,
-		"rgName",
-		"ddb1",
-		"databaseName",
-		"graphName",
-		armcosmos.ContinuousBackupRestoreLocation{
-			Location: to.Ptr("North Europe"),
-		},
-		nil)
+	poller, err := client.BeginMigrateGremlinGraphToManualThroughput(ctx, "rg1", "ddb1", "databaseName", "graphName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

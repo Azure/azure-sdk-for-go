@@ -12,7 +12,6 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"net/http"
 	"net/url"
 	"sort"
@@ -59,7 +58,7 @@ func (c *SharedKeyCredential) SetAccountKey(accountKey string) error {
 }
 
 // ComputeHMACSHA256 generates a hash signature for an HTTP request or for a SAS.
-func (c *SharedKeyCredential) ComputeHMACSHA256(message string) (string, error) {
+func (c *SharedKeyCredential) computeHMACSHA256(message string) (string, error) {
 	h := hmac.New(sha256.New, c.accountKey.Load().([]byte))
 	_, err := h.Write([]byte(message))
 	return base64.StdEncoding.EncodeToString(h.Sum(nil)), err
@@ -179,9 +178,9 @@ func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, er
 	return cr.String(), nil
 }
 
-// noop function to satisfy StorageAccountCredential interface
-func (f *SharedKeyCredential) getUDKParams() *generated.UserDelegationKey {
-	return nil
+// ComputeHMACSHA256 is a helper for computing the signed string outside of this package.
+func ComputeHMACSHA256(cred *SharedKeyCredential, message string) (string, error) {
+	return cred.computeHMACSHA256(message)
 }
 
 // the following content isn't actually exported but must live
@@ -203,7 +202,7 @@ func (s *SharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	signature, err := s.cred.ComputeHMACSHA256(stringToSign)
+	signature, err := s.cred.computeHMACSHA256(stringToSign)
 	if err != nil {
 		return nil, err
 	}

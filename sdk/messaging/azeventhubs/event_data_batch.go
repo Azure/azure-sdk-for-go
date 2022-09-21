@@ -59,8 +59,8 @@ func (mb *EventDataBatch) NumBytes() uint64 {
 	return mb.currentSize
 }
 
-// NumMessages returns the # of messages in the batch.
-func (mb *EventDataBatch) NumMessages() int32 {
+// NumEvents returns the # of events in the batch.
+func (mb *EventDataBatch) NumEvents() int32 {
 	mb.mu.RLock()
 	defer mb.mu.RUnlock()
 
@@ -77,15 +77,14 @@ func (mb *EventDataBatch) toAMQPMessage() *amqp.Message {
 	mb.batchEnvelope.Format = batchMessageFormat
 
 	if mb.partitionKey != nil {
+		if mb.batchEnvelope.Annotations == nil {
+			mb.batchEnvelope.Annotations = make(amqp.Annotations)
+		}
+
 		mb.batchEnvelope.Annotations[partitionKeyAnnotation] = *mb.partitionKey
 	}
 
-	if mb.partitionID != nil {
-		mb.batchEnvelope.Annotations[partitionIDAnnotation] = *mb.partitionID
-	}
-
 	copy(mb.batchEnvelope.Data, mb.marshaledMessages)
-
 	return mb.batchEnvelope
 }
 
@@ -96,6 +95,14 @@ func (mb *EventDataBatch) addAMQPMessage(msg *amqp.Message) error {
 			return err
 		}
 		msg.Properties.MessageID = uid.String()
+	}
+
+	if mb.partitionKey != nil {
+		if msg.Annotations == nil {
+			msg.Annotations = make(amqp.Annotations)
+		}
+
+		msg.Annotations[partitionKeyAnnotation] = *mb.partitionKey
 	}
 
 	bin, err := msg.MarshalBinary()

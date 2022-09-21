@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakemhsm/keys/testbackuprestore2485414557/create?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testbackuprestore2485414557/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -17,7 +17,7 @@
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://local\u0022",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-request-id": "50035ea0-f64b-11ec-b395-6045bd86d5ca",
@@ -26,7 +26,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakemhsm/keys/testbackuprestore2485414557/create?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testbackuprestore2485414557/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -72,14 +72,14 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakemhsm/keys/testbackuprestore2485414557/594201d6c497427c2ae4e60fa220e511",
+          "kid": "https://fakemhsm.local/keys/testbackuprestore2485414557/594201d6c497427c2ae4e60fa220e511",
           "kty": "RSA-HSM",
           "n": "jPdt8eTMvHY9fsUlM296YmRmMQxsAOfrfnLQUWPUeDleSetTv-K_NmgsDxHgPo4JKqwuqMA8kHkAbq1NN-ZKMLDqTkxxMRLIHmXOJaVoGoojcxvn3OfLeZ17kar0EdwNiA44eaLDF2tAJxVoopnK9GiY9ke-WfH_AjJM2scdXKZTDKxUv3rsC9Er4YmILMhpprymgMg3s3d5_0uOOcbVOZ9p1OQb--t8YhAP1GAgXM8N5NMlVroUd-1QwiwoestgxN44uLkzHvwvJ3ceHFIq7T0dNByWglsf9vnQqDsYeTQF4ST8owDwKtz4gAESCttCcp_1Wb4H1ztFWeOvDy2lUw"
         }
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/testbackuprestore2485414557/backup?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testbackuprestore2485414557/backup?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -108,7 +108,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/testbackuprestore2485414557?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testbackuprestore2485414557?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -151,16 +151,16 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakemhsm/keys/testbackuprestore2485414557/594201d6c497427c2ae4e60fa220e511",
+          "kid": "https://fakemhsm.local/keys/testbackuprestore2485414557/594201d6c497427c2ae4e60fa220e511",
           "kty": "RSA-HSM",
           "n": "jPdt8eTMvHY9fsUlM296YmRmMQxsAOfrfnLQUWPUeDleSetTv-K_NmgsDxHgPo4JKqwuqMA8kHkAbq1NN-ZKMLDqTkxxMRLIHmXOJaVoGoojcxvn3OfLeZ17kar0EdwNiA44eaLDF2tAJxVoopnK9GiY9ke-WfH_AjJM2scdXKZTDKxUv3rsC9Er4YmILMhpprymgMg3s3d5_0uOOcbVOZ9p1OQb--t8YhAP1GAgXM8N5NMlVroUd-1QwiwoestgxN44uLkzHvwvJ3ceHFIq7T0dNByWglsf9vnQqDsYeTQF4ST8owDwKtz4gAESCttCcp_1Wb4H1ztFWeOvDy2lUw"
         },
-        "recoveryId": "https://fakemhsm/deletedkeys/testbackuprestore2485414557",
+        "recoveryId": "https://fakemhsm.local/deletedkeys/testbackuprestore2485414557",
         "scheduledPurgeDate": 1656961187
       }
     },
     {
-      "RequestUri": "https://fakemhsm/deletedkeys/testbackuprestore2485414557?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/deletedkeys/testbackuprestore2485414557?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -204,16 +204,16 @@
             "decrypt",
             "wrapKey"
           ],
-          "kid": "https://fakemhsm/keys/testbackuprestore2485414557/594201d6c497427c2ae4e60fa220e511",
+          "kid": "https://fakemhsm.local/keys/testbackuprestore2485414557/594201d6c497427c2ae4e60fa220e511",
           "kty": "RSA-HSM",
           "n": "jPdt8eTMvHY9fsUlM296YmRmMQxsAOfrfnLQUWPUeDleSetTv-K_NmgsDxHgPo4JKqwuqMA8kHkAbq1NN-ZKMLDqTkxxMRLIHmXOJaVoGoojcxvn3OfLeZ17kar0EdwNiA44eaLDF2tAJxVoopnK9GiY9ke-WfH_AjJM2scdXKZTDKxUv3rsC9Er4YmILMhpprymgMg3s3d5_0uOOcbVOZ9p1OQb--t8YhAP1GAgXM8N5NMlVroUd-1QwiwoestgxN44uLkzHvwvJ3ceHFIq7T0dNByWglsf9vnQqDsYeTQF4ST8owDwKtz4gAESCttCcp_1Wb4H1ztFWeOvDy2lUw"
         },
-        "recoveryId": "https://fakemhsm/deletedkeys/testbackuprestore2485414557",
+        "recoveryId": "https://fakemhsm.local/deletedkeys/testbackuprestore2485414557",
         "scheduledPurgeDate": 1656961187
       }
     },
     {
-      "RequestUri": "https://fakemhsm/deletedkeys/testbackuprestore2485414557?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/deletedkeys/testbackuprestore2485414557?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -239,7 +239,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakemhsm/keys/restore?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/restore?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -285,14 +285,14 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakemhsm/keys/testbackuprestore2485414557/594201d6c497427c2ae4e60fa220e511",
+          "kid": "https://fakemhsm.local/keys/testbackuprestore2485414557/594201d6c497427c2ae4e60fa220e511",
           "kty": "RSA-HSM",
           "n": "jPdt8eTMvHY9fsUlM296YmRmMQxsAOfrfnLQUWPUeDleSetTv-K_NmgsDxHgPo4JKqwuqMA8kHkAbq1NN-ZKMLDqTkxxMRLIHmXOJaVoGoojcxvn3OfLeZ17kar0EdwNiA44eaLDF2tAJxVoopnK9GiY9ke-WfH_AjJM2scdXKZTDKxUv3rsC9Er4YmILMhpprymgMg3s3d5_0uOOcbVOZ9p1OQb--t8YhAP1GAgXM8N5NMlVroUd-1QwiwoestgxN44uLkzHvwvJ3ceHFIq7T0dNByWglsf9vnQqDsYeTQF4ST8owDwKtz4gAESCttCcp_1Wb4H1ztFWeOvDy2lUw"
         }
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/testbackuprestore2485414557/?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testbackuprestore2485414557/?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -335,14 +335,14 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakemhsm/keys/testbackuprestore2485414557/594201d6c497427c2ae4e60fa220e511",
+          "kid": "https://fakemhsm.local/keys/testbackuprestore2485414557/594201d6c497427c2ae4e60fa220e511",
           "kty": "RSA-HSM",
           "n": "jPdt8eTMvHY9fsUlM296YmRmMQxsAOfrfnLQUWPUeDleSetTv-K_NmgsDxHgPo4JKqwuqMA8kHkAbq1NN-ZKMLDqTkxxMRLIHmXOJaVoGoojcxvn3OfLeZ17kar0EdwNiA44eaLDF2tAJxVoopnK9GiY9ke-WfH_AjJM2scdXKZTDKxUv3rsC9Er4YmILMhpprymgMg3s3d5_0uOOcbVOZ9p1OQb--t8YhAP1GAgXM8N5NMlVroUd-1QwiwoestgxN44uLkzHvwvJ3ceHFIq7T0dNByWglsf9vnQqDsYeTQF4ST8owDwKtz4gAESCttCcp_1Wb4H1ztFWeOvDy2lUw"
         }
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/testbackuprestore2485414557?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testbackuprestore2485414557?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -385,11 +385,11 @@
             "encrypt",
             "wrapKey"
           ],
-          "kid": "https://fakemhsm/keys/testbackuprestore2485414557/594201d6c497427c2ae4e60fa220e511",
+          "kid": "https://fakemhsm.local/keys/testbackuprestore2485414557/594201d6c497427c2ae4e60fa220e511",
           "kty": "RSA-HSM",
           "n": "jPdt8eTMvHY9fsUlM296YmRmMQxsAOfrfnLQUWPUeDleSetTv-K_NmgsDxHgPo4JKqwuqMA8kHkAbq1NN-ZKMLDqTkxxMRLIHmXOJaVoGoojcxvn3OfLeZ17kar0EdwNiA44eaLDF2tAJxVoopnK9GiY9ke-WfH_AjJM2scdXKZTDKxUv3rsC9Er4YmILMhpprymgMg3s3d5_0uOOcbVOZ9p1OQb--t8YhAP1GAgXM8N5NMlVroUd-1QwiwoestgxN44uLkzHvwvJ3ceHFIq7T0dNByWglsf9vnQqDsYeTQF4ST8owDwKtz4gAESCttCcp_1Wb4H1ztFWeOvDy2lUw"
         },
-        "recoveryId": "https://fakemhsm/deletedkeys/testbackuprestore2485414557",
+        "recoveryId": "https://fakemhsm.local/deletedkeys/testbackuprestore2485414557",
         "scheduledPurgeDate": 1656961188
       }
     }

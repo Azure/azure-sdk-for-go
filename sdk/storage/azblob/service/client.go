@@ -9,6 +9,7 @@ package service
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"net/http"
 	"strings"
 	"time"
@@ -21,6 +22,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -84,7 +86,7 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 // NewClientWithUserDelegationCredential obtains a UserDelegationKey object using the base ServiceURL object.
 // OAuth is required for this call, as well as any role that can delegate access to the storage account.
 func NewClientWithUserDelegationCredential(serviceURL string, ctx context.Context, info generated.KeyInfo, timeout *int32, requestID *string) (*Client, error) {
-	url, err := exported.ParseURL(serviceURL)
+	url, err := blob.ParseURL(serviceURL)
 	if err != nil {
 		return nil, err
 	}
@@ -243,14 +245,14 @@ func (s *Client) GetStatistics(ctx context.Context, o *GetStatisticsOptions) (Ge
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 // This validity can be checked with CanGetAccountSASToken().
-func (s *Client) GetSASURL(resources SASResourceTypes, permissions SASPermissions, services SASServices, start time.Time, expiry time.Time) (string, error) {
+func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, services sas.AccountServices, start time.Time, expiry time.Time) (string, error) {
 	if s.sharedKey() == nil {
 		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}
 
-	qps, err := SASSignatureValues{
-		Version:       exported.SASVersion,
-		Protocol:      exported.SASProtocolHTTPS,
+	qps, err := sas.AccountSignatureValues{
+		Version:       sas.Version,
+		Protocol:      sas.ProtocolHTTPS,
 		Permissions:   permissions.String(),
 		Services:      services.String(),
 		ResourceTypes: resources.String(),
@@ -273,7 +275,7 @@ func (s *Client) GetSASURL(resources SASResourceTypes, permissions SASPermission
 // GetUDKSASURL is a convenience method for generating a SAS token for the currently pointed at account.
 // It can only be used if the credential supplied during creation was a UserDelegationKey.
 // This validity can be checked with CanGetAccountSASToken().
-func (s *Client) GetUDKSASURL(resources SASResourceTypes, permissions SASPermissions, services SASServices, start time.Time, expiry time.Time) (string, error) {
+func (s *Client) GetUDKSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, services sas.AccountServices, start time.Time, expiry time.Time) (string, error) {
 	if s.userDelegationKey() == nil {
 		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}
@@ -281,9 +283,9 @@ func (s *Client) GetUDKSASURL(resources SASResourceTypes, permissions SASPermiss
 	udc := UserDelegationCredential{
 		Key: *s.userDelegationKey(),
 	}
-	qps, err := SASSignatureValues{
-		Version:       exported.SASVersion,
-		Protocol:      exported.SASProtocolHTTPS,
+	qps, err := sas.AccountSignatureValues{
+		Version:       sas.Version,
+		Protocol:      sas.ProtocolHTTPS,
 		Permissions:   permissions.String(),
 		Services:      services.String(),
 		ResourceTypes: resources.String(),

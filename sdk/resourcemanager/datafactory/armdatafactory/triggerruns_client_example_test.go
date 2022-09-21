@@ -30,12 +30,7 @@ func ExampleTriggerRunsClient_Rerun() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Rerun(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleTrigger",
-		"2f7fdb90-5df1-4b8e-ac2f-064cfa58202b",
-		nil)
+	_, err = client.Rerun(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -52,12 +47,7 @@ func ExampleTriggerRunsClient_Cancel() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Cancel(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleTrigger",
-		"2f7fdb90-5df1-4b8e-ac2f-064cfa58202b",
-		nil)
+	_, err = client.Cancel(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -74,21 +64,17 @@ func ExampleTriggerRunsClient_QueryByFactory() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.QueryByFactory(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		armdatafactory.RunFilterParameters{
-			Filters: []*armdatafactory.RunQueryFilter{
-				{
-					Operand:  to.Ptr(armdatafactory.RunQueryFilterOperandTriggerName),
-					Operator: to.Ptr(armdatafactory.RunQueryFilterOperatorEquals),
-					Values: []*string{
-						to.Ptr("exampleTrigger")},
-				}},
-			LastUpdatedAfter:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:36:44.3345758Z"); return t }()),
-			LastUpdatedBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:49:48.3686473Z"); return t }()),
-		},
-		nil)
+	res, err := client.QueryByFactory(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.RunFilterParameters{
+		Filters: []*armdatafactory.RunQueryFilter{
+			{
+				Operand:  to.Ptr(armdatafactory.RunQueryFilterOperandTriggerName),
+				Operator: to.Ptr(armdatafactory.RunQueryFilterOperatorEquals),
+				Values: []*string{
+					to.Ptr("exampleTrigger")},
+			}},
+		LastUpdatedAfter:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:36:44.3345758Z"); return t }()),
+		LastUpdatedBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:49:48.3686473Z"); return t }()),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -28,9 +28,7 @@ func ExampleGlobalParametersClient_NewListByFactoryPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByFactoryPager("exampleResourceGroup",
-		"exampleFactoryName",
-		nil)
+	pager := client.NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -54,11 +52,7 @@ func ExampleGlobalParametersClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"default",
-		nil)
+	res, err := client.Get(ctx, "exampleResourceGroup", "exampleFactoryName", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -67,7 +61,7 @@ func ExampleGlobalParametersClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Create.json
-func ExampleGlobalParametersClient_CreateOrUpdate() {
+func ExampleGlobalParametersClient_CreateOrUpdate_globalParametersCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -77,19 +71,40 @@ func ExampleGlobalParametersClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"default",
-		armdatafactory.GlobalParameterResource{
-			Properties: map[string]*armdatafactory.GlobalParameterSpecification{
-				"waitTime": {
-					Type:  to.Ptr(armdatafactory.GlobalParameterTypeInt),
-					Value: float64(5),
-				},
+	res, err := client.CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "default", armdatafactory.GlobalParameterResource{
+		Properties: map[string]*armdatafactory.GlobalParameterSpecification{
+			"waitTime": {
+				Type:  to.Ptr(armdatafactory.GlobalParameterTypeInt),
+				Value: float64(5),
 			},
 		},
-		nil)
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Update.json
+func ExampleGlobalParametersClient_CreateOrUpdate_globalParametersUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armdatafactory.NewGlobalParametersClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "default", armdatafactory.GlobalParameterResource{
+		Properties: map[string]*armdatafactory.GlobalParameterSpecification{
+			"waitTime": {
+				Type:  to.Ptr(armdatafactory.GlobalParameterTypeInt),
+				Value: float64(5),
+			},
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -108,11 +123,7 @@ func ExampleGlobalParametersClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"default",
-		nil)
+	_, err = client.Delete(ctx, "exampleResourceGroup", "exampleFactoryName", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

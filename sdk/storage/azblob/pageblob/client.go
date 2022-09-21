@@ -104,7 +104,7 @@ func (pb *Client) sharedKey() *blob.SharedKeyCredential {
 // WithSnapshot creates a new PageBlobURL object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
 func (pb *Client) WithSnapshot(snapshot string) (*Client, error) {
-	p, err := exported.ParseURL(pb.URL())
+	p, err := blob.ParseURL(pb.URL())
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +116,7 @@ func (pb *Client) WithSnapshot(snapshot string) (*Client, error) {
 // WithVersionID creates a new PageBlobURL object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the version returning a URL to the base blob.
 func (pb *Client) WithVersionID(versionID string) (*Client, error) {
-	p, err := exported.ParseURL(pb.URL())
+	p, err := blob.ParseURL(pb.URL())
 	if err != nil {
 		return nil, err
 	}
@@ -174,9 +174,9 @@ func (pb *Client) UploadPagesFromURL(ctx context.Context, source string, sourceO
 
 // ClearPages frees the specified pages from the page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-page.
-func (pb *Client) ClearPages(ctx context.Context, offset, count int64, options *ClearPagesOptions) (ClearPagesResponse, error) {
+func (pb *Client) ClearPages(ctx context.Context, rnge blob.HTTPRange, options *ClearPagesOptions) (ClearPagesResponse, error) {
 	clearOptions := &generated.PageBlobClientClearPagesOptions{
-		Range: shared.HTTPRange{Offset: offset, Count: count}.Format(),
+		Range: exported.FormatHTTPRange(rnge),
 	}
 
 	leaseAccessConditions, cpkInfo, cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions := options.format()

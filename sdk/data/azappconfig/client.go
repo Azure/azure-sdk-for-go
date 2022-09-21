@@ -448,7 +448,7 @@ func fromGeneratedGetRevisionsPage(g generated.AzureAppConfigurationClientGetRev
 	}
 }
 
-// ListRevisionsOptions contains the optional parameters for the ListRevisions method.
+// ListRevisionsOptions contains the optional parameters for the NewListRevisionsPager method.
 type ListRevisionsOptions struct {
 	// placeholder for future options
 }
@@ -456,7 +456,7 @@ type ListRevisionsOptions struct {
 // NewListRevisionsPager creates a pager that retrieves the revisions of one or more
 // configuration setting entities that match the specified setting selector.
 func (c *Client) NewListRevisionsPager(selector SettingSelector, options *ListRevisionsOptions) *runtime.Pager[ListRevisionsPage] {
-	pagerInternal := c.appConfigClient.NewGetRevisionsPager(selector.toGenerated())
+	pagerInternal := c.appConfigClient.NewGetRevisionsPager(selector.toGeneratedGetRevisions())
 	return runtime.NewPager(runtime.PagingHandler[ListRevisionsPage]{
 		More: func(ListRevisionsPage) bool {
 			return pagerInternal.More()
@@ -467,6 +467,51 @@ func (c *Client) NewListRevisionsPager(selector SettingSelector, options *ListRe
 				return ListRevisionsPage{}, err
 			}
 			return fromGeneratedGetRevisionsPage(page), nil
+		},
+	})
+}
+
+// ListSettingsPage contains the configuration settings returned by ListRevisionsPager.
+type ListSettingsPage struct {
+	// Contains the configuration settings returned that match the setting selector provided.
+	Settings []Setting
+
+	// Sync token for the Azure App Configuration client, corresponding to the current state of the client.
+	SyncToken *string
+}
+
+func fromGeneratedGetSettingsPage(g generated.AzureAppConfigurationClientGetKeyValuesResponse) ListSettingsPage {
+	var css []Setting
+	for _, cs := range g.Items {
+		if cs != nil {
+			css = append(css, settingFromGenerated(*cs))
+		}
+	}
+
+	return ListSettingsPage{
+		Settings:  css,
+		SyncToken: g.SyncToken,
+	}
+}
+
+// ListSettingsOptions contains the optional parameters for the NewListSettingsPager method.
+type ListSettingsOptions struct {
+	// placeholder for future options
+}
+
+// NewListSettingsPager creates a pager that retrieves setting entities that match the specified setting selector.
+func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSettingsOptions) *runtime.Pager[ListSettingsPage] {
+	pagerInternal := c.appConfigClient.NewGetKeyValuesPager(selector.toGeneratedGetKeyValues())
+	return runtime.NewPager(runtime.PagingHandler[ListSettingsPage]{
+		More: func(ListSettingsPage) bool {
+			return pagerInternal.More()
+		},
+		Fetcher: func(ctx context.Context, cur *ListSettingsPage) (ListSettingsPage, error) {
+			page, err := pagerInternal.NextPage(ctx)
+			if err != nil {
+				return ListSettingsPage{}, err
+			}
+			return fromGeneratedGetSettingsPage(page), nil
 		},
 	})
 }

@@ -1,0 +1,228 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example/providers/Microsoft.Insights/metricDefinitions?api-version=2018-01-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azquery/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json",
+        "Date": "Thu, 08 Sep 2022 00:01:50 GMT",
+        "Request-Context": "appId=cid-v1:b021da79-5252-4375-9df5-2e17c1dcd822",
+        "Server": "Microsoft-IIS/10.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": [
+          "Accept-Encoding",
+          "Accept-Encoding"
+        ],
+        "X-AspNet-Version": "4.0.30319",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "66488ede-4eb8-4c0e-8756-402ecea0b651",
+        "x-ms-ratelimit-remaining-subscription-resource-requests": "399",
+        "x-ms-request-id": "{66488ede-4eb8-4c0e-8756-402ecea0b651}",
+        "x-ms-routing-request-id": "CENTRALUS:20220908T000150Z:66488ede-4eb8-4c0e-8756-402ecea0b651",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example/providers/microsoft.insights/metricdefinitions/HttpIncomingRequestCount",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example",
+            "namespace": "Microsoft.AppConfiguration/configurationStores",
+            "name": {
+              "value": "HttpIncomingRequestCount",
+              "localizedValue": "HttpIncomingRequestCount"
+            },
+            "displayDescription": "Total number of incoming http requests.",
+            "isDimensionRequired": false,
+            "unit": "Count",
+            "primaryAggregationType": "Count",
+            "supportedAggregationTypes": [
+              "None",
+              "Average",
+              "Minimum",
+              "Maximum",
+              "Total",
+              "Count"
+            ],
+            "metricAvailabilities": [
+              {
+                "timeGrain": "PT1M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT5M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT15M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT30M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT1H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT6H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT12H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "P1D",
+                "retention": "P93D"
+              }
+            ],
+            "dimensions": [
+              {
+                "value": "StatusCode",
+                "localizedValue": "HttpStatusCode"
+              },
+              {
+                "value": "Authentication",
+                "localizedValue": "AuthenticationScheme"
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example/providers/microsoft.insights/metricdefinitions/HttpIncomingRequestDuration",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example",
+            "namespace": "Microsoft.AppConfiguration/configurationStores",
+            "name": {
+              "value": "HttpIncomingRequestDuration",
+              "localizedValue": "HttpIncomingRequestDuration"
+            },
+            "displayDescription": "Latency on an http request.",
+            "isDimensionRequired": false,
+            "unit": "Count",
+            "primaryAggregationType": "Average",
+            "supportedAggregationTypes": [
+              "None",
+              "Average",
+              "Minimum",
+              "Maximum",
+              "Total",
+              "Count"
+            ],
+            "metricAvailabilities": [
+              {
+                "timeGrain": "PT1M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT5M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT15M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT30M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT1H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT6H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT12H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "P1D",
+                "retention": "P93D"
+              }
+            ],
+            "dimensions": [
+              {
+                "value": "StatusCode",
+                "localizedValue": "HttpStatusCode"
+              },
+              {
+                "value": "Authentication",
+                "localizedValue": "AuthenticationScheme"
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example/providers/microsoft.insights/metricdefinitions/ThrottledHttpRequestCount",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example",
+            "namespace": "Microsoft.AppConfiguration/configurationStores",
+            "name": {
+              "value": "ThrottledHttpRequestCount",
+              "localizedValue": "ThrottledHttpRequestCount"
+            },
+            "displayDescription": "Throttled http requests.",
+            "isDimensionRequired": false,
+            "unit": "Count",
+            "primaryAggregationType": "Count",
+            "supportedAggregationTypes": [
+              "None",
+              "Average",
+              "Minimum",
+              "Maximum",
+              "Total",
+              "Count"
+            ],
+            "metricAvailabilities": [
+              {
+                "timeGrain": "PT1M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT5M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT15M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT30M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT1H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT6H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT12H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "P1D",
+                "retention": "P93D"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
+}

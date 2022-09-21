@@ -1,5 +1,53 @@
 # Release History
 
+## 3.1.0 (2022-09-02)
+### Features Added
+
+- New const `SecurityLevelSL150`
+- New const `AsyncOperationStatusInProgress`
+- New const `AsyncOperationStatusSucceeded`
+- New const `SecurityLevelSL3000`
+- New const `AsyncOperationStatusFailed`
+- New const `SecurityLevelUnknown`
+- New const `SecurityLevelSL2000`
+- New type alias `AsyncOperationStatus`
+- New type alias `SecurityLevel`
+- New function `PossibleSecurityLevelValues() []SecurityLevel`
+- New function `*LiveEventsClient.OperationLocation(context.Context, string, string, string, string, *LiveEventsClientOperationLocationOptions) (LiveEventsClientOperationLocationResponse, error)`
+- New function `*LiveOutputsClient.AsyncOperation(context.Context, string, string, string, *LiveOutputsClientAsyncOperationOptions) (LiveOutputsClientAsyncOperationResponse, error)`
+- New function `PossibleAsyncOperationStatusValues() []AsyncOperationStatus`
+- New function `*LiveEventsClient.AsyncOperation(context.Context, string, string, string, *LiveEventsClientAsyncOperationOptions) (LiveEventsClientAsyncOperationResponse, error)`
+- New function `*StreamingEndpointsClient.AsyncOperation(context.Context, string, string, string, *StreamingEndpointsClientAsyncOperationOptions) (StreamingEndpointsClientAsyncOperationResponse, error)`
+- New function `*LiveOutputsClient.OperationLocation(context.Context, string, string, string, string, string, *LiveOutputsClientOperationLocationOptions) (LiveOutputsClientOperationLocationResponse, error)`
+- New function `*StreamingEndpointsClient.OperationLocation(context.Context, string, string, string, string, *StreamingEndpointsClientOperationLocationOptions) (StreamingEndpointsClientOperationLocationResponse, error)`
+- New struct `AsyncOperationResult`
+- New struct `ClearKeyEncryptionConfiguration`
+- New struct `DashSettings`
+- New struct `LiveEventsClientAsyncOperationOptions`
+- New struct `LiveEventsClientAsyncOperationResponse`
+- New struct `LiveEventsClientOperationLocationOptions`
+- New struct `LiveEventsClientOperationLocationResponse`
+- New struct `LiveOutputsClientAsyncOperationOptions`
+- New struct `LiveOutputsClientAsyncOperationResponse`
+- New struct `LiveOutputsClientOperationLocationOptions`
+- New struct `LiveOutputsClientOperationLocationResponse`
+- New struct `StreamingEndpointsClientAsyncOperationOptions`
+- New struct `StreamingEndpointsClientAsyncOperationResponse`
+- New struct `StreamingEndpointsClientOperationLocationOptions`
+- New struct `StreamingEndpointsClientOperationLocationResponse`
+- New field `SecurityLevel` in struct `ContentKeyPolicyPlayReadyLicense`
+- New field `ClearKeyEncryptionConfiguration` in struct `CommonEncryptionCenc`
+- New field `RewindWindowLength` in struct `LiveOutputProperties`
+- New field `ClearKeyEncryptionConfiguration` in struct `CommonEncryptionCbcs`
+- New field `DashSettings` in struct `AudioTrack`
+- New field `DisplayName` in struct `AudioTrack`
+- New field `FileName` in struct `AudioTrack`
+- New field `HlsSettings` in struct `AudioTrack`
+- New field `LanguageCode` in struct `AudioTrack`
+- New field `Mpeg4TrackID` in struct `AudioTrack`
+- New field `BitRate` in struct `AudioTrack`
+
+
 ## 3.0.0 (2022-06-24)
 ### Breaking Changes
 

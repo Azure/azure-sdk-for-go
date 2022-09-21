@@ -6,20 +6,20 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"os"
 	"sort"
+	"strings"
 	"sync"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/conn"
-	"github.com/joho/godotenv"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 	"github.com/stretchr/testify/require"
 )
 
 func TestNewProducerClient_GetHubAndPartitionProperties(t *testing.T) {
-	testParams := getConnectionParams(t)
+	testParams := test.GetConnectionParamsForTest(t)
 
 	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
 	require.NoError(t, err)
@@ -51,7 +51,7 @@ func TestNewProducerClient_GetHubAndPartitionProperties(t *testing.T) {
 }
 
 func TestNewProducerClient_GetEventHubsProperties(t *testing.T) {
-	testParams := getConnectionParams(t)
+	testParams := test.GetConnectionParamsForTest(t)
 
 	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
 	require.NoError(t, err)
@@ -77,35 +77,44 @@ func TestNewProducerClient_GetEventHubsProperties(t *testing.T) {
 }
 
 func TestNewProducerClient_SendToAny(t *testing.T) {
-	testParams := getConnectionParams(t)
-	partitions := getPartitions(t, testParams)
+	// there are two ways to "send to any" partition
+	// 1. Don't specify a partition ID or a partition key when creating the batch
+	// 2. Specify a partition key. This is useful if you want to send events and have them
+	//    be placed into the same partition but let the overall distribution of the partition keys
+	//    happen through Event Hubs.
 
-	require.NotNil(t, partitions)
+	partitionKeys := map[string]*string{
+		"nil":                  nil,
+		"actual partition key": to.Ptr("my special partition key"),
+	}
 
-	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
-	require.NoError(t, err)
+	for displayName, partitionKey := range partitionKeys {
+		t.Run(fmt.Sprintf("partition key = %s", displayName), func(t *testing.T) {
+			testParams := test.GetConnectionParamsForTest(t)
 
-	batch, err := producer.NewEventDataBatch(context.Background(), nil)
-	require.NoError(t, err)
+			producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+			require.NoError(t, err)
 
-	err = batch.AddEventData(&azeventhubs.EventData{
-		Body: []byte("hello world"),
-	}, nil)
-	require.NoError(t, err)
+			batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.NewEventDataBatchOptions{
+				PartitionKey: partitionKey,
+			})
+			require.NoError(t, err)
 
-	err = producer.SendEventBatch(context.Background(), batch, nil)
-	require.NoError(t, err)
+			err = batch.AddEventData(&azeventhubs.EventData{
+				Body:          []byte("hello world"),
+				ContentType:   to.Ptr("content type"),
+				CorrelationID: "correlation id",
+				MessageID:     to.Ptr("message id"),
+				Properties: map[string]any{
+					"hello": "world",
+				},
+			}, nil)
+			require.NoError(t, err)
 
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
+			partitionsBeforeSend := getAllPartitionProperties(t, producer)
 
-	wg := sync.WaitGroup{}
-
-	for _, partProps := range partitions {
-		wg.Add(1)
-
-		go func(partProps azeventhubs.PartitionProperties) {
-			defer wg.Done()
+			err = producer.SendEventBatch(context.Background(), batch, nil)
+			require.NoError(t, err)
 
 			consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
 			require.NoError(t, err)
@@ -115,12 +124,177 @@ func TestNewProducerClient_SendToAny(t *testing.T) {
 				require.NoError(t, err)
 			}()
 
-			subscription, err := consumer.NewPartitionClient(partProps.PartitionID, &azeventhubs.NewPartitionClientOptions{
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
+
+			receivedEvent := receiveEventFromAnyPartition(ctx, t, consumer, partitionsBeforeSend)
+
+			require.Equal(t, azeventhubs.EventData{
+				Body:          []byte("hello world"),
+				ContentType:   to.Ptr("content type"),
+				CorrelationID: "correlation id",
+				MessageID:     to.Ptr("message id"),
+				Properties: map[string]any{
+					"hello": "world",
+				}}, receivedEvent.EventData)
+
+			require.Greater(t, receivedEvent.SequenceNumber, int64(0))
+			require.NotNil(t, receivedEvent.Offset)
+			require.NotZero(t, receivedEvent.EnqueuedTime)
+
+			if partitionKey == nil {
+				require.Nil(t, receivedEvent.PartitionKey)
+			} else {
+				require.NotNil(t, receivedEvent.PartitionKey)
+				require.Equal(t, *partitionKey, *receivedEvent.PartitionKey)
+			}
+		})
+	}
+}
+
+func makeByteSlice(index int, total int) []byte {
+	// ie: %0<total>d, so it'll be zero padded up to the length we want
+	text := fmt.Sprintf("%0"+fmt.Sprintf("%d", total)+"d", index)
+	return []byte(text)
+}
+
+func TestProducerClient_SendBatchExample(t *testing.T) {
+	testParams := test.GetConnectionParamsForTest(t)
+
+	producerClient, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
+	require.NoError(t, err)
+
+	beforeSend, err := producerClient.GetPartitionProperties(context.Background(), "0", nil)
+	require.NoError(t, err)
+
+	// this is a replicate of the code we use in the example "example_producer_events.go"
+	// just testing to make sure it works the way we expect it to.
+	newBatchOptions := &azeventhubs.NewEventDataBatchOptions{
+		MaxBytes:    300,
+		PartitionID: to.Ptr("0"),
+	}
+
+	const messageSize = 40
+
+	events := []*azeventhubs.EventData{
+		{
+			Body: makeByteSlice(0, messageSize),
+		},
+		{
+			Body: makeByteSlice(1, messageSize),
+		},
+		{
+			Body: makeByteSlice(2, messageSize),
+		},
+		{
+			Body: makeByteSlice(3, messageSize),
+		},
+		{
+			Body: makeByteSlice(4, messageSize),
+		},
+	}
+
+	batchesSentFromExcess := 0
+	var numMessagesPerBatch []int
+
+	// (example start)
+	batch, err := producerClient.NewEventDataBatch(context.TODO(), newBatchOptions)
+
+	if err != nil {
+		panic(err)
+	}
+
+	for i := 0; i < len(events); i++ {
+		err = batch.AddEventData(events[i], nil)
+
+		if errors.Is(err, azeventhubs.ErrEventDataTooLarge) {
+			if batch.NumEvents() == 0 {
+				// This one event is too large for this batch, even on its own. No matter what we do it
+				// will not be sendable at its current size.
+				panic(err)
+			}
+
+			// This batch is full - we can send it and create a new one and continue
+			// packaging and sending events.
+			if err := producerClient.SendEventBatch(context.TODO(), batch, nil); err != nil {
+				panic(err)
+			}
+
+			numMessagesPerBatch = append(numMessagesPerBatch, int(batch.NumEvents()))
+
+			tmpBatch, err := producerClient.NewEventDataBatch(context.TODO(), newBatchOptions)
+
+			if err != nil {
+				panic(err)
+			}
+
+			batch = tmpBatch
+
+			// rewind so we can retry adding this event to a batch
+			i--
+		} else if err != nil {
+			panic(err)
+		}
+	}
+
+	// if we have any events in the last batch, send it
+	if batch.NumEvents() > 0 {
+		if err := producerClient.SendEventBatch(context.TODO(), batch, nil); err != nil {
+			panic(err)
+		}
+
+		batchesSentFromExcess++
+	}
+	// (example end)
+
+	require.Equal(t, 1, batchesSentFromExcess)
+	require.Equal(t, []int{2, 2}, numMessagesPerBatch)
+
+	consumerClient, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+	require.NoError(t, err)
+
+	defer consumerClient.Close(context.Background())
+
+	partitionClient, err := consumerClient.NewPartitionClient("0", &azeventhubs.NewPartitionClientOptions{
+		StartPosition: getStartPosition(beforeSend),
+	})
+	require.NoError(t, err)
+
+	defer partitionClient.Close(context.Background())
+
+	receivedEvents, err := partitionClient.ReceiveEvents(context.Background(), 5, nil)
+	require.NoError(t, err)
+
+	sort.Slice(events, func(i, j int) bool {
+		return strings.Compare(string(receivedEvents[i].Body), string(receivedEvents[j].Body)) < 0
+	})
+
+	for i := 0; i < 5; i++ {
+		require.Equal(t, string(makeByteSlice(i, messageSize)), string(receivedEvents[i].Body))
+	}
+}
+
+// receiveEventFromAnyPartition returns when it receives an event from any partition. Useful for tests where you're
+// letting the service route the event and you're not sure where it'll end up.
+func receiveEventFromAnyPartition(ctx context.Context, t *testing.T, consumer *azeventhubs.ConsumerClient, allPartitions []azeventhubs.PartitionProperties) *azeventhubs.ReceivedEventData {
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	eventCh := make(chan *azeventhubs.ReceivedEventData, 1)
+
+	for _, partProps := range allPartitions {
+		go func(partProps azeventhubs.PartitionProperties) {
+			partClient, err := consumer.NewPartitionClient(partProps.PartitionID, &azeventhubs.NewPartitionClientOptions{
 				StartPosition: getStartPosition(partProps),
 			})
 			require.NoError(t, err)
 
-			events, err := subscription.ReceiveEvents(ctx, 1, nil)
+			defer func() {
+				err := partClient.Close(context.Background())
+				require.NoError(t, err)
+			}()
+
+			events, err := partClient.ReceiveEvents(ctx, 1, nil)
 
 			if err != nil {
 				if errors.Is(err, context.DeadlineExceeded) || errors.Is(err, context.Canceled) {
@@ -130,35 +304,37 @@ func TestNewProducerClient_SendToAny(t *testing.T) {
 				require.NoError(t, err)
 			}
 
-			cancel()
-			require.Equal(t, "hello world", string(events[0].Body))
+			if len(events) >= 1 {
+				select {
+				case eventCh <- events[0]:
+				default:
+					require.Failf(t, "More than one event was available, something is probably wrong (found on partition %s)", partProps.PartitionID)
+				}
+				cancel()
+			}
 		}(partProps)
 	}
 
-	wg.Wait()
-	require.ErrorIs(t, ctx.Err(), context.Canceled)
+	select {
+	case evt := <-eventCh:
+		return evt
+	case <-ctx.Done():
+		require.Fail(t, "No event received!")
+		return nil
+	}
 }
 
-func getPartitions(t *testing.T, testParams struct {
-	ConnectionString  string
-	EventHubName      string
-	EventHubNamespace string
+func getAllPartitionProperties(t *testing.T, client interface {
+	GetEventHubProperties(ctx context.Context, options *azeventhubs.GetEventHubPropertiesOptions) (azeventhubs.EventHubProperties, error)
+	GetPartitionProperties(ctx context.Context, partitionID string, options *azeventhubs.GetPartitionPropertiesOptions) (azeventhubs.PartitionProperties, error)
 }) []azeventhubs.PartitionProperties {
-	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
-	require.NoError(t, err)
-
-	defer func() {
-		err := producer.Close(context.Background())
-		require.NoError(t, err)
-	}()
-
-	hubProps, err := producer.GetEventHubProperties(context.Background(), nil)
+	hubProps, err := client.GetEventHubProperties(context.Background(), nil)
 	require.NoError(t, err)
 
 	var partitions []azeventhubs.PartitionProperties
 
 	for _, partitionID := range hubProps.PartitionIDs {
-		partProps, err := producer.GetPartitionProperties(context.Background(), partitionID, nil)
+		partProps, err := client.GetPartitionProperties(context.Background(), partitionID, nil)
 		require.NoError(t, err)
 
 		partitions = append(partitions, partProps)
@@ -204,7 +380,7 @@ func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string,
 
 		err = batch.AddEventData(&azeventhubs.EventData{
 			Body: []byte(msg),
-			ApplicationProperties: map[string]any{
+			Properties: map[string]any{
 				"PartitionID": partitionID,
 				"RunID":       runID,
 			},
@@ -235,8 +411,8 @@ func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string,
 		for _, event := range events {
 			actualBodies = append(actualBodies, string(event.Body))
 
-			require.Equal(t, partitionID, event.ApplicationProperties["PartitionID"], "No messages from other partitions")
-			require.Equal(t, runID, event.ApplicationProperties["RunID"], "No messages from older runs")
+			require.Equal(t, partitionID, event.Properties["PartitionID"], "No messages from other partitions")
+			require.Equal(t, runID, event.Properties["RunID"], "No messages from older runs")
 		}
 
 		if len(actualBodies) == len(expectedBodies) {
@@ -246,43 +422,4 @@ func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string,
 
 	sort.Strings(actualBodies)
 	require.Equal(t, expectedBodies, actualBodies)
-}
-
-type connectionParams struct {
-	ConnectionString  string
-	EventHubName      string
-	EventHubNamespace string
-}
-
-func getConnectionParams(t *testing.T) connectionParams {
-	_ = godotenv.Load()
-
-	cs := os.Getenv("EVENTHUB_CONNECTION_STRING")
-
-	if cs == "" {
-		t.Skipf("EVENTHUB_CONNECTION_STRING must be defined in the environment. Live test skipped.")
-
-		return connectionParams{}
-	}
-
-	eventHubName := os.Getenv("EVENTHUB_NAME")
-
-	if eventHubName == "" {
-		t.Skipf("EVENTHUB_NAME must be defined in the environment. Live test skipped.")
-
-		return struct {
-			ConnectionString  string
-			EventHubName      string
-			EventHubNamespace string
-		}{}
-	}
-
-	parsedConn, err := conn.ParsedConnectionFromStr(cs)
-	require.NoError(t, err)
-
-	return connectionParams{
-		ConnectionString:  cs,
-		EventHubName:      eventHubName,
-		EventHubNamespace: parsedConn.Namespace,
-	}
 }

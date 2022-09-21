@@ -4,8 +4,8 @@
 
 Use the client library `github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs` in your application to:
 
-- Send messages to an event hub.
-- Consume messages from an event hub.
+- Send events to an event hub.
+- Consume events from an event hub.
 
 **NOTE**: This library is currently a beta. There may be breaking changes until it reaches semantic version `v1.0.0`.
 
@@ -51,7 +51,9 @@ An Event Hub [**namespace**](https://docs.microsoft.com/azure/event-hubs/event-h
 
 Events are published to an event hub using an [event publisher](https://docs.microsoft.com/azure/event-hubs/event-hubs-features#event-publishers). In this package, the event publisher is the [ProducerClient](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#ProducerClient)
 
-Events can be consumed from an event hub using an [event consumer](https://docs.microsoft.com/azure/event-hubs/event-hubs-features#event-consumers). In this package, the event consumer is the  [ConsumerClient](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#ConsumerClient). 
+Events can be consumed from an event hub using an [event consumer](https://docs.microsoft.com/azure/event-hubs/event-hubs-features#event-consumers). In this package there are two types for consuming events: 
+- The basic event consumer is the, in the [ConsumerClient](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#ConsumerClient). This consumer is useful if you already known which partitions you want to receive from.
+- A distributed event consumer, which uses Azure Blobs for checkpointing and coordination. This is implemented in the [Processor](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs#Processor). This is useful when you want to have the partition assignment be dynamically chosen, and balanced with other Processor instances.
 
 For more information about Event Hubs features and terminology can be found here: [link](https://docs.microsoft.com/azure/event-hubs/event-hubs-features)
 

@@ -28,6 +28,14 @@ type LinkWithID[LinkT AMQPLink] struct {
 	Link LinkT
 }
 
+// LinksForPartitionClient are the functions that the PartitionClient uses within Links[T]
+// (for unit testing only)
+type LinksForPartitionClient[LinkT AMQPLink] interface {
+	RecoverIfNeeded(ctx context.Context, partitionID string, lwid *LinkWithID[LinkT], err error) error
+	Retry(ctx context.Context, eventName log.Event, operation string, partitionID string, retryOptions exported.RetryOptions, fn func(ctx context.Context, lwid LinkWithID[LinkT]) error) error
+	Close(ctx context.Context) error
+}
+
 type Links[LinkT AMQPLink] struct {
 	ns NamespaceForAMQPLinks
 
@@ -113,7 +121,7 @@ func (l *Links[LinkT]) Retry(ctx context.Context, eventName log.Event, operation
 		prevLinkWithID = linkWithID
 
 		if err := fn(ctx, *linkWithID); err != nil {
-			if args.I == 0 && !didQuickRetry && IsDetachError(err) {
+			if args.I == 0 && !didQuickRetry && IsQuickRecoveryError(err) {
 				// go-amqp will asynchronously handle detaches. This means errors that you get
 				// back from Send(), for instance, can actually be from much earlier in time
 				// depending on the last time you called into Send().

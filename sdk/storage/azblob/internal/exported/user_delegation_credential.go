@@ -21,9 +21,13 @@ func NewUserDelegationCredential(accountName string, key generated.UserDelegatio
 	}
 }
 
+// UserDelegationKey contains UserDelegationKey.
+type UserDelegationKey = generated.UserDelegationKey
+
+// UserDelegationCredential contains an account's name and its user delegation key.
 type UserDelegationCredential struct {
 	Name string
-	Key  generated.UserDelegationKey
+	Key  UserDelegationKey
 }
 
 // AccountName returns the Storage account's Name
@@ -39,9 +43,7 @@ func (f *UserDelegationCredential) ComputeHMACSHA256(message string) (string, er
 	return base64.StdEncoding.EncodeToString(h.Sum(nil)), err
 }
 
-// Private method to return important parameters for NewSASQueryParameters
-func (f *UserDelegationCredential) getUDKParams() *generated.UserDelegationKey {
+// GetUDKParams returns UserDelegationKey
+func (f *UserDelegationCredential) GetUDKParams() *generated.UserDelegationKey {
 	return &f.Key
 }
-
-type UserDelegationKey = generated.UserDelegationKey

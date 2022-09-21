@@ -50,12 +50,6 @@
             "parameters": {
               "label": "needs-triage"
             }
-          },
-          {
-            "name": "addReply",
-            "parameters": {
-              "comment": "Hi @${issueAuthor}. Thank you for your feedback and we will look into it soon. Meanwhile, feel free to share your experience using the Azure SDK in this [survey](https://aka.ms/azsdk/go/issuesurvey)."
-            }
           }
         ],
         "eventType": "issue",
@@ -549,6 +543,12 @@
             "name": "addLabel",
             "parameters": {
               "label": "question"
+            }
+          },
+          {
+            "name": "addReply",
+            "parameters": {
+              "comment": "Hi @${issueAuthor}. Thank you for your feedback and we will look into it soon. Meanwhile, feel free to share your experience using the Azure SDK in this [survey](https://aka.ms/azsdk/go/issuesurvey)."
             }
           }
         ]
@@ -1406,7 +1406,8 @@
               "Automation"
             ],
             "mentionees": [
-              "zjalexander"
+              "jaspkaur28",
+              "omairabdullah"
             ]
           },
           {
@@ -1654,8 +1655,7 @@
               "Commerce"
             ],
             "mentionees": [
-              "ms-premp",
-              "qiaozha"
+              "ms-premp"
             ]
           },
           {

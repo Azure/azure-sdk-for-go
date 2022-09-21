@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package azeventhubs_test
 
 import (
@@ -33,6 +34,8 @@ func Example_producing() {
 
 	defer producerClient.Close(context.TODO())
 
+	events := createEventsForSample()
+
 	// Other examples:
 	//
 	// sending a batch to a specific partition:
@@ -44,33 +47,60 @@ func Example_producing() {
 	// batch, err := producerClient.NewEventDataBatch(context.TODO(), &azeventhubs.NewEventDataBatchOptions{
 	// 	PartitionKey: to.Ptr("partition key"),
 	// })
-	batch, err := producerClient.NewEventDataBatch(context.TODO(), nil)
+	newBatchOptions := &azeventhubs.NewEventDataBatchOptions{}
+
+	batch, err := producerClient.NewEventDataBatch(context.TODO(), newBatchOptions)
 
 	if err != nil {
 		panic(err)
 	}
 
-	eventData := &azeventhubs.EventData{
-		Body: []byte("hello"),
+	for i := 0; i < len(events); i++ {
+		err = batch.AddEventData(events[i], nil)
+
+		if errors.Is(err, azeventhubs.ErrEventDataTooLarge) {
+			if batch.NumEvents() == 0 {
+				// This one event is too large for this batch, even on its own. No matter what we do it
+				// will not be sendable at its current size.
+				panic(err)
+			}
+
+			// This batch is full - we can send it and create a new one and continue
+			// packaging and sending events.
+			if err := producerClient.SendEventBatch(context.TODO(), batch, nil); err != nil {
+				panic(err)
+			}
+
+			tmpBatch, err := producerClient.NewEventDataBatch(context.TODO(), newBatchOptions)
+
+			if err != nil {
+				panic(err)
+			}
+
+			batch = tmpBatch
+
+			// rewind so we can retry adding this event to a batch
+			i--
+		} else if err != nil {
+			panic(err)
+		}
 	}
 
-	err = batch.AddEventData(eventData, nil)
-
-	if errors.Is(err, azeventhubs.ErrEventDataTooLarge) {
-		// EventData is too large for this batch.
-		//
-		// If the batch is empty and this happens then the event will never be sendable at it's current
-		// size as it exceeds what the link allows.
-		//
-		// Otherwise, it's simplest to send this batch and create a new one, starting with this event.
-		panic(err)
-	} else if err != nil {
-		panic(err)
+	// if we have any events in the last batch, send it
+	if batch.NumEvents() > 0 {
+		if err := producerClient.SendEventBatch(context.TODO(), batch, nil); err != nil {
+			panic(err)
+		}
 	}
+}
 
-	err = producerClient.SendEventBatch(context.TODO(), batch, nil)
-
-	if err != nil {
-		panic(err)
+func createEventsForSample() []*azeventhubs.EventData {
+	return []*azeventhubs.EventData{
+		{
+			Body: []byte("hello"),
+		},
+		{
+			Body: []byte("world"),
+		},
 	}
 }

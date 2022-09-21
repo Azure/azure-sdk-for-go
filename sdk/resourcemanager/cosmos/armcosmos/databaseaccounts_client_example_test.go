@@ -12,12 +12,14 @@ import (
 	"context"
 	"log"
 
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDatabaseAccountGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountGet.json
 func ExampleDatabaseAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,10 +30,7 @@ func ExampleDatabaseAccountsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"rg1",
-		"ddb1",
-		nil)
+	res, err := client.Get(ctx, "rg1", "ddb1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -39,7 +38,7 @@ func ExampleDatabaseAccountsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDatabaseAccountPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountPatch.json
 func ExampleDatabaseAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,65 +49,59 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"rg1",
-		"ddb1",
-		armcosmos.DatabaseAccountUpdateParameters{
-			Identity: &armcosmos.ManagedServiceIdentity{
-				Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
-				UserAssignedIdentities: map[string]*armcosmos.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
-					"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
-				},
-			},
-			Location: to.Ptr("westus"),
-			Properties: &armcosmos.DatabaseAccountUpdateProperties{
-				AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
-					SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
-				},
-				BackupPolicy: &armcosmos.PeriodicModeBackupPolicy{
-					Type: to.Ptr(armcosmos.BackupPolicyTypePeriodic),
-					PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
-						BackupIntervalInMinutes:        to.Ptr[int32](240),
-						BackupRetentionIntervalInHours: to.Ptr[int32](720),
-						BackupStorageRedundancy:        to.Ptr(armcosmos.BackupStorageRedundancyGeo),
-					},
-				},
-				Capacity: &armcosmos.Capacity{
-					TotalThroughputLimit: to.Ptr[int32](2000),
-				},
-				ConsistencyPolicy: &armcosmos.ConsistencyPolicy{
-					DefaultConsistencyLevel: to.Ptr(armcosmos.DefaultConsistencyLevelBoundedStaleness),
-					MaxIntervalInSeconds:    to.Ptr[int32](10),
-					MaxStalenessPrefix:      to.Ptr[int64](200),
-				},
-				DefaultIdentity: to.Ptr("FirstPartyIdentity"),
-				DiagnosticLogSettings: &armcosmos.DiagnosticLogSettings{
-					EnableFullTextQuery: to.Ptr(armcosmos.EnableFullTextQueryTrue),
-				},
-				EnableAnalyticalStorage: to.Ptr(true),
-				EnableFreeTier:          to.Ptr(false),
-				IPRules: []*armcosmos.IPAddressOrRange{
-					{
-						IPAddressOrRange: to.Ptr("23.43.230.120"),
-					},
-					{
-						IPAddressOrRange: to.Ptr("110.12.240.0/12"),
-					}},
-				IsVirtualNetworkFilterEnabled: to.Ptr(true),
-				NetworkACLBypass:              to.Ptr(armcosmos.NetworkACLBypassAzureServices),
-				NetworkACLBypassResourceIDs: []*string{
-					to.Ptr("/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.Synapse/workspaces/workspaceName")},
-				VirtualNetworkRules: []*armcosmos.VirtualNetworkRule{
-					{
-						ID:                               to.Ptr("/subscriptions/subId/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-						IgnoreMissingVNetServiceEndpoint: to.Ptr(false),
-					}},
-			},
-			Tags: map[string]*string{
-				"dept": to.Ptr("finance"),
+	poller, err := client.BeginUpdate(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountUpdateParameters{
+		Identity: &armcosmos.ManagedServiceIdentity{
+			Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
+			UserAssignedIdentities: map[string]*armcosmos.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
+				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
 			},
 		},
-		nil)
+		Location: to.Ptr("westus"),
+		Properties: &armcosmos.DatabaseAccountUpdateProperties{
+			AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
+				SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
+			},
+			BackupPolicy: &armcosmos.PeriodicModeBackupPolicy{
+				Type: to.Ptr(armcosmos.BackupPolicyTypePeriodic),
+				PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
+					BackupIntervalInMinutes:        to.Ptr[int32](240),
+					BackupRetentionIntervalInHours: to.Ptr[int32](720),
+					BackupStorageRedundancy:        to.Ptr(armcosmos.BackupStorageRedundancyLocal),
+				},
+			},
+			Capacity: &armcosmos.Capacity{
+				TotalThroughputLimit: to.Ptr[int32](2000),
+			},
+			ConsistencyPolicy: &armcosmos.ConsistencyPolicy{
+				DefaultConsistencyLevel: to.Ptr(armcosmos.DefaultConsistencyLevelBoundedStaleness),
+				MaxIntervalInSeconds:    to.Ptr[int32](10),
+				MaxStalenessPrefix:      to.Ptr[int64](200),
+			},
+			DefaultIdentity:         to.Ptr("FirstPartyIdentity"),
+			EnableAnalyticalStorage: to.Ptr(true),
+			EnableFreeTier:          to.Ptr(false),
+			EnablePartitionMerge:    to.Ptr(true),
+			IPRules: []*armcosmos.IPAddressOrRange{
+				{
+					IPAddressOrRange: to.Ptr("23.43.230.120"),
+				},
+				{
+					IPAddressOrRange: to.Ptr("110.12.240.0/12"),
+				}},
+			IsVirtualNetworkFilterEnabled: to.Ptr(true),
+			NetworkACLBypass:              to.Ptr(armcosmos.NetworkACLBypassAzureServices),
+			NetworkACLBypassResourceIDs: []*string{
+				to.Ptr("/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.Synapse/workspaces/workspaceName")},
+			VirtualNetworkRules: []*armcosmos.VirtualNetworkRule{
+				{
+					ID:                               to.Ptr("/subscriptions/subId/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+					IgnoreMissingVNetServiceEndpoint: to.Ptr(false),
+				}},
+		},
+		Tags: map[string]*string{
+			"dept": to.Ptr("finance"),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -120,8 +113,8 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDatabaseAccountCreateMax.json
-func ExampleDatabaseAccountsClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountCreateMax.json
+func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCreateMax() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -131,84 +124,79 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"rg1",
-		"ddb1",
-		armcosmos.DatabaseAccountCreateUpdateParameters{
-			Identity: &armcosmos.ManagedServiceIdentity{
-				Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
-				UserAssignedIdentities: map[string]*armcosmos.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
-					"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
-				},
-			},
-			Location: to.Ptr("westus"),
-			Tags:     map[string]*string{},
-			Kind:     to.Ptr(armcosmos.DatabaseAccountKindMongoDB),
-			Properties: &armcosmos.DatabaseAccountCreateUpdateProperties{
-				AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
-					SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
-				},
-				APIProperties: &armcosmos.APIProperties{
-					ServerVersion: to.Ptr(armcosmos.ServerVersionThree2),
-				},
-				BackupPolicy: &armcosmos.PeriodicModeBackupPolicy{
-					Type: to.Ptr(armcosmos.BackupPolicyTypePeriodic),
-					PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
-						BackupIntervalInMinutes:        to.Ptr[int32](240),
-						BackupRetentionIntervalInHours: to.Ptr[int32](8),
-						BackupStorageRedundancy:        to.Ptr(armcosmos.BackupStorageRedundancyGeo),
-					},
-				},
-				Capacity: &armcosmos.Capacity{
-					TotalThroughputLimit: to.Ptr[int32](2000),
-				},
-				ConsistencyPolicy: &armcosmos.ConsistencyPolicy{
-					DefaultConsistencyLevel: to.Ptr(armcosmos.DefaultConsistencyLevelBoundedStaleness),
-					MaxIntervalInSeconds:    to.Ptr[int32](10),
-					MaxStalenessPrefix:      to.Ptr[int64](200),
-				},
-				Cors: []*armcosmos.CorsPolicy{
-					{
-						AllowedOrigins: to.Ptr("https://test"),
-					}},
-				CreateMode:               to.Ptr(armcosmos.CreateModeDefault),
-				DatabaseAccountOfferType: to.Ptr("Standard"),
-				DefaultIdentity:          to.Ptr("FirstPartyIdentity"),
-				EnableAnalyticalStorage:  to.Ptr(true),
-				EnableFreeTier:           to.Ptr(false),
-				EnableMaterializedViews:  to.Ptr(false),
-				IPRules: []*armcosmos.IPAddressOrRange{
-					{
-						IPAddressOrRange: to.Ptr("23.43.230.120"),
-					},
-					{
-						IPAddressOrRange: to.Ptr("110.12.240.0/12"),
-					}},
-				IsVirtualNetworkFilterEnabled: to.Ptr(true),
-				KeyVaultKeyURI:                to.Ptr("https://myKeyVault.vault.azure.net"),
-				Locations: []*armcosmos.Location{
-					{
-						FailoverPriority: to.Ptr[int32](0),
-						IsZoneRedundant:  to.Ptr(false),
-						LocationName:     to.Ptr("southcentralus"),
-					},
-					{
-						FailoverPriority: to.Ptr[int32](1),
-						IsZoneRedundant:  to.Ptr(false),
-						LocationName:     to.Ptr("eastus"),
-					}},
-				NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassAzureServices),
-				NetworkACLBypassResourceIDs: []*string{
-					to.Ptr("/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.Synapse/workspaces/workspaceName")},
-				PublicNetworkAccess: to.Ptr(armcosmos.PublicNetworkAccessEnabled),
-				VirtualNetworkRules: []*armcosmos.VirtualNetworkRule{
-					{
-						ID:                               to.Ptr("/subscriptions/subId/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-						IgnoreMissingVNetServiceEndpoint: to.Ptr(false),
-					}},
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountCreateUpdateParameters{
+		Location: to.Ptr("westus"),
+		Tags:     map[string]*string{},
+		Identity: &armcosmos.ManagedServiceIdentity{
+			Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
+			UserAssignedIdentities: map[string]*armcosmos.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
+				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
 			},
 		},
-		nil)
+		Kind: to.Ptr(armcosmos.DatabaseAccountKindMongoDB),
+		Properties: &armcosmos.DatabaseAccountCreateUpdateProperties{
+			AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
+				SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
+			},
+			APIProperties: &armcosmos.APIProperties{
+				ServerVersion: to.Ptr(armcosmos.ServerVersionThree2),
+			},
+			BackupPolicy: &armcosmos.PeriodicModeBackupPolicy{
+				Type: to.Ptr(armcosmos.BackupPolicyTypePeriodic),
+				PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
+					BackupIntervalInMinutes:        to.Ptr[int32](240),
+					BackupRetentionIntervalInHours: to.Ptr[int32](8),
+					BackupStorageRedundancy:        to.Ptr(armcosmos.BackupStorageRedundancyGeo),
+				},
+			},
+			Capacity: &armcosmos.Capacity{
+				TotalThroughputLimit: to.Ptr[int32](2000),
+			},
+			ConsistencyPolicy: &armcosmos.ConsistencyPolicy{
+				DefaultConsistencyLevel: to.Ptr(armcosmos.DefaultConsistencyLevelBoundedStaleness),
+				MaxIntervalInSeconds:    to.Ptr[int32](10),
+				MaxStalenessPrefix:      to.Ptr[int64](200),
+			},
+			Cors: []*armcosmos.CorsPolicy{
+				{
+					AllowedOrigins: to.Ptr("https://test"),
+				}},
+			CreateMode:               to.Ptr(armcosmos.CreateModeDefault),
+			DatabaseAccountOfferType: to.Ptr("Standard"),
+			DefaultIdentity:          to.Ptr("FirstPartyIdentity"),
+			EnableAnalyticalStorage:  to.Ptr(true),
+			EnableFreeTier:           to.Ptr(false),
+			IPRules: []*armcosmos.IPAddressOrRange{
+				{
+					IPAddressOrRange: to.Ptr("23.43.230.120"),
+				},
+				{
+					IPAddressOrRange: to.Ptr("110.12.240.0/12"),
+				}},
+			IsVirtualNetworkFilterEnabled: to.Ptr(true),
+			KeyVaultKeyURI:                to.Ptr("https://myKeyVault.vault.azure.net"),
+			Locations: []*armcosmos.Location{
+				{
+					FailoverPriority: to.Ptr[int32](0),
+					IsZoneRedundant:  to.Ptr(false),
+					LocationName:     to.Ptr("southcentralus"),
+				},
+				{
+					FailoverPriority: to.Ptr[int32](1),
+					IsZoneRedundant:  to.Ptr(false),
+					LocationName:     to.Ptr("eastus"),
+				}},
+			NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassAzureServices),
+			NetworkACLBypassResourceIDs: []*string{
+				to.Ptr("/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.Synapse/workspaces/workspaceName")},
+			PublicNetworkAccess: to.Ptr(armcosmos.PublicNetworkAccessEnabled),
+			VirtualNetworkRules: []*armcosmos.VirtualNetworkRule{
+				{
+					ID:                               to.Ptr("/subscriptions/subId/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+					IgnoreMissingVNetServiceEndpoint: to.Ptr(false),
+				}},
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -220,7 +208,111 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDatabaseAccountDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountCreateMin.json
+func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCreateMin() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountCreateUpdateParameters{
+		Location: to.Ptr("westus"),
+		Properties: &armcosmos.DatabaseAccountCreateUpdateProperties{
+			CreateMode:               to.Ptr(armcosmos.CreateModeDefault),
+			DatabaseAccountOfferType: to.Ptr("Standard"),
+			Locations: []*armcosmos.Location{
+				{
+					FailoverPriority: to.Ptr[int32](0),
+					IsZoneRedundant:  to.Ptr(false),
+					LocationName:     to.Ptr("southcentralus"),
+				}},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBRestoreDatabaseAccountCreateUpdate.json
+func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAccountCreateUpdateJson() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountCreateUpdateParameters{
+		Location: to.Ptr("westus"),
+		Tags:     map[string]*string{},
+		Kind:     to.Ptr(armcosmos.DatabaseAccountKindGlobalDocumentDB),
+		Properties: &armcosmos.DatabaseAccountCreateUpdateProperties{
+			APIProperties: &armcosmos.APIProperties{
+				ServerVersion: to.Ptr(armcosmos.ServerVersionThree2),
+			},
+			BackupPolicy: &armcosmos.ContinuousModeBackupPolicy{
+				Type: to.Ptr(armcosmos.BackupPolicyTypeContinuous),
+			},
+			ConsistencyPolicy: &armcosmos.ConsistencyPolicy{
+				DefaultConsistencyLevel: to.Ptr(armcosmos.DefaultConsistencyLevelBoundedStaleness),
+				MaxIntervalInSeconds:    to.Ptr[int32](10),
+				MaxStalenessPrefix:      to.Ptr[int64](200),
+			},
+			CreateMode:               to.Ptr(armcosmos.CreateModeRestore),
+			DatabaseAccountOfferType: to.Ptr("Standard"),
+			EnableAnalyticalStorage:  to.Ptr(true),
+			EnableFreeTier:           to.Ptr(false),
+			KeyVaultKeyURI:           to.Ptr("https://myKeyVault.vault.azure.net"),
+			Locations: []*armcosmos.Location{
+				{
+					FailoverPriority: to.Ptr[int32](0),
+					IsZoneRedundant:  to.Ptr(false),
+					LocationName:     to.Ptr("southcentralus"),
+				}},
+			RestoreParameters: &armcosmos.RestoreParameters{
+				DatabasesToRestore: []*armcosmos.DatabaseRestoreResource{
+					{
+						CollectionNames: []*string{
+							to.Ptr("collection1"),
+							to.Ptr("collection2")},
+						DatabaseName: to.Ptr("db1"),
+					},
+					{
+						CollectionNames: []*string{
+							to.Ptr("collection3"),
+							to.Ptr("collection4")},
+						DatabaseName: to.Ptr("db2"),
+					}},
+				RestoreMode:           to.Ptr(armcosmos.RestoreModePointInTime),
+				RestoreSource:         to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/1a97b4bb-f6a0-430e-ade1-638d781830cc"),
+				RestoreTimestampInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-11T22:05:09Z"); return t }()),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountDelete.json
 func ExampleDatabaseAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -231,10 +323,7 @@ func ExampleDatabaseAccountsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"rg1",
-		"ddb1",
-		nil)
+	poller, err := client.BeginDelete(ctx, "rg1", "ddb1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -244,7 +333,7 @@ func ExampleDatabaseAccountsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDatabaseAccountFailoverPriorityChange.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountFailoverPriorityChange.json
 func ExampleDatabaseAccountsClient_BeginFailoverPriorityChange() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,21 +344,17 @@ func ExampleDatabaseAccountsClient_BeginFailoverPriorityChange() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginFailoverPriorityChange(ctx,
-		"rg1",
-		"ddb1-failover",
-		armcosmos.FailoverPolicies{
-			FailoverPolicies: []*armcosmos.FailoverPolicy{
-				{
-					FailoverPriority: to.Ptr[int32](0),
-					LocationName:     to.Ptr("eastus"),
-				},
-				{
-					FailoverPriority: to.Ptr[int32](1),
-					LocationName:     to.Ptr("westus"),
-				}},
-		},
-		nil)
+	poller, err := client.BeginFailoverPriorityChange(ctx, "rg1", "ddb1-failover", armcosmos.FailoverPolicies{
+		FailoverPolicies: []*armcosmos.FailoverPolicy{
+			{
+				FailoverPriority: to.Ptr[int32](0),
+				LocationName:     to.Ptr("eastus"),
+			},
+			{
+				FailoverPriority: to.Ptr[int32](1),
+				LocationName:     to.Ptr("westus"),
+			}},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -279,7 +364,7 @@ func ExampleDatabaseAccountsClient_BeginFailoverPriorityChange() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDatabaseAccountList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountList.json
 func ExampleDatabaseAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -303,7 +388,7 @@ func ExampleDatabaseAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDatabaseAccountListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountListByResourceGroup.json
 func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -314,8 +399,7 @@ func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rg1",
-		nil)
+	pager := client.NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -328,7 +412,7 @@ func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDatabaseAccountListKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountListKeys.json
 func ExampleDatabaseAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -339,10 +423,7 @@ func ExampleDatabaseAccountsClient_ListKeys() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListKeys(ctx,
-		"rg1",
-		"ddb1",
-		nil)
+	res, err := client.ListKeys(ctx, "rg1", "ddb1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -350,8 +431,8 @@ func ExampleDatabaseAccountsClient_ListKeys() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDatabaseAccountListConnectionStrings.json
-func ExampleDatabaseAccountsClient_ListConnectionStrings() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountListConnectionStrings.json
+func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccountListConnectionStrings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -361,10 +442,7 @@ func ExampleDatabaseAccountsClient_ListConnectionStrings() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListConnectionStrings(ctx,
-		"rg1",
-		"ddb1",
-		nil)
+	res, err := client.ListConnectionStrings(ctx, "rg1", "ddb1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -372,7 +450,26 @@ func ExampleDatabaseAccountsClient_ListConnectionStrings() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDatabaseAccountOfflineRegion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountListConnectionStringsMongo.json
+func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccountListConnectionStringsMongo() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.ListConnectionStrings(ctx, "rg1", "mongo-ddb1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountOfflineRegion.json
 func ExampleDatabaseAccountsClient_BeginOfflineRegion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -383,11 +480,7 @@ func ExampleDatabaseAccountsClient_BeginOfflineRegion() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginOfflineRegion(ctx,
-		"rg1",
-		"ddb1",
-		armcosmos.RegionForOnlineOffline{},
-		nil)
+	poller, err := client.BeginOfflineRegion(ctx, "rg1", "ddb1", armcosmos.RegionForOnlineOffline{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -397,7 +490,7 @@ func ExampleDatabaseAccountsClient_BeginOfflineRegion() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDatabaseAccountOnlineRegion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountOnlineRegion.json
 func ExampleDatabaseAccountsClient_BeginOnlineRegion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -408,11 +501,7 @@ func ExampleDatabaseAccountsClient_BeginOnlineRegion() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginOnlineRegion(ctx,
-		"rg1",
-		"ddb1",
-		armcosmos.RegionForOnlineOffline{},
-		nil)
+	poller, err := client.BeginOnlineRegion(ctx, "rg1", "ddb1", armcosmos.RegionForOnlineOffline{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -422,7 +511,7 @@ func ExampleDatabaseAccountsClient_BeginOnlineRegion() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDatabaseAccountListReadOnlyKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountListReadOnlyKeys.json
 func ExampleDatabaseAccountsClient_GetReadOnlyKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -433,10 +522,7 @@ func ExampleDatabaseAccountsClient_GetReadOnlyKeys() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetReadOnlyKeys(ctx,
-		"rg1",
-		"ddb1",
-		nil)
+	res, err := client.GetReadOnlyKeys(ctx, "rg1", "ddb1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -444,29 +530,7 @@ func ExampleDatabaseAccountsClient_GetReadOnlyKeys() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDatabaseAccountListReadOnlyKeys.json
-func ExampleDatabaseAccountsClient_ListReadOnlyKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := client.ListReadOnlyKeys(ctx,
-		"rg1",
-		"ddb1",
-		nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// TODO: use response item
-	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDatabaseAccountRegenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountRegenerateKey.json
 func ExampleDatabaseAccountsClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -477,13 +541,9 @@ func ExampleDatabaseAccountsClient_BeginRegenerateKey() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRegenerateKey(ctx,
-		"rg1",
-		"ddb1",
-		armcosmos.DatabaseAccountRegenerateKeyParameters{
-			KeyKind: to.Ptr(armcosmos.KeyKindPrimary),
-		},
-		nil)
+	poller, err := client.BeginRegenerateKey(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountRegenerateKeyParameters{
+		KeyKind: to.Ptr(armcosmos.KeyKindPrimary),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -493,7 +553,7 @@ func ExampleDatabaseAccountsClient_BeginRegenerateKey() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDatabaseAccountCheckNameExists.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountCheckNameExists.json
 func ExampleDatabaseAccountsClient_CheckNameExists() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -504,15 +564,13 @@ func ExampleDatabaseAccountsClient_CheckNameExists() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.CheckNameExists(ctx,
-		"ddb1",
-		nil)
+	_, err = client.CheckNameExists(ctx, "ddb1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDatabaseAccountGetMetrics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountGetMetrics.json
 func ExampleDatabaseAccountsClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -523,10 +581,7 @@ func ExampleDatabaseAccountsClient_NewListMetricsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMetricsPager("rg1",
-		"ddb1",
-		"$filter=(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z",
-		nil)
+	pager := client.NewListMetricsPager("rg1", "ddb1", "$filter=(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -539,7 +594,7 @@ func ExampleDatabaseAccountsClient_NewListMetricsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDatabaseAccountGetUsages.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountGetUsages.json
 func ExampleDatabaseAccountsClient_NewListUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -550,9 +605,7 @@ func ExampleDatabaseAccountsClient_NewListUsagesPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListUsagesPager("rg1",
-		"ddb1",
-		&armcosmos.DatabaseAccountsClientListUsagesOptions{Filter: to.Ptr("$filter=name.value eq 'Storage'")})
+	pager := client.NewListUsagesPager("rg1", "ddb1", &armcosmos.DatabaseAccountsClientListUsagesOptions{Filter: to.Ptr("$filter=name.value eq 'Storage'")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -565,7 +618,7 @@ func ExampleDatabaseAccountsClient_NewListUsagesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-05-15-preview/examples/CosmosDBDatabaseAccountGetMetricDefinitions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountGetMetricDefinitions.json
 func ExampleDatabaseAccountsClient_NewListMetricDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -576,9 +629,7 @@ func ExampleDatabaseAccountsClient_NewListMetricDefinitionsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMetricDefinitionsPager("rg1",
-		"ddb1",
-		nil)
+	pager := client.NewListMetricDefinitionsPager("rg1", "ddb1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

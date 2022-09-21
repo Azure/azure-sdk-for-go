@@ -57,3 +57,10 @@ type ContainersClientAPI interface {
 }
 
 var _ ContainersClientAPI = (*containerinstance.ContainersClient)(nil)
+
+// SubnetServiceAssociationLinkClientAPI contains the set of methods on the SubnetServiceAssociationLinkClient type.
+type SubnetServiceAssociationLinkClientAPI interface {
+	Delete(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string) (result containerinstance.SubnetServiceAssociationLinkDeleteFuture, err error)
+}
+
+var _ SubnetServiceAssociationLinkClientAPI = (*containerinstance.SubnetServiceAssociationLinkClient)(nil)

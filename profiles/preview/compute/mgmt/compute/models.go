@@ -12,7 +12,7 @@ package compute
 import (
 	"context"
 
-	original "github.com/Azure/dev/azure-sdk-for-go/services/compute/mgmt/2022-03-02/compute"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/compute/mgmt/2022-04-04/compute"
 )
 
 const (
@@ -75,6 +75,13 @@ type CapacityReservationInstanceViewTypes = original.CapacityReservationInstance
 
 const (
 	CapacityReservationInstanceViewTypesInstanceView CapacityReservationInstanceViewTypes = original.CapacityReservationInstanceViewTypesInstanceView
+)
+
+type CloudServiceSlotType = original.CloudServiceSlotType
+
+const (
+	Production CloudServiceSlotType = original.Production
+	Staging    CloudServiceSlotType = original.Staging
 )
 
 type CloudServiceUpgradeMode = original.CloudServiceUpgradeMode
@@ -1548,6 +1555,7 @@ type SubResource = original.SubResource
 type SubResourceReadOnly = original.SubResourceReadOnly
 type SubResourceWithColocationStatus = original.SubResourceWithColocationStatus
 type SupportedCapabilities = original.SupportedCapabilities
+type SystemData = original.SystemData
 type TargetRegion = original.TargetRegion
 type TerminateNotificationProfile = original.TerminateNotificationProfile
 type ThrottledRequestsInput = original.ThrottledRequestsInput
@@ -2359,6 +2367,9 @@ func PossibleCapacityReservationGroupInstanceViewTypesValues() []CapacityReserva
 }
 func PossibleCapacityReservationInstanceViewTypesValues() []CapacityReservationInstanceViewTypes {
 	return original.PossibleCapacityReservationInstanceViewTypesValues()
+}
+func PossibleCloudServiceSlotTypeValues() []CloudServiceSlotType {
+	return original.PossibleCloudServiceSlotTypeValues()
 }
 func PossibleCloudServiceUpgradeModeValues() []CloudServiceUpgradeMode {
 	return original.PossibleCloudServiceUpgradeModeValues()

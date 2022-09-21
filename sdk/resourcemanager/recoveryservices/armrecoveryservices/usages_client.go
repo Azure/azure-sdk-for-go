@@ -56,8 +56,7 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 }
 
 // NewListByVaultsPager - Fetches the usages of the vault.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // vaultName - The name of the recovery services vault.
 // options - UsagesClientListByVaultsOptions contains the optional parameters for the UsagesClient.ListByVaults method.
@@ -103,7 +102,7 @@ func (client *UsagesClient) listByVaultsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

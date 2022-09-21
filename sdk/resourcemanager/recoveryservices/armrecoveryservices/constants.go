@@ -11,7 +11,7 @@ package armrecoveryservices
 
 const (
 	moduleName    = "armrecoveryservices"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v2.0.0"
 )
 
 type AlertsState string
@@ -102,6 +102,23 @@ func PossibleCrossRegionRestoreValues() []CrossRegionRestore {
 	return []CrossRegionRestore{
 		CrossRegionRestoreDisabled,
 		CrossRegionRestoreEnabled,
+	}
+}
+
+type ImmutabilityState string
+
+const (
+	ImmutabilityStateDisabled ImmutabilityState = "Disabled"
+	ImmutabilityStateLocked   ImmutabilityState = "Locked"
+	ImmutabilityStateUnlocked ImmutabilityState = "Unlocked"
+)
+
+// PossibleImmutabilityStateValues returns the possible values for the ImmutabilityState const type.
+func PossibleImmutabilityStateValues() []ImmutabilityState {
+	return []ImmutabilityState{
+		ImmutabilityStateDisabled,
+		ImmutabilityStateLocked,
+		ImmutabilityStateUnlocked,
 	}
 }
 

@@ -112,12 +112,6 @@ type ClientDiscoveryValueForSingleAPI struct {
 	Properties *ClientDiscoveryForProperties `json:"properties,omitempty"`
 }
 
-// CloudError - An error response from Azure Backup.
-type CloudError struct {
-	// The resource management error response.
-	Error *Error `json:"error,omitempty"`
-}
-
 // CmkKekIdentity - The details of the identity used for CMK
 type CmkKekIdentity struct {
 	// Indicate that system assigned identity should be used. Mutually exclusive with 'userAssignedIdentity' field
@@ -177,6 +171,11 @@ type IdentityData struct {
 
 	// READ-ONLY; The tenant ID of resource.
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
+// ImmutabilitySettings - Immutability Settings of vault
+type ImmutabilitySettings struct {
+	State *ImmutabilityState `json:"state,omitempty"`
 }
 
 // JobsSummary - Summary of the replication job data for this vault.
@@ -660,6 +659,12 @@ type SKU struct {
 	Tier *string `json:"tier,omitempty"`
 }
 
+// SecuritySettings - Security Settings of the vault
+type SecuritySettings struct {
+	// Immutability Settings of a vault
+	ImmutabilitySettings *ImmutabilitySettings `json:"immutabilitySettings,omitempty"`
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -870,6 +875,9 @@ type VaultProperties struct {
 
 	// The redundancy Settings of a Vault
 	RedundancySettings *VaultPropertiesRedundancySettings `json:"redundancySettings,omitempty"`
+
+	// Security Settings of the vault
+	SecuritySettings *SecuritySettings `json:"securitySettings,omitempty"`
 
 	// Details for upgrading vault.
 	UpgradeDetails *UpgradeDetails `json:"upgradeDetails,omitempty"`

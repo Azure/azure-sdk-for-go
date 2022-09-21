@@ -12,24 +12,37 @@ package managedapplications
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/solutions/mgmt/2017-12-01/managedapplications"
+	original "github.com/Azure/azure-sdk-for-go/services/solutions/mgmt/2018-02-01/managedapplications"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type ActionType = original.ActionType
+type ApplicationArtifactName = original.ApplicationArtifactName
 
 const (
-	Internal ActionType = original.Internal
+	Authorizations       ApplicationArtifactName = original.Authorizations
+	CustomRoleDefinition ApplicationArtifactName = original.CustomRoleDefinition
+	NotSpecified         ApplicationArtifactName = original.NotSpecified
+	ViewDefinition       ApplicationArtifactName = original.ViewDefinition
 )
 
 type ApplicationArtifactType = original.ApplicationArtifactType
 
 const (
-	Custom   ApplicationArtifactType = original.Custom
-	Template ApplicationArtifactType = original.Template
+	ApplicationArtifactTypeCustom       ApplicationArtifactType = original.ApplicationArtifactTypeCustom
+	ApplicationArtifactTypeNotSpecified ApplicationArtifactType = original.ApplicationArtifactTypeNotSpecified
+	ApplicationArtifactTypeTemplate     ApplicationArtifactType = original.ApplicationArtifactTypeTemplate
+)
+
+type ApplicationDefinitionArtifactName = original.ApplicationDefinitionArtifactName
+
+const (
+	ApplicationDefinitionArtifactNameApplicationResourceTemplate ApplicationDefinitionArtifactName = original.ApplicationDefinitionArtifactNameApplicationResourceTemplate
+	ApplicationDefinitionArtifactNameCreateUIDefinition          ApplicationDefinitionArtifactName = original.ApplicationDefinitionArtifactNameCreateUIDefinition
+	ApplicationDefinitionArtifactNameMainTemplateParameters      ApplicationDefinitionArtifactName = original.ApplicationDefinitionArtifactNameMainTemplateParameters
+	ApplicationDefinitionArtifactNameNotSpecified                ApplicationDefinitionArtifactName = original.ApplicationDefinitionArtifactNameNotSpecified
 )
 
 type ApplicationLockLevel = original.ApplicationLockLevel
@@ -40,39 +53,55 @@ const (
 	ReadOnly     ApplicationLockLevel = original.ReadOnly
 )
 
-type Origin = original.Origin
+type ApplicationManagementMode = original.ApplicationManagementMode
 
 const (
-	System     Origin = original.System
-	User       Origin = original.User
-	Usersystem Origin = original.Usersystem
+	ApplicationManagementModeManaged      ApplicationManagementMode = original.ApplicationManagementModeManaged
+	ApplicationManagementModeNotSpecified ApplicationManagementMode = original.ApplicationManagementModeNotSpecified
+	ApplicationManagementModeUnmanaged    ApplicationManagementMode = original.ApplicationManagementModeUnmanaged
+)
+
+type DeploymentMode = original.DeploymentMode
+
+const (
+	DeploymentModeComplete     DeploymentMode = original.DeploymentModeComplete
+	DeploymentModeIncremental  DeploymentMode = original.DeploymentModeIncremental
+	DeploymentModeNotSpecified DeploymentMode = original.DeploymentModeNotSpecified
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Accepted  ProvisioningState = original.Accepted
-	Canceled  ProvisioningState = original.Canceled
-	Created   ProvisioningState = original.Created
-	Creating  ProvisioningState = original.Creating
-	Deleted   ProvisioningState = original.Deleted
-	Deleting  ProvisioningState = original.Deleting
-	Failed    ProvisioningState = original.Failed
-	Ready     ProvisioningState = original.Ready
-	Running   ProvisioningState = original.Running
-	Succeeded ProvisioningState = original.Succeeded
-	Updating  ProvisioningState = original.Updating
+	ProvisioningStateAccepted     ProvisioningState = original.ProvisioningStateAccepted
+	ProvisioningStateCanceled     ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateCreated      ProvisioningState = original.ProvisioningStateCreated
+	ProvisioningStateCreating     ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleted      ProvisioningState = original.ProvisioningStateDeleted
+	ProvisioningStateDeleting     ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed       ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateNotSpecified ProvisioningState = original.ProvisioningStateNotSpecified
+	ProvisioningStateReady        ProvisioningState = original.ProvisioningStateReady
+	ProvisioningStateRunning      ProvisioningState = original.ProvisioningStateRunning
+	ProvisioningStateSucceeded    ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUpdating     ProvisioningState = original.ProvisioningStateUpdating
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
-	SystemAssigned ResourceIdentityType = original.SystemAssigned
+	ResourceIdentityTypeNone                       ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssignedUserAssigned
+	ResourceIdentityTypeUserAssigned               ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
 )
 
 type Application = original.Application
 type ApplicationArtifact = original.ApplicationArtifact
+type ApplicationAuthorization = original.ApplicationAuthorization
+type ApplicationBillingDetailsDefinition = original.ApplicationBillingDetailsDefinition
+type ApplicationClientDetails = original.ApplicationClientDetails
 type ApplicationDefinition = original.ApplicationDefinition
+type ApplicationDefinitionArtifact = original.ApplicationDefinitionArtifact
 type ApplicationDefinitionListResult = original.ApplicationDefinitionListResult
 type ApplicationDefinitionListResultIterator = original.ApplicationDefinitionListResultIterator
 type ApplicationDefinitionListResultPage = original.ApplicationDefinitionListResultPage
@@ -82,15 +111,18 @@ type ApplicationDefinitionsClient = original.ApplicationDefinitionsClient
 type ApplicationListResult = original.ApplicationListResult
 type ApplicationListResultIterator = original.ApplicationListResultIterator
 type ApplicationListResultPage = original.ApplicationListResultPage
+type ApplicationPackageContact = original.ApplicationPackageContact
+type ApplicationPackageSupportUrls = original.ApplicationPackageSupportUrls
 type ApplicationPatchable = original.ApplicationPatchable
+type ApplicationPolicy = original.ApplicationPolicy
 type ApplicationProperties = original.ApplicationProperties
 type ApplicationPropertiesPatchable = original.ApplicationPropertiesPatchable
-type ApplicationProviderAuthorization = original.ApplicationProviderAuthorization
 type ApplicationsClient = original.ApplicationsClient
 type ApplicationsCreateOrUpdateByIDFuture = original.ApplicationsCreateOrUpdateByIDFuture
 type ApplicationsCreateOrUpdateFuture = original.ApplicationsCreateOrUpdateFuture
 type ApplicationsDeleteByIDFuture = original.ApplicationsDeleteByIDFuture
 type ApplicationsDeleteFuture = original.ApplicationsDeleteFuture
+type ApplicationsRefreshPermissionsFuture = original.ApplicationsRefreshPermissionsFuture
 type ApplicationsUpdateByIDFuture = original.ApplicationsUpdateByIDFuture
 type ApplicationsUpdateFuture = original.ApplicationsUpdateFuture
 type BaseClient = original.BaseClient
@@ -108,6 +140,7 @@ type Plan = original.Plan
 type PlanPatchable = original.PlanPatchable
 type Resource = original.Resource
 type Sku = original.Sku
+type UserAssignedResourceIdentity = original.UserAssignedResourceIdentity
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -145,17 +178,23 @@ func NewOperationListResultPage(cur OperationListResult, getNextPage func(contex
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleActionTypeValues() []ActionType {
-	return original.PossibleActionTypeValues()
+func PossibleApplicationArtifactNameValues() []ApplicationArtifactName {
+	return original.PossibleApplicationArtifactNameValues()
 }
 func PossibleApplicationArtifactTypeValues() []ApplicationArtifactType {
 	return original.PossibleApplicationArtifactTypeValues()
 }
+func PossibleApplicationDefinitionArtifactNameValues() []ApplicationDefinitionArtifactName {
+	return original.PossibleApplicationDefinitionArtifactNameValues()
+}
 func PossibleApplicationLockLevelValues() []ApplicationLockLevel {
 	return original.PossibleApplicationLockLevelValues()
 }
-func PossibleOriginValues() []Origin {
-	return original.PossibleOriginValues()
+func PossibleApplicationManagementModeValues() []ApplicationManagementMode {
+	return original.PossibleApplicationManagementModeValues()
+}
+func PossibleDeploymentModeValues() []DeploymentMode {
+	return original.PossibleDeploymentModeValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

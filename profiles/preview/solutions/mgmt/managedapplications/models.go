@@ -12,7 +12,7 @@ package managedapplications
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/solutions/mgmt/2018-02-01/managedapplications"
+	original "github.com/Azure/azure-sdk-for-go/services/solutions/mgmt/2018-03-01/managedapplications"
 )
 
 const (
@@ -69,6 +69,42 @@ const (
 	DeploymentModeNotSpecified DeploymentMode = original.DeploymentModeNotSpecified
 )
 
+type JitApprovalMode = original.JitApprovalMode
+
+const (
+	JitApprovalModeAutoApprove   JitApprovalMode = original.JitApprovalModeAutoApprove
+	JitApprovalModeManualApprove JitApprovalMode = original.JitApprovalModeManualApprove
+	JitApprovalModeNotSpecified  JitApprovalMode = original.JitApprovalModeNotSpecified
+)
+
+type JitApproverType = original.JitApproverType
+
+const (
+	Group JitApproverType = original.Group
+	User  JitApproverType = original.User
+)
+
+type JitRequestState = original.JitRequestState
+
+const (
+	JitRequestStateApproved     JitRequestState = original.JitRequestStateApproved
+	JitRequestStateCanceled     JitRequestState = original.JitRequestStateCanceled
+	JitRequestStateDenied       JitRequestState = original.JitRequestStateDenied
+	JitRequestStateExpired      JitRequestState = original.JitRequestStateExpired
+	JitRequestStateFailed       JitRequestState = original.JitRequestStateFailed
+	JitRequestStateNotSpecified JitRequestState = original.JitRequestStateNotSpecified
+	JitRequestStatePending      JitRequestState = original.JitRequestStatePending
+	JitRequestStateTimeout      JitRequestState = original.JitRequestStateTimeout
+)
+
+type JitSchedulingType = original.JitSchedulingType
+
+const (
+	JitSchedulingTypeNotSpecified JitSchedulingType = original.JitSchedulingTypeNotSpecified
+	JitSchedulingTypeOnce         JitSchedulingType = original.JitSchedulingTypeOnce
+	JitSchedulingTypeRecurring    JitSchedulingType = original.JitSchedulingTypeRecurring
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -95,6 +131,25 @@ const (
 	ResourceIdentityTypeUserAssigned               ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
 )
 
+type Status = original.Status
+
+const (
+	StatusElevate      Status = original.StatusElevate
+	StatusNotSpecified Status = original.StatusNotSpecified
+	StatusRemove       Status = original.StatusRemove
+)
+
+type Substatus = original.Substatus
+
+const (
+	SubstatusApproved     Substatus = original.SubstatusApproved
+	SubstatusDenied       Substatus = original.SubstatusDenied
+	SubstatusExpired      Substatus = original.SubstatusExpired
+	SubstatusFailed       Substatus = original.SubstatusFailed
+	SubstatusNotSpecified Substatus = original.SubstatusNotSpecified
+	SubstatusTimeout      Substatus = original.SubstatusTimeout
+)
+
 type Application = original.Application
 type ApplicationArtifact = original.ApplicationArtifact
 type ApplicationAuthorization = original.ApplicationAuthorization
@@ -108,6 +163,7 @@ type ApplicationDefinitionListResultPage = original.ApplicationDefinitionListRes
 type ApplicationDefinitionPatchable = original.ApplicationDefinitionPatchable
 type ApplicationDefinitionProperties = original.ApplicationDefinitionProperties
 type ApplicationDefinitionsClient = original.ApplicationDefinitionsClient
+type ApplicationJitAccessPolicy = original.ApplicationJitAccessPolicy
 type ApplicationListResult = original.ApplicationListResult
 type ApplicationListResultIterator = original.ApplicationListResultIterator
 type ApplicationListResultPage = original.ApplicationListResultPage
@@ -123,6 +179,7 @@ type ApplicationsCreateOrUpdateFuture = original.ApplicationsCreateOrUpdateFutur
 type ApplicationsDeleteByIDFuture = original.ApplicationsDeleteByIDFuture
 type ApplicationsDeleteFuture = original.ApplicationsDeleteFuture
 type ApplicationsRefreshPermissionsFuture = original.ApplicationsRefreshPermissionsFuture
+type ApplicationsUpdateAccessFuture = original.ApplicationsUpdateAccessFuture
 type ApplicationsUpdateByIDFuture = original.ApplicationsUpdateByIDFuture
 type ApplicationsUpdateFuture = original.ApplicationsUpdateFuture
 type BaseClient = original.BaseClient
@@ -131,6 +188,19 @@ type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
 type GenericResource = original.GenericResource
 type Identity = original.Identity
+type JitApproverDefinition = original.JitApproverDefinition
+type JitAuthorizationPolicies = original.JitAuthorizationPolicies
+type JitRequestDefinition = original.JitRequestDefinition
+type JitRequestDefinitionListResult = original.JitRequestDefinitionListResult
+type JitRequestMetadata = original.JitRequestMetadata
+type JitRequestPatchable = original.JitRequestPatchable
+type JitRequestProperties = original.JitRequestProperties
+type JitRequestsClient = original.JitRequestsClient
+type JitRequestsCreateOrUpdateFuture = original.JitRequestsCreateOrUpdateFuture
+type JitSchedulingPolicy = original.JitSchedulingPolicy
+type ListTokenRequest = original.ListTokenRequest
+type ManagedIdentityToken = original.ManagedIdentityToken
+type ManagedIdentityTokenResult = original.ManagedIdentityTokenResult
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -140,6 +210,7 @@ type Plan = original.Plan
 type PlanPatchable = original.PlanPatchable
 type Resource = original.Resource
 type Sku = original.Sku
+type UpdateAccessDefinition = original.UpdateAccessDefinition
 type UserAssignedResourceIdentity = original.UserAssignedResourceIdentity
 
 func New(subscriptionID string) BaseClient {
@@ -169,6 +240,12 @@ func NewApplicationsClient(subscriptionID string) ApplicationsClient {
 func NewApplicationsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationsClient {
 	return original.NewApplicationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewJitRequestsClient(subscriptionID string) JitRequestsClient {
+	return original.NewJitRequestsClient(subscriptionID)
+}
+func NewJitRequestsClientWithBaseURI(baseURI string, subscriptionID string) JitRequestsClient {
+	return original.NewJitRequestsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
@@ -196,11 +273,29 @@ func PossibleApplicationManagementModeValues() []ApplicationManagementMode {
 func PossibleDeploymentModeValues() []DeploymentMode {
 	return original.PossibleDeploymentModeValues()
 }
+func PossibleJitApprovalModeValues() []JitApprovalMode {
+	return original.PossibleJitApprovalModeValues()
+}
+func PossibleJitApproverTypeValues() []JitApproverType {
+	return original.PossibleJitApproverTypeValues()
+}
+func PossibleJitRequestStateValues() []JitRequestState {
+	return original.PossibleJitRequestStateValues()
+}
+func PossibleJitSchedulingTypeValues() []JitSchedulingType {
+	return original.PossibleJitSchedulingTypeValues()
+}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
+}
+func PossibleStatusValues() []Status {
+	return original.PossibleStatusValues()
+}
+func PossibleSubstatusValues() []Substatus {
+	return original.PossibleSubstatusValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -15,32 +15,32 @@ import (
 	"net/http"
 )
 
-// AutomationsClient is the API spec for Microsoft.Security (Azure Security Center) resource provider
-type AutomationsClient struct {
+// ConnectorsGroupClient is the API spec for Microsoft.Security (Azure Security Center) resource provider
+type ConnectorsGroupClient struct {
 	BaseClient
 }
 
-// NewAutomationsClient creates an instance of the AutomationsClient client.
-func NewAutomationsClient(subscriptionID string) AutomationsClient {
-	return NewAutomationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewConnectorsGroupClient creates an instance of the ConnectorsGroupClient client.
+func NewConnectorsGroupClient(subscriptionID string) ConnectorsGroupClient {
+	return NewConnectorsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAutomationsClientWithBaseURI creates an instance of the AutomationsClient client using a custom endpoint.  Use
-// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewAutomationsClientWithBaseURI(baseURI string, subscriptionID string) AutomationsClient {
-	return AutomationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewConnectorsGroupClientWithBaseURI creates an instance of the ConnectorsGroupClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+func NewConnectorsGroupClientWithBaseURI(baseURI string, subscriptionID string) ConnectorsGroupClient {
+	return ConnectorsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates or updates a security automation. If a security automation is already created and a
-// subsequent request is issued for the same automation id, then it will be updated.
+// CreateOrUpdate creates or updates a security connector. If a security connector is already created and a subsequent
+// request is issued for the same security connector id, then it will be updated.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// automationName - the security automation name.
-// automation - the security automation resource
-func (client AutomationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationName string, automation Automation) (result Automation, err error) {
+// securityConnectorName - the security connector name.
+// securityConnector - the security connector resource
+func (client ConnectorsGroupClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, securityConnectorName string, securityConnector Connector) (result Connector, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AutomationsClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsGroupClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -56,25 +56,25 @@ func (client AutomationsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("security.AutomationsClient", "CreateOrUpdate", err.Error())
+		return result, validation.NewError("security.ConnectorsGroupClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, automationName, automation)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, securityConnectorName, securityConnector)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "CreateOrUpdate", resp, "Failure responding to request")
 		return
 	}
 
@@ -82,37 +82,38 @@ func (client AutomationsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AutomationsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, automationName string, automation Automation) (*http.Request, error) {
+func (client ConnectorsGroupClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, securityConnectorName string, securityConnector Connector) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"automationName":    autorest.Encode("path", automationName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
+		"securityConnectorName": autorest.Encode("path", securityConnectorName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2022-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
+	securityConnector.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}", pathParameters),
-		autorest.WithJSON(automation),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}", pathParameters),
+		autorest.WithJSON(securityConnector),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client AutomationsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client ConnectorsGroupClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client AutomationsClient) CreateOrUpdateResponder(resp *http.Response) (result Automation, err error) {
+func (client ConnectorsGroupClient) CreateOrUpdateResponder(resp *http.Response) (result Connector, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -122,14 +123,14 @@ func (client AutomationsClient) CreateOrUpdateResponder(resp *http.Response) (re
 	return
 }
 
-// Delete deletes a security automation.
+// Delete deletes a security connector.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// automationName - the security automation name.
-func (client AutomationsClient) Delete(ctx context.Context, resourceGroupName string, automationName string) (result autorest.Response, err error) {
+// securityConnectorName - the security connector name.
+func (client ConnectorsGroupClient) Delete(ctx context.Context, resourceGroupName string, securityConnectorName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AutomationsClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsGroupClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response != nil {
@@ -145,25 +146,25 @@ func (client AutomationsClient) Delete(ctx context.Context, resourceGroupName st
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("security.AutomationsClient", "Delete", err.Error())
+		return result, validation.NewError("security.ConnectorsGroupClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, automationName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, securityConnectorName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "Delete", resp, "Failure responding to request")
 		return
 	}
 
@@ -171,14 +172,14 @@ func (client AutomationsClient) Delete(ctx context.Context, resourceGroupName st
 }
 
 // DeletePreparer prepares the Delete request.
-func (client AutomationsClient) DeletePreparer(ctx context.Context, resourceGroupName string, automationName string) (*http.Request, error) {
+func (client ConnectorsGroupClient) DeletePreparer(ctx context.Context, resourceGroupName string, securityConnectorName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"automationName":    autorest.Encode("path", automationName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
+		"securityConnectorName": autorest.Encode("path", securityConnectorName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2022-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -186,20 +187,20 @@ func (client AutomationsClient) DeletePreparer(ctx context.Context, resourceGrou
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client AutomationsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client ConnectorsGroupClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client AutomationsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ConnectorsGroupClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
@@ -208,14 +209,14 @@ func (client AutomationsClient) DeleteResponder(resp *http.Response) (result aut
 	return
 }
 
-// Get retrieves information about the model of a security automation.
+// Get retrieves details of a specific security connector
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// automationName - the security automation name.
-func (client AutomationsClient) Get(ctx context.Context, resourceGroupName string, automationName string) (result Automation, err error) {
+// securityConnectorName - the security connector name.
+func (client ConnectorsGroupClient) Get(ctx context.Context, resourceGroupName string, securityConnectorName string) (result Connector, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AutomationsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsGroupClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -231,25 +232,25 @@ func (client AutomationsClient) Get(ctx context.Context, resourceGroupName strin
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("security.AutomationsClient", "Get", err.Error())
+		return result, validation.NewError("security.ConnectorsGroupClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, automationName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, securityConnectorName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "Get", resp, "Failure responding to request")
 		return
 	}
 
@@ -257,14 +258,14 @@ func (client AutomationsClient) Get(ctx context.Context, resourceGroupName strin
 }
 
 // GetPreparer prepares the Get request.
-func (client AutomationsClient) GetPreparer(ctx context.Context, resourceGroupName string, automationName string) (*http.Request, error) {
+func (client ConnectorsGroupClient) GetPreparer(ctx context.Context, resourceGroupName string, securityConnectorName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"automationName":    autorest.Encode("path", automationName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
+		"securityConnectorName": autorest.Encode("path", securityConnectorName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2022-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -272,20 +273,20 @@ func (client AutomationsClient) GetPreparer(ctx context.Context, resourceGroupNa
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client AutomationsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client ConnectorsGroupClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AutomationsClient) GetResponder(resp *http.Response) (result Automation, err error) {
+func (client ConnectorsGroupClient) GetResponder(resp *http.Response) (result Connector, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -295,15 +296,15 @@ func (client AutomationsClient) GetResponder(resp *http.Response) (result Automa
 	return
 }
 
-// List lists all the security automations in the specified subscription. Use the 'nextLink' property in the response
-// to get the next page of security automations for the specified subscription.
-func (client AutomationsClient) List(ctx context.Context) (result AutomationListPage, err error) {
+// List lists all the security connectors in the specified subscription. Use the 'nextLink' property in the response to
+// get the next page of security connectors for the specified subscription.
+func (client ConnectorsGroupClient) List(ctx context.Context) (result ConnectorsListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AutomationsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsGroupClient.List")
 		defer func() {
 			sc := -1
-			if result.al.Response.Response != nil {
-				sc = result.al.Response.Response.StatusCode
+			if result.cl.Response.Response != nil {
+				sc = result.cl.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -311,29 +312,29 @@ func (client AutomationsClient) List(ctx context.Context) (result AutomationList
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("security.AutomationsClient", "List", err.Error())
+		return result, validation.NewError("security.ConnectorsGroupClient", "List", err.Error())
 	}
 
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.al.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "List", resp, "Failure sending request")
+		result.cl.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.al, err = client.ListResponder(resp)
+	result.cl, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "List", resp, "Failure responding to request")
 		return
 	}
-	if result.al.hasNextLink() && result.al.IsEmpty() {
+	if result.cl.hasNextLink() && result.cl.IsEmpty() {
 		err = result.NextWithContext(ctx)
 		return
 	}
@@ -342,12 +343,12 @@ func (client AutomationsClient) List(ctx context.Context) (result AutomationList
 }
 
 // ListPreparer prepares the List request.
-func (client AutomationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client ConnectorsGroupClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2022-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -355,20 +356,20 @@ func (client AutomationsClient) ListPreparer(ctx context.Context) (*http.Request
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/automations", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityConnectors", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client AutomationsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ConnectorsGroupClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client AutomationsClient) ListResponder(resp *http.Response) (result AutomationList, err error) {
+func (client ConnectorsGroupClient) ListResponder(resp *http.Response) (result ConnectorsList, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -379,10 +380,10 @@ func (client AutomationsClient) ListResponder(resp *http.Response) (result Autom
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client AutomationsClient) listNextResults(ctx context.Context, lastResults AutomationList) (result AutomationList, err error) {
-	req, err := lastResults.automationListPreparer(ctx)
+func (client ConnectorsGroupClient) listNextResults(ctx context.Context, lastResults ConnectorsList) (result ConnectorsList, err error) {
+	req, err := lastResults.connectorsListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "security.AutomationsClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -390,19 +391,19 @@ func (client AutomationsClient) listNextResults(ctx context.Context, lastResults
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "security.AutomationsClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AutomationsClient) ListComplete(ctx context.Context) (result AutomationListIterator, err error) {
+func (client ConnectorsGroupClient) ListComplete(ctx context.Context) (result ConnectorsListIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AutomationsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsGroupClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -415,18 +416,18 @@ func (client AutomationsClient) ListComplete(ctx context.Context) (result Automa
 	return
 }
 
-// ListByResourceGroup lists all the security automations in the specified resource group. Use the 'nextLink' property
-// in the response to get the next page of security automations for the specified resource group.
+// ListByResourceGroup lists all the security connectors in the specified resource group. Use the 'nextLink' property
+// in the response to get the next page of security connectors for the specified resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-func (client AutomationsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result AutomationListPage, err error) {
+func (client ConnectorsGroupClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ConnectorsListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AutomationsClient.ListByResourceGroup")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsGroupClient.ListByResourceGroup")
 		defer func() {
 			sc := -1
-			if result.al.Response.Response != nil {
-				sc = result.al.Response.Response.StatusCode
+			if result.cl.Response.Response != nil {
+				sc = result.cl.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -438,29 +439,29 @@ func (client AutomationsClient) ListByResourceGroup(ctx context.Context, resourc
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("security.AutomationsClient", "ListByResourceGroup", err.Error())
+		return result, validation.NewError("security.ConnectorsGroupClient", "ListByResourceGroup", err.Error())
 	}
 
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
-		result.al.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "ListByResourceGroup", resp, "Failure sending request")
+		result.cl.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
-	result.al, err = client.ListByResourceGroupResponder(resp)
+	result.cl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "ListByResourceGroup", resp, "Failure responding to request")
 		return
 	}
-	if result.al.hasNextLink() && result.al.IsEmpty() {
+	if result.cl.hasNextLink() && result.cl.IsEmpty() {
 		err = result.NextWithContext(ctx)
 		return
 	}
@@ -469,13 +470,13 @@ func (client AutomationsClient) ListByResourceGroup(ctx context.Context, resourc
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client AutomationsClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+func (client ConnectorsGroupClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2022-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -483,20 +484,20 @@ func (client AutomationsClient) ListByResourceGroupPreparer(ctx context.Context,
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
-func (client AutomationsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
+func (client ConnectorsGroupClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client AutomationsClient) ListByResourceGroupResponder(resp *http.Response) (result AutomationList, err error) {
+func (client ConnectorsGroupClient) ListByResourceGroupResponder(resp *http.Response) (result ConnectorsList, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -507,10 +508,10 @@ func (client AutomationsClient) ListByResourceGroupResponder(resp *http.Response
 }
 
 // listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client AutomationsClient) listByResourceGroupNextResults(ctx context.Context, lastResults AutomationList) (result AutomationList, err error) {
-	req, err := lastResults.automationListPreparer(ctx)
+func (client ConnectorsGroupClient) listByResourceGroupNextResults(ctx context.Context, lastResults ConnectorsList) (result ConnectorsList, err error) {
+	req, err := lastResults.connectorsListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "security.AutomationsClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -518,19 +519,19 @@ func (client AutomationsClient) listByResourceGroupNextResults(ctx context.Conte
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "security.AutomationsClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AutomationsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result AutomationListIterator, err error) {
+func (client ConnectorsGroupClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result ConnectorsListIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AutomationsClient.ListByResourceGroup")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsGroupClient.ListByResourceGroup")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -543,16 +544,15 @@ func (client AutomationsClient) ListByResourceGroupComplete(ctx context.Context,
 	return
 }
 
-// Validate validates the security automation model before create or update. Any validation errors are returned to the
-// client.
+// Update updates a security connector
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// automationName - the security automation name.
-// automation - the security automation resource
-func (client AutomationsClient) Validate(ctx context.Context, resourceGroupName string, automationName string, automation Automation) (result AutomationValidationStatus, err error) {
+// securityConnectorName - the security connector name.
+// securityConnector - the security connector resource
+func (client ConnectorsGroupClient) Update(ctx context.Context, resourceGroupName string, securityConnectorName string, securityConnector Connector) (result Connector, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AutomationsClient.Validate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectorsGroupClient.Update")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -568,63 +568,64 @@ func (client AutomationsClient) Validate(ctx context.Context, resourceGroupName 
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("security.AutomationsClient", "Validate", err.Error())
+		return result, validation.NewError("security.ConnectorsGroupClient", "Update", err.Error())
 	}
 
-	req, err := client.ValidatePreparer(ctx, resourceGroupName, automationName, automation)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, securityConnectorName, securityConnector)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "Validate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ValidateSender(req)
+	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "Validate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "Update", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ValidateResponder(resp)
+	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.AutomationsClient", "Validate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "security.ConnectorsGroupClient", "Update", resp, "Failure responding to request")
 		return
 	}
 
 	return
 }
 
-// ValidatePreparer prepares the Validate request.
-func (client AutomationsClient) ValidatePreparer(ctx context.Context, resourceGroupName string, automationName string, automation Automation) (*http.Request, error) {
+// UpdatePreparer prepares the Update request.
+func (client ConnectorsGroupClient) UpdatePreparer(ctx context.Context, resourceGroupName string, securityConnectorName string, securityConnector Connector) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"automationName":    autorest.Encode("path", automationName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
+		"securityConnectorName": autorest.Encode("path", securityConnectorName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-01-01-preview"
+	const APIVersion = "2022-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
+	securityConnector.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
+		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}/validate", pathParameters),
-		autorest.WithJSON(automation),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}", pathParameters),
+		autorest.WithJSON(securityConnector),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ValidateSender sends the Validate request. The method will close the
+// UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client AutomationsClient) ValidateSender(req *http.Request) (*http.Response, error) {
+func (client ConnectorsGroupClient) UpdateSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
-// ValidateResponder handles the response to the Validate request. The method always
+// UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client AutomationsClient) ValidateResponder(resp *http.Response) (result AutomationValidationStatus, err error) {
+func (client ConnectorsGroupClient) UpdateResponder(resp *http.Response) (result Connector, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

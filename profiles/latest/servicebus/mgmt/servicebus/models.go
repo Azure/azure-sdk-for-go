@@ -12,7 +12,7 @@ package servicebus
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
+	original "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2021-11-01/servicebus"
 )
 
 const (
@@ -27,6 +27,15 @@ const (
 	SendEnumValue AccessRights = original.SendEnumValue
 )
 
+type CreatedByType = original.CreatedByType
+
+const (
+	Application     CreatedByType = original.Application
+	Key             CreatedByType = original.Key
+	ManagedIdentity CreatedByType = original.ManagedIdentity
+	User            CreatedByType = original.User
+)
+
 type DefaultAction = original.DefaultAction
 
 const (
@@ -34,25 +43,29 @@ const (
 	Deny  DefaultAction = original.Deny
 )
 
-type EncodingCaptureDescription = original.EncodingCaptureDescription
+type EndPointProvisioningState = original.EndPointProvisioningState
 
 const (
-	Avro        EncodingCaptureDescription = original.Avro
-	AvroDeflate EncodingCaptureDescription = original.AvroDeflate
+	Canceled  EndPointProvisioningState = original.Canceled
+	Creating  EndPointProvisioningState = original.Creating
+	Deleting  EndPointProvisioningState = original.Deleting
+	Failed    EndPointProvisioningState = original.Failed
+	Succeeded EndPointProvisioningState = original.Succeeded
+	Updating  EndPointProvisioningState = original.Updating
 )
 
 type EntityStatus = original.EntityStatus
 
 const (
-	Active          EntityStatus = original.Active
-	Creating        EntityStatus = original.Creating
-	Deleting        EntityStatus = original.Deleting
-	Disabled        EntityStatus = original.Disabled
-	ReceiveDisabled EntityStatus = original.ReceiveDisabled
-	Renaming        EntityStatus = original.Renaming
-	Restoring       EntityStatus = original.Restoring
-	SendDisabled    EntityStatus = original.SendDisabled
-	Unknown         EntityStatus = original.Unknown
+	EntityStatusActive          EntityStatus = original.EntityStatusActive
+	EntityStatusCreating        EntityStatus = original.EntityStatusCreating
+	EntityStatusDeleting        EntityStatus = original.EntityStatusDeleting
+	EntityStatusDisabled        EntityStatus = original.EntityStatusDisabled
+	EntityStatusReceiveDisabled EntityStatus = original.EntityStatusReceiveDisabled
+	EntityStatusRenaming        EntityStatus = original.EntityStatusRenaming
+	EntityStatusRestoring       EntityStatus = original.EntityStatusRestoring
+	EntityStatusSendDisabled    EntityStatus = original.EntityStatusSendDisabled
+	EntityStatusUnknown         EntityStatus = original.EntityStatusUnknown
 )
 
 type FilterType = original.FilterType
@@ -62,6 +75,12 @@ const (
 	FilterTypeSQLFilter         FilterType = original.FilterTypeSQLFilter
 )
 
+type KeySource = original.KeySource
+
+const (
+	MicrosoftKeyVault KeySource = original.MicrosoftKeyVault
+)
+
 type KeyType = original.KeyType
 
 const (
@@ -69,14 +88,13 @@ const (
 	SecondaryKey KeyType = original.SecondaryKey
 )
 
-type NameSpaceType = original.NameSpaceType
+type ManagedServiceIdentityType = original.ManagedServiceIdentityType
 
 const (
-	EventHub        NameSpaceType = original.EventHub
-	Messaging       NameSpaceType = original.Messaging
-	Mixed           NameSpaceType = original.Mixed
-	NotificationHub NameSpaceType = original.NotificationHub
-	Relay           NameSpaceType = original.Relay
+	None                       ManagedServiceIdentityType = original.None
+	SystemAssigned             ManagedServiceIdentityType = original.SystemAssigned
+	SystemAssignedUserAssigned ManagedServiceIdentityType = original.SystemAssignedUserAssigned
+	UserAssigned               ManagedServiceIdentityType = original.UserAssigned
 )
 
 type NetworkRuleIPAction = original.NetworkRuleIPAction
@@ -85,12 +103,28 @@ const (
 	NetworkRuleIPActionAllow NetworkRuleIPAction = original.NetworkRuleIPActionAllow
 )
 
+type PrivateLinkConnectionStatus = original.PrivateLinkConnectionStatus
+
+const (
+	Approved     PrivateLinkConnectionStatus = original.Approved
+	Disconnected PrivateLinkConnectionStatus = original.Disconnected
+	Pending      PrivateLinkConnectionStatus = original.Pending
+	Rejected     PrivateLinkConnectionStatus = original.Rejected
+)
+
 type ProvisioningStateDR = original.ProvisioningStateDR
 
 const (
-	Accepted  ProvisioningStateDR = original.Accepted
-	Failed    ProvisioningStateDR = original.Failed
-	Succeeded ProvisioningStateDR = original.Succeeded
+	ProvisioningStateDRAccepted  ProvisioningStateDR = original.ProvisioningStateDRAccepted
+	ProvisioningStateDRFailed    ProvisioningStateDR = original.ProvisioningStateDRFailed
+	ProvisioningStateDRSucceeded ProvisioningStateDR = original.ProvisioningStateDRSucceeded
+)
+
+type PublicNetworkAccessFlag = original.PublicNetworkAccessFlag
+
+const (
+	Disabled PublicNetworkAccessFlag = original.Disabled
+	Enabled  PublicNetworkAccessFlag = original.Enabled
 )
 
 type RoleDisasterRecovery = original.RoleDisasterRecovery
@@ -120,12 +154,12 @@ const (
 type UnavailableReason = original.UnavailableReason
 
 const (
-	InvalidName                           UnavailableReason = original.InvalidName
-	NameInLockdown                        UnavailableReason = original.NameInLockdown
-	NameInUse                             UnavailableReason = original.NameInUse
-	None                                  UnavailableReason = original.None
-	SubscriptionIsDisabled                UnavailableReason = original.SubscriptionIsDisabled
-	TooManyNamespaceInCurrentSubscription UnavailableReason = original.TooManyNamespaceInCurrentSubscription
+	UnavailableReasonInvalidName                           UnavailableReason = original.UnavailableReasonInvalidName
+	UnavailableReasonNameInLockdown                        UnavailableReason = original.UnavailableReasonNameInLockdown
+	UnavailableReasonNameInUse                             UnavailableReason = original.UnavailableReasonNameInUse
+	UnavailableReasonNone                                  UnavailableReason = original.UnavailableReasonNone
+	UnavailableReasonSubscriptionIsDisabled                UnavailableReason = original.UnavailableReasonSubscriptionIsDisabled
+	UnavailableReasonTooManyNamespaceInCurrentSubscription UnavailableReason = original.UnavailableReasonTooManyNamespaceInCurrentSubscription
 )
 
 type AccessKeys = original.AccessKeys
@@ -136,22 +170,19 @@ type ArmDisasterRecoveryListResultIterator = original.ArmDisasterRecoveryListRes
 type ArmDisasterRecoveryListResultPage = original.ArmDisasterRecoveryListResultPage
 type ArmDisasterRecoveryProperties = original.ArmDisasterRecoveryProperties
 type BaseClient = original.BaseClient
-type CaptureDescription = original.CaptureDescription
 type CheckNameAvailability = original.CheckNameAvailability
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
+type ConnectionState = original.ConnectionState
 type CorrelationFilter = original.CorrelationFilter
-type Destination = original.Destination
-type DestinationProperties = original.DestinationProperties
 type DisasterRecoveryConfigsClient = original.DisasterRecoveryConfigsClient
+type Encryption = original.Encryption
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorResponse = original.ErrorResponse
 type ErrorResponseError = original.ErrorResponseError
-type EventHubListResult = original.EventHubListResult
-type EventHubListResultIterator = original.EventHubListResultIterator
-type EventHubListResultPage = original.EventHubListResultPage
-type EventHubsClient = original.EventHubsClient
-type Eventhub = original.Eventhub
-type EventhubProperties = original.EventhubProperties
+type FailoverProperties = original.FailoverProperties
+type FailoverPropertiesProperties = original.FailoverPropertiesProperties
+type Identity = original.Identity
+type KeyVaultProperties = original.KeyVaultProperties
 type MessageCountDetails = original.MessageCountDetails
 type MigrationConfigListResult = original.MigrationConfigListResult
 type MigrationConfigListResultIterator = original.MigrationConfigListResultIterator
@@ -176,15 +207,21 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
-type PremiumMessagingRegions = original.PremiumMessagingRegions
-type PremiumMessagingRegionsClient = original.PremiumMessagingRegionsClient
-type PremiumMessagingRegionsListResult = original.PremiumMessagingRegionsListResult
-type PremiumMessagingRegionsListResultIterator = original.PremiumMessagingRegionsListResultIterator
-type PremiumMessagingRegionsListResultPage = original.PremiumMessagingRegionsListResultPage
-type PremiumMessagingRegionsProperties = original.PremiumMessagingRegionsProperties
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionListResultIterator = original.PrivateEndpointConnectionListResultIterator
+type PrivateEndpointConnectionListResultPage = original.PrivateEndpointConnectionListResultPage
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkResourcesListResult = original.PrivateLinkResourcesListResult
+type ProxyResource = original.ProxyResource
 type QueuesClient = original.QueuesClient
 type RegenerateAccessKeyParameters = original.RegenerateAccessKeyParameters
-type RegionsClient = original.RegionsClient
 type Resource = original.Resource
 type ResourceNamespacePatch = original.ResourceNamespacePatch
 type Rule = original.Rule
@@ -198,13 +235,14 @@ type SBAuthorizationRuleListResult = original.SBAuthorizationRuleListResult
 type SBAuthorizationRuleListResultIterator = original.SBAuthorizationRuleListResultIterator
 type SBAuthorizationRuleListResultPage = original.SBAuthorizationRuleListResultPage
 type SBAuthorizationRuleProperties = original.SBAuthorizationRuleProperties
+type SBClientAffineProperties = original.SBClientAffineProperties
 type SBNamespace = original.SBNamespace
 type SBNamespaceListResult = original.SBNamespaceListResult
 type SBNamespaceListResultIterator = original.SBNamespaceListResultIterator
 type SBNamespaceListResultPage = original.SBNamespaceListResultPage
-type SBNamespaceMigrate = original.SBNamespaceMigrate
 type SBNamespaceProperties = original.SBNamespaceProperties
 type SBNamespaceUpdateParameters = original.SBNamespaceUpdateParameters
+type SBNamespaceUpdateProperties = original.SBNamespaceUpdateProperties
 type SBQueue = original.SBQueue
 type SBQueueListResult = original.SBQueueListResult
 type SBQueueListResultIterator = original.SBQueueListResultIterator
@@ -225,8 +263,11 @@ type SQLFilter = original.SQLFilter
 type SQLRuleAction = original.SQLRuleAction
 type Subnet = original.Subnet
 type SubscriptionsClient = original.SubscriptionsClient
+type SystemData = original.SystemData
 type TopicsClient = original.TopicsClient
 type TrackedResource = original.TrackedResource
+type UserAssignedIdentity = original.UserAssignedIdentity
+type UserAssignedIdentityProperties = original.UserAssignedIdentityProperties
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -242,18 +283,6 @@ func NewDisasterRecoveryConfigsClient(subscriptionID string) DisasterRecoveryCon
 }
 func NewDisasterRecoveryConfigsClientWithBaseURI(baseURI string, subscriptionID string) DisasterRecoveryConfigsClient {
 	return original.NewDisasterRecoveryConfigsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewEventHubListResultIterator(page EventHubListResultPage) EventHubListResultIterator {
-	return original.NewEventHubListResultIterator(page)
-}
-func NewEventHubListResultPage(cur EventHubListResult, getNextPage func(context.Context, EventHubListResult) (EventHubListResult, error)) EventHubListResultPage {
-	return original.NewEventHubListResultPage(cur, getNextPage)
-}
-func NewEventHubsClient(subscriptionID string) EventHubsClient {
-	return original.NewEventHubsClient(subscriptionID)
-}
-func NewEventHubsClientWithBaseURI(baseURI string, subscriptionID string) EventHubsClient {
-	return original.NewEventHubsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewMigrationConfigListResultIterator(page MigrationConfigListResultPage) MigrationConfigListResultIterator {
 	return original.NewMigrationConfigListResultIterator(page)
@@ -291,29 +320,29 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPremiumMessagingRegionsClient(subscriptionID string) PremiumMessagingRegionsClient {
-	return original.NewPremiumMessagingRegionsClient(subscriptionID)
+func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
+	return original.NewPrivateEndpointConnectionListResultIterator(page)
 }
-func NewPremiumMessagingRegionsClientWithBaseURI(baseURI string, subscriptionID string) PremiumMessagingRegionsClient {
-	return original.NewPremiumMessagingRegionsClientWithBaseURI(baseURI, subscriptionID)
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return original.NewPrivateEndpointConnectionListResultPage(cur, getNextPage)
 }
-func NewPremiumMessagingRegionsListResultIterator(page PremiumMessagingRegionsListResultPage) PremiumMessagingRegionsListResultIterator {
-	return original.NewPremiumMessagingRegionsListResultIterator(page)
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
 }
-func NewPremiumMessagingRegionsListResultPage(cur PremiumMessagingRegionsListResult, getNextPage func(context.Context, PremiumMessagingRegionsListResult) (PremiumMessagingRegionsListResult, error)) PremiumMessagingRegionsListResultPage {
-	return original.NewPremiumMessagingRegionsListResultPage(cur, getNextPage)
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewQueuesClient(subscriptionID string) QueuesClient {
 	return original.NewQueuesClient(subscriptionID)
 }
 func NewQueuesClientWithBaseURI(baseURI string, subscriptionID string) QueuesClient {
 	return original.NewQueuesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRegionsClient(subscriptionID string) RegionsClient {
-	return original.NewRegionsClient(subscriptionID)
-}
-func NewRegionsClientWithBaseURI(baseURI string, subscriptionID string) RegionsClient {
-	return original.NewRegionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewRuleListResultIterator(page RuleListResultPage) RuleListResultIterator {
 	return original.NewRuleListResultIterator(page)
@@ -375,11 +404,14 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleAccessRightsValues() []AccessRights {
 	return original.PossibleAccessRightsValues()
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
 func PossibleDefaultActionValues() []DefaultAction {
 	return original.PossibleDefaultActionValues()
 }
-func PossibleEncodingCaptureDescriptionValues() []EncodingCaptureDescription {
-	return original.PossibleEncodingCaptureDescriptionValues()
+func PossibleEndPointProvisioningStateValues() []EndPointProvisioningState {
+	return original.PossibleEndPointProvisioningStateValues()
 }
 func PossibleEntityStatusValues() []EntityStatus {
 	return original.PossibleEntityStatusValues()
@@ -387,17 +419,26 @@ func PossibleEntityStatusValues() []EntityStatus {
 func PossibleFilterTypeValues() []FilterType {
 	return original.PossibleFilterTypeValues()
 }
+func PossibleKeySourceValues() []KeySource {
+	return original.PossibleKeySourceValues()
+}
 func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()
 }
-func PossibleNameSpaceTypeValues() []NameSpaceType {
-	return original.PossibleNameSpaceTypeValues()
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return original.PossibleManagedServiceIdentityTypeValues()
 }
 func PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction {
 	return original.PossibleNetworkRuleIPActionValues()
 }
+func PossiblePrivateLinkConnectionStatusValues() []PrivateLinkConnectionStatus {
+	return original.PossiblePrivateLinkConnectionStatusValues()
+}
 func PossibleProvisioningStateDRValues() []ProvisioningStateDR {
 	return original.PossibleProvisioningStateDRValues()
+}
+func PossiblePublicNetworkAccessFlagValues() []PublicNetworkAccessFlag {
+	return original.PossiblePublicNetworkAccessFlagValues()
 }
 func PossibleRoleDisasterRecoveryValues() []RoleDisasterRecovery {
 	return original.PossibleRoleDisasterRecoveryValues()

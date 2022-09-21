@@ -9,7 +9,7 @@
 
 package computeapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2022-03-02/compute/computeapi"
+import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2022-04-04/compute/computeapi"
 
 type AvailabilitySetsClientAPI = original.AvailabilitySetsClientAPI
 type CapacityReservationGroupsClientAPI = original.CapacityReservationGroupsClientAPI

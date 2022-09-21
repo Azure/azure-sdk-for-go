@@ -12,7 +12,7 @@ package compute
 import (
 	"context"
 
-	original "github.com/Azure/dev/azure-sdk-for-go/services/compute/mgmt/2022-03-01/compute"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/compute/mgmt/2022-03-02/compute"
 )
 
 const (
@@ -181,8 +181,10 @@ const (
 type DiskEncryptionSetIdentityType = original.DiskEncryptionSetIdentityType
 
 const (
-	DiskEncryptionSetIdentityTypeNone           DiskEncryptionSetIdentityType = original.DiskEncryptionSetIdentityTypeNone
-	DiskEncryptionSetIdentityTypeSystemAssigned DiskEncryptionSetIdentityType = original.DiskEncryptionSetIdentityTypeSystemAssigned
+	DiskEncryptionSetIdentityTypeNone                       DiskEncryptionSetIdentityType = original.DiskEncryptionSetIdentityTypeNone
+	DiskEncryptionSetIdentityTypeSystemAssigned             DiskEncryptionSetIdentityType = original.DiskEncryptionSetIdentityTypeSystemAssigned
+	DiskEncryptionSetIdentityTypeSystemAssignedUserAssigned DiskEncryptionSetIdentityType = original.DiskEncryptionSetIdentityTypeSystemAssignedUserAssigned
+	DiskEncryptionSetIdentityTypeUserAssigned               DiskEncryptionSetIdentityType = original.DiskEncryptionSetIdentityTypeUserAssigned
 )
 
 type DiskEncryptionSetType = original.DiskEncryptionSetType
@@ -219,6 +221,7 @@ type DiskStorageAccountTypes = original.DiskStorageAccountTypes
 
 const (
 	PremiumLRS     DiskStorageAccountTypes = original.PremiumLRS
+	PremiumV2LRS   DiskStorageAccountTypes = original.PremiumV2LRS
 	PremiumZRS     DiskStorageAccountTypes = original.PremiumZRS
 	StandardLRS    DiskStorageAccountTypes = original.StandardLRS
 	StandardSSDLRS DiskStorageAccountTypes = original.StandardSSDLRS
@@ -284,11 +287,23 @@ const (
 	GalleryExtendedLocationTypeUnknown  GalleryExtendedLocationType = original.GalleryExtendedLocationTypeUnknown
 )
 
+type GalleryProvisioningState = original.GalleryProvisioningState
+
+const (
+	GalleryProvisioningStateCreating  GalleryProvisioningState = original.GalleryProvisioningStateCreating
+	GalleryProvisioningStateDeleting  GalleryProvisioningState = original.GalleryProvisioningStateDeleting
+	GalleryProvisioningStateFailed    GalleryProvisioningState = original.GalleryProvisioningStateFailed
+	GalleryProvisioningStateMigrating GalleryProvisioningState = original.GalleryProvisioningStateMigrating
+	GalleryProvisioningStateSucceeded GalleryProvisioningState = original.GalleryProvisioningStateSucceeded
+	GalleryProvisioningStateUpdating  GalleryProvisioningState = original.GalleryProvisioningStateUpdating
+)
+
 type GallerySharingPermissionTypes = original.GallerySharingPermissionTypes
 
 const (
-	Groups  GallerySharingPermissionTypes = original.Groups
-	Private GallerySharingPermissionTypes = original.Private
+	Community GallerySharingPermissionTypes = original.Community
+	Groups    GallerySharingPermissionTypes = original.Groups
+	Private   GallerySharingPermissionTypes = original.Private
 )
 
 type HostCaching = original.HostCaching
@@ -503,50 +518,6 @@ const (
 	HTTPS ProtocolTypes = original.HTTPS
 )
 
-type ProvisioningState = original.ProvisioningState
-
-const (
-	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
-	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
-	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
-	ProvisioningStateMigrating ProvisioningState = original.ProvisioningStateMigrating
-	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
-	ProvisioningStateUpdating  ProvisioningState = original.ProvisioningStateUpdating
-)
-
-type ProvisioningState1 = original.ProvisioningState1
-
-const (
-	ProvisioningState1Creating  ProvisioningState1 = original.ProvisioningState1Creating
-	ProvisioningState1Deleting  ProvisioningState1 = original.ProvisioningState1Deleting
-	ProvisioningState1Failed    ProvisioningState1 = original.ProvisioningState1Failed
-	ProvisioningState1Migrating ProvisioningState1 = original.ProvisioningState1Migrating
-	ProvisioningState1Succeeded ProvisioningState1 = original.ProvisioningState1Succeeded
-	ProvisioningState1Updating  ProvisioningState1 = original.ProvisioningState1Updating
-)
-
-type ProvisioningState2 = original.ProvisioningState2
-
-const (
-	ProvisioningState2Creating  ProvisioningState2 = original.ProvisioningState2Creating
-	ProvisioningState2Deleting  ProvisioningState2 = original.ProvisioningState2Deleting
-	ProvisioningState2Failed    ProvisioningState2 = original.ProvisioningState2Failed
-	ProvisioningState2Migrating ProvisioningState2 = original.ProvisioningState2Migrating
-	ProvisioningState2Succeeded ProvisioningState2 = original.ProvisioningState2Succeeded
-	ProvisioningState2Updating  ProvisioningState2 = original.ProvisioningState2Updating
-)
-
-type ProvisioningState3 = original.ProvisioningState3
-
-const (
-	ProvisioningState3Creating  ProvisioningState3 = original.ProvisioningState3Creating
-	ProvisioningState3Deleting  ProvisioningState3 = original.ProvisioningState3Deleting
-	ProvisioningState3Failed    ProvisioningState3 = original.ProvisioningState3Failed
-	ProvisioningState3Migrating ProvisioningState3 = original.ProvisioningState3Migrating
-	ProvisioningState3Succeeded ProvisioningState3 = original.ProvisioningState3Succeeded
-	ProvisioningState3Updating  ProvisioningState3 = original.ProvisioningState3Updating
-)
-
 type ProximityPlacementGroupType = original.ProximityPlacementGroupType
 
 const (
@@ -698,6 +669,14 @@ const (
 	FirstLogonCommands SettingNames = original.FirstLogonCommands
 )
 
+type SharedGalleryHostCaching = original.SharedGalleryHostCaching
+
+const (
+	SharedGalleryHostCachingNone      SharedGalleryHostCaching = original.SharedGalleryHostCachingNone
+	SharedGalleryHostCachingReadOnly  SharedGalleryHostCaching = original.SharedGalleryHostCachingReadOnly
+	SharedGalleryHostCachingReadWrite SharedGalleryHostCaching = original.SharedGalleryHostCachingReadWrite
+)
+
 type SharedToValues = original.SharedToValues
 
 const (
@@ -708,7 +687,6 @@ type SharingProfileGroupTypes = original.SharingProfileGroupTypes
 
 const (
 	AADTenants    SharingProfileGroupTypes = original.AADTenants
-	Community     SharingProfileGroupTypes = original.Community
 	Subscriptions SharingProfileGroupTypes = original.Subscriptions
 )
 
@@ -1162,12 +1140,19 @@ type CommunityGalleriesClient = original.CommunityGalleriesClient
 type CommunityGallery = original.CommunityGallery
 type CommunityGalleryIdentifier = original.CommunityGalleryIdentifier
 type CommunityGalleryImage = original.CommunityGalleryImage
+type CommunityGalleryImageList = original.CommunityGalleryImageList
+type CommunityGalleryImageListIterator = original.CommunityGalleryImageListIterator
+type CommunityGalleryImageListPage = original.CommunityGalleryImageListPage
 type CommunityGalleryImageProperties = original.CommunityGalleryImageProperties
 type CommunityGalleryImageVersion = original.CommunityGalleryImageVersion
+type CommunityGalleryImageVersionList = original.CommunityGalleryImageVersionList
+type CommunityGalleryImageVersionListIterator = original.CommunityGalleryImageVersionListIterator
+type CommunityGalleryImageVersionListPage = original.CommunityGalleryImageVersionListPage
 type CommunityGalleryImageVersionProperties = original.CommunityGalleryImageVersionProperties
 type CommunityGalleryImageVersionsClient = original.CommunityGalleryImageVersionsClient
 type CommunityGalleryImagesClient = original.CommunityGalleryImagesClient
 type CommunityGalleryInfo = original.CommunityGalleryInfo
+type CopyCompletionError = original.CopyCompletionError
 type CreationData = original.CreationData
 type DataDisk = original.DataDisk
 type DataDiskImage = original.DataDiskImage
@@ -1515,6 +1500,8 @@ type SecurityProfile = original.SecurityProfile
 type ShareInfoElement = original.ShareInfoElement
 type SharedGalleriesClient = original.SharedGalleriesClient
 type SharedGallery = original.SharedGallery
+type SharedGalleryDataDiskImage = original.SharedGalleryDataDiskImage
+type SharedGalleryDiskImage = original.SharedGalleryDiskImage
 type SharedGalleryIdentifier = original.SharedGalleryIdentifier
 type SharedGalleryImage = original.SharedGalleryImage
 type SharedGalleryImageList = original.SharedGalleryImageList
@@ -1526,11 +1513,13 @@ type SharedGalleryImageVersionList = original.SharedGalleryImageVersionList
 type SharedGalleryImageVersionListIterator = original.SharedGalleryImageVersionListIterator
 type SharedGalleryImageVersionListPage = original.SharedGalleryImageVersionListPage
 type SharedGalleryImageVersionProperties = original.SharedGalleryImageVersionProperties
+type SharedGalleryImageVersionStorageProfile = original.SharedGalleryImageVersionStorageProfile
 type SharedGalleryImageVersionsClient = original.SharedGalleryImageVersionsClient
 type SharedGalleryImagesClient = original.SharedGalleryImagesClient
 type SharedGalleryList = original.SharedGalleryList
 type SharedGalleryListIterator = original.SharedGalleryListIterator
 type SharedGalleryListPage = original.SharedGalleryListPage
+type SharedGalleryOSDiskImage = original.SharedGalleryOSDiskImage
 type SharingProfile = original.SharingProfile
 type SharingProfileGroup = original.SharingProfileGroup
 type SharingStatus = original.SharingStatus
@@ -1577,6 +1566,7 @@ type Usage = original.Usage
 type UsageClient = original.UsageClient
 type UsageName = original.UsageName
 type UserArtifactManage = original.UserArtifactManage
+type UserArtifactSettings = original.UserArtifactSettings
 type UserArtifactSource = original.UserArtifactSource
 type UserAssignedIdentitiesValue = original.UserAssignedIdentitiesValue
 type VMDiskSecurityProfile = original.VMDiskSecurityProfile
@@ -1874,6 +1864,18 @@ func NewCommunityGalleriesClient(subscriptionID string) CommunityGalleriesClient
 }
 func NewCommunityGalleriesClientWithBaseURI(baseURI string, subscriptionID string) CommunityGalleriesClient {
 	return original.NewCommunityGalleriesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCommunityGalleryImageListIterator(page CommunityGalleryImageListPage) CommunityGalleryImageListIterator {
+	return original.NewCommunityGalleryImageListIterator(page)
+}
+func NewCommunityGalleryImageListPage(cur CommunityGalleryImageList, getNextPage func(context.Context, CommunityGalleryImageList) (CommunityGalleryImageList, error)) CommunityGalleryImageListPage {
+	return original.NewCommunityGalleryImageListPage(cur, getNextPage)
+}
+func NewCommunityGalleryImageVersionListIterator(page CommunityGalleryImageVersionListPage) CommunityGalleryImageVersionListIterator {
+	return original.NewCommunityGalleryImageVersionListIterator(page)
+}
+func NewCommunityGalleryImageVersionListPage(cur CommunityGalleryImageVersionList, getNextPage func(context.Context, CommunityGalleryImageVersionList) (CommunityGalleryImageVersionList, error)) CommunityGalleryImageVersionListPage {
+	return original.NewCommunityGalleryImageVersionListPage(cur, getNextPage)
 }
 func NewCommunityGalleryImageVersionsClient(subscriptionID string) CommunityGalleryImageVersionsClient {
 	return original.NewCommunityGalleryImageVersionsClient(subscriptionID)
@@ -2436,6 +2438,9 @@ func PossibleGalleryExpandParamsValues() []GalleryExpandParams {
 func PossibleGalleryExtendedLocationTypeValues() []GalleryExtendedLocationType {
 	return original.PossibleGalleryExtendedLocationTypeValues()
 }
+func PossibleGalleryProvisioningStateValues() []GalleryProvisioningState {
+	return original.PossibleGalleryProvisioningStateValues()
+}
 func PossibleGallerySharingPermissionTypesValues() []GallerySharingPermissionTypes {
 	return original.PossibleGallerySharingPermissionTypesValues()
 }
@@ -2523,18 +2528,6 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 func PossibleProtocolTypesValues() []ProtocolTypes {
 	return original.PossibleProtocolTypesValues()
 }
-func PossibleProvisioningState1Values() []ProvisioningState1 {
-	return original.PossibleProvisioningState1Values()
-}
-func PossibleProvisioningState2Values() []ProvisioningState2 {
-	return original.PossibleProvisioningState2Values()
-}
-func PossibleProvisioningState3Values() []ProvisioningState3 {
-	return original.PossibleProvisioningState3Values()
-}
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
 func PossibleProximityPlacementGroupTypeValues() []ProximityPlacementGroupType {
 	return original.PossibleProximityPlacementGroupTypeValues()
 }
@@ -2597,6 +2590,9 @@ func PossibleSelectPermissionsValues() []SelectPermissions {
 }
 func PossibleSettingNamesValues() []SettingNames {
 	return original.PossibleSettingNamesValues()
+}
+func PossibleSharedGalleryHostCachingValues() []SharedGalleryHostCaching {
+	return original.PossibleSharedGalleryHostCachingValues()
 }
 func PossibleSharedToValuesValues() []SharedToValues {
 	return original.PossibleSharedToValuesValues()

@@ -9,50 +9,37 @@
 
 package resourcegraph
 
-import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/resourcegraph/mgmt/2021-03-01-preview/resourcegraph"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/preview/resourcegraph/mgmt/2021-06-01-preview/resourcegraph"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type ChangeCategory = original.ChangeCategory
+type AuthorizationScopeFilter = original.AuthorizationScopeFilter
 
 const (
-	ChangeCategorySystem ChangeCategory = original.ChangeCategorySystem
-	ChangeCategoryUser   ChangeCategory = original.ChangeCategoryUser
-)
-
-type ChangeType = original.ChangeType
-
-const (
-	ChangeTypeCreate ChangeType = original.ChangeTypeCreate
-	ChangeTypeDelete ChangeType = original.ChangeTypeDelete
-	ChangeTypeUpdate ChangeType = original.ChangeTypeUpdate
+	AtScopeAboveAndBelow AuthorizationScopeFilter = original.AtScopeAboveAndBelow
+	AtScopeAndAbove      AuthorizationScopeFilter = original.AtScopeAndAbove
+	AtScopeAndBelow      AuthorizationScopeFilter = original.AtScopeAndBelow
+	AtScopeExact         AuthorizationScopeFilter = original.AtScopeExact
 )
 
 type ColumnDataType = original.ColumnDataType
 
 const (
-	ColumnDataTypeBoolean ColumnDataType = original.ColumnDataTypeBoolean
-	ColumnDataTypeInteger ColumnDataType = original.ColumnDataTypeInteger
-	ColumnDataTypeNumber  ColumnDataType = original.ColumnDataTypeNumber
-	ColumnDataTypeObject  ColumnDataType = original.ColumnDataTypeObject
-	ColumnDataTypeString  ColumnDataType = original.ColumnDataTypeString
+	Boolean  ColumnDataType = original.Boolean
+	Datetime ColumnDataType = original.Datetime
+	Integer  ColumnDataType = original.Integer
+	Number   ColumnDataType = original.Number
+	Object   ColumnDataType = original.Object
+	String   ColumnDataType = original.String
 )
 
 type FacetSortOrder = original.FacetSortOrder
 
 const (
-	FacetSortOrderAsc  FacetSortOrder = original.FacetSortOrderAsc
-	FacetSortOrderDesc FacetSortOrder = original.FacetSortOrderDesc
-)
-
-type PropertyChangeType = original.PropertyChangeType
-
-const (
-	PropertyChangeTypeInsert PropertyChangeType = original.PropertyChangeTypeInsert
-	PropertyChangeTypeRemove PropertyChangeType = original.PropertyChangeTypeRemove
-	PropertyChangeTypeUpdate PropertyChangeType = original.PropertyChangeTypeUpdate
+	Asc  FacetSortOrder = original.Asc
+	Desc FacetSortOrder = original.Desc
 )
 
 type ResultFormat = original.ResultFormat
@@ -62,18 +49,11 @@ const (
 	ResultFormatTable       ResultFormat = original.ResultFormatTable
 )
 
-type ResultFormat1 = original.ResultFormat1
-
-const (
-	ResultFormat1ObjectArray ResultFormat1 = original.ResultFormat1ObjectArray
-	ResultFormat1Table       ResultFormat1 = original.ResultFormat1Table
-)
-
 type ResultTruncated = original.ResultTruncated
 
 const (
-	ResultTruncatedFalse ResultTruncated = original.ResultTruncatedFalse
-	ResultTruncatedTrue  ResultTruncated = original.ResultTruncatedTrue
+	False ResultTruncated = original.False
+	True  ResultTruncated = original.True
 )
 
 type ResultType = original.ResultType
@@ -96,7 +76,6 @@ type FacetError = original.FacetError
 type FacetRequest = original.FacetRequest
 type FacetRequestOptions = original.FacetRequestOptions
 type FacetResult = original.FacetResult
-type ListResourceChangeData = original.ListResourceChangeData
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -104,15 +83,6 @@ type OperationsClient = original.OperationsClient
 type QueryRequest = original.QueryRequest
 type QueryRequestOptions = original.QueryRequestOptions
 type QueryResponse = original.QueryResponse
-type ResourceChangeData = original.ResourceChangeData
-type ResourceChangeDataAfterSnapshot = original.ResourceChangeDataAfterSnapshot
-type ResourceChangeDataBeforeSnapshot = original.ResourceChangeDataBeforeSnapshot
-type ResourceChangeDetailsRequestParameters = original.ResourceChangeDetailsRequestParameters
-type ResourceChangeList = original.ResourceChangeList
-type ResourceChangesRequestParameters = original.ResourceChangesRequestParameters
-type ResourceChangesRequestParametersInterval = original.ResourceChangesRequestParametersInterval
-type ResourcePropertyChange = original.ResourcePropertyChange
-type ResourceSnapshotData = original.ResourceSnapshotData
 type ResourcesHistoryRequest = original.ResourcesHistoryRequest
 type ResourcesHistoryRequestOptions = original.ResourcesHistoryRequestOptions
 type SetObject = original.SetObject
@@ -130,23 +100,14 @@ func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
 }
-func PossibleChangeCategoryValues() []ChangeCategory {
-	return original.PossibleChangeCategoryValues()
-}
-func PossibleChangeTypeValues() []ChangeType {
-	return original.PossibleChangeTypeValues()
+func PossibleAuthorizationScopeFilterValues() []AuthorizationScopeFilter {
+	return original.PossibleAuthorizationScopeFilterValues()
 }
 func PossibleColumnDataTypeValues() []ColumnDataType {
 	return original.PossibleColumnDataTypeValues()
 }
 func PossibleFacetSortOrderValues() []FacetSortOrder {
 	return original.PossibleFacetSortOrderValues()
-}
-func PossiblePropertyChangeTypeValues() []PropertyChangeType {
-	return original.PossiblePropertyChangeTypeValues()
-}
-func PossibleResultFormat1Values() []ResultFormat1 {
-	return original.PossibleResultFormat1Values()
 }
 func PossibleResultFormatValues() []ResultFormat {
 	return original.PossibleResultFormatValues()

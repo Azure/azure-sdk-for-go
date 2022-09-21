@@ -11,7 +11,7 @@ package armoperationalinsights
 
 const (
 	moduleName    = "armoperationalinsights"
-	moduleVersion = "v2.0.0-beta.2"
+	moduleVersion = "v2.0.0"
 )
 
 // BillingType - Configures whether billing will be only on the cluster or each workspace will be billed by its proportional
@@ -425,6 +425,24 @@ func PossiblePurgeStateValues() []PurgeState {
 	}
 }
 
+// RetentionInDaysAsDefault - True - Value originates from workspace retention in days, False - Customer specific.
+type RetentionInDaysAsDefault string
+
+const (
+	// RetentionInDaysAsDefaultFalse - Value is customer specific.
+	RetentionInDaysAsDefaultFalse RetentionInDaysAsDefault = "False"
+	// RetentionInDaysAsDefaultTrue - Value originates from workspace retention in days.
+	RetentionInDaysAsDefaultTrue RetentionInDaysAsDefault = "True"
+)
+
+// PossibleRetentionInDaysAsDefaultValues returns the possible values for the RetentionInDaysAsDefault const type.
+func PossibleRetentionInDaysAsDefaultValues() []RetentionInDaysAsDefault {
+	return []RetentionInDaysAsDefault{
+		RetentionInDaysAsDefaultFalse,
+		RetentionInDaysAsDefaultTrue,
+	}
+}
+
 // SKUNameEnum - The name of the Service Tier.
 type SKUNameEnum string
 
@@ -566,6 +584,24 @@ func PossibleTableTypeEnumValues() []TableTypeEnum {
 		TableTypeEnumMicrosoft,
 		TableTypeEnumRestoredLogs,
 		TableTypeEnumSearchResults,
+	}
+}
+
+// TotalRetentionInDaysAsDefault - True - Value originates from retention in days, False - Customer specific.
+type TotalRetentionInDaysAsDefault string
+
+const (
+	// TotalRetentionInDaysAsDefaultFalse - Value is customer specific.
+	TotalRetentionInDaysAsDefaultFalse TotalRetentionInDaysAsDefault = "False"
+	// TotalRetentionInDaysAsDefaultTrue - Value originates from retention in days.
+	TotalRetentionInDaysAsDefaultTrue TotalRetentionInDaysAsDefault = "True"
+)
+
+// PossibleTotalRetentionInDaysAsDefaultValues returns the possible values for the TotalRetentionInDaysAsDefault const type.
+func PossibleTotalRetentionInDaysAsDefaultValues() []TotalRetentionInDaysAsDefault {
+	return []TotalRetentionInDaysAsDefault{
+		TotalRetentionInDaysAsDefaultFalse,
+		TotalRetentionInDaysAsDefaultTrue,
 	}
 }
 

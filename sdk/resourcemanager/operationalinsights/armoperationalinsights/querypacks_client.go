@@ -114,6 +114,60 @@ func (client *QueryPacksClient) createOrUpdateHandleResponse(resp *http.Response
 	return result, nil
 }
 
+// CreateOrUpdateWithoutName - Creates a Log Analytics QueryPack. Note: You cannot specify a different value for InstrumentationKey
+// nor AppId in the Put operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-09-01
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// logAnalyticsQueryPackPayload - Properties that need to be specified to create or update a Log Analytics QueryPack.
+// options - QueryPacksClientCreateOrUpdateWithoutNameOptions contains the optional parameters for the QueryPacksClient.CreateOrUpdateWithoutName
+// method.
+func (client *QueryPacksClient) CreateOrUpdateWithoutName(ctx context.Context, resourceGroupName string, logAnalyticsQueryPackPayload LogAnalyticsQueryPack, options *QueryPacksClientCreateOrUpdateWithoutNameOptions) (QueryPacksClientCreateOrUpdateWithoutNameResponse, error) {
+	req, err := client.createOrUpdateWithoutNameCreateRequest(ctx, resourceGroupName, logAnalyticsQueryPackPayload, options)
+	if err != nil {
+		return QueryPacksClientCreateOrUpdateWithoutNameResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return QueryPacksClientCreateOrUpdateWithoutNameResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusCreated) {
+		return QueryPacksClientCreateOrUpdateWithoutNameResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.createOrUpdateWithoutNameHandleResponse(resp)
+}
+
+// createOrUpdateWithoutNameCreateRequest creates the CreateOrUpdateWithoutName request.
+func (client *QueryPacksClient) createOrUpdateWithoutNameCreateRequest(ctx context.Context, resourceGroupName string, logAnalyticsQueryPackPayload LogAnalyticsQueryPack, options *QueryPacksClientCreateOrUpdateWithoutNameOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2019-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, logAnalyticsQueryPackPayload)
+}
+
+// createOrUpdateWithoutNameHandleResponse handles the CreateOrUpdateWithoutName response.
+func (client *QueryPacksClient) createOrUpdateWithoutNameHandleResponse(resp *http.Response) (QueryPacksClientCreateOrUpdateWithoutNameResponse, error) {
+	result := QueryPacksClientCreateOrUpdateWithoutNameResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LogAnalyticsQueryPack); err != nil {
+		return QueryPacksClientCreateOrUpdateWithoutNameResponse{}, err
+	}
+	return result, nil
+}
+
 // Delete - Deletes a Log Analytics QueryPack.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-09-01
@@ -218,7 +272,6 @@ func (client *QueryPacksClient) getHandleResponse(resp *http.Response) (QueryPac
 }
 
 // NewListPager - Gets a list of all Log Analytics QueryPacks within a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-09-01
 // options - QueryPacksClientListOptions contains the optional parameters for the QueryPacksClient.List method.
 func (client *QueryPacksClient) NewListPager(options *QueryPacksClientListOptions) *runtime.Pager[QueryPacksClientListResponse] {
@@ -277,7 +330,6 @@ func (client *QueryPacksClient) listHandleResponse(resp *http.Response) (QueryPa
 }
 
 // NewListByResourceGroupPager - Gets a list of Log Analytics QueryPacks within a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-09-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - QueryPacksClientListByResourceGroupOptions contains the optional parameters for the QueryPacksClient.ListByResourceGroup

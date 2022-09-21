@@ -170,7 +170,6 @@ func (client *QueriesClient) getHandleResponse(resp *http.Response) (QueriesClie
 }
 
 // NewListPager - Gets a list of Queries defined within a Log Analytics QueryPack.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-09-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // queryPackName - The name of the Log Analytics QueryPack resource.
@@ -310,7 +309,6 @@ func (client *QueriesClient) putHandleResponse(resp *http.Response) (QueriesClie
 }
 
 // NewSearchPager - Search a list of Queries defined within a Log Analytics QueryPack according to given search properties.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-09-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // queryPackName - The name of the Log Analytics QueryPack resource.

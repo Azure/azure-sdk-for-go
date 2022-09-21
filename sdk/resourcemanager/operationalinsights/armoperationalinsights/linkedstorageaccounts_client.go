@@ -235,7 +235,6 @@ func (client *LinkedStorageAccountsClient) getHandleResponse(resp *http.Response
 
 // NewListByWorkspacePager - Gets all linked storage accounts associated with the specified workspace, storage accounts will
 // be sorted by their data source type.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.

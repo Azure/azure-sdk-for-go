@@ -56,7 +56,6 @@ func NewManagementGroupsClient(subscriptionID string, credential azcore.TokenCre
 }
 
 // NewListPager - Gets a list of management groups connected to a workspace.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.

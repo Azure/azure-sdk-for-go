@@ -232,7 +232,6 @@ func (client *DataExportsClient) getHandleResponse(resp *http.Response) (DataExp
 }
 
 // NewListByWorkspacePager - Lists the data export instances within a workspace.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.

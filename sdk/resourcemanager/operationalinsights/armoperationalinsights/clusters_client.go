@@ -238,7 +238,6 @@ func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersCl
 }
 
 // NewListPager - Gets the Log Analytics clusters in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-06-01
 // options - ClustersClientListOptions contains the optional parameters for the ClustersClient.List method.
 func (client *ClustersClient) NewListPager(options *ClustersClientListOptions) *runtime.Pager[ClustersClientListResponse] {
@@ -297,7 +296,6 @@ func (client *ClustersClient) listHandleResponse(resp *http.Response) (ClustersC
 }
 
 // NewListByResourceGroupPager - Gets Log Analytics clusters in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup

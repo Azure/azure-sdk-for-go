@@ -2010,6 +2010,7 @@ func (r *Resource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type RestoredLogs.
 func (r RestoredLogs) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "azureAsyncOperationId", r.AzureAsyncOperationID)
 	populateTimeRFC3339(objectMap, "endRestoreTime", r.EndRestoreTime)
 	populate(objectMap, "sourceTable", r.SourceTable)
 	populateTimeRFC3339(objectMap, "startRestoreTime", r.StartRestoreTime)
@@ -2025,6 +2026,9 @@ func (r *RestoredLogs) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "azureAsyncOperationId":
+			err = unpopulate(val, "AzureAsyncOperationID", &r.AzureAsyncOperationID)
+			delete(rawMsg, key)
 		case "endRestoreTime":
 			err = unpopulateTimeRFC3339(val, "EndRestoreTime", &r.EndRestoreTime)
 			delete(rawMsg, key)
@@ -2047,6 +2051,7 @@ func (r ResultStatistics) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "ingestedRecords", r.IngestedRecords)
 	populate(objectMap, "progress", r.Progress)
+	populate(objectMap, "scannedGb", r.ScannedGb)
 	return json.Marshal(objectMap)
 }
 
@@ -2064,6 +2069,9 @@ func (r *ResultStatistics) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "progress":
 			err = unpopulate(val, "Progress", &r.Progress)
+			delete(rawMsg, key)
+		case "scannedGb":
+			err = unpopulate(val, "ScannedGb", &r.ScannedGb)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2203,8 +2211,6 @@ func (s Schema) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "displayName", s.DisplayName)
 	populate(objectMap, "labels", s.Labels)
 	populate(objectMap, "name", s.Name)
-	populate(objectMap, "restoredLogs", s.RestoredLogs)
-	populate(objectMap, "searchResults", s.SearchResults)
 	populate(objectMap, "solutions", s.Solutions)
 	populate(objectMap, "source", s.Source)
 	populate(objectMap, "standardColumns", s.StandardColumns)
@@ -2239,12 +2245,6 @@ func (s *Schema) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &s.Name)
-			delete(rawMsg, key)
-		case "restoredLogs":
-			err = unpopulate(val, "RestoredLogs", &s.RestoredLogs)
-			delete(rawMsg, key)
-		case "searchResults":
-			err = unpopulate(val, "SearchResults", &s.SearchResults)
 			delete(rawMsg, key)
 		case "solutions":
 			err = unpopulate(val, "Solutions", &s.Solutions)
@@ -2425,6 +2425,7 @@ func (s *SearchMetadataSchema) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SearchResults.
 func (s SearchResults) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "azureAsyncOperationId", s.AzureAsyncOperationID)
 	populate(objectMap, "description", s.Description)
 	populateTimeRFC3339(objectMap, "endSearchTime", s.EndSearchTime)
 	populate(objectMap, "limit", s.Limit)
@@ -2443,6 +2444,9 @@ func (s *SearchResults) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "azureAsyncOperationId":
+			err = unpopulate(val, "AzureAsyncOperationID", &s.AzureAsyncOperationID)
+			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, "Description", &s.Description)
 			delete(rawMsg, key)
@@ -2908,9 +2912,11 @@ func (t TableProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "restoredLogs", t.RestoredLogs)
 	populate(objectMap, "resultStatistics", t.ResultStatistics)
 	populate(objectMap, "retentionInDays", t.RetentionInDays)
+	populate(objectMap, "retentionInDaysAsDefault", t.RetentionInDaysAsDefault)
 	populate(objectMap, "schema", t.Schema)
 	populate(objectMap, "searchResults", t.SearchResults)
 	populate(objectMap, "totalRetentionInDays", t.TotalRetentionInDays)
+	populate(objectMap, "totalRetentionInDaysAsDefault", t.TotalRetentionInDaysAsDefault)
 	return json.Marshal(objectMap)
 }
 
@@ -2944,6 +2950,9 @@ func (t *TableProperties) UnmarshalJSON(data []byte) error {
 		case "retentionInDays":
 			err = unpopulate(val, "RetentionInDays", &t.RetentionInDays)
 			delete(rawMsg, key)
+		case "retentionInDaysAsDefault":
+			err = unpopulate(val, "RetentionInDaysAsDefault", &t.RetentionInDaysAsDefault)
+			delete(rawMsg, key)
 		case "schema":
 			err = unpopulate(val, "Schema", &t.Schema)
 			delete(rawMsg, key)
@@ -2952,6 +2961,9 @@ func (t *TableProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "totalRetentionInDays":
 			err = unpopulate(val, "TotalRetentionInDays", &t.TotalRetentionInDays)
+			delete(rawMsg, key)
+		case "totalRetentionInDaysAsDefault":
+			err = unpopulate(val, "TotalRetentionInDaysAsDefault", &t.TotalRetentionInDaysAsDefault)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3170,8 +3182,9 @@ func (u *UserIdentityProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Workspace.
 func (w Workspace) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "eTag", w.ETag)
+	populate(objectMap, "etag", w.Etag)
 	populate(objectMap, "id", w.ID)
+	populate(objectMap, "identity", w.Identity)
 	populate(objectMap, "location", w.Location)
 	populate(objectMap, "name", w.Name)
 	populate(objectMap, "properties", w.Properties)
@@ -3190,11 +3203,14 @@ func (w *Workspace) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "eTag":
-			err = unpopulate(val, "ETag", &w.ETag)
+		case "etag":
+			err = unpopulate(val, "Etag", &w.Etag)
 			delete(rawMsg, key)
 		case "id":
 			err = unpopulate(val, "ID", &w.ID)
+			delete(rawMsg, key)
+		case "identity":
+			err = unpopulate(val, "Identity", &w.Identity)
 			delete(rawMsg, key)
 		case "location":
 			err = unpopulate(val, "Location", &w.Location)
@@ -3401,6 +3417,7 @@ func (w WorkspacePatch) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "etag", w.Etag)
 	populate(objectMap, "id", w.ID)
+	populate(objectMap, "identity", w.Identity)
 	populate(objectMap, "name", w.Name)
 	populate(objectMap, "properties", w.Properties)
 	populate(objectMap, "tags", w.Tags)
@@ -3422,6 +3439,9 @@ func (w *WorkspacePatch) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "id":
 			err = unpopulate(val, "ID", &w.ID)
+			delete(rawMsg, key)
+		case "identity":
+			err = unpopulate(val, "Identity", &w.Identity)
 			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &w.Name)

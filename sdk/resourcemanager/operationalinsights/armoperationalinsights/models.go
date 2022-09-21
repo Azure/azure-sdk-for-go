@@ -949,6 +949,12 @@ type QueryPacksClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// QueryPacksClientCreateOrUpdateWithoutNameOptions contains the optional parameters for the QueryPacksClient.CreateOrUpdateWithoutName
+// method.
+type QueryPacksClientCreateOrUpdateWithoutNameOptions struct {
+	// placeholder for future optional parameters
+}
+
 // QueryPacksClientDeleteOptions contains the optional parameters for the QueryPacksClient.Delete method.
 type QueryPacksClientDeleteOptions struct {
 	// placeholder for future optional parameters
@@ -1015,6 +1021,9 @@ type RestoredLogs struct {
 
 	// The timestamp to start the restore from (UTC).
 	StartRestoreTime *time.Time `json:"startRestoreTime,omitempty"`
+
+	// READ-ONLY; Search results table async operation id.
+	AzureAsyncOperationID *string `json:"azureAsyncOperationId,omitempty" azure:"ro"`
 }
 
 // ResultStatistics - Search job execution statistics.
@@ -1024,6 +1033,9 @@ type ResultStatistics struct {
 
 	// READ-ONLY; Search job completion percentage.
 	Progress *float32 `json:"progress,omitempty" azure:"ro"`
+
+	// READ-ONLY; Search job: Amount of scanned data.
+	ScannedGb *float32 `json:"scannedGb,omitempty" azure:"ro"`
 }
 
 // SavedSearch - Value object for saved search results.
@@ -1116,12 +1128,6 @@ type Schema struct {
 
 	// READ-ONLY; Table labels.
 	Labels []*string `json:"labels,omitempty" azure:"ro"`
-
-	// READ-ONLY; Parameters of the restore operation that initiated this table.
-	RestoredLogs *RestoredLogs `json:"restoredLogs,omitempty" azure:"ro"`
-
-	// READ-ONLY; Parameters of the search job that initiated this table.
-	SearchResults *SearchResults `json:"searchResults,omitempty" azure:"ro"`
 
 	// READ-ONLY; List of solutions the table is affiliated with
 	Solutions []*string `json:"solutions,omitempty" azure:"ro"`
@@ -1233,6 +1239,9 @@ type SearchResults struct {
 
 	// The timestamp to start the search from (UTC)
 	StartSearchTime *time.Time `json:"startSearchTime,omitempty"`
+
+	// READ-ONLY; Search results table async operation id.
+	AzureAsyncOperationID *string `json:"azureAsyncOperationId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The table used in the search job.
 	SourceTable *string `json:"sourceTable,omitempty" azure:"ro"`
@@ -1443,9 +1452,6 @@ type TableProperties struct {
 	// Parameters of the restore operation that initiated this table.
 	RestoredLogs *RestoredLogs `json:"restoredLogs,omitempty"`
 
-	// Search job execution statistics.
-	ResultStatistics *ResultStatistics `json:"resultStatistics,omitempty"`
-
 	// The table retention in days, between 4 and 730. Setting this property to -1 will default to the workspace retention.
 	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
 
@@ -1467,6 +1473,15 @@ type TableProperties struct {
 	// READ-ONLY; Table's current provisioning state. If set to 'updating', indicates a resource lock due to ongoing operation,
 	// forbidding any update to the table until the ongoing operation is concluded.
 	ProvisioningState *ProvisioningStateEnum `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Search job execution statistics.
+	ResultStatistics *ResultStatistics `json:"resultStatistics,omitempty" azure:"ro"`
+
+	// READ-ONLY; True - Value originates from workspace retention in days, False - Customer specific.
+	RetentionInDaysAsDefault *RetentionInDaysAsDefault `json:"retentionInDaysAsDefault,omitempty" azure:"ro"`
+
+	// READ-ONLY; True - Value originates from retention in days, False - Customer specific.
+	TotalRetentionInDaysAsDefault *TotalRetentionInDaysAsDefault `json:"totalRetentionInDaysAsDefault,omitempty" azure:"ro"`
 }
 
 // TablesClientBeginCreateOrUpdateOptions contains the optional parameters for the TablesClient.BeginCreateOrUpdate method.
@@ -1485,6 +1500,11 @@ type TablesClientBeginDeleteOptions struct {
 type TablesClientBeginUpdateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
+}
+
+// TablesClientCancelSearchOptions contains the optional parameters for the TablesClient.CancelSearch method.
+type TablesClientCancelSearchOptions struct {
+	// placeholder for future optional parameters
 }
 
 // TablesClientGetOptions contains the optional parameters for the TablesClient.Get method.
@@ -1582,8 +1602,11 @@ type Workspace struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
-	// The ETag of the workspace.
-	ETag *string `json:"eTag,omitempty"`
+	// The etag of the workspace.
+	Etag *string `json:"etag,omitempty"`
+
+	// The identity of the resource.
+	Identity *Identity `json:"identity,omitempty"`
 
 	// Workspace properties.
 	Properties *WorkspaceProperties `json:"properties,omitempty"`
@@ -1657,6 +1680,9 @@ type WorkspaceListUsagesResult struct {
 
 // WorkspacePatch - The top level Workspace resource container.
 type WorkspacePatch struct {
+	// The identity of the resource.
+	Identity *Identity `json:"identity,omitempty"`
+
 	// Workspace properties.
 	Properties *WorkspaceProperties `json:"properties,omitempty"`
 

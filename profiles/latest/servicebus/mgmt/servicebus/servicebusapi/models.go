@@ -9,16 +9,15 @@
 
 package servicebusapi
 
-import original "github.com/Azure/dev/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus/servicebusapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/servicebus/mgmt/2021-11-01/servicebus/servicebusapi"
 
 type DisasterRecoveryConfigsClientAPI = original.DisasterRecoveryConfigsClientAPI
-type EventHubsClientAPI = original.EventHubsClientAPI
 type MigrationConfigsClientAPI = original.MigrationConfigsClientAPI
 type NamespacesClientAPI = original.NamespacesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
-type PremiumMessagingRegionsClientAPI = original.PremiumMessagingRegionsClientAPI
+type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
 type QueuesClientAPI = original.QueuesClientAPI
-type RegionsClientAPI = original.RegionsClientAPI
 type RulesClientAPI = original.RulesClientAPI
 type SubscriptionsClientAPI = original.SubscriptionsClientAPI
 type TopicsClientAPI = original.TopicsClientAPI

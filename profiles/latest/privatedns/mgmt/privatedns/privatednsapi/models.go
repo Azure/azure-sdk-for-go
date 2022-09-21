@@ -9,7 +9,7 @@
 
 package privatednsapi
 
-import original "github.com/Azure/dev/azure-sdk-for-go/services/privatedns/mgmt/2020-01-01/privatedns/privatednsapi"
+import original "github.com/Azure/dev/azure-sdk-for-go/services/privatedns/mgmt/2020-06-01/privatedns/privatednsapi"
 
 type PrivateZonesClientAPI = original.PrivateZonesClientAPI
 type RecordSetsClientAPI = original.RecordSetsClientAPI

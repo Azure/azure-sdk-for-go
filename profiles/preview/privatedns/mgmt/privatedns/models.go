@@ -12,7 +12,7 @@ package privatedns
 import (
 	"context"
 
-	original "github.com/Azure/dev/azure-sdk-for-go/services/privatedns/mgmt/2020-01-01/privatedns"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/privatedns/mgmt/2020-06-01/privatedns"
 )
 
 const (

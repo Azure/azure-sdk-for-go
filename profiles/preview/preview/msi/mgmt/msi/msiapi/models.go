@@ -9,8 +9,9 @@
 
 package msiapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/msi/mgmt/2021-09-30-preview/msi/msiapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/msi/mgmt/2022-01-31-preview/msi/msiapi"
 
+type FederatedIdentityCredentialsClientAPI = original.FederatedIdentityCredentialsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type SystemAssignedIdentitiesClientAPI = original.SystemAssignedIdentitiesClientAPI
 type UserAssignedIdentitiesClientAPI = original.UserAssignedIdentitiesClientAPI

@@ -12,7 +12,7 @@ package msi
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/msi/mgmt/2021-09-30-preview/msi"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/msi/mgmt/2022-01-31-preview/msi"
 )
 
 const (
@@ -27,6 +27,12 @@ type AzureResource = original.AzureResource
 type BaseClient = original.BaseClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
+type FederatedIdentityCredential = original.FederatedIdentityCredential
+type FederatedIdentityCredentialProperties = original.FederatedIdentityCredentialProperties
+type FederatedIdentityCredentialsClient = original.FederatedIdentityCredentialsClient
+type FederatedIdentityCredentialsListResult = original.FederatedIdentityCredentialsListResult
+type FederatedIdentityCredentialsListResultIterator = original.FederatedIdentityCredentialsListResultIterator
+type FederatedIdentityCredentialsListResultPage = original.FederatedIdentityCredentialsListResultPage
 type Identity = original.Identity
 type IdentityUpdate = original.IdentityUpdate
 type Operation = original.Operation
@@ -55,6 +61,18 @@ func NewAssociatedResourcesListResultIterator(page AssociatedResourcesListResult
 }
 func NewAssociatedResourcesListResultPage(cur AssociatedResourcesListResult, getNextPage func(context.Context, AssociatedResourcesListResult) (AssociatedResourcesListResult, error)) AssociatedResourcesListResultPage {
 	return original.NewAssociatedResourcesListResultPage(cur, getNextPage)
+}
+func NewFederatedIdentityCredentialsClient(subscriptionID string) FederatedIdentityCredentialsClient {
+	return original.NewFederatedIdentityCredentialsClient(subscriptionID)
+}
+func NewFederatedIdentityCredentialsClientWithBaseURI(baseURI string, subscriptionID string) FederatedIdentityCredentialsClient {
+	return original.NewFederatedIdentityCredentialsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewFederatedIdentityCredentialsListResultIterator(page FederatedIdentityCredentialsListResultPage) FederatedIdentityCredentialsListResultIterator {
+	return original.NewFederatedIdentityCredentialsListResultIterator(page)
+}
+func NewFederatedIdentityCredentialsListResultPage(cur FederatedIdentityCredentialsListResult, getNextPage func(context.Context, FederatedIdentityCredentialsListResult) (FederatedIdentityCredentialsListResult, error)) FederatedIdentityCredentialsListResultPage {
+	return original.NewFederatedIdentityCredentialsListResultPage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)

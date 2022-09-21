@@ -12,7 +12,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2022-06-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2022-07-01/containerservice"
 )
 
 const (
@@ -179,8 +179,10 @@ const (
 type OSSKU = original.OSSKU
 
 const (
-	CBLMariner OSSKU = original.CBLMariner
-	Ubuntu     OSSKU = original.Ubuntu
+	CBLMariner  OSSKU = original.CBLMariner
+	Ubuntu      OSSKU = original.Ubuntu
+	Windows2019 OSSKU = original.Windows2019
+	Windows2022 OSSKU = original.Windows2022
 )
 
 type OSType = original.OSType

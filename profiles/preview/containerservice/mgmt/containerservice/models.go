@@ -12,7 +12,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/dev/azure-sdk-for-go/services/containerservice/mgmt/2022-04-01/containerservice"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/containerservice/mgmt/2022-06-01/containerservice"
 )
 
 const (
@@ -97,6 +97,13 @@ const (
 	IPv6 IPFamily = original.IPv6
 )
 
+type KeyVaultNetworkAccessTypes = original.KeyVaultNetworkAccessTypes
+
+const (
+	Private KeyVaultNetworkAccessTypes = original.Private
+	Public  KeyVaultNetworkAccessTypes = original.Public
+)
+
 type KubeletDiskType = original.KubeletDiskType
 
 const (
@@ -152,6 +159,7 @@ type NetworkPlugin = original.NetworkPlugin
 const (
 	NetworkPluginAzure   NetworkPlugin = original.NetworkPluginAzure
 	NetworkPluginKubenet NetworkPlugin = original.NetworkPluginKubenet
+	NetworkPluginNone    NetworkPlugin = original.NetworkPluginNone
 )
 
 type NetworkPolicy = original.NetworkPolicy
@@ -474,6 +482,7 @@ type AgentPoolsCreateOrUpdateFuture = original.AgentPoolsCreateOrUpdateFuture
 type AgentPoolsDeleteFuture = original.AgentPoolsDeleteFuture
 type AgentPoolsUpgradeNodeImageVersionFuture = original.AgentPoolsUpgradeNodeImageVersionFuture
 type AzureEntityResource = original.AzureEntityResource
+type AzureKeyVaultKms = original.AzureKeyVaultKms
 type BaseClient = original.BaseClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
@@ -527,7 +536,8 @@ type ManagedClusterProperties = original.ManagedClusterProperties
 type ManagedClusterPropertiesAutoScalerProfile = original.ManagedClusterPropertiesAutoScalerProfile
 type ManagedClusterSKU = original.ManagedClusterSKU
 type ManagedClusterSecurityProfile = original.ManagedClusterSecurityProfile
-type ManagedClusterSecurityProfileAzureDefender = original.ManagedClusterSecurityProfileAzureDefender
+type ManagedClusterSecurityProfileDefender = original.ManagedClusterSecurityProfileDefender
+type ManagedClusterSecurityProfileDefenderSecurityMonitoring = original.ManagedClusterSecurityProfileDefenderSecurityMonitoring
 type ManagedClusterServicePrincipalProfile = original.ManagedClusterServicePrincipalProfile
 type ManagedClusterStorageProfile = original.ManagedClusterStorageProfile
 type ManagedClusterStorageProfileDiskCSIDriver = original.ManagedClusterStorageProfileDiskCSIDriver
@@ -708,6 +718,9 @@ func PossibleGPUInstanceProfileValues() []GPUInstanceProfile {
 }
 func PossibleIPFamilyValues() []IPFamily {
 	return original.PossibleIPFamilyValues()
+}
+func PossibleKeyVaultNetworkAccessTypesValues() []KeyVaultNetworkAccessTypes {
+	return original.PossibleKeyVaultNetworkAccessTypesValues()
 }
 func PossibleKubeletDiskTypeValues() []KubeletDiskType {
 	return original.PossibleKubeletDiskTypeValues()

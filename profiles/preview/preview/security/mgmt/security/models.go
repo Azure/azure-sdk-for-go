@@ -57,34 +57,6 @@ const (
 	Sentinel AdditionalWorkspaceType = original.Sentinel
 )
 
-type AlertIntent = original.AlertIntent
-
-const (
-	Collection          AlertIntent = original.Collection
-	CommandAndControl   AlertIntent = original.CommandAndControl
-	CredentialAccess    AlertIntent = original.CredentialAccess
-	DefenseEvasion      AlertIntent = original.DefenseEvasion
-	Discovery           AlertIntent = original.Discovery
-	Execution           AlertIntent = original.Execution
-	Exfiltration        AlertIntent = original.Exfiltration
-	Exploitation        AlertIntent = original.Exploitation
-	Impact              AlertIntent = original.Impact
-	InitialAccess       AlertIntent = original.InitialAccess
-	LateralMovement     AlertIntent = original.LateralMovement
-	Persistence         AlertIntent = original.Persistence
-	PreAttack           AlertIntent = original.PreAttack
-	PrivilegeEscalation AlertIntent = original.PrivilegeEscalation
-	Probing             AlertIntent = original.Probing
-	Unknown             AlertIntent = original.Unknown
-)
-
-type AlertNotifications = original.AlertNotifications
-
-const (
-	Off AlertNotifications = original.Off
-	On  AlertNotifications = original.On
-)
-
 type AlertSeverity = original.AlertSeverity
 
 const (
@@ -97,16 +69,17 @@ const (
 type AlertStatus = original.AlertStatus
 
 const (
-	Active    AlertStatus = original.Active
-	Dismissed AlertStatus = original.Dismissed
-	Resolved  AlertStatus = original.Resolved
+	Active     AlertStatus = original.Active
+	Dismissed  AlertStatus = original.Dismissed
+	InProgress AlertStatus = original.InProgress
+	Resolved   AlertStatus = original.Resolved
 )
 
-type AlertsToAdmins = original.AlertsToAdmins
+type ApplicationConditionOperator = original.ApplicationConditionOperator
 
 const (
-	AlertsToAdminsOff AlertsToAdmins = original.AlertsToAdminsOff
-	AlertsToAdminsOn  AlertsToAdmins = original.AlertsToAdminsOn
+	Equals ApplicationConditionOperator = original.Equals
+	In     ApplicationConditionOperator = original.In
 )
 
 type AssessedResourceType = original.AssessedResourceType
@@ -153,24 +126,18 @@ const (
 	AuthenticationTypeGcpCredentials                  AuthenticationType = original.AuthenticationTypeGcpCredentials
 )
 
-type AuthorizationState = original.AuthorizationState
-
-const (
-	Authorized   AuthorizationState = original.Authorized
-	Unauthorized AuthorizationState = original.Unauthorized
-)
-
 type AutoProvision = original.AutoProvision
 
 const (
-	AutoProvisionOff AutoProvision = original.AutoProvisionOff
-	AutoProvisionOn  AutoProvision = original.AutoProvisionOn
+	Off AutoProvision = original.Off
+	On  AutoProvision = original.On
 )
 
 type BundleType = original.BundleType
 
 const (
 	AppServices       BundleType = original.AppServices
+	CosmosDbs         BundleType = original.CosmosDbs
 	DNS               BundleType = original.DNS
 	KeyVaults         BundleType = original.KeyVaults
 	KubernetesService BundleType = original.KubernetesService
@@ -190,14 +157,24 @@ const (
 	Networking        Categories = original.Networking
 )
 
+type CloudName = original.CloudName
+
+const (
+	AWS         CloudName = original.AWS
+	Azure       CloudName = original.Azure
+	AzureDevOps CloudName = original.AzureDevOps
+	GCP         CloudName = original.GCP
+	Github      CloudName = original.Github
+)
+
 type ConfigurationStatus = original.ConfigurationStatus
 
 const (
-	Configured    ConfigurationStatus = original.Configured
-	Failed        ConfigurationStatus = original.Failed
-	InProgress    ConfigurationStatus = original.InProgress
-	NoStatus      ConfigurationStatus = original.NoStatus
-	NotConfigured ConfigurationStatus = original.NotConfigured
+	ConfigurationStatusConfigured    ConfigurationStatus = original.ConfigurationStatusConfigured
+	ConfigurationStatusFailed        ConfigurationStatus = original.ConfigurationStatusFailed
+	ConfigurationStatusInProgress    ConfigurationStatus = original.ConfigurationStatusInProgress
+	ConfigurationStatusNoStatus      ConfigurationStatus = original.ConfigurationStatusNoStatus
+	ConfigurationStatusNotConfigured ConfigurationStatus = original.ConfigurationStatusNotConfigured
 )
 
 type ConfigurationStatus1 = original.ConfigurationStatus1
@@ -237,30 +214,16 @@ const (
 type CreatedByType = original.CreatedByType
 
 const (
-	Application     CreatedByType = original.Application
-	Key             CreatedByType = original.Key
-	ManagedIdentity CreatedByType = original.ManagedIdentity
-	User            CreatedByType = original.User
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type DataSource = original.DataSource
 
 const (
 	TwinData DataSource = original.TwinData
-)
-
-type DeviceCriticality = original.DeviceCriticality
-
-const (
-	Important DeviceCriticality = original.Important
-	Standard  DeviceCriticality = original.Standard
-)
-
-type DeviceStatus = original.DeviceStatus
-
-const (
-	DeviceStatusActive  DeviceStatus = original.DeviceStatusActive
-	DeviceStatusRemoved DeviceStatus = original.DeviceStatusRemoved
 )
 
 type Direction = original.Direction
@@ -291,9 +254,19 @@ const (
 type EnforcementSupport = original.EnforcementSupport
 
 const (
-	EnforcementSupportNotSupported EnforcementSupport = original.EnforcementSupportNotSupported
-	EnforcementSupportSupported    EnforcementSupport = original.EnforcementSupportSupported
-	EnforcementSupportUnknown      EnforcementSupport = original.EnforcementSupportUnknown
+	NotSupported EnforcementSupport = original.NotSupported
+	Supported    EnforcementSupport = original.Supported
+	Unknown      EnforcementSupport = original.Unknown
+)
+
+type EnvironmentType = original.EnvironmentType
+
+const (
+	EnvironmentTypeAwsAccount       EnvironmentType = original.EnvironmentTypeAwsAccount
+	EnvironmentTypeAzureDevOpsScope EnvironmentType = original.EnvironmentTypeAzureDevOpsScope
+	EnvironmentTypeEnvironmentData  EnvironmentType = original.EnvironmentTypeEnvironmentData
+	EnvironmentTypeGcpProject       EnvironmentType = original.EnvironmentTypeGcpProject
+	EnvironmentTypeGithubScope      EnvironmentType = original.EnvironmentTypeGithubScope
 )
 
 type EventSource = original.EventSource
@@ -301,6 +274,7 @@ type EventSource = original.EventSource
 const (
 	EventSourceAlerts                                 EventSource = original.EventSourceAlerts
 	EventSourceAssessments                            EventSource = original.EventSourceAssessments
+	EventSourceAssessmentsSnapshot                    EventSource = original.EventSourceAssessmentsSnapshot
 	EventSourceRegulatoryComplianceAssessment         EventSource = original.EventSourceRegulatoryComplianceAssessment
 	EventSourceRegulatoryComplianceAssessmentSnapshot EventSource = original.EventSourceRegulatoryComplianceAssessmentSnapshot
 	EventSourceSecureScoreControls                    EventSource = original.EventSourceSecureScoreControls
@@ -308,6 +282,7 @@ const (
 	EventSourceSecureScores                           EventSource = original.EventSourceSecureScores
 	EventSourceSecureScoresSnapshot                   EventSource = original.EventSourceSecureScoresSnapshot
 	EventSourceSubAssessments                         EventSource = original.EventSourceSubAssessments
+	EventSourceSubAssessmentsSnapshot                 EventSource = original.EventSourceSubAssessmentsSnapshot
 )
 
 type Exe = original.Exe
@@ -373,6 +348,27 @@ const (
 	FileTypeUnknown    FileType = original.FileTypeUnknown
 )
 
+type GovernanceRuleConditionOperator = original.GovernanceRuleConditionOperator
+
+const (
+	GovernanceRuleConditionOperatorEquals GovernanceRuleConditionOperator = original.GovernanceRuleConditionOperatorEquals
+	GovernanceRuleConditionOperatorIn     GovernanceRuleConditionOperator = original.GovernanceRuleConditionOperatorIn
+)
+
+type GovernanceRuleOwnerSourceType = original.GovernanceRuleOwnerSourceType
+
+const (
+	ByTag    GovernanceRuleOwnerSourceType = original.ByTag
+	Manually GovernanceRuleOwnerSourceType = original.Manually
+)
+
+type GovernanceRuleType = original.GovernanceRuleType
+
+const (
+	Integrated GovernanceRuleType = original.Integrated
+	ServiceNow GovernanceRuleType = original.ServiceNow
+)
+
 type HybridComputeProvisioningState = original.HybridComputeProvisioningState
 
 const (
@@ -387,6 +383,13 @@ const (
 	ImplementationEffortHigh     ImplementationEffort = original.ImplementationEffortHigh
 	ImplementationEffortLow      ImplementationEffort = original.ImplementationEffortLow
 	ImplementationEffortModerate ImplementationEffort = original.ImplementationEffortModerate
+)
+
+type InformationProtectionPolicyName = original.InformationProtectionPolicyName
+
+const (
+	Custom    InformationProtectionPolicyName = original.Custom
+	Effective InformationProtectionPolicyName = original.Effective
 )
 
 type Intent = original.Intent
@@ -445,18 +448,12 @@ const (
 	KindSetting            KindEnum2 = original.KindSetting
 )
 
-type MacSignificance = original.MacSignificance
+type MinimalSeverity = original.MinimalSeverity
 
 const (
-	Primary   MacSignificance = original.Primary
-	Secondary MacSignificance = original.Secondary
-)
-
-type ManagementState = original.ManagementState
-
-const (
-	Managed   ManagementState = original.Managed
-	Unmanaged ManagementState = original.Unmanaged
+	MinimalSeverityHigh   MinimalSeverity = original.MinimalSeverityHigh
+	MinimalSeverityLow    MinimalSeverity = original.MinimalSeverityLow
+	MinimalSeverityMedium MinimalSeverity = original.MinimalSeverityMedium
 )
 
 type Msi = original.Msi
@@ -467,27 +464,55 @@ const (
 	MsiNone    Msi = original.MsiNone
 )
 
-type OnboardingKind = original.OnboardingKind
+type OfferingType = original.OfferingType
 
 const (
-	Default         OnboardingKind = original.Default
-	Evaluation      OnboardingKind = original.Evaluation
-	MigratedToAzure OnboardingKind = original.MigratedToAzure
-	Purchased       OnboardingKind = original.Purchased
+	OfferingTypeCloudOffering                OfferingType = original.OfferingTypeCloudOffering
+	OfferingTypeCspmMonitorAws               OfferingType = original.OfferingTypeCspmMonitorAws
+	OfferingTypeCspmMonitorAzureDevOps       OfferingType = original.OfferingTypeCspmMonitorAzureDevOps
+	OfferingTypeCspmMonitorGcp               OfferingType = original.OfferingTypeCspmMonitorGcp
+	OfferingTypeCspmMonitorGithub            OfferingType = original.OfferingTypeCspmMonitorGithub
+	OfferingTypeDefenderCspmAws              OfferingType = original.OfferingTypeDefenderCspmAws
+	OfferingTypeDefenderCspmGcp              OfferingType = original.OfferingTypeDefenderCspmGcp
+	OfferingTypeDefenderForContainersAws     OfferingType = original.OfferingTypeDefenderForContainersAws
+	OfferingTypeDefenderForContainersGcp     OfferingType = original.OfferingTypeDefenderForContainersGcp
+	OfferingTypeDefenderForDatabasesAws      OfferingType = original.OfferingTypeDefenderForDatabasesAws
+	OfferingTypeDefenderForDatabasesGcp      OfferingType = original.OfferingTypeDefenderForDatabasesGcp
+	OfferingTypeDefenderForDevOpsAzureDevOps OfferingType = original.OfferingTypeDefenderForDevOpsAzureDevOps
+	OfferingTypeDefenderForDevOpsGithub      OfferingType = original.OfferingTypeDefenderForDevOpsGithub
+	OfferingTypeDefenderForServersAws        OfferingType = original.OfferingTypeDefenderForServersAws
+	OfferingTypeDefenderForServersGcp        OfferingType = original.OfferingTypeDefenderForServersGcp
+	OfferingTypeInformationProtectionAws     OfferingType = original.OfferingTypeInformationProtectionAws
 )
 
 type Operator = original.Operator
 
 const (
-	Contains             Operator = original.Contains
-	EndsWith             Operator = original.EndsWith
-	Equals               Operator = original.Equals
-	GreaterThan          Operator = original.GreaterThan
-	GreaterThanOrEqualTo Operator = original.GreaterThanOrEqualTo
-	LesserThan           Operator = original.LesserThan
-	LesserThanOrEqualTo  Operator = original.LesserThanOrEqualTo
-	NotEquals            Operator = original.NotEquals
-	StartsWith           Operator = original.StartsWith
+	OperatorContains             Operator = original.OperatorContains
+	OperatorEndsWith             Operator = original.OperatorEndsWith
+	OperatorEquals               Operator = original.OperatorEquals
+	OperatorGreaterThan          Operator = original.OperatorGreaterThan
+	OperatorGreaterThanOrEqualTo Operator = original.OperatorGreaterThanOrEqualTo
+	OperatorLesserThan           Operator = original.OperatorLesserThan
+	OperatorLesserThanOrEqualTo  Operator = original.OperatorLesserThanOrEqualTo
+	OperatorNotEquals            Operator = original.OperatorNotEquals
+	OperatorStartsWith           Operator = original.OperatorStartsWith
+)
+
+type OrganizationMembershipType = original.OrganizationMembershipType
+
+const (
+	OrganizationMembershipTypeAwsOrganizationalData OrganizationMembershipType = original.OrganizationMembershipTypeAwsOrganizationalData
+	OrganizationMembershipTypeMember                OrganizationMembershipType = original.OrganizationMembershipTypeMember
+	OrganizationMembershipTypeOrganization          OrganizationMembershipType = original.OrganizationMembershipTypeOrganization
+)
+
+type OrganizationMembershipTypeBasicGcpOrganizationalData = original.OrganizationMembershipTypeBasicGcpOrganizationalData
+
+const (
+	OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeGcpOrganizationalData OrganizationMembershipTypeBasicGcpOrganizationalData = original.OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeGcpOrganizationalData
+	OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeMember                OrganizationMembershipTypeBasicGcpOrganizationalData = original.OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeMember
+	OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeOrganization          OrganizationMembershipTypeBasicGcpOrganizationalData = original.OrganizationMembershipTypeBasicGcpOrganizationalDataOrganizationMembershipTypeOrganization
 )
 
 type PermissionProperty = original.PermissionProperty
@@ -502,15 +527,8 @@ const (
 type PricingTier = original.PricingTier
 
 const (
-	PricingTierFree     PricingTier = original.PricingTierFree
-	PricingTierStandard PricingTier = original.PricingTierStandard
-)
-
-type ProgrammingState = original.ProgrammingState
-
-const (
-	NotProgrammingDevice ProgrammingState = original.NotProgrammingDevice
-	ProgrammingDevice    ProgrammingState = original.ProgrammingDevice
+	Free     PricingTier = original.Free
+	Standard PricingTier = original.Standard
 )
 
 type PropertyType = original.PropertyType
@@ -533,9 +551,9 @@ const (
 type ProvisioningState = original.ProvisioningState
 
 const (
-	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
-	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
-	ProvisioningStateUpdating  ProvisioningState = original.ProvisioningStateUpdating
+	Failed    ProvisioningState = original.Failed
+	Succeeded ProvisioningState = original.Succeeded
+	Updating  ProvisioningState = original.Updating
 )
 
 type ProvisioningState1 = original.ProvisioningState1
@@ -546,14 +564,6 @@ const (
 	ProvisioningState1Failed         ProvisioningState1 = original.ProvisioningState1Failed
 	ProvisioningState1Provisioning   ProvisioningState1 = original.ProvisioningState1Provisioning
 	ProvisioningState1Succeeded      ProvisioningState1 = original.ProvisioningState1Succeeded
-)
-
-type PurdueLevel = original.PurdueLevel
-
-const (
-	Enterprise     PurdueLevel = original.Enterprise
-	ProcessControl PurdueLevel = original.ProcessControl
-	Supervisory    PurdueLevel = original.Supervisory
 )
 
 type Rank = original.Rank
@@ -589,18 +599,6 @@ const (
 	Enabled  RecommendationConfigStatus = original.Enabled
 )
 
-type RecommendationSeverity = original.RecommendationSeverity
-
-const (
-	RecommendationSeverityHealthy       RecommendationSeverity = original.RecommendationSeverityHealthy
-	RecommendationSeverityHigh          RecommendationSeverity = original.RecommendationSeverityHigh
-	RecommendationSeverityLow           RecommendationSeverity = original.RecommendationSeverityLow
-	RecommendationSeverityMedium        RecommendationSeverity = original.RecommendationSeverityMedium
-	RecommendationSeverityNotApplicable RecommendationSeverity = original.RecommendationSeverityNotApplicable
-	RecommendationSeverityOffByPolicy   RecommendationSeverity = original.RecommendationSeverityOffByPolicy
-	RecommendationSeverityUnknown       RecommendationSeverity = original.RecommendationSeverityUnknown
-)
-
 type RecommendationStatus = original.RecommendationStatus
 
 const (
@@ -631,13 +629,6 @@ const (
 	IoTVulnerableTLSCipherSuite      RecommendationType = original.IoTVulnerableTLSCipherSuite
 )
 
-type RelationToIPStatus = original.RelationToIPStatus
-
-const (
-	Certain RelationToIPStatus = original.Certain
-	Guess   RelationToIPStatus = original.Guess
-)
-
 type ReportedSeverity = original.ReportedSeverity
 
 const (
@@ -654,6 +645,15 @@ const (
 	ResourceStatusNotApplicable ResourceStatus = original.ResourceStatusNotApplicable
 	ResourceStatusNotHealthy    ResourceStatus = original.ResourceStatusNotHealthy
 	ResourceStatusOffByPolicy   ResourceStatus = original.ResourceStatusOffByPolicy
+)
+
+type Roles = original.Roles
+
+const (
+	AccountAdmin Roles = original.AccountAdmin
+	Contributor  Roles = original.Contributor
+	Owner        Roles = original.Owner
+	ServiceAdmin Roles = original.ServiceAdmin
 )
 
 type RuleSeverity = original.RuleSeverity
@@ -738,11 +738,10 @@ const (
 	Recurring ScanTriggerType = original.Recurring
 )
 
-type ScanningFunctionality = original.ScanningFunctionality
+type ScanningMode = original.ScanningMode
 
 const (
-	NotScannerDevice ScanningFunctionality = original.NotScannerDevice
-	ScannerDevice    ScanningFunctionality = original.ScannerDevice
+	Default ScanningMode = original.Default
 )
 
 type Script = original.Script
@@ -753,19 +752,34 @@ const (
 	ScriptNone    Script = original.ScriptNone
 )
 
-type SensorStatus = original.SensorStatus
+type SettingName2 = original.SettingName2
 
 const (
-	Disconnected SensorStatus = original.Disconnected
-	Ok           SensorStatus = original.Ok
-	Unavailable  SensorStatus = original.Unavailable
+	SettingName2MCAS                           SettingName2 = original.SettingName2MCAS
+	SettingName2Sentinel                       SettingName2 = original.SettingName2Sentinel
+	SettingName2WDATP                          SettingName2 = original.SettingName2WDATP
+	SettingName2WDATPEXCLUDELINUXPUBLICPREVIEW SettingName2 = original.SettingName2WDATPEXCLUDELINUXPUBLICPREVIEW
+	SettingName2WDATPUNIFIEDSOLUTION           SettingName2 = original.SettingName2WDATPUNIFIEDSOLUTION
 )
 
-type SensorType = original.SensorType
+type SettingName4 = original.SettingName4
 
 const (
-	SensorTypeEnterprise SensorType = original.SensorTypeEnterprise
-	SensorTypeOt         SensorType = original.SensorTypeOt
+	SettingName4MCAS                           SettingName4 = original.SettingName4MCAS
+	SettingName4Sentinel                       SettingName4 = original.SettingName4Sentinel
+	SettingName4WDATP                          SettingName4 = original.SettingName4WDATP
+	SettingName4WDATPEXCLUDELINUXPUBLICPREVIEW SettingName4 = original.SettingName4WDATPEXCLUDELINUXPUBLICPREVIEW
+	SettingName4WDATPUNIFIEDSOLUTION           SettingName4 = original.SettingName4WDATPUNIFIEDSOLUTION
+)
+
+type SettingName5 = original.SettingName5
+
+const (
+	SettingName5MCAS                           SettingName5 = original.SettingName5MCAS
+	SettingName5Sentinel                       SettingName5 = original.SettingName5Sentinel
+	SettingName5WDATP                          SettingName5 = original.SettingName5WDATP
+	SettingName5WDATPEXCLUDELINUXPUBLICPREVIEW SettingName5 = original.SettingName5WDATPEXCLUDELINUXPUBLICPREVIEW
+	SettingName5WDATPUNIFIEDSOLUTION           SettingName5 = original.SettingName5WDATPUNIFIEDSOLUTION
 )
 
 type Severity = original.Severity
@@ -774,6 +788,14 @@ const (
 	SeverityHigh   Severity = original.SeverityHigh
 	SeverityLow    Severity = original.SeverityLow
 	SeverityMedium Severity = original.SeverityMedium
+)
+
+type SeverityEnum = original.SeverityEnum
+
+const (
+	SeverityEnumHigh   SeverityEnum = original.SeverityEnumHigh
+	SeverityEnumLow    SeverityEnum = original.SeverityEnumLow
+	SeverityEnumMedium SeverityEnum = original.SeverityEnumMedium
 )
 
 type SolutionStatus = original.SolutionStatus
@@ -811,6 +833,20 @@ const (
 	StateUnsupported State = original.StateUnsupported
 )
 
+type StateForAlertNotifications = original.StateForAlertNotifications
+
+const (
+	StateForAlertNotificationsOff StateForAlertNotifications = original.StateForAlertNotificationsOff
+	StateForAlertNotificationsOn  StateForAlertNotifications = original.StateForAlertNotificationsOn
+)
+
+type StateForNotificationsByRole = original.StateForNotificationsByRole
+
+const (
+	StateForNotificationsByRoleOff StateForNotificationsByRole = original.StateForNotificationsByRoleOff
+	StateForNotificationsByRoleOn  StateForNotificationsByRole = original.StateForNotificationsByRoleOn
+)
+
 type Status = original.Status
 
 const (
@@ -834,6 +870,158 @@ const (
 	SubAssessmentStatusCodeUnhealthy     SubAssessmentStatusCode = original.SubAssessmentStatusCodeUnhealthy
 )
 
+type SubPlan = original.SubPlan
+
+const (
+	P1 SubPlan = original.P1
+	P2 SubPlan = original.P2
+)
+
+type SupportedCloudEnum = original.SupportedCloudEnum
+
+const (
+	SupportedCloudEnumAWS SupportedCloudEnum = original.SupportedCloudEnumAWS
+	SupportedCloudEnumGCP SupportedCloudEnum = original.SupportedCloudEnumGCP
+)
+
+type Tactics = original.Tactics
+
+const (
+	Collection          Tactics = original.Collection
+	CommandandControl   Tactics = original.CommandandControl
+	CredentialAccess    Tactics = original.CredentialAccess
+	DefenseEvasion      Tactics = original.DefenseEvasion
+	Discovery           Tactics = original.Discovery
+	Execution           Tactics = original.Execution
+	Exfiltration        Tactics = original.Exfiltration
+	Impact              Tactics = original.Impact
+	InitialAccess       Tactics = original.InitialAccess
+	LateralMovement     Tactics = original.LateralMovement
+	Persistence         Tactics = original.Persistence
+	PrivilegeEscalation Tactics = original.PrivilegeEscalation
+	Reconnaissance      Tactics = original.Reconnaissance
+	ResourceDevelopment Tactics = original.ResourceDevelopment
+)
+
+type TaskUpdateActionType = original.TaskUpdateActionType
+
+const (
+	Activate TaskUpdateActionType = original.Activate
+	Close    TaskUpdateActionType = original.Close
+	Dismiss  TaskUpdateActionType = original.Dismiss
+	Resolve  TaskUpdateActionType = original.Resolve
+	Start    TaskUpdateActionType = original.Start
+)
+
+type Techniques = original.Techniques
+
+const (
+	AbuseElevationControlMechanism          Techniques = original.AbuseElevationControlMechanism
+	AccessTokenManipulation                 Techniques = original.AccessTokenManipulation
+	AccountDiscovery                        Techniques = original.AccountDiscovery
+	AccountManipulation                     Techniques = original.AccountManipulation
+	ActiveScanning                          Techniques = original.ActiveScanning
+	ApplicationLayerProtocol                Techniques = original.ApplicationLayerProtocol
+	AudioCapture                            Techniques = original.AudioCapture
+	BootorLogonAutostartExecution           Techniques = original.BootorLogonAutostartExecution
+	BootorLogonInitializationScripts        Techniques = original.BootorLogonInitializationScripts
+	BruteForce                              Techniques = original.BruteForce
+	CloudInfrastructureDiscovery            Techniques = original.CloudInfrastructureDiscovery
+	CloudServiceDashboard                   Techniques = original.CloudServiceDashboard
+	CloudServiceDiscovery                   Techniques = original.CloudServiceDiscovery
+	CommandandScriptingInterpreter          Techniques = original.CommandandScriptingInterpreter
+	CompromiseClientSoftwareBinary          Techniques = original.CompromiseClientSoftwareBinary
+	CompromiseInfrastructure                Techniques = original.CompromiseInfrastructure
+	ContainerandResourceDiscovery           Techniques = original.ContainerandResourceDiscovery
+	CreateAccount                           Techniques = original.CreateAccount
+	CreateorModifySystemProcess             Techniques = original.CreateorModifySystemProcess
+	CredentialsfromPasswordStores           Techniques = original.CredentialsfromPasswordStores
+	DataDestruction                         Techniques = original.DataDestruction
+	DataEncryptedforImpact                  Techniques = original.DataEncryptedforImpact
+	DatafromCloudStorageObject              Techniques = original.DatafromCloudStorageObject
+	DatafromConfigurationRepository         Techniques = original.DatafromConfigurationRepository
+	DatafromInformationRepositories         Techniques = original.DatafromInformationRepositories
+	DatafromLocalSystem                     Techniques = original.DatafromLocalSystem
+	DataManipulation                        Techniques = original.DataManipulation
+	DataStaged                              Techniques = original.DataStaged
+	Defacement                              Techniques = original.Defacement
+	DeobfuscateDecodeFilesorInformation     Techniques = original.DeobfuscateDecodeFilesorInformation
+	DiskWipe                                Techniques = original.DiskWipe
+	DomainTrustDiscovery                    Techniques = original.DomainTrustDiscovery
+	DriveByCompromise                       Techniques = original.DriveByCompromise
+	DynamicResolution                       Techniques = original.DynamicResolution
+	EndpointDenialofService                 Techniques = original.EndpointDenialofService
+	EventTriggeredExecution                 Techniques = original.EventTriggeredExecution
+	ExfiltrationOverAlternativeProtocol     Techniques = original.ExfiltrationOverAlternativeProtocol
+	ExploitationforClientExecution          Techniques = original.ExploitationforClientExecution
+	ExploitationforCredentialAccess         Techniques = original.ExploitationforCredentialAccess
+	ExploitationforDefenseEvasion           Techniques = original.ExploitationforDefenseEvasion
+	ExploitationforPrivilegeEscalation      Techniques = original.ExploitationforPrivilegeEscalation
+	ExploitationofRemoteServices            Techniques = original.ExploitationofRemoteServices
+	ExploitPublicFacingApplication          Techniques = original.ExploitPublicFacingApplication
+	ExternalRemoteServices                  Techniques = original.ExternalRemoteServices
+	FallbackChannels                        Techniques = original.FallbackChannels
+	FileandDirectoryDiscovery               Techniques = original.FileandDirectoryDiscovery
+	FileandDirectoryPermissionsModification Techniques = original.FileandDirectoryPermissionsModification
+	GatherVictimNetworkInformation          Techniques = original.GatherVictimNetworkInformation
+	HideArtifacts                           Techniques = original.HideArtifacts
+	HijackExecutionFlow                     Techniques = original.HijackExecutionFlow
+	ImpairDefenses                          Techniques = original.ImpairDefenses
+	ImplantContainerImage                   Techniques = original.ImplantContainerImage
+	IndicatorRemovalonHost                  Techniques = original.IndicatorRemovalonHost
+	IndirectCommandExecution                Techniques = original.IndirectCommandExecution
+	IngressToolTransfer                     Techniques = original.IngressToolTransfer
+	InputCapture                            Techniques = original.InputCapture
+	InterProcessCommunication               Techniques = original.InterProcessCommunication
+	LateralToolTransfer                     Techniques = original.LateralToolTransfer
+	ManInTheMiddle                          Techniques = original.ManInTheMiddle
+	Masquerading                            Techniques = original.Masquerading
+	ModifyAuthenticationProcess             Techniques = original.ModifyAuthenticationProcess
+	ModifyRegistry                          Techniques = original.ModifyRegistry
+	NetworkDenialofService                  Techniques = original.NetworkDenialofService
+	NetworkServiceScanning                  Techniques = original.NetworkServiceScanning
+	NetworkSniffing                         Techniques = original.NetworkSniffing
+	NonApplicationLayerProtocol             Techniques = original.NonApplicationLayerProtocol
+	NonStandardPort                         Techniques = original.NonStandardPort
+	ObfuscatedFilesorInformation            Techniques = original.ObfuscatedFilesorInformation
+	ObtainCapabilities                      Techniques = original.ObtainCapabilities
+	OfficeApplicationStartup                Techniques = original.OfficeApplicationStartup
+	OSCredentialDumping                     Techniques = original.OSCredentialDumping
+	PermissionGroupsDiscovery               Techniques = original.PermissionGroupsDiscovery
+	Phishing                                Techniques = original.Phishing
+	PreOSBoot                               Techniques = original.PreOSBoot
+	ProcessDiscovery                        Techniques = original.ProcessDiscovery
+	ProcessInjection                        Techniques = original.ProcessInjection
+	ProtocolTunneling                       Techniques = original.ProtocolTunneling
+	Proxy                                   Techniques = original.Proxy
+	QueryRegistry                           Techniques = original.QueryRegistry
+	RemoteAccessSoftware                    Techniques = original.RemoteAccessSoftware
+	RemoteServices                          Techniques = original.RemoteServices
+	RemoteServiceSessionHijacking           Techniques = original.RemoteServiceSessionHijacking
+	RemoteSystemDiscovery                   Techniques = original.RemoteSystemDiscovery
+	ResourceHijacking                       Techniques = original.ResourceHijacking
+	ScheduledTaskJob                        Techniques = original.ScheduledTaskJob
+	ScreenCapture                           Techniques = original.ScreenCapture
+	SearchVictimOwnedWebsites               Techniques = original.SearchVictimOwnedWebsites
+	ServerSoftwareComponent                 Techniques = original.ServerSoftwareComponent
+	ServiceStop                             Techniques = original.ServiceStop
+	SignedBinaryProxyExecution              Techniques = original.SignedBinaryProxyExecution
+	SoftwareDeploymentTools                 Techniques = original.SoftwareDeploymentTools
+	SQLStoredProcedures                     Techniques = original.SQLStoredProcedures
+	StealorForgeKerberosTickets             Techniques = original.StealorForgeKerberosTickets
+	SubvertTrustControls                    Techniques = original.SubvertTrustControls
+	SupplyChainCompromise                   Techniques = original.SupplyChainCompromise
+	SystemInformationDiscovery              Techniques = original.SystemInformationDiscovery
+	TaintSharedContent                      Techniques = original.TaintSharedContent
+	TrafficSignaling                        Techniques = original.TrafficSignaling
+	TransferDatatoCloudAccount              Techniques = original.TransferDatatoCloudAccount
+	TrustedRelationship                     Techniques = original.TrustedRelationship
+	UnsecuredCredentials                    Techniques = original.UnsecuredCredentials
+	UserExecution                           Techniques = original.UserExecution
+	ValidAccounts                           Techniques = original.ValidAccounts
+	WindowsManagementInstrumentation        Techniques = original.WindowsManagementInstrumentation
+)
+
 type Threats = original.Threats
 
 const (
@@ -847,15 +1035,6 @@ const (
 	ThreatResistance     Threats = original.ThreatResistance
 )
 
-type TiStatus = original.TiStatus
-
-const (
-	TiStatusFailed          TiStatus = original.TiStatusFailed
-	TiStatusInProgress      TiStatus = original.TiStatusInProgress
-	TiStatusOk              TiStatus = original.TiStatusOk
-	TiStatusUpdateAvailable TiStatus = original.TiStatusUpdateAvailable
-)
-
 type TransportProtocol = original.TransportProtocol
 
 const (
@@ -866,12 +1045,19 @@ const (
 type Type = original.Type
 
 const (
-	BinarySignature          Type = original.BinarySignature
-	File                     Type = original.File
-	FileHash                 Type = original.FileHash
-	ProductSignature         Type = original.ProductSignature
-	PublisherSignature       Type = original.PublisherSignature
-	VersionAndAboveSignature Type = original.VersionAndAboveSignature
+	Qualys Type = original.Qualys
+	TVM    Type = original.TVM
+)
+
+type Type1 = original.Type1
+
+const (
+	BinarySignature          Type1 = original.BinarySignature
+	File                     Type1 = original.File
+	FileHash                 Type1 = original.FileHash
+	ProductSignature         Type1 = original.ProductSignature
+	PublisherSignature       Type1 = original.PublisherSignature
+	VersionAndAboveSignature Type1 = original.VersionAndAboveSignature
 )
 
 type TypeBasicResourceIdentifier = original.TypeBasicResourceIdentifier
@@ -904,14 +1090,6 @@ const (
 	ValueTypeString ValueType = original.ValueTypeString
 )
 
-type VersionKind = original.VersionKind
-
-const (
-	Latest   VersionKind = original.Latest
-	Preview  VersionKind = original.Preview
-	Previous VersionKind = original.Previous
-)
-
 type AadConnectivityState1 = original.AadConnectivityState1
 type AadExternalSecuritySolution = original.AadExternalSecuritySolution
 type AadSolutionProperties = original.AadSolutionProperties
@@ -940,6 +1118,7 @@ type AlertList = original.AlertList
 type AlertListIterator = original.AlertListIterator
 type AlertListPage = original.AlertListPage
 type AlertProperties = original.AlertProperties
+type AlertPropertiesSupportingEvidence = original.AlertPropertiesSupportingEvidence
 type AlertSimulatorBundlesRequestProperties = original.AlertSimulatorBundlesRequestProperties
 type AlertSimulatorRequestBody = original.AlertSimulatorRequestBody
 type AlertSimulatorRequestProperties = original.AlertSimulatorRequestProperties
@@ -963,6 +1142,14 @@ type AllowlistCustomAlertRule = original.AllowlistCustomAlertRule
 type AmqpC2DMessagesNotInAllowedRange = original.AmqpC2DMessagesNotInAllowedRange
 type AmqpC2DRejectedMessagesNotInAllowedRange = original.AmqpC2DRejectedMessagesNotInAllowedRange
 type AmqpD2CMessagesNotInAllowedRange = original.AmqpD2CMessagesNotInAllowedRange
+type Application = original.Application
+type ApplicationClient = original.ApplicationClient
+type ApplicationCondition = original.ApplicationCondition
+type ApplicationProperties = original.ApplicationProperties
+type ApplicationsClient = original.ApplicationsClient
+type ApplicationsList = original.ApplicationsList
+type ApplicationsListIterator = original.ApplicationsListIterator
+type ApplicationsListPage = original.ApplicationsListPage
 type AscLocation = original.AscLocation
 type AscLocationList = original.AscLocationList
 type AscLocationListIterator = original.AscLocationListIterator
@@ -973,14 +1160,21 @@ type AssessmentList = original.AssessmentList
 type AssessmentListIterator = original.AssessmentListIterator
 type AssessmentListPage = original.AssessmentListPage
 type AssessmentMetadata = original.AssessmentMetadata
-type AssessmentMetadataList = original.AssessmentMetadataList
-type AssessmentMetadataListIterator = original.AssessmentMetadataListIterator
-type AssessmentMetadataListPage = original.AssessmentMetadataListPage
 type AssessmentMetadataPartnerData = original.AssessmentMetadataPartnerData
 type AssessmentMetadataProperties = original.AssessmentMetadataProperties
+type AssessmentMetadataPropertiesResponse = original.AssessmentMetadataPropertiesResponse
+type AssessmentMetadataPropertiesResponsePublishDates = original.AssessmentMetadataPropertiesResponsePublishDates
+type AssessmentMetadataResponse = original.AssessmentMetadataResponse
+type AssessmentMetadataResponseList = original.AssessmentMetadataResponseList
+type AssessmentMetadataResponseListIterator = original.AssessmentMetadataResponseListIterator
+type AssessmentMetadataResponseListPage = original.AssessmentMetadataResponseListPage
 type AssessmentPartnerData = original.AssessmentPartnerData
 type AssessmentProperties = original.AssessmentProperties
+type AssessmentPropertiesBase = original.AssessmentPropertiesBase
+type AssessmentPropertiesResponse = original.AssessmentPropertiesResponse
+type AssessmentResponse = original.AssessmentResponse
 type AssessmentStatus = original.AssessmentStatus
+type AssessmentStatusResponse = original.AssessmentStatusResponse
 type AssessmentsClient = original.AssessmentsClient
 type AssessmentsMetadataClient = original.AssessmentsMetadataClient
 type AtaExternalSecuritySolution = original.AtaExternalSecuritySolution
@@ -1009,6 +1203,11 @@ type AutomationValidationStatus = original.AutomationValidationStatus
 type AutomationsClient = original.AutomationsClient
 type AwAssumeRoleAuthenticationDetailsProperties = original.AwAssumeRoleAuthenticationDetailsProperties
 type AwsCredsAuthenticationDetailsProperties = original.AwsCredsAuthenticationDetailsProperties
+type AwsEnvironmentData = original.AwsEnvironmentData
+type AwsOrganizationalData = original.AwsOrganizationalData
+type AwsOrganizationalDataMaster = original.AwsOrganizationalDataMaster
+type AwsOrganizationalDataMember = original.AwsOrganizationalDataMember
+type AzureDevOpsScopeEnvironmentData = original.AzureDevOpsScopeEnvironmentData
 type AzureResourceDetails = original.AzureResourceDetails
 type AzureResourceIdentifier = original.AzureResourceIdentifier
 type AzureResourceLink = original.AzureResourceLink
@@ -1021,8 +1220,12 @@ type BasicAlertSimulatorRequestProperties = original.BasicAlertSimulatorRequestP
 type BasicAllowlistCustomAlertRule = original.BasicAllowlistCustomAlertRule
 type BasicAuthenticationDetailsProperties = original.BasicAuthenticationDetailsProperties
 type BasicAutomationAction = original.BasicAutomationAction
+type BasicAwsOrganizationalData = original.BasicAwsOrganizationalData
+type BasicCloudOffering = original.BasicCloudOffering
 type BasicCustomAlertRule = original.BasicCustomAlertRule
+type BasicEnvironmentData = original.BasicEnvironmentData
 type BasicExternalSecuritySolution = original.BasicExternalSecuritySolution
+type BasicGcpOrganizationalData = original.BasicGcpOrganizationalData
 type BasicListCustomAlertRule = original.BasicListCustomAlertRule
 type BasicOnPremiseResourceDetails = original.BasicOnPremiseResourceDetails
 type BasicResourceDetails = original.BasicResourceDetails
@@ -1037,6 +1240,7 @@ type CefExternalSecuritySolution = original.CefExternalSecuritySolution
 type CefSolutionProperties = original.CefSolutionProperties
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
+type CloudOffering = original.CloudOffering
 type Compliance = original.Compliance
 type ComplianceList = original.ComplianceList
 type ComplianceListIterator = original.ComplianceListIterator
@@ -1050,43 +1254,110 @@ type ComplianceResultProperties = original.ComplianceResultProperties
 type ComplianceResultsClient = original.ComplianceResultsClient
 type ComplianceSegment = original.ComplianceSegment
 type CompliancesClient = original.CompliancesClient
+type Condition = original.Condition
 type ConnectableResource = original.ConnectableResource
 type ConnectedResource = original.ConnectedResource
 type ConnectedWorkspace = original.ConnectedWorkspace
 type ConnectionFromIPNotAllowed = original.ConnectionFromIPNotAllowed
 type ConnectionStrings = original.ConnectionStrings
 type ConnectionToIPNotAllowed = original.ConnectionToIPNotAllowed
+type Connector = original.Connector
+type ConnectorApplicationClient = original.ConnectorApplicationClient
+type ConnectorApplicationsClient = original.ConnectorApplicationsClient
+type ConnectorGovernanceRuleClient = original.ConnectorGovernanceRuleClient
+type ConnectorGovernanceRulesClient = original.ConnectorGovernanceRulesClient
+type ConnectorGovernanceRulesExecuteStatusClient = original.ConnectorGovernanceRulesExecuteStatusClient
+type ConnectorGovernanceRulesExecuteStatusGetFuture = original.ConnectorGovernanceRulesExecuteStatusGetFuture
+type ConnectorProperties = original.ConnectorProperties
 type ConnectorSetting = original.ConnectorSetting
 type ConnectorSettingList = original.ConnectorSettingList
 type ConnectorSettingListIterator = original.ConnectorSettingListIterator
 type ConnectorSettingListPage = original.ConnectorSettingListPage
 type ConnectorSettingProperties = original.ConnectorSettingProperties
 type ConnectorsClient = original.ConnectorsClient
+type ConnectorsGroupClient = original.ConnectorsGroupClient
+type ConnectorsList = original.ConnectorsList
+type ConnectorsListIterator = original.ConnectorsListIterator
+type ConnectorsListPage = original.ConnectorsListPage
 type Contact = original.Contact
 type ContactList = original.ContactList
 type ContactListIterator = original.ContactListIterator
 type ContactListPage = original.ContactListPage
 type ContactProperties = original.ContactProperties
+type ContactPropertiesAlertNotifications = original.ContactPropertiesAlertNotifications
+type ContactPropertiesNotificationsByRole = original.ContactPropertiesNotificationsByRole
 type ContactsClient = original.ContactsClient
 type ContainerRegistryVulnerabilityProperties = original.ContainerRegistryVulnerabilityProperties
+type CspmMonitorAwsOffering = original.CspmMonitorAwsOffering
+type CspmMonitorAwsOfferingNativeCloudConnection = original.CspmMonitorAwsOfferingNativeCloudConnection
+type CspmMonitorAzureDevOpsOffering = original.CspmMonitorAzureDevOpsOffering
+type CspmMonitorGcpOffering = original.CspmMonitorGcpOffering
+type CspmMonitorGcpOfferingNativeCloudConnection = original.CspmMonitorGcpOfferingNativeCloudConnection
+type CspmMonitorGithubOffering = original.CspmMonitorGithubOffering
 type CustomAlertRule = original.CustomAlertRule
+type CustomAssessmentAutomation = original.CustomAssessmentAutomation
+type CustomAssessmentAutomationProperties = original.CustomAssessmentAutomationProperties
+type CustomAssessmentAutomationRequest = original.CustomAssessmentAutomationRequest
+type CustomAssessmentAutomationRequestProperties = original.CustomAssessmentAutomationRequestProperties
+type CustomAssessmentAutomationsClient = original.CustomAssessmentAutomationsClient
+type CustomAssessmentAutomationsListResult = original.CustomAssessmentAutomationsListResult
+type CustomAssessmentAutomationsListResultIterator = original.CustomAssessmentAutomationsListResultIterator
+type CustomAssessmentAutomationsListResultPage = original.CustomAssessmentAutomationsListResultPage
+type CustomEntityStoreAssignment = original.CustomEntityStoreAssignment
+type CustomEntityStoreAssignmentProperties = original.CustomEntityStoreAssignmentProperties
+type CustomEntityStoreAssignmentRequest = original.CustomEntityStoreAssignmentRequest
+type CustomEntityStoreAssignmentRequestProperties = original.CustomEntityStoreAssignmentRequestProperties
+type CustomEntityStoreAssignmentsClient = original.CustomEntityStoreAssignmentsClient
+type CustomEntityStoreAssignmentsListResult = original.CustomEntityStoreAssignmentsListResult
+type CustomEntityStoreAssignmentsListResultIterator = original.CustomEntityStoreAssignmentsListResultIterator
+type CustomEntityStoreAssignmentsListResultPage = original.CustomEntityStoreAssignmentsListResultPage
 type DataExportSettingProperties = original.DataExportSettingProperties
 type DataExportSettings = original.DataExportSettings
+type DefenderCspmAwsOffering = original.DefenderCspmAwsOffering
+type DefenderCspmAwsOfferingVMScanners = original.DefenderCspmAwsOfferingVMScanners
+type DefenderCspmAwsOfferingVMScannersConfiguration = original.DefenderCspmAwsOfferingVMScannersConfiguration
+type DefenderCspmGcpOffering = original.DefenderCspmGcpOffering
+type DefenderFoDatabasesAwsOffering = original.DefenderFoDatabasesAwsOffering
+type DefenderFoDatabasesAwsOfferingArcAutoProvisioning = original.DefenderFoDatabasesAwsOfferingArcAutoProvisioning
+type DefenderFoDatabasesAwsOfferingRds = original.DefenderFoDatabasesAwsOfferingRds
+type DefenderForContainersAwsOffering = original.DefenderForContainersAwsOffering
+type DefenderForContainersAwsOfferingCloudWatchToKinesis = original.DefenderForContainersAwsOfferingCloudWatchToKinesis
+type DefenderForContainersAwsOfferingContainerVulnerabilityAssessment = original.DefenderForContainersAwsOfferingContainerVulnerabilityAssessment
+type DefenderForContainersAwsOfferingContainerVulnerabilityAssessmentTask = original.DefenderForContainersAwsOfferingContainerVulnerabilityAssessmentTask
+type DefenderForContainersAwsOfferingKinesisToS3 = original.DefenderForContainersAwsOfferingKinesisToS3
+type DefenderForContainersAwsOfferingKubernetesScubaReader = original.DefenderForContainersAwsOfferingKubernetesScubaReader
+type DefenderForContainersAwsOfferingKubernetesService = original.DefenderForContainersAwsOfferingKubernetesService
+type DefenderForContainersGcpOffering = original.DefenderForContainersGcpOffering
+type DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection = original.DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection
+type DefenderForContainersGcpOfferingNativeCloudConnection = original.DefenderForContainersGcpOfferingNativeCloudConnection
+type DefenderForDatabasesGcpOffering = original.DefenderForDatabasesGcpOffering
+type DefenderForDatabasesGcpOfferingArcAutoProvisioning = original.DefenderForDatabasesGcpOfferingArcAutoProvisioning
+type DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning = original.DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning
+type DefenderForDevOpsAzureDevOpsOffering = original.DefenderForDevOpsAzureDevOpsOffering
+type DefenderForDevOpsGithubOffering = original.DefenderForDevOpsGithubOffering
+type DefenderForServersAwsOffering = original.DefenderForServersAwsOffering
+type DefenderForServersAwsOfferingArcAutoProvisioning = original.DefenderForServersAwsOfferingArcAutoProvisioning
+type DefenderForServersAwsOfferingDefenderForServers = original.DefenderForServersAwsOfferingDefenderForServers
+type DefenderForServersAwsOfferingMdeAutoProvisioning = original.DefenderForServersAwsOfferingMdeAutoProvisioning
+type DefenderForServersAwsOfferingSubPlan = original.DefenderForServersAwsOfferingSubPlan
+type DefenderForServersAwsOfferingVMScanners = original.DefenderForServersAwsOfferingVMScanners
+type DefenderForServersAwsOfferingVMScannersConfiguration = original.DefenderForServersAwsOfferingVMScannersConfiguration
+type DefenderForServersAwsOfferingVaAutoProvisioning = original.DefenderForServersAwsOfferingVaAutoProvisioning
+type DefenderForServersAwsOfferingVaAutoProvisioningConfiguration = original.DefenderForServersAwsOfferingVaAutoProvisioningConfiguration
+type DefenderForServersGcpOffering = original.DefenderForServersGcpOffering
+type DefenderForServersGcpOfferingArcAutoProvisioning = original.DefenderForServersGcpOfferingArcAutoProvisioning
+type DefenderForServersGcpOfferingDefenderForServers = original.DefenderForServersGcpOfferingDefenderForServers
+type DefenderForServersGcpOfferingMdeAutoProvisioning = original.DefenderForServersGcpOfferingMdeAutoProvisioning
+type DefenderForServersGcpOfferingSubPlan = original.DefenderForServersGcpOfferingSubPlan
+type DefenderForServersGcpOfferingVaAutoProvisioning = original.DefenderForServersGcpOfferingVaAutoProvisioning
+type DefenderForServersGcpOfferingVaAutoProvisioningConfiguration = original.DefenderForServersGcpOfferingVaAutoProvisioningConfiguration
 type DenylistCustomAlertRule = original.DenylistCustomAlertRule
-type Device = original.Device
-type DeviceClient = original.DeviceClient
-type DeviceList = original.DeviceList
-type DeviceListIterator = original.DeviceListIterator
-type DeviceListPage = original.DeviceListPage
-type DeviceProperties = original.DeviceProperties
 type DeviceSecurityGroup = original.DeviceSecurityGroup
 type DeviceSecurityGroupList = original.DeviceSecurityGroupList
 type DeviceSecurityGroupListIterator = original.DeviceSecurityGroupListIterator
 type DeviceSecurityGroupListPage = original.DeviceSecurityGroupListPage
 type DeviceSecurityGroupProperties = original.DeviceSecurityGroupProperties
 type DeviceSecurityGroupsClient = original.DeviceSecurityGroupsClient
-type DevicesForHubClient = original.DevicesForHubClient
-type DevicesForSubscriptionClient = original.DevicesForSubscriptionClient
 type DirectMethodInvokesNotInAllowedRange = original.DirectMethodInvokesNotInAllowedRange
 type DiscoveredSecuritySolution = original.DiscoveredSecuritySolution
 type DiscoveredSecuritySolutionList = original.DiscoveredSecuritySolutionList
@@ -1096,7 +1367,10 @@ type DiscoveredSecuritySolutionProperties = original.DiscoveredSecuritySolutionP
 type DiscoveredSecuritySolutionsClient = original.DiscoveredSecuritySolutionsClient
 type ETag = original.ETag
 type EffectiveNetworkSecurityGroups = original.EffectiveNetworkSecurityGroups
+type EnvironmentData = original.EnvironmentData
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
+type ExecuteGovernanceRuleParams = original.ExecuteGovernanceRuleParams
+type ExecuteRuleStatus = original.ExecuteRuleStatus
 type ExternalSecuritySolution = original.ExternalSecuritySolution
 type ExternalSecuritySolutionKind1 = original.ExternalSecuritySolutionKind1
 type ExternalSecuritySolutionList = original.ExternalSecuritySolutionList
@@ -1107,13 +1381,38 @@ type ExternalSecuritySolutionProperties = original.ExternalSecuritySolutionPrope
 type ExternalSecuritySolutionsClient = original.ExternalSecuritySolutionsClient
 type FailedLocalLoginsNotInAllowedRange = original.FailedLocalLoginsNotInAllowedRange
 type FileUploadsNotInAllowedRange = original.FileUploadsNotInAllowedRange
-type Firmware = original.Firmware
 type GcpCredentialsDetailsProperties = original.GcpCredentialsDetailsProperties
+type GcpOrganizationalData = original.GcpOrganizationalData
+type GcpOrganizationalDataMember = original.GcpOrganizationalDataMember
+type GcpOrganizationalDataOrganization = original.GcpOrganizationalDataOrganization
+type GcpProjectDetails = original.GcpProjectDetails
+type GcpProjectEnvironmentData = original.GcpProjectEnvironmentData
+type GithubScopeEnvironmentData = original.GithubScopeEnvironmentData
+type GovernanceAssignment = original.GovernanceAssignment
+type GovernanceAssignmentAdditionalData = original.GovernanceAssignmentAdditionalData
+type GovernanceAssignmentProperties = original.GovernanceAssignmentProperties
+type GovernanceAssignmentsClient = original.GovernanceAssignmentsClient
+type GovernanceAssignmentsList = original.GovernanceAssignmentsList
+type GovernanceAssignmentsListIterator = original.GovernanceAssignmentsListIterator
+type GovernanceAssignmentsListPage = original.GovernanceAssignmentsListPage
+type GovernanceEmailNotification = original.GovernanceEmailNotification
+type GovernanceRule = original.GovernanceRule
+type GovernanceRuleClient = original.GovernanceRuleClient
+type GovernanceRuleEmailNotification = original.GovernanceRuleEmailNotification
+type GovernanceRuleList = original.GovernanceRuleList
+type GovernanceRuleListIterator = original.GovernanceRuleListIterator
+type GovernanceRuleListPage = original.GovernanceRuleListPage
+type GovernanceRuleOwnerSource = original.GovernanceRuleOwnerSource
+type GovernanceRuleProperties = original.GovernanceRuleProperties
+type GovernanceRulesClient = original.GovernanceRulesClient
+type GovernanceRulesRuleIDExecuteSingleSecurityConnectorFuture = original.GovernanceRulesRuleIDExecuteSingleSecurityConnectorFuture
+type GovernanceRulesRuleIDExecuteSingleSubscriptionFuture = original.GovernanceRulesRuleIDExecuteSingleSubscriptionFuture
 type HTTPC2DMessagesNotInAllowedRange = original.HTTPC2DMessagesNotInAllowedRange
 type HTTPC2DRejectedMessagesNotInAllowedRange = original.HTTPC2DRejectedMessagesNotInAllowedRange
 type HTTPD2CMessagesNotInAllowedRange = original.HTTPD2CMessagesNotInAllowedRange
 type HybridComputeSettingsProperties = original.HybridComputeSettingsProperties
-type IPAddress = original.IPAddress
+type InformationProtectionAwsOffering = original.InformationProtectionAwsOffering
+type InformationProtectionAwsOfferingInformationProtection = original.InformationProtectionAwsOfferingInformationProtection
 type InformationProtectionKeyword = original.InformationProtectionKeyword
 type InformationProtectionPoliciesClient = original.InformationProtectionPoliciesClient
 type InformationProtectionPolicy = original.InformationProtectionPolicy
@@ -1153,42 +1452,10 @@ type IoTSecuritySolutionsList = original.IoTSecuritySolutionsList
 type IoTSecuritySolutionsListIterator = original.IoTSecuritySolutionsListIterator
 type IoTSecuritySolutionsListPage = original.IoTSecuritySolutionsListPage
 type IoTSeverityMetrics = original.IoTSeverityMetrics
-type IotAlertListModel = original.IotAlertListModel
-type IotAlertListModelIterator = original.IotAlertListModelIterator
-type IotAlertListModelPage = original.IotAlertListModelPage
-type IotAlertModel = original.IotAlertModel
-type IotAlertPropertiesModel = original.IotAlertPropertiesModel
-type IotAlertType = original.IotAlertType
-type IotAlertTypeList = original.IotAlertTypeList
-type IotAlertTypeProperties = original.IotAlertTypeProperties
-type IotAlertTypesClient = original.IotAlertTypesClient
-type IotAlertsClient = original.IotAlertsClient
-type IotDefenderSettingsClient = original.IotDefenderSettingsClient
-type IotDefenderSettingsList = original.IotDefenderSettingsList
-type IotDefenderSettingsModel = original.IotDefenderSettingsModel
-type IotDefenderSettingsProperties = original.IotDefenderSettingsProperties
-type IotRecommendationListModel = original.IotRecommendationListModel
-type IotRecommendationListModelIterator = original.IotRecommendationListModelIterator
-type IotRecommendationListModelPage = original.IotRecommendationListModelPage
-type IotRecommendationModel = original.IotRecommendationModel
-type IotRecommendationPropertiesModel = original.IotRecommendationPropertiesModel
-type IotRecommendationType = original.IotRecommendationType
-type IotRecommendationTypeList = original.IotRecommendationTypeList
-type IotRecommendationTypeProperties = original.IotRecommendationTypeProperties
-type IotRecommendationTypesClient = original.IotRecommendationTypesClient
-type IotRecommendationsClient = original.IotRecommendationsClient
 type IotSecuritySolutionAnalyticsClient = original.IotSecuritySolutionAnalyticsClient
 type IotSecuritySolutionClient = original.IotSecuritySolutionClient
 type IotSecuritySolutionsAnalyticsAggregatedAlertClient = original.IotSecuritySolutionsAnalyticsAggregatedAlertClient
 type IotSecuritySolutionsAnalyticsRecommendationClient = original.IotSecuritySolutionsAnalyticsRecommendationClient
-type IotSensorProperties = original.IotSensorProperties
-type IotSensorsClient = original.IotSensorsClient
-type IotSensorsList = original.IotSensorsList
-type IotSensorsModel = original.IotSensorsModel
-type IotSiteProperties = original.IotSiteProperties
-type IotSitesClient = original.IotSitesClient
-type IotSitesList = original.IotSitesList
-type IotSitesModel = original.IotSitesModel
 type JitNetworkAccessPoliciesClient = original.JitNetworkAccessPoliciesClient
 type JitNetworkAccessPoliciesList = original.JitNetworkAccessPoliciesList
 type JitNetworkAccessPoliciesListIterator = original.JitNetworkAccessPoliciesListIterator
@@ -1209,14 +1476,13 @@ type LocalUserNotAllowed = original.LocalUserNotAllowed
 type Location = original.Location
 type LocationsClient = original.LocationsClient
 type LogAnalyticsIdentifier = original.LogAnalyticsIdentifier
-type MacAddress = original.MacAddress
+type MdeOnboardingData = original.MdeOnboardingData
+type MdeOnboardingDataList = original.MdeOnboardingDataList
+type MdeOnboardingDataProperties = original.MdeOnboardingDataProperties
+type MdeOnboardingsClient = original.MdeOnboardingsClient
 type MqttC2DMessagesNotInAllowedRange = original.MqttC2DMessagesNotInAllowedRange
 type MqttC2DRejectedMessagesNotInAllowedRange = original.MqttC2DRejectedMessagesNotInAllowedRange
 type MqttD2CMessagesNotInAllowedRange = original.MqttD2CMessagesNotInAllowedRange
-type NetworkInterface = original.NetworkInterface
-type OnPremiseIotSensor = original.OnPremiseIotSensor
-type OnPremiseIotSensorsClient = original.OnPremiseIotSensorsClient
-type OnPremiseIotSensorsList = original.OnPremiseIotSensorsList
 type OnPremiseResourceDetails = original.OnPremiseResourceDetails
 type OnPremiseSQLResourceDetails = original.OnPremiseSQLResourceDetails
 type Operation = original.Operation
@@ -1225,14 +1491,6 @@ type OperationList = original.OperationList
 type OperationListIterator = original.OperationListIterator
 type OperationListPage = original.OperationListPage
 type OperationsClient = original.OperationsClient
-type PackageDownloadInfo = original.PackageDownloadInfo
-type PackageDownloads = original.PackageDownloads
-type PackageDownloadsCentralManager = original.PackageDownloadsCentralManager
-type PackageDownloadsCentralManagerFull = original.PackageDownloadsCentralManagerFull
-type PackageDownloadsCentralManagerFullOvf = original.PackageDownloadsCentralManagerFullOvf
-type PackageDownloadsSensor = original.PackageDownloadsSensor
-type PackageDownloadsSensorFull = original.PackageDownloadsSensorFull
-type PackageDownloadsSensorFullOvf = original.PackageDownloadsSensorFullOvf
 type PathRecommendation = original.PathRecommendation
 type Pricing = original.Pricing
 type PricingList = original.PricingList
@@ -1240,12 +1498,10 @@ type PricingProperties = original.PricingProperties
 type PricingsClient = original.PricingsClient
 type ProcessNotAllowed = original.ProcessNotAllowed
 type ProtectionMode = original.ProtectionMode
-type Protocol1 = original.Protocol1
 type ProxyServerProperties = original.ProxyServerProperties
 type PublisherInfo = original.PublisherInfo
 type QueryCheck = original.QueryCheck
 type QueuePurgesNotInAllowedRange = original.QueuePurgesNotInAllowedRange
-type ReadCloser = original.ReadCloser
 type RecommendationConfigurationProperties = original.RecommendationConfigurationProperties
 type RegulatoryComplianceAssessment = original.RegulatoryComplianceAssessment
 type RegulatoryComplianceAssessmentList = original.RegulatoryComplianceAssessmentList
@@ -1266,7 +1522,7 @@ type RegulatoryComplianceStandardListPage = original.RegulatoryComplianceStandar
 type RegulatoryComplianceStandardProperties = original.RegulatoryComplianceStandardProperties
 type RegulatoryComplianceStandardsClient = original.RegulatoryComplianceStandardsClient
 type Remediation = original.Remediation
-type ResetPasswordInput = original.ResetPasswordInput
+type RemediationEta = original.RemediationEta
 type Resource = original.Resource
 type ResourceDetails = original.ResourceDetails
 type ResourceIdentifier = original.ResourceIdentifier
@@ -1309,7 +1565,6 @@ type SecureScoresList = original.SecureScoresList
 type SecureScoresListIterator = original.SecureScoresListIterator
 type SecureScoresListPage = original.SecureScoresListPage
 type SensitivityLabel = original.SensitivityLabel
-type Sensor = original.Sensor
 type ServerVulnerabilityAssessment = original.ServerVulnerabilityAssessment
 type ServerVulnerabilityAssessmentClient = original.ServerVulnerabilityAssessmentClient
 type ServerVulnerabilityAssessmentDeleteFuture = original.ServerVulnerabilityAssessmentDeleteFuture
@@ -1323,7 +1578,6 @@ type SettingsClient = original.SettingsClient
 type SettingsList = original.SettingsList
 type SettingsListIterator = original.SettingsListIterator
 type SettingsListPage = original.SettingsListPage
-type Site = original.Site
 type Software = original.Software
 type SoftwareInventoriesClient = original.SoftwareInventoriesClient
 type SoftwareProperties = original.SoftwareProperties
@@ -1347,6 +1601,8 @@ type SubAssessmentListPage = original.SubAssessmentListPage
 type SubAssessmentProperties = original.SubAssessmentProperties
 type SubAssessmentStatus = original.SubAssessmentStatus
 type SubAssessmentsClient = original.SubAssessmentsClient
+type SubscriptionGovernanceRulesExecuteStatusClient = original.SubscriptionGovernanceRulesExecuteStatusClient
+type SubscriptionGovernanceRulesExecuteStatusGetFuture = original.SubscriptionGovernanceRulesExecuteStatusGetFuture
 type SuppressionAlertsScope = original.SuppressionAlertsScope
 type SystemData = original.SystemData
 type Tags = original.Tags
@@ -1374,7 +1630,6 @@ type TwinUpdatesNotInAllowedRange = original.TwinUpdatesNotInAllowedRange
 type UnauthorizedOperationsNotInAllowedRange = original.UnauthorizedOperationsNotInAllowedRange
 type UpdateIoTSecuritySolutionProperties = original.UpdateIoTSecuritySolutionProperties
 type UpdateIotSecuritySolutionData = original.UpdateIotSecuritySolutionData
-type UpgradePackageDownloadInfo = original.UpgradePackageDownloadInfo
 type UserDefinedResourcesProperties = original.UserDefinedResourcesProperties
 type UserRecommendation = original.UserRecommendation
 type VMRecommendation = original.VMRecommendation
@@ -1387,20 +1642,20 @@ type WorkspaceSettingListPage = original.WorkspaceSettingListPage
 type WorkspaceSettingProperties = original.WorkspaceSettingProperties
 type WorkspaceSettingsClient = original.WorkspaceSettingsClient
 
-func New(subscriptionID string, ascLocation string) BaseClient {
-	return original.New(subscriptionID, ascLocation)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewAdaptiveApplicationControlsClient(subscriptionID string, ascLocation string) AdaptiveApplicationControlsClient {
-	return original.NewAdaptiveApplicationControlsClient(subscriptionID, ascLocation)
+func NewAdaptiveApplicationControlsClient(subscriptionID string) AdaptiveApplicationControlsClient {
+	return original.NewAdaptiveApplicationControlsClient(subscriptionID)
 }
-func NewAdaptiveApplicationControlsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AdaptiveApplicationControlsClient {
-	return original.NewAdaptiveApplicationControlsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewAdaptiveApplicationControlsClientWithBaseURI(baseURI string, subscriptionID string) AdaptiveApplicationControlsClient {
+	return original.NewAdaptiveApplicationControlsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewAdaptiveNetworkHardeningsClient(subscriptionID string, ascLocation string) AdaptiveNetworkHardeningsClient {
-	return original.NewAdaptiveNetworkHardeningsClient(subscriptionID, ascLocation)
+func NewAdaptiveNetworkHardeningsClient(subscriptionID string) AdaptiveNetworkHardeningsClient {
+	return original.NewAdaptiveNetworkHardeningsClient(subscriptionID)
 }
-func NewAdaptiveNetworkHardeningsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AdaptiveNetworkHardeningsClient {
-	return original.NewAdaptiveNetworkHardeningsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewAdaptiveNetworkHardeningsClientWithBaseURI(baseURI string, subscriptionID string) AdaptiveNetworkHardeningsClient {
+	return original.NewAdaptiveNetworkHardeningsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAdaptiveNetworkHardeningsListIterator(page AdaptiveNetworkHardeningsListPage) AdaptiveNetworkHardeningsListIterator {
 	return original.NewAdaptiveNetworkHardeningsListIterator(page)
@@ -1408,11 +1663,11 @@ func NewAdaptiveNetworkHardeningsListIterator(page AdaptiveNetworkHardeningsList
 func NewAdaptiveNetworkHardeningsListPage(cur AdaptiveNetworkHardeningsList, getNextPage func(context.Context, AdaptiveNetworkHardeningsList) (AdaptiveNetworkHardeningsList, error)) AdaptiveNetworkHardeningsListPage {
 	return original.NewAdaptiveNetworkHardeningsListPage(cur, getNextPage)
 }
-func NewAdvancedThreatProtectionClient(subscriptionID string, ascLocation string) AdvancedThreatProtectionClient {
-	return original.NewAdvancedThreatProtectionClient(subscriptionID, ascLocation)
+func NewAdvancedThreatProtectionClient(subscriptionID string) AdvancedThreatProtectionClient {
+	return original.NewAdvancedThreatProtectionClient(subscriptionID)
 }
-func NewAdvancedThreatProtectionClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AdvancedThreatProtectionClient {
-	return original.NewAdvancedThreatProtectionClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewAdvancedThreatProtectionClientWithBaseURI(baseURI string, subscriptionID string) AdvancedThreatProtectionClient {
+	return original.NewAdvancedThreatProtectionClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAlertListIterator(page AlertListPage) AlertListIterator {
 	return original.NewAlertListIterator(page)
@@ -1420,17 +1675,17 @@ func NewAlertListIterator(page AlertListPage) AlertListIterator {
 func NewAlertListPage(cur AlertList, getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
 	return original.NewAlertListPage(cur, getNextPage)
 }
-func NewAlertsClient(subscriptionID string, ascLocation string) AlertsClient {
-	return original.NewAlertsClient(subscriptionID, ascLocation)
+func NewAlertsClient(subscriptionID string) AlertsClient {
+	return original.NewAlertsClient(subscriptionID)
 }
-func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AlertsClient {
-	return original.NewAlertsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsClient {
+	return original.NewAlertsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewAlertsSuppressionRulesClient(subscriptionID string, ascLocation string) AlertsSuppressionRulesClient {
-	return original.NewAlertsSuppressionRulesClient(subscriptionID, ascLocation)
+func NewAlertsSuppressionRulesClient(subscriptionID string) AlertsSuppressionRulesClient {
+	return original.NewAlertsSuppressionRulesClient(subscriptionID)
 }
-func NewAlertsSuppressionRulesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AlertsSuppressionRulesClient {
-	return original.NewAlertsSuppressionRulesClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewAlertsSuppressionRulesClientWithBaseURI(baseURI string, subscriptionID string) AlertsSuppressionRulesClient {
+	return original.NewAlertsSuppressionRulesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAlertsSuppressionRulesListIterator(page AlertsSuppressionRulesListPage) AlertsSuppressionRulesListIterator {
 	return original.NewAlertsSuppressionRulesListIterator(page)
@@ -1438,17 +1693,35 @@ func NewAlertsSuppressionRulesListIterator(page AlertsSuppressionRulesListPage) 
 func NewAlertsSuppressionRulesListPage(cur AlertsSuppressionRulesList, getNextPage func(context.Context, AlertsSuppressionRulesList) (AlertsSuppressionRulesList, error)) AlertsSuppressionRulesListPage {
 	return original.NewAlertsSuppressionRulesListPage(cur, getNextPage)
 }
-func NewAllowedConnectionsClient(subscriptionID string, ascLocation string) AllowedConnectionsClient {
-	return original.NewAllowedConnectionsClient(subscriptionID, ascLocation)
+func NewAllowedConnectionsClient(subscriptionID string) AllowedConnectionsClient {
+	return original.NewAllowedConnectionsClient(subscriptionID)
 }
-func NewAllowedConnectionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AllowedConnectionsClient {
-	return original.NewAllowedConnectionsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewAllowedConnectionsClientWithBaseURI(baseURI string, subscriptionID string) AllowedConnectionsClient {
+	return original.NewAllowedConnectionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAllowedConnectionsListIterator(page AllowedConnectionsListPage) AllowedConnectionsListIterator {
 	return original.NewAllowedConnectionsListIterator(page)
 }
 func NewAllowedConnectionsListPage(cur AllowedConnectionsList, getNextPage func(context.Context, AllowedConnectionsList) (AllowedConnectionsList, error)) AllowedConnectionsListPage {
 	return original.NewAllowedConnectionsListPage(cur, getNextPage)
+}
+func NewApplicationClient(subscriptionID string) ApplicationClient {
+	return original.NewApplicationClient(subscriptionID)
+}
+func NewApplicationClientWithBaseURI(baseURI string, subscriptionID string) ApplicationClient {
+	return original.NewApplicationClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewApplicationsClient(subscriptionID string) ApplicationsClient {
+	return original.NewApplicationsClient(subscriptionID)
+}
+func NewApplicationsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationsClient {
+	return original.NewApplicationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewApplicationsListIterator(page ApplicationsListPage) ApplicationsListIterator {
+	return original.NewApplicationsListIterator(page)
+}
+func NewApplicationsListPage(cur ApplicationsList, getNextPage func(context.Context, ApplicationsList) (ApplicationsList, error)) ApplicationsListPage {
+	return original.NewApplicationsListPage(cur, getNextPage)
 }
 func NewAscLocationListIterator(page AscLocationListPage) AscLocationListIterator {
 	return original.NewAscLocationListIterator(page)
@@ -1462,23 +1735,23 @@ func NewAssessmentListIterator(page AssessmentListPage) AssessmentListIterator {
 func NewAssessmentListPage(cur AssessmentList, getNextPage func(context.Context, AssessmentList) (AssessmentList, error)) AssessmentListPage {
 	return original.NewAssessmentListPage(cur, getNextPage)
 }
-func NewAssessmentMetadataListIterator(page AssessmentMetadataListPage) AssessmentMetadataListIterator {
-	return original.NewAssessmentMetadataListIterator(page)
+func NewAssessmentMetadataResponseListIterator(page AssessmentMetadataResponseListPage) AssessmentMetadataResponseListIterator {
+	return original.NewAssessmentMetadataResponseListIterator(page)
 }
-func NewAssessmentMetadataListPage(cur AssessmentMetadataList, getNextPage func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error)) AssessmentMetadataListPage {
-	return original.NewAssessmentMetadataListPage(cur, getNextPage)
+func NewAssessmentMetadataResponseListPage(cur AssessmentMetadataResponseList, getNextPage func(context.Context, AssessmentMetadataResponseList) (AssessmentMetadataResponseList, error)) AssessmentMetadataResponseListPage {
+	return original.NewAssessmentMetadataResponseListPage(cur, getNextPage)
 }
-func NewAssessmentsClient(subscriptionID string, ascLocation string) AssessmentsClient {
-	return original.NewAssessmentsClient(subscriptionID, ascLocation)
+func NewAssessmentsClient(subscriptionID string) AssessmentsClient {
+	return original.NewAssessmentsClient(subscriptionID)
 }
-func NewAssessmentsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AssessmentsClient {
-	return original.NewAssessmentsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewAssessmentsClientWithBaseURI(baseURI string, subscriptionID string) AssessmentsClient {
+	return original.NewAssessmentsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewAssessmentsMetadataClient(subscriptionID string, ascLocation string) AssessmentsMetadataClient {
-	return original.NewAssessmentsMetadataClient(subscriptionID, ascLocation)
+func NewAssessmentsMetadataClient(subscriptionID string) AssessmentsMetadataClient {
+	return original.NewAssessmentsMetadataClient(subscriptionID)
 }
-func NewAssessmentsMetadataClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AssessmentsMetadataClient {
-	return original.NewAssessmentsMetadataClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewAssessmentsMetadataClientWithBaseURI(baseURI string, subscriptionID string) AssessmentsMetadataClient {
+	return original.NewAssessmentsMetadataClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAutoProvisioningSettingListIterator(page AutoProvisioningSettingListPage) AutoProvisioningSettingListIterator {
 	return original.NewAutoProvisioningSettingListIterator(page)
@@ -1486,11 +1759,11 @@ func NewAutoProvisioningSettingListIterator(page AutoProvisioningSettingListPage
 func NewAutoProvisioningSettingListPage(cur AutoProvisioningSettingList, getNextPage func(context.Context, AutoProvisioningSettingList) (AutoProvisioningSettingList, error)) AutoProvisioningSettingListPage {
 	return original.NewAutoProvisioningSettingListPage(cur, getNextPage)
 }
-func NewAutoProvisioningSettingsClient(subscriptionID string, ascLocation string) AutoProvisioningSettingsClient {
-	return original.NewAutoProvisioningSettingsClient(subscriptionID, ascLocation)
+func NewAutoProvisioningSettingsClient(subscriptionID string) AutoProvisioningSettingsClient {
+	return original.NewAutoProvisioningSettingsClient(subscriptionID)
 }
-func NewAutoProvisioningSettingsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AutoProvisioningSettingsClient {
-	return original.NewAutoProvisioningSettingsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewAutoProvisioningSettingsClientWithBaseURI(baseURI string, subscriptionID string) AutoProvisioningSettingsClient {
+	return original.NewAutoProvisioningSettingsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAutomationListIterator(page AutomationListPage) AutomationListIterator {
 	return original.NewAutomationListIterator(page)
@@ -1498,11 +1771,11 @@ func NewAutomationListIterator(page AutomationListPage) AutomationListIterator {
 func NewAutomationListPage(cur AutomationList, getNextPage func(context.Context, AutomationList) (AutomationList, error)) AutomationListPage {
 	return original.NewAutomationListPage(cur, getNextPage)
 }
-func NewAutomationsClient(subscriptionID string, ascLocation string) AutomationsClient {
-	return original.NewAutomationsClient(subscriptionID, ascLocation)
+func NewAutomationsClient(subscriptionID string) AutomationsClient {
+	return original.NewAutomationsClient(subscriptionID)
 }
-func NewAutomationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AutomationsClient {
-	return original.NewAutomationsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewAutomationsClientWithBaseURI(baseURI string, subscriptionID string) AutomationsClient {
+	return original.NewAutomationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewComplianceListIterator(page ComplianceListPage) ComplianceListIterator {
 	return original.NewComplianceListIterator(page)
@@ -1516,17 +1789,47 @@ func NewComplianceResultListIterator(page ComplianceResultListPage) ComplianceRe
 func NewComplianceResultListPage(cur ComplianceResultList, getNextPage func(context.Context, ComplianceResultList) (ComplianceResultList, error)) ComplianceResultListPage {
 	return original.NewComplianceResultListPage(cur, getNextPage)
 }
-func NewComplianceResultsClient(subscriptionID string, ascLocation string) ComplianceResultsClient {
-	return original.NewComplianceResultsClient(subscriptionID, ascLocation)
+func NewComplianceResultsClient(subscriptionID string) ComplianceResultsClient {
+	return original.NewComplianceResultsClient(subscriptionID)
 }
-func NewComplianceResultsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) ComplianceResultsClient {
-	return original.NewComplianceResultsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewComplianceResultsClientWithBaseURI(baseURI string, subscriptionID string) ComplianceResultsClient {
+	return original.NewComplianceResultsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewCompliancesClient(subscriptionID string, ascLocation string) CompliancesClient {
-	return original.NewCompliancesClient(subscriptionID, ascLocation)
+func NewCompliancesClient(subscriptionID string) CompliancesClient {
+	return original.NewCompliancesClient(subscriptionID)
 }
-func NewCompliancesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) CompliancesClient {
-	return original.NewCompliancesClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewCompliancesClientWithBaseURI(baseURI string, subscriptionID string) CompliancesClient {
+	return original.NewCompliancesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewConnectorApplicationClient(subscriptionID string) ConnectorApplicationClient {
+	return original.NewConnectorApplicationClient(subscriptionID)
+}
+func NewConnectorApplicationClientWithBaseURI(baseURI string, subscriptionID string) ConnectorApplicationClient {
+	return original.NewConnectorApplicationClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewConnectorApplicationsClient(subscriptionID string) ConnectorApplicationsClient {
+	return original.NewConnectorApplicationsClient(subscriptionID)
+}
+func NewConnectorApplicationsClientWithBaseURI(baseURI string, subscriptionID string) ConnectorApplicationsClient {
+	return original.NewConnectorApplicationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewConnectorGovernanceRuleClient(subscriptionID string) ConnectorGovernanceRuleClient {
+	return original.NewConnectorGovernanceRuleClient(subscriptionID)
+}
+func NewConnectorGovernanceRuleClientWithBaseURI(baseURI string, subscriptionID string) ConnectorGovernanceRuleClient {
+	return original.NewConnectorGovernanceRuleClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewConnectorGovernanceRulesClient(subscriptionID string) ConnectorGovernanceRulesClient {
+	return original.NewConnectorGovernanceRulesClient(subscriptionID)
+}
+func NewConnectorGovernanceRulesClientWithBaseURI(baseURI string, subscriptionID string) ConnectorGovernanceRulesClient {
+	return original.NewConnectorGovernanceRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewConnectorGovernanceRulesExecuteStatusClient(subscriptionID string) ConnectorGovernanceRulesExecuteStatusClient {
+	return original.NewConnectorGovernanceRulesExecuteStatusClient(subscriptionID)
+}
+func NewConnectorGovernanceRulesExecuteStatusClientWithBaseURI(baseURI string, subscriptionID string) ConnectorGovernanceRulesExecuteStatusClient {
+	return original.NewConnectorGovernanceRulesExecuteStatusClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewConnectorSettingListIterator(page ConnectorSettingListPage) ConnectorSettingListIterator {
 	return original.NewConnectorSettingListIterator(page)
@@ -1534,11 +1837,23 @@ func NewConnectorSettingListIterator(page ConnectorSettingListPage) ConnectorSet
 func NewConnectorSettingListPage(cur ConnectorSettingList, getNextPage func(context.Context, ConnectorSettingList) (ConnectorSettingList, error)) ConnectorSettingListPage {
 	return original.NewConnectorSettingListPage(cur, getNextPage)
 }
-func NewConnectorsClient(subscriptionID string, ascLocation string) ConnectorsClient {
-	return original.NewConnectorsClient(subscriptionID, ascLocation)
+func NewConnectorsClient(subscriptionID string) ConnectorsClient {
+	return original.NewConnectorsClient(subscriptionID)
 }
-func NewConnectorsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) ConnectorsClient {
-	return original.NewConnectorsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewConnectorsClientWithBaseURI(baseURI string, subscriptionID string) ConnectorsClient {
+	return original.NewConnectorsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewConnectorsGroupClient(subscriptionID string) ConnectorsGroupClient {
+	return original.NewConnectorsGroupClient(subscriptionID)
+}
+func NewConnectorsGroupClientWithBaseURI(baseURI string, subscriptionID string) ConnectorsGroupClient {
+	return original.NewConnectorsGroupClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewConnectorsListIterator(page ConnectorsListPage) ConnectorsListIterator {
+	return original.NewConnectorsListIterator(page)
+}
+func NewConnectorsListPage(cur ConnectorsList, getNextPage func(context.Context, ConnectorsList) (ConnectorsList, error)) ConnectorsListPage {
+	return original.NewConnectorsListPage(cur, getNextPage)
 }
 func NewContactListIterator(page ContactListPage) ContactListIterator {
 	return original.NewContactListIterator(page)
@@ -1546,23 +1861,35 @@ func NewContactListIterator(page ContactListPage) ContactListIterator {
 func NewContactListPage(cur ContactList, getNextPage func(context.Context, ContactList) (ContactList, error)) ContactListPage {
 	return original.NewContactListPage(cur, getNextPage)
 }
-func NewContactsClient(subscriptionID string, ascLocation string) ContactsClient {
-	return original.NewContactsClient(subscriptionID, ascLocation)
+func NewContactsClient(subscriptionID string) ContactsClient {
+	return original.NewContactsClient(subscriptionID)
 }
-func NewContactsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) ContactsClient {
-	return original.NewContactsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewContactsClientWithBaseURI(baseURI string, subscriptionID string) ContactsClient {
+	return original.NewContactsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewDeviceClient(subscriptionID string, ascLocation string) DeviceClient {
-	return original.NewDeviceClient(subscriptionID, ascLocation)
+func NewCustomAssessmentAutomationsClient(subscriptionID string) CustomAssessmentAutomationsClient {
+	return original.NewCustomAssessmentAutomationsClient(subscriptionID)
 }
-func NewDeviceClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) DeviceClient {
-	return original.NewDeviceClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewCustomAssessmentAutomationsClientWithBaseURI(baseURI string, subscriptionID string) CustomAssessmentAutomationsClient {
+	return original.NewCustomAssessmentAutomationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewDeviceListIterator(page DeviceListPage) DeviceListIterator {
-	return original.NewDeviceListIterator(page)
+func NewCustomAssessmentAutomationsListResultIterator(page CustomAssessmentAutomationsListResultPage) CustomAssessmentAutomationsListResultIterator {
+	return original.NewCustomAssessmentAutomationsListResultIterator(page)
 }
-func NewDeviceListPage(cur DeviceList, getNextPage func(context.Context, DeviceList) (DeviceList, error)) DeviceListPage {
-	return original.NewDeviceListPage(cur, getNextPage)
+func NewCustomAssessmentAutomationsListResultPage(cur CustomAssessmentAutomationsListResult, getNextPage func(context.Context, CustomAssessmentAutomationsListResult) (CustomAssessmentAutomationsListResult, error)) CustomAssessmentAutomationsListResultPage {
+	return original.NewCustomAssessmentAutomationsListResultPage(cur, getNextPage)
+}
+func NewCustomEntityStoreAssignmentsClient(subscriptionID string) CustomEntityStoreAssignmentsClient {
+	return original.NewCustomEntityStoreAssignmentsClient(subscriptionID)
+}
+func NewCustomEntityStoreAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) CustomEntityStoreAssignmentsClient {
+	return original.NewCustomEntityStoreAssignmentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCustomEntityStoreAssignmentsListResultIterator(page CustomEntityStoreAssignmentsListResultPage) CustomEntityStoreAssignmentsListResultIterator {
+	return original.NewCustomEntityStoreAssignmentsListResultIterator(page)
+}
+func NewCustomEntityStoreAssignmentsListResultPage(cur CustomEntityStoreAssignmentsListResult, getNextPage func(context.Context, CustomEntityStoreAssignmentsListResult) (CustomEntityStoreAssignmentsListResult, error)) CustomEntityStoreAssignmentsListResultPage {
+	return original.NewCustomEntityStoreAssignmentsListResultPage(cur, getNextPage)
 }
 func NewDeviceSecurityGroupListIterator(page DeviceSecurityGroupListPage) DeviceSecurityGroupListIterator {
 	return original.NewDeviceSecurityGroupListIterator(page)
@@ -1570,23 +1897,11 @@ func NewDeviceSecurityGroupListIterator(page DeviceSecurityGroupListPage) Device
 func NewDeviceSecurityGroupListPage(cur DeviceSecurityGroupList, getNextPage func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)) DeviceSecurityGroupListPage {
 	return original.NewDeviceSecurityGroupListPage(cur, getNextPage)
 }
-func NewDeviceSecurityGroupsClient(subscriptionID string, ascLocation string) DeviceSecurityGroupsClient {
-	return original.NewDeviceSecurityGroupsClient(subscriptionID, ascLocation)
+func NewDeviceSecurityGroupsClient(subscriptionID string) DeviceSecurityGroupsClient {
+	return original.NewDeviceSecurityGroupsClient(subscriptionID)
 }
-func NewDeviceSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) DeviceSecurityGroupsClient {
-	return original.NewDeviceSecurityGroupsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
-func NewDevicesForHubClient(subscriptionID string, ascLocation string) DevicesForHubClient {
-	return original.NewDevicesForHubClient(subscriptionID, ascLocation)
-}
-func NewDevicesForHubClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) DevicesForHubClient {
-	return original.NewDevicesForHubClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
-func NewDevicesForSubscriptionClient(subscriptionID string, ascLocation string) DevicesForSubscriptionClient {
-	return original.NewDevicesForSubscriptionClient(subscriptionID, ascLocation)
-}
-func NewDevicesForSubscriptionClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) DevicesForSubscriptionClient {
-	return original.NewDevicesForSubscriptionClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewDeviceSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) DeviceSecurityGroupsClient {
+	return original.NewDeviceSecurityGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDiscoveredSecuritySolutionListIterator(page DiscoveredSecuritySolutionListPage) DiscoveredSecuritySolutionListIterator {
 	return original.NewDiscoveredSecuritySolutionListIterator(page)
@@ -1594,11 +1909,11 @@ func NewDiscoveredSecuritySolutionListIterator(page DiscoveredSecuritySolutionLi
 func NewDiscoveredSecuritySolutionListPage(cur DiscoveredSecuritySolutionList, getNextPage func(context.Context, DiscoveredSecuritySolutionList) (DiscoveredSecuritySolutionList, error)) DiscoveredSecuritySolutionListPage {
 	return original.NewDiscoveredSecuritySolutionListPage(cur, getNextPage)
 }
-func NewDiscoveredSecuritySolutionsClient(subscriptionID string, ascLocation string) DiscoveredSecuritySolutionsClient {
-	return original.NewDiscoveredSecuritySolutionsClient(subscriptionID, ascLocation)
+func NewDiscoveredSecuritySolutionsClient(subscriptionID string) DiscoveredSecuritySolutionsClient {
+	return original.NewDiscoveredSecuritySolutionsClient(subscriptionID)
 }
-func NewDiscoveredSecuritySolutionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) DiscoveredSecuritySolutionsClient {
-	return original.NewDiscoveredSecuritySolutionsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewDiscoveredSecuritySolutionsClientWithBaseURI(baseURI string, subscriptionID string) DiscoveredSecuritySolutionsClient {
+	return original.NewDiscoveredSecuritySolutionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewExternalSecuritySolutionListIterator(page ExternalSecuritySolutionListPage) ExternalSecuritySolutionListIterator {
 	return original.NewExternalSecuritySolutionListIterator(page)
@@ -1606,17 +1921,47 @@ func NewExternalSecuritySolutionListIterator(page ExternalSecuritySolutionListPa
 func NewExternalSecuritySolutionListPage(cur ExternalSecuritySolutionList, getNextPage func(context.Context, ExternalSecuritySolutionList) (ExternalSecuritySolutionList, error)) ExternalSecuritySolutionListPage {
 	return original.NewExternalSecuritySolutionListPage(cur, getNextPage)
 }
-func NewExternalSecuritySolutionsClient(subscriptionID string, ascLocation string) ExternalSecuritySolutionsClient {
-	return original.NewExternalSecuritySolutionsClient(subscriptionID, ascLocation)
+func NewExternalSecuritySolutionsClient(subscriptionID string) ExternalSecuritySolutionsClient {
+	return original.NewExternalSecuritySolutionsClient(subscriptionID)
 }
-func NewExternalSecuritySolutionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) ExternalSecuritySolutionsClient {
-	return original.NewExternalSecuritySolutionsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewExternalSecuritySolutionsClientWithBaseURI(baseURI string, subscriptionID string) ExternalSecuritySolutionsClient {
+	return original.NewExternalSecuritySolutionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewInformationProtectionPoliciesClient(subscriptionID string, ascLocation string) InformationProtectionPoliciesClient {
-	return original.NewInformationProtectionPoliciesClient(subscriptionID, ascLocation)
+func NewGovernanceAssignmentsClient(subscriptionID string) GovernanceAssignmentsClient {
+	return original.NewGovernanceAssignmentsClient(subscriptionID)
 }
-func NewInformationProtectionPoliciesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) InformationProtectionPoliciesClient {
-	return original.NewInformationProtectionPoliciesClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewGovernanceAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) GovernanceAssignmentsClient {
+	return original.NewGovernanceAssignmentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewGovernanceAssignmentsListIterator(page GovernanceAssignmentsListPage) GovernanceAssignmentsListIterator {
+	return original.NewGovernanceAssignmentsListIterator(page)
+}
+func NewGovernanceAssignmentsListPage(cur GovernanceAssignmentsList, getNextPage func(context.Context, GovernanceAssignmentsList) (GovernanceAssignmentsList, error)) GovernanceAssignmentsListPage {
+	return original.NewGovernanceAssignmentsListPage(cur, getNextPage)
+}
+func NewGovernanceRuleClient(subscriptionID string) GovernanceRuleClient {
+	return original.NewGovernanceRuleClient(subscriptionID)
+}
+func NewGovernanceRuleClientWithBaseURI(baseURI string, subscriptionID string) GovernanceRuleClient {
+	return original.NewGovernanceRuleClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewGovernanceRuleListIterator(page GovernanceRuleListPage) GovernanceRuleListIterator {
+	return original.NewGovernanceRuleListIterator(page)
+}
+func NewGovernanceRuleListPage(cur GovernanceRuleList, getNextPage func(context.Context, GovernanceRuleList) (GovernanceRuleList, error)) GovernanceRuleListPage {
+	return original.NewGovernanceRuleListPage(cur, getNextPage)
+}
+func NewGovernanceRulesClient(subscriptionID string) GovernanceRulesClient {
+	return original.NewGovernanceRulesClient(subscriptionID)
+}
+func NewGovernanceRulesClientWithBaseURI(baseURI string, subscriptionID string) GovernanceRulesClient {
+	return original.NewGovernanceRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewInformationProtectionPoliciesClient(subscriptionID string) InformationProtectionPoliciesClient {
+	return original.NewInformationProtectionPoliciesClient(subscriptionID)
+}
+func NewInformationProtectionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) InformationProtectionPoliciesClient {
+	return original.NewInformationProtectionPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewInformationProtectionPolicyListIterator(page InformationProtectionPolicyListPage) InformationProtectionPolicyListIterator {
 	return original.NewInformationProtectionPolicyListIterator(page)
@@ -1630,11 +1975,11 @@ func NewIngestionSettingListIterator(page IngestionSettingListPage) IngestionSet
 func NewIngestionSettingListPage(cur IngestionSettingList, getNextPage func(context.Context, IngestionSettingList) (IngestionSettingList, error)) IngestionSettingListPage {
 	return original.NewIngestionSettingListPage(cur, getNextPage)
 }
-func NewIngestionSettingsClient(subscriptionID string, ascLocation string) IngestionSettingsClient {
-	return original.NewIngestionSettingsClient(subscriptionID, ascLocation)
+func NewIngestionSettingsClient(subscriptionID string) IngestionSettingsClient {
+	return original.NewIngestionSettingsClient(subscriptionID)
 }
-func NewIngestionSettingsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IngestionSettingsClient {
-	return original.NewIngestionSettingsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewIngestionSettingsClientWithBaseURI(baseURI string, subscriptionID string) IngestionSettingsClient {
+	return original.NewIngestionSettingsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewIoTSecurityAggregatedAlertListIterator(page IoTSecurityAggregatedAlertListPage) IoTSecurityAggregatedAlertListIterator {
 	return original.NewIoTSecurityAggregatedAlertListIterator(page)
@@ -1654,89 +1999,35 @@ func NewIoTSecuritySolutionsListIterator(page IoTSecuritySolutionsListPage) IoTS
 func NewIoTSecuritySolutionsListPage(cur IoTSecuritySolutionsList, getNextPage func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error)) IoTSecuritySolutionsListPage {
 	return original.NewIoTSecuritySolutionsListPage(cur, getNextPage)
 }
-func NewIotAlertListModelIterator(page IotAlertListModelPage) IotAlertListModelIterator {
-	return original.NewIotAlertListModelIterator(page)
+func NewIotSecuritySolutionAnalyticsClient(subscriptionID string) IotSecuritySolutionAnalyticsClient {
+	return original.NewIotSecuritySolutionAnalyticsClient(subscriptionID)
 }
-func NewIotAlertListModelPage(cur IotAlertListModel, getNextPage func(context.Context, IotAlertListModel) (IotAlertListModel, error)) IotAlertListModelPage {
-	return original.NewIotAlertListModelPage(cur, getNextPage)
+func NewIotSecuritySolutionAnalyticsClientWithBaseURI(baseURI string, subscriptionID string) IotSecuritySolutionAnalyticsClient {
+	return original.NewIotSecuritySolutionAnalyticsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewIotAlertTypesClient(subscriptionID string, ascLocation string) IotAlertTypesClient {
-	return original.NewIotAlertTypesClient(subscriptionID, ascLocation)
+func NewIotSecuritySolutionClient(subscriptionID string) IotSecuritySolutionClient {
+	return original.NewIotSecuritySolutionClient(subscriptionID)
 }
-func NewIotAlertTypesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotAlertTypesClient {
-	return original.NewIotAlertTypesClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewIotSecuritySolutionClientWithBaseURI(baseURI string, subscriptionID string) IotSecuritySolutionClient {
+	return original.NewIotSecuritySolutionClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewIotAlertsClient(subscriptionID string, ascLocation string) IotAlertsClient {
-	return original.NewIotAlertsClient(subscriptionID, ascLocation)
+func NewIotSecuritySolutionsAnalyticsAggregatedAlertClient(subscriptionID string) IotSecuritySolutionsAnalyticsAggregatedAlertClient {
+	return original.NewIotSecuritySolutionsAnalyticsAggregatedAlertClient(subscriptionID)
 }
-func NewIotAlertsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotAlertsClient {
-	return original.NewIotAlertsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewIotSecuritySolutionsAnalyticsAggregatedAlertClientWithBaseURI(baseURI string, subscriptionID string) IotSecuritySolutionsAnalyticsAggregatedAlertClient {
+	return original.NewIotSecuritySolutionsAnalyticsAggregatedAlertClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewIotDefenderSettingsClient(subscriptionID string, ascLocation string) IotDefenderSettingsClient {
-	return original.NewIotDefenderSettingsClient(subscriptionID, ascLocation)
+func NewIotSecuritySolutionsAnalyticsRecommendationClient(subscriptionID string) IotSecuritySolutionsAnalyticsRecommendationClient {
+	return original.NewIotSecuritySolutionsAnalyticsRecommendationClient(subscriptionID)
 }
-func NewIotDefenderSettingsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotDefenderSettingsClient {
-	return original.NewIotDefenderSettingsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewIotSecuritySolutionsAnalyticsRecommendationClientWithBaseURI(baseURI string, subscriptionID string) IotSecuritySolutionsAnalyticsRecommendationClient {
+	return original.NewIotSecuritySolutionsAnalyticsRecommendationClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewIotRecommendationListModelIterator(page IotRecommendationListModelPage) IotRecommendationListModelIterator {
-	return original.NewIotRecommendationListModelIterator(page)
+func NewJitNetworkAccessPoliciesClient(subscriptionID string) JitNetworkAccessPoliciesClient {
+	return original.NewJitNetworkAccessPoliciesClient(subscriptionID)
 }
-func NewIotRecommendationListModelPage(cur IotRecommendationListModel, getNextPage func(context.Context, IotRecommendationListModel) (IotRecommendationListModel, error)) IotRecommendationListModelPage {
-	return original.NewIotRecommendationListModelPage(cur, getNextPage)
-}
-func NewIotRecommendationTypesClient(subscriptionID string, ascLocation string) IotRecommendationTypesClient {
-	return original.NewIotRecommendationTypesClient(subscriptionID, ascLocation)
-}
-func NewIotRecommendationTypesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotRecommendationTypesClient {
-	return original.NewIotRecommendationTypesClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
-func NewIotRecommendationsClient(subscriptionID string, ascLocation string) IotRecommendationsClient {
-	return original.NewIotRecommendationsClient(subscriptionID, ascLocation)
-}
-func NewIotRecommendationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotRecommendationsClient {
-	return original.NewIotRecommendationsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
-func NewIotSecuritySolutionAnalyticsClient(subscriptionID string, ascLocation string) IotSecuritySolutionAnalyticsClient {
-	return original.NewIotSecuritySolutionAnalyticsClient(subscriptionID, ascLocation)
-}
-func NewIotSecuritySolutionAnalyticsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotSecuritySolutionAnalyticsClient {
-	return original.NewIotSecuritySolutionAnalyticsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
-func NewIotSecuritySolutionClient(subscriptionID string, ascLocation string) IotSecuritySolutionClient {
-	return original.NewIotSecuritySolutionClient(subscriptionID, ascLocation)
-}
-func NewIotSecuritySolutionClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotSecuritySolutionClient {
-	return original.NewIotSecuritySolutionClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
-func NewIotSecuritySolutionsAnalyticsAggregatedAlertClient(subscriptionID string, ascLocation string) IotSecuritySolutionsAnalyticsAggregatedAlertClient {
-	return original.NewIotSecuritySolutionsAnalyticsAggregatedAlertClient(subscriptionID, ascLocation)
-}
-func NewIotSecuritySolutionsAnalyticsAggregatedAlertClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotSecuritySolutionsAnalyticsAggregatedAlertClient {
-	return original.NewIotSecuritySolutionsAnalyticsAggregatedAlertClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
-func NewIotSecuritySolutionsAnalyticsRecommendationClient(subscriptionID string, ascLocation string) IotSecuritySolutionsAnalyticsRecommendationClient {
-	return original.NewIotSecuritySolutionsAnalyticsRecommendationClient(subscriptionID, ascLocation)
-}
-func NewIotSecuritySolutionsAnalyticsRecommendationClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotSecuritySolutionsAnalyticsRecommendationClient {
-	return original.NewIotSecuritySolutionsAnalyticsRecommendationClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
-func NewIotSensorsClient(subscriptionID string, ascLocation string) IotSensorsClient {
-	return original.NewIotSensorsClient(subscriptionID, ascLocation)
-}
-func NewIotSensorsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotSensorsClient {
-	return original.NewIotSensorsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
-func NewIotSitesClient(subscriptionID string, ascLocation string) IotSitesClient {
-	return original.NewIotSitesClient(subscriptionID, ascLocation)
-}
-func NewIotSitesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotSitesClient {
-	return original.NewIotSitesClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
-func NewJitNetworkAccessPoliciesClient(subscriptionID string, ascLocation string) JitNetworkAccessPoliciesClient {
-	return original.NewJitNetworkAccessPoliciesClient(subscriptionID, ascLocation)
-}
-func NewJitNetworkAccessPoliciesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) JitNetworkAccessPoliciesClient {
-	return original.NewJitNetworkAccessPoliciesClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewJitNetworkAccessPoliciesClientWithBaseURI(baseURI string, subscriptionID string) JitNetworkAccessPoliciesClient {
+	return original.NewJitNetworkAccessPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewJitNetworkAccessPoliciesListIterator(page JitNetworkAccessPoliciesListPage) JitNetworkAccessPoliciesListIterator {
 	return original.NewJitNetworkAccessPoliciesListIterator(page)
@@ -1744,17 +2035,17 @@ func NewJitNetworkAccessPoliciesListIterator(page JitNetworkAccessPoliciesListPa
 func NewJitNetworkAccessPoliciesListPage(cur JitNetworkAccessPoliciesList, getNextPage func(context.Context, JitNetworkAccessPoliciesList) (JitNetworkAccessPoliciesList, error)) JitNetworkAccessPoliciesListPage {
 	return original.NewJitNetworkAccessPoliciesListPage(cur, getNextPage)
 }
-func NewLocationsClient(subscriptionID string, ascLocation string) LocationsClient {
-	return original.NewLocationsClient(subscriptionID, ascLocation)
+func NewLocationsClient(subscriptionID string) LocationsClient {
+	return original.NewLocationsClient(subscriptionID)
 }
-func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) LocationsClient {
-	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
+	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewOnPremiseIotSensorsClient(subscriptionID string, ascLocation string) OnPremiseIotSensorsClient {
-	return original.NewOnPremiseIotSensorsClient(subscriptionID, ascLocation)
+func NewMdeOnboardingsClient(subscriptionID string) MdeOnboardingsClient {
+	return original.NewMdeOnboardingsClient(subscriptionID)
 }
-func NewOnPremiseIotSensorsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) OnPremiseIotSensorsClient {
-	return original.NewOnPremiseIotSensorsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewMdeOnboardingsClientWithBaseURI(baseURI string, subscriptionID string) MdeOnboardingsClient {
+	return original.NewMdeOnboardingsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
@@ -1762,17 +2053,17 @@ func NewOperationListIterator(page OperationListPage) OperationListIterator {
 func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
 	return original.NewOperationListPage(cur, getNextPage)
 }
-func NewOperationsClient(subscriptionID string, ascLocation string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID, ascLocation)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPricingsClient(subscriptionID string, ascLocation string) PricingsClient {
-	return original.NewPricingsClient(subscriptionID, ascLocation)
+func NewPricingsClient(subscriptionID string) PricingsClient {
+	return original.NewPricingsClient(subscriptionID)
 }
-func NewPricingsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) PricingsClient {
-	return original.NewPricingsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewPricingsClientWithBaseURI(baseURI string, subscriptionID string) PricingsClient {
+	return original.NewPricingsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewRegulatoryComplianceAssessmentListIterator(page RegulatoryComplianceAssessmentListPage) RegulatoryComplianceAssessmentListIterator {
 	return original.NewRegulatoryComplianceAssessmentListIterator(page)
@@ -1780,11 +2071,11 @@ func NewRegulatoryComplianceAssessmentListIterator(page RegulatoryComplianceAsse
 func NewRegulatoryComplianceAssessmentListPage(cur RegulatoryComplianceAssessmentList, getNextPage func(context.Context, RegulatoryComplianceAssessmentList) (RegulatoryComplianceAssessmentList, error)) RegulatoryComplianceAssessmentListPage {
 	return original.NewRegulatoryComplianceAssessmentListPage(cur, getNextPage)
 }
-func NewRegulatoryComplianceAssessmentsClient(subscriptionID string, ascLocation string) RegulatoryComplianceAssessmentsClient {
-	return original.NewRegulatoryComplianceAssessmentsClient(subscriptionID, ascLocation)
+func NewRegulatoryComplianceAssessmentsClient(subscriptionID string) RegulatoryComplianceAssessmentsClient {
+	return original.NewRegulatoryComplianceAssessmentsClient(subscriptionID)
 }
-func NewRegulatoryComplianceAssessmentsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) RegulatoryComplianceAssessmentsClient {
-	return original.NewRegulatoryComplianceAssessmentsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewRegulatoryComplianceAssessmentsClientWithBaseURI(baseURI string, subscriptionID string) RegulatoryComplianceAssessmentsClient {
+	return original.NewRegulatoryComplianceAssessmentsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewRegulatoryComplianceControlListIterator(page RegulatoryComplianceControlListPage) RegulatoryComplianceControlListIterator {
 	return original.NewRegulatoryComplianceControlListIterator(page)
@@ -1792,11 +2083,11 @@ func NewRegulatoryComplianceControlListIterator(page RegulatoryComplianceControl
 func NewRegulatoryComplianceControlListPage(cur RegulatoryComplianceControlList, getNextPage func(context.Context, RegulatoryComplianceControlList) (RegulatoryComplianceControlList, error)) RegulatoryComplianceControlListPage {
 	return original.NewRegulatoryComplianceControlListPage(cur, getNextPage)
 }
-func NewRegulatoryComplianceControlsClient(subscriptionID string, ascLocation string) RegulatoryComplianceControlsClient {
-	return original.NewRegulatoryComplianceControlsClient(subscriptionID, ascLocation)
+func NewRegulatoryComplianceControlsClient(subscriptionID string) RegulatoryComplianceControlsClient {
+	return original.NewRegulatoryComplianceControlsClient(subscriptionID)
 }
-func NewRegulatoryComplianceControlsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) RegulatoryComplianceControlsClient {
-	return original.NewRegulatoryComplianceControlsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewRegulatoryComplianceControlsClientWithBaseURI(baseURI string, subscriptionID string) RegulatoryComplianceControlsClient {
+	return original.NewRegulatoryComplianceControlsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewRegulatoryComplianceStandardListIterator(page RegulatoryComplianceStandardListPage) RegulatoryComplianceStandardListIterator {
 	return original.NewRegulatoryComplianceStandardListIterator(page)
@@ -1804,29 +2095,29 @@ func NewRegulatoryComplianceStandardListIterator(page RegulatoryComplianceStanda
 func NewRegulatoryComplianceStandardListPage(cur RegulatoryComplianceStandardList, getNextPage func(context.Context, RegulatoryComplianceStandardList) (RegulatoryComplianceStandardList, error)) RegulatoryComplianceStandardListPage {
 	return original.NewRegulatoryComplianceStandardListPage(cur, getNextPage)
 }
-func NewRegulatoryComplianceStandardsClient(subscriptionID string, ascLocation string) RegulatoryComplianceStandardsClient {
-	return original.NewRegulatoryComplianceStandardsClient(subscriptionID, ascLocation)
+func NewRegulatoryComplianceStandardsClient(subscriptionID string) RegulatoryComplianceStandardsClient {
+	return original.NewRegulatoryComplianceStandardsClient(subscriptionID)
 }
-func NewRegulatoryComplianceStandardsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) RegulatoryComplianceStandardsClient {
-	return original.NewRegulatoryComplianceStandardsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewRegulatoryComplianceStandardsClientWithBaseURI(baseURI string, subscriptionID string) RegulatoryComplianceStandardsClient {
+	return original.NewRegulatoryComplianceStandardsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSQLVulnerabilityAssessmentBaselineRulesClient(subscriptionID string, ascLocation string) SQLVulnerabilityAssessmentBaselineRulesClient {
-	return original.NewSQLVulnerabilityAssessmentBaselineRulesClient(subscriptionID, ascLocation)
+func NewSQLVulnerabilityAssessmentBaselineRulesClient(subscriptionID string) SQLVulnerabilityAssessmentBaselineRulesClient {
+	return original.NewSQLVulnerabilityAssessmentBaselineRulesClient(subscriptionID)
 }
-func NewSQLVulnerabilityAssessmentBaselineRulesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SQLVulnerabilityAssessmentBaselineRulesClient {
-	return original.NewSQLVulnerabilityAssessmentBaselineRulesClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewSQLVulnerabilityAssessmentBaselineRulesClientWithBaseURI(baseURI string, subscriptionID string) SQLVulnerabilityAssessmentBaselineRulesClient {
+	return original.NewSQLVulnerabilityAssessmentBaselineRulesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSQLVulnerabilityAssessmentScanResultsClient(subscriptionID string, ascLocation string) SQLVulnerabilityAssessmentScanResultsClient {
-	return original.NewSQLVulnerabilityAssessmentScanResultsClient(subscriptionID, ascLocation)
+func NewSQLVulnerabilityAssessmentScanResultsClient(subscriptionID string) SQLVulnerabilityAssessmentScanResultsClient {
+	return original.NewSQLVulnerabilityAssessmentScanResultsClient(subscriptionID)
 }
-func NewSQLVulnerabilityAssessmentScanResultsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SQLVulnerabilityAssessmentScanResultsClient {
-	return original.NewSQLVulnerabilityAssessmentScanResultsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewSQLVulnerabilityAssessmentScanResultsClientWithBaseURI(baseURI string, subscriptionID string) SQLVulnerabilityAssessmentScanResultsClient {
+	return original.NewSQLVulnerabilityAssessmentScanResultsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSQLVulnerabilityAssessmentScansClient(subscriptionID string, ascLocation string) SQLVulnerabilityAssessmentScansClient {
-	return original.NewSQLVulnerabilityAssessmentScansClient(subscriptionID, ascLocation)
+func NewSQLVulnerabilityAssessmentScansClient(subscriptionID string) SQLVulnerabilityAssessmentScansClient {
+	return original.NewSQLVulnerabilityAssessmentScansClient(subscriptionID)
 }
-func NewSQLVulnerabilityAssessmentScansClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SQLVulnerabilityAssessmentScansClient {
-	return original.NewSQLVulnerabilityAssessmentScansClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewSQLVulnerabilityAssessmentScansClientWithBaseURI(baseURI string, subscriptionID string) SQLVulnerabilityAssessmentScansClient {
+	return original.NewSQLVulnerabilityAssessmentScansClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSecureScoreControlDefinitionListIterator(page SecureScoreControlDefinitionListPage) SecureScoreControlDefinitionListIterator {
 	return original.NewSecureScoreControlDefinitionListIterator(page)
@@ -1834,11 +2125,11 @@ func NewSecureScoreControlDefinitionListIterator(page SecureScoreControlDefiniti
 func NewSecureScoreControlDefinitionListPage(cur SecureScoreControlDefinitionList, getNextPage func(context.Context, SecureScoreControlDefinitionList) (SecureScoreControlDefinitionList, error)) SecureScoreControlDefinitionListPage {
 	return original.NewSecureScoreControlDefinitionListPage(cur, getNextPage)
 }
-func NewSecureScoreControlDefinitionsClient(subscriptionID string, ascLocation string) SecureScoreControlDefinitionsClient {
-	return original.NewSecureScoreControlDefinitionsClient(subscriptionID, ascLocation)
+func NewSecureScoreControlDefinitionsClient(subscriptionID string) SecureScoreControlDefinitionsClient {
+	return original.NewSecureScoreControlDefinitionsClient(subscriptionID)
 }
-func NewSecureScoreControlDefinitionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SecureScoreControlDefinitionsClient {
-	return original.NewSecureScoreControlDefinitionsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewSecureScoreControlDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) SecureScoreControlDefinitionsClient {
+	return original.NewSecureScoreControlDefinitionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSecureScoreControlListIterator(page SecureScoreControlListPage) SecureScoreControlListIterator {
 	return original.NewSecureScoreControlListIterator(page)
@@ -1846,17 +2137,17 @@ func NewSecureScoreControlListIterator(page SecureScoreControlListPage) SecureSc
 func NewSecureScoreControlListPage(cur SecureScoreControlList, getNextPage func(context.Context, SecureScoreControlList) (SecureScoreControlList, error)) SecureScoreControlListPage {
 	return original.NewSecureScoreControlListPage(cur, getNextPage)
 }
-func NewSecureScoreControlsClient(subscriptionID string, ascLocation string) SecureScoreControlsClient {
-	return original.NewSecureScoreControlsClient(subscriptionID, ascLocation)
+func NewSecureScoreControlsClient(subscriptionID string) SecureScoreControlsClient {
+	return original.NewSecureScoreControlsClient(subscriptionID)
 }
-func NewSecureScoreControlsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SecureScoreControlsClient {
-	return original.NewSecureScoreControlsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewSecureScoreControlsClientWithBaseURI(baseURI string, subscriptionID string) SecureScoreControlsClient {
+	return original.NewSecureScoreControlsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSecureScoresClient(subscriptionID string, ascLocation string) SecureScoresClient {
-	return original.NewSecureScoresClient(subscriptionID, ascLocation)
+func NewSecureScoresClient(subscriptionID string) SecureScoresClient {
+	return original.NewSecureScoresClient(subscriptionID)
 }
-func NewSecureScoresClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SecureScoresClient {
-	return original.NewSecureScoresClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewSecureScoresClientWithBaseURI(baseURI string, subscriptionID string) SecureScoresClient {
+	return original.NewSecureScoresClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSecureScoresListIterator(page SecureScoresListPage) SecureScoresListIterator {
 	return original.NewSecureScoresListIterator(page)
@@ -1864,17 +2155,17 @@ func NewSecureScoresListIterator(page SecureScoresListPage) SecureScoresListIter
 func NewSecureScoresListPage(cur SecureScoresList, getNextPage func(context.Context, SecureScoresList) (SecureScoresList, error)) SecureScoresListPage {
 	return original.NewSecureScoresListPage(cur, getNextPage)
 }
-func NewServerVulnerabilityAssessmentClient(subscriptionID string, ascLocation string) ServerVulnerabilityAssessmentClient {
-	return original.NewServerVulnerabilityAssessmentClient(subscriptionID, ascLocation)
+func NewServerVulnerabilityAssessmentClient(subscriptionID string) ServerVulnerabilityAssessmentClient {
+	return original.NewServerVulnerabilityAssessmentClient(subscriptionID)
 }
-func NewServerVulnerabilityAssessmentClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) ServerVulnerabilityAssessmentClient {
-	return original.NewServerVulnerabilityAssessmentClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewServerVulnerabilityAssessmentClientWithBaseURI(baseURI string, subscriptionID string) ServerVulnerabilityAssessmentClient {
+	return original.NewServerVulnerabilityAssessmentClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSettingsClient(subscriptionID string, ascLocation string) SettingsClient {
-	return original.NewSettingsClient(subscriptionID, ascLocation)
+func NewSettingsClient(subscriptionID string) SettingsClient {
+	return original.NewSettingsClient(subscriptionID)
 }
-func NewSettingsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SettingsClient {
-	return original.NewSettingsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewSettingsClientWithBaseURI(baseURI string, subscriptionID string) SettingsClient {
+	return original.NewSettingsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSettingsListIterator(page SettingsListPage) SettingsListIterator {
 	return original.NewSettingsListIterator(page)
@@ -1882,11 +2173,11 @@ func NewSettingsListIterator(page SettingsListPage) SettingsListIterator {
 func NewSettingsListPage(cur SettingsList, getNextPage func(context.Context, SettingsList) (SettingsList, error)) SettingsListPage {
 	return original.NewSettingsListPage(cur, getNextPage)
 }
-func NewSoftwareInventoriesClient(subscriptionID string, ascLocation string) SoftwareInventoriesClient {
-	return original.NewSoftwareInventoriesClient(subscriptionID, ascLocation)
+func NewSoftwareInventoriesClient(subscriptionID string) SoftwareInventoriesClient {
+	return original.NewSoftwareInventoriesClient(subscriptionID)
 }
-func NewSoftwareInventoriesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SoftwareInventoriesClient {
-	return original.NewSoftwareInventoriesClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewSoftwareInventoriesClientWithBaseURI(baseURI string, subscriptionID string) SoftwareInventoriesClient {
+	return original.NewSoftwareInventoriesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSoftwaresListIterator(page SoftwaresListPage) SoftwaresListIterator {
 	return original.NewSoftwaresListIterator(page)
@@ -1900,17 +2191,17 @@ func NewSolutionListIterator(page SolutionListPage) SolutionListIterator {
 func NewSolutionListPage(cur SolutionList, getNextPage func(context.Context, SolutionList) (SolutionList, error)) SolutionListPage {
 	return original.NewSolutionListPage(cur, getNextPage)
 }
-func NewSolutionsClient(subscriptionID string, ascLocation string) SolutionsClient {
-	return original.NewSolutionsClient(subscriptionID, ascLocation)
+func NewSolutionsClient(subscriptionID string) SolutionsClient {
+	return original.NewSolutionsClient(subscriptionID)
 }
-func NewSolutionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SolutionsClient {
-	return original.NewSolutionsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewSolutionsClientWithBaseURI(baseURI string, subscriptionID string) SolutionsClient {
+	return original.NewSolutionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSolutionsReferenceDataClient(subscriptionID string, ascLocation string) SolutionsReferenceDataClient {
-	return original.NewSolutionsReferenceDataClient(subscriptionID, ascLocation)
+func NewSolutionsReferenceDataClient(subscriptionID string) SolutionsReferenceDataClient {
+	return original.NewSolutionsReferenceDataClient(subscriptionID)
 }
-func NewSolutionsReferenceDataClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SolutionsReferenceDataClient {
-	return original.NewSolutionsReferenceDataClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewSolutionsReferenceDataClientWithBaseURI(baseURI string, subscriptionID string) SolutionsReferenceDataClient {
+	return original.NewSolutionsReferenceDataClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSubAssessmentListIterator(page SubAssessmentListPage) SubAssessmentListIterator {
 	return original.NewSubAssessmentListIterator(page)
@@ -1918,11 +2209,17 @@ func NewSubAssessmentListIterator(page SubAssessmentListPage) SubAssessmentListI
 func NewSubAssessmentListPage(cur SubAssessmentList, getNextPage func(context.Context, SubAssessmentList) (SubAssessmentList, error)) SubAssessmentListPage {
 	return original.NewSubAssessmentListPage(cur, getNextPage)
 }
-func NewSubAssessmentsClient(subscriptionID string, ascLocation string) SubAssessmentsClient {
-	return original.NewSubAssessmentsClient(subscriptionID, ascLocation)
+func NewSubAssessmentsClient(subscriptionID string) SubAssessmentsClient {
+	return original.NewSubAssessmentsClient(subscriptionID)
 }
-func NewSubAssessmentsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SubAssessmentsClient {
-	return original.NewSubAssessmentsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewSubAssessmentsClientWithBaseURI(baseURI string, subscriptionID string) SubAssessmentsClient {
+	return original.NewSubAssessmentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSubscriptionGovernanceRulesExecuteStatusClient(subscriptionID string) SubscriptionGovernanceRulesExecuteStatusClient {
+	return original.NewSubscriptionGovernanceRulesExecuteStatusClient(subscriptionID)
+}
+func NewSubscriptionGovernanceRulesExecuteStatusClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionGovernanceRulesExecuteStatusClient {
+	return original.NewSubscriptionGovernanceRulesExecuteStatusClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewTaskListIterator(page TaskListPage) TaskListIterator {
 	return original.NewTaskListIterator(page)
@@ -1930,17 +2227,17 @@ func NewTaskListIterator(page TaskListPage) TaskListIterator {
 func NewTaskListPage(cur TaskList, getNextPage func(context.Context, TaskList) (TaskList, error)) TaskListPage {
 	return original.NewTaskListPage(cur, getNextPage)
 }
-func NewTasksClient(subscriptionID string, ascLocation string) TasksClient {
-	return original.NewTasksClient(subscriptionID, ascLocation)
+func NewTasksClient(subscriptionID string) TasksClient {
+	return original.NewTasksClient(subscriptionID)
 }
-func NewTasksClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) TasksClient {
-	return original.NewTasksClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewTasksClientWithBaseURI(baseURI string, subscriptionID string) TasksClient {
+	return original.NewTasksClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewTopologyClient(subscriptionID string, ascLocation string) TopologyClient {
-	return original.NewTopologyClient(subscriptionID, ascLocation)
+func NewTopologyClient(subscriptionID string) TopologyClient {
+	return original.NewTopologyClient(subscriptionID)
 }
-func NewTopologyClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) TopologyClient {
-	return original.NewTopologyClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewTopologyClientWithBaseURI(baseURI string, subscriptionID string) TopologyClient {
+	return original.NewTopologyClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewTopologyListIterator(page TopologyListPage) TopologyListIterator {
 	return original.NewTopologyListIterator(page)
@@ -1948,8 +2245,8 @@ func NewTopologyListIterator(page TopologyListPage) TopologyListIterator {
 func NewTopologyListPage(cur TopologyList, getNextPage func(context.Context, TopologyList) (TopologyList, error)) TopologyListPage {
 	return original.NewTopologyListPage(cur, getNextPage)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string, ascLocation string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewWorkspaceSettingListIterator(page WorkspaceSettingListPage) WorkspaceSettingListIterator {
 	return original.NewWorkspaceSettingListIterator(page)
@@ -1957,11 +2254,11 @@ func NewWorkspaceSettingListIterator(page WorkspaceSettingListPage) WorkspaceSet
 func NewWorkspaceSettingListPage(cur WorkspaceSettingList, getNextPage func(context.Context, WorkspaceSettingList) (WorkspaceSettingList, error)) WorkspaceSettingListPage {
 	return original.NewWorkspaceSettingListPage(cur, getNextPage)
 }
-func NewWorkspaceSettingsClient(subscriptionID string, ascLocation string) WorkspaceSettingsClient {
-	return original.NewWorkspaceSettingsClient(subscriptionID, ascLocation)
+func NewWorkspaceSettingsClient(subscriptionID string) WorkspaceSettingsClient {
+	return original.NewWorkspaceSettingsClient(subscriptionID)
 }
-func NewWorkspaceSettingsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) WorkspaceSettingsClient {
-	return original.NewWorkspaceSettingsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+func NewWorkspaceSettingsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceSettingsClient {
+	return original.NewWorkspaceSettingsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAadConnectivityStateValues() []AadConnectivityState {
 	return original.PossibleAadConnectivityStateValues()
@@ -1978,20 +2275,14 @@ func PossibleAdditionalWorkspaceDataTypeValues() []AdditionalWorkspaceDataType {
 func PossibleAdditionalWorkspaceTypeValues() []AdditionalWorkspaceType {
 	return original.PossibleAdditionalWorkspaceTypeValues()
 }
-func PossibleAlertIntentValues() []AlertIntent {
-	return original.PossibleAlertIntentValues()
-}
-func PossibleAlertNotificationsValues() []AlertNotifications {
-	return original.PossibleAlertNotificationsValues()
-}
 func PossibleAlertSeverityValues() []AlertSeverity {
 	return original.PossibleAlertSeverityValues()
 }
 func PossibleAlertStatusValues() []AlertStatus {
 	return original.PossibleAlertStatusValues()
 }
-func PossibleAlertsToAdminsValues() []AlertsToAdmins {
-	return original.PossibleAlertsToAdminsValues()
+func PossibleApplicationConditionOperatorValues() []ApplicationConditionOperator {
+	return original.PossibleApplicationConditionOperatorValues()
 }
 func PossibleAssessedResourceTypeValues() []AssessedResourceType {
 	return original.PossibleAssessedResourceTypeValues()
@@ -2008,9 +2299,6 @@ func PossibleAuthenticationProvisioningStateValues() []AuthenticationProvisionin
 func PossibleAuthenticationTypeValues() []AuthenticationType {
 	return original.PossibleAuthenticationTypeValues()
 }
-func PossibleAuthorizationStateValues() []AuthorizationState {
-	return original.PossibleAuthorizationStateValues()
-}
 func PossibleAutoProvisionValues() []AutoProvision {
 	return original.PossibleAutoProvisionValues()
 }
@@ -2019,6 +2307,9 @@ func PossibleBundleTypeValues() []BundleType {
 }
 func PossibleCategoriesValues() []Categories {
 	return original.PossibleCategoriesValues()
+}
+func PossibleCloudNameValues() []CloudName {
+	return original.PossibleCloudNameValues()
 }
 func PossibleConfigurationStatus1Values() []ConfigurationStatus1 {
 	return original.PossibleConfigurationStatus1Values()
@@ -2041,12 +2332,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 func PossibleDataSourceValues() []DataSource {
 	return original.PossibleDataSourceValues()
 }
-func PossibleDeviceCriticalityValues() []DeviceCriticality {
-	return original.PossibleDeviceCriticalityValues()
-}
-func PossibleDeviceStatusValues() []DeviceStatus {
-	return original.PossibleDeviceStatusValues()
-}
 func PossibleDirectionValues() []Direction {
 	return original.PossibleDirectionValues()
 }
@@ -2058,6 +2343,9 @@ func PossibleEnforcementModeValues() []EnforcementMode {
 }
 func PossibleEnforcementSupportValues() []EnforcementSupport {
 	return original.PossibleEnforcementSupportValues()
+}
+func PossibleEnvironmentTypeValues() []EnvironmentType {
+	return original.PossibleEnvironmentTypeValues()
 }
 func PossibleEventSourceValues() []EventSource {
 	return original.PossibleEventSourceValues()
@@ -2086,11 +2374,23 @@ func PossibleFamilyValues() []Family {
 func PossibleFileTypeValues() []FileType {
 	return original.PossibleFileTypeValues()
 }
+func PossibleGovernanceRuleConditionOperatorValues() []GovernanceRuleConditionOperator {
+	return original.PossibleGovernanceRuleConditionOperatorValues()
+}
+func PossibleGovernanceRuleOwnerSourceTypeValues() []GovernanceRuleOwnerSourceType {
+	return original.PossibleGovernanceRuleOwnerSourceTypeValues()
+}
+func PossibleGovernanceRuleTypeValues() []GovernanceRuleType {
+	return original.PossibleGovernanceRuleTypeValues()
+}
 func PossibleHybridComputeProvisioningStateValues() []HybridComputeProvisioningState {
 	return original.PossibleHybridComputeProvisioningStateValues()
 }
 func PossibleImplementationEffortValues() []ImplementationEffort {
 	return original.PossibleImplementationEffortValues()
+}
+func PossibleInformationProtectionPolicyNameValues() []InformationProtectionPolicyName {
+	return original.PossibleInformationProtectionPolicyNameValues()
 }
 func PossibleIntentValues() []Intent {
 	return original.PossibleIntentValues()
@@ -2107,29 +2407,29 @@ func PossibleKindEnum2Values() []KindEnum2 {
 func PossibleKindEnumValues() []KindEnum {
 	return original.PossibleKindEnumValues()
 }
-func PossibleMacSignificanceValues() []MacSignificance {
-	return original.PossibleMacSignificanceValues()
-}
-func PossibleManagementStateValues() []ManagementState {
-	return original.PossibleManagementStateValues()
+func PossibleMinimalSeverityValues() []MinimalSeverity {
+	return original.PossibleMinimalSeverityValues()
 }
 func PossibleMsiValues() []Msi {
 	return original.PossibleMsiValues()
 }
-func PossibleOnboardingKindValues() []OnboardingKind {
-	return original.PossibleOnboardingKindValues()
+func PossibleOfferingTypeValues() []OfferingType {
+	return original.PossibleOfferingTypeValues()
 }
 func PossibleOperatorValues() []Operator {
 	return original.PossibleOperatorValues()
+}
+func PossibleOrganizationMembershipTypeBasicGcpOrganizationalDataValues() []OrganizationMembershipTypeBasicGcpOrganizationalData {
+	return original.PossibleOrganizationMembershipTypeBasicGcpOrganizationalDataValues()
+}
+func PossibleOrganizationMembershipTypeValues() []OrganizationMembershipType {
+	return original.PossibleOrganizationMembershipTypeValues()
 }
 func PossiblePermissionPropertyValues() []PermissionProperty {
 	return original.PossiblePermissionPropertyValues()
 }
 func PossiblePricingTierValues() []PricingTier {
 	return original.PossiblePricingTierValues()
-}
-func PossibleProgrammingStateValues() []ProgrammingState {
-	return original.PossibleProgrammingStateValues()
 }
 func PossiblePropertyTypeValues() []PropertyType {
 	return original.PossiblePropertyTypeValues()
@@ -2143,9 +2443,6 @@ func PossibleProvisioningState1Values() []ProvisioningState1 {
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
-func PossiblePurdueLevelValues() []PurdueLevel {
-	return original.PossiblePurdueLevelValues()
-}
 func PossibleRankValues() []Rank {
 	return original.PossibleRankValues()
 }
@@ -2158,23 +2455,20 @@ func PossibleRecommendationActionValues() []RecommendationAction {
 func PossibleRecommendationConfigStatusValues() []RecommendationConfigStatus {
 	return original.PossibleRecommendationConfigStatusValues()
 }
-func PossibleRecommendationSeverityValues() []RecommendationSeverity {
-	return original.PossibleRecommendationSeverityValues()
-}
 func PossibleRecommendationStatusValues() []RecommendationStatus {
 	return original.PossibleRecommendationStatusValues()
 }
 func PossibleRecommendationTypeValues() []RecommendationType {
 	return original.PossibleRecommendationTypeValues()
 }
-func PossibleRelationToIPStatusValues() []RelationToIPStatus {
-	return original.PossibleRelationToIPStatusValues()
-}
 func PossibleReportedSeverityValues() []ReportedSeverity {
 	return original.PossibleReportedSeverityValues()
 }
 func PossibleResourceStatusValues() []ResourceStatus {
 	return original.PossibleResourceStatusValues()
+}
+func PossibleRolesValues() []Roles {
+	return original.PossibleRolesValues()
 }
 func PossibleRuleSeverityValues() []RuleSeverity {
 	return original.PossibleRuleSeverityValues()
@@ -2197,17 +2491,23 @@ func PossibleScanStateValues() []ScanState {
 func PossibleScanTriggerTypeValues() []ScanTriggerType {
 	return original.PossibleScanTriggerTypeValues()
 }
-func PossibleScanningFunctionalityValues() []ScanningFunctionality {
-	return original.PossibleScanningFunctionalityValues()
+func PossibleScanningModeValues() []ScanningMode {
+	return original.PossibleScanningModeValues()
 }
 func PossibleScriptValues() []Script {
 	return original.PossibleScriptValues()
 }
-func PossibleSensorStatusValues() []SensorStatus {
-	return original.PossibleSensorStatusValues()
+func PossibleSettingName2Values() []SettingName2 {
+	return original.PossibleSettingName2Values()
 }
-func PossibleSensorTypeValues() []SensorType {
-	return original.PossibleSensorTypeValues()
+func PossibleSettingName4Values() []SettingName4 {
+	return original.PossibleSettingName4Values()
+}
+func PossibleSettingName5Values() []SettingName5 {
+	return original.PossibleSettingName5Values()
+}
+func PossibleSeverityEnumValues() []SeverityEnum {
+	return original.PossibleSeverityEnumValues()
 }
 func PossibleSeverityValues() []Severity {
 	return original.PossibleSeverityValues()
@@ -2221,6 +2521,12 @@ func PossibleSourceSystemValues() []SourceSystem {
 func PossibleSourceValues() []Source {
 	return original.PossibleSourceValues()
 }
+func PossibleStateForAlertNotificationsValues() []StateForAlertNotifications {
+	return original.PossibleStateForAlertNotificationsValues()
+}
+func PossibleStateForNotificationsByRoleValues() []StateForNotificationsByRole {
+	return original.PossibleStateForNotificationsByRoleValues()
+}
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()
 }
@@ -2233,14 +2539,29 @@ func PossibleStatusValues() []Status {
 func PossibleSubAssessmentStatusCodeValues() []SubAssessmentStatusCode {
 	return original.PossibleSubAssessmentStatusCodeValues()
 }
+func PossibleSubPlanValues() []SubPlan {
+	return original.PossibleSubPlanValues()
+}
+func PossibleSupportedCloudEnumValues() []SupportedCloudEnum {
+	return original.PossibleSupportedCloudEnumValues()
+}
+func PossibleTacticsValues() []Tactics {
+	return original.PossibleTacticsValues()
+}
+func PossibleTaskUpdateActionTypeValues() []TaskUpdateActionType {
+	return original.PossibleTaskUpdateActionTypeValues()
+}
+func PossibleTechniquesValues() []Techniques {
+	return original.PossibleTechniquesValues()
+}
 func PossibleThreatsValues() []Threats {
 	return original.PossibleThreatsValues()
 }
-func PossibleTiStatusValues() []TiStatus {
-	return original.PossibleTiStatusValues()
-}
 func PossibleTransportProtocolValues() []TransportProtocol {
 	return original.PossibleTransportProtocolValues()
+}
+func PossibleType1Values() []Type1 {
+	return original.PossibleType1Values()
 }
 func PossibleTypeBasicResourceIdentifierValues() []TypeBasicResourceIdentifier {
 	return original.PossibleTypeBasicResourceIdentifierValues()
@@ -2256,9 +2577,6 @@ func PossibleUserImpactValues() []UserImpact {
 }
 func PossibleValueTypeValues() []ValueType {
 	return original.PossibleValueTypeValues()
-}
-func PossibleVersionKindValues() []VersionKind {
-	return original.PossibleVersionKindValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

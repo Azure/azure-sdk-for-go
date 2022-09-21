@@ -12,7 +12,7 @@ package keyvault
 import (
 	"context"
 
-	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/keyvault/mgmt/2020-04-01-preview/keyvault"
+	original "github.com/Azure/dev/azure-sdk-for-go/services/preview/keyvault/mgmt/2021-11-01-preview/keyvault"
 )
 
 const (
@@ -25,6 +25,12 @@ const (
 	Add     AccessPolicyUpdateKind = original.Add
 	Remove  AccessPolicyUpdateKind = original.Remove
 	Replace AccessPolicyUpdateKind = original.Replace
+)
+
+type ActionsRequired = original.ActionsRequired
+
+const (
+	None ActionsRequired = original.None
 )
 
 type CertificatePermissions = original.CertificatePermissions
@@ -56,26 +62,86 @@ const (
 	CreateModeRecover CreateMode = original.CreateModeRecover
 )
 
+type DeletionRecoveryLevel = original.DeletionRecoveryLevel
+
+const (
+	Purgeable                        DeletionRecoveryLevel = original.Purgeable
+	Recoverable                      DeletionRecoveryLevel = original.Recoverable
+	RecoverableProtectedSubscription DeletionRecoveryLevel = original.RecoverableProtectedSubscription
+	RecoverablePurgeable             DeletionRecoveryLevel = original.RecoverablePurgeable
+)
+
+type IdentityType = original.IdentityType
+
+const (
+	IdentityTypeApplication     IdentityType = original.IdentityTypeApplication
+	IdentityTypeKey             IdentityType = original.IdentityTypeKey
+	IdentityTypeManagedIdentity IdentityType = original.IdentityTypeManagedIdentity
+	IdentityTypeUser            IdentityType = original.IdentityTypeUser
+)
+
+type JSONWebKeyCurveName = original.JSONWebKeyCurveName
+
+const (
+	P256  JSONWebKeyCurveName = original.P256
+	P256K JSONWebKeyCurveName = original.P256K
+	P384  JSONWebKeyCurveName = original.P384
+	P521  JSONWebKeyCurveName = original.P521
+)
+
+type JSONWebKeyOperation = original.JSONWebKeyOperation
+
+const (
+	JSONWebKeyOperationDecrypt   JSONWebKeyOperation = original.JSONWebKeyOperationDecrypt
+	JSONWebKeyOperationEncrypt   JSONWebKeyOperation = original.JSONWebKeyOperationEncrypt
+	JSONWebKeyOperationImport    JSONWebKeyOperation = original.JSONWebKeyOperationImport
+	JSONWebKeyOperationRelease   JSONWebKeyOperation = original.JSONWebKeyOperationRelease
+	JSONWebKeyOperationSign      JSONWebKeyOperation = original.JSONWebKeyOperationSign
+	JSONWebKeyOperationUnwrapKey JSONWebKeyOperation = original.JSONWebKeyOperationUnwrapKey
+	JSONWebKeyOperationVerify    JSONWebKeyOperation = original.JSONWebKeyOperationVerify
+	JSONWebKeyOperationWrapKey   JSONWebKeyOperation = original.JSONWebKeyOperationWrapKey
+)
+
+type JSONWebKeyType = original.JSONWebKeyType
+
+const (
+	EC     JSONWebKeyType = original.EC
+	ECHSM  JSONWebKeyType = original.ECHSM
+	RSA    JSONWebKeyType = original.RSA
+	RSAHSM JSONWebKeyType = original.RSAHSM
+)
+
 type KeyPermissions = original.KeyPermissions
 
 const (
-	KeyPermissionsAll       KeyPermissions = original.KeyPermissionsAll
-	KeyPermissionsBackup    KeyPermissions = original.KeyPermissionsBackup
-	KeyPermissionsCreate    KeyPermissions = original.KeyPermissionsCreate
-	KeyPermissionsDecrypt   KeyPermissions = original.KeyPermissionsDecrypt
-	KeyPermissionsDelete    KeyPermissions = original.KeyPermissionsDelete
-	KeyPermissionsEncrypt   KeyPermissions = original.KeyPermissionsEncrypt
-	KeyPermissionsGet       KeyPermissions = original.KeyPermissionsGet
-	KeyPermissionsImport    KeyPermissions = original.KeyPermissionsImport
-	KeyPermissionsList      KeyPermissions = original.KeyPermissionsList
-	KeyPermissionsPurge     KeyPermissions = original.KeyPermissionsPurge
-	KeyPermissionsRecover   KeyPermissions = original.KeyPermissionsRecover
-	KeyPermissionsRestore   KeyPermissions = original.KeyPermissionsRestore
-	KeyPermissionsSign      KeyPermissions = original.KeyPermissionsSign
-	KeyPermissionsUnwrapKey KeyPermissions = original.KeyPermissionsUnwrapKey
-	KeyPermissionsUpdate    KeyPermissions = original.KeyPermissionsUpdate
-	KeyPermissionsVerify    KeyPermissions = original.KeyPermissionsVerify
-	KeyPermissionsWrapKey   KeyPermissions = original.KeyPermissionsWrapKey
+	KeyPermissionsAll               KeyPermissions = original.KeyPermissionsAll
+	KeyPermissionsBackup            KeyPermissions = original.KeyPermissionsBackup
+	KeyPermissionsCreate            KeyPermissions = original.KeyPermissionsCreate
+	KeyPermissionsDecrypt           KeyPermissions = original.KeyPermissionsDecrypt
+	KeyPermissionsDelete            KeyPermissions = original.KeyPermissionsDelete
+	KeyPermissionsEncrypt           KeyPermissions = original.KeyPermissionsEncrypt
+	KeyPermissionsGet               KeyPermissions = original.KeyPermissionsGet
+	KeyPermissionsGetrotationpolicy KeyPermissions = original.KeyPermissionsGetrotationpolicy
+	KeyPermissionsImport            KeyPermissions = original.KeyPermissionsImport
+	KeyPermissionsList              KeyPermissions = original.KeyPermissionsList
+	KeyPermissionsPurge             KeyPermissions = original.KeyPermissionsPurge
+	KeyPermissionsRecover           KeyPermissions = original.KeyPermissionsRecover
+	KeyPermissionsRelease           KeyPermissions = original.KeyPermissionsRelease
+	KeyPermissionsRestore           KeyPermissions = original.KeyPermissionsRestore
+	KeyPermissionsRotate            KeyPermissions = original.KeyPermissionsRotate
+	KeyPermissionsSetrotationpolicy KeyPermissions = original.KeyPermissionsSetrotationpolicy
+	KeyPermissionsSign              KeyPermissions = original.KeyPermissionsSign
+	KeyPermissionsUnwrapKey         KeyPermissions = original.KeyPermissionsUnwrapKey
+	KeyPermissionsUpdate            KeyPermissions = original.KeyPermissionsUpdate
+	KeyPermissionsVerify            KeyPermissions = original.KeyPermissionsVerify
+	KeyPermissionsWrapKey           KeyPermissions = original.KeyPermissionsWrapKey
+)
+
+type KeyRotationPolicyActionType = original.KeyRotationPolicyActionType
+
+const (
+	Notify KeyRotationPolicyActionType = original.Notify
+	Rotate KeyRotationPolicyActionType = original.Rotate
 )
 
 type ManagedHsmSkuName = original.ManagedHsmSkuName
@@ -95,8 +161,8 @@ const (
 type NetworkRuleBypassOptions = original.NetworkRuleBypassOptions
 
 const (
-	AzureServices NetworkRuleBypassOptions = original.AzureServices
-	None          NetworkRuleBypassOptions = original.None
+	NetworkRuleBypassOptionsAzureServices NetworkRuleBypassOptions = original.NetworkRuleBypassOptionsAzureServices
+	NetworkRuleBypassOptionsNone          NetworkRuleBypassOptions = original.NetworkRuleBypassOptionsNone
 )
 
 type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
@@ -130,6 +196,13 @@ const (
 	ProvisioningStateSecurityDomainRestore ProvisioningState = original.ProvisioningStateSecurityDomainRestore
 	ProvisioningStateSucceeded             ProvisioningState = original.ProvisioningStateSucceeded
 	ProvisioningStateUpdating              ProvisioningState = original.ProvisioningStateUpdating
+)
+
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	Disabled PublicNetworkAccess = original.Disabled
+	Enabled  PublicNetworkAccess = original.Enabled
 )
 
 type Reason = original.Reason
@@ -180,19 +253,62 @@ const (
 	StoragePermissionsUpdate        StoragePermissions = original.StoragePermissionsUpdate
 )
 
+type VaultProvisioningState = original.VaultProvisioningState
+
+const (
+	VaultProvisioningStateRegisteringDNS VaultProvisioningState = original.VaultProvisioningStateRegisteringDNS
+	VaultProvisioningStateSucceeded      VaultProvisioningState = original.VaultProvisioningStateSucceeded
+)
+
 type AccessPolicyEntry = original.AccessPolicyEntry
+type Action = original.Action
+type Attributes = original.Attributes
 type BaseClient = original.BaseClient
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
+type DeletedManagedHsm = original.DeletedManagedHsm
+type DeletedManagedHsmListResult = original.DeletedManagedHsmListResult
+type DeletedManagedHsmListResultIterator = original.DeletedManagedHsmListResultIterator
+type DeletedManagedHsmListResultPage = original.DeletedManagedHsmListResultPage
+type DeletedManagedHsmProperties = original.DeletedManagedHsmProperties
 type DeletedVault = original.DeletedVault
 type DeletedVaultListResult = original.DeletedVaultListResult
 type DeletedVaultListResultIterator = original.DeletedVaultListResultIterator
 type DeletedVaultListResultPage = original.DeletedVaultListResultPage
 type DeletedVaultProperties = original.DeletedVaultProperties
+type DimensionProperties = original.DimensionProperties
 type Error = original.Error
 type IPRule = original.IPRule
+type Key = original.Key
+type KeyAttributes = original.KeyAttributes
+type KeyCreateParameters = original.KeyCreateParameters
+type KeyListResult = original.KeyListResult
+type KeyListResultIterator = original.KeyListResultIterator
+type KeyListResultPage = original.KeyListResultPage
+type KeyProperties = original.KeyProperties
+type KeyReleasePolicy = original.KeyReleasePolicy
+type KeyRotationPolicyAttributes = original.KeyRotationPolicyAttributes
+type KeysClient = original.KeysClient
+type LifetimeAction = original.LifetimeAction
 type LogSpecification = original.LogSpecification
+type MHSMIPRule = original.MHSMIPRule
+type MHSMNetworkRuleSet = original.MHSMNetworkRuleSet
+type MHSMPrivateEndpoint = original.MHSMPrivateEndpoint
+type MHSMPrivateEndpointConnection = original.MHSMPrivateEndpointConnection
+type MHSMPrivateEndpointConnectionItem = original.MHSMPrivateEndpointConnectionItem
+type MHSMPrivateEndpointConnectionProperties = original.MHSMPrivateEndpointConnectionProperties
+type MHSMPrivateEndpointConnectionsClient = original.MHSMPrivateEndpointConnectionsClient
+type MHSMPrivateEndpointConnectionsDeleteFuture = original.MHSMPrivateEndpointConnectionsDeleteFuture
+type MHSMPrivateEndpointConnectionsListResult = original.MHSMPrivateEndpointConnectionsListResult
+type MHSMPrivateEndpointConnectionsListResultIterator = original.MHSMPrivateEndpointConnectionsListResultIterator
+type MHSMPrivateEndpointConnectionsListResultPage = original.MHSMPrivateEndpointConnectionsListResultPage
+type MHSMPrivateLinkResource = original.MHSMPrivateLinkResource
+type MHSMPrivateLinkResourceListResult = original.MHSMPrivateLinkResourceListResult
+type MHSMPrivateLinkResourceProperties = original.MHSMPrivateLinkResourceProperties
+type MHSMPrivateLinkResourcesClient = original.MHSMPrivateLinkResourcesClient
+type MHSMPrivateLinkServiceConnectionState = original.MHSMPrivateLinkServiceConnectionState
+type MHSMVirtualNetworkRule = original.MHSMVirtualNetworkRule
 type ManagedHsm = original.ManagedHsm
 type ManagedHsmError = original.ManagedHsmError
 type ManagedHsmListResult = original.ManagedHsmListResult
@@ -204,7 +320,9 @@ type ManagedHsmSku = original.ManagedHsmSku
 type ManagedHsmsClient = original.ManagedHsmsClient
 type ManagedHsmsCreateOrUpdateFuture = original.ManagedHsmsCreateOrUpdateFuture
 type ManagedHsmsDeleteFuture = original.ManagedHsmsDeleteFuture
+type ManagedHsmsPurgeDeletedFuture = original.ManagedHsmsPurgeDeletedFuture
 type ManagedHsmsUpdateFuture = original.ManagedHsmsUpdateFuture
+type MetricSpecification = original.MetricSpecification
 type NetworkRuleSet = original.NetworkRuleSet
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -217,6 +335,9 @@ type Permissions = original.Permissions
 type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointConnection = original.PrivateEndpointConnection
 type PrivateEndpointConnectionItem = original.PrivateEndpointConnectionItem
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionListResultIterator = original.PrivateEndpointConnectionListResultIterator
+type PrivateEndpointConnectionListResultPage = original.PrivateEndpointConnectionListResultPage
 type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
 type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
 type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
@@ -229,8 +350,21 @@ type Resource = original.Resource
 type ResourceListResult = original.ResourceListResult
 type ResourceListResultIterator = original.ResourceListResultIterator
 type ResourceListResultPage = original.ResourceListResultPage
+type RotationPolicy = original.RotationPolicy
+type Secret = original.Secret
+type SecretAttributes = original.SecretAttributes
+type SecretCreateOrUpdateParameters = original.SecretCreateOrUpdateParameters
+type SecretListResult = original.SecretListResult
+type SecretListResultIterator = original.SecretListResultIterator
+type SecretListResultPage = original.SecretListResultPage
+type SecretPatchParameters = original.SecretPatchParameters
+type SecretPatchProperties = original.SecretPatchProperties
+type SecretProperties = original.SecretProperties
+type SecretsClient = original.SecretsClient
 type ServiceSpecification = original.ServiceSpecification
 type Sku = original.Sku
+type SystemData = original.SystemData
+type Trigger = original.Trigger
 type Vault = original.Vault
 type VaultAccessPolicyParameters = original.VaultAccessPolicyParameters
 type VaultAccessPolicyProperties = original.VaultAccessPolicyProperties
@@ -250,11 +384,47 @@ type VirtualNetworkRule = original.VirtualNetworkRule
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
+func NewDeletedManagedHsmListResultIterator(page DeletedManagedHsmListResultPage) DeletedManagedHsmListResultIterator {
+	return original.NewDeletedManagedHsmListResultIterator(page)
+}
+func NewDeletedManagedHsmListResultPage(cur DeletedManagedHsmListResult, getNextPage func(context.Context, DeletedManagedHsmListResult) (DeletedManagedHsmListResult, error)) DeletedManagedHsmListResultPage {
+	return original.NewDeletedManagedHsmListResultPage(cur, getNextPage)
+}
 func NewDeletedVaultListResultIterator(page DeletedVaultListResultPage) DeletedVaultListResultIterator {
 	return original.NewDeletedVaultListResultIterator(page)
 }
 func NewDeletedVaultListResultPage(cur DeletedVaultListResult, getNextPage func(context.Context, DeletedVaultListResult) (DeletedVaultListResult, error)) DeletedVaultListResultPage {
 	return original.NewDeletedVaultListResultPage(cur, getNextPage)
+}
+func NewKeyListResultIterator(page KeyListResultPage) KeyListResultIterator {
+	return original.NewKeyListResultIterator(page)
+}
+func NewKeyListResultPage(cur KeyListResult, getNextPage func(context.Context, KeyListResult) (KeyListResult, error)) KeyListResultPage {
+	return original.NewKeyListResultPage(cur, getNextPage)
+}
+func NewKeysClient(subscriptionID string) KeysClient {
+	return original.NewKeysClient(subscriptionID)
+}
+func NewKeysClientWithBaseURI(baseURI string, subscriptionID string) KeysClient {
+	return original.NewKeysClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMHSMPrivateEndpointConnectionsClient(subscriptionID string) MHSMPrivateEndpointConnectionsClient {
+	return original.NewMHSMPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewMHSMPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) MHSMPrivateEndpointConnectionsClient {
+	return original.NewMHSMPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMHSMPrivateEndpointConnectionsListResultIterator(page MHSMPrivateEndpointConnectionsListResultPage) MHSMPrivateEndpointConnectionsListResultIterator {
+	return original.NewMHSMPrivateEndpointConnectionsListResultIterator(page)
+}
+func NewMHSMPrivateEndpointConnectionsListResultPage(cur MHSMPrivateEndpointConnectionsListResult, getNextPage func(context.Context, MHSMPrivateEndpointConnectionsListResult) (MHSMPrivateEndpointConnectionsListResult, error)) MHSMPrivateEndpointConnectionsListResultPage {
+	return original.NewMHSMPrivateEndpointConnectionsListResultPage(cur, getNextPage)
+}
+func NewMHSMPrivateLinkResourcesClient(subscriptionID string) MHSMPrivateLinkResourcesClient {
+	return original.NewMHSMPrivateLinkResourcesClient(subscriptionID)
+}
+func NewMHSMPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) MHSMPrivateLinkResourcesClient {
+	return original.NewMHSMPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewManagedHsmListResultIterator(page ManagedHsmListResultPage) ManagedHsmListResultIterator {
 	return original.NewManagedHsmListResultIterator(page)
@@ -280,6 +450,12 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
+	return original.NewPrivateEndpointConnectionListResultIterator(page)
+}
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return original.NewPrivateEndpointConnectionListResultPage(cur, getNextPage)
+}
 func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
 	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
 }
@@ -297,6 +473,18 @@ func NewResourceListResultIterator(page ResourceListResultPage) ResourceListResu
 }
 func NewResourceListResultPage(cur ResourceListResult, getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
 	return original.NewResourceListResultPage(cur, getNextPage)
+}
+func NewSecretListResultIterator(page SecretListResultPage) SecretListResultIterator {
+	return original.NewSecretListResultIterator(page)
+}
+func NewSecretListResultPage(cur SecretListResult, getNextPage func(context.Context, SecretListResult) (SecretListResult, error)) SecretListResultPage {
+	return original.NewSecretListResultPage(cur, getNextPage)
+}
+func NewSecretsClient(subscriptionID string) SecretsClient {
+	return original.NewSecretsClient(subscriptionID)
+}
+func NewSecretsClientWithBaseURI(baseURI string, subscriptionID string) SecretsClient {
+	return original.NewSecretsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVaultListResultIterator(page VaultListResultPage) VaultListResultIterator {
 	return original.NewVaultListResultIterator(page)
@@ -316,14 +504,35 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleAccessPolicyUpdateKindValues() []AccessPolicyUpdateKind {
 	return original.PossibleAccessPolicyUpdateKindValues()
 }
+func PossibleActionsRequiredValues() []ActionsRequired {
+	return original.PossibleActionsRequiredValues()
+}
 func PossibleCertificatePermissionsValues() []CertificatePermissions {
 	return original.PossibleCertificatePermissionsValues()
 }
 func PossibleCreateModeValues() []CreateMode {
 	return original.PossibleCreateModeValues()
 }
+func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
+	return original.PossibleDeletionRecoveryLevelValues()
+}
+func PossibleIdentityTypeValues() []IdentityType {
+	return original.PossibleIdentityTypeValues()
+}
+func PossibleJSONWebKeyCurveNameValues() []JSONWebKeyCurveName {
+	return original.PossibleJSONWebKeyCurveNameValues()
+}
+func PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation {
+	return original.PossibleJSONWebKeyOperationValues()
+}
+func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
+	return original.PossibleJSONWebKeyTypeValues()
+}
 func PossibleKeyPermissionsValues() []KeyPermissions {
 	return original.PossibleKeyPermissionsValues()
+}
+func PossibleKeyRotationPolicyActionTypeValues() []KeyRotationPolicyActionType {
+	return original.PossibleKeyRotationPolicyActionTypeValues()
 }
 func PossibleManagedHsmSkuNameValues() []ManagedHsmSkuName {
 	return original.PossibleManagedHsmSkuNameValues()
@@ -343,6 +552,9 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
+}
 func PossibleReasonValues() []Reason {
 	return original.PossibleReasonValues()
 }
@@ -354,6 +566,9 @@ func PossibleSkuNameValues() []SkuName {
 }
 func PossibleStoragePermissionsValues() []StoragePermissions {
 	return original.PossibleStoragePermissionsValues()
+}
+func PossibleVaultProvisioningStateValues() []VaultProvisioningState {
+	return original.PossibleVaultProvisioningStateValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -29,7 +29,7 @@ const (
 	EventLevelWarning       EventLevel = original.EventLevelWarning
 )
 
-type ActionGroup = original.ActionGroup
+type ActionGroupForActivityLogAlerts = original.ActionGroupForActivityLogAlerts
 type ActionList = original.ActionList
 type AlertResource = original.AlertResource
 type AlertRuleAllOfCondition = original.AlertRuleAllOfCondition

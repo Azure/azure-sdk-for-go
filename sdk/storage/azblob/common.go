@@ -24,13 +24,13 @@ func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredentia
 // UserDelegationCredential contains an account's name and its user delegation key.
 type UserDelegationCredential = exported.UserDelegationCredential
 
-// NewUserDelegationCredential creates a new UserDelegationCredential using a Storage account's name and a user delegation key from it
-func NewUserDelegationCredential(accountName string, udk generated.UserDelegationKey) *UserDelegationCredential {
-	return exported.NewUserDelegationCredential(accountName, udk)
-}
-
 // UserDelegationKey contains UserDelegationKey.
 type UserDelegationKey = generated.UserDelegationKey
+
+// NewUserDelegationCredential creates a new UserDelegationCredential using a Storage account's name and a user delegation key from it
+func NewUserDelegationCredential(accountName string, udk UserDelegationKey) *UserDelegationCredential {
+	return exported.NewUserDelegationCredential(accountName, udk)
+}
 
 // URLParts object represents the components that make up an Azure Storage Container/Blob URL.
 // NOTE: Changing any SAS-related field requires computing a new SAS signature.

@@ -236,14 +236,12 @@ func (v BlobSignatureValues) SignWithUDK(userDelegationCredential *UserDelegatio
 	}
 
 	//User delegation SAS specific parameters
-	if udk != nil {
-		p.signedOID = *udk.SignedOID
-		p.signedTID = *udk.SignedTID
-		p.signedStart = *udk.SignedStart
-		p.signedExpiry = *udk.SignedExpiry
-		p.signedService = *udk.SignedService
-		p.signedVersion = *udk.SignedVersion
-	}
+	p.signedOID = *udk.SignedOID
+	p.signedTID = *udk.SignedTID
+	p.signedStart = *udk.SignedStart
+	p.signedExpiry = *udk.SignedExpiry
+	p.signedService = *udk.SignedService
+	p.signedVersion = *udk.SignedVersion
 
 	return p, nil
 }

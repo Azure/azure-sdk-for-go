@@ -23,9 +23,6 @@ func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredentia
 	return exported.NewSharedKeyCredential(accountName, accountKey)
 }
 
-// UserDelegationKey contains UserDelegationKey.
-type UserDelegationKey = generated.UserDelegationKey
-
 // Type Declarations ---------------------------------------------------------------------
 
 // AccessConditions identifies blob-specific access conditions which you optionally set.

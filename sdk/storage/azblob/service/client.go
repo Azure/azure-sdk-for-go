@@ -104,7 +104,7 @@ func GetUserDelegationCredential(serviceURL string, ctx context.Context, info ge
 	return NewUserDelegationCredential(url.Host, udk.UserDelegationKey), nil
 }
 
-func (s Client) GetUserDelegationKey(ctx context.Context, keyInfo generated.KeyInfo, options *GetUserDelegationKeyOptions) GetUserDelegationKeyResponse {
+func (s Client) GetUserDelegationKey(ctx context.Context, keyInfo KeyInfo, options *GetUserDelegationKeyOptions) GetUserDelegationKeyResponse {
 	resp, _ := s.generated().GetUserDelegationKey(ctx, keyInfo, options)
 	return resp
 }

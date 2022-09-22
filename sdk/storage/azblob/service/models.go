@@ -27,6 +27,8 @@ type UserDelegationCredential = exported.UserDelegationCredential
 // UserDelegationKey contains UserDelegationKey.
 type UserDelegationKey = generated.UserDelegationKey
 
+type KeyInfo = generated.KeyInfo
+
 // NewUserDelegationCredential creates a new UserDelegationCredential using a Storage account's name and a user delegation key from it
 func NewUserDelegationCredential(accountName string, udk UserDelegationKey) *UserDelegationCredential {
 	return exported.NewUserDelegationCredential(accountName, udk)

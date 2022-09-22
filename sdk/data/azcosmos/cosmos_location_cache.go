@@ -77,15 +77,15 @@ func (lc *LocationCache) update(writeLocations []AcctRegion, readLocations []Acc
 	lc.enableMultipleWriteLocations = enableMultipleWriteLocations
 	lc.RefreshStaleEndpts()
 	if readLocations != nil {
-
+		nextLoc.availReadEndptsByLocation, nextLoc.availReadLocations = lc.GetEndptsByLocation(readLocations)
 	}
 
 	if writeLocations != nil {
-
+		nextLoc.availWriteEndptsByLocation, nextLoc.availWriteLocations = lc.GetEndptsByLocation(writeLocations)
 	}
 
-	nextLoc.writeEndpts = lc.getPrefAvailableEndpts(nextLoc.availWriteEndptsByLocation, nextLoc.availWriteLocations, write, lc.defaultEndpt)
-	nextLoc.readEndpts = lc.getPrefAvailableEndpts(nextLoc.availReadEndptsByLocation, nextLoc.availReadLocations, read, nextLoc.writeEndpts[0])
+	nextLoc.writeEndpts = lc.GetPrefAvailableEndpts(nextLoc.availWriteEndptsByLocation, nextLoc.availWriteLocations, write, lc.defaultEndpt)
+	nextLoc.readEndpts = lc.GetPrefAvailableEndpts(nextLoc.availReadEndptsByLocation, nextLoc.availReadLocations, read, nextLoc.writeEndpts[0])
 	lc.lastUpdateTime = time.Now()
 	lc.locationInfo = nextLoc
 	lc.updateMutex.Unlock()
@@ -187,7 +187,7 @@ func (lc *LocationCache) IsEndptUnavailable(endpoint url.URL, ops opType) bool {
 	}
 }
 
-func (lc *LocationCache) getPrefAvailableEndpts(endptsByLoc map[string]url.URL, locs []string, availOps opType, fallbackEndpt url.URL) []url.URL {
+func (lc *LocationCache) GetPrefAvailableEndpts(endptsByLoc map[string]url.URL, locs []string, availOps opType, fallbackEndpt url.URL) []url.URL {
 	endpts := make([]url.URL, 0)
 	if lc.enableEndptDiscovery {
 		if lc.CanUseMultipleWriteLocs() || availOps&read != 0 {
@@ -216,6 +216,20 @@ func (lc *LocationCache) getPrefAvailableEndpts(endptsByLoc map[string]url.URL, 
 		endpts = append(endpts, fallbackEndpt)
 	}
 	return endpts
+}
+
+func (lc *LocationCache) GetEndptsByLocation(locs []AcctRegion) (map[string]url.URL, []string) {
+	endptsByLoc := make(map[string]url.URL)
+	parsedLocs := make([]string, 0)
+	for _, loc := range locs {
+		endpt := url.URL{Scheme: "https", Host: loc.endpoint}
+		if loc.name != "" {
+			endptsByLoc[loc.name] = endpt
+			parsedLocs = append(parsedLocs, loc.name)
+			// set service pt needed?
+		}
+	}
+	return endptsByLoc, parsedLocs
 }
 
 func NewdbdbAcctLocationsInfo(prefLocations []string, defaultEndpt url.URL) *dbAcctLocationsInfo {

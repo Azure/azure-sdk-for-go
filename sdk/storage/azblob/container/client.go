@@ -90,10 +90,6 @@ func (c *Client) sharedKey() *SharedKeyCredential {
 	return base.SharedKey((*base.Client[generated.ContainerClient])(c))
 }
 
-/*func (c *Client) userDelegationKey() *UserDelegationKey {
-	return base.UserDelegationKey((*base.Client[generated.ContainerClient])(c))
-}*/
-
 // URL returns the URL endpoint used by the Client object.
 func (c *Client) URL() string {
 	return c.generated().Endpoint()

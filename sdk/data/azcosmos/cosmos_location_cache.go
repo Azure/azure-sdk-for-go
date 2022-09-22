@@ -185,6 +185,37 @@ func (lc *LocationCache) IsEndptUnavailable(endpoint url.URL, ops opType) bool {
 	}
 }
 
+func (lc *LocationCache) getPrefAvailableEndpts(endptsByLoc map[string]url.URL, locs []string, availOps opType, fallbackEndpt url.URL) []url.URL {
+	endpts := make([]url.URL, 0)
+	if lc.enableEndptDiscovery {
+		if lc.CanUseMultipleWriteLocs() || availOps&read != 0 {
+			unavailEndpts := make([]url.URL, 0)
+			unavailEndpts = append(unavailEndpts, fallbackEndpt)
+			for _, loc := range lc.locationInfo.prefLocations {
+				if endpt, ok := endptsByLoc[loc]; ok && endpt != fallbackEndpt {
+					if lc.IsEndptUnavailable(endpt, availOps) {
+						unavailEndpts = append(unavailEndpts, endpt)
+					} else {
+						endpts = append(endpts, endpt)
+					}
+				}
+
+			}
+			endpts = append(endpts, unavailEndpts...)
+		} else {
+			for _, loc := range locs {
+				if endpt, ok := endptsByLoc[loc]; ok && loc != "" {
+					endpts = append(endpts, endpt)
+				}
+			}
+		}
+	}
+	if len(endpts) == 0 {
+		endpts = append(endpts, fallbackEndpt)
+	}
+	return endpts
+}
+
 func NewdbdbAcctLocationsInfo(prefLocations []string, defaultEndpt url.URL) *dbAcctLocationsInfo {
 	availWriteLocs := make([]string, 0)
 	availReadLocs := make([]string, 0)

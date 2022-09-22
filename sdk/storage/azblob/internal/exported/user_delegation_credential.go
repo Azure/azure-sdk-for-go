@@ -35,8 +35,8 @@ func (f *UserDelegationCredential) AccountName() string {
 	return f.Name
 }
 
-// ComputeHMAC
-func (f *UserDelegationCredential) ComputeHMACSHA256(message string) (string, error) {
+// computeHMACSHA256 generates a hash signature for an HTTP request or for a SAS.
+func (f *UserDelegationCredential) computeHMACSHA256(message string) (string, error) {
 	bytes, _ := base64.StdEncoding.DecodeString(*f.Key.Value)
 	h := hmac.New(sha256.New, bytes)
 	_, err := h.Write([]byte(message))
@@ -44,6 +44,16 @@ func (f *UserDelegationCredential) ComputeHMACSHA256(message string) (string, er
 }
 
 // GetUDKParams returns UserDelegationKey
-func (f *UserDelegationCredential) GetUDKParams() *generated.UserDelegationKey {
+func (f *UserDelegationCredential) getUDKParams() *UserDelegationKey {
 	return &f.Key
+}
+
+// ComputeUDCHMACSHA256 is a helper method for computing the signed string outside of this package.
+func ComputeUDCHMACSHA256(udc *UserDelegationCredential, message string) (string, error) {
+	return udc.computeHMACSHA256(message)
+}
+
+// GetUDKParams is a helper method for accessing the user delegation key parameters outside of this package.
+func GetUDKParams(udc *UserDelegationCredential) *UserDelegationKey {
+	return udc.getUDKParams()
 }

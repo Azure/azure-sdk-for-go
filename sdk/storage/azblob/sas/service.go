@@ -168,7 +168,7 @@ func (v BlobSignatureValues) SignWithUDK(userDelegationCredential *UserDelegatio
 
 	signedIdentifier := v.Identifier
 
-	udk := userDelegationCredential.GetUDKParams()
+	udk := exported.GetUDKParams(userDelegationCredential)
 
 	udkStart, udkExpiry, _ := formatTimesForSigning(*udk.SignedStart, *udk.SignedExpiry, time.Time{})
 	//I don't like this answer to combining the functions
@@ -204,7 +204,7 @@ func (v BlobSignatureValues) SignWithUDK(userDelegationCredential *UserDelegatio
 		v.ContentType},       // rsct
 		"\n")
 
-	signature, err := userDelegationCredential.ComputeHMACSHA256(stringToSign)
+	signature, err := exported.ComputeUDCHMACSHA256(userDelegationCredential, stringToSign)
 	if err != nil {
 		return QueryParameters{}, err
 	}

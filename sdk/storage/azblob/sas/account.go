@@ -121,7 +121,7 @@ func (v AccountSignatureValues) SignWithUDK(userDelegationCredential *UserDelega
 		""}, // That is right, the account SAS requires a terminating extra newline
 		"\n")
 
-	signature, err := userDelegationCredential.ComputeHMACSHA256(stringToSign)
+	signature, err := exported.ComputeUDCHMACSHA256(userDelegationCredential, stringToSign)
 	if err != nil {
 		return QueryParameters{}, err
 	}
@@ -142,17 +142,15 @@ func (v AccountSignatureValues) SignWithUDK(userDelegationCredential *UserDelega
 		signature: signature,
 	}
 
-	udk := userDelegationCredential.GetUDKParams()
+	udk := exported.GetUDKParams(userDelegationCredential)
 
 	//User delegation SAS specific parameters
-	if udk != nil {
-		p.signedOID = *udk.SignedOID
-		p.signedTID = *udk.SignedTID
-		p.signedStart = *udk.SignedStart
-		p.signedExpiry = *udk.SignedExpiry
-		p.signedService = *udk.SignedService
-		p.signedVersion = *udk.SignedVersion
-	}
+	p.signedOID = *udk.SignedOID
+	p.signedTID = *udk.SignedTID
+	p.signedStart = *udk.SignedStart
+	p.signedExpiry = *udk.SignedExpiry
+	p.signedService = *udk.SignedService
+	p.signedVersion = *udk.SignedVersion
 
 	return p, nil
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 0.8.1 (Unreleased)
+## 0.8.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.8.1 (2022-09-20)
+
+### Features Added
+* Added `ClientOptions.DisableChallengeResourceVerification`.
+  See https://aka.ms/azsdk/blog/vault-uri for more information.
 
 ## 0.8.0 (2022-09-12)
 

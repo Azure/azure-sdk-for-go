@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Volumes_BackupStatus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Volumes_BackupStatus.json
 func ExampleBackupsClient_GetStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,12 +28,7 @@ func ExampleBackupsClient_GetStatus() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetStatus(ctx,
-		"myRG",
-		"account1",
-		"pool1",
-		"volume1",
-		nil)
+	res, err := client.GetStatus(ctx, "myRG", "account1", "pool1", "volume1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -41,7 +36,7 @@ func ExampleBackupsClient_GetStatus() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Volumes_RestoreStatus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Volumes_RestoreStatus.json
 func ExampleBackupsClient_GetVolumeRestoreStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,12 +47,7 @@ func ExampleBackupsClient_GetVolumeRestoreStatus() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetVolumeRestoreStatus(ctx,
-		"myRG",
-		"account1",
-		"pool1",
-		"volume1",
-		nil)
+	res, err := client.GetVolumeRestoreStatus(ctx, "myRG", "account1", "pool1", "volume1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -65,7 +55,7 @@ func ExampleBackupsClient_GetVolumeRestoreStatus() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Backups_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Backups_List.json
 func ExampleBackupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,11 +66,7 @@ func ExampleBackupsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("myRG",
-		"account1",
-		"pool1",
-		"volume1",
-		nil)
+	pager := client.NewListPager("myRG", "account1", "pool1", "volume1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -93,7 +79,7 @@ func ExampleBackupsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Backups_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Backups_Get.json
 func ExampleBackupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,13 +90,7 @@ func ExampleBackupsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"myRG",
-		"account1",
-		"pool1",
-		"volume1",
-		"backup1",
-		nil)
+	res, err := client.Get(ctx, "myRG", "account1", "pool1", "volume1", "backup1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -118,7 +98,7 @@ func ExampleBackupsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Backups_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Backups_Create.json
 func ExampleBackupsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,19 +109,12 @@ func ExampleBackupsClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx,
-		"myRG",
-		"account1",
-		"pool1",
-		"volume1",
-		"backup1",
-		armnetapp.Backup{
-			Location: to.Ptr("eastus"),
-			Properties: &armnetapp.BackupProperties{
-				Label: to.Ptr("myLabel"),
-			},
+	poller, err := client.BeginCreate(ctx, "myRG", "account1", "pool1", "volume1", "backup1", armnetapp.Backup{
+		Location: to.Ptr("eastus"),
+		Properties: &armnetapp.BackupProperties{
+			Label: to.Ptr("myLabel"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -153,7 +126,7 @@ func ExampleBackupsClient_BeginCreate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Backups_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Backups_Update.json
 func ExampleBackupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,14 +137,7 @@ func ExampleBackupsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"myRG",
-		"account1",
-		"pool1",
-		"volume1",
-		"backup1",
-		armnetapp.BackupPatch{},
-		nil)
+	poller, err := client.BeginUpdate(ctx, "myRG", "account1", "pool1", "volume1", "backup1", armnetapp.BackupPatch{}, &armnetapp.BackupsClientBeginUpdateOptions{})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -183,7 +149,7 @@ func ExampleBackupsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Backups_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Backups_Delete.json
 func ExampleBackupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,13 +160,7 @@ func ExampleBackupsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"resourceGroup",
-		"accountName",
-		"poolName",
-		"volumeName",
-		"backupName",
-		nil)
+	poller, err := client.BeginDelete(ctx, "resourceGroup", "accountName", "poolName", "volumeName", "backupName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

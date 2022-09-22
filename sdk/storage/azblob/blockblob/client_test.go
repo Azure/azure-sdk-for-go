@@ -26,11 +26,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
+
+var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
 
 func Test(t *testing.T) {
 	suite.Run(t, &BlockBlobRecordedTestsSuite{})
@@ -2017,6 +2020,60 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTags() {
 	blobGetTagsResponse, err := bbClient.GetTags(context.Background(), nil)
 	_require.Nil(err)
 	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
+	blobTagsSet := blobGetTagsResponse.BlobTagSet
+	_require.NotNil(blobTagsSet)
+	_require.Len(blobTagsSet, 3)
+	for _, blobTag := range blobTagsSet {
+		_require.Equal(blobTagsMap[*blobTag.Key], *blobTag.Value)
+	}
+}
+
+// nolint
+func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	blobTagsMap := map[string]string{
+		"azure":    "bbClient",
+		"bbClient": "sdk",
+		"sdk":      "go",
+	}
+
+	contentSize := 4 * 1024 * 1024 // 4MB
+	r, _ := testcommon.GenerateData(contentSize)
+
+	_, err = bbClient.Upload(context.Background(), r, nil)
+	_require.Nil(err)
+	blobLeaseClient, err := lease.NewBlobClient(bbClient, &lease.BlobClientOptions{
+		LeaseID: proposedLeaseIDs[0],
+	})
+	_require.NoError(err)
+	ctx := context.Background()
+	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &lease.BlobAcquireOptions{Duration: to.Ptr[int32](60)})
+	_require.Nil(err)
+	_require.NotNil(acquireLeaseResponse.LeaseID)
+	_require.EqualValues(acquireLeaseResponse.LeaseID, blobLeaseClient.LeaseID())
+
+	_, err = bbClient.SetTags(ctx, blobTagsMap, nil)
+	_require.NotNil(err)
+
+	_, err = bbClient.SetTags(ctx, blobTagsMap, &blob.SetTagsOptions{AccessConditions: &blob.AccessConditions{
+		LeaseAccessConditions: &blob.LeaseAccessConditions{LeaseID: blobLeaseClient.LeaseID()}}})
+	_require.Nil(err)
+
+	_, err = bbClient.GetTags(ctx, nil)
+	_require.NotNil(err)
+
+	blobGetTagsResponse, err := bbClient.GetTags(ctx, &blob.GetTagsOptions{BlobAccessConditions: &blob.AccessConditions{
+		LeaseAccessConditions: &blob.LeaseAccessConditions{LeaseID: blobLeaseClient.LeaseID()}}})
+	_require.Nil(err)
+
 	blobTagsSet := blobGetTagsResponse.BlobTagSet
 	_require.NotNil(blobTagsSet)
 	_require.Len(blobTagsSet, 3)

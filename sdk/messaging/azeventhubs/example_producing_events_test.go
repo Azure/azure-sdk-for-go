@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 )
 
-func Example_producing() {
+func Example_producingEventsUsingProducerClient() {
 	eventHubNamespace := os.Getenv("EVENTHUB_NAMESPACE") // <ex: myeventhubnamespace.servicebus.windows.net>
 	eventHubName := os.Getenv("EVENTHUB_NAME")
 
@@ -36,18 +36,20 @@ func Example_producing() {
 
 	events := createEventsForSample()
 
-	// Other examples:
+	// Other options you might consider:
 	//
-	// sending a batch to a specific partition:
+	// Targeting a batch to a specific partition
+	//
 	// batch, err := producerClient.NewEventDataBatch(context.TODO(), &azeventhubs.NewEventDataBatchOptions{
 	// 	PartitionID: to.Ptr("0"),
 	// })
 	//
-	// targeting a batch using a partition key
+	// Targeting a batch using a partition key
+	//
 	// batch, err := producerClient.NewEventDataBatch(context.TODO(), &azeventhubs.NewEventDataBatchOptions{
 	// 	PartitionKey: to.Ptr("partition key"),
 	// })
-	newBatchOptions := &azeventhubs.NewEventDataBatchOptions{}
+	newBatchOptions := &azeventhubs.EventDataBatchOptions{}
 
 	batch, err := producerClient.NewEventDataBatch(context.TODO(), newBatchOptions)
 

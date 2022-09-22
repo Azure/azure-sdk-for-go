@@ -25,7 +25,6 @@ import (
 )
 
 const (
-	appServiceSuccessResp     = `{"access_token": "` + tokenValue + `", "expires_on": "1560974028", "resource": "https://vault.azure.net", "token_type": "Bearer", "client_id": "some-guid"}`
 	expiresOnIntResp          = `{"access_token": "new_token", "refresh_token": "", "expires_in": "", "expires_on": "1560974028", "not_before": "1560970130", "resource": "https://vault.azure.net", "token_type": "Bearer"}`
 	expiresOnNonStringIntResp = `{"access_token": "new_token", "refresh_token": "", "expires_in": "", "expires_on": 1560974028, "not_before": "1560970130", "resource": "https://vault.azure.net", "token_type": "Bearer"}`
 )
@@ -94,16 +93,7 @@ func TestManagedIdentityCredential_AzureArc(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if tk.Token != tokenValue {
-		t.Fatalf("unexpected token: %s", tk.Token)
-	}
-	if tk.ExpiresOn.Before(time.Now().UTC()) {
-		t.Fatal("GetToken returned an invalid expiration time")
-	}
+	testGetTokenSuccess(t, cred)
 }
 
 func TestManagedIdentityCredential_CloudShell(t *testing.T) {
@@ -131,19 +121,7 @@ func TestManagedIdentityCredential_CloudShell(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	tk, err := msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if tk.Token != tokenValue {
-		t.Fatalf("unexpected token value: %s", tk.Token)
-	}
-	srv.AppendResponse(mock.WithPredicate(validateReq), mock.WithStatusCode(http.StatusUnauthorized))
-	srv.AppendResponse()
-	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if err == nil {
-		t.Fatal("expected an error but didn't receive one")
-	}
+	testGetTokenSuccess(t, msiCred)
 }
 
 func TestManagedIdentityCredential_AppService(t *testing.T) {
@@ -185,7 +163,14 @@ func TestManagedIdentityCredential_AppService(t *testing.T) {
 		t.Run(fmt.Sprintf("%T", id), func(t *testing.T) {
 			srv, close := mock.NewServer()
 			defer close()
-			srv.AppendResponse(mock.WithPredicate(validateReq), mock.WithBody([]byte(appServiceSuccessResp)))
+			srv.AppendResponse(
+				mock.WithPredicate(validateReq),
+				mock.WithBody([]byte(fmt.Sprintf(
+					`{"access_token": "%s", "expires_on": "%d", "resource": "https://vault.azure.net", "token_type": "Bearer", "client_id": "some-guid"}`,
+					tokenValue,
+					time.Now().Add(time.Hour).Unix(),
+				))),
+			)
 			srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 			setEnvironmentVariables(t, map[string]string{identityEndpoint: srv.URL(), identityHeader: expectedHeader})
 			options := ManagedIdentityCredentialOptions{ID: id}
@@ -194,13 +179,7 @@ func TestManagedIdentityCredential_AppService(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-			if err != nil {
-				t.Fatal(err)
-			}
-			if tk.Token != tokenValue {
-				t.Fatalf(`unexpected token "%s"`, tk.Token)
-			}
+			testGetTokenSuccess(t, cred)
 		})
 	}
 }
@@ -283,8 +262,7 @@ func TestManagedIdentityCredential_CreateIMDSAuthRequest(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	cred.client.endpoint = imdsEndpoint
-	req, err := cred.client.createIMDSAuthRequest(context.Background(), ClientID(fakeClientID), []string{liveTestScope})
+	req, err := cred.mic.createIMDSAuthRequest(context.Background(), ClientID(fakeClientID), []string{liveTestScope})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -355,16 +333,12 @@ func TestManagedIdentityCredential_ScopesImmutable(t *testing.T) {
 }
 
 func TestManagedIdentityCredential_ResourceID_IMDS(t *testing.T) {
-	// setting a dummy value for MSI_ENDPOINT in order to avoid failure in the constructor
-	setEnvironmentVariables(t, map[string]string{msiEndpoint: "http://localhost"})
 	resID := "sample/resource/id"
 	cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ID: ResourceID(resID)})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	cred.client.msiType = msiTypeIMDS
-	cred.client.endpoint = imdsEndpoint
-	req, err := cred.client.createAuthRequest(context.Background(), cred.id, []string{liveTestScope})
+	req, err := cred.mic.createAuthRequest(context.Background(), cred.mic.id, []string{liveTestScope})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -435,16 +409,7 @@ func TestManagedIdentityCredential_IMDSLive(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if tk.Token == "" {
-		t.Fatal("GetToken returned an invalid token")
-	}
-	if tk.ExpiresOn.Before(time.Now().UTC()) {
-		t.Fatal("GetToken returned an invalid expiration time")
-	}
+	testGetTokenSuccess(t, cred)
 }
 
 func TestManagedIdentityCredential_IMDSClientIDLive(t *testing.T) {
@@ -463,16 +428,7 @@ func TestManagedIdentityCredential_IMDSClientIDLive(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if tk.Token == "" {
-		t.Fatal("GetToken returned an invalid token")
-	}
-	if tk.ExpiresOn.Before(time.Now().UTC()) {
-		t.Fatal("GetToken returned an invalid expiration time")
-	}
+	testGetTokenSuccess(t, cred)
 }
 
 func TestManagedIdentityCredential_IMDSResourceIDLive(t *testing.T) {
@@ -491,16 +447,7 @@ func TestManagedIdentityCredential_IMDSResourceIDLive(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if tk.Token == "" {
-		t.Fatal("GetToken returned an invalid token")
-	}
-	if tk.ExpiresOn.Before(time.Now().UTC()) {
-		t.Fatal("GetToken returned an invalid expiration time")
-	}
+	testGetTokenSuccess(t, cred)
 }
 
 func TestManagedIdentityCredential_IMDSTimeoutExceeded(t *testing.T) {
@@ -513,7 +460,7 @@ func TestManagedIdentityCredential_IMDSTimeoutExceeded(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	cred.client.imdsTimeout = time.Nanosecond
+	cred.mic.imdsTimeout = time.Nanosecond
 	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 	if _, ok := err.(*credentialUnavailableError); !ok {
 		t.Fatalf("expected credentialUnavailableError, received %T", err)
@@ -534,7 +481,7 @@ func TestManagedIdentityCredential_IMDSTimeoutSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	cred.client.imdsTimeout = time.Minute
+	cred.mic.imdsTimeout = time.Minute
 	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 	if err != nil {
 		t.Fatal(err)
@@ -542,10 +489,10 @@ func TestManagedIdentityCredential_IMDSTimeoutSuccess(t *testing.T) {
 	if tk.Token != tokenValue {
 		t.Fatalf(`got unexpected token "%s"`, tk.Token)
 	}
-	if !tk.ExpiresOn.After(time.Now().UTC()) {
-		t.Fatal("GetToken returned an invalid expiration time")
+	if v := time.Until(tk.ExpiresOn); v > tokenExpiresIn*time.Second || tokenExpiresIn-v > time.Second {
+		t.Fatalf("expected token to expire in about %d seconds but it expires in %f seconds", tokenExpiresIn, v.Seconds())
 	}
-	if cred.client.imdsTimeout > 0 {
+	if cred.mic.imdsTimeout > 0 {
 		t.Fatal("credential didn't remove IMDS timeout after receiving a response")
 	}
 }
@@ -574,14 +521,5 @@ func TestManagedIdentityCredential_ServiceFabric(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if tk.Token != tokenValue {
-		t.Fatalf(`got unexpected token "%s"`, tk.Token)
-	}
-	if !tk.ExpiresOn.After(time.Now().UTC()) {
-		t.Fatal("GetToken returned an invalid expiration time")
-	}
+	testGetTokenSuccess(t, cred)
 }

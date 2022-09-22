@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 )
 
-func Example_consuming_events() {
+func Example_consumingEventsUsingConsumerClient() {
 	eventHubNamespace := os.Getenv("EVENTHUB_NAMESPACE") // <ex: myeventhubnamespace.servicebus.windows.net>
 	eventHubName := os.Getenv("EVENTHUB_NAME")
 	eventHubPartitionID := os.Getenv("EVENTHUB_PARTITION")
@@ -36,20 +36,20 @@ func Example_consuming_events() {
 
 	defer consumerClient.Close(context.TODO())
 
-	subscription, err := consumerClient.NewPartitionClient(eventHubPartitionID, nil)
+	partitionClient, err := consumerClient.NewPartitionClient(eventHubPartitionID, nil)
 
 	if err != nil {
 		panic(err)
 	}
 
-	defer subscription.Close(context.TODO())
+	defer partitionClient.Close(context.TODO())
 
 	for {
 		// ReceiveEvents will wait until it either receives the # of events requested (100, in this call)
 		// or if the context is cancelled, in which case it'll return any messages it has received.
 		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 
-		events, err := subscription.ReceiveEvents(ctx, 100, nil)
+		events, err := partitionClient.ReceiveEvents(ctx, 100, nil)
 		cancel()
 
 		if err != nil {

@@ -20,8 +20,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 )
 
-// NewWebSocketConnArgs are passed to your web socket creation function (ClientOptions.NewWebSocketConn)
-type NewWebSocketConnArgs = exported.NewWebSocketConnArgs
+// WebSocketConnArgs are passed to your web socket creation function (ClientOptions.NewWebSocketConn)
+type WebSocketConnArgs = exported.WebSocketConnArgs
 
 // RetryOptions represent the options for retries.
 type RetryOptions = exported.RetryOptions
@@ -37,7 +37,7 @@ type ProducerClientOptions struct {
 
 	// NewWebSocketConn is a function that can create a net.Conn for use with websockets.
 	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
-	NewWebSocketConn func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error)
+	NewWebSocketConn func(ctx context.Context, args WebSocketConnArgs) (net.Conn, error)
 
 	// RetryOptions controls how often operations are retried from this client and any
 	// Receivers and Senders created from this client.
@@ -58,9 +58,13 @@ type ProducerClient struct {
 // to get event hub properties or partition properties.
 const anyPartitionID = ""
 
-// NewProducerClient creates a ProducerClient which uses an azcore.TokenCredential for authentication.
+// NewProducerClient creates a ProducerClient which uses an azcore.TokenCredential for authentication. You
+// MUST call [azeventhubs.ProducerClient.Close] on this client to avoid leaking resources.
+//
 // The fullyQualifiedNamespace is the Event Hubs namespace name (ex: myeventhub.servicebus.windows.net)
-// The credential is one of the credentials in the `github.com/Azure/azure-sdk-for-go/sdk/azidentity` package.
+// The credential is one of the credentials in the [azidentity] package.
+//
+// [azidentity]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azidentity
 func NewProducerClient(fullyQualifiedNamespace string, eventHub string, credential azcore.TokenCredential, options *ProducerClientOptions) (*ProducerClient, error) {
 	return newProducerClientImpl(producerClientCreds{
 		fullyQualifiedNamespace: fullyQualifiedNamespace,
@@ -69,15 +73,19 @@ func NewProducerClient(fullyQualifiedNamespace string, eventHub string, credenti
 	}, options)
 }
 
-// NewProducerClientFromConnectionString creates a ProducerClient from a connection string.
+// NewProducerClientFromConnectionString creates a ProducerClient from a connection string. You
+// MUST call [azeventhubs.ProducerClient.Close] on this client to avoid leaking resources.
 //
-// connectionString can be one of the following formats:
+// connectionString can be one of two formats - with or without an EntityPath key.
 //
-// Connection string, no EntityPath. In this case eventHub cannot be empty.
-// ex: Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>
+// When the connection string does not have an entity path, as shown below, the eventHub parameter cannot
+// be empty and should contain the name of your event hub.
 //
-// Connection string, has EntityPath. In this case eventHub must be empty.
-// ex: Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>
+//	Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>
+//
+// When the connection string DOES have an entity path, as shown below, the eventHub parameter must be empty.
+//
+//	Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=<key-name>;SharedAccessKey=<key>;EntityPath=<entity path>;
 func NewProducerClientFromConnectionString(connectionString string, eventHub string, options *ProducerClientOptions) (*ProducerClient, error) {
 	parsedConn, err := parseConn(connectionString, eventHub)
 
@@ -91,10 +99,10 @@ func NewProducerClientFromConnectionString(connectionString string, eventHub str
 	}, options)
 }
 
-// NewEventDataBatchOptions contains optional parameters for the NewEventDataBatch function
-type NewEventDataBatchOptions struct {
+// EventDataBatchOptions contains optional parameters for the NewEventDataBatch function
+type EventDataBatchOptions struct {
 	// MaxBytes overrides the max size (in bytes) for a batch.
-	// By default NewMessageBatch will use the max message size provided by the service.
+	// By default NewEventDataBatch will use the max message size provided by the service.
 	MaxBytes uint64
 
 	// PartitionKey is hashed to calculate the partition assignment. Messages and message
@@ -107,9 +115,15 @@ type NewEventDataBatchOptions struct {
 	PartitionID *string
 }
 
-// NewEventDataBatch can be used to create a batch that contain multiple events.
-// If the operation fails it can return an *azeventhubs.Error type if the failure is actionable.
-func (pc *ProducerClient) NewEventDataBatch(ctx context.Context, options *NewEventDataBatchOptions) (*EventDataBatch, error) {
+// NewEventDataBatch can be used to create an EventDataBatch, which can contain multiple
+// events.
+//
+// EventDataBatch contains logic to make sure that the it doesn't exceed the maximum size
+// for the Event Hubs link, using it's [azeventhubs.EventDataBatch.AddEventData] function.
+// A lower size limit can also be configured through the options.
+//
+// If the operation fails it can return an azeventhubs.Error type if the failure is actionable.
+func (pc *ProducerClient) NewEventDataBatch(ctx context.Context, options *EventDataBatchOptions) (*EventDataBatch, error) {
 	var batch *EventDataBatch
 
 	partitionID := anyPartitionID
@@ -172,7 +186,7 @@ func (pc *ProducerClient) GetEventHubProperties(ctx context.Context, options *Ge
 	return getEventHubProperties(ctx, pc.namespace, rpcLink.Link, pc.eventHub, options)
 }
 
-// Close closes the producer's AMQP links and the underlying AMQP connection.
+// Close releases resources for this client.
 func (pc *ProducerClient) Close(ctx context.Context) error {
 	if err := pc.links.Close(ctx); err != nil {
 		azlog.Writef(EventProducer, "Failed when closing links while shutting down producer client: %s", err.Error())

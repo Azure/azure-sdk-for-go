@@ -55,7 +55,7 @@ func TestFindScopeAndTenant(t *testing.T) {
 			Token:     "fake_token",
 			ExpiresOn: time.Now().Add(time.Hour),
 		}, nil
-	}))
+	}), nil)
 	resp := http.Response{}
 	resp.Header = http.Header{}
 
@@ -156,16 +156,25 @@ func TestFindScopeAndTenant(t *testing.T) {
 func TestResourceVerification(t *testing.T) {
 	for _, test := range []struct {
 		challenge, resource string
-		err                 bool
+		disableVerify, err  bool
 	}{
-		{authResource, "https://vault.azure.net", false},
-		{authScope, "https://vault.azure.net/.default", false},
+		// happy path: resource matches requested vault's host (vault.azure.net)
+		{challenge: authResource, resource: "https://vault.azure.net"},
+		{challenge: authScope, resource: "https://vault.azure.net/.default"},
+		{challenge: authResource, resource: "https://vault.azure.net", disableVerify: true},
+		{challenge: authScope, resource: "https://vault.azure.net/.default", disableVerify: true},
 
 		// error cases: resource/scope doesn't match the requested vault's host (vault.azure.net)
-		{authResource, "https://vault.azure.cn", true},
-		{authResource, "https://myvault.azure.net", true},
-		{authScope, "https://vault.azure.cn/.default", true},
-		{authScope, "https://myvault.azure.net/.default", true},
+		{challenge: authResource, resource: "https://vault.azure.cn", err: true},
+		{challenge: authResource, resource: "https://myvault.azure.net", err: true},
+		{challenge: authScope, resource: "https://vault.azure.cn/.default", err: true},
+		{challenge: authScope, resource: "https://myvault.azure.net/.default", err: true},
+
+		// the policy shouldn't return errors for the above error cases when verification is disabled
+		{challenge: authResource, resource: "https://vault.azure.cn", disableVerify: true},
+		{challenge: authResource, resource: "https://myvault.azure.net", disableVerify: true},
+		{challenge: authScope, resource: "https://vault.azure.cn/.default", disableVerify: true},
+		{challenge: authScope, resource: "https://myvault.azure.net/.default", disableVerify: true},
 	} {
 		t.Run(test.resource, func(t *testing.T) {
 			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
@@ -179,7 +188,7 @@ func TestResourceVerification(t *testing.T) {
 			cred := credentialFunc(func(context.Context, policy.TokenRequestOptions) (azcore.AccessToken, error) {
 				return azcore.AccessToken{Token: "***", ExpiresOn: time.Now().Add(time.Hour)}, nil
 			})
-			p := NewKeyVaultChallengePolicy(cred)
+			p := NewKeyVaultChallengePolicy(cred, &KeyVaultChallengePolicyOptions{DisableChallengeResourceVerification: test.disableVerify})
 			pl := runtime.NewPipeline("", "",
 				runtime.PipelineOptions{PerCall: []policy.Policy{p}},
 				&policy.ClientOptions{Transport: srv},
@@ -188,7 +197,7 @@ func TestResourceVerification(t *testing.T) {
 			require.NoError(t, err)
 			_, err = pl.Do(req)
 			if test.err {
-				expected := fmt.Sprintf(`the challenge resource "%s" doesn't match the requested domain`, test.resource)
+				expected := fmt.Sprintf(challengeMatchError, test.resource)
 				require.EqualError(t, err, expected)
 				if _, ok := err.(*challengePolicyError); !ok {
 					t.Fatalf("unexpected error type %T", err)

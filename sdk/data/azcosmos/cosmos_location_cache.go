@@ -63,7 +63,7 @@ type LocationCache struct {
 func NewLocationCache(prefLocations []string, defaultEndpt url.URL) *LocationCache {
 	return &LocationCache{
 		defaultEndpt:                  defaultEndpt,
-		locationInfo:                  *NewdbdbAcctLocationsInfo(prefLocations, defaultEndpt),
+		locationInfo:                  *NewdbAcctLocationsInfo(prefLocations, defaultEndpt),
 		locationUnavailabilityInfoMap: make(map[url.URL]locationUnavailabilityInfo),
 	}
 }
@@ -232,7 +232,7 @@ func (lc *LocationCache) GetEndptsByLocation(locs []AcctRegion) (map[string]url.
 	return endptsByLoc, parsedLocs
 }
 
-func NewdbdbAcctLocationsInfo(prefLocations []string, defaultEndpt url.URL) *dbAcctLocationsInfo {
+func NewdbAcctLocationsInfo(prefLocations []string, defaultEndpt url.URL) *dbAcctLocationsInfo {
 	availWriteLocs := make([]string, 0)
 	availReadLocs := make([]string, 0)
 	availWriteEndptsByLocation := make(map[string]url.URL)

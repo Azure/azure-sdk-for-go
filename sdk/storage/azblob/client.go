@@ -159,6 +159,6 @@ func (c *Client) DownloadStream(ctx context.Context, containerName string, blobN
 	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadStream(ctx, o)
 }
 
-func (c *Client) GetUserDelegationCredential(ctx context.Context, info service.KeyInfo, o *service.GetUserDelegationKeyOptions) (*service.UserDelegationCredential, error) {
-	return c.svc.GetUserDelegationCredential(ctx, info, o)
+func (c *Client) GetUserDelegationCredential(ctx context.Context, info service.KeyInfo, options *service.GetUserDelegationKeyOptions) (*service.UserDelegationCredential, error) {
+	return c.svc.GetUserDelegationCredential(ctx, info, options)
 }

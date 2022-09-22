@@ -190,7 +190,7 @@ func (v BlobSignatureValues) SignWithUDK(userDelegationCredential *UserDelegatio
 		v.Permissions,
 		startTime,
 		expiryTime,
-		getCanonicalName(userDelegationCredential.AccountName(), v.ContainerName, v.BlobName, v.Directory),
+		getCanonicalName(exported.GetAccountName(userDelegationCredential), v.ContainerName, v.BlobName, v.Directory),
 		signedIdentifier,
 		v.IPRange.String(),
 		string(v.Protocol),

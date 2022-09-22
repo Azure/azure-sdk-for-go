@@ -109,7 +109,7 @@ func (v AccountSignatureValues) SignWithUDK(userDelegationCredential *UserDelega
 	startTime, expiryTime, _ := formatTimesForSigning(v.StartTime, v.ExpiryTime, time.Time{})
 
 	stringToSign := strings.Join([]string{
-		userDelegationCredential.AccountName(),
+		exported.GetAccountName(userDelegationCredential),
 		v.Permissions,
 		v.Services,
 		v.ResourceTypes,

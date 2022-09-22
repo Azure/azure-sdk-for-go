@@ -102,6 +102,14 @@ The timespan can be the following string formats:
 <duration> such as "P1Y2M10DT2H30M" // 1 year, 2 months, 10 days, 2 hours, 20 minutes
 ```
 
+Examples of constructing a timespan string:
+```go
+
+```
+
+### Logs Workspace IDs
+
+
 ## Examples
 
 - [Logs query](#logs-query)
@@ -117,6 +125,8 @@ The timespan can be the following string formats:
   - [Metrics result structure](#metrics-result-structure)
 
 ### Logs query
+The example below shows a basic logs query using the QueryWorkspace method. QueryWorkspace's parameters are a [context][context], a [Log Analytics Workspace][log_analytics_workspace] ID string, a [Body](#logs-query-body-structure) struct, and a [LogsClientQueryWorkspaceOptions](#increase-wait-time-include-statistics-include-render-visualization) struct.
+
 ```go
 client := azquery.NewLogsClient(cred, nil)
 timespan := "2022-08-30/2022-08-31"
@@ -132,7 +142,7 @@ _ = res
 ```
 Body
 |---Query *string // Kusto Query
-|---Timespan *string // ISO8601 Standard Timespan
+|---Timespan *string // ISO8601 Standard Timespan- refer to timespan section for more info
 |---Workspaces []*string //Optional- additional workspaces to query
 ```
 
@@ -346,6 +356,8 @@ comments.
 [azure_sub]: https://azure.microsoft.com/free/
 [azure_monitor_create_using_portal]: https://docs.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
 [azure_monitor_overview]: https://docs.microsoft.com/azure/azure-monitor/overview
+[context]: https://pkg.go.dev/context
+[log_analytics_workspace]: https://learn.microsoft.com/en-us/azure/azure-monitor/logs/log-analytics-workspace-overview
 [time_intervals]: https://en.wikipedia.org/wiki/ISO_8601#Time_intervals
 
 [cla]: https://cla.microsoft.com

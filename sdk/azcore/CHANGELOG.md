@@ -8,6 +8,7 @@
 
 ### Bugs Fixed
 * Don't retry a request if the `Retry-After` delay is greater than the configured `RetryOptions.MaxRetryDelay`.
+* Remove empty path segments in `runtime.JoinPaths()`.
 
 ### Other Changes
 

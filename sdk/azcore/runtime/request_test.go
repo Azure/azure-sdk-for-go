@@ -553,7 +553,12 @@ func TestJoinPaths(t *testing.T) {
 	}
 
 	expected = "http://test.contoso.com/path/one/path/two/?qp1=abc&qp2=def"
-	if path := JoinPaths("http://test.contoso.com/?qp1=abc&qp2=def", "/path/one", "path/two"); path != expected {
+	if path := JoinPaths("http://test.contoso.com/?qp1=abc&qp2=def", "path/one", "path/two"); path != expected {
+		t.Fatalf("got %s, expected %s", path, expected)
+	}
+
+	expected = "http://test.contoso.com/path/one/clean/path/two/clean/path/three"
+	if path := JoinPaths("http://test.contoso.com", "/path/one//clean", "path/two/clean//", "//path//three"); path != expected {
 		t.Fatalf("got %s, expected %s", path, expected)
 	}
 }

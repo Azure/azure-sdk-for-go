@@ -59,6 +59,10 @@ func JoinPaths(root string, paths ...string) string {
 	for i := 0; i < len(paths); i++ {
 		root = strings.TrimRight(root, "/")
 		paths[i] = strings.TrimLeft(paths[i], "/")
+		// remove any empty path segments. this can happen when an
+		// optional path param is unspecified so its placeholder is
+		// replaced with the empty string.
+		paths[i] = strings.Replace(paths[i], "//", "/", -1)
 		root += "/" + paths[i]
 	}
 

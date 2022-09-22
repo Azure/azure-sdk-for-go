@@ -84,8 +84,10 @@ func (lc *LocationCache) update(writeLocations []AcctRegion, readLocations []Acc
 
 	}
 
-	//write/read endpts
+	nextLoc.writeEndpts = lc.getPrefAvailableEndpts(nextLoc.availWriteEndptsByLocation, nextLoc.availWriteLocations, write, lc.defaultEndpt)
+	nextLoc.readEndpts = lc.getPrefAvailableEndpts(nextLoc.availReadEndptsByLocation, nextLoc.availReadLocations, read, nextLoc.writeEndpts[0])
 	lc.lastUpdateTime = time.Now()
+	lc.locationInfo = nextLoc
 	lc.updateMutex.Unlock()
 }
 

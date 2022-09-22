@@ -34,8 +34,14 @@ func NewUserDelegationCredential(accountName string, udk UserDelegationKey) *Use
 	return exported.NewUserDelegationCredential(accountName, udk)
 }
 
-// GetUserDelegationKeyOptions contains request id and timeout
-type GetUserDelegationKeyOptions = generated.ServiceClientGetUserDelegationKeyOptions
+// GetUserDelegationKeyOptions contains optional parameters for Service.GetUserDelegationKey method
+type GetUserDelegationKeyOptions struct {
+	// placeholder for future options
+}
+
+func (o *GetUserDelegationKeyOptions) format() *generated.ServiceClientGetUserDelegationKeyOptions {
+	return nil
+}
 
 // AccessConditions identifies container-specific access conditions which you optionally set.
 type AccessConditions = exported.ContainerAccessConditions

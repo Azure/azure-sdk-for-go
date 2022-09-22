@@ -8,7 +8,6 @@ package azblob
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
 
@@ -19,17 +18,6 @@ type SharedKeyCredential = exported.SharedKeyCredential
 // storage account's name and either its primary or secondary key.
 func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
 	return exported.NewSharedKeyCredential(accountName, accountKey)
-}
-
-// UserDelegationCredential contains an account's name and its user delegation key.
-type UserDelegationCredential = exported.UserDelegationCredential
-
-// UserDelegationKey contains UserDelegationKey.
-type UserDelegationKey = generated.UserDelegationKey
-
-// NewUserDelegationCredential creates a new UserDelegationCredential using a Storage account's name and a user delegation key from it
-func NewUserDelegationCredential(accountName string, udk UserDelegationKey) *UserDelegationCredential {
-	return exported.NewUserDelegationCredential(accountName, udk)
 }
 
 // URLParts object represents the components that make up an Azure Storage Container/Blob URL.

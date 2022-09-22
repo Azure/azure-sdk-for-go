@@ -625,7 +625,7 @@ func (s *ServiceRecordedTestsSuite) TestUserDelegationSAS() {
 	}
 
 	// Get UserDelegationCredential
-	udc, err := service.GetUserDelegationCredential(svcClient.URL(), context.Background(), info, nil, nil)
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
 	_require.Nil(err)
 
 	csas, err := sas.AccountSignatureValues{

@@ -273,12 +273,12 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 		Expiry: to.Ptr(pastTime.UTC().Format(sas.TimeFormat)),
 	}
 
-	udc, err := service.GetUserDelegationCredential(svcClient.URL(), context.Background(), info, nil, nil)
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println("User Delegation Key has been created for ", udc.AccountName())
+	fmt.Println("User Delegation Key has been created for ", accountName)
 
 	// Create Account Signature Values with desired permissions and sign with user delegation credential
 	sasQueryParams, err := sas.AccountSignatureValues{
@@ -309,11 +309,11 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 
 	svcClient, err = azblob.NewClient("svcURL", cred, &clientOptionsAzBlob)
 
-	udc, err = service.GetUserDelegationCredential(svcClient.URL(), context.Background(), info, nil, nil)
+	udc, err = svcClient.GetUserDelegationCredential(context.Background(), info, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("User Delegation Key has been created for ", udc.AccountName())
+	fmt.Println("User Delegation Key has been created for ", accountName)
 
 	// Create Account Signature Values with desired permissions and sign with user delegation credential
 	sasQueryParams, err = sas.AccountSignatureValues{

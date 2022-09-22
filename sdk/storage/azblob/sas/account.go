@@ -90,8 +90,8 @@ func (v AccountSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKey
 	return p, nil
 }
 
-// SignWithUDK uses an account's UserDelegationKey to sign this signature values to produce the proper SAS query parameters.
-func (v AccountSignatureValues) SignWithUDK(userDelegationCredential *UserDelegationCredential) (QueryParameters, error) {
+// SignWithUserDelegation uses an account's UserDelegationKey to sign this signature values to produce the proper SAS query parameters.
+func (v AccountSignatureValues) SignWithUserDelegation(userDelegationCredential *UserDelegationCredential) (QueryParameters, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/Constructing-an-Account-SAS
 	if v.ExpiryTime.IsZero() || v.Permissions == "" || v.ResourceTypes == "" || v.Services == "" {
 		return QueryParameters{}, errors.New("account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")

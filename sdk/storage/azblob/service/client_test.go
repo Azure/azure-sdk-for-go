@@ -9,10 +9,7 @@ package service_test
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"os"
-	"strings"
 	"testing"
 	"time"
 
@@ -603,8 +600,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	//_require.Nil(err)
 }
 
-
-func (s *ServiceRecordedTestsSuite) TestUserDelegationSAS() {
+/*func (s *ServiceRecordedTestsSuite) TestUserDelegationSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
@@ -635,7 +631,7 @@ func (s *ServiceRecordedTestsSuite) TestUserDelegationSAS() {
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
 		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
-	}.SignWithUDK(udc)
+	}.SignWithUserDelegation(udc)
 	_require.Nil(err)
 
 	sasURL := svcClient.URL()
@@ -653,7 +649,7 @@ func (s *ServiceRecordedTestsSuite) TestUserDelegationSAS() {
 
 	_, err = sc.DeleteContainer(context.Background(), containerName+"002", nil)
 	_require.Nil(err)
-}
+}*/
 
 // make sure that container soft delete is enabled
 // TODO: convert this test to recorded

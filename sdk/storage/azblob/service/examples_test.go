@@ -321,7 +321,7 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
 		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
-	}.SignWithUDK(udc)
+	}.SignWithUserDelegation(udc)
 	handleError(err)
 
 	sasURL := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, sasQueryParams.Encode())
@@ -356,7 +356,7 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
 		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
-	}.SignWithUDK(udc)
+	}.SignWithUserDelegation(udc)
 	handleError(err)
 
 	sasURL = fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, sasQueryParams.Encode())

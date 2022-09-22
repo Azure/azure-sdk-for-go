@@ -134,8 +134,8 @@ func (v BlobSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCre
 	return p, nil
 }
 
-// SignWithUDK uses an account's UserDelegationCredential to sign this signature values to produce the proper SAS query parameters.
-func (v BlobSignatureValues) SignWithUDK(userDelegationCredential *UserDelegationCredential) (QueryParameters, error) {
+// SignWithUserDelegation uses an account's UserDelegationCredential to sign this signature values to produce the proper SAS query parameters.
+func (v BlobSignatureValues) SignWithUserDelegation(userDelegationCredential *UserDelegationCredential) (QueryParameters, error) {
 	if userDelegationCredential == nil {
 		return QueryParameters{}, fmt.Errorf("cannot sign SAS query without User Delegation Key")
 	}

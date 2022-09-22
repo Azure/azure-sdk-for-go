@@ -102,7 +102,7 @@ The timespan can be the following string formats:
 <duration> such as "P1Y2M10DT2H30M" // 1 year, 2 months, 10 days, 2 hours, 20 minutes
 ```
 
-Examples of constructing a timespan string:
+Examples of constructing a timespan string from the Go [time][time_go] package:
 ```go
 
 ```
@@ -358,6 +358,7 @@ comments.
 [azure_monitor_overview]: https://docs.microsoft.com/azure/azure-monitor/overview
 [context]: https://pkg.go.dev/context
 [log_analytics_workspace]: https://learn.microsoft.com/en-us/azure/azure-monitor/logs/log-analytics-workspace-overview
+[time_go]: https://pkg.go.dev/time
 [time_intervals]: https://en.wikipedia.org/wiki/ISO_8601#Time_intervals
 
 [cla]: https://cla.microsoft.com

@@ -129,6 +129,40 @@ func Example_service_Client_DeleteContainer() {
 	handleError(err)
 }
 
+func Example_service_Client_RestoreContainer() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	handleError(err)
+	serviceClient, err := service.NewClient(serviceURL, cred, nil)
+	handleError(err)
+
+	listOptions := service.ListContainersOptions{
+		Include: service.ListContainersInclude{
+			Metadata: true, // Include Metadata
+			Deleted:  true, // Include deleted containers in the result as well
+		},
+	}
+	pager := serviceClient.NewListContainersPager(&listOptions)
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.TODO())
+		if err != nil {
+			log.Fatal(err)
+		}
+		for _, cont := range resp.ContainerItems {
+			if *cont.Deleted {
+				_, err = serviceClient.RestoreContainer(context.TODO(), *cont.Name, *cont.Version, nil)
+				handleError(err)
+			}
+		}
+	}
+}
+
 func Example_service_Client_ListContainers() {
 	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
 	if !ok {

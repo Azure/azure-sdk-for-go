@@ -599,3 +599,64 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	//_, err = containerClient2.Create(ctx, nil)
 	//_require.Nil(err)
 }
+
+// make sure that container soft delete is enabled
+// TODO: convert this test to recorded
+func (s *ServiceUnrecordedTestsSuite) TestContainerRestore() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	containerName := testcommon.GenerateContainerName(testName)
+
+	_, err = svcClient.CreateContainer(context.Background(), containerName, nil)
+	_require.Nil(err)
+
+	_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
+	_require.Nil(err)
+
+	prefix := testcommon.ContainerPrefix
+	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersInclude{Metadata: true, Deleted: true}}
+	pager := svcClient.NewListContainersPager(&listOptions)
+
+	contRestored := false
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		for _, cont := range resp.ContainerItems {
+			_require.NotNil(cont.Name)
+
+			if *cont.Deleted && *cont.Name == containerName {
+				contRestored = true
+				_, err = svcClient.RestoreContainer(context.Background(), containerName, *cont.Version, nil)
+				_require.Nil(err)
+				break
+			}
+		}
+		if contRestored {
+			break
+		}
+	}
+
+	_require.Equal(contRestored, true)
+
+	_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
+	_require.Nil(err)
+}
+
+// TODO: convert this test to recorded
+func (s *ServiceUnrecordedTestsSuite) TestContainerRestoreFailures() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	containerName := testcommon.GenerateContainerName(testName)
+
+	_, err = svcClient.RestoreContainer(context.Background(), containerName, "", nil)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MissingRequiredHeader)
+
+	_, err = svcClient.RestoreContainer(context.Background(), "", "", &service.RestoreContainerOptions{})
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MissingRequiredHeader)
+}

@@ -34,12 +34,12 @@ func NewUserDelegationCredential(accountName string, udk UserDelegationKey) *Use
 	return exported.NewUserDelegationCredential(accountName, udk)
 }
 
-// GetUserDelegationKeyOptions contains optional parameters for Service.GetUserDelegationKey method
-type GetUserDelegationKeyOptions struct {
+// GetUserDelegationCredentialOptions contains optional parameters for Service.GetUserDelegationKey method
+type GetUserDelegationCredentialOptions struct {
 	// placeholder for future options
 }
 
-func (o *GetUserDelegationKeyOptions) format() *generated.ServiceClientGetUserDelegationKeyOptions {
+func (o *GetUserDelegationCredentialOptions) format() *generated.ServiceClientGetUserDelegationKeyOptions {
 	return nil
 }
 

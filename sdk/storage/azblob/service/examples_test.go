@@ -307,7 +307,7 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 		Expiry: to.Ptr(pastTime.UTC().Format(sas.TimeFormat)),
 	}
 
-	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	udc, err := service.GetUserDelegationCredential(svcClient.URL(), context.Background(), info, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -343,7 +343,7 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 
 	svcClient, err = azblob.NewClient("svcURL", cred, &clientOptionsAzBlob)
 
-	udc, err = svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	udc, err = service.GetUserDelegationCredential(svcClient.URL(), context.Background(), info, nil)
 	if err != nil {
 		log.Fatal(err)
 	}

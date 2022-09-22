@@ -16,8 +16,8 @@ import (
 // NewUserDelegationCredential creates a new UserDelegationCredential using a Storage account's Name and a user delegation Key from it
 func NewUserDelegationCredential(accountName string, udk UserDelegationKey) *UserDelegationCredential {
 	return &UserDelegationCredential{
-		Name: accountName,
-		Key:  udk,
+		accountName:       accountName,
+		userDelegationKey: udk,
 	}
 }
 
@@ -26,18 +26,18 @@ type UserDelegationKey = generated.UserDelegationKey
 
 // UserDelegationCredential contains an account's name and its user delegation key.
 type UserDelegationCredential struct {
-	Name string
-	Key  UserDelegationKey
+	accountName       string
+	userDelegationKey UserDelegationKey
 }
 
 // AccountName returns the Storage account's Name
 func (f *UserDelegationCredential) AccountName() string {
-	return f.Name
+	return f.accountName
 }
 
 // computeHMACSHA256 generates a hash signature for an HTTP request or for a SAS.
 func (f *UserDelegationCredential) computeHMACSHA256(message string) (string, error) {
-	bytes, _ := base64.StdEncoding.DecodeString(*f.Key.Value)
+	bytes, _ := base64.StdEncoding.DecodeString(*f.userDelegationKey.Value)
 	h := hmac.New(sha256.New, bytes)
 	_, err := h.Write([]byte(message))
 	return base64.StdEncoding.EncodeToString(h.Sum(nil)), err
@@ -45,7 +45,7 @@ func (f *UserDelegationCredential) computeHMACSHA256(message string) (string, er
 
 // GetUDKParams returns UserDelegationKey
 func (f *UserDelegationCredential) getUDKParams() *UserDelegationKey {
-	return &f.Key
+	return &f.userDelegationKey
 }
 
 // ComputeUDCHMACSHA256 is a helper method for computing the signed string outside of this package.

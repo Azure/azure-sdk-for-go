@@ -273,11 +273,32 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 		Expiry: to.Ptr(pastTime.UTC().Format(sas.TimeFormat)),
 	}
 
-	_, err = service.GetUserDelegationCredential(svcClient.URL(), context.Background(), info, nil, nil)
+	udc, err := service.GetUserDelegationCredential(svcClient.URL(), context.Background(), info, nil, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("User Delegation Key has been created for ", accountName)
+
+	fmt.Println("User Delegation Key has been created for ", udc.AccountName())
+
+	// Create Account Signature Values with desired permissions and sign with user delegation credential
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithUDK(udc)
+	handleError(err)
+
+	sasURL := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, sasQueryParams.Encode())
+
+	// This URL can be used to authenticate requests now
+	serviceClient, err := service.NewClientWithNoCredential(sasURL, nil)
+	handleError(err)
+
+	// You can also break a blob URL up into it's constituent parts
+	blobURLParts, _ := blob.ParseURL(serviceClient.URL())
+	fmt.Printf("SAS expiry time = %s\n", blobURLParts.SAS.ExpiryTime())
 
 	// Create Managed Identity (OAuth) Credentials using Resource ID
 	optsResourceID := azidentity.ManagedIdentityCredentialOptions{ClientOptions: clientOptions, ID: azidentity.ResourceID("/subscriptions/...")}
@@ -288,9 +309,30 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 
 	svcClient, err = azblob.NewClient("svcURL", cred, &clientOptionsAzBlob)
 
-	_, err = service.GetUserDelegationCredential(svcClient.URL(), context.Background(), info, nil, nil)
+	udc, err = service.GetUserDelegationCredential(svcClient.URL(), context.Background(), info, nil, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("User Delegation Key has been created for ", accountName)
+	fmt.Println("User Delegation Key has been created for ", udc.AccountName())
+
+	// Create Account Signature Values with desired permissions and sign with user delegation credential
+	sasQueryParams, err = sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithUDK(udc)
+	handleError(err)
+
+	sasURL = fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, sasQueryParams.Encode())
+
+	// This URL can be used to authenticate requests now
+	serviceClient, err = service.NewClientWithNoCredential(sasURL, nil)
+	handleError(err)
+
+	// You can also break a blob URL up into it's constituent parts
+	blobURLParts, _ = blob.ParseURL(serviceClient.URL())
+	fmt.Printf("SAS expiry time = %s\n", blobURLParts.SAS.ExpiryTime())
+
 }

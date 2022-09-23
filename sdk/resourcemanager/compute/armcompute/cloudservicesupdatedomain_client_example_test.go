@@ -27,7 +27,7 @@ func ExampleCloudServicesUpdateDomainClient_BeginWalkUpdateDomain() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginWalkUpdateDomain(ctx, "ConstosoRG", "{cs-name}", 1, &armcompute.CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions{Parameters: nil})
+	poller, err := client.BeginWalkUpdateDomain(ctx, "ConstosoRG", "{cs-name}", 1, armcompute.UpdateDomain{},nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

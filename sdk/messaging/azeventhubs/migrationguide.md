@@ -24,11 +24,11 @@ consumerClient, err := azeventhubs.NewConsumerClient(/* arguments elided for exa
 defer consumerClient.Close(context.TODO())    
 
 // this call will lazily create a set of AMQP links using the consumerClient's TCP connection.
-partClient0, err := consumerClient.NewPartitionClient("0")
+partClient0, err := consumerClient.NewPartitionClient("0", nil)
 defer partClient0.Close(context.TODO())     // will close the AMQP link, not the connection
 
 // this call will also lazily create a set of AMQP links using the consumerClient's TCP connection.
-partClient1, err := consumerClient.NewPartitionClient("1")
+partClient1, err := consumerClient.NewPartitionClient("1", nil)
 defer partClient1.Close(context.TODO())     // will close the AMQP link, not the connection
 ```
 
@@ -40,8 +40,8 @@ producerClient, err := azeventhubs.NewProducerClient(/* arguments elided for exa
 defer producerClient.Close(context.TODO())
 
 // these calls will lazily create a set of AMQP links using the producerClient's TCP connection.
-producerClient.SendBatch(context.TODO(), eventDataBatchForPartition0, nil)
-producerClient.SendBatch(context.TODO(), eventDataBatchForPartition1, nil)
+producerClient.SendEventBatch(context.TODO(), eventDataBatchForPartition0, nil)
+producerClient.SendEventBatch(context.TODO(), eventDataBatchForPartition1, nil)
 ```
 
 This was not possible in the older package.

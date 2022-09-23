@@ -289,15 +289,14 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
 	// Create Managed Identity (OAuth) Credentials using Client ID
-	clientOptions := azcore.ClientOptions{}
+	clientOptions := azcore.ClientOptions{} // Fill clientOptions as needed
 	optsClientID := azidentity.ManagedIdentityCredentialOptions{ClientOptions: clientOptions, ID: azidentity.ClientID("7cf7db0d-...")}
 	cred, err := azidentity.NewManagedIdentityCredential(&optsClientID)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	clientOptionsAzBlob := azblob.ClientOptions{} // Same as azcore.ClientOptions using azblob instead
 
 	svcClient, err := azblob.NewClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, &clientOptionsAzBlob)
+	handleError(err)
 
 	// Set current and past time and create key
 	currentTime := time.Now().UTC().Add(-10 * time.Second)
@@ -308,9 +307,7 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 	}
 
 	udc, err := service.GetUserDelegationCredential(svcClient.URL(), context.Background(), info, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	fmt.Println("User Delegation Key has been created for ", accountName)
 
@@ -337,16 +334,13 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 	// Create Managed Identity (OAuth) Credentials using Resource ID
 	optsResourceID := azidentity.ManagedIdentityCredentialOptions{ClientOptions: clientOptions, ID: azidentity.ResourceID("/subscriptions/...")}
 	cred, err = azidentity.NewManagedIdentityCredential(&optsResourceID)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	svcClient, err = azblob.NewClient("svcURL", cred, &clientOptionsAzBlob)
+	handleError(err)
 
 	udc, err = service.GetUserDelegationCredential(svcClient.URL(), context.Background(), info, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	fmt.Println("User Delegation Key has been created for ", accountName)
 
 	// Create Account Signature Values with desired permissions and sign with user delegation credential

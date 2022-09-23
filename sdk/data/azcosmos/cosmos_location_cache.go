@@ -40,6 +40,7 @@ type AcctRegion struct {
 	endpoint string // make url?
 	props    map[string]interface{}
 }
+
 type AcctProperties struct {
 	readRegions                  []AcctRegion
 	writeRegions                 []AcctRegion

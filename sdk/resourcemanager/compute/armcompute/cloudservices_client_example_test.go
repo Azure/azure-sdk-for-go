@@ -71,7 +71,7 @@ func ExampleCloudServicesClient_BeginCreateOrUpdate_createNewCloudServiceWithMul
 			},
 			UpgradeMode: to.Ptr(armcompute.CloudServiceUpgradeModeAuto),
 		},
-	},nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -129,7 +129,7 @@ func ExampleCloudServicesClient_BeginCreateOrUpdate_createNewCloudServiceWithSin
 			},
 			UpgradeMode: to.Ptr(armcompute.CloudServiceUpgradeModeAuto),
 		},
-	},nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -199,7 +199,7 @@ func ExampleCloudServicesClient_BeginCreateOrUpdate_createNewCloudServiceWithSin
 			},
 			UpgradeMode: to.Ptr(armcompute.CloudServiceUpgradeModeAuto),
 		},
-	},nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -271,7 +271,7 @@ func ExampleCloudServicesClient_BeginCreateOrUpdate_createNewCloudServiceWithSin
 			},
 			UpgradeMode: to.Ptr(armcompute.CloudServiceUpgradeModeAuto),
 		},
-	},nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -298,7 +298,7 @@ func ExampleCloudServicesClient_BeginUpdate() {
 		Tags: map[string]*string{
 			"Documentation": to.Ptr("RestAPI"),
 		},
-	},nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

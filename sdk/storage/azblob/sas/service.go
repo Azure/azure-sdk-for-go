@@ -47,9 +47,8 @@ func getDirectoryDepth(path string) string {
 	return fmt.Sprint(strings.Count(path, "/") + 1)
 }
 
-// Sign uses an account's StorageAccountCredential to sign this signature values to produce the proper SAS query parameters.
-// See: StorageAccountCredential. Compatible with both UserDelegationCredential and SharedKeyCredential
-func (v BlobSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (QueryParameters, error) {
+// SignWithSharedKey uses an account's SharedKeyCredential to sign this signature values to produce the proper SAS query parameters.
+func (v BlobSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCredential) (QueryParameters, error) {
 	if sharedKeyCredential == nil {
 		return QueryParameters{}, fmt.Errorf("cannot sign SAS query without Shared Key Credential")
 	}
@@ -81,25 +80,6 @@ func (v BlobSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (Que
 	startTime, expiryTime, snapshotTime := formatTimesForSigning(v.StartTime, v.ExpiryTime, v.SnapshotTime)
 
 	signedIdentifier := v.Identifier
-
-	//udk := sharedKeyCredential.getUDKParams()
-	//
-	//if udk != nil {
-	//	udkStart, udkExpiry, _ := FormatTimesForSASSigning(udk.SignedStart, udk.SignedExpiry, time.Time{})
-	//	//I don't like this answer to combining the functions
-	//	//But because signedIdentifier and the user delegation key strings share a place, this is an _OK_ way to do it.
-	//	signedIdentifier = strings.Join([]string{
-	//		udk.SignedOID,
-	//		udk.SignedTID,
-	//		udkStart,
-	//		udkExpiry,
-	//		udk.SignedService,
-	//		udk.SignedVersion,
-	//		v.PreauthorizedAgentObjectId,
-	//		v.AgentObjectID,
-	//		v.CorrelationId,
-	//	}, "\n")
-	//}
 
 	// String to sign: http://msdn.microsoft.com/en-us/library/azure/dn140255.aspx
 	stringToSign := strings.Join([]string{
@@ -151,15 +131,115 @@ func (v BlobSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (Que
 		signature: signature,
 	}
 
-	////User delegation SAS specific parameters
-	//if udk != nil {
-	//	p.signedOID = udk.SignedOID
-	//	p.signedTID = udk.SignedTID
-	//	p.signedStart = udk.SignedStart
-	//	p.signedExpiry = udk.SignedExpiry
-	//	p.signedService = udk.SignedService
-	//	p.signedVersion = udk.SignedVersion
-	//}
+	return p, nil
+}
+
+// SignWithUserDelegation uses an account's UserDelegationCredential to sign this signature values to produce the proper SAS query parameters.
+func (v BlobSignatureValues) SignWithUserDelegation(userDelegationCredential *UserDelegationCredential) (QueryParameters, error) {
+	if userDelegationCredential == nil {
+		return QueryParameters{}, fmt.Errorf("cannot sign SAS query without User Delegation Key")
+	}
+
+	//Make sure the permission characters are in the correct order
+	perms, err := parseBlobPermissions(v.Permissions)
+	if err != nil {
+		return QueryParameters{}, err
+	}
+	v.Permissions = perms.String()
+
+	resource := "c"
+	if !v.SnapshotTime.IsZero() {
+		resource = "bs"
+	} else if v.BlobVersion != "" {
+		resource = "bv"
+	} else if v.Directory != "" {
+		resource = "d"
+		v.BlobName = ""
+	} else if v.BlobName == "" {
+		// do nothing
+	} else {
+		resource = "b"
+	}
+
+	if v.Version == "" {
+		v.Version = Version
+	}
+	startTime, expiryTime, snapshotTime := formatTimesForSigning(v.StartTime, v.ExpiryTime, v.SnapshotTime)
+
+	udk := exported.GetUDKParams(userDelegationCredential)
+
+	udkStart, udkExpiry, _ := formatTimesForSigning(*udk.SignedStart, *udk.SignedExpiry, time.Time{})
+	//I don't like this answer to combining the functions
+	//But because signedIdentifier and the user delegation key strings share a place, this is an _OK_ way to do it.
+	signedIdentifier := strings.Join([]string{
+		*udk.SignedOID,
+		*udk.SignedTID,
+		udkStart,
+		udkExpiry,
+		*udk.SignedService,
+		*udk.SignedVersion,
+		v.PreauthorizedAgentObjectId,
+		v.AgentObjectId,
+		v.CorrelationId,
+	}, "\n")
+
+	// String to sign: http://msdn.microsoft.com/en-us/library/azure/dn140255.aspx
+	stringToSign := strings.Join([]string{
+		v.Permissions,
+		startTime,
+		expiryTime,
+		getCanonicalName(exported.GetAccountName(userDelegationCredential), v.ContainerName, v.BlobName, v.Directory),
+		signedIdentifier,
+		v.IPRange.String(),
+		string(v.Protocol),
+		v.Version,
+		resource,
+		snapshotTime,         // signed timestamp
+		v.CacheControl,       // rscc
+		v.ContentDisposition, // rscd
+		v.ContentEncoding,    // rsce
+		v.ContentLanguage,    // rscl
+		v.ContentType},       // rsct
+		"\n")
+
+	signature, err := exported.ComputeUDCHMACSHA256(userDelegationCredential, stringToSign)
+	if err != nil {
+		return QueryParameters{}, err
+	}
+
+	p := QueryParameters{
+		// Common SAS parameters
+		version:     v.Version,
+		protocol:    v.Protocol,
+		startTime:   v.StartTime,
+		expiryTime:  v.ExpiryTime,
+		permissions: v.Permissions,
+		ipRange:     v.IPRange,
+
+		// Container/Blob-specific SAS parameters
+		resource:                   resource,
+		identifier:                 v.Identifier,
+		cacheControl:               v.CacheControl,
+		contentDisposition:         v.ContentDisposition,
+		contentEncoding:            v.ContentEncoding,
+		contentLanguage:            v.ContentLanguage,
+		contentType:                v.ContentType,
+		snapshotTime:               v.SnapshotTime,
+		signedDirectoryDepth:       getDirectoryDepth(v.Directory),
+		preauthorizedAgentObjectID: v.PreauthorizedAgentObjectId,
+		agentObjectID:              v.AgentObjectId,
+		correlationID:              v.CorrelationId,
+		// Calculated SAS signature
+		signature: signature,
+	}
+
+	//User delegation SAS specific parameters
+	p.signedOID = *udk.SignedOID
+	p.signedTID = *udk.SignedTID
+	p.signedStart = *udk.SignedStart
+	p.signedExpiry = *udk.SignedExpiry
+	p.signedService = *udk.SignedService
+	p.signedVersion = *udk.SignedVersion
 
 	return p, nil
 }

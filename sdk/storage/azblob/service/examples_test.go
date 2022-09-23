@@ -9,6 +9,8 @@ package service_test
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"log"
 	"os"
 	"time"
@@ -267,7 +269,7 @@ func Example_service_SASSignatureValues_Sign() {
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
 		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
-	}.Sign(credential)
+	}.SignWithSharedKey(credential)
 	handleError(err)
 
 	sasURL := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, sasQueryParams.Encode())
@@ -279,4 +281,86 @@ func Example_service_SASSignatureValues_Sign() {
 	// You can also break a blob URL up into it's constituent parts
 	blobURLParts, _ := blob.ParseURL(serviceClient.URL())
 	fmt.Printf("SAS expiry time = %s\n", blobURLParts.SAS.ExpiryTime())
+}
+
+func Example_service_Client_NewClientWithUserDelegationCredential() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	// Create Managed Identity (OAuth) Credentials using Client ID
+	clientOptions := azcore.ClientOptions{} // Fill clientOptions as needed
+	optsClientID := azidentity.ManagedIdentityCredentialOptions{ClientOptions: clientOptions, ID: azidentity.ClientID("7cf7db0d-...")}
+	cred, err := azidentity.NewManagedIdentityCredential(&optsClientID)
+	handleError(err)
+	clientOptionsService := service.ClientOptions{} // Same as azcore.ClientOptions using service instead
+
+	svcClient, err := service.NewClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, &clientOptionsService)
+	handleError(err)
+
+	// Set current and past time and create key
+	currentTime := time.Now().UTC().Add(-10 * time.Second)
+	pastTime := currentTime.Add(48 * time.Hour)
+	info := generated.KeyInfo{
+		Start:  to.Ptr(currentTime.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(pastTime.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	handleError(err)
+
+	fmt.Println("User Delegation Key has been created for ", accountName)
+
+	// Create Account Signature Values with desired permissions and sign with user delegation credential
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithUserDelegation(udc)
+	handleError(err)
+
+	sasURL := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, sasQueryParams.Encode())
+
+	// This URL can be used to authenticate requests now
+	serviceClient, err := service.NewClientWithNoCredential(sasURL, nil)
+	handleError(err)
+
+	// You can also break a blob URL up into it's constituent parts
+	blobURLParts, _ := blob.ParseURL(serviceClient.URL())
+	fmt.Printf("SAS expiry time = %s\n", blobURLParts.SAS.ExpiryTime())
+
+	// Create Managed Identity (OAuth) Credentials using Resource ID
+	optsResourceID := azidentity.ManagedIdentityCredentialOptions{ClientOptions: clientOptions, ID: azidentity.ResourceID("/subscriptions/...")}
+	cred, err = azidentity.NewManagedIdentityCredential(&optsResourceID)
+	handleError(err)
+
+	svcClient, err = service.NewClient("svcURL", cred, &clientOptionsService)
+	handleError(err)
+
+	udc, err = svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	handleError(err)
+	fmt.Println("User Delegation Key has been created for ", accountName)
+
+	// Create Account Signature Values with desired permissions and sign with user delegation credential
+	sasQueryParams, err = sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithUserDelegation(udc)
+	handleError(err)
+
+	sasURL = fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, sasQueryParams.Encode())
+
+	// This URL can be used to authenticate requests now
+	serviceClient, err = service.NewClientWithNoCredential(sasURL, nil)
+	handleError(err)
+
+	// You can also break a blob URL up into it's constituent parts
+	blobURLParts, _ = blob.ParseURL(serviceClient.URL())
+	fmt.Printf("SAS expiry time = %s\n", blobURLParts.SAS.ExpiryTime())
+
 }

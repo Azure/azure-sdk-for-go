@@ -166,14 +166,12 @@ func (v BlobSignatureValues) SignWithUserDelegation(userDelegationCredential *Us
 	}
 	startTime, expiryTime, snapshotTime := formatTimesForSigning(v.StartTime, v.ExpiryTime, v.SnapshotTime)
 
-	signedIdentifier := v.Identifier
-
 	udk := exported.GetUDKParams(userDelegationCredential)
 
 	udkStart, udkExpiry, _ := formatTimesForSigning(*udk.SignedStart, *udk.SignedExpiry, time.Time{})
 	//I don't like this answer to combining the functions
 	//But because signedIdentifier and the user delegation key strings share a place, this is an _OK_ way to do it.
-	signedIdentifier = strings.Join([]string{
+	signedIdentifier := strings.Join([]string{
 		*udk.SignedOID,
 		*udk.SignedTID,
 		udkStart,

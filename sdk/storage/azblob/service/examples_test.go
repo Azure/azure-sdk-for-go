@@ -293,9 +293,9 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 	optsClientID := azidentity.ManagedIdentityCredentialOptions{ClientOptions: clientOptions, ID: azidentity.ClientID("7cf7db0d-...")}
 	cred, err := azidentity.NewManagedIdentityCredential(&optsClientID)
 	handleError(err)
-	clientOptionsAzBlob := azblob.ClientOptions{} // Same as azcore.ClientOptions using azblob instead
+	clientOptionsService := service.ClientOptions{} // Same as azcore.ClientOptions using service instead
 
-	svcClient, err := azblob.NewClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, &clientOptionsAzBlob)
+	svcClient, err := service.NewClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, &clientOptionsService)
 	handleError(err)
 
 	// Set current and past time and create key
@@ -306,7 +306,7 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 		Expiry: to.Ptr(pastTime.UTC().Format(sas.TimeFormat)),
 	}
 
-	udc, err := service.GetUserDelegationCredential(svcClient.URL(), context.Background(), info, nil)
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
 	handleError(err)
 
 	fmt.Println("User Delegation Key has been created for ", accountName)
@@ -336,10 +336,10 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 	cred, err = azidentity.NewManagedIdentityCredential(&optsResourceID)
 	handleError(err)
 
-	svcClient, err = azblob.NewClient("svcURL", cred, &clientOptionsAzBlob)
+	svcClient, err = service.NewClient("svcURL", cred, &clientOptionsService)
 	handleError(err)
 
-	udc, err = service.GetUserDelegationCredential(svcClient.URL(), context.Background(), info, nil)
+	udc, err = svcClient.GetUserDelegationCredential(context.Background(), info, nil)
 	handleError(err)
 	fmt.Println("User Delegation Key has been created for ", accountName)
 

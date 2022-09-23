@@ -85,16 +85,14 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 
 // GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceURL object.
 // OAuth is required for this call, as well as any role that can delegate access to the storage account.
-func GetUserDelegationCredential(serviceURL string, ctx context.Context, info KeyInfo, o *GetUserDelegationCredentialOptions) (*UserDelegationCredential, error) {
-	url, err := blob.ParseURL(serviceURL)
+func (s *Client) GetUserDelegationCredential(ctx context.Context, info KeyInfo, o *GetUserDelegationCredentialOptions) (*UserDelegationCredential, error) {
+	url, err := blob.ParseURL(s.URL())
 	if err != nil {
 		return nil, err
 	}
-	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, nil)
-	sc := generated.NewServiceClient(serviceURL, pl)
 
-	getUserDelegationCredentialOptions := o.format()
-	udk, err := sc.GetUserDelegationKey(ctx, info, getUserDelegationCredentialOptions)
+	getUserDelegationKeyOptions := o.format()
+	udk, err := s.generated().GetUserDelegationKey(ctx, info, getUserDelegationKeyOptions)
 	if err != nil {
 		return nil, err
 	}

@@ -78,6 +78,30 @@ func TestGetLocation(t *testing.T) {
 	}
 	expected, actual := dbAcct.writeRegions[0].name, lc.GetLocation(defaultEndpt)
 	if expected != actual {
-		t.Errorf("Expected GetLocation to return %s, but was %s", expected, actual)
+		t.Errorf("Expected GetLocation to return First Write Region %s, but was %s", expected, actual)
+	}
+
+	for _, region := range dbAcct.writeRegions {
+		url, err := url.Parse(region.endpoint)
+		if err != nil {
+			t.Errorf("Failed to parse endpoint %s, %s", region.endpoint, err)
+			continue
+		}
+		expected, actual = region.name, lc.GetLocation(*url)
+		if expected != actual {
+			t.Errorf("Expected GetLocation to return Write Region %s, but was %s", expected, actual)
+		}
+	}
+
+	for _, region := range dbAcct.readRegions {
+		url, err := url.Parse(region.endpoint)
+		if err != nil {
+			t.Errorf("Failed to parse endpoint %s, %s", region.endpoint, err)
+			continue
+		}
+		expected, actual = region.name, lc.GetLocation(*url)
+		if expected != actual {
+			t.Errorf("Expected GetLocation to return Read Region %s, but was %s", expected, actual)
+		}
 	}
 }

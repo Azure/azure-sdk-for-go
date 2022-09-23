@@ -25,7 +25,7 @@ func ExecuteGoGenerate(path string) error {
 
 // execute `pwsh Invoke-MgmtTestgen` command and fetch result
 func ExecuteExampleGenerate(path, packagePath string) error {
-	cmd := exec.Command("pwsh", "../../../../eng/scripts/Invoke-MgmtTestgen.ps1", "-skipBuild", "-cleanGenerated", "-format", "-tidy", "-generateExample", packagePath)
+	cmd := exec.Command("pwsh", "../../../../eng/scripts/Invoke-MgmtTestgen.ps1", "-skipBuild", "-cleanGenerated", "-format", "-tidy", "-generateExample", "-alwaysSetBodyParamRequired", packagePath)
 	cmd.Dir = path
 	output, err := cmd.CombinedOutput()
 	log.Printf("Result of `pwsh Invoke-MgmtTestgen` execution: \n%s", string(output))

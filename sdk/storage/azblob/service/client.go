@@ -97,7 +97,7 @@ func (s *Client) GetUserDelegationCredential(ctx context.Context, info KeyInfo, 
 		return nil, err
 	}
 
-	return NewUserDelegationCredential(strings.Split(url.Host, ".")[0], udk.UserDelegationKey), nil
+	return exported.NewUserDelegationCredential(strings.Split(url.Host, ".")[0], udk.UserDelegationKey), nil
 }
 
 func (s *Client) generated() *generated.ServiceClient {

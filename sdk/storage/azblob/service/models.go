@@ -30,11 +30,6 @@ type UserDelegationKey = generated.UserDelegationKey
 // KeyInfo contains KeyInfo struct.
 type KeyInfo = generated.KeyInfo
 
-// NewUserDelegationCredential creates a new UserDelegationCredential using a Storage account's name and a user delegation key from it
-func NewUserDelegationCredential(accountName string, udk UserDelegationKey) *UserDelegationCredential {
-	return exported.NewUserDelegationCredential(accountName, udk)
-}
-
 // GetUserDelegationCredentialOptions contains optional parameters for Service.GetUserDelegationKey method
 type GetUserDelegationCredentialOptions struct {
 	// placeholder for future options

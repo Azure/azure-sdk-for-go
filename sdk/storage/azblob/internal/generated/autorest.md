@@ -290,3 +290,15 @@ directive:
       replace(/SignedOid\s+\*string/g, `SignedOID *string`).
       replace(/SignedTid\s+\*string/g, `SignedTID *string`);
 ```
+
+### Fixing Typo with StorageErrorCodeIncrementalCopyOfEarlierVersionSnapshotNotAllowed
+
+``` yaml
+directive:
+- from: zz_constants.go
+  where: $
+  transform: >-
+    return $.
+      replace(/StorageErrorCodeIncrementalCopyOfEralierVersionSnapshotNotAllowed\t+\StorageErrorCode\s+=\s+\"IncrementalCopyOfEralierVersionSnapshotNotAllowed"\n, /StorageErrorCodeIncrementalCopyOfEarlierVersionSnapshotNotAllowed\t+\StorageErrorCode\s+=\s+\"IncrementalCopyOfEarlierVersionSnapshotNotAllowed"\
+      replace(/StorageErrorCodeIncrementalCopyOfEarlierVersionSnapshotNotAllowed/g, /StorageErrorCodeIncrementalCopyOfEarlierVersionSnapshotNotAllowed/g)
+```

@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/BackupPolicies_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/BackupPolicies_List.json
 func ExampleBackupPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,9 +28,7 @@ func ExampleBackupPoliciesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("myRG",
-		"account1",
-		nil)
+	pager := client.NewListPager("myRG", "account1", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,7 +41,7 @@ func ExampleBackupPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/BackupPolicies_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/BackupPolicies_Get.json
 func ExampleBackupPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,11 +52,7 @@ func ExampleBackupPoliciesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"myRG",
-		"account1",
-		"backupPolicyName",
-		nil)
+	res, err := client.Get(ctx, "myRG", "account1", "backupPolicyName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,7 +60,7 @@ func ExampleBackupPoliciesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/BackupPolicies_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/BackupPolicies_Create.json
 func ExampleBackupPoliciesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,20 +71,15 @@ func ExampleBackupPoliciesClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx,
-		"myRG",
-		"account1",
-		"backupPolicyName",
-		armnetapp.BackupPolicy{
-			Location: to.Ptr("westus"),
-			Properties: &armnetapp.BackupPolicyProperties{
-				DailyBackupsToKeep:   to.Ptr[int32](10),
-				Enabled:              to.Ptr(true),
-				MonthlyBackupsToKeep: to.Ptr[int32](10),
-				WeeklyBackupsToKeep:  to.Ptr[int32](10),
-			},
+	poller, err := client.BeginCreate(ctx, "myRG", "account1", "backupPolicyName", armnetapp.BackupPolicy{
+		Location: to.Ptr("westus"),
+		Properties: &armnetapp.BackupPolicyProperties{
+			DailyBackupsToKeep:   to.Ptr[int32](10),
+			Enabled:              to.Ptr(true),
+			MonthlyBackupsToKeep: to.Ptr[int32](10),
+			WeeklyBackupsToKeep:  to.Ptr[int32](10),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -102,7 +91,7 @@ func ExampleBackupPoliciesClient_BeginCreate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/BackupPolicies_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/BackupPolicies_Update.json
 func ExampleBackupPoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,20 +102,15 @@ func ExampleBackupPoliciesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"myRG",
-		"account1",
-		"backupPolicyName",
-		armnetapp.BackupPolicyPatch{
-			Location: to.Ptr("westus"),
-			Properties: &armnetapp.BackupPolicyProperties{
-				DailyBackupsToKeep:   to.Ptr[int32](5),
-				Enabled:              to.Ptr(false),
-				MonthlyBackupsToKeep: to.Ptr[int32](10),
-				WeeklyBackupsToKeep:  to.Ptr[int32](10),
-			},
+	poller, err := client.BeginUpdate(ctx, "myRG", "account1", "backupPolicyName", armnetapp.BackupPolicyPatch{
+		Location: to.Ptr("westus"),
+		Properties: &armnetapp.BackupPolicyProperties{
+			DailyBackupsToKeep:   to.Ptr[int32](5),
+			Enabled:              to.Ptr(false),
+			MonthlyBackupsToKeep: to.Ptr[int32](10),
+			WeeklyBackupsToKeep:  to.Ptr[int32](10),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -138,7 +122,7 @@ func ExampleBackupPoliciesClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/BackupPolicies_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/BackupPolicies_Delete.json
 func ExampleBackupPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,11 +133,7 @@ func ExampleBackupPoliciesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"resourceGroup",
-		"accountName",
-		"backupPolicyName",
-		nil)
+	poller, err := client.BeginDelete(ctx, "resourceGroup", "accountName", "backupPolicyName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

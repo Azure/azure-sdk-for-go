@@ -104,8 +104,8 @@ type downloadOptions struct {
 	CpkInfo      *CpkInfo
 	CpkScopeInfo *CpkScopeInfo
 
-	// Parallelism indicates the maximum number of blocks to download in parallel (0=default)
-	Parallelism uint16
+	// Concurrency indicates the maximum number of blocks to download in parallel (0=default)
+	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
 	RetryReaderOptionsPerBlock RetryReaderOptions
@@ -154,8 +154,8 @@ type DownloadBufferOptions struct {
 	// CpkScopeInfo contains a group of parameters for client provided encryption scope.
 	CpkScopeInfo *CpkScopeInfo
 
-	// Parallelism indicates the maximum number of blocks to download in parallel (0=default)
-	Parallelism uint16
+	// Concurrency indicates the maximum number of blocks to download in parallel (0=default)
+	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
 	RetryReaderOptionsPerBlock RetryReaderOptions
@@ -179,8 +179,8 @@ type DownloadFileOptions struct {
 	CpkInfo      *CpkInfo
 	CpkScopeInfo *CpkScopeInfo
 
-	// Parallelism indicates the maximum number of blocks to download in parallel.  The default value is 5.
-	Parallelism uint16
+	// Concurrency indicates the maximum number of blocks to download in parallel.  The default value is 5.
+	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
 	RetryReaderOptionsPerBlock RetryReaderOptions

@@ -29,8 +29,8 @@ type UploadResponse = blockblob.CommitBlockListResponse
 // DownloadStreamResponse wraps AutoRest generated BlobDownloadResponse and helps to provide info for retry.
 type DownloadStreamResponse = blob.DownloadStreamResponse
 
-// ListBlobsResponse contains the response from method container.Client.ListBlobFlatSegment.
-type ListBlobsResponse = container.ListBlobsFlatResponse
+// ListBlobsFlatResponse contains the response from method container.Client.ListBlobFlatSegment.
+type ListBlobsFlatResponse = container.ListBlobsFlatResponse
 
 // ListContainersResponse contains the response from method service.Client.ListContainersSegment.
 type ListContainersResponse = service.ListContainersResponse

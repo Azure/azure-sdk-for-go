@@ -119,7 +119,7 @@ func sendEventsToPartition(ctx context.Context, producerClient *azeventhubs.Prod
 
 	extraBytes := make([]byte, numExtraBytes)
 
-	batch, err := producerClient.NewEventDataBatch(context.Background(), &azeventhubs.NewEventDataBatchOptions{
+	batch, err := producerClient.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
 		PartitionID: &partitionID,
 	})
 
@@ -143,16 +143,16 @@ func sendEventsToPartition(ctx context.Context, producerClient *azeventhubs.Prod
 		err := batch.AddEventData(ed, nil)
 
 		if errors.Is(err, azeventhubs.ErrEventDataTooLarge) {
-			if batch.NumMessages() == 0 {
+			if batch.NumEvents() == 0 {
 				return azeventhubs.StartPosition{}, errors.New("single event was too large to fit into batch")
 			}
 
-			log.Printf("[%s] Sending batch with %d messages", partitionID, batch.NumMessages())
+			log.Printf("[%s] Sending batch with %d messages", partitionID, batch.NumEvents())
 			if err := producerClient.SendEventBatch(context.Background(), batch, nil); err != nil {
 				return azeventhubs.StartPosition{}, err
 			}
 
-			tempBatch, err := producerClient.NewEventDataBatch(context.Background(), &azeventhubs.NewEventDataBatchOptions{
+			tempBatch, err := producerClient.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
 				PartitionID: &partitionID,
 			})
 
@@ -167,8 +167,8 @@ func sendEventsToPartition(ctx context.Context, producerClient *azeventhubs.Prod
 		}
 	}
 
-	if batch.NumMessages() > 0 {
-		log.Printf("[%s] Sending last batch with %d messages", partitionID, batch.NumMessages())
+	if batch.NumEvents() > 0 {
+		log.Printf("[%s] Sending last batch with %d messages", partitionID, batch.NumEvents())
 		if err := producerClient.SendEventBatch(ctx, batch, nil); err != nil {
 			return azeventhubs.StartPosition{}, err
 		}
@@ -197,7 +197,7 @@ func sendEventsToPartition(ctx context.Context, producerClient *azeventhubs.Prod
 	return sp, nil
 }
 
-func initCheckpointStore(ctx context.Context, client propertiesClient, baseAddress azeventhubs.CheckpointStoreAddress, cps azeventhubs.CheckpointStore) error {
+func initCheckpointStore(ctx context.Context, client propertiesClient, baseCheckpoint azeventhubs.Checkpoint, cps azeventhubs.CheckpointStore) error {
 	hubProps, err := client.GetEventHubProperties(ctx, nil)
 
 	if err != nil {
@@ -211,23 +211,18 @@ func initCheckpointStore(ctx context.Context, client propertiesClient, baseAddre
 			return err
 		}
 
-		newAddress := baseAddress
-		newAddress.PartitionID = partitionID
-
-		var checkpointData azeventhubs.CheckpointData
+		newCheckpoint := baseCheckpoint
+		newCheckpoint.PartitionID = partitionID
 
 		if partProps.IsEmpty {
-			checkpointData.Offset = to.Ptr[int64](-1)
-			checkpointData.SequenceNumber = to.Ptr[int64](0)
+			newCheckpoint.Offset = to.Ptr[int64](-1)
+			newCheckpoint.SequenceNumber = to.Ptr[int64](0)
 		} else {
-			checkpointData.Offset = &partProps.LastEnqueuedOffset
-			checkpointData.SequenceNumber = &partProps.LastEnqueuedSequenceNumber
+			newCheckpoint.Offset = &partProps.LastEnqueuedOffset
+			newCheckpoint.SequenceNumber = &partProps.LastEnqueuedSequenceNumber
 		}
 
-		err = cps.UpdateCheckpoint(ctx, azeventhubs.Checkpoint{
-			CheckpointStoreAddress: newAddress,
-			CheckpointData:         checkpointData,
-		}, nil)
+		err = cps.UpdateCheckpoint(ctx, newCheckpoint, nil)
 
 		if err != nil {
 			return err

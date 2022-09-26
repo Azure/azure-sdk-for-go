@@ -78,9 +78,9 @@ func TestDefaultAzureCredential_UserAssignedIdentity(t *testing.T) {
 				t.Fatal(err)
 			}
 			for _, c := range cred.chain.sources {
-				if mic, ok := c.(*ManagedIdentityCredential); ok {
-					if mic.id != ID {
-						t.Fatalf(`expected %v, got "%v"`, ID, mic.id)
+				if m, ok := c.(*ManagedIdentityCredential); ok {
+					if actual := m.mic.id; actual != ID {
+						t.Fatalf(`expected "%s", got "%v"`, ID, actual)
 					}
 					return
 				}

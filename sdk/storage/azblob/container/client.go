@@ -312,7 +312,7 @@ func (c *Client) GetSASURL(permissions sas.ContainerPermissions, start time.Time
 		Permissions:   permissions.String(),
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
-	}.Sign(c.sharedKey())
+	}.SignWithSharedKey(c.sharedKey())
 	if err != nil {
 		return "", err
 	}

@@ -1,15 +1,25 @@
 # Release History
 
-## 0.6.0 (Unreleased)
+## 0.7.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
-* `ParseID()` no longer appends a trailing slash to vault URLs
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.7.0 (2022-09-20)
+
+### Breaking Changes
+* Added `*KeyVaultChallengePolicyOptions` parameter to `NewKeyVaultChallengePolicy`
+
+## 0.6.0 (2022-09-12)
+
+### Breaking Changes
+* Verify the challenge resource matches the vault domain. See https://aka.ms/azsdk/blog/vault-uri for more information.
+* `ParseID()` no longer appends a trailing slash to vault URLs
 
 ## 0.5.0 (2022-05-12)
 

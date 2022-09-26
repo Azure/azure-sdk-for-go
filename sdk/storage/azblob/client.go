@@ -111,10 +111,10 @@ func (c *Client) DeleteBlob(ctx context.Context, containerName string, blobName 
 	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).Delete(ctx, o)
 }
 
-// NewListBlobsPager returns a pager for blobs starting from the specified Marker. Use an empty
+// NewListBlobsFlatPager returns a pager for blobs starting from the specified Marker. Use an empty
 // Marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-blobs.
-func (c *Client) NewListBlobsPager(containerName string, o *ListBlobsOptions) *runtime.Pager[ListBlobsResponse] {
+func (c *Client) NewListBlobsFlatPager(containerName string, o *ListBlobsFlatOptions) *runtime.Pager[ListBlobsFlatResponse] {
 	return c.svc.NewContainerClient(containerName).NewListBlobsFlatPager(o)
 }
 

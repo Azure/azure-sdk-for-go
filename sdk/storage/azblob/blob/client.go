@@ -255,7 +255,7 @@ func (b *Client) GetSASURL(permissions sas.BlobPermissions, start time.Time, exp
 
 		StartTime:  start.UTC(),
 		ExpiryTime: expiry.UTC(),
-	}.Sign(b.sharedKey())
+	}.SignWithSharedKey(b.sharedKey())
 
 	if err != nil {
 		return "", err
@@ -302,7 +302,7 @@ func (b *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 		OperationName: "downloadBlobToWriterAt",
 		TransferSize:  count,
 		ChunkSize:     o.BlockSize,
-		Parallelism:   o.Parallelism,
+		Concurrency:   o.Concurrency,
 		Operation: func(chunkStart int64, count int64, ctx context.Context) error {
 
 			downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{

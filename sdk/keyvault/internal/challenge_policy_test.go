@@ -15,6 +15,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -53,7 +55,7 @@ func TestFindScopeAndTenant(t *testing.T) {
 			Token:     "fake_token",
 			ExpiresOn: time.Now().Add(time.Hour),
 		}, nil
-	}))
+	}), nil)
 	resp := http.Response{}
 	resp.Header = http.Header{}
 
@@ -61,7 +63,10 @@ func TestFindScopeAndTenant(t *testing.T) {
 		"WWW-Authenticate",
 		fmt.Sprintf(authResource, fakeTenant, mhsmResource),
 	)
-	err := p.findScopeAndTenant(&resp)
+	req, err := http.NewRequest("GET", "https://42.managedhsm.azure.net", nil)
+	require.NoError(t, err)
+	resp.Request = req
+	err = p.findScopeAndTenant(&resp, req)
 	require.NoError(t, err)
 	if *p.scope != mhsmScope {
 		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, mhsmScope)
@@ -72,9 +77,25 @@ func TestFindScopeAndTenant(t *testing.T) {
 
 	resp.Header.Set(
 		"WWW-Authenticate",
+		fmt.Sprintf(resourceScopeAuth, mhsmResource, mhsmScope, fakeTenant),
+	)
+	err = p.findScopeAndTenant(&resp, req)
+	require.NoError(t, err)
+	if *p.scope != mhsmScope {
+		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, "https://vault.azure.net/.default")
+	}
+	if *p.tenantID != fakeTenant {
+		t.Fatalf("tenant ID was not properly parsed, got %s, expected %s", *p.tenantID, fakeTenant)
+	}
+
+	resp.Header.Set(
+		"WWW-Authenticate",
 		fmt.Sprintf(authResourceScope, fakeTenant, resource, scope),
 	)
-	err = p.findScopeAndTenant(&resp)
+	req, err = http.NewRequest("GET", "https://42.vault.azure.net", nil)
+	require.NoError(t, err)
+	resp.Request = req
+	err = p.findScopeAndTenant(&resp, req)
 	require.NoError(t, err)
 	if *p.scope != scope {
 		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, scope)
@@ -87,7 +108,7 @@ func TestFindScopeAndTenant(t *testing.T) {
 		"WWW-Authenticate",
 		fmt.Sprintf(authScope, fakeTenant, scope),
 	)
-	err = p.findScopeAndTenant(&resp)
+	err = p.findScopeAndTenant(&resp, req)
 	require.NoError(t, err)
 	if *p.scope != scope {
 		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, scope)
@@ -98,22 +119,9 @@ func TestFindScopeAndTenant(t *testing.T) {
 
 	resp.Header.Set(
 		"WWW-Authenticate",
-		fmt.Sprintf(resourceScopeAuth, mhsmResource, mhsmScope, fakeTenant),
-	)
-	err = p.findScopeAndTenant(&resp)
-	require.NoError(t, err)
-	if *p.scope != mhsmScope {
-		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, "https://vault.azure.net/.default")
-	}
-	if *p.tenantID != fakeTenant {
-		t.Fatalf("tenant ID was not properly parsed, got %s, expected %s", *p.tenantID, fakeTenant)
-	}
-
-	resp.Header.Set(
-		"WWW-Authenticate",
 		"Bearer authorization=\"https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\", unimportantkey=\"unimportantvalue\" resource=\"https://vault.azure.net/.default\"",
 	)
-	err = p.findScopeAndTenant(&resp)
+	err = p.findScopeAndTenant(&resp, req)
 	require.NoError(t, err)
 	if *p.scope != scope {
 		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, scope)
@@ -126,7 +134,7 @@ func TestFindScopeAndTenant(t *testing.T) {
 		"WWW-Authenticate",
 		"Bearer   authorization=\"https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\",    unimportantkey=\"unimportantvalue\"   resource=\"https://vault.azure.net/.default\"    fakekey=\"fakevalue\"			",
 	)
-	err = p.findScopeAndTenant(&resp)
+	err = p.findScopeAndTenant(&resp, req)
 	require.NoError(t, err)
 	if *p.scope != "https://vault.azure.net/.default" {
 		t.Fatalf("scope was not properly parsed, got %s, expected %s", *p.scope, "https://vault.azure.net/.default")
@@ -136,13 +144,69 @@ func TestFindScopeAndTenant(t *testing.T) {
 	}
 
 	resp.Header.Set("WWW-Authenticate", "this is an invalid value")
-	err = p.findScopeAndTenant(&resp)
+	err = p.findScopeAndTenant(&resp, req)
 	var challengeError *challengePolicyError
 	require.ErrorAs(t, err, &challengeError)
 
 	resp.Header = http.Header{}
-	err = p.findScopeAndTenant(&resp)
+	err = p.findScopeAndTenant(&resp, req)
 	require.ErrorAs(t, err, &challengeError)
+}
+
+func TestResourceVerification(t *testing.T) {
+	for _, test := range []struct {
+		challenge, resource string
+		disableVerify, err  bool
+	}{
+		// happy path: resource matches requested vault's host (vault.azure.net)
+		{challenge: authResource, resource: "https://vault.azure.net"},
+		{challenge: authScope, resource: "https://vault.azure.net/.default"},
+		{challenge: authResource, resource: "https://vault.azure.net", disableVerify: true},
+		{challenge: authScope, resource: "https://vault.azure.net/.default", disableVerify: true},
+
+		// error cases: resource/scope doesn't match the requested vault's host (vault.azure.net)
+		{challenge: authResource, resource: "https://vault.azure.cn", err: true},
+		{challenge: authResource, resource: "https://myvault.azure.net", err: true},
+		{challenge: authScope, resource: "https://vault.azure.cn/.default", err: true},
+		{challenge: authScope, resource: "https://myvault.azure.net/.default", err: true},
+
+		// the policy shouldn't return errors for the above error cases when verification is disabled
+		{challenge: authResource, resource: "https://vault.azure.cn", disableVerify: true},
+		{challenge: authResource, resource: "https://myvault.azure.net", disableVerify: true},
+		{challenge: authScope, resource: "https://vault.azure.cn/.default", disableVerify: true},
+		{challenge: authScope, resource: "https://myvault.azure.net/.default", disableVerify: true},
+	} {
+		t.Run(test.resource, func(t *testing.T) {
+			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+			defer close()
+			srv.AppendResponse(
+				mock.WithHeader("WWW-Authenticate", fmt.Sprintf(test.challenge, fakeTenant, test.resource)),
+				mock.WithStatusCode(401),
+			)
+			srv.AppendResponse()
+
+			cred := credentialFunc(func(context.Context, policy.TokenRequestOptions) (azcore.AccessToken, error) {
+				return azcore.AccessToken{Token: "***", ExpiresOn: time.Now().Add(time.Hour)}, nil
+			})
+			p := NewKeyVaultChallengePolicy(cred, &KeyVaultChallengePolicyOptions{DisableChallengeResourceVerification: test.disableVerify})
+			pl := runtime.NewPipeline("", "",
+				runtime.PipelineOptions{PerCall: []policy.Policy{p}},
+				&policy.ClientOptions{Transport: srv},
+			)
+			req, err := runtime.NewRequest(context.Background(), "GET", "https://42.vault.azure.net")
+			require.NoError(t, err)
+			_, err = pl.Do(req)
+			if test.err {
+				expected := fmt.Sprintf(challengeMatchError, test.resource)
+				require.EqualError(t, err, expected)
+				if _, ok := err.(*challengePolicyError); !ok {
+					t.Fatalf("unexpected error type %T", err)
+				}
+			} else {
+				require.NoError(t, err)
+			}
+		})
+	}
 }
 
 // TODO: add test coverage for the following

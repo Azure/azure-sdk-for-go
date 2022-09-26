@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakemhsm/keys/testreleasekey2633194999/create?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testreleasekey2633194999/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -17,7 +17,7 @@
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://local\u0022",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-request-id": "88730538-f64b-11ec-b395-6045bd86d5ca",
@@ -26,7 +26,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakemhsm/keys/testreleasekey2633194999/create?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testreleasekey2633194999/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -76,7 +76,7 @@
             "verify",
             "sign"
           ],
-          "kid": "https://fakemhsm/keys/testreleasekey2633194999/6997cf3d4fab4d5b961b424ecf92e63d",
+          "kid": "https://fakemhsm.local/keys/testreleasekey2633194999/6997cf3d4fab4d5b961b424ecf92e63d",
           "kty": "EC-HSM",
           "x": "t2lQW1kR2jC1pIuhLTGfrBaWec7e-bKzl1FFyzUCTcM",
           "y": "RlW0JH_GBubABJVJpRlUVq-k06huQIl0iOuuqyA6-PQ"
@@ -109,7 +109,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/testreleasekey2633194999//release?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testreleasekey2633194999//release?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -141,7 +141,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/testreleasekey2633194999?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testreleasekey2633194999?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -180,12 +180,12 @@
             "verify",
             "sign"
           ],
-          "kid": "https://fakemhsm/keys/testreleasekey2633194999/6997cf3d4fab4d5b961b424ecf92e63d",
+          "kid": "https://fakemhsm.local/keys/testreleasekey2633194999/6997cf3d4fab4d5b961b424ecf92e63d",
           "kty": "EC-HSM",
           "x": "t2lQW1kR2jC1pIuhLTGfrBaWec7e-bKzl1FFyzUCTcM",
           "y": "RlW0JH_GBubABJVJpRlUVq-k06huQIl0iOuuqyA6-PQ"
         },
-        "recoveryId": "https://fakemhsm/deletedkeys/testreleasekey2633194999",
+        "recoveryId": "https://fakemhsm.local/deletedkeys/testreleasekey2633194999",
         "release_policy": {
           "contentType": "application/json; charset=utf-8",
           "data": "eyJhbnlPZiI6W3siYW55T2YiOlt7ImNsYWltIjoic2RrLXRlc3QiLCJlcXVhbHMiOiJ0cnVlIn1dLCJhdXRob3JpdHkiOiJodHRwczovL2NobG93ZWF6a2V5c3NpdGUuYXp1cmV3ZWJzaXRlcy5uZXQvIn1dLCJ2ZXJzaW9uIjoiMS4wLjAifQ",

@@ -92,7 +92,7 @@ func performUploadStreamToBlockBlobTest(t *testing.T, _require *require.Assertio
 
 	// Perform UploadStream
 	_, err = client.UploadStream(ctx, containerName, blobName, blobContentReader,
-		&blockblob.UploadStreamOptions{BufferSize: bufferSize, MaxBuffers: maxBuffers})
+		&blockblob.UploadStreamOptions{BlockSize: bufferSize, Concurrency: maxBuffers})
 
 	// Assert that upload was successful
 	_require.Equal(err, nil)
@@ -160,7 +160,7 @@ func (s *AZBlobUnrecordedTestsSuite) TestUploadStreamToBlockBlobEmpty() {
 }
 
 // nolint
-func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions, testName string, fileSize, blockSize, parallelism, downloadOffset, downloadCount int) {
+func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions, testName string, fileSize, blockSize, concurrency, downloadOffset, downloadCount int) {
 	// Set up file to upload
 	fileName := "BigFile.bin"
 	fileData := generateFile(fileName, fileSize)
@@ -193,7 +193,7 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 	_, err = client.UploadFile(context.Background(), containerName, blobName, file,
 		&blockblob.UploadFileOptions{
 			BlockSize:   int64(blockSize),
-			Parallelism: uint16(parallelism),
+			Concurrency: uint16(concurrency),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
 				_require.Equal(bytesTransferred > 0 && bytesTransferred <= int64(fileSize), true)
@@ -226,7 +226,7 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 				Offset: int64(downloadOffset),
 			},
 			BlockSize:   int64(blockSize),
-			Parallelism: uint16(parallelism),
+			Concurrency: uint16(concurrency),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
 				_require.Equal(bytesTransferred > 0 && bytesTransferred <= int64(fileSize), true)
@@ -264,80 +264,80 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 func (s *AZBlobUnrecordedTestsSuite) TestUploadAndDownloadFileInChunks() {
 	fileSize := 8 * 1024
 	blockSize := 1024
-	parallelism := 3
+	concurrency := 3
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, concurrency, 0, 0)
 }
 
 // nolint
 func (s *AZBlobUnrecordedTestsSuite) TestUploadAndDownloadFileSingleIO() {
 	fileSize := 1024
 	blockSize := 2048
-	parallelism := 3
+	concurrency := 3
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, concurrency, 0, 0)
 }
 
 // nolint
 func (s *AZBlobUnrecordedTestsSuite) TestUploadAndDownloadFileSingleRoutine() {
 	fileSize := 8 * 1024
 	blockSize := 1024
-	parallelism := 1
+	concurrency := 1
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, concurrency, 0, 0)
 }
 
 // nolint
 func (s *AZBlobUnrecordedTestsSuite) TestUploadAndDownloadFileEmpty() {
 	fileSize := 0
 	blockSize := 1024
-	parallelism := 3
+	concurrency := 3
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, concurrency, 0, 0)
 }
 
 // nolint
 func (s *AZBlobUnrecordedTestsSuite) TestUploadAndDownloadFileNonZeroOffset() {
 	fileSize := 8 * 1024
 	blockSize := 1024
-	parallelism := 3
+	concurrency := 3
 	downloadOffset := 1000
 	downloadCount := 0
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
+	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, concurrency, downloadOffset, downloadCount)
 }
 
 // nolint
 func (s *AZBlobUnrecordedTestsSuite) TestUploadAndDownloadFileNonZeroCount() {
 	fileSize := 8 * 1024
 	blockSize := 1024
-	parallelism := 3
+	concurrency := 3
 	downloadOffset := 0
 	downloadCount := 6000
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
+	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, concurrency, downloadOffset, downloadCount)
 }
 
 // nolint
 func (s *AZBlobUnrecordedTestsSuite) TestUploadAndDownloadFileNonZeroOffsetAndCount() {
 	fileSize := 8 * 1024
 	blockSize := 1024
-	parallelism := 3
+	concurrency := 3
 	downloadOffset := 1000
 	downloadCount := 6000
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
+	performUploadAndDownloadFileTest(s.T(), _require, testName, fileSize, blockSize, concurrency, downloadOffset, downloadCount)
 }
 
 // nolint
-func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertions, testName string, blobSize, blockSize, parallelism, downloadOffset, downloadCount int) {
+func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertions, testName string, blobSize, blockSize, concurrency, downloadOffset, downloadCount int) {
 	// Set up buffer to upload
 	_, bytesToUpload := testcommon.GenerateData(blobSize)
 
@@ -359,7 +359,7 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 	_, err = client.UploadBuffer(context.Background(), containerName, blobName, bytesToUpload,
 		&blockblob.UploadBufferOptions{
 			BlockSize:   int64(blockSize),
-			Parallelism: uint16(parallelism),
+			Concurrency: uint16(concurrency),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
 				_require.Equal(bytesTransferred > 0 && bytesTransferred <= int64(blobSize), true)
@@ -386,7 +386,7 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 				Offset: int64(downloadOffset),
 			},
 			BlockSize:   int64(blockSize),
-			Parallelism: uint16(parallelism),
+			Concurrency: uint16(concurrency),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
 				_require.Equal(bytesTransferred > 0 && bytesTransferred <= int64(blobSize), true)
@@ -410,76 +410,76 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 func (s *AZBlobUnrecordedTestsSuite) TestUploadAndDownloadBufferInChunks() {
 	blobSize := 8 * 1024
 	blockSize := 1024
-	parallelism := 3
+	concurrency := 3
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, concurrency, 0, 0)
 }
 
 // nolint
 func (s *AZBlobUnrecordedTestsSuite) TestUploadAndDownloadBufferSingleIO() {
 	blobSize := 1024
 	blockSize := 8 * 1024
-	parallelism := 3
+	concurrency := 3
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, concurrency, 0, 0)
 }
 
 // nolint
 func (s *AZBlobUnrecordedTestsSuite) TestUploadAndDownloadBufferSingleRoutine() {
 	blobSize := 8 * 1024
 	blockSize := 1024
-	parallelism := 1
+	concurrency := 1
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, concurrency, 0, 0)
 }
 
 // nolint
 func (s *AZBlobUnrecordedTestsSuite) TestUploadAndDownloadBufferEmpty() {
 	blobSize := 0
 	blockSize := 1024
-	parallelism := 3
+	concurrency := 3
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, concurrency, 0, 0)
 }
 
 // nolint
 func (s *AZBlobUnrecordedTestsSuite) TestDownloadBufferWithNonZeroOffset() {
 	blobSize := 8 * 1024
 	blockSize := 1024
-	parallelism := 3
+	concurrency := 3
 	downloadOffset := 1000
 	downloadCount := 0
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
+	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, concurrency, downloadOffset, downloadCount)
 }
 
 // nolint
 func (s *AZBlobUnrecordedTestsSuite) TestDownloadBufferWithNonZeroCount() {
 	blobSize := 8 * 1024
 	blockSize := 1024
-	parallelism := 3
+	concurrency := 3
 	downloadOffset := 0
 	downloadCount := 6000
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
+	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, concurrency, downloadOffset, downloadCount)
 }
 
 // nolint
 func (s *AZBlobUnrecordedTestsSuite) TestDownloadBufferWithNonZeroOffsetAndCount() {
 	blobSize := 8 * 1024
 	blockSize := 1024
-	parallelism := 3
+	concurrency := 3
 	downloadOffset := 2000
 	downloadCount := 6 * 1024
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
+	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, concurrency, downloadOffset, downloadCount)
 }
 
 // nolint
@@ -489,18 +489,18 @@ func (s *AZBlobUnrecordedTestsSuite) TestBasicDoBatchTransfer() {
 	type testInstance struct {
 		transferSize int64
 		chunkSize    int64
-		parallelism  uint16
+		concurrency  uint16
 		expectError  bool
 	}
 
 	testMatrix := []testInstance{
-		{transferSize: 100, chunkSize: 10, parallelism: 5, expectError: false},
-		{transferSize: 100, chunkSize: 9, parallelism: 4, expectError: false},
-		{transferSize: 100, chunkSize: 8, parallelism: 15, expectError: false},
-		{transferSize: 100, chunkSize: 1, parallelism: 3, expectError: false},
-		{transferSize: 0, chunkSize: 100, parallelism: 5, expectError: false}, // empty file works
-		{transferSize: 100, chunkSize: 0, parallelism: 5, expectError: true},  // 0 chunk size on the other hand must fail
-		{transferSize: 0, chunkSize: 0, parallelism: 5, expectError: true},
+		{transferSize: 100, chunkSize: 10, concurrency: 5, expectError: false},
+		{transferSize: 100, chunkSize: 9, concurrency: 4, expectError: false},
+		{transferSize: 100, chunkSize: 8, concurrency: 15, expectError: false},
+		{transferSize: 100, chunkSize: 1, concurrency: 3, expectError: false},
+		{transferSize: 0, chunkSize: 100, concurrency: 5, expectError: false}, // empty file works
+		{transferSize: 100, chunkSize: 0, concurrency: 5, expectError: true},  // 0 chunk size on the other hand must fail
+		{transferSize: 0, chunkSize: 0, concurrency: 5, expectError: true},
 	}
 
 	for _, test := range testMatrix {
@@ -512,7 +512,7 @@ func (s *AZBlobUnrecordedTestsSuite) TestBasicDoBatchTransfer() {
 		err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
 			TransferSize: test.transferSize,
 			ChunkSize:    test.chunkSize,
-			Parallelism:  test.parallelism,
+			Concurrency:  test.concurrency,
 			Operation: func(offset int64, chunkSize int64, ctx context.Context) error {
 				atomic.AddInt64(&totalSizeCount, chunkSize)
 				atomic.AddInt64(&runCount, 1)
@@ -557,7 +557,7 @@ func (s *AZBlobUnrecordedTestsSuite) TestDoBatchTransferWithError() {
 	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
 		TransferSize: 5,
 		ChunkSize:    1,
-		Parallelism:  5,
+		Concurrency:  5,
 		Operation: func(offset int64, chunkSize int64, ctx context.Context) error {
 			// simulate doing some work (HTTP call in real scenarios)
 			// later chunks later longer to finish

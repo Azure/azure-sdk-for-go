@@ -20,9 +20,10 @@ import (
 )
 
 func TestSessionReceiver_acceptSession(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		RequiresSession: to.Ptr(true),
-	})
+	client, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			RequiresSession: to.Ptr(true),
+		}})
 	defer cleanup()
 
 	ctx := context.Background()
@@ -60,9 +61,10 @@ func TestSessionReceiver_acceptSession(t *testing.T) {
 }
 
 func TestSessionReceiver_blankSessionIDs(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		RequiresSession: to.Ptr(true),
-	})
+	client, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			RequiresSession: to.Ptr(true),
+		}})
 	defer cleanup()
 
 	ctx := context.Background()
@@ -115,9 +117,10 @@ func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 }
 
 func TestSessionReceiver_acceptSessionButAlreadyLocked(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		RequiresSession: to.Ptr(true),
-	})
+	client, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			RequiresSession: to.Ptr(true),
+		}})
 	defer cleanup()
 
 	ctx := context.Background()
@@ -134,10 +137,11 @@ func TestSessionReceiver_acceptSessionButAlreadyLocked(t *testing.T) {
 	require.Nil(t, receiver)
 }
 
-func TestSessionReceiver_acceptNextSession(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		RequiresSession: to.Ptr(true),
-	})
+func TestSessionReceiver_acceptNextSession_sessionExists(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			RequiresSession: to.Ptr(true),
+		}})
 	defer cleanup()
 
 	ctx := context.Background()
@@ -175,35 +179,37 @@ func TestSessionReceiver_acceptNextSession(t *testing.T) {
 	require.EqualValues(t, "hello", string(sessionState))
 }
 
-func TestSessionReceiver_noSessionsAvailable(t *testing.T) {
-	t.Skip("Really slow test (since it has to wait for a timeout from the service)")
-
-	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		RequiresSession: to.Ptr(true),
-	})
+func TestSessionReceiver_acceptNextSession_noSessionsExist(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		ClientOptions: &ClientOptions{
+			RetryOptions: RetryOptions{
+				MaxRetryDelay: time.Millisecond,
+			},
+		},
+		QueueProperties: &admin.QueueProperties{
+			RequiresSession: to.Ptr(true),
+		}})
 	defer cleanup()
 
 	ctx := context.Background()
 
-	// now try again (there are no sessions available with messages so we expect a failure
+	// This adds an extra property to our link that sets a shorter scanning interval on the
+	// service side. If you comment this out it will let the service determine the timeout,
+	// which is 1 minute.
+	client.acceptNextTimeout = time.Second
+
 	receiver, err := client.AcceptNextSessionForQueue(ctx, queueName, nil)
-
-	var amqpError *amqp.Error
-	require.True(t, errors.As(err, &amqpError))
-
-	// just documenting this for now - if this is consistent enough we'll want to provide some guidance as this is a normal condition but
-	// it looks like it's an error instead.
-	// (actual error)
-	// *Error{Condition: com.microsoft:timeout, Description: The operation did not complete within the allotted timeout of 00:01:04.9800000. The time allotted to this operation may have been a portion of a longer timeout.
-	require.EqualValues(t, amqpError.Condition, "com.microsoft:timeout")
-
+	var sbErr *Error
+	require.ErrorAs(t, err, &sbErr)
+	require.Equal(t, CodeTimeout, sbErr.Code, "CodeTimeout since no sessions are available")
 	require.Nil(t, receiver)
 }
 
 func TestSessionReceiver_nonSessionReceiver(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		RequiresSession: to.Ptr(true),
-	})
+	client, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			RequiresSession: to.Ptr(true),
+		}})
 	defer cleanup()
 
 	// opening a non-session full receiver fails and it's at least understandable
@@ -228,10 +234,63 @@ func TestSessionReceiver_nonSessionReceiver(t *testing.T) {
 	require.Contains(t, amqpError.Description, "It is not possible for an entity that requires sessions to create a non-sessionful message receiver.")
 }
 
-func TestSessionReceiver_RenewSessionLock(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
+func TestSessionReceiver_subscription(t *testing.T) {
+	cs := test.GetConnectionString(t)
+
+	topic, cleanupTopic := createSubscription(t, cs, nil, &admin.SubscriptionProperties{
 		RequiresSession: to.Ptr(true),
 	})
+
+	defer cleanupTopic()
+
+	client, err := NewClientFromConnectionString(cs, &ClientOptions{
+		RetryOptions: RetryOptions{
+			MaxRetries: -1,
+		},
+	})
+	require.NoError(t, err)
+
+	client.acceptNextTimeout = time.Second
+
+	receiver, err := client.AcceptNextSessionForSubscription(context.Background(), topic, "sub", nil)
+	require.Nil(t, receiver)
+
+	var sbError *Error
+	require.ErrorAs(t, err, &sbError)
+	require.Equal(t, CodeTimeout, sbError.Code, "CodeTimeout because there are no sessions (yet)")
+
+	sender, err := client.NewSender(topic, nil)
+	require.NoError(t, err)
+
+	defer sender.Close(context.Background())
+
+	err = sender.SendMessage(context.Background(), &Message{
+		SessionID: to.Ptr("session1"),
+	}, nil)
+	require.NoError(t, err)
+
+	// there's a session this time...
+	receiver, err = client.AcceptNextSessionForSubscription(context.Background(), topic, "sub", nil)
+	require.NoError(t, err)
+
+	defer receiver.Close(context.Background())
+
+	require.Equal(t, "session1", receiver.SessionID())
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+
+	require.Equal(t, "session1", *messages[0].SessionID)
+	require.Equal(t, 1, len(messages))
+
+	err = receiver.CompleteMessage(context.Background(), messages[0], nil)
+	require.NoError(t, err)
+}
+
+func TestSessionReceiver_RenewSessionLock(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			RequiresSession: to.Ptr(true),
+		}})
 	defer cleanup()
 
 	sessionReceiver, err := client.AcceptSessionForQueue(context.Background(), queueName, "session-1", nil)
@@ -256,9 +315,10 @@ func TestSessionReceiver_RenewSessionLock(t *testing.T) {
 }
 
 func TestSessionReceiver_Detach(t *testing.T) {
-	serviceBusClient, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
-		RequiresSession: to.Ptr(true),
-	})
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			RequiresSession: to.Ptr(true),
+		}})
 	defer cleanup()
 
 	azlog.SetListener(func(e azlog.Event, s string) {
@@ -309,6 +369,122 @@ func TestSessionReceiver_Detach(t *testing.T) {
 
 	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0], nil))
 	require.NoError(t, receiver.Close(context.Background()))
+}
+
+func TestSessionReceiver_roundRobin(t *testing.T) {
+	client, cleanup, sessionEnabledQueueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			RequiresSession: to.Ptr(true),
+		},
+		ClientOptions: &ClientOptions{
+			RetryOptions: RetryOptions{
+				MaxRetries: -1,
+			},
+		}})
+	defer cleanup()
+
+	sender, err := client.NewSender(sessionEnabledQueueName, nil)
+	require.NoError(t, err)
+
+	defer func() {
+		err := sender.Close(context.Background())
+		require.NoError(t, err)
+	}()
+
+	const maxSessions = 5
+
+	for i := 0; i < maxSessions; i++ {
+		sessionID := fmt.Sprintf("session%d", i)
+
+		err = sender.SendMessage(context.Background(), &Message{
+			Body:      []byte(sessionID),
+			SessionID: to.Ptr(sessionID),
+		}, nil)
+		require.NoError(t, err)
+	}
+
+	receivedSessions := make(chan string, maxSessions)
+
+	processMessageFromSession := func(ctx context.Context, receiver *SessionReceiver, message *ReceivedMessage) error {
+		fmt.Printf("Completing messages for '%s'\n", *message.SessionID)
+		err := receiver.CompleteMessage(ctx, message, nil)
+		fmt.Printf("Completed messages for '%s'\n", *message.SessionID)
+
+		require.Equal(t, receiver.SessionID(), *message.SessionID)
+		receivedSessions <- *message.SessionID
+		return err
+	}
+
+	client.acceptNextTimeout = time.Second
+
+	// NOTE: this code is intentionally similar to `ExampleClient_AcceptNextSessionForQueue_roundrobin` so we can
+	// test it.
+	// BEGIN
+	for {
+		// You can have multiple active session receivers, provided they're each receiving
+		// from different sessions.
+		//
+		// AcceptNextSessionForQueue (or AcceptNextSessionForSubscription) makes it simple to implement
+		// this pattern, consuming multiple session receivers in parallel.
+		sessionReceiver, err := client.AcceptNextSessionForQueue(context.TODO(), sessionEnabledQueueName, nil)
+
+		if err != nil {
+			var sbErr *Error
+
+			if errors.As(err, &sbErr) && sbErr.Code == CodeTimeout {
+				fmt.Printf("No sessions available\n")
+
+				// NOTE: you could also continue here, which will block and wait again for a
+				// session to become available.
+				break
+			}
+
+			panic(err)
+		}
+
+		fmt.Printf("Got receiving for session '%s'\n", sessionReceiver.SessionID())
+
+		// consume the session
+		go func() {
+			defer func() {
+				fmt.Printf("Closing receiver for session '%s'\n", sessionReceiver.SessionID())
+				err := sessionReceiver.Close(context.TODO())
+
+				if err != nil {
+					panic(err)
+				}
+			}()
+
+			// we're only reading a few messages here, but you can also receive in a loop
+			messages, err := sessionReceiver.ReceiveMessages(context.TODO(), 10, nil)
+
+			if err != nil {
+				panic(err)
+			}
+
+			fmt.Printf("Received %d messages from session '%s'\n", len(messages), sessionReceiver.SessionID())
+
+			for _, m := range messages {
+				if err := processMessageFromSession(context.TODO(), sessionReceiver, m); err != nil {
+					panic(err)
+				}
+			}
+		}()
+	}
+
+	// END
+
+	t.Logf("Waiting for all sessions to complete")
+
+	all := map[string]bool{}
+
+	for i := 0; i < maxSessions; i++ {
+		sessionID := <-receivedSessions
+		t.Logf("Got %s's message", sessionID)
+		all[sessionID] = true
+	}
+
+	require.Equal(t, maxSessions, len(all))
 }
 
 func Test_toReceiverOptions(t *testing.T) {

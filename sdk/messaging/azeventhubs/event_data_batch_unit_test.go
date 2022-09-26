@@ -42,7 +42,7 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 	link := eventBatchLinkForTest{maxMessageSize: 10000}
 
 	t.Run("default: uses link size", func(t *testing.T) {
-		batch, err := newEventDataBatch(link, &NewEventDataBatchOptions{})
+		batch, err := newEventDataBatch(link, &EventDataBatchOptions{})
 		require.NoError(t, err)
 		require.NotNil(t, batch)
 		require.Equal(t, link.MaxMessageSize(), batch.maxBytes)
@@ -58,7 +58,7 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 	})
 
 	t.Run("custom size", func(t *testing.T) {
-		batch, err := newEventDataBatch(link, &NewEventDataBatchOptions{
+		batch, err := newEventDataBatch(link, &EventDataBatchOptions{
 			MaxBytes: 9,
 		})
 		require.NoError(t, err)
@@ -67,13 +67,13 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 	})
 
 	t.Run("requested size is bigger than allowed size", func(t *testing.T) {
-		batch, err := newEventDataBatch(link, &NewEventDataBatchOptions{MaxBytes: link.maxMessageSize + 1})
+		batch, err := newEventDataBatch(link, &EventDataBatchOptions{MaxBytes: link.maxMessageSize + 1})
 		require.EqualError(t, err, fmt.Sprintf("maximum message size for batch was set to %d bytes, which is larger than the maximum size allowed by link (%d)", link.maxMessageSize+1, link.MaxMessageSize()))
 		require.Nil(t, batch)
 	})
 
 	t.Run("partition key", func(t *testing.T) {
-		batch, err := newEventDataBatch(link, &NewEventDataBatchOptions{
+		batch, err := newEventDataBatch(link, &EventDataBatchOptions{
 			PartitionKey: to.Ptr("hello-partition-key"),
 		})
 		require.NoError(t, err)
@@ -84,7 +84,7 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 	})
 
 	t.Run("partition ID", func(t *testing.T) {
-		batch, err := newEventDataBatch(link, &NewEventDataBatchOptions{
+		batch, err := newEventDataBatch(link, &EventDataBatchOptions{
 			PartitionID: to.Ptr("101"),
 		})
 		require.NoError(t, err)
@@ -97,7 +97,7 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 	as2k := [2048]byte{'A'}
 
 	t.Run("sizeCalculationsAreCorrectVBin8", func(t *testing.T) {
-		mb, err := newEventDataBatch(link, &NewEventDataBatchOptions{MaxBytes: 8000})
+		mb, err := newEventDataBatch(link, &EventDataBatchOptions{MaxBytes: 8000})
 		require.NoError(t, err)
 
 		err = mb.AddEventData(&EventData{
@@ -108,7 +108,7 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 		}, nil)
 
 		require.NoError(t, err)
-		require.EqualValues(t, 1, mb.NumMessages())
+		require.EqualValues(t, 1, mb.NumEvents())
 		require.EqualValues(t, 172, mb.NumBytes())
 
 		actualBytes, err := mb.toAMQPMessage().MarshalBinary()
@@ -118,7 +118,7 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 	})
 
 	t.Run("sizeCalculationsAreCorrectVBin32", func(t *testing.T) {
-		mb, err := newEventDataBatch(link, &NewEventDataBatchOptions{MaxBytes: 8000})
+		mb, err := newEventDataBatch(link, &EventDataBatchOptions{MaxBytes: 8000})
 		require.NoError(t, err)
 
 		err = mb.AddEventData(&EventData{
@@ -132,7 +132,7 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 		}, nil)
 
 		require.NoError(t, err)
-		require.EqualValues(t, 1, mb.NumMessages())
+		require.EqualValues(t, 1, mb.NumEvents())
 		require.EqualValues(t, 4357, mb.NumBytes())
 
 		actualBytes, err := mb.toAMQPMessage().MarshalBinary()
@@ -144,7 +144,7 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 	// the first message gets special treatment since it gets used as the actual
 	// batch message's envelope.
 	t.Run("firstMessageTooLarge", func(t *testing.T) {
-		mb, err := newEventDataBatch(link, &NewEventDataBatchOptions{MaxBytes: 1})
+		mb, err := newEventDataBatch(link, &EventDataBatchOptions{MaxBytes: 1})
 		require.NoError(t, err)
 
 		err = mb.AddEventData(&EventData{
@@ -158,7 +158,7 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 	})
 
 	t.Run("addTooManyMessages", func(t *testing.T) {
-		mb, err := newEventDataBatch(link, &NewEventDataBatchOptions{MaxBytes: 200})
+		mb, err := newEventDataBatch(link, &EventDataBatchOptions{MaxBytes: 200})
 		require.NoError(t, err)
 
 		require.EqualValues(t, 0, mb.currentSize)
@@ -169,7 +169,7 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 		require.EqualValues(t, 121, mb.currentSize)
 
 		sizeBefore := mb.NumBytes()
-		countBefore := mb.NumMessages()
+		countBefore := mb.NumEvents()
 
 		err = mb.AddEventData(&EventData{
 			Body: as2k[:],
@@ -177,11 +177,11 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 		require.EqualError(t, err, ErrEventDataTooLarge.Error())
 
 		require.Equal(t, sizeBefore, mb.NumBytes(), "size is unchanged when a message fails to get added")
-		require.Equal(t, countBefore, mb.NumMessages(), "count is unchanged when a message fails to get added")
+		require.Equal(t, countBefore, mb.NumEvents(), "count is unchanged when a message fails to get added")
 	})
 
 	t.Run("addConcurrently", func(t *testing.T) {
-		mb, err := newEventDataBatch(link, &NewEventDataBatchOptions{MaxBytes: 10000})
+		mb, err := newEventDataBatch(link, &EventDataBatchOptions{MaxBytes: 10000})
 		require.NoError(t, err)
 
 		wg := sync.WaitGroup{}
@@ -200,7 +200,7 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 		}
 
 		wg.Wait()
-		require.EqualValues(t, 100, mb.NumMessages())
+		require.EqualValues(t, 100, mb.NumEvents())
 	})
 }
 

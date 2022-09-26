@@ -23,16 +23,12 @@ func Test_InMemoryCheckpointStore_Checkpoints(t *testing.T) {
 
 	for i := int64(0); i < 5; i++ {
 		err = store.UpdateCheckpoint(context.Background(), Checkpoint{
-			CheckpointStoreAddress: CheckpointStoreAddress{
-				FullyQualifiedNamespace: "ns",
-				EventHubName:            "eh",
-				ConsumerGroup:           "cg",
-				PartitionID:             "100",
-			},
-			CheckpointData: CheckpointData{
-				Offset:         to.Ptr(i),
-				SequenceNumber: to.Ptr(i + 1),
-			},
+			FullyQualifiedNamespace: "ns",
+			EventHubName:            "eh",
+			ConsumerGroup:           "cg",
+			PartitionID:             "100",
+			Offset:                  to.Ptr(i),
+			SequenceNumber:          to.Ptr(i + 1),
 		}, nil)
 		require.NoError(t, err)
 
@@ -41,16 +37,12 @@ func Test_InMemoryCheckpointStore_Checkpoints(t *testing.T) {
 
 		require.Equal(t, []Checkpoint{
 			{
-				CheckpointStoreAddress: CheckpointStoreAddress{
-					FullyQualifiedNamespace: "ns",
-					EventHubName:            "eh",
-					ConsumerGroup:           "cg",
-					PartitionID:             "100",
-				},
-				CheckpointData: CheckpointData{
-					Offset:         to.Ptr(i),
-					SequenceNumber: to.Ptr(i + 1),
-				},
+				FullyQualifiedNamespace: "ns",
+				EventHubName:            "eh",
+				ConsumerGroup:           "cg",
+				PartitionID:             "100",
+				Offset:                  to.Ptr(i),
+				SequenceNumber:          to.Ptr(i + 1),
 			},
 		}, checkpoints)
 	}
@@ -68,34 +60,26 @@ func Test_InMemoryCheckpointStore_Ownership(t *testing.T) {
 	for i := int64(0); i < 5; i++ {
 		ownerships, err = store.ClaimOwnership(context.Background(), []Ownership{
 			{
-				CheckpointStoreAddress: CheckpointStoreAddress{
-					FullyQualifiedNamespace: "ns",
-					EventHubName:            "eh",
-					ConsumerGroup:           "cg",
-					PartitionID:             "100",
-				},
-				OwnershipData: OwnershipData{
-					OwnerID:          "owner-id",
-					LastModifiedTime: time.Time{},
-					ETag:             previousETag,
-				},
-			}}, nil)
-		require.NoError(t, err)
-
-		expectedOwnership := Ownership{
-			CheckpointStoreAddress: CheckpointStoreAddress{
 				FullyQualifiedNamespace: "ns",
 				EventHubName:            "eh",
 				ConsumerGroup:           "cg",
 				PartitionID:             "100",
-			},
-			OwnershipData: OwnershipData{
-				OwnerID: "owner-id",
-				// these fields are dynamically generated, so we just make sure
-				// they do get filled out
-				LastModifiedTime: ownerships[0].LastModifiedTime,
-				ETag:             ownerships[0].ETag,
-			},
+				OwnerID:                 "owner-id",
+				LastModifiedTime:        time.Time{},
+				ETag:                    previousETag,
+			}}, nil)
+		require.NoError(t, err)
+
+		expectedOwnership := Ownership{
+			FullyQualifiedNamespace: "ns",
+			EventHubName:            "eh",
+			ConsumerGroup:           "cg",
+			PartitionID:             "100",
+			OwnerID:                 "owner-id",
+			// these fields are dynamically generated, so we just make sure
+			// they do get filled out
+			LastModifiedTime: ownerships[0].LastModifiedTime,
+			ETag:             ownerships[0].ETag,
 		}
 
 		require.NotEqual(t, previousETag, ownerships[0].ETag)
@@ -123,16 +107,12 @@ func Test_InMemoryCheckpointStore_OwnershipLoss(t *testing.T) {
 	// If you don't specify an etag (ie, it's blank) then you always win ownership.
 	ownerships, err = store.ClaimOwnership(context.Background(), []Ownership{
 		{
-			CheckpointStoreAddress: CheckpointStoreAddress{
-				FullyQualifiedNamespace: "ns",
-				EventHubName:            "eh",
-				ConsumerGroup:           "cg",
-				PartitionID:             "100",
-			},
-			OwnershipData: OwnershipData{
-				OwnerID:          "owner-id",
-				LastModifiedTime: time.Time{},
-			},
+			FullyQualifiedNamespace: "ns",
+			EventHubName:            "eh",
+			ConsumerGroup:           "cg",
+			PartitionID:             "100",
+			OwnerID:                 "owner-id",
+			LastModifiedTime:        time.Time{},
 		}}, nil)
 	require.NoError(t, err)
 
@@ -142,17 +122,13 @@ func Test_InMemoryCheckpointStore_OwnershipLoss(t *testing.T) {
 	// the current one.
 	ownerships, err = store.ClaimOwnership(context.Background(), []Ownership{
 		{
-			CheckpointStoreAddress: CheckpointStoreAddress{
-				FullyQualifiedNamespace: "ns",
-				EventHubName:            "eh",
-				ConsumerGroup:           "cg",
-				PartitionID:             "100",
-			},
-			OwnershipData: OwnershipData{
-				OwnerID:          "new-owner-id",
-				LastModifiedTime: time.Time{},
-				ETag:             "non-matching-etag",
-			},
+			FullyQualifiedNamespace: "ns",
+			EventHubName:            "eh",
+			ConsumerGroup:           "cg",
+			PartitionID:             "100",
+			OwnerID:                 "new-owner-id",
+			LastModifiedTime:        time.Time{},
+			ETag:                    "non-matching-etag",
 		}}, nil)
 	require.NoError(t, err)
 	require.Empty(t, ownerships, "we weren't able to claim any partitions because our etag didn't match")
@@ -168,17 +144,13 @@ func Test_InMemoryCheckpointStore_OwnershipLoss(t *testing.T) {
 	// okay, let's claim the partition properly (with a matching etag)
 	ownerships, err = store.ClaimOwnership(context.Background(), []Ownership{
 		{
-			CheckpointStoreAddress: CheckpointStoreAddress{
-				FullyQualifiedNamespace: "ns",
-				EventHubName:            "eh",
-				ConsumerGroup:           "cg",
-				PartitionID:             "100",
-			},
-			OwnershipData: OwnershipData{
-				OwnerID:          "new-owner-id",
-				LastModifiedTime: time.Time{},
-				ETag:             previousETag,
-			},
+			FullyQualifiedNamespace: "ns",
+			EventHubName:            "eh",
+			ConsumerGroup:           "cg",
+			PartitionID:             "100",
+			OwnerID:                 "new-owner-id",
+			LastModifiedTime:        time.Time{},
+			ETag:                    previousETag,
 		}}, nil)
 	require.NoError(t, err)
 	require.Equal(t, "new-owner-id", ownerships[0].OwnerID)
@@ -204,7 +176,7 @@ func newCheckpointStoreForTest() *testCheckpointStore {
 }
 
 func (cps *testCheckpointStore) ExpireOwnership(o Ownership) {
-	key := strings.Join([]string{o.CheckpointStoreAddress.FullyQualifiedNamespace, o.CheckpointStoreAddress.EventHubName, o.CheckpointStoreAddress.ConsumerGroup, o.CheckpointStoreAddress.PartitionID}, "/")
+	key := strings.Join([]string{o.FullyQualifiedNamespace, o.EventHubName, o.ConsumerGroup, o.PartitionID}, "/")
 
 	cps.ownershipMu.Lock()
 	defer cps.ownershipMu.Unlock()
@@ -222,14 +194,14 @@ func (cps *testCheckpointStore) ClaimOwnership(ctx context.Context, partitionOwn
 			cps.ownershipMu.Lock()
 			defer cps.ownershipMu.Unlock()
 
-			if po.CheckpointStoreAddress.ConsumerGroup == "" ||
-				po.CheckpointStoreAddress.EventHubName == "" ||
-				po.CheckpointStoreAddress.FullyQualifiedNamespace == "" ||
-				po.CheckpointStoreAddress.PartitionID == "" {
+			if po.ConsumerGroup == "" ||
+				po.EventHubName == "" ||
+				po.FullyQualifiedNamespace == "" ||
+				po.PartitionID == "" {
 				panic("bad test, not all required fields were filled out for ownership data")
 			}
 
-			key := strings.Join([]string{po.CheckpointStoreAddress.FullyQualifiedNamespace, po.CheckpointStoreAddress.EventHubName, po.CheckpointStoreAddress.ConsumerGroup, po.CheckpointStoreAddress.PartitionID}, "/")
+			key := strings.Join([]string{po.FullyQualifiedNamespace, po.EventHubName, po.ConsumerGroup, po.PartitionID}, "/")
 
 			current, exists := cps.ownerships[key]
 
@@ -246,8 +218,8 @@ func (cps *testCheckpointStore) ClaimOwnership(ctx context.Context, partitionOwn
 				return nil, err
 			}
 
-			newOwnership.OwnershipData.ETag = uuid.String()
-			newOwnership.OwnershipData.LastModifiedTime = time.Now().UTC()
+			newOwnership.ETag = uuid.String()
+			newOwnership.LastModifiedTime = time.Now().UTC()
 			cps.ownerships[key] = newOwnership
 
 			return &newOwnership, nil
@@ -295,19 +267,19 @@ func (cps *testCheckpointStore) UpdateCheckpoint(ctx context.Context, checkpoint
 	cps.checkpointsMu.Lock()
 	defer cps.checkpointsMu.Unlock()
 
-	if checkpoint.CheckpointStoreAddress.ConsumerGroup == "" ||
-		checkpoint.CheckpointStoreAddress.EventHubName == "" ||
-		checkpoint.CheckpointStoreAddress.FullyQualifiedNamespace == "" ||
-		checkpoint.CheckpointStoreAddress.PartitionID == "" {
+	if checkpoint.ConsumerGroup == "" ||
+		checkpoint.EventHubName == "" ||
+		checkpoint.FullyQualifiedNamespace == "" ||
+		checkpoint.PartitionID == "" {
 		panic("bad test, not all required fields were filled out for checkpoint data")
 	}
 
-	key := toInMemoryKey(checkpoint.CheckpointStoreAddress)
+	key := toInMemoryKey(checkpoint)
 	cps.checkpoints[key] = checkpoint
 
 	return nil
 }
 
-func toInMemoryKey(a CheckpointStoreAddress) string {
+func toInMemoryKey(a Checkpoint) string {
 	return strings.Join([]string{a.FullyQualifiedNamespace, a.EventHubName, a.ConsumerGroup, a.PartitionID}, "/")
 }

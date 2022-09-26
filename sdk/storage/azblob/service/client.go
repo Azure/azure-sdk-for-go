@@ -9,6 +9,7 @@ package service
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"net/http"
 	"strings"
 	"time"
@@ -80,6 +81,23 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 	}
 
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
+}
+
+// GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceURL object.
+// OAuth is required for this call, as well as any role that can delegate access to the storage account.
+func (s *Client) GetUserDelegationCredential(ctx context.Context, info KeyInfo, o *GetUserDelegationCredentialOptions) (*UserDelegationCredential, error) {
+	url, err := blob.ParseURL(s.URL())
+	if err != nil {
+		return nil, err
+	}
+
+	getUserDelegationKeyOptions := o.format()
+	udk, err := s.generated().GetUserDelegationKey(ctx, info, getUserDelegationKeyOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	return exported.NewUserDelegationCredential(strings.Split(url.Host, ".")[0], udk.UserDelegationKey), nil
 }
 
 func (s *Client) generated() *generated.ServiceClient {
@@ -235,7 +253,7 @@ func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.A
 		ResourceTypes: resources.String(),
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
-	}.Sign(s.sharedKey())
+	}.SignWithSharedKey(s.sharedKey())
 	if err != nil {
 		return "", err
 	}

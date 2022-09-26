@@ -23,6 +23,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 )
 
 const (
@@ -148,10 +149,18 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 	return &c, nil
 }
 
-// authenticate creates an authentication request for a Managed Identity and returns the resulting Access Token if successful.
-// ctx: The current context for controlling the request lifetime.
-// clientID: The client (application) ID of the service principal.
-// scopes: The scopes required for the token.
+// provideToken acquires a token for MSAL's confidential.Client, which caches the token
+func (c *managedIdentityClient) provideToken(ctx context.Context, params confidential.TokenProviderParameters) (confidential.TokenProviderResult, error) {
+	result := confidential.TokenProviderResult{}
+	tk, err := c.authenticate(ctx, c.id, params.Scopes)
+	if err == nil {
+		result.AccessToken = tk.Token
+		result.ExpiresInSeconds = int(time.Until(tk.ExpiresOn).Seconds())
+	}
+	return result, err
+}
+
+// authenticate acquires an access token
 func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKind, scopes []string) (azcore.AccessToken, error) {
 	var cancel context.CancelFunc
 	if c.imdsTimeout > 0 && c.msiType == msiTypeIMDS {

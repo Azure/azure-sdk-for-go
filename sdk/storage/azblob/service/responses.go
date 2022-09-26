@@ -36,3 +36,6 @@ type GetStatisticsResponse = generated.ServiceClientGetStatisticsResponse
 
 // FilterBlobsResponse contains the response from method Client.FilterBlobs.
 type FilterBlobsResponse = generated.ServiceClientFilterBlobsResponse
+
+// GetUserDelegationKeyResponse contains the response from method ServiceClient.GetUserDelegationKey.
+type GetUserDelegationKeyResponse = generated.ServiceClientGetUserDelegationKeyResponse

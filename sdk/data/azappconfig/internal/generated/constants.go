@@ -10,7 +10,7 @@ package generated
 
 const (
 	ModuleName    = "azappconfig"
-	ModuleVersion = "v0.4.1"
+	ModuleVersion = "v0.4.2"
 )
 
 type Enum6 string

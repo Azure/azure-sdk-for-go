@@ -168,14 +168,19 @@ func (p *retryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 			return
 		}
 
-		// drain before retrying so nothing is leaked
-		Drain(resp)
-
 		// use the delay from retry-after if available
 		delay := shared.RetryAfter(resp)
 		if delay <= 0 {
 			delay = calcDelay(options, try)
+		} else if delay > options.MaxRetryDelay {
+			// the retry-after delay exceeds the the cap so don't retry
+			log.Writef(log.EventRetryPolicy, "Retry-After delay %s exceeds MaxRetryDelay of %s", delay, options.MaxRetryDelay)
+			return
 		}
+
+		// drain before retrying so nothing is leaked
+		Drain(resp)
+
 		log.Writef(log.EventRetryPolicy, "End Try #%d, Delay=%v", try, delay)
 		select {
 		case <-time.After(delay):

@@ -321,11 +321,15 @@ func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, read
 		if readerSize <= MaxUploadBlobBytes {
 			o.BlockSize = MaxUploadBlobBytes // Default if unspecified
 		} else {
+			if remainder := readerSize % MaxBlocks; remainder > 0 {
+				// ensure readerSize is a multiple of MaxBlocks
+				readerSize += (MaxBlocks - remainder)
+			}
 			o.BlockSize = readerSize / MaxBlocks             // buffer / max blocks = block size to use all 50,000 blocks
 			if o.BlockSize < blob.DefaultDownloadBlockSize { // If the block size is smaller than 4MB, round up to 4MB
 				o.BlockSize = blob.DefaultDownloadBlockSize
 			}
-			// StageBlock will be called with blockSize blocks and a Parallelism of (BufferSize / BlockSize).
+			// StageBlock will be called with blockSize blocks and a Concurrency of (BufferSize / BlockSize).
 		}
 	}
 
@@ -343,6 +347,10 @@ func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, read
 	}
 
 	var numBlocks = uint16(((readerSize - 1) / o.BlockSize) + 1)
+	if numBlocks > MaxBlocks {
+		// prevent any math bugs from attempting to upload too many blocks which will always fail
+		return uploadFromReaderResponse{}, errors.New("block limit exceeded")
+	}
 
 	blockIDList := make([]string, numBlocks) // Base-64 encoded block IDs
 	progress := int64(0)
@@ -352,7 +360,7 @@ func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, read
 		OperationName: "uploadFromReader",
 		TransferSize:  readerSize,
 		ChunkSize:     o.BlockSize,
-		Parallelism:   o.Parallelism,
+		Concurrency:   o.Concurrency,
 		Operation: func(offset int64, count int64, ctx context.Context) error {
 			// This function is called once per block.
 			// It is passed this block's offset within the buffer and its count of bytes

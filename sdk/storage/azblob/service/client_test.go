@@ -600,6 +600,57 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	//_require.Nil(err)
 }
 
+/*func (s *ServiceRecordedTestsSuite) TestUserDelegationSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+
+	optsClientID := azidentity.ManagedIdentityCredentialOptions{ID: azidentity.ClientID("cf482fac-3a0b-11ed-a261-0242ac120002")}
+	cred, err := azidentity.NewManagedIdentityCredential(&optsClientID)
+	_require.Nil(err)
+
+	svcClient, err := azblob.NewClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, &azblob.ClientOptions{})
+	_require.Nil(err)
+
+	// Set current and past time, create KeyInfo
+	currentTime := time.Now().UTC().Add(-10 * time.Second)
+	pastTime := currentTime.Add(48 * time.Hour)
+	_require.Nil(err)
+	info := generated.KeyInfo{
+		Start:  to.Ptr(currentTime.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(pastTime.UTC().Format(sas.TimeFormat)),
+	}
+
+	// Get UserDelegationCredential
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.Nil(err)
+
+	csas, err := sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		ExpiryTime:    pastTime.UTC(),
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithUserDelegation(udc)
+	_require.Nil(err)
+
+	sasURL := svcClient.URL()
+	if !strings.HasSuffix(sasURL, "/") {
+		sasURL += "/"
+	}
+	sasURL += "?" + csas.Encode()
+
+	containerName := testcommon.GenerateContainerName(testName)
+	sc, err := service.NewClientWithNoCredential(sasURL, nil)
+	_require.Nil(err)
+
+	_, err = sc.CreateContainer(context.Background(), containerName+"002", nil)
+	_require.Nil(err)
+
+	_, err = sc.DeleteContainer(context.Background(), containerName+"002", nil)
+	_require.Nil(err)
+}*/
+
 // make sure that container soft delete is enabled
 // TODO: convert this test to recorded
 func (s *ServiceUnrecordedTestsSuite) TestContainerRestore() {

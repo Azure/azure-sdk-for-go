@@ -200,19 +200,17 @@ func testGetTokenSuccess(t *testing.T, cred azcore.TokenCredential) {
 	if tk.Token == "" {
 		t.Fatal("GetToken returned an invalid token")
 	}
-	if tk.ExpiresOn.Before(time.Now().UTC()) {
+	if tk.ExpiresOn.Before(time.Now()) {
 		t.Fatal("GetToken returned an invalid expiration time")
 	}
-	_, actual := tk.ExpiresOn.Zone()
-	_, expected := time.Now().UTC().Zone()
-	if actual != expected {
+	if tk.ExpiresOn.Location() != time.UTC {
 		t.Fatal("ExpiresOn isn't UTC")
 	}
 	tk2, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if tk2.Token != tk.Token || tk2.ExpiresOn.After(tk.ExpiresOn) {
+	if tk2.Token != tk.Token || tk2.ExpiresOn != tk.ExpiresOn {
 		t.Fatal("expected a cached token")
 	}
 }

@@ -71,7 +71,7 @@ func NewLocationCache(prefLocations []string, defaultEndpt url.URL) *LocationCac
 
 func (lc *LocationCache) update(writeLocations []AcctRegion, readLocations []AcctRegion, prefList []string, enableMultipleWriteLocations bool) {
 	lc.updateMutex.Lock()
-	nextLoc := Copy(lc.locationInfo)
+	nextLoc := CopyDbAcctLocInfo(lc.locationInfo)
 	if prefList != nil {
 		nextLoc.prefLocations = prefList
 	}
@@ -181,10 +181,7 @@ func (lc *LocationCache) IsEndptUnavailable(endpoint url.URL, ops opType) bool {
 	if ops == none || !ok || ops&info.unavailableOps == 0 {
 		return false
 	} else {
-		if time.Since(info.lastCheckTime) > lc.unavailableLocationExpirationTime {
-			return false
-		}
-		return true
+		return time.Since(info.lastCheckTime) <= lc.unavailableLocationExpirationTime
 	}
 }
 
@@ -253,7 +250,7 @@ func NewdbAcctLocationsInfo(prefLocations []string, defaultEndpt url.URL) *dbAcc
 	}
 }
 
-func Copy(other dbAcctLocationsInfo) dbAcctLocationsInfo {
+func CopyDbAcctLocInfo(other dbAcctLocationsInfo) dbAcctLocationsInfo {
 	return dbAcctLocationsInfo{
 		prefLocations:              other.prefLocations,
 		availWriteLocations:        other.availWriteLocations,

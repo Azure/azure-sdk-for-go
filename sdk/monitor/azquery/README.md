@@ -388,6 +388,7 @@ comments.
 [azure_monitor_create_using_portal]: https://docs.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
 [azure_monitor_overview]: https://docs.microsoft.com/azure/azure-monitor/overview
 [context]: https://pkg.go.dev/context
+[kusto_query_language]: https://learn.microsoft.com/azure/data-explorer/kusto/query/
 [log_analytics_workspace]: https://learn.microsoft.com/azure/azure-monitor/logs/log-analytics-workspace-overview
 [time_go]: https://pkg.go.dev/time
 [time_intervals]: https://en.wikipedia.org/wiki/ISO_8601#Time_intervals

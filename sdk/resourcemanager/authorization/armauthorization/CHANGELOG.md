@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (2022-08-17)
+## 2.0.0 (2022-09-26)
 ### Breaking Changes
 
 - Function `*RoleAssignmentsClient.NewListForResourcePager` parameter(s) have been changed from `(string, string, string, string, string, *RoleAssignmentsClientListForResourceOptions)` to `(string, string, string, string, *RoleAssignmentsClientListForResourceOptions)`

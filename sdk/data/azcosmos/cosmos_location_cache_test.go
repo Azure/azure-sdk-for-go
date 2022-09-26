@@ -82,7 +82,10 @@ func CreateDbAcct(useMultipleWriteLocations bool, enforceSingleMasterWriteLoc bo
 func TestMarkEndptUnavailable(t *testing.T) {
 	var firstCheckTime time.Time
 	// mark endpoint unavailable for first time
-	lc.MarkEndptUnavailableForRead(*loc1Endpt)
+	err := lc.MarkEndptUnavailableForRead(*loc1Endpt)
+	if err != nil {
+		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
+	}
 	if info, ok := lc.locationUnavailabilityInfoMap[*loc1Endpt]; ok {
 		var zeroTime time.Time
 		if firstCheckTime = info.lastCheckTime; firstCheckTime == zeroTime {
@@ -96,7 +99,10 @@ func TestMarkEndptUnavailable(t *testing.T) {
 	}
 	// mark endpoint unavailable for second time
 	time.Sleep(100 * time.Millisecond)
-	lc.MarkEndptUnavailableForWrite(*loc1Endpt)
+	err = lc.MarkEndptUnavailableForWrite(*loc1Endpt)
+	if err != nil {
+		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
+	}
 	if info, ok := lc.locationUnavailabilityInfoMap[*loc1Endpt]; ok {
 		var zeroTime time.Time
 		if info.lastCheckTime == zeroTime || info.lastCheckTime == firstCheckTime {
@@ -112,7 +118,10 @@ func TestMarkEndptUnavailable(t *testing.T) {
 
 func TestRefreshStaleEndpts(t *testing.T) {
 	// mark endpoint unavailable for first time
-	lc.MarkEndptUnavailableForRead(*loc1Endpt)
+	err := lc.MarkEndptUnavailableForRead(*loc1Endpt)
+	if err != nil {
+		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
+	}
 	if info, ok := lc.locationUnavailabilityInfoMap[*loc1Endpt]; ok {
 		info.lastCheckTime = time.Now().Add(-1 * DefaultExpirationTime)
 		lc.locationUnavailabilityInfoMap[*loc1Endpt] = info
@@ -127,8 +136,15 @@ func TestRefreshStaleEndpts(t *testing.T) {
 }
 
 func TestIsEndptUnavailable(t *testing.T) {
-	lc.MarkEndptUnavailableForRead(*loc1Endpt)
-	lc.MarkEndptUnavailableForWrite(*loc2Endpt)
+	err := lc.MarkEndptUnavailableForRead(*loc1Endpt)
+	if err != nil {
+		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
+	}
+	err = lc.MarkEndptUnavailableForWrite(*loc2Endpt)
+	if err != nil {
+		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
+	}
+
 	if lc.IsEndptUnavailable(*loc1Endpt, none) {
 		t.Errorf("Expected IsEndptUnavailable to return false, but it returned true for ops = none")
 	}
@@ -156,7 +172,10 @@ func TestIsEndptUnavailable(t *testing.T) {
 
 func TestGetLocation(t *testing.T) {
 	dbAcct := CreateDbAcct(lc.enableMultipleWriteLocations, false)
-	lc.DbAcctRead(dbAcct) // requires unit test of update
+	err := lc.DbAcctRead(dbAcct) // requires unit test of update
+	if err != nil {
+		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
+	}
 	if dbAcct.writeRegions == nil || len(dbAcct.writeRegions) == 0 {
 		t.Fatal("Write Regions are empty")
 	}

@@ -69,7 +69,7 @@ func NewLocationCache(prefLocations []string, defaultEndpt url.URL) *LocationCac
 	}
 }
 
-func (lc *LocationCache) update(writeLocations []AcctRegion, readLocations []AcctRegion, prefList []string, enableMultipleWriteLocations bool) {
+func (lc *LocationCache) update(writeLocations []AcctRegion, readLocations []AcctRegion, prefList []string, enableMultipleWriteLocations bool) error {
 	lc.updateMutex.Lock()
 	nextLoc := CopyDbAcctLocInfo(lc.locationInfo)
 	if prefList != nil {
@@ -78,11 +78,21 @@ func (lc *LocationCache) update(writeLocations []AcctRegion, readLocations []Acc
 	lc.enableMultipleWriteLocations = enableMultipleWriteLocations
 	lc.RefreshStaleEndpts()
 	if readLocations != nil {
-		nextLoc.availReadEndptsByLocation, nextLoc.availReadLocations = lc.GetEndptsByLocation(readLocations)
+		availReadEndptsByLocation, availReadLocations, err := lc.GetEndptsByLocation(readLocations)
+		if err != nil {
+			return err
+		}
+		nextLoc.availReadEndptsByLocation = availReadEndptsByLocation
+		nextLoc.availReadLocations = availReadLocations
 	}
 
 	if writeLocations != nil {
-		nextLoc.availWriteEndptsByLocation, nextLoc.availWriteLocations = lc.GetEndptsByLocation(writeLocations)
+		availWriteEndptsByLocation, availWriteLocations, err := lc.GetEndptsByLocation(writeLocations)
+		if err != nil {
+			return err
+		}
+		nextLoc.availWriteEndptsByLocation = availWriteEndptsByLocation
+		nextLoc.availWriteLocations = availWriteLocations
 	}
 
 	nextLoc.writeEndpts = lc.GetPrefAvailableEndpts(nextLoc.availWriteEndptsByLocation, nextLoc.availWriteLocations, write, lc.defaultEndpt)
@@ -90,20 +100,27 @@ func (lc *LocationCache) update(writeLocations []AcctRegion, readLocations []Acc
 	lc.lastUpdateTime = time.Now()
 	lc.locationInfo = nextLoc
 	lc.updateMutex.Unlock()
+	return nil
 }
 
-func (lc *LocationCache) ReadEndpoints() []url.URL {
+func (lc *LocationCache) ReadEndpoints() ([]url.URL, error) {
 	if time.Since(lc.lastUpdateTime) > lc.unavailableLocationExpirationTime && len(lc.locationUnavailabilityInfoMap) > 0 {
-		lc.update(nil, nil, nil, lc.enableMultipleWriteLocations)
+		err := lc.update(nil, nil, nil, lc.enableMultipleWriteLocations)
+		if err != nil {
+			return nil, err
+		}
 	}
-	return lc.locationInfo.readEndpts
+	return lc.locationInfo.readEndpts, nil
 }
 
-func (lc *LocationCache) WriteEndpoints() []url.URL {
+func (lc *LocationCache) WriteEndpoints() ([]url.URL, error) {
 	if time.Since(lc.lastUpdateTime) > lc.unavailableLocationExpirationTime && len(lc.locationUnavailabilityInfoMap) > 0 {
-		lc.update(nil, nil, nil, lc.enableMultipleWriteLocations)
+		err := lc.update(nil, nil, nil, lc.enableMultipleWriteLocations)
+		if err != nil {
+			return nil, err
+		}
 	}
-	return lc.locationInfo.writeEndpts
+	return lc.locationInfo.writeEndpts, nil
 }
 
 func (lc *LocationCache) GetLocation(endpoint url.URL) string {
@@ -135,15 +152,15 @@ func (lc *LocationCache) CanUseMultipleWriteLocs() bool {
 	return lc.useMultipleWriteLocations && lc.enableMultipleWriteLocations
 }
 
-func (lc *LocationCache) MarkEndptUnavailableForRead(endpoint url.URL) {
-	lc.MarkEndptUnavailable(endpoint, read)
+func (lc *LocationCache) MarkEndptUnavailableForRead(endpoint url.URL) error {
+	return lc.MarkEndptUnavailable(endpoint, read)
 }
 
-func (lc *LocationCache) MarkEndptUnavailableForWrite(endpoint url.URL) {
-	lc.MarkEndptUnavailable(endpoint, write)
+func (lc *LocationCache) MarkEndptUnavailableForWrite(endpoint url.URL) error {
+	return lc.MarkEndptUnavailable(endpoint, write)
 }
 
-func (lc *LocationCache) MarkEndptUnavailable(endpoint url.URL, op opType) {
+func (lc *LocationCache) MarkEndptUnavailable(endpoint url.URL, op opType) error {
 	currTime := time.Now()
 	lc.mapMutex.Lock()
 	if info, ok := lc.locationUnavailabilityInfoMap[endpoint]; ok {
@@ -158,11 +175,12 @@ func (lc *LocationCache) MarkEndptUnavailable(endpoint url.URL, op opType) {
 		lc.locationUnavailabilityInfoMap[endpoint] = info
 	}
 	lc.mapMutex.Unlock()
-	lc.update(nil, nil, nil, lc.enableMultipleWriteLocations)
+	err := lc.update(nil, nil, nil, lc.enableMultipleWriteLocations)
+	return err
 }
 
-func (lc *LocationCache) DbAcctRead(dbAcct AcctProperties) {
-	lc.update(dbAcct.writeRegions, dbAcct.readRegions, nil, dbAcct.enableMultipleWriteLocations)
+func (lc *LocationCache) DbAcctRead(dbAcct AcctProperties) error {
+	return lc.update(dbAcct.writeRegions, dbAcct.readRegions, nil, dbAcct.enableMultipleWriteLocations)
 }
 
 func (lc *LocationCache) RefreshStaleEndpts() {
@@ -216,18 +234,21 @@ func (lc *LocationCache) GetPrefAvailableEndpts(endptsByLoc map[string]url.URL, 
 	return endpts
 }
 
-func (lc *LocationCache) GetEndptsByLocation(locs []AcctRegion) (map[string]url.URL, []string) {
+func (lc *LocationCache) GetEndptsByLocation(locs []AcctRegion) (map[string]url.URL, []string, error) {
 	endptsByLoc := make(map[string]url.URL)
 	parsedLocs := make([]string, 0)
 	for _, loc := range locs {
-		endpt := url.URL{Scheme: "https", Host: loc.endpoint}
+		endpt, err := url.Parse(loc.endpoint)
+		if err != nil {
+			return nil, nil, err
+		}
 		if loc.name != "" {
-			endptsByLoc[loc.name] = endpt
+			endptsByLoc[loc.name] = *endpt
 			parsedLocs = append(parsedLocs, loc.name)
 			// set service pt needed?
 		}
 	}
-	return endptsByLoc, parsedLocs
+	return endptsByLoc, parsedLocs, nil
 }
 
 func NewdbAcctLocationsInfo(prefLocations []string, defaultEndpt url.URL) *dbAcctLocationsInfo {

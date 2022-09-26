@@ -1,5 +1,15 @@
 # Release History
 
+## 1.2.0 (2022-09-26)
+### Features Added
+
+- New field `CallRateLimit` in struct `DeploymentModel`
+- New field `CallRateLimit` in struct `AccountModel`
+- New field `RaiPolicyName` in struct `DeploymentProperties`
+- New field `CallRateLimit` in struct `DeploymentProperties`
+- New field `Capabilities` in struct `DeploymentProperties`
+
+
 ## 1.1.0 (2022-06-09)
 ### Features Added
 

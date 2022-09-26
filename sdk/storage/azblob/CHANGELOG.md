@@ -16,8 +16,6 @@
 * Fixed issue [#18767](https://github.com/Azure/azure-sdk-for-go/issues/18767)
 * Fix deadlock when error writes are slow [#16937](https://github.com/Azure/azure-sdk-for-go/pull/16937)
 
-### Other Changes
-
 ## 0.4.1 (2022-05-12)
 
 ### Other Changes

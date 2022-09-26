@@ -207,3 +207,33 @@ func TestGetLocation(t *testing.T) {
 		}
 	}
 }
+
+func TestGetEndptsByLocation(t *testing.T) {
+	locs := []AcctRegion{loc1, loc2, loc3, loc4}
+	newEndptsByLoc, parsedLocs, err := lc.GetEndptsByLocation(locs)
+	if err != nil {
+		t.Fatalf("Received error getting endpoints by location: %s", err.Error())
+	}
+	if len(newEndptsByLoc) != len(endptsByLoc) {
+		t.Errorf("Expected %d endpoints, but got %d", len(endptsByLoc), len(newEndptsByLoc))
+	}
+	for loc, endpt := range endptsByLoc {
+		if newEndpt, ok := newEndptsByLoc[loc]; ok {
+			if newEndpt != endpt {
+				t.Errorf("Expected endpoint %s for location %s, but was %s", endpt.String(), loc, newEndpt.String())
+			}
+		} else {
+			t.Errorf("Expected newEndptsByLoc to contain location %s, but it did not", loc)
+		}
+	}
+
+	if len(parsedLocs) != len(locs) {
+		t.Errorf("Expected parsedLocs to contain %d locations, but it contained %d", len(locs), len(parsedLocs))
+	}
+	// may need to fix this, believe that maps are unordered which could cause this to fail due to ordering
+	for i, loc := range locs {
+		if parsedLocs[i] != loc.name {
+			t.Errorf("Expected parsedLocs to contain location %s, but it did not", loc.name)
+		}
+	}
+}

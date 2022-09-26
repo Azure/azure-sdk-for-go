@@ -1758,6 +1758,126 @@ func (s *BlockBlobRecordedTestsSuite) TestDeleteSpecificBlobVersion() {
 	}
 }
 
+func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlobVersion() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	// enable soft delete for blobs
+	testcommon.EnableSoftDelete(context.Background(), _require, svcClient)
+
+	// From FE, 30 seconds is guaranteed to be enough.
+	time.Sleep(time.Second * 30)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+
+	versions := make([]string, 0)
+	for i := 0; i < 5; i++ {
+		uploadResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("data"+strconv.Itoa(i)))), &blockblob.UploadOptions{
+			Metadata: testcommon.BasicMetadata,
+		})
+		_require.Nil(err)
+		_require.NotNil(uploadResp.VersionID)
+		versions = append(versions, *uploadResp.VersionID)
+	}
+
+	listPager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Versions: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 5)
+
+	// Deleting the 1st, 2nd and 3rd versions
+	for i := 0; i < 3; i++ {
+		bbClientWithVersionID, err := bbClient.WithVersionID(versions[i])
+		_require.Nil(err)
+		_, err = bbClientWithVersionID.Delete(context.Background(), nil)
+		_require.Nil(err)
+	}
+
+	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Versions: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 2)
+
+	_, err = bbClient.Undelete(context.Background(), nil)
+	_require.Nil(err)
+
+	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Versions: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 5)
+
+	// disable soft delete for blobs
+	testcommon.DisableSoftDelete(context.Background(), _require, svcClient)
+
+	// From FE, 30 seconds is guaranteed to be enough.
+	time.Sleep(time.Second * 30)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlobSnapshot() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	// enable soft delete for blobs
+	testcommon.EnableSoftDelete(context.Background(), _require, svcClient)
+
+	// From FE, 30 seconds is guaranteed to be enough.
+	time.Sleep(time.Second * 30)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	snapshots := make([]string, 0)
+	for i := 0; i < 5; i++ {
+		resp, err := bbClient.CreateSnapshot(context.Background(), nil)
+		_require.Nil(err)
+		_require.NotNil(resp.Snapshot)
+		snapshots = append(snapshots, *resp.Snapshot)
+	}
+
+	listPager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 6) // 5 snapshots and 1 current version
+
+	// Deleting the 1st, 2nd and 3rd snapshots
+	for i := 0; i < 3; i++ {
+		bbClientWithSnapshot, err := bbClient.WithSnapshot(snapshots[i])
+		_require.Nil(err)
+		_, err = bbClientWithSnapshot.Delete(context.Background(), nil)
+		_require.Nil(err)
+	}
+
+	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 3) // 2 snapshots and 1 current version
+
+	_, err = bbClient.Undelete(context.Background(), nil)
+	_require.Nil(err)
+
+	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 6) // 5 snapshots and 1 current version
+
+	// disable soft delete for blobs
+	testcommon.DisableSoftDelete(context.Background(), _require, svcClient)
+
+	// From FE, 30 seconds is guaranteed to be enough.
+	time.Sleep(time.Second * 30)
+}
+
 func (s *BlockBlobRecordedTestsSuite) TestPutBlockListReturnsVID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

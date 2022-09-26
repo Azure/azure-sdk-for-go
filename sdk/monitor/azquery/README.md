@@ -102,11 +102,6 @@ The timespan can be the following string formats:
 <duration> such as "P1Y2M10DT2H30M" // 1 year, 2 months, 10 days, 2 hours, 20 minutes
 ```
 
-Examples of constructing a timespan string from the Go [time][time_go] package:
-```go
-
-```
-
 ### Logs Workspace IDs
 
 
@@ -325,7 +320,7 @@ _ = res
 
 #### Metrics result structure
 ```
-MetricsResults
+Response
 |---Timespan *string
 |---Value []*Metric
 	|---ID *string

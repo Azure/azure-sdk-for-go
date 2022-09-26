@@ -177,12 +177,12 @@ func (lc *LocationCache) RefreshStaleEndpts() {
 
 func (lc *LocationCache) IsEndptUnavailable(endpoint url.URL, ops opType) bool {
 	lc.mapMutex.Lock()
+	defer lc.mapMutex.Unlock()
 	info, ok := lc.locationUnavailabilityInfoMap[endpoint]
-	if ops == none || !ok || ops&info.unavailableOps == 0 {
+	if ops == none || !ok || ops&info.unavailableOps != ops {
 		return false
-	} else {
-		return time.Since(info.lastCheckTime) <= lc.unavailableLocationExpirationTime
 	}
+	return time.Since(info.lastCheckTime) <= lc.unavailableLocationExpirationTime
 }
 
 func (lc *LocationCache) GetPrefAvailableEndpts(endptsByLoc map[string]url.URL, locs []string, availOps opType, fallbackEndpt url.URL) []url.URL {

@@ -45,7 +45,7 @@ func main() {
 		panic(err)
 	}
 
-	client := azkeys.NewLogsClient(cred, nil)
+	client := azquery.NewLogsClient(cred, nil)
 }
 ```
 
@@ -63,7 +63,7 @@ func main() {
 		panic(err)
 	}
 
-	client := azkeys.NewMetricsClient(cred, nil)
+	client := azquery.NewMetricsClient(cred, nil)
 }
 ```
 
@@ -125,17 +125,41 @@ Examples of constructing a timespan string from the Go [time][time_go] package:
   - [Metrics result structure](#metrics-result-structure)
 
 ### Logs query
-The example below shows a basic logs query using the QueryWorkspace method. QueryWorkspace's parameters are a [context][context], a [Log Analytics Workspace][log_analytics_workspace] ID string, a [Body](#logs-query-body-structure) struct, and a [LogsClientQueryWorkspaceOptions](#increase-wait-time-include-statistics-include-render-visualization) struct.
+The example below shows a basic logs query using the `QueryWorkspace` method. `QueryWorkspace` takes in a [context][context], a [Log Analytics Workspace][log_analytics_workspace] ID string, a [Body](#logs-query-body-structure) struct, and a [LogsClientQueryWorkspaceOptions](#increase-wait-time-include-statistics-include-render-visualization) struct and returns a [Results](#logs-query-result-structure) struct.
 
 ```go
-client := azquery.NewLogsClient(cred, nil)
-timespan := "2022-08-30/2022-08-31"
+import (
+	"context"
 
-res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, nil)
-if err != nil {
-	panic(err)
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
+)
+
+func main() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+	client := azquery.NewLogsClient(cred, nil)
+	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
+	query := "AzureActivity | top 10 by TimeGenerated" // Kusto query
+	timespan := "2022-08-30/2022-08-31" // ISO8601 Standard timespan
+
+	res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, nil)
+	if err != nil {
+		panic(err)
+	}
+	if res.Results.Error != nil {
+		// handle partial error
+	}
+
+	table := res.Results.Tables[0]
+	fmt.Println("Response rows:")
+	for _, row := range table.Rows {
+		fmt.Println(row)
+	}
 }
-_ = res
 ```
 
 #### Logs query body structure
@@ -148,7 +172,7 @@ Body
 
 #### Logs query result structure
 ```
-LogsResponse
+Results
 |---Tables []*Table
 	|---Columns []*Column
 		|---Name *string
@@ -156,37 +180,49 @@ LogsResponse
 	|---Name *string
 	|---Rows [][]interface{}
 |---Error *ErrorInfo
-	|---Code *string
-	|---Message *string
-	|---AdditionalProperties interface{}
-	|---Details []*ErrorDetail
-		|---Code *string
-		|---Message *string
-		|---AdditionalProperties interface{}
-		|---Resources []*string
-		|---Target *string
-		|---Value *string
-	|---Innererror *ErrorInfo
 |---Render interface{}
 |---Statistics interface{}
 ```
 
 ### Batch query
+`Batch` is an advanced method allowing users to execute multiple logs queries in a single request. It takes in a [BatchRequest](#batch-query-request-structure) and returns a [BatchResponse](#batch-query-result-structure). `Batch` can return results in any order (usually in order of completion/success). Please use the `ID` attribute to identify the correct response. 
 ```go
-client := azquery.NewLogsClient(cred, nil)
-timespan := "2022-08-30/2022-08-31"
+import (
+	"context"
 
-batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
-	{Body: &azquery.Body{Query: to.Ptr(kustoQuery1), Timespan: to.Ptr(timespan)}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID)},
-	{Body: &azquery.Body{Query: to.Ptr(kustoQuery2), Timespan: to.Ptr(timespan)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID)},
-	{Body: &azquery.Body{Query: to.Ptr(kustoQuery3), Timespan: to.Ptr(timespan)}, ID: to.Ptr("3"), Workspace: to.Ptr(workspaceID)},
-}}
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
+)
 
-res, err := client.Batch(context.TODO(), batchRequest, nil)
-if err != nil {
-	panic(err)
+func main() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+	client := azquery.NewLogsClient(cred, nil)
+	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
+	timespan := "2022-08-30/2022-08-31" // ISO8601 Standard Timespan
+
+	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
+		{Body: &azquery.Body{Query: to.Ptr(kustoQuery1), Timespan: to.Ptr(timespan)}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(kustoQuery2), Timespan: to.Ptr(timespan)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID)},
+		{Body: &azquery.Body{Query: to.Ptr(kustoQuery3), Timespan: to.Ptr(timespan)}, ID: to.Ptr("3"), Workspace: to.Ptr(workspaceID)},
+	}}
+
+	res, err := client.Batch(context.TODO(), batchRequest, nil)
+	if err != nil {
+		panic(err)
+	}
+	
+	responses := res.BatchResponse.Responses
+	fmt.Println("ID's of successful responses:")
+	for _, response := range responses {
+		if response.Body.Error == nil {
+			fmt.Println(*response.ID)
+		}
+	}
 }
-_ = res
 ```
 
 #### Batch query request structure

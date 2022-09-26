@@ -6,10 +6,10 @@
 azure-arm: true
 tag: package-composite-v3
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/security/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/security/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/6080bb1fc0e219b72ed3c85966b54334e22e9980/specification/security/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/6080bb1fc0e219b72ed3c85966b54334e22e9980/specification/security/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.7.0
+module-version: 0.8.0
 modelerfour:
   lenient-model-deduplication: true
 ```

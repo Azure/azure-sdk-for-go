@@ -91,8 +91,8 @@ type PullRequestStatus string
 const (
 	// PullRequestStatusMerged - Pull Request merged into repository.
 	PullRequestStatusMerged PullRequestStatus = "merged"
-	// PullRequestStatusMerged - Workflow no longer found within repository.
-	PullRequestStatusMerged PullRequestStatus = "merged"
+	// PullRequestStatusRemoved - Workflow no longer found within repository.
+	PullRequestStatusRemoved PullRequestStatus = "removed"
 	// PullRequestStatusSubmitted - Pull Request submitted to repository.
 	PullRequestStatusSubmitted PullRequestStatus = "submitted"
 	// PullRequestStatusUnknown - Pull Request state unknown.
@@ -103,7 +103,7 @@ const (
 func PossiblePullRequestStatusValues() []PullRequestStatus {
 	return []PullRequestStatus{
 		PullRequestStatusMerged,
-		PullRequestStatusMerged,
+		PullRequestStatusRemoved,
 		PullRequestStatusSubmitted,
 		PullRequestStatusUnknown,
 	}

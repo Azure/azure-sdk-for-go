@@ -1,5 +1,15 @@
 # Release History
 
+## 0.8.0 (2022-09-26)
+### Breaking Changes
+
+- Type of `AlertsClientChangeStateOptions.Comment` has been changed from `*string` to `*Comments`
+
+### Features Added
+
+- New struct `Comments`
+
+
 ## 0.7.0 (2022-08-19)
 ### Features Added
 

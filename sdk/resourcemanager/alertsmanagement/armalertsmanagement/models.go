@@ -218,7 +218,7 @@ type AlertProperties struct {
 // AlertsClientChangeStateOptions contains the optional parameters for the AlertsClient.ChangeState method.
 type AlertsClientChangeStateOptions struct {
 	// reason of change alert state
-	Comment *string
+	Comment *Comments
 }
 
 // AlertsClientGetAllOptions contains the optional parameters for the AlertsClient.GetAll method.
@@ -383,6 +383,11 @@ type AlertsSummaryGroupItem struct {
 
 	// List of the items
 	Values []*AlertsSummaryGroupItem `json:"values,omitempty"`
+}
+
+// Comments - Change alert state reason
+type Comments struct {
+	Comments *string `json:"comments,omitempty"`
 }
 
 // Condition to trigger an alert processing rule.

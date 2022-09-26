@@ -234,7 +234,6 @@ func (client *AlertProcessingRulesClient) getByNameHandleResponse(resp *http.Res
 }
 
 // NewListByResourceGroupPager - List all alert processing rules in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-08-08
 // resourceGroupName - Resource group name where the resource is created.
 // options - AlertProcessingRulesClientListByResourceGroupOptions contains the optional parameters for the AlertProcessingRulesClient.ListByResourceGroup
@@ -302,7 +301,6 @@ func (client *AlertProcessingRulesClient) listByResourceGroupHandleResponse(resp
 }
 
 // NewListBySubscriptionPager - List all alert processing rules in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-08-08
 // options - AlertProcessingRulesClientListBySubscriptionOptions contains the optional parameters for the AlertProcessingRulesClient.ListBySubscription
 // method.

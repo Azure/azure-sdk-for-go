@@ -50,7 +50,6 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 }
 
 // NewListPager - List all operations available through Azure Alerts Management Resource Provider.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2019-05-05-preview
 // options - OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {

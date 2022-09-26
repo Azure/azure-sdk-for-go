@@ -1,16 +1,20 @@
 # Release History
 
-## 0.5.0 (Unreleased)
+## 0.5.0 (2022-09-26)
 
 ### Breaking Changes
 
-* Complete architectural change for better user experience. Please see the example file for more information.
+* Complete architectural change for better user experience. Please view the [README](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob#readme)
+
+### Features Added
+
+* Added [UserDelegationCredential](https://learn.microsoft.com/rest/api/storageservices/create-user-delegation-sas) which resolves [#18976](https://github.com/Azure/azure-sdk-for-go/issues/18976), [#16916](https://github.com/Azure/azure-sdk-for-go/issues/16916), [#18977](https://github.com/Azure/azure-sdk-for-go/issues/18977) 
+* Added [Restore Container API](https://learn.microsoft.com/rest/api/storageservices/restore-container).
 
 ### Bugs Fixed
 
-* Fixed bugs reported in the previous version of `azblob`.
-
-### Other Changes
+* Fixed issue [#18767](https://github.com/Azure/azure-sdk-for-go/issues/18767)
+* Fix deadlock when error writes are slow [#16937](https://github.com/Azure/azure-sdk-for-go/pull/16937)
 
 ## 0.4.1 (2022-05-12)
 

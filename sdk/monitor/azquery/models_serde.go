@@ -316,7 +316,7 @@ func (e *ErrorDetail) UnmarshalJSON(data []byte) error {
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ErrorInfo.
-func (e ErrorInfo) MarshalJSON() ([]byte, error) {
+/*func (e ErrorInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "additionalProperties", &e.AdditionalProperties)
 	populate(objectMap, "code", e.Code)
@@ -324,10 +324,10 @@ func (e ErrorInfo) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "innererror", e.Innererror)
 	populate(objectMap, "message", e.Message)
 	return json.Marshal(objectMap)
-}
+}*/
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type ErrorInfo.
-func (e *ErrorInfo) UnmarshalJSON(data []byte) error {
+/*func (e *ErrorInfo) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", e, err)
@@ -356,7 +356,7 @@ func (e *ErrorInfo) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
-}
+}*/
 
 // MarshalJSON implements the json.Marshaller interface for type LocalizableString.
 func (l LocalizableString) MarshalJSON() ([]byte, error) {

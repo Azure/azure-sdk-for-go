@@ -9,6 +9,9 @@ package azquery
 // this file contains handwritten additions to the generated code
 
 import (
+	"encoding/json"
+	"fmt"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -45,3 +48,28 @@ func NewMetricsClient(credential azcore.TokenCredential, options *MetricsClientO
 }
 
 const metricsHost string = "https://management.azure.com"
+
+// ErrorInfo - The code and message for an error.
+type ErrorInfo struct {
+	// REQUIRED; A machine readable error code.
+	Code *string `json:"code,omitempty"`
+}
+
+func (e *ErrorInfo) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "code":
+			err = unpopulate(val, "Code", &e.Code)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}

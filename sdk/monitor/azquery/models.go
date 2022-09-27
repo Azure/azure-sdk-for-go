@@ -114,7 +114,7 @@ type ErrorDetail struct {
 }
 
 // ErrorInfo - The code and message for an error.
-type ErrorInfo struct {
+/*type ErrorInfo struct {
 	// REQUIRED; A machine readable error code.
 	Code *string `json:"code,omitempty"`
 
@@ -129,7 +129,7 @@ type ErrorInfo struct {
 
 	// Inner error details if they exist.
 	Innererror *ErrorInfo `json:"innererror,omitempty"`
-}
+}*/
 
 // LocalizableString - The localizable string class.
 type LocalizableString struct {

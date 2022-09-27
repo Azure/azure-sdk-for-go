@@ -25,18 +25,19 @@ import (
 const (
 	StatusSucceeded  = "Succeeded"
 	StatusCanceled   = "Canceled"
+	StatusCancelled  = "Cancelled"
 	StatusFailed     = "Failed"
 	StatusInProgress = "InProgress"
 )
 
 // IsTerminalState returns true if the LRO's state is terminal.
 func IsTerminalState(s string) bool {
-	return strings.EqualFold(s, StatusSucceeded) || strings.EqualFold(s, StatusFailed) || strings.EqualFold(s, StatusCanceled)
+	return strings.EqualFold(s, StatusSucceeded) || strings.EqualFold(s, StatusFailed) || strings.EqualFold(s, StatusCanceled) || strings.EqualFold(s, StatusCancelled)
 }
 
 // Failed returns true if the LRO's state is terminal failure.
 func Failed(s string) bool {
-	return strings.EqualFold(s, StatusFailed) || strings.EqualFold(s, StatusCanceled)
+	return strings.EqualFold(s, StatusFailed) || strings.EqualFold(s, StatusCanceled) || strings.EqualFold(s, StatusCancelled)
 }
 
 // Succeeded returns true if the LRO's state is terminal success.

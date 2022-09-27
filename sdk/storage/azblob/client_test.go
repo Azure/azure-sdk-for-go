@@ -37,7 +37,7 @@ type AZBlobUnrecordedTestsSuite struct {
 // Hookup to the testing framework
 func Test(t *testing.T) {
 	recordMode := os.Getenv("AZURE_RECORD_MODE")
-	t.Logf("Running AzBlob Tests in %s mode\n", recordMode)
+	t.Logf("Running azblob Tests in %s mode\n", recordMode)
 	if recordMode == "live" {
 		suite.Run(t, &AZBlobRecordedTestsSuite{})
 		suite.Run(t, &AZBlobUnrecordedTestsSuite{})
@@ -103,7 +103,7 @@ func performUploadStreamToBlockBlobTest(t *testing.T, _require *require.Assertio
 		&blockblob.UploadStreamOptions{BlockSize: bufferSize, Concurrency: maxBuffers})
 
 	// Assert that upload was successful
-	_require.Equal(err, nil)
+	_require.NoError(err)
 	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 
 	// Download the blob to verify
@@ -175,7 +175,7 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 
 	// Open the file to upload
 	file, err := os.Open(fileName)
-	_require.Equal(err, nil)
+	_require.NoError(err)
 	defer func(file *os.File) {
 		_ = file.Close()
 	}(file)
@@ -253,7 +253,7 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 	}
 
 	n, err := destFile.Read(destBuffer)
-	_require.Equal(err, nil)
+	_require.NoError(err)
 
 	if downloadOffset == 0 && downloadCount == 0 {
 		_require.EqualValues(destBuffer, fileData)
@@ -373,7 +373,7 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 				_require.Equal(bytesTransferred > 0 && bytesTransferred <= int64(blobSize), true)
 			},
 		})
-	_require.Equal(err, nil)
+	_require.NoError(err)
 	//_require.Equal(response.StatusCode, 201)
 
 	// Set up buffer to download the blob to
@@ -385,7 +385,8 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 	}
 
 	// Download the blob to a buffer
-	_, err = client.DownloadBuffer(context.Background(),
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	_, err = client.DownloadBuffer(ctx,
 		containerName,
 		blobName,
 		destBuffer, &blob.DownloadBufferOptions{
@@ -400,8 +401,9 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 				_require.Equal(bytesTransferred > 0 && bytesTransferred <= int64(blobSize), true)
 			},
 		})
+	cancel()
 
-	_require.Equal(err, nil)
+	_require.NoError(err)
 
 	if downloadOffset == 0 && downloadCount == 0 {
 		_require.EqualValues(destBuffer, bytesToUpload)

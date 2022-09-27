@@ -38,7 +38,7 @@ var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"),
 
 func Test(t *testing.T) {
 	recordMode := os.Getenv("AZURE_RECORD_MODE")
-	t.Logf("Running AzBlob Tests in %s mode\n", recordMode)
+	t.Logf("Running blockblob Tests in %s mode\n", recordMode)
 	if recordMode == "live" {
 		suite.Run(t, &BlockBlobRecordedTestsSuite{})
 		suite.Run(t, &BlockBlobUnrecordedTestsSuite{})
@@ -1872,7 +1872,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 func (s *BlockBlobUnrecordedTestsSuite) TestORSSource() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(nil, testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -3138,7 +3138,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPKScope() {
 //		})
 //
 //	// Assert that upload was successful
-//	_require.Equal(err, nil)
+//	_require.NoError(err)
 //	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 //
 //	getPropertiesResp, err := bbClient.GetProperties(ctx, &blob.GetPropertiesOptions{CpkInfo: &testcommon.TestCPKByValue})
@@ -3203,7 +3203,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPKScope() {
 //		})
 //
 //	// Assert that upload was successful
-//	_require.Equal(err, nil)
+//	_require.NoError(err)
 //	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 //
 //	getPropertiesResp, err := bbClient.GetProperties(ctx, nil)
@@ -3262,7 +3262,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadStreamToBlobProperties() {
 		})
 
 	// Assert that upload was successful
-	_require.Equal(err, nil)
+	_require.NoError(err)
 	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 
 	getPropertiesResp, err := bbClient.GetProperties(context.Background(), nil)

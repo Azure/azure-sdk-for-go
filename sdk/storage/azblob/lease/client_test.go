@@ -23,7 +23,7 @@ import (
 
 func Test(t *testing.T) {
 	recordMode := os.Getenv("AZURE_RECORD_MODE")
-	t.Logf("Running AzBlob Tests in %s mode\n", recordMode)
+	t.Logf("Running lease Tests in %s mode\n", recordMode)
 	if recordMode == "live" {
 		suite.Run(t, &LeaseRecordedTestsSuite{})
 		suite.Run(t, &LeaseUnrecordedTestsSuite{})

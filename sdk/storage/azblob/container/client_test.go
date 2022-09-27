@@ -31,7 +31,7 @@ import (
 
 func Test(t *testing.T) {
 	recordMode := os.Getenv("AZURE_RECORD_MODE")
-	t.Logf("Running AzBlob Tests in %s mode\n", recordMode)
+	t.Logf("Running container Tests in %s mode\n", recordMode)
 	if recordMode == "live" {
 		suite.Run(t, &ContainerRecordedTestsSuite{})
 		suite.Run(t, &ContainerUnrecordedTestsSuite{})
@@ -1347,7 +1347,7 @@ func (s *ContainerRecordedTestsSuite) TestBlobListWrapperListingError() {
 func (s *ContainerUnrecordedTestsSuite) TestSetEmptyAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(nil, testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -1362,7 +1362,7 @@ func (s *ContainerUnrecordedTestsSuite) TestSetEmptyAccessPolicy() {
 func (s *ContainerUnrecordedTestsSuite) TestSetAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(nil, testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -1393,7 +1393,7 @@ func (s *ContainerUnrecordedTestsSuite) TestSetAccessPolicy() {
 func (s *ContainerUnrecordedTestsSuite) TestSetMultipleAccessPolicies() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(nil, testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -1444,7 +1444,7 @@ func (s *ContainerUnrecordedTestsSuite) TestSetMultipleAccessPolicies() {
 func (s *ContainerUnrecordedTestsSuite) TestSetNullAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(nil, testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)

@@ -28,7 +28,7 @@ import (
 
 func Test(t *testing.T) {
 	recordMode := os.Getenv("AZURE_RECORD_MODE")
-	t.Logf("Running AzBlob Tests in %s mode\n", recordMode)
+	t.Logf("Running service Tests in %s mode\n", recordMode)
 	if recordMode == "live" {
 		suite.Run(t, &ServiceRecordedTestsSuite{})
 		suite.Run(t, &ServiceUnrecordedTestsSuite{})
@@ -99,7 +99,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(nil, testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.Nil(err)
 	md := map[string]string{
 		"foo": "foovalue",
@@ -465,7 +465,7 @@ func (s *ServiceUnrecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooLar
 	var err error
 	for i := 1; i <= 2; i++ {
 		if i == 1 {
-			svcClient, err = testcommon.GetServiceClient(nil, testcommon.TestAccountDefault, nil)
+			svcClient, err = testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 		} else {
 			svcClient, err = testcommon.GetServiceClientFromConnectionString(nil, testcommon.TestAccountDefault, nil)
 		}

@@ -18,7 +18,6 @@ var loc4Endpt *url.URL
 var writeEndpts []url.URL
 var readEndpts []url.URL
 var endptsByLoc map[string]url.URL
-var lc *LocationCache
 var loc1 AcctRegion
 var loc2 AcctRegion
 var loc3 AcctRegion
@@ -77,14 +76,15 @@ func CreateDbAcct(useMultipleWriteLocations bool, enforceSingleMasterWriteLoc bo
 	return AcctProperties{writeRegions: writeRegions, readRegions: readRegions, enableMultipleWriteLocations: useMultipleWriteLocations}
 }
 
-func ResetLocationCache() {
-	lc = NewLocationCache(prefLocs, *defaultEndpt)
+func ResetLocationCache() *LocationCache {
+	lc := NewLocationCache(prefLocs, *defaultEndpt)
 	lc.enableEndptDiscovery = true
 	lc.connLimit = 10
+	return lc
 }
 
 func TestMarkEndptUnavailable(t *testing.T) {
-	ResetLocationCache()
+	lc := ResetLocationCache()
 	var firstCheckTime time.Time
 	// mark endpoint unavailable for first time
 	err := lc.MarkEndptUnavailableForRead(*loc1Endpt)
@@ -122,7 +122,7 @@ func TestMarkEndptUnavailable(t *testing.T) {
 }
 
 func TestRefreshStaleEndpts(t *testing.T) {
-	ResetLocationCache()
+	lc := ResetLocationCache()
 	// mark endpoint unavailable for first time
 	err := lc.MarkEndptUnavailableForRead(*loc1Endpt)
 	if err != nil {
@@ -142,7 +142,7 @@ func TestRefreshStaleEndpts(t *testing.T) {
 }
 
 func TestIsEndptUnavailable(t *testing.T) {
-	ResetLocationCache()
+	lc := ResetLocationCache()
 	err := lc.MarkEndptUnavailableForRead(*loc1Endpt)
 	if err != nil {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
@@ -178,7 +178,7 @@ func TestIsEndptUnavailable(t *testing.T) {
 }
 
 func TestGetLocation(t *testing.T) {
-	ResetLocationCache()
+	lc := ResetLocationCache()
 	dbAcct := CreateDbAcct(lc.enableMultipleWriteLocations, false)
 	err := lc.DbAcctRead(dbAcct) // requires unit test of update
 	if err != nil {
@@ -217,7 +217,7 @@ func TestGetLocation(t *testing.T) {
 }
 
 func TestGetEndptsByLocation(t *testing.T) {
-	ResetLocationCache()
+	lc := ResetLocationCache()
 	locs := []AcctRegion{loc1, loc2, loc3, loc4}
 	newEndptsByLoc, parsedLocs, err := lc.GetEndptsByLocation(locs)
 	if err != nil {

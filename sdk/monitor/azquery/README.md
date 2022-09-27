@@ -102,9 +102,6 @@ The timespan can be the following string formats:
 <duration> such as "P1Y2M10DT2H30M" // 1 year, 2 months, 10 days, 2 hours, 20 minutes
 ```
 
-### Logs Workspace IDs
-
-
 ## Examples
 
 - [Logs query](#logs-query)
@@ -125,6 +122,7 @@ The example below shows a basic logs query using the `QueryWorkspace` method. `Q
 ```go
 import (
 	"context"
+	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -184,6 +182,7 @@ Results
 ```go
 import (
 	"context"
+	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"

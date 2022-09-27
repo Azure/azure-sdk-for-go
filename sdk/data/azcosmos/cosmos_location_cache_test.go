@@ -100,7 +100,7 @@ func TestMarkEndptUnavailable(t *testing.T) {
 			t.Errorf("Expected unavailableOps to be 1 (read-only), but was %d", info.unavailableOps)
 		}
 	} else {
-		t.Errorf("Expected locationUnavailabilityInfoMap %v to contain %s, but it did not", lc.locationUnavailabilityInfoMap, loc1Endpt.String())
+		t.Errorf("Expected locationUnavailabilityInfoMap %s to contain %s, but it did not", lc.locationUnavailabilityInfoMap, loc1Endpt.String())
 	}
 	// mark endpoint unavailable for second time
 	time.Sleep(100 * time.Millisecond)
@@ -117,7 +117,7 @@ func TestMarkEndptUnavailable(t *testing.T) {
 			t.Errorf("Expected unavailableOps to be 3 (read+write), but was %d", info.unavailableOps)
 		}
 	} else {
-		t.Errorf("Expected locationUnavailabilityInfoMap %v to contain %s, but it did not", lc.locationUnavailabilityInfoMap, loc1Endpt.String())
+		t.Errorf("Expected locationUnavailabilityInfoMap %s to contain %s, but it did not", lc.locationUnavailabilityInfoMap, loc1Endpt.String())
 	}
 }
 

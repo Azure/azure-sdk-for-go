@@ -63,9 +63,10 @@ type LocationCache struct {
 
 func NewLocationCache(prefLocations []string, defaultEndpt url.URL) *LocationCache {
 	return &LocationCache{
-		defaultEndpt:                  defaultEndpt,
-		locationInfo:                  *NewdbAcctLocationsInfo(prefLocations, defaultEndpt),
-		locationUnavailabilityInfoMap: make(map[url.URL]locationUnavailabilityInfo),
+		defaultEndpt:                      defaultEndpt,
+		locationInfo:                      *NewdbAcctLocationsInfo(prefLocations, defaultEndpt),
+		locationUnavailabilityInfoMap:     make(map[url.URL]locationUnavailabilityInfo),
+		unavailableLocationExpirationTime: DefaultExpirationTime,
 	}
 }
 

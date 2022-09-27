@@ -9,6 +9,7 @@ package container_test
 import (
 	"context"
 	"fmt"
+	"os"
 	"sort"
 	"strconv"
 	"strings"
@@ -29,8 +30,16 @@ import (
 )
 
 func Test(t *testing.T) {
-	suite.Run(t, &ContainerRecordedTestsSuite{})
-	//suite.Run(t, &ContainerUnrecordedTestsSuite{})
+	recordMode := os.Getenv("AZURE_RECORD_MODE")
+	t.Logf("Running AzBlob Tests in %s mode\n", recordMode)
+	if recordMode == "live" {
+		suite.Run(t, &ContainerRecordedTestsSuite{})
+		suite.Run(t, &ContainerUnrecordedTestsSuite{})
+	} else if recordMode == "playback" {
+		suite.Run(t, &ContainerRecordedTestsSuite{})
+	} else if recordMode == "record" {
+		suite.Run(t, &ContainerRecordedTestsSuite{})
+	}
 }
 
 // nolint

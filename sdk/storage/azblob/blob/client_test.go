@@ -13,6 +13,7 @@ import (
 	"errors"
 	"io"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 	"testing"
@@ -33,8 +34,16 @@ import (
 )
 
 func Test(t *testing.T) {
-	suite.Run(t, &BlobRecordedTestsSuite{})
-	//suite.Run(t, &BlobUnrecordedTestsSuite{})
+	recordMode := os.Getenv("AZURE_RECORD_MODE")
+	t.Logf("Running AzBlob Tests in %s mode\n", recordMode)
+	if recordMode == "live" {
+		suite.Run(t, &BlobRecordedTestsSuite{})
+		suite.Run(t, &BlobUnrecordedTestsSuite{})
+	} else if recordMode == "playback" {
+		suite.Run(t, &BlobRecordedTestsSuite{})
+	} else if recordMode == "record" {
+		suite.Run(t, &BlobRecordedTestsSuite{})
+	}
 }
 
 // nolint

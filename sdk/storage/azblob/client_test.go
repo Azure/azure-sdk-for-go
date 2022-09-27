@@ -36,8 +36,16 @@ type AZBlobUnrecordedTestsSuite struct {
 
 // Hookup to the testing framework
 func Test(t *testing.T) {
-	suite.Run(t, &AZBlobRecordedTestsSuite{})
-	//suite.Run(t, &AZBlobUnrecordedTestsSuite{})
+	recordMode := os.Getenv("AZURE_RECORD_MODE")
+	t.Logf("Running AzBlob Tests in %s mode\n", recordMode)
+	if recordMode == "live" {
+		suite.Run(t, &AZBlobRecordedTestsSuite{})
+		suite.Run(t, &AZBlobUnrecordedTestsSuite{})
+	} else if recordMode == "playback" {
+		suite.Run(t, &AZBlobRecordedTestsSuite{})
+	} else if recordMode == "record" {
+		suite.Run(t, &AZBlobRecordedTestsSuite{})
+	}
 }
 
 // nolint

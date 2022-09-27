@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"context"
 	"io"
+	"os"
 	"testing"
 	"time"
 
@@ -26,8 +27,16 @@ import (
 )
 
 func Test(t *testing.T) {
-	suite.Run(t, &PageBlobRecordedTestsSuite{})
-	//suite.Run(t, &PageBlobUnrecordedTestsSuite{})
+	recordMode := os.Getenv("AZURE_RECORD_MODE")
+	t.Logf("Running AzBlob Tests in %s mode\n", recordMode)
+	if recordMode == "live" {
+		suite.Run(t, &PageBlobRecordedTestsSuite{})
+		suite.Run(t, &PageBlobUnrecordedTestsSuite{})
+	} else if recordMode == "playback" {
+		suite.Run(t, &PageBlobRecordedTestsSuite{})
+	} else if recordMode == "record" {
+		suite.Run(t, &PageBlobRecordedTestsSuite{})
+	}
 }
 
 // nolint

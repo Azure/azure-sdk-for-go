@@ -11,6 +11,7 @@ import (
 	"context"
 	"crypto/md5"
 	"io"
+	"os"
 	"strconv"
 	"strings"
 	"testing"
@@ -28,8 +29,16 @@ import (
 )
 
 func Test(t *testing.T) {
-	suite.Run(t, &AppendBlobRecordedTestsSuite{})
-	//suite.Run(t, &AppendBlobUnrecordedTestsSuite{})
+	recordMode := os.Getenv("AZURE_RECORD_MODE")
+	t.Logf("Running AzBlob Tests in %s mode\n", recordMode)
+	if recordMode == "live" {
+		suite.Run(t, &AppendBlobRecordedTestsSuite{})
+		suite.Run(t, &AppendBlobUnrecordedTestsSuite{})
+	} else if recordMode == "playback" {
+		suite.Run(t, &AppendBlobRecordedTestsSuite{})
+	} else if recordMode == "record" {
+		suite.Run(t, &AppendBlobRecordedTestsSuite{})
+	}
 }
 
 // nolint

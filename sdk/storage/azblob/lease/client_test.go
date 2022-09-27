@@ -8,6 +8,7 @@ package lease_test
 
 import (
 	"context"
+	"os"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
@@ -21,8 +22,16 @@ import (
 )
 
 func Test(t *testing.T) {
-	suite.Run(t, &LeaseRecordedTestsSuite{})
-	//suite.Run(t, &LeaseUnrecordedTestsSuite{})
+	recordMode := os.Getenv("AZURE_RECORD_MODE")
+	t.Logf("Running AzBlob Tests in %s mode\n", recordMode)
+	if recordMode == "live" {
+		suite.Run(t, &LeaseRecordedTestsSuite{})
+		suite.Run(t, &LeaseUnrecordedTestsSuite{})
+	} else if recordMode == "playback" {
+		suite.Run(t, &LeaseRecordedTestsSuite{})
+	} else if recordMode == "record" {
+		suite.Run(t, &LeaseRecordedTestsSuite{})
+	}
 }
 
 // nolint

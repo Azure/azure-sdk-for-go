@@ -27,8 +27,16 @@ import (
 )
 
 func Test(t *testing.T) {
-	suite.Run(t, &ServiceRecordedTestsSuite{})
-	//suite.Run(t, &ServiceUnrecordedTestsSuite{})
+	recordMode := os.Getenv("AZURE_RECORD_MODE")
+	t.Logf("Running AzBlob Tests in %s mode\n", recordMode)
+	if recordMode == "live" {
+		suite.Run(t, &ServiceRecordedTestsSuite{})
+		suite.Run(t, &ServiceUnrecordedTestsSuite{})
+	} else if recordMode == "playback" {
+		suite.Run(t, &ServiceRecordedTestsSuite{})
+	} else if recordMode == "record" {
+		suite.Run(t, &ServiceRecordedTestsSuite{})
+	}
 }
 
 func (s *ServiceRecordedTestsSuite) BeforeTest(suite string, test string) {

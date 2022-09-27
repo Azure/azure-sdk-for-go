@@ -13,6 +13,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"io"
+	"os"
 	"strconv"
 	"strings"
 	"testing"
@@ -36,8 +37,16 @@ import (
 var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"), to.Ptr("326cc5e1-746e-4af8-4811-a50e6629a8ca")}
 
 func Test(t *testing.T) {
-	suite.Run(t, &BlockBlobRecordedTestsSuite{})
-	//suite.Run(t, &BlockBlobUnrecordedTestsSuite{})
+	recordMode := os.Getenv("AZURE_RECORD_MODE")
+	t.Logf("Running AzBlob Tests in %s mode\n", recordMode)
+	if recordMode == "live" {
+		suite.Run(t, &BlockBlobRecordedTestsSuite{})
+		suite.Run(t, &BlockBlobUnrecordedTestsSuite{})
+	} else if recordMode == "playback" {
+		suite.Run(t, &BlockBlobRecordedTestsSuite{})
+	} else if recordMode == "record" {
+		suite.Run(t, &BlockBlobRecordedTestsSuite{})
+	}
 }
 
 // nolint

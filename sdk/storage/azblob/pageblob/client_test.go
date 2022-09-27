@@ -3712,6 +3712,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPK() {
 func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPKScope() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
+	encryptionScope := testcommon.GetCPKScopeInfo(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName)+"01", svcClient)
@@ -3720,18 +3721,18 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPKScope() {
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := testcommon.GenerateData(contentSize)
 	pbName := testcommon.GenerateBlobName(testName)
-	pbClient := createNewPageBlobWithCPK(context.Background(), _require, pbName, containerClient, int64(contentSize), nil, &testcommon.TestCPKByScope)
+	pbClient := createNewPageBlobWithCPK(context.Background(), _require, pbName, containerClient, int64(contentSize), nil, &encryptionScope)
 
 	uploadPagesOptions := pageblob.UploadPagesOptions{
 		Range: blob.HTTPRange{
 			Count: int64(contentSize),
 		},
-		CpkScopeInfo: &testcommon.TestCPKByScope,
+		CpkScopeInfo: &encryptionScope,
 	}
 	uploadResp, err := pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
 	_require.Nil(err)
 	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
-	_require.EqualValues(uploadResp.EncryptionScope, testcommon.TestCPKByScope.EncryptionScope)
+	_require.EqualValues(*uploadResp.EncryptionScope, encryptionScope)
 
 	pager := pbClient.NewGetPageRangesPager(nil)
 	for pager.More() {
@@ -3749,7 +3750,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPKScope() {
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions := blob.DownloadStreamOptions{
-		CpkScopeInfo: &testcommon.TestCPKByScope,
+		CpkScopeInfo: &encryptionScope,
 	}
 	downloadResp, err := pbClient.DownloadStream(context.Background(), &downloadBlobOptions)
 	_require.Nil(err)
@@ -3757,7 +3758,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPKScope() {
 	destData, err := io.ReadAll(downloadResp.Body)
 	_require.Nil(err)
 	_require.EqualValues(destData, srcData)
-	_require.EqualValues(*downloadResp.EncryptionScope, *testcommon.TestCPKByScope.EncryptionScope)
+	_require.EqualValues(*downloadResp.EncryptionScope, *encryptionScope.EncryptionScope)
 }
 
 func (s *PageBlobUnrecordedTestsSuite) TestCreatePageBlobWithTags() {

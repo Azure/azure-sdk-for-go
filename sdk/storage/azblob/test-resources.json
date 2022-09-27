@@ -20,9 +20,7 @@
       }
     },
     "variables": {
-      "computeApiVersion": "2019-12-01",
       "mgmtApiVersion": "2019-06-01",
-      "keyvaultApiVersion": "2016-10-01",
       "authorizationApiVersion": "2018-09-01-preview",
       "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
       "contributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c')]",
@@ -36,9 +34,6 @@
       "premiumFileAccountName": "[concat(parameters('baseName'), 'pfile')]",
       "webjobsPrimaryAccountName": "[concat(parameters('baseName'), 'wjprim')]",
       "webjobsSecondaryAccountName": "[concat(parameters('baseName'), 'wjsec')]",
-      "vmName": "[concat(take(parameters('baseName'), 13), 'vm')]",
-      "keyvaultName": "[concat(parameters('baseName'), 'kvlt')]",
-      "azureKeyVaultUrl": "[format('https://{0}.vault.azure.net', variables('keyvaultName'))]",
       "location": "[resourceGroup().location]",
       "resourceGroupName": "[resourceGroup().name]",
       "subscriptionId": "[subscription().subscriptionId]",
@@ -301,160 +296,6 @@
           "encryption": "[variables('encryption')]",
           "accessTier": "Hot"
         }
-      },
-      {
-        "type": "Microsoft.KeyVault/vaults",
-        "apiVersion": "[variables('keyvaultApiVersion')]",
-        "name": "[variables('keyvaultName')]",
-        "location": "[variables('location')]",
-        "properties": {
-          "sku": {
-            "family": "A",
-            "name": "premium"
-          },
-          "tenantId": "[parameters('tenantId')]",
-          "accessPolicies": [
-            {
-              "tenantId": "[parameters('tenantId')]",
-              "objectId": "[parameters('testApplicationOid')]",
-              "permissions": {
-                "keys": [
-                  "get",
-                  "list",
-                  "update",
-                  "create",
-                  "import",
-                  "delete",
-                  "recover",
-                  "backup",
-                  "restore",
-                  "decrypt",
-                  "encrypt",
-                  "unwrapKey",
-                  "wrapKey",
-                  "verify",
-                  "sign",
-                  "purge"
-                ],
-                "secrets": [
-                  "get",
-                  "list",
-                  "set",
-                  "delete",
-                  "recover",
-                  "backup",
-                  "restore",
-                  "purge"
-                ],
-                "certificates": [
-                  "get",
-                  "list",
-                  "update",
-                  "create",
-                  "import",
-                  "delete",
-                  "recover",
-                  "backup",
-                  "restore",
-                  "managecontacts",
-                  "manageissuers",
-                  "getissuers",
-                  "listissuers",
-                  "setissuers",
-                  "deleteissuers",
-                  "purge"
-                ]
-              }
-            }
-          ],
-          "enabledForDeployment": false,
-          "enabledForDiskEncryption": false,
-          "enabledForTemplateDeployment": false,
-          "enableSoftDelete": false
-        }
-      },
-      {
-        "type": "Microsoft.Network/virtualNetworks",
-        "apiVersion": "2020-05-01",
-        "name": "[concat(variables('vmName'), '-vnet')]",
-        "location": "[variables('location')]",
-        "properties": {
-          "addressSpace": {
-            "addressPrefixes": [
-              "10.0.0.0/16"
-            ]
-          },
-          "subnets": [
-            {
-              "name": "default",
-              "properties": {
-                "addressPrefix": "10.0.0.0/24"
-              }
-            }
-          ]
-        }
-      },
-      {
-        "type": "Microsoft.Network/networkInterfaces",
-        "apiVersion": "2020-05-01",
-        "name": "[concat(variables('vmName'), '-nic')]",
-        "location": "[variables('location')]",
-        "dependsOn": [
-          "[resourceId('Microsoft.Network/virtualNetworks', concat(variables('vmName'), '-vnet'))]"
-        ],
-        "properties": {
-          "ipConfigurations": [
-            {
-              "name": "ipconfig1",
-              "properties": {
-                "privateIPAllocationMethod": "Dynamic",
-                "subnet": {
-                  "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', concat(variables('vmName'), '-vnet'), 'default')]"
-                }
-              }
-            }
-          ]
-        }
-      },
-      {
-        "type": "Microsoft.Compute/virtualMachines",
-        "apiVersion": "[variables('computeApiVersion')]",
-        "name": "[variables('vmName')]",
-        "location": "[variables('location')]",
-        "dependsOn": [
-          "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('vmName'), '-nic'))]"
-        ],
-        "properties": {
-          "hardwareProfile": {
-            "vmSize": "Standard_DS1_v2"
-          },
-          "osProfile": {
-            "computerName": "[variables('vmName')]",
-            "adminUsername": "[concat(variables('vmName'), 'admin')]",
-            "adminPassword": "[concat('P', uniqueString(variables('vmName')), 'x', '!')]"
-          },
-          "storageProfile": {
-            "imageReference": {
-              "publisher": "MicrosoftWindowsServer",
-              "offer": "WindowsServer",
-              "sku": "2019-Datacenter",
-              "version": "latest"
-            },
-            "osDisk": {
-              "createOption": "FromImage",
-              "managedDisk": {
-                "storageAccountType": "StandardSSD_LRS"
-              }
-            }
-          },
-          "networkProfile": {
-            "networkInterfaces": [
-              {
-                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('vmName'), '-nic'))]"
-              }
-            ]
-          }
-        }
       }
     ],
     "functions": [
@@ -649,14 +490,6 @@
       "AZUREWEBJOBSSECONDARYSTORAGE": {
         "type": "string",
         "value": "[connectionString.create(variables('webjobsSecondaryAccountName'), listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('webjobsSecondaryAccountName')), variables('mgmtApiVersion')).keys[0].value, reference(resourceId('Microsoft.Storage/storageAccounts', variables('webjobsSecondaryAccountName')), variables('mgmtApiVersion')).primaryEndpoints.blob, reference(resourceId('Microsoft.Storage/storageAccounts', variables('webjobsSecondaryAccountName')), variables('mgmtApiVersion')).primaryEndpoints.queue, reference(resourceId('Microsoft.Storage/storageAccounts', variables('webjobsSecondaryAccountName')), variables('mgmtApiVersion')).primaryEndpoints.file, reference(resourceId('Microsoft.Storage/storageAccounts', variables('webjobsSecondaryAccountName')), variables('mgmtApiVersion')).primaryEndpoints.table)]"
-      },
-      "KEYVAULT_URI": {
-        "type": "string",
-        "value": "[variables('azureKeyVaultUrl')]"
-      },
-      "VM_NAME": {
-        "type": "string",
-        "value": "[variables('vmName')]"
       },
       "RESOURCE_GROUP_NAME": {
         "type": "string",

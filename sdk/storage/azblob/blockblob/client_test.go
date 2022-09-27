@@ -1549,24 +1549,25 @@ func (s *BlockBlobRecordedTestsSuite) TestGetSetBlobMetadataWithCPK() {
 func (s *BlockBlobRecordedTestsSuite) TestGetSetBlobMetadataWithCPKScope() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
+	encryptionScope := testcommon.GetCPKScopeInfo(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName)+"01", svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	bbName := testcommon.GenerateBlobName(testName)
-	bbClient := testcommon.CreateNewBlockBlobWithCPK(context.Background(), _require, bbName, containerClient, nil, &testcommon.TestCPKByScope)
+	bbClient := testcommon.CreateNewBlockBlobWithCPK(context.Background(), _require, bbName, containerClient, nil, &encryptionScope)
 
 	// Set blob metadata without encryption key should fail the request.
 	_, err = bbClient.SetMetadata(context.Background(), testcommon.BasicMetadata, nil)
 	_require.NotNil(err)
 
 	setBlobMetadataOptions := blob.SetMetadataOptions{
-		CpkScopeInfo: &testcommon.TestCPKByScope,
+		CpkScopeInfo: &encryptionScope,
 	}
 	resp, err := bbClient.SetMetadata(context.Background(), testcommon.BasicMetadata, &setBlobMetadataOptions)
 	_require.Nil(err)
-	_require.EqualValues(resp.EncryptionScope, testcommon.TestCPKByScope.EncryptionScope)
+	_require.EqualValues(*resp.EncryptionScope, *encryptionScope.EncryptionScope)
 
 	getResp, err := bbClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
@@ -1631,13 +1632,14 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSnapshotWithCPK() {
 func (s *BlockBlobRecordedTestsSuite) TestBlobSnapshotWithCPKScope() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
+	encryptionScope := testcommon.GetCPKScopeInfo(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName)+"01", svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	bbName := testcommon.GenerateBlobName(testName)
-	bbClient := testcommon.CreateNewBlockBlobWithCPK(context.Background(), _require, bbName, containerClient, nil, &testcommon.TestCPKByScope)
+	bbClient := testcommon.CreateNewBlockBlobWithCPK(context.Background(), _require, bbName, containerClient, nil, &encryptionScope)
 
 	// Create Snapshot of an encrypted blob without encryption key should fail the request.
 	_, err = bbClient.CreateSnapshot(context.Background(), nil)
@@ -1650,7 +1652,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSnapshotWithCPKScope() {
 	_require.NotNil(err)
 
 	createBlobSnapshotOptions1 := blob.CreateSnapshotOptions{
-		CpkScopeInfo: &testcommon.TestCPKByScope,
+		CpkScopeInfo: &encryptionScope,
 	}
 	resp, err := bbClient.CreateSnapshot(context.Background(), &createBlobSnapshotOptions1)
 	_require.Nil(err)
@@ -1658,11 +1660,11 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSnapshotWithCPKScope() {
 
 	snapshotURL, _ := bbClient.WithSnapshot(*resp.Snapshot)
 	downloadBlobOptions := blob.DownloadStreamOptions{
-		CpkScopeInfo: &testcommon.TestCPKByScope,
+		CpkScopeInfo: &encryptionScope,
 	}
 	dResp, err := snapshotURL.DownloadStream(context.Background(), &downloadBlobOptions)
 	_require.Nil(err)
-	_require.EqualValues(*dResp.EncryptionScope, *testcommon.TestCPKByScope.EncryptionScope)
+	_require.EqualValues(*dResp.EncryptionScope, *encryptionScope.EncryptionScope)
 
 	_, err = snapshotURL.Delete(context.Background(), nil)
 	_require.Nil(err)
@@ -2739,6 +2741,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPK() {
 func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
+	encryptionScope := testcommon.GetCPKScopeInfo(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
@@ -2751,21 +2754,21 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 	for index, word := range words {
 		base64BlockIDs[index] = testcommon.BlockIDIntToBase64(index)
 		stageBlockOptions := blockblob.StageBlockOptions{
-			CpkScopeInfo: &testcommon.TestCPKByScope,
+			CpkScopeInfo: &encryptionScope,
 		}
 		_, err := bbClient.StageBlock(context.Background(), base64BlockIDs[index], streaming.NopCloser(strings.NewReader(word)), &stageBlockOptions)
 		_require.Nil(err)
 	}
 
 	commitBlockListOptions := blockblob.CommitBlockListOptions{
-		CpkScopeInfo: &testcommon.TestCPKByScope,
+		CpkScopeInfo: &encryptionScope,
 	}
 	resp, err := bbClient.CommitBlockList(context.Background(), base64BlockIDs, &commitBlockListOptions)
 	_require.Nil(err)
 	_require.NotNil(resp.ETag)
 	_require.NotNil(resp.LastModified)
 	_require.Equal(*resp.IsServerEncrypted, true)
-	_require.EqualValues(resp.EncryptionScope, testcommon.TestCPKByScope.EncryptionScope)
+	_require.EqualValues(*encryptionScope.EncryptionScope, *resp.EncryptionScope)
 
 	downloadBlobOptions := blob.DownloadStreamOptions{
 		CpkInfo: &testcommon.TestCPKByValue,
@@ -2774,7 +2777,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 	_require.NotNil(err)
 
 	downloadBlobOptions = blob.DownloadStreamOptions{
-		CpkScopeInfo: &testcommon.TestCPKByScope,
+		CpkScopeInfo: &encryptionScope,
 	}
 	getResp, err := bbClient.DownloadStream(context.Background(), &downloadBlobOptions)
 	_require.Nil(err)
@@ -2787,7 +2790,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 	_require.EqualValues(*getResp.ETag, *resp.ETag)
 	_require.EqualValues(*getResp.LastModified, *resp.LastModified)
 	_require.Equal(*getResp.IsServerEncrypted, true)
-	_require.EqualValues(*getResp.EncryptionScope, *testcommon.TestCPKByScope.EncryptionScope)
+	_require.EqualValues(*getResp.EncryptionScope, *encryptionScope.EncryptionScope)
 }
 
 //
@@ -3069,6 +3072,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadBlobWithMD5WithCPK() {
 func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPKScope() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
+	encryptionScope := testcommon.GetCPKScopeInfo(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
@@ -3080,17 +3084,17 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPKScope() {
 	bbClient := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
 
 	uploadBlockBlobOptions := blockblob.UploadOptions{
-		CpkScopeInfo: &testcommon.TestCPKByScope,
+		CpkScopeInfo: &encryptionScope,
 	}
 	uploadResp, err := bbClient.Upload(context.Background(), r, &uploadBlockBlobOptions)
 	_require.Nil(err)
 	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 	_require.Equal(*uploadResp.IsServerEncrypted, true)
-	_require.EqualValues(uploadResp.EncryptionScope, testcommon.TestCPKByScope.EncryptionScope)
+	_require.EqualValues(*encryptionScope.EncryptionScope, *uploadResp.EncryptionScope)
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions := blob.DownloadStreamOptions{
-		CpkScopeInfo: &testcommon.TestCPKByScope,
+		CpkScopeInfo: &encryptionScope,
 	}
 	downloadResp, err := bbClient.DownloadStream(context.Background(), &downloadBlobOptions)
 	_require.Nil(err)
@@ -3098,7 +3102,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPKScope() {
 	destData, err := io.ReadAll(downloadResp.Body)
 	_require.NoError(err)
 	_require.EqualValues(destData, srcData)
-	_require.EqualValues(*downloadResp.EncryptionScope, *testcommon.TestCPKByScope.EncryptionScope)
+	_require.EqualValues(*downloadResp.EncryptionScope, *encryptionScope.EncryptionScope)
 }
 
 //func (s *AZBlobUnrecordedTestsSuite) TestUploadStreamToBlobBlobPropertiesWithCPKKey() {

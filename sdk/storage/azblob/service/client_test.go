@@ -160,7 +160,7 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClientFromConnectionString(nil, testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClientFromConnectionString(s.T(), testcommon.TestAccountDefault, nil)
 	_require.Nil(err)
 	md := map[string]string{
 		"foo": "foovalue",
@@ -467,7 +467,7 @@ func (s *ServiceUnrecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooLar
 		if i == 1 {
 			svcClient, err = testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 		} else {
-			svcClient, err = testcommon.GetServiceClientFromConnectionString(nil, testcommon.TestAccountDefault, nil)
+			svcClient, err = testcommon.GetServiceClientFromConnectionString(s.T(), testcommon.TestAccountDefault, nil)
 		}
 		_require.Nil(err)
 

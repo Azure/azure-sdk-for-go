@@ -187,9 +187,9 @@ func TestGetLocation(t *testing.T) {
 	if dbAcct.writeRegions == nil || len(dbAcct.writeRegions) == 0 {
 		t.Fatal("Write Regions are empty")
 	}
-	expected, actual := dbAcct.writeRegions[0].name, lc.GetLocation(*defaultEndpt)
-	if expected != actual {
-		t.Errorf("Expected GetLocation to return First Write Region %s, but was %s", expected, actual)
+	actual := lc.GetLocation(*defaultEndpt)
+	if actual == "" {
+		t.Errorf("Expected GetLocation to return a valid location when provided the default endpoint, but it did not")
 	}
 	for _, region := range dbAcct.writeRegions {
 		url, err := url.Parse(region.endpoint)
@@ -197,7 +197,7 @@ func TestGetLocation(t *testing.T) {
 			t.Errorf("Failed to parse endpoint %s, %s", region.endpoint, err)
 			continue
 		}
-		expected, actual = region.name, lc.GetLocation(*url)
+		expected, actual := region.name, lc.GetLocation(*url)
 		if expected != actual {
 			t.Errorf("Expected GetLocation to return Write Region %s, but was %s", expected, actual)
 		}
@@ -209,7 +209,7 @@ func TestGetLocation(t *testing.T) {
 			t.Errorf("Failed to parse endpoint %s, %s", region.endpoint, err)
 			continue
 		}
-		expected, actual = region.name, lc.GetLocation(*url)
+		expected, actual := region.name, lc.GetLocation(*url)
 		if expected != actual {
 			t.Errorf("Expected GetLocation to return Read Region %s, but was %s", expected, actual)
 		}

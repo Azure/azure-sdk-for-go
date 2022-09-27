@@ -9,6 +9,7 @@ package azblob_test
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"os"
 	"sync/atomic"
@@ -20,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
@@ -198,15 +200,19 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 	blobName := testcommon.GenerateBlobName(testName)
 
 	// Upload the file to a block blob
+	var errTransferred error
 	_, err = client.UploadFile(context.Background(), containerName, blobName, file,
 		&blockblob.UploadFileOptions{
 			BlockSize:   int64(blockSize),
 			Concurrency: uint16(concurrency),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
-				_require.Equal(bytesTransferred > 0 && bytesTransferred <= int64(fileSize), true)
+				if bytesTransferred <= 0 || bytesTransferred > int64(fileSize) {
+					errTransferred = fmt.Errorf("invalid bytes transferred %d", bytesTransferred)
+				}
 			},
 		})
+	assert.NoError(t, errTransferred)
 	_require.NoError(err)
 	//_require.Equal(response.StatusCode, 201)
 
@@ -237,11 +243,14 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 			Concurrency: uint16(concurrency),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
-				_require.Equal(bytesTransferred > 0 && bytesTransferred <= int64(fileSize), true)
+				if bytesTransferred <= 0 || bytesTransferred > int64(fileSize) {
+					errTransferred = fmt.Errorf("invalid bytes transferred %d", bytesTransferred)
+				}
 			},
 		})
 
 	// Assert download was successful
+	assert.NoError(t, errTransferred)
 	_require.NoError(err)
 
 	// Assert downloaded data is consistent
@@ -364,15 +373,19 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 	blobName := testcommon.GenerateBlobName(testName)
 
 	// Pass the Context, stream, stream size, block blob URL, and options to StreamToBlockBlob
+	var errTransferred error
 	_, err = client.UploadBuffer(context.Background(), containerName, blobName, bytesToUpload,
 		&blockblob.UploadBufferOptions{
 			BlockSize:   int64(blockSize),
 			Concurrency: uint16(concurrency),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
-				_require.Equal(bytesTransferred > 0 && bytesTransferred <= int64(blobSize), true)
+				if bytesTransferred <= 0 || bytesTransferred > int64(blobSize) {
+					errTransferred = fmt.Errorf("invalid bytes transferred %d", bytesTransferred)
+				}
 			},
 		})
+	assert.NoError(t, errTransferred)
 	_require.NoError(err)
 	//_require.Equal(response.StatusCode, 201)
 
@@ -385,7 +398,7 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 	}
 
 	// Download the blob to a buffer
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Minute)
 	_, err = client.DownloadBuffer(ctx,
 		containerName,
 		blobName,
@@ -398,11 +411,14 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 			Concurrency: uint16(concurrency),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
-				_require.Equal(bytesTransferred > 0 && bytesTransferred <= int64(blobSize), true)
+				if bytesTransferred <= 0 || bytesTransferred > int64(blobSize) {
+					errTransferred = fmt.Errorf("invalid bytes transferred %d", bytesTransferred)
+				}
 			},
 		})
 	cancel()
 
+	assert.NoError(t, errTransferred)
 	_require.NoError(err)
 
 	if downloadOffset == 0 && downloadCount == 0 {

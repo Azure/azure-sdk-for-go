@@ -102,7 +102,7 @@ func TestMarkEndptUnavailable(t *testing.T) {
 	} else {
 		t.Errorf("Expected locationUnavailabilityInfoMap to contain %s, but it did not", loc1Endpt.String())
 		for k, v := range lc.locationUnavailabilityInfoMap {
-			fmt.Println(k, v)
+			t.Errorf("Key: %s, Value: %v", k.String(), v)
 		}
 	}
 	// mark endpoint unavailable for second time
@@ -122,7 +122,7 @@ func TestMarkEndptUnavailable(t *testing.T) {
 	} else {
 		t.Errorf("Expected locationUnavailabilityInfoMap to contain %s, but it did not", loc1Endpt.String())
 		for k, v := range lc.locationUnavailabilityInfoMap {
-			fmt.Println(k, v)
+			t.Errorf("Key: %s, Value: %v", k.String(), v)
 		}
 	}
 }

@@ -217,9 +217,8 @@ func TestGetLocation(t *testing.T) {
 }
 
 func TestGetEndptsByLocation(t *testing.T) {
-	lc := ResetLocationCache()
 	locs := []AcctRegion{loc1, loc2, loc3, loc4}
-	newEndptsByLoc, parsedLocs, err := lc.GetEndptsByLocation(locs)
+	newEndptsByLoc, parsedLocs, err := GetEndptsByLocation(locs)
 	if err != nil {
 		t.Fatalf("Received error getting endpoints by location: %s", err.Error())
 	}

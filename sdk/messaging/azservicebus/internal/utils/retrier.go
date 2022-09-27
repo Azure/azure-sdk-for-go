@@ -52,12 +52,10 @@ func Retry(ctx context.Context, eventName log.Event, operation string, fn func(c
 			sleep := calcDelay(ro, i)
 			log.Writef(eventName, "(%s) Retry attempt %d sleeping for %s", operation, i, sleep)
 
-			sleepCtx, cancelSleep := context.WithTimeout(ctx, sleep)
-			<-sleepCtx.Done()
-			cancelSleep()
-
-			if ctx.Err() != nil {
+			select {
+			case <-ctx.Done():
 				return ctx.Err()
+			case <-time.After(sleep):
 			}
 		}
 

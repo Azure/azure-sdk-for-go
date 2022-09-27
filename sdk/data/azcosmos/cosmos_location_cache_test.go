@@ -23,6 +23,7 @@ var loc1 AcctRegion
 var loc2 AcctRegion
 var loc3 AcctRegion
 var loc4 AcctRegion
+var prefLocs []string
 
 func TestMain(m *testing.M) {
 	var err error
@@ -61,10 +62,7 @@ func TestMain(m *testing.M) {
 	readEndpts = []url.URL{*loc1Endpt, *loc2Endpt, *loc4Endpt}
 	endptsByLoc = map[string]url.URL{"location1": *loc1Endpt, "location2": *loc2Endpt, "location3": *loc3Endpt, "location4": *loc4Endpt}
 
-	prefLocs := make([]string, 0)
-	lc = NewLocationCache(prefLocs, *defaultEndpt)
-	lc.enableEndptDiscovery = true
-	lc.connLimit = 10
+	prefLocs = make([]string, 0)
 
 	status := m.Run()
 	os.Exit(status)
@@ -79,7 +77,14 @@ func CreateDbAcct(useMultipleWriteLocations bool, enforceSingleMasterWriteLoc bo
 	return AcctProperties{writeRegions: writeRegions, readRegions: readRegions, enableMultipleWriteLocations: useMultipleWriteLocations}
 }
 
+func ResetLocationCache() {
+	lc = NewLocationCache(prefLocs, *defaultEndpt)
+	lc.enableEndptDiscovery = true
+	lc.connLimit = 10
+}
+
 func TestMarkEndptUnavailable(t *testing.T) {
+	ResetLocationCache()
 	var firstCheckTime time.Time
 	// mark endpoint unavailable for first time
 	err := lc.MarkEndptUnavailableForRead(*loc1Endpt)
@@ -117,6 +122,7 @@ func TestMarkEndptUnavailable(t *testing.T) {
 }
 
 func TestRefreshStaleEndpts(t *testing.T) {
+	ResetLocationCache()
 	// mark endpoint unavailable for first time
 	err := lc.MarkEndptUnavailableForRead(*loc1Endpt)
 	if err != nil {
@@ -136,6 +142,7 @@ func TestRefreshStaleEndpts(t *testing.T) {
 }
 
 func TestIsEndptUnavailable(t *testing.T) {
+	ResetLocationCache()
 	err := lc.MarkEndptUnavailableForRead(*loc1Endpt)
 	if err != nil {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
@@ -171,6 +178,7 @@ func TestIsEndptUnavailable(t *testing.T) {
 }
 
 func TestGetLocation(t *testing.T) {
+	ResetLocationCache()
 	dbAcct := CreateDbAcct(lc.enableMultipleWriteLocations, false)
 	err := lc.DbAcctRead(dbAcct) // requires unit test of update
 	if err != nil {
@@ -209,6 +217,7 @@ func TestGetLocation(t *testing.T) {
 }
 
 func TestGetEndptsByLocation(t *testing.T) {
+	ResetLocationCache()
 	locs := []AcctRegion{loc1, loc2, loc3, loc4}
 	newEndptsByLoc, parsedLocs, err := lc.GetEndptsByLocation(locs)
 	if err != nil {

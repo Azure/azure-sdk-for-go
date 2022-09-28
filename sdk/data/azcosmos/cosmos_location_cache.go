@@ -200,7 +200,8 @@ func (lc *LocationCache) DbAcctRead(dbAcct AcctProperties) error {
 func (lc *LocationCache) RefreshStaleEndpts() {
 	lc.mapMutex.Lock()
 	for endpoint, info := range lc.locationUnavailabilityInfoMap {
-		if time.Since(info.lastCheckTime) > lc.unavailableLocationExpirationTime {
+		t := time.Since(info.lastCheckTime)
+		if t > lc.unavailableLocationExpirationTime {
 			delete(lc.locationUnavailabilityInfoMap, endpoint)
 		}
 	}

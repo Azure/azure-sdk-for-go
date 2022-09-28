@@ -135,7 +135,7 @@ func TestRefreshStaleEndpts(t *testing.T) {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
 	if info, ok := lc.locationUnavailabilityInfoMap[*loc1Endpt]; ok {
-		info.lastCheckTime = time.Now().Add(-1 * DefaultExpirationTime)
+		info.lastCheckTime = time.Now().Add(-1*DefaultExpirationTime - 1*time.Second)
 		lc.locationUnavailabilityInfoMap[*loc1Endpt] = info
 	} else {
 		t.Errorf("Expected locationUnavailabilityInfoMap to contain %s, but it did not", loc1Endpt.String())
@@ -172,7 +172,7 @@ func TestIsEndptUnavailable(t *testing.T) {
 	}
 
 	if info, ok := lc.locationUnavailabilityInfoMap[*loc1Endpt]; ok {
-		info.lastCheckTime = time.Now().Add(-1 * DefaultExpirationTime)
+		info.lastCheckTime = time.Now().Add(-1*DefaultExpirationTime - 1*time.Second)
 		lc.locationUnavailabilityInfoMap[*loc1Endpt] = info
 	} else {
 		t.Errorf("Expected locationUnavailabilityInfoMap to contain %s, but it did not", loc1Endpt.String())

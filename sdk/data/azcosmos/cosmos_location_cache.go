@@ -64,7 +64,7 @@ type LocationCache struct {
 func NewLocationCache(prefLocations []string, defaultEndpt url.URL) *LocationCache {
 	return &LocationCache{
 		defaultEndpt:                      defaultEndpt,
-		locationInfo:                      *NewdbAcctLocationsInfo(prefLocations, defaultEndpt),
+		locationInfo:                      *NewDbAcctLocationsInfo(prefLocations, defaultEndpt),
 		locationUnavailabilityInfoMap:     make(map[url.URL]locationUnavailabilityInfo),
 		unavailableLocationExpirationTime: DefaultExpirationTime,
 	}
@@ -217,7 +217,7 @@ func (lc *LocationCache) IsEndptUnavailable(endpoint url.URL, ops opType) bool {
 	}
 	lc.rwMutex.RLock()
 	defer lc.rwMutex.RUnlock()
-	return time.Since(info.lastCheckTime) <= lc.unavailableLocationExpirationTime
+	return time.Since(info.lastCheckTime) < lc.unavailableLocationExpirationTime
 }
 
 func (lc *LocationCache) GetPrefAvailableEndpts(endptsByLoc map[string]url.URL, locs []string, availOps opType, fallbackEndpt url.URL) []url.URL {
@@ -270,7 +270,7 @@ func GetEndptsByLocation(locs []AcctRegion) (map[string]url.URL, []string, error
 	return endptsByLoc, parsedLocs, nil
 }
 
-func NewdbAcctLocationsInfo(prefLocations []string, defaultEndpt url.URL) *dbAcctLocationsInfo {
+func NewDbAcctLocationsInfo(prefLocations []string, defaultEndpt url.URL) *dbAcctLocationsInfo {
 	availWriteLocs := make([]string, 0)
 	availReadLocs := make([]string, 0)
 	availWriteEndptsByLocation := make(map[string]url.URL)

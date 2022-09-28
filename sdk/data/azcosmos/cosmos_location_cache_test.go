@@ -179,7 +179,7 @@ func TestIsEndptUnavailable(t *testing.T) {
 	}
 
 	if lc.IsEndptUnavailable(*loc1Endpt, read) {
-		t.Errorf("Expected IsEndptUnavailable to return false, but it returned true stale unavailablilty")
+		t.Errorf("Expected IsEndptUnavailable to return false, but it returned true stale unavailability")
 	}
 }
 

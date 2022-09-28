@@ -38,7 +38,7 @@ type dbAcctLocationsInfo struct {
 type AcctRegion struct {
 	name     string
 	endpoint string // make url?
-	props    map[string]interface{}
+	// props    map[string]interface{}
 }
 
 type AcctProperties struct {
@@ -48,11 +48,11 @@ type AcctProperties struct {
 }
 
 type LocationCache struct {
-	locationInfo                      dbAcctLocationsInfo
-	defaultEndpt                      url.URL
-	enableEndptDiscovery              bool
-	useMultipleWriteLocations         bool
-	connLimit                         int
+	locationInfo              dbAcctLocationsInfo
+	defaultEndpt              url.URL
+	enableEndptDiscovery      bool
+	useMultipleWriteLocations bool
+	// connLimit                         int
 	rwMutex                           sync.RWMutex
 	locationUnavailabilityInfoMap     map[url.URL]locationUnavailabilityInfo
 	mapMutex                          sync.RWMutex

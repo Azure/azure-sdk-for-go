@@ -79,7 +79,7 @@ func CreateDbAcct(useMultipleWriteLocations bool, enforceSingleMasterWriteLoc bo
 func ResetLocationCache() *LocationCache {
 	lc := NewLocationCache(prefLocs, *defaultEndpt)
 	lc.enableEndptDiscovery = true
-	lc.connLimit = 10
+	// lc.connLimit = 10
 	return lc
 }
 

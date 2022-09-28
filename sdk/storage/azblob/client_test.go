@@ -16,6 +16,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
@@ -38,7 +39,7 @@ type AZBlobUnrecordedTestsSuite struct {
 
 // Hookup to the testing framework
 func Test(t *testing.T) {
-	recordMode := os.Getenv("AZURE_RECORD_MODE")
+	recordMode := recording.GetRecordMode()
 	t.Logf("Running azblob Tests in %s mode\n", recordMode)
 	if recordMode == "live" {
 		suite.Run(t, &AZBlobRecordedTestsSuite{})

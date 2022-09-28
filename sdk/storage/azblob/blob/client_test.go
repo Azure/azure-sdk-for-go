@@ -13,7 +13,6 @@ import (
 	"errors"
 	"io"
 	"net/url"
-	"os"
 	"strconv"
 	"strings"
 	"testing"
@@ -22,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
@@ -34,7 +34,7 @@ import (
 )
 
 func Test(t *testing.T) {
-	recordMode := os.Getenv("AZURE_RECORD_MODE")
+	recordMode := recording.GetRecordMode()
 	t.Logf("Running blob Tests in %s mode\n", recordMode)
 	if recordMode == "live" {
 		suite.Run(t, &BlobRecordedTestsSuite{})

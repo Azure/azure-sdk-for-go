@@ -257,7 +257,10 @@ func TestGetPrefAvailableEndpts(t *testing.T) {
 		t.Fatalf("Received error Reading DB account: %s", err.Error())
 	}
 	// marks loc1 unavailable, which will put it last in the preferred available endpoint list
-	lc.MarkEndptUnavailableForWrite(*loc1Endpt)
+	err = lc.MarkEndptUnavailableForWrite(*loc1Endpt)
+	if err != nil {
+		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
+	}
 	// loc1: unavailable, loc2: available, loc5: non-existent
 	lc.locationInfo.prefLocations = []string{loc1.name, loc2.name, "location5"}
 	prefWriteEndpts := lc.GetPrefAvailableEndpts(lc.locationInfo.availWriteEndptsByLocation, lc.locationInfo.availWriteLocations, write, lc.defaultEndpt)
@@ -297,7 +300,10 @@ func TestReadEndpts(t *testing.T) {
 	}
 
 	lc.lastUpdateTime = time.Now().Add(-1*DefaultExpirationTime - 1*time.Second)
-	lc.MarkEndptUnavailableForRead(*loc2Endpt)
+	err = lc.MarkEndptUnavailableForRead(*loc2Endpt)
+	if err != nil {
+		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
+	}
 	expectedReadEndpts = []*url.URL{loc4Endpt, loc1Endpt, loc2Endpt}
 	actualReadEndpts, err = lc.ReadEndpts()
 	if err != nil {
@@ -343,7 +349,10 @@ func TestWriteEndpts(t *testing.T) {
 	}
 
 	lc.lastUpdateTime = time.Now().Add(-1*DefaultExpirationTime - 1*time.Second)
-	lc.MarkEndptUnavailableForWrite(*loc1Endpt)
+	err = lc.MarkEndptUnavailableForWrite(*loc1Endpt)
+	if err != nil {
+		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
+	}
 	expectedWriteEndpts = []*url.URL{loc2Endpt, loc3Endpt, defaultEndpt, loc1Endpt}
 	actualWriteEndpts, err = lc.WriteEndpts()
 	if err != nil {

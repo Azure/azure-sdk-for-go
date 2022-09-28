@@ -235,7 +235,6 @@ func (lc *LocationCache) GetPrefAvailableEndpts(endptsByLoc map[string]url.URL, 
 						endpts = append(endpts, endpt)
 					}
 				}
-
 			}
 			endpts = append(endpts, unavailEndpts...)
 		} else {

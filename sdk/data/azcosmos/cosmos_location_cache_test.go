@@ -101,9 +101,6 @@ func TestMarkEndptUnavailable(t *testing.T) {
 		}
 	} else {
 		t.Errorf("Expected locationUnavailabilityInfoMap to contain %s, but it did not", loc1Endpt.String())
-		for k, v := range lc.locationUnavailabilityInfoMap {
-			t.Errorf("Key: %s, Value: %v", k.String(), v)
-		}
 	}
 	// mark endpoint unavailable for second time
 	time.Sleep(100 * time.Millisecond)
@@ -121,9 +118,6 @@ func TestMarkEndptUnavailable(t *testing.T) {
 		}
 	} else {
 		t.Errorf("Expected locationUnavailabilityInfoMap to contain %s, but it did not", loc1Endpt.String())
-		for k, v := range lc.locationUnavailabilityInfoMap {
-			t.Errorf("Key: %s, Value: %v", k.String(), v)
-		}
 	}
 }
 
@@ -188,7 +182,7 @@ func TestGetLocation(t *testing.T) {
 	dbAcct := CreateDbAcct(lc.enableMultipleWriteLocations, false)
 	err := lc.DbAcctRead(dbAcct) // requires unit test of update
 	if err != nil {
-		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
+		t.Fatalf("Received error Reading DB account: %s", err.Error())
 	}
 	if dbAcct.writeRegions == nil || len(dbAcct.writeRegions) == 0 {
 		t.Fatal("Write Regions are empty")
@@ -248,6 +242,31 @@ func TestGetEndptsByLocation(t *testing.T) {
 	for i, loc := range locs {
 		if parsedLocs[i] != loc.name {
 			t.Errorf("Expected parsedLocs to contain location %s, but it did not", loc.name)
+		}
+	}
+}
+
+func TestGetPrefAvailableEndpts(t *testing.T) {
+	lc := ResetLocationCache()
+	lc.enableMultipleWriteLocations = true
+	lc.useMultipleWriteLocations = true
+	dbAcct := CreateDbAcct(lc.enableMultipleWriteLocations, false)
+	// will set write locations to loc1, loc2, loc3
+	err := lc.DbAcctRead(dbAcct)
+	if err != nil {
+		t.Fatalf("Received error Reading DB account: %s", err.Error())
+	}
+	// marks loc1 unavailable, which will put it last in the preferred available endpoint list
+	lc.MarkEndptUnavailableForWrite(*loc1Endpt)
+	// loc1: unavailable, loc2: available, loc5: non-existent
+	lc.locationInfo.prefLocations = []string{loc1.name, loc2.name, "location5"}
+	prefWriteEndpts := lc.GetPrefAvailableEndpts(lc.locationInfo.availWriteEndptsByLocation, lc.locationInfo.availWriteLocations, write, lc.defaultEndpt)
+	// loc2: preferred + available, default: fallback endpoint, loc1: unavailable + preferred
+	expectedWriteEndpts := []*url.URL{loc2Endpt, defaultEndpt, loc1Endpt}
+
+	for i, endpt := range expectedWriteEndpts {
+		if endpt.String() != prefWriteEndpts[i].String() {
+			t.Errorf("Expected endpoint %s, but was %s", endpt.String(), prefWriteEndpts[i].String())
 		}
 	}
 }

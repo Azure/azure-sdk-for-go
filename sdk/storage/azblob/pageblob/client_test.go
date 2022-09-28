@@ -3732,7 +3732,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPKScope() {
 	uploadResp, err := pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
 	_require.Nil(err)
 	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
-	_require.EqualValues(*uploadResp.EncryptionScope, encryptionScope)
+	_require.EqualValues(*encryptionScope.EncryptionScope, *uploadResp.EncryptionScope)
 
 	pager := pbClient.NewGetPageRangesPager(nil)
 	for pager.More() {

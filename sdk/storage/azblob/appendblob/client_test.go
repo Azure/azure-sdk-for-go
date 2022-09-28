@@ -10,7 +10,6 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
-	"fmt"
 	"io"
 	"strconv"
 	"strings"
@@ -1781,7 +1780,7 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobVersion() {
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(fmt.Sprintf("Appending block\n"))), nil)
+	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
 	_require.Nil(err)
 
 	versions := make([]string, 0)
@@ -1844,7 +1843,7 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobSnapshot() {
 	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 	_, err = abClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(fmt.Sprintf("Appending block\n"))), nil)
+	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
 	_require.Nil(err)
 
 	snapshots := make([]string, 0)

@@ -1761,7 +1761,7 @@ func (s *BlockBlobRecordedTestsSuite) TestDeleteSpecificBlobVersion() {
 	}
 }
 
-func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlobVersion() {
+func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobVersion() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1821,7 +1821,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlobVersion() {
 	time.Sleep(time.Second * 30)
 }
 
-func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlobSnapshot() {
+func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobSnapshot() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

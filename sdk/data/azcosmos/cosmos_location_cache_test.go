@@ -270,3 +270,92 @@ func TestGetPrefAvailableEndpts(t *testing.T) {
 		}
 	}
 }
+
+func TestReadEndpts(t *testing.T) {
+	lc := ResetLocationCache()
+	lc.locationInfo.prefLocations = []string{loc1.name, loc2.name, loc3.name, loc4.name}
+	dbAcct := CreateDbAcct(lc.enableMultipleWriteLocations, false)
+	err := lc.DbAcctRead(dbAcct)
+	if err != nil {
+		t.Fatalf("Received error Reading DB account: %s", err.Error())
+	}
+
+	lc.lastUpdateTime = time.Now().Add(-1*DefaultExpirationTime - 1*time.Second)
+	expectedReadEndpts := []*url.URL{loc2Endpt, loc4Endpt, loc1Endpt}
+	actualReadEndpts, err := lc.ReadEndpts()
+	if err != nil {
+		t.Fatalf("Received error getting read endpoints: %s", err.Error())
+	}
+	if len(expectedReadEndpts) != len(actualReadEndpts) {
+		t.Errorf("Expected %d read endpoints, but got %d", len(expectedReadEndpts), len(actualReadEndpts))
+	} else {
+		for i, endpt := range expectedReadEndpts {
+			if endpt.String() != actualReadEndpts[i].String() {
+				t.Errorf("Expected endpoint %s, but was %s", endpt.String(), actualReadEndpts[i].String())
+			}
+		}
+	}
+
+	lc.lastUpdateTime = time.Now().Add(-1*DefaultExpirationTime - 1*time.Second)
+	lc.MarkEndptUnavailableForRead(*loc2Endpt)
+	expectedReadEndpts = []*url.URL{loc4Endpt, loc1Endpt, loc2Endpt}
+	actualReadEndpts, err = lc.ReadEndpts()
+	if err != nil {
+		t.Fatalf("Received error getting read endpoints: %s", err.Error())
+	}
+	if len(expectedReadEndpts) != len(actualReadEndpts) {
+		t.Errorf("Expected %d read endpoints, but got %d", len(expectedReadEndpts), len(actualReadEndpts))
+	} else {
+		for i, endpt := range expectedReadEndpts {
+			if endpt.String() != actualReadEndpts[i].String() {
+				t.Errorf("Expected endpoint %s, but was %s", endpt.String(), actualReadEndpts[i].String())
+			}
+		}
+	}
+
+}
+
+func TestWriteEndpts(t *testing.T) {
+	lc := ResetLocationCache()
+	lc.enableMultipleWriteLocations = true
+	lc.useMultipleWriteLocations = true
+	lc.locationInfo.prefLocations = []string{loc1.name, loc2.name, loc3.name, loc4.name}
+	dbAcct := CreateDbAcct(lc.enableMultipleWriteLocations, false)
+	err := lc.DbAcctRead(dbAcct)
+	if err != nil {
+		t.Fatalf("Received error Reading DB account: %s", err.Error())
+	}
+
+	lc.lastUpdateTime = time.Now().Add(-1*DefaultExpirationTime - 1*time.Second)
+	expectedWriteEndpts := []*url.URL{loc1Endpt, loc2Endpt, loc3Endpt, defaultEndpt}
+	actualWriteEndpts, err := lc.WriteEndpts()
+	if err != nil {
+		t.Fatalf("Received error getting write endpoints: %s", err.Error())
+	}
+	if len(expectedWriteEndpts) != len(actualWriteEndpts) {
+		t.Errorf("Expected %d write endpoints, but got %d", len(expectedWriteEndpts), len(actualWriteEndpts))
+	} else {
+		for i, endpt := range expectedWriteEndpts {
+			if endpt.String() != actualWriteEndpts[i].String() {
+				t.Errorf("Expected endpoint %s, but was %s", endpt.String(), actualWriteEndpts[i].String())
+			}
+		}
+	}
+
+	lc.lastUpdateTime = time.Now().Add(-1*DefaultExpirationTime - 1*time.Second)
+	lc.MarkEndptUnavailableForWrite(*loc1Endpt)
+	expectedWriteEndpts = []*url.URL{loc2Endpt, loc3Endpt, defaultEndpt, loc1Endpt}
+	actualWriteEndpts, err = lc.WriteEndpts()
+	if err != nil {
+		t.Fatalf("Received error getting write endpoints: %s", err.Error())
+	}
+	if len(expectedWriteEndpts) != len(actualWriteEndpts) {
+		t.Errorf("Expected %d write endpoints, but got %d", len(expectedWriteEndpts), len(actualWriteEndpts))
+	} else {
+		for i, endpt := range expectedWriteEndpts {
+			if endpt.String() != actualWriteEndpts[i].String() {
+				t.Errorf("Expected endpoint %s, but was %s", endpt.String(), actualWriteEndpts[i].String())
+			}
+		}
+	}
+}

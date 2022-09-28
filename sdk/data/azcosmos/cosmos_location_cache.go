@@ -108,7 +108,7 @@ func (lc *LocationCache) update(writeLocations []AcctRegion, readLocations []Acc
 	return nil
 }
 
-func (lc *LocationCache) ReadEndpoints() ([]url.URL, error) {
+func (lc *LocationCache) ReadEndpts() ([]url.URL, error) {
 	lc.mapMutex.RLock()
 	defer lc.mapMutex.RUnlock()
 	if time.Since(lc.lastUpdateTime) > lc.unavailableLocationExpirationTime && len(lc.locationUnavailabilityInfoMap) > 0 {
@@ -120,7 +120,7 @@ func (lc *LocationCache) ReadEndpoints() ([]url.URL, error) {
 	return lc.locationInfo.readEndpts, nil
 }
 
-func (lc *LocationCache) WriteEndpoints() ([]url.URL, error) {
+func (lc *LocationCache) WriteEndpts() ([]url.URL, error) {
 	lc.mapMutex.RLock()
 	defer lc.mapMutex.RUnlock()
 	if time.Since(lc.lastUpdateTime) > lc.unavailableLocationExpirationTime && len(lc.locationUnavailabilityInfoMap) > 0 {

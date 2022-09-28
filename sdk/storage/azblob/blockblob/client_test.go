@@ -2079,7 +2079,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
 	_require.Nil(err)
 
 	_, err = bbClient.GetTags(ctx, nil)
-	_require.NotNil(err)
+	_require.NoError(err)
 
 	blobGetTagsResponse, err := bbClient.GetTags(ctx, &blob.GetTagsOptions{BlobAccessConditions: &blob.AccessConditions{
 		LeaseAccessConditions: &blob.LeaseAccessConditions{LeaseID: blobLeaseClient.LeaseID()}}})

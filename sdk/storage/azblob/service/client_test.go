@@ -588,7 +588,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	_require.Nil(err)
 	_, err = containerClient.Create(context.Background(), &container.CreateOptions{Metadata: testcommon.BasicMetadata})
 	_require.Nil(err)
-	defer containerClient.Delete(context.Background(), nil)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	containerClient1, err := container.NewClientWithNoCredential(sasUrlReadAdd, nil)
 	_require.Nil(err)
@@ -691,8 +691,20 @@ func (s *ServiceUnrecordedTestsSuite) TestContainerRestore() {
 
 			if *cont.Deleted && *cont.Name == containerName {
 				contRestored = true
-				_, err = svcClient.RestoreContainer(context.Background(), containerName, *cont.Version, nil)
-				_require.Nil(err)
+				const maxTries = 5
+				for tries := 0; tries < maxTries; tries++ {
+					_, err = svcClient.RestoreContainer(context.Background(), containerName, *cont.Version, nil)
+					if err == nil {
+						break
+					} else if bloberror.HasCode(err, bloberror.ContainerBeingDeleted) {
+						// container is still being deleted, try again
+						time.Sleep(5 * time.Second)
+						if tries+1 < maxTries {
+							err = nil
+						}
+					}
+				}
+				_require.NoError(err)
 				break
 			}
 		}

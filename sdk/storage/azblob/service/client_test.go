@@ -666,7 +666,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 // TODO: convert this test to recorded
 func (s *ServiceUnrecordedTestsSuite) TestContainerRestore() {
 	_require := require.New(s.T())
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
 	_require.NoError(err)
 
 	testName := s.T().Name()

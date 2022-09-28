@@ -447,27 +447,27 @@
         "type": "string",
         "value": "[url.serviceEndpointSuffix(reference(resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName')), variables('mgmtApiVersion')).primaryEndpoints.table)]"
       },
-      "SOFT_DELETE_ACCOUNT_NAME": {
+      "SOFT_DELETE_AZURE_STORAGE_ACCOUNT_NAME": {
         "type": "string",
         "value": "[variables('softDeleteAccountName')]"
       },
-      "SOFT_DELETE_ACCOUNT_KEY": {
+      "SOFT_DELETE_AZURE_STORAGE_ACCOUNT_KEY": {
         "type": "string",
         "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('softDeleteAccountName')), variables('mgmtApiVersion')).keys[0].value]"
       },
-      "SOFT_DELETE_STORAGE_ACCOUNT_BLOB_ENDPOINT_SUFFIX": {
+      "SOFT_DELETE_AZURE_STORAGE_ACCOUNT_BLOB_ENDPOINT_SUFFIX": {
         "type": "string",
         "value": "[url.serviceEndpointSuffix(reference(resourceId('Microsoft.Storage/storageAccounts', variables('softDeleteAccountName')), variables('mgmtApiVersion')).primaryEndpoints.blob)]"
       },
-      "SOFT_DELETE_STORAGE_ACCOUNT_FILE_ENDPOINT_SUFFIX": {
+      "SOFT_DELETE_AZURE_STORAGE_ACCOUNT_FILE_ENDPOINT_SUFFIX": {
         "type": "string",
         "value": "[url.serviceEndpointSuffix(reference(resourceId('Microsoft.Storage/storageAccounts', variables('softDeleteAccountName')), variables('mgmtApiVersion')).primaryEndpoints.file)]"
       },
-      "SOFT_DELETE_STORAGE_ACCOUNT_QUEUE_ENDPOINT_SUFFIX": {
+      "SOFT_DELETE_AZURE_STORAGE_ACCOUNT_QUEUE_ENDPOINT_SUFFIX": {
         "type": "string",
         "value": "[url.serviceEndpointSuffix(reference(resourceId('Microsoft.Storage/storageAccounts', variables('softDeleteAccountName')), variables('mgmtApiVersion')).primaryEndpoints.queue)]"
       },
-      "SOFT_DELETE_STORAGE_ACCOUNT_TABLE_ENDPOINT_SUFFIX": {
+      "SOFT_DELETE_AZURE_STORAGE_ACCOUNT_TABLE_ENDPOINT_SUFFIX": {
         "type": "string",
         "value": "[url.serviceEndpointSuffix(reference(resourceId('Microsoft.Storage/storageAccounts', variables('softDeleteAccountName')), variables('mgmtApiVersion')).primaryEndpoints.table)]"
       },

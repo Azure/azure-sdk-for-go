@@ -531,11 +531,10 @@ func (s *ServiceUnrecordedTestsSuite) TestSASServiceClient() {
 	svcClient, err := service.NewClientWithNoCredential(sasUrl, nil)
 	_require.Nil(err)
 
+	// mismatched container name
 	_, err = svcClient.CreateContainer(context.Background(), containerName+"002", nil)
-	_require.Nil(err)
-
-	_, err = svcClient.DeleteContainer(context.Background(), containerName+"002", nil)
-	_require.Nil(err)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthenticationFailed)
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient() {
@@ -589,23 +588,27 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	_require.Nil(err)
 	_, err = containerClient.Create(context.Background(), &container.CreateOptions{Metadata: testcommon.BasicMetadata})
 	_require.Nil(err)
+	defer containerClient.Delete(context.Background(), nil)
 
 	containerClient1, err := container.NewClientWithNoCredential(sasUrlReadAdd, nil)
 	_require.Nil(err)
 
+	// container metadata and properties can't be read or written with SAS auth
 	_, err = containerClient1.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthorizationFailure)
+
+	sasUrlRCWL, err := containerClient.GetSASURL(sas.ContainerPermissions{Add: true, Create: true, Delete: true, List: true},
+		time.Now().Add(-5*time.Minute).UTC(), time.Now().Add(time.Hour))
 	_require.Nil(err)
-	//validateBlobErrorCode(_require, err, bloberror.AuthorizationFailure)
-	//
-	//sasUrlRCWL, err := containerClient.GetSASURL(container.SASPermissions{Add: true, Create: true, Delete: true, List: true},
-	//	time.Now().Add(-5*time.Minute).UTC(), time.Now().Add(time.Hour))
-	//_require.Nil(err)
-	//
-	//containerClient2, err := container.NewClientWithNoCredential(sasUrlRCWL, nil)
-	//_require.Nil(err)
-	//
-	//_, err = containerClient2.Create(ctx, nil)
-	//_require.Nil(err)
+
+	containerClient2, err := container.NewClientWithNoCredential(sasUrlRCWL, nil)
+	_require.Nil(err)
+
+	// containers can't be created, deleted, or listed with SAS auth
+	_, err = containerClient2.Create(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthorizationFailure)
 }
 
 /*func (s *ServiceRecordedTestsSuite) TestUserDelegationSAS() {

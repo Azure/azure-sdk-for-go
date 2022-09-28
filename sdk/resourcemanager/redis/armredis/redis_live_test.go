@@ -35,6 +35,7 @@ type RedisTestSuite struct {
 }
 
 func (testsuite *RedisTestSuite) SetupSuite() {
+	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/redis/armredis/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.name = testutil.GenerateAlphaNumericID(testsuite.T(), "redisna", 6)
@@ -43,7 +44,6 @@ func (testsuite *RedisTestSuite) SetupSuite() {
 	testsuite.subnetId = testutil.GetEnv("SUBNET_ID", "")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "")
 
-	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/redis/armredis/testdata")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name

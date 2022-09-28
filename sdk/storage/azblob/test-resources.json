@@ -26,7 +26,8 @@
       "contributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c')]",
       "blobDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
       "primaryAccountName": "[concat(parameters('baseName'), 'prim')]",
-      "primaryEncryptionScopeName": "[concat(parameters('baseName'), 'prim', '/encryptionScope')]",
+      "primaryEncryptionScopeName": "encryptionScope",
+      "primaryEncryptionScope": "[concat(parameters('baseName'), 'prim', concat('/', variables('primaryEncryptionScopeName')))]",
       "secondaryAccountName": "[concat(parameters('baseName'), 'sec')]",
       "premiumAccountName": "[concat(parameters('baseName'), 'prem')]",
       "dataLakeAccountName": "[concat(parameters('baseName'), 'dtlk')]",
@@ -122,7 +123,7 @@
       {
         "type": "Microsoft.Storage/storageAccounts/encryptionScopes",
         "apiVersion": "[variables('mgmtApiVersion')]",
-        "name": "[variables('primaryEncryptionScopeName')]",
+        "name": "[variables('primaryEncryptionScope')]",
         "properties": {
           "source": "Microsoft.Storage",
           "state": "Enabled"

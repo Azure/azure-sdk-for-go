@@ -11,1898 +11,1573 @@ package armauthorization
 
 import "time"
 
-// ApprovalSettings - The approval settings.
-type ApprovalSettings struct {
-	// The type of rule
-	ApprovalMode *ApprovalMode `json:"approvalMode,omitempty"`
+// AccessReviewActorIdentity - Details of the actor identity
+type AccessReviewActorIdentity struct {
+	// READ-ONLY; The identity id
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 
-	// The approval stages of the request.
-	ApprovalStages []*ApprovalStage `json:"approvalStages,omitempty"`
+	// READ-ONLY; The identity display name
+	PrincipalName *string `json:"principalName,omitempty" azure:"ro"`
 
-	// Determines whether approval is required or not.
-	IsApprovalRequired *bool `json:"isApprovalRequired,omitempty"`
+	// READ-ONLY; The identity type : user/servicePrincipal
+	PrincipalType *AccessReviewActorIdentityType `json:"principalType,omitempty" azure:"ro"`
 
-	// Determines whether approval is required for assignment extension.
-	IsApprovalRequiredForExtension *bool `json:"isApprovalRequiredForExtension,omitempty"`
-
-	// Determine whether requestor justification is required.
-	IsRequestorJustificationRequired *bool `json:"isRequestorJustificationRequired,omitempty"`
+	// READ-ONLY; The user principal name(if valid)
+	UserPrincipalName *string `json:"userPrincipalName,omitempty" azure:"ro"`
 }
 
-// ApprovalStage - The approval stage.
-type ApprovalStage struct {
-	// The time in days when approval request would be timed out
-	ApprovalStageTimeOutInDays *int32 `json:"approvalStageTimeOutInDays,omitempty"`
+// AccessReviewContactedReviewer - Access Review Contacted Reviewer.
+type AccessReviewContactedReviewer struct {
+	// Access Review Contacted Reviewer properties.
+	Properties *AccessReviewContactedReviewerProperties `json:"properties,omitempty"`
 
-	// The escalation approver of the request.
-	EscalationApprovers []*UserSet `json:"escalationApprovers,omitempty"`
-
-	// The time in minutes when the approval request would be escalated if the primary approver does not approve
-	EscalationTimeInMinutes *int32 `json:"escalationTimeInMinutes,omitempty"`
-
-	// Determines whether approver need to provide justification for his decision.
-	IsApproverJustificationRequired *bool `json:"isApproverJustificationRequired,omitempty"`
-
-	// The value determine whether escalation feature is enabled.
-	IsEscalationEnabled *bool `json:"isEscalationEnabled,omitempty"`
-
-	// The primary approver of the request.
-	PrimaryApprovers []*UserSet `json:"primaryApprovers,omitempty"`
-}
-
-// ClassicAdministrator - Classic Administrators
-type ClassicAdministrator struct {
-	// The ID of the administrator.
-	ID *string `json:"id,omitempty"`
-
-	// The name of the administrator.
-	Name *string `json:"name,omitempty"`
-
-	// Properties for the classic administrator.
-	Properties *ClassicAdministratorProperties `json:"properties,omitempty"`
-
-	// The type of the administrator.
-	Type *string `json:"type,omitempty"`
-}
-
-// ClassicAdministratorListResult - ClassicAdministrator list result information.
-type ClassicAdministratorListResult struct {
-	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// An array of administrators.
-	Value []*ClassicAdministrator `json:"value,omitempty"`
-}
-
-// ClassicAdministratorProperties - Classic Administrator properties.
-type ClassicAdministratorProperties struct {
-	// The email address of the administrator.
-	EmailAddress *string `json:"emailAddress,omitempty"`
-
-	// The role of the administrator.
-	Role *string `json:"role,omitempty"`
-}
-
-// ClassicAdministratorsClientListOptions contains the optional parameters for the ClassicAdministratorsClient.List method.
-type ClassicAdministratorsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CloudError - An error response from the service.
-type CloudError struct {
-	// An error response from the service.
-	Error *CloudErrorBody `json:"error,omitempty"`
-}
-
-// CloudErrorBody - An error response from the service.
-type CloudErrorBody struct {
-	// An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
-	Code *string `json:"code,omitempty"`
-
-	// A message describing the error, intended to be suitable for display in a user interface.
-	Message *string `json:"message,omitempty"`
-}
-
-// DenyAssignment - Deny Assignment
-type DenyAssignment struct {
-	// Deny assignment properties.
-	Properties *DenyAssignmentProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The deny assignment ID.
+	// READ-ONLY; The access review reviewer id.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; The deny assignment name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The deny assignment type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// DenyAssignmentFilter - Deny Assignments filter
-type DenyAssignmentFilter struct {
-	// Return deny assignment with specified name.
-	DenyAssignmentName *string `json:"denyAssignmentName,omitempty"`
-
-	// Return all deny assignments where the specified principal is listed either in the principals list or exclude principals
-	// list of deny assignments.
-	GdprExportPrincipalID *string `json:"gdprExportPrincipalId,omitempty"`
-
-	// Return all deny assignments where the specified principal is listed in the principals list of deny assignments.
-	PrincipalID *string `json:"principalId,omitempty"`
-}
-
-// DenyAssignmentListResult - Deny assignment list operation result.
-type DenyAssignmentListResult struct {
-	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// Deny assignment list.
-	Value []*DenyAssignment `json:"value,omitempty"`
-}
-
-// DenyAssignmentPermission - Deny assignment permissions.
-type DenyAssignmentPermission struct {
-	// Actions to which the deny assignment does not grant access.
-	Actions []*string `json:"actions,omitempty"`
-
-	// The conditions on the Deny assignment permission. This limits the resources it applies to.
-	Condition *string `json:"condition,omitempty"`
-
-	// Version of the condition.
-	ConditionVersion *string `json:"conditionVersion,omitempty"`
-
-	// Data actions to which the deny assignment does not grant access.
-	DataActions []*string `json:"dataActions,omitempty"`
-
-	// Actions to exclude from that the deny assignment does not grant access.
-	NotActions []*string `json:"notActions,omitempty"`
-
-	// Data actions to exclude from that the deny assignment does not grant access.
-	NotDataActions []*string `json:"notDataActions,omitempty"`
-}
-
-// DenyAssignmentProperties - Deny assignment properties.
-type DenyAssignmentProperties struct {
-	// The display name of the deny assignment.
-	DenyAssignmentName *string `json:"denyAssignmentName,omitempty"`
-
-	// The description of the deny assignment.
-	Description *string `json:"description,omitempty"`
-
-	// Determines if the deny assignment applies to child scopes. Default value is false.
-	DoNotApplyToChildScopes *bool `json:"doNotApplyToChildScopes,omitempty"`
-
-	// Array of principals to which the deny assignment does not apply.
-	ExcludePrincipals []*Principal `json:"excludePrincipals,omitempty"`
-
-	// Specifies whether this deny assignment was created by Azure and cannot be edited or deleted.
-	IsSystemProtected *bool `json:"isSystemProtected,omitempty"`
-
-	// An array of permissions that are denied by the deny assignment.
-	Permissions []*DenyAssignmentPermission `json:"permissions,omitempty"`
-
-	// Array of principals to which the deny assignment applies.
-	Principals []*Principal `json:"principals,omitempty"`
-
-	// The deny assignment scope.
-	Scope *string `json:"scope,omitempty"`
-}
-
-// DenyAssignmentsClientGetByIDOptions contains the optional parameters for the DenyAssignmentsClient.GetByID method.
-type DenyAssignmentsClientGetByIDOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DenyAssignmentsClientGetOptions contains the optional parameters for the DenyAssignmentsClient.Get method.
-type DenyAssignmentsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DenyAssignmentsClientListForResourceGroupOptions contains the optional parameters for the DenyAssignmentsClient.ListForResourceGroup
-// method.
-type DenyAssignmentsClientListForResourceGroupOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
-	// eq '{name}' to search deny assignments by name at
-	// specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope for the
-	// specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all
-	// deny assignments at, above and below the scope for the specified principal. This filter is different from the principalId
-	// filter as it returns not only those deny assignments that contain the
-	// specified principal is the Principals list but also those deny assignments that contain the specified principal is the
-	// ExcludePrincipals list. Additionally, when gdprExportPrincipalId filter is used,
-	// only the deny assignment name and description properties are returned.
-	Filter *string
-}
-
-// DenyAssignmentsClientListForResourceOptions contains the optional parameters for the DenyAssignmentsClient.ListForResource
-// method.
-type DenyAssignmentsClientListForResourceOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
-	// eq '{name}' to search deny assignments by name at
-	// specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope for the
-	// specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all
-	// deny assignments at, above and below the scope for the specified principal. This filter is different from the principalId
-	// filter as it returns not only those deny assignments that contain the
-	// specified principal is the Principals list but also those deny assignments that contain the specified principal is the
-	// ExcludePrincipals list. Additionally, when gdprExportPrincipalId filter is used,
-	// only the deny assignment name and description properties are returned.
-	Filter *string
-}
-
-// DenyAssignmentsClientListForScopeOptions contains the optional parameters for the DenyAssignmentsClient.ListForScope method.
-type DenyAssignmentsClientListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
-	// eq '{name}' to search deny assignments by name at
-	// specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope for the
-	// specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all
-	// deny assignments at, above and below the scope for the specified principal. This filter is different from the principalId
-	// filter as it returns not only those deny assignments that contain the
-	// specified principal is the Principals list but also those deny assignments that contain the specified principal is the
-	// ExcludePrincipals list. Additionally, when gdprExportPrincipalId filter is used,
-	// only the deny assignment name and description properties are returned.
-	Filter *string
-}
-
-// DenyAssignmentsClientListOptions contains the optional parameters for the DenyAssignmentsClient.List method.
-type DenyAssignmentsClientListOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
-	// eq '{name}' to search deny assignments by name at
-	// specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope for the
-	// specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all
-	// deny assignments at, above and below the scope for the specified principal. This filter is different from the principalId
-	// filter as it returns not only those deny assignments that contain the
-	// specified principal is the Principals list but also those deny assignments that contain the specified principal is the
-	// ExcludePrincipals list. Additionally, when gdprExportPrincipalId filter is used,
-	// only the deny assignment name and description properties are returned.
-	Filter *string
-}
-
-// EligibleChildResource - Eligible child resource
-type EligibleChildResource struct {
-	// READ-ONLY; The resource scope Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The resource name.
+	// READ-ONLY; The access review reviewer id.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// EligibleChildResourcesClientGetOptions contains the optional parameters for the EligibleChildResourcesClient.Get method.
-type EligibleChildResourcesClientGetOptions struct {
-	// The filter to apply on the operation. Use $filter=resourceType+eq+'Subscription' to filter on only resource of type = 'Subscription'.
-	// Use
-	// $filter=resourceType+eq+'subscription'+or+resourceType+eq+'resourcegroup' to filter on resource of type = 'Subscription'
-	// or 'ResourceGroup'
-	Filter *string
-}
-
-// EligibleChildResourcesListResult - Eligible child resources list operation result.
-type EligibleChildResourcesListResult struct {
+// AccessReviewContactedReviewerListResult - List of access review contacted reviewers.
+type AccessReviewContactedReviewerListResult struct {
 	// The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 
-	// Eligible child resource list.
-	Value []*EligibleChildResource `json:"value,omitempty"`
+	// Access Review Contacted Reviewer.
+	Value []*AccessReviewContactedReviewer `json:"value,omitempty"`
 }
 
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+// AccessReviewContactedReviewerProperties - Properties of access review contacted reviewer.
+type AccessReviewContactedReviewerProperties struct {
+	// READ-ONLY; Date Time when the reviewer was contacted.
+	CreatedDateTime *time.Time `json:"createdDateTime,omitempty" azure:"ro"`
 
-	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	// READ-ONLY; The display name of the reviewer
+	UserDisplayName *string `json:"userDisplayName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The user principal name of the reviewer
+	UserPrincipalName *string `json:"userPrincipalName,omitempty" azure:"ro"`
 }
 
-// ErrorDetail - The error detail.
-type ErrorDetail struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.).
-type ErrorResponse struct {
-	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
-}
-
-type ExpandedProperties struct {
-	// Details of the principal
-	Principal *ExpandedPropertiesPrincipal `json:"principal,omitempty"`
-
-	// Details of role definition
-	RoleDefinition *ExpandedPropertiesRoleDefinition `json:"roleDefinition,omitempty"`
-
-	// Details of the resource scope
-	Scope *ExpandedPropertiesScope `json:"scope,omitempty"`
-}
-
-// ExpandedPropertiesPrincipal - Details of the principal
-type ExpandedPropertiesPrincipal struct {
-	// Display name of the principal
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Email id of the principal
-	Email *string `json:"email,omitempty"`
-
-	// Id of the principal
-	ID *string `json:"id,omitempty"`
-
-	// Type of the principal
-	Type *string `json:"type,omitempty"`
-}
-
-// ExpandedPropertiesRoleDefinition - Details of role definition
-type ExpandedPropertiesRoleDefinition struct {
-	// Display name of the role definition
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Id of the role definition
-	ID *string `json:"id,omitempty"`
-
-	// Type of the role definition
-	Type *string `json:"type,omitempty"`
-}
-
-// ExpandedPropertiesScope - Details of the resource scope
-type ExpandedPropertiesScope struct {
-	// Display name of the resource
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Scope id of the resource
-	ID *string `json:"id,omitempty"`
-
-	// Type of the resource
-	Type *string `json:"type,omitempty"`
-}
-
-// GlobalAdministratorClientElevateAccessOptions contains the optional parameters for the GlobalAdministratorClient.ElevateAccess
-// method.
-type GlobalAdministratorClientElevateAccessOptions struct {
-	// placeholder for future optional parameters
-}
-
-// Permission - Role definition permissions.
-type Permission struct {
-	// Allowed actions.
-	Actions []*string `json:"actions,omitempty"`
-
-	// Allowed Data actions.
-	DataActions []*string `json:"dataActions,omitempty"`
-
-	// Denied actions.
-	NotActions []*string `json:"notActions,omitempty"`
-
-	// Denied Data actions.
-	NotDataActions []*string `json:"notDataActions,omitempty"`
-}
-
-// PermissionGetResult - Permissions information.
-type PermissionGetResult struct {
-	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// An array of permissions.
-	Value []*Permission `json:"value,omitempty"`
-}
-
-// PermissionsClientListForResourceGroupOptions contains the optional parameters for the PermissionsClient.ListForResourceGroup
-// method.
-type PermissionsClientListForResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PermissionsClientListForResourceOptions contains the optional parameters for the PermissionsClient.ListForResource method.
-type PermissionsClientListForResourceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyAssignmentProperties - Expanded info of resource scope, role definition and policy
-type PolicyAssignmentProperties struct {
-	// Details of the policy
-	Policy *PolicyAssignmentPropertiesPolicy `json:"policy,omitempty"`
-
-	// Details of role definition
-	RoleDefinition *PolicyAssignmentPropertiesRoleDefinition `json:"roleDefinition,omitempty"`
-
-	// Details of the resource scope
-	Scope *PolicyAssignmentPropertiesScope `json:"scope,omitempty"`
-}
-
-// PolicyAssignmentPropertiesPolicy - Details of the policy
-type PolicyAssignmentPropertiesPolicy struct {
-	// Id of the policy
-	ID *string `json:"id,omitempty"`
-
-	// The last modified date time.
-	LastModifiedDateTime *time.Time `json:"lastModifiedDateTime,omitempty"`
-
-	// READ-ONLY; The name of the entity last modified it
-	LastModifiedBy *Principal `json:"lastModifiedBy,omitempty" azure:"ro"`
-}
-
-// PolicyAssignmentPropertiesRoleDefinition - Details of role definition
-type PolicyAssignmentPropertiesRoleDefinition struct {
-	// Display name of the role definition
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Id of the role definition
-	ID *string `json:"id,omitempty"`
-
-	// Type of the role definition
-	Type *string `json:"type,omitempty"`
-}
-
-// PolicyAssignmentPropertiesScope - Details of the resource scope
-type PolicyAssignmentPropertiesScope struct {
-	// Display name of the resource
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Scope id of the resource
-	ID *string `json:"id,omitempty"`
-
-	// Type of the resource
-	Type *string `json:"type,omitempty"`
-}
-
-// PolicyProperties - Expanded info of resource scope
-type PolicyProperties struct {
-	// READ-ONLY; Details of the resource scope
-	Scope *PolicyPropertiesScope `json:"scope,omitempty" azure:"ro"`
-}
-
-// PolicyPropertiesScope - Details of the resource scope
-type PolicyPropertiesScope struct {
-	// Display name of the resource
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Scope id of the resource
-	ID *string `json:"id,omitempty"`
-
-	// Type of the resource
-	Type *string `json:"type,omitempty"`
-}
-
-// Principal - The name of the entity last modified it
-type Principal struct {
-	// The name of the principal made changes
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Email of principal
-	Email *string `json:"email,omitempty"`
-
-	// The id of the principal made changes
-	ID *string `json:"id,omitempty"`
-
-	// Type of principal such as user , group etc
-	Type *string `json:"type,omitempty"`
-}
-
-// ProviderOperation - Operation
-type ProviderOperation struct {
-	// The operation description.
-	Description *string `json:"description,omitempty"`
-
-	// The operation display name.
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// The dataAction flag to specify the operation type.
-	IsDataAction *bool `json:"isDataAction,omitempty"`
-
-	// The operation name.
-	Name *string `json:"name,omitempty"`
-
-	// The operation origin.
-	Origin *string `json:"origin,omitempty"`
-
-	// The operation properties.
-	Properties interface{} `json:"properties,omitempty"`
-}
-
-// ProviderOperationsMetadata - Provider Operations metadata
-type ProviderOperationsMetadata struct {
-	// The provider display name.
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// The provider id.
-	ID *string `json:"id,omitempty"`
-
-	// The provider name.
-	Name *string `json:"name,omitempty"`
-
-	// The provider operations.
-	Operations []*ProviderOperation `json:"operations,omitempty"`
-
-	// The provider resource types
-	ResourceTypes []*ResourceType `json:"resourceTypes,omitempty"`
-
-	// The provider type.
-	Type *string `json:"type,omitempty"`
-}
-
-// ProviderOperationsMetadataClientGetOptions contains the optional parameters for the ProviderOperationsMetadataClient.Get
-// method.
-type ProviderOperationsMetadataClientGetOptions struct {
-	// Specifies whether to expand the values.
-	Expand *string
-}
-
-// ProviderOperationsMetadataClientListOptions contains the optional parameters for the ProviderOperationsMetadataClient.List
-// method.
-type ProviderOperationsMetadataClientListOptions struct {
-	// Specifies whether to expand the values.
-	Expand *string
-}
-
-// ProviderOperationsMetadataListResult - Provider operations metadata list
-type ProviderOperationsMetadataListResult struct {
-	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// The list of providers.
-	Value []*ProviderOperationsMetadata `json:"value,omitempty"`
-}
-
-// ResourceType - Resource Type
-type ResourceType struct {
-	// The resource type display name.
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// The resource type name.
-	Name *string `json:"name,omitempty"`
-
-	// The resource type operations.
-	Operations []*ProviderOperation `json:"operations,omitempty"`
-}
-
-// RoleAssignment - Role Assignments
-type RoleAssignment struct {
-	// Role assignment properties.
-	Properties *RoleAssignmentProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The role assignment ID.
+// AccessReviewDecision - Access Review.
+type AccessReviewDecision struct {
+	// Access Review Decision properties.
+	Properties *AccessReviewDecisionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The access review decision id.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; The role assignment name.
+	// READ-ONLY; The access review decision name.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The role assignment type.
+	// READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// RoleAssignmentCreateParameters - Role assignment create parameters.
-type RoleAssignmentCreateParameters struct {
-	// REQUIRED; Role assignment properties.
-	Properties *RoleAssignmentProperties `json:"properties,omitempty"`
+// AccessReviewDecisionIdentityClassification provides polymorphic access to related types.
+// Call the interface's GetAccessReviewDecisionIdentity() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AccessReviewDecisionIdentity, *AccessReviewDecisionServicePrincipalIdentity, *AccessReviewDecisionUserIdentity
+type AccessReviewDecisionIdentityClassification interface {
+	// GetAccessReviewDecisionIdentity returns the AccessReviewDecisionIdentity content of the underlying type.
+	GetAccessReviewDecisionIdentity() *AccessReviewDecisionIdentity
 }
 
-// RoleAssignmentFilter - Role Assignments filter
-type RoleAssignmentFilter struct {
-	// Returns role assignment of the specific principal.
-	PrincipalID *string `json:"principalId,omitempty"`
+// AccessReviewDecisionIdentity - Target of the decision.
+type AccessReviewDecisionIdentity struct {
+	// REQUIRED; The type of decision target : User/ServicePrincipal
+	Type *DecisionTargetType `json:"type,omitempty"`
+
+	// READ-ONLY; The display name of the user whose access was reviewed.
+	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The id of principal whose access was reviewed.
+	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
-// RoleAssignmentListResult - Role assignment list operation result.
-type RoleAssignmentListResult struct {
-	// Role assignment list.
-	Value []*RoleAssignment `json:"value,omitempty"`
-
-	// READ-ONLY; The skipToken to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+// GetAccessReviewDecisionIdentity implements the AccessReviewDecisionIdentityClassification interface for type AccessReviewDecisionIdentity.
+func (a *AccessReviewDecisionIdentity) GetAccessReviewDecisionIdentity() *AccessReviewDecisionIdentity {
+	return a
 }
 
-// RoleAssignmentProperties - Role assignment properties.
-type RoleAssignmentProperties struct {
-	// REQUIRED; The principal ID.
-	PrincipalID *string `json:"principalId,omitempty"`
+// AccessReviewDecisionInsight - Access Review Decision Insight.
+type AccessReviewDecisionInsight struct {
+	// Access Review Decision Insight properties.
+	Properties AccessReviewDecisionInsightPropertiesClassification `json:"properties,omitempty"`
 
-	// REQUIRED; The role definition ID.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-
-	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-	// StringEqualsIgnoreCase
-	// 'foostoragecontainer'
-	Condition *string `json:"condition,omitempty"`
-
-	// Version of the condition. Currently the only accepted value is '2.0'
-	ConditionVersion *string `json:"conditionVersion,omitempty"`
-
-	// Id of the delegated managed identity resource
-	DelegatedManagedIdentityResourceID *string `json:"delegatedManagedIdentityResourceId,omitempty"`
-
-	// Description of role assignment
-	Description *string `json:"description,omitempty"`
-
-	// The principal type of the assigned principal ID.
-	PrincipalType *PrincipalType `json:"principalType,omitempty"`
-
-	// READ-ONLY; Id of the user who created the assignment
-	CreatedBy *string `json:"createdBy,omitempty" azure:"ro"`
-
-	// READ-ONLY; Time it was created
-	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role assignment scope.
-	Scope *string `json:"scope,omitempty" azure:"ro"`
-
-	// READ-ONLY; Id of the user who updated the assignment
-	UpdatedBy *string `json:"updatedBy,omitempty" azure:"ro"`
-
-	// READ-ONLY; Time it was updated
-	UpdatedOn *time.Time `json:"updatedOn,omitempty" azure:"ro"`
-}
-
-// RoleAssignmentSchedule - Role Assignment schedule
-type RoleAssignmentSchedule struct {
-	// Role assignment schedule properties.
-	Properties *RoleAssignmentScheduleProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The role assignment schedule Id.
+	// READ-ONLY; The access review insight id.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; The role assignment schedule name.
+	// READ-ONLY; The access review insight name.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The role assignment schedule type.
+	// READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// RoleAssignmentScheduleFilter - Role assignment schedule filter
-type RoleAssignmentScheduleFilter struct {
-	// Returns role assignment schedule of the specific principal.
-	PrincipalID *string `json:"principalId,omitempty"`
-
-	// Returns role assignment schedule of the specific role definition.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-
-	// Returns role assignment schedule instances of the specific status.
-	Status *string `json:"status,omitempty"`
+// AccessReviewDecisionInsightPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetAccessReviewDecisionInsightProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AccessReviewDecisionInsightProperties, *AccessReviewDecisionUserSignInInsightProperties
+type AccessReviewDecisionInsightPropertiesClassification interface {
+	// GetAccessReviewDecisionInsightProperties returns the AccessReviewDecisionInsightProperties content of the underlying type.
+	GetAccessReviewDecisionInsightProperties() *AccessReviewDecisionInsightProperties
 }
 
-// RoleAssignmentScheduleInstance - Information about current or upcoming role assignment schedule instance
-type RoleAssignmentScheduleInstance struct {
-	// Role assignment schedule instance properties.
-	Properties *RoleAssignmentScheduleInstanceProperties `json:"properties,omitempty"`
+// AccessReviewDecisionInsightProperties - Details of the Insight.
+type AccessReviewDecisionInsightProperties struct {
+	// REQUIRED; The type of insight
+	Type *AccessReviewDecisionInsightType `json:"type,omitempty"`
 
-	// READ-ONLY; The role assignment schedule instance ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role assignment schedule instance name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role assignment schedule instance type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	// READ-ONLY; Date Time when the insight was created.
+	InsightCreatedDateTime interface{} `json:"insightCreatedDateTime,omitempty" azure:"ro"`
 }
 
-// RoleAssignmentScheduleInstanceFilter - Role assignment schedule instance filter
-type RoleAssignmentScheduleInstanceFilter struct {
-	// Returns role assignment schedule instances of the specific principal.
-	PrincipalID *string `json:"principalId,omitempty"`
-
-	// Returns role assignment schedule instances belonging to a specific role assignment schedule.
-	RoleAssignmentScheduleID *string `json:"roleAssignmentScheduleId,omitempty"`
-
-	// Returns role assignment schedule instances of the specific role definition.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-
-	// Returns role assignment schedule instances of the specific status.
-	Status *string `json:"status,omitempty"`
+// GetAccessReviewDecisionInsightProperties implements the AccessReviewDecisionInsightPropertiesClassification interface for
+// type AccessReviewDecisionInsightProperties.
+func (a *AccessReviewDecisionInsightProperties) GetAccessReviewDecisionInsightProperties() *AccessReviewDecisionInsightProperties {
+	return a
 }
 
-// RoleAssignmentScheduleInstanceListResult - Role assignment schedule instance list operation result.
-type RoleAssignmentScheduleInstanceListResult struct {
+// AccessReviewDecisionListResult - List of access review decisions.
+type AccessReviewDecisionListResult struct {
 	// The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 
-	// Role assignment schedule instance list.
-	Value []*RoleAssignmentScheduleInstance `json:"value,omitempty"`
+	// Access Review Decision list.
+	Value []*AccessReviewDecision `json:"value,omitempty"`
 }
 
-// RoleAssignmentScheduleInstanceProperties - Role assignment schedule properties with scope.
-type RoleAssignmentScheduleInstanceProperties struct {
-	// Assignment type of the role assignment schedule
-	AssignmentType *AssignmentType `json:"assignmentType,omitempty"`
-
-	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-	// StringEqualsIgnoreCase
-	// 'foostoragecontainer'
-	Condition *string `json:"condition,omitempty"`
-
-	// Version of the condition. Currently accepted value is '2.0'
-	ConditionVersion *string `json:"conditionVersion,omitempty"`
-
-	// DateTime when role assignment schedule was created
-	CreatedOn *time.Time `json:"createdOn,omitempty"`
-
-	// The endDateTime of the role assignment schedule instance
-	EndDateTime *time.Time `json:"endDateTime,omitempty"`
-
-	// Additional properties of principal, scope and role definition
-	ExpandedProperties *ExpandedProperties `json:"expandedProperties,omitempty"`
-
-	// roleEligibilityScheduleId used to activate
-	LinkedRoleEligibilityScheduleID *string `json:"linkedRoleEligibilityScheduleId,omitempty"`
-
-	// roleEligibilityScheduleInstanceId linked to this roleAssignmentScheduleInstance
-	LinkedRoleEligibilityScheduleInstanceID *string `json:"linkedRoleEligibilityScheduleInstanceId,omitempty"`
-
-	// Membership type of the role assignment schedule
-	MemberType *MemberType `json:"memberType,omitempty"`
-
-	// Role Assignment Id in external system
-	OriginRoleAssignmentID *string `json:"originRoleAssignmentId,omitempty"`
-
-	// The principal ID.
-	PrincipalID *string `json:"principalId,omitempty"`
-
-	// The principal type of the assigned principal ID.
-	PrincipalType *PrincipalType `json:"principalType,omitempty"`
-
-	// Id of the master role assignment schedule
-	RoleAssignmentScheduleID *string `json:"roleAssignmentScheduleId,omitempty"`
-
-	// The role definition ID.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-
-	// The role assignment schedule scope.
-	Scope *string `json:"scope,omitempty"`
-
-	// The startDateTime of the role assignment schedule instance
-	StartDateTime *time.Time `json:"startDateTime,omitempty"`
-
-	// The status of the role assignment schedule instance.
-	Status *Status `json:"status,omitempty"`
+// AccessReviewDecisionPrincipalResourceMembership - Target of the decision.
+type AccessReviewDecisionPrincipalResourceMembership struct {
+	// Every decision item in an access review represents a principal's membership to a resource. This property represents details
+	// of the membership. Examples of this detail might be whether the principal
+	// has direct access or indirect access
+	MembershipTypes []*AccessReviewDecisionPrincipalResourceMembershipType `json:"membershipTypes,omitempty"`
 }
 
-// RoleAssignmentScheduleInstancesClientGetOptions contains the optional parameters for the RoleAssignmentScheduleInstancesClient.Get
-// method.
-type RoleAssignmentScheduleInstancesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
+// AccessReviewDecisionProperties - Approval Step.
+type AccessReviewDecisionProperties struct {
+	// The decision on the approval step. This value is initially set to NotReviewed. Approvers can take action of Approve/Deny
+	Decision *AccessReviewResult `json:"decision,omitempty"`
 
-// RoleAssignmentScheduleInstancesClientListForScopeOptions contains the optional parameters for the RoleAssignmentScheduleInstancesClient.ListForScope
-// method.
-type RoleAssignmentScheduleInstancesClientListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope.
-	// Use $filter=principalId eq {id} to return all role assignment schedules at,
-	// above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role assignment
-	// schedule instances for the user. Use $filter=asTarget() to return all role
-	// assignment schedule instances created for the current user.
-	Filter *string
-}
+	// This is the collection of insights for this decision item.
+	Insights []*AccessReviewDecisionInsight `json:"insights,omitempty"`
 
-// RoleAssignmentScheduleListResult - Role assignment schedule list operation result.
-type RoleAssignmentScheduleListResult struct {
-	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// Role assignment schedule list.
-	Value []*RoleAssignmentSchedule `json:"value,omitempty"`
-}
-
-// RoleAssignmentScheduleProperties - Role assignment schedule properties with scope.
-type RoleAssignmentScheduleProperties struct {
-	// Assignment type of the role assignment schedule
-	AssignmentType *AssignmentType `json:"assignmentType,omitempty"`
-
-	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-	// StringEqualsIgnoreCase
-	// 'foostoragecontainer'
-	Condition *string `json:"condition,omitempty"`
-
-	// Version of the condition. Currently accepted value is '2.0'
-	ConditionVersion *string `json:"conditionVersion,omitempty"`
-
-	// DateTime when role assignment schedule was created
-	CreatedOn *time.Time `json:"createdOn,omitempty"`
-
-	// End DateTime when role assignment schedule
-	EndDateTime *time.Time `json:"endDateTime,omitempty"`
-
-	// Additional properties of principal, scope and role definition
-	ExpandedProperties *ExpandedProperties `json:"expandedProperties,omitempty"`
-
-	// The id of roleEligibilitySchedule used to activated this roleAssignmentSchedule
-	LinkedRoleEligibilityScheduleID *string `json:"linkedRoleEligibilityScheduleId,omitempty"`
-
-	// Membership type of the role assignment schedule
-	MemberType *MemberType `json:"memberType,omitempty"`
-
-	// The principal ID.
-	PrincipalID *string `json:"principalId,omitempty"`
-
-	// The principal type of the assigned principal ID.
-	PrincipalType *PrincipalType `json:"principalType,omitempty"`
-
-	// The id of roleAssignmentScheduleRequest used to create this roleAssignmentSchedule
-	RoleAssignmentScheduleRequestID *string `json:"roleAssignmentScheduleRequestId,omitempty"`
-
-	// The role definition ID.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-
-	// The role assignment schedule scope.
-	Scope *string `json:"scope,omitempty"`
-
-	// Start DateTime when role assignment schedule
-	StartDateTime *time.Time `json:"startDateTime,omitempty"`
-
-	// The status of the role assignment schedule.
-	Status *Status `json:"status,omitempty"`
-
-	// DateTime when role assignment schedule was modified
-	UpdatedOn *time.Time `json:"updatedOn,omitempty"`
-}
-
-// RoleAssignmentScheduleRequest - Role Assignment schedule request
-type RoleAssignmentScheduleRequest struct {
-	// Role assignment schedule request properties.
-	Properties *RoleAssignmentScheduleRequestProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The role assignment schedule request ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role assignment schedule request name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role assignment schedule request type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// RoleAssignmentScheduleRequestFilter - Role assignment schedule request filter
-type RoleAssignmentScheduleRequestFilter struct {
-	// Returns role assignment requests of the specific principal.
-	PrincipalID *string `json:"principalId,omitempty"`
-
-	// Returns role assignment requests created by specific principal.
-	RequestorID *string `json:"requestorId,omitempty"`
-
-	// Returns role assignment requests of the specific role definition.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-
-	// Returns role assignment requests of specific status.
-	Status *string `json:"status,omitempty"`
-}
-
-// RoleAssignmentScheduleRequestListResult - Role assignment schedule request list operation result.
-type RoleAssignmentScheduleRequestListResult struct {
-	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// Role assignment schedule request list.
-	Value []*RoleAssignmentScheduleRequest `json:"value,omitempty"`
-}
-
-// RoleAssignmentScheduleRequestProperties - Role assignment schedule request properties with scope.
-type RoleAssignmentScheduleRequestProperties struct {
-	// REQUIRED; The principal ID.
-	PrincipalID *string `json:"principalId,omitempty"`
-
-	// REQUIRED; The type of the role assignment schedule request. Eg: SelfActivate, AdminAssign etc
-	RequestType *RequestType `json:"requestType,omitempty"`
-
-	// REQUIRED; The role definition ID.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-
-	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-	// StringEqualsIgnoreCase
-	// 'foostoragecontainer'
-	Condition *string `json:"condition,omitempty"`
-
-	// Version of the condition. Currently accepted value is '2.0'
-	ConditionVersion *string `json:"conditionVersion,omitempty"`
-
-	// Justification for the role assignment
+	// Justification provided by approvers for their action
 	Justification *string `json:"justification,omitempty"`
 
-	// The linked role eligibility schedule id - to activate an eligibility.
-	LinkedRoleEligibilityScheduleID *string `json:"linkedRoleEligibilityScheduleId,omitempty"`
+	// READ-ONLY; Details of the approver.
+	AppliedBy *AccessReviewActorIdentity `json:"appliedBy,omitempty" azure:"ro"`
 
-	// Schedule info of the role assignment schedule
-	ScheduleInfo *RoleAssignmentScheduleRequestPropertiesScheduleInfo `json:"scheduleInfo,omitempty"`
+	// READ-ONLY; The date and time when the review decision was applied.
+	AppliedDateTime *time.Time `json:"appliedDateTime,omitempty" azure:"ro"`
 
-	// The resultant role assignment schedule id or the role assignment schedule id being updated
-	TargetRoleAssignmentScheduleID *string `json:"targetRoleAssignmentScheduleId,omitempty"`
+	// READ-ONLY; The outcome of applying the decision.
+	ApplyResult *AccessReviewApplyResult `json:"applyResult,omitempty" azure:"ro"`
 
-	// The role assignment schedule instance id being updated
-	TargetRoleAssignmentScheduleInstanceID *string `json:"targetRoleAssignmentScheduleInstanceId,omitempty"`
+	// READ-ONLY; Principal associated with the decision record. Can be AccessReviewDecisionUserIdentity or AccessReviewDecisionServicePrincipalIdentity
+	Principal AccessReviewDecisionIdentityClassification `json:"principal,omitempty" azure:"ro"`
 
-	// Ticket Info of the role assignment
-	TicketInfo *RoleAssignmentScheduleRequestPropertiesTicketInfo `json:"ticketInfo,omitempty"`
+	// READ-ONLY; Details of the membership type.
+	PrincipalResourceMembership *AccessReviewDecisionPrincipalResourceMembership `json:"principalResourceMembership,omitempty" azure:"ro"`
 
-	// READ-ONLY; The approvalId of the role assignment schedule request.
-	ApprovalID *string `json:"approvalId,omitempty" azure:"ro"`
+	// READ-ONLY; The feature- generated recommendation shown to the reviewer.
+	Recommendation *AccessRecommendationType `json:"recommendation,omitempty" azure:"ro"`
 
-	// READ-ONLY; DateTime when role assignment schedule request was created
-	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
+	// READ-ONLY; Resource associated with this decision record.
+	Resource *AccessReviewDecisionResource `json:"resource,omitempty" azure:"ro"`
 
-	// READ-ONLY; Additional properties of principal, scope and role definition
-	ExpandedProperties *ExpandedProperties `json:"expandedProperties,omitempty" azure:"ro"`
+	// READ-ONLY; Details of the approver.
+	ReviewedBy *AccessReviewActorIdentity `json:"reviewedBy,omitempty" azure:"ro"`
 
-	// READ-ONLY; The principal type of the assigned principal ID.
-	PrincipalType *PrincipalType `json:"principalType,omitempty" azure:"ro"`
-
-	// READ-ONLY; Id of the user who created this request
-	RequestorID *string `json:"requestorId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role assignment schedule request scope.
-	Scope *string `json:"scope,omitempty" azure:"ro"`
-
-	// READ-ONLY; The status of the role assignment schedule request.
-	Status *Status `json:"status,omitempty" azure:"ro"`
+	// READ-ONLY; Date Time when a decision was taken.
+	ReviewedDateTime *time.Time `json:"reviewedDateTime,omitempty" azure:"ro"`
 }
 
-// RoleAssignmentScheduleRequestPropertiesScheduleInfo - Schedule info of the role assignment schedule
-type RoleAssignmentScheduleRequestPropertiesScheduleInfo struct {
-	// Expiration of the role assignment schedule
-	Expiration *RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration `json:"expiration,omitempty"`
+// AccessReviewDecisionResource - Target of the decision.
+type AccessReviewDecisionResource struct {
+	// REQUIRED; The type of resource
+	Type *DecisionResourceType `json:"type,omitempty"`
 
-	// Start DateTime of the role assignment schedule.
-	StartDateTime *time.Time `json:"startDateTime,omitempty"`
-}
+	// READ-ONLY; The display name of resource associated with a decision record.
+	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
 
-// RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration - Expiration of the role assignment schedule
-type RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration struct {
-	// Duration of the role assignment schedule in TimeSpan.
-	Duration *string `json:"duration,omitempty"`
-
-	// End DateTime of the role assignment schedule.
-	EndDateTime *time.Time `json:"endDateTime,omitempty"`
-
-	// Type of the role assignment schedule expiration
-	Type *Type `json:"type,omitempty"`
-}
-
-// RoleAssignmentScheduleRequestPropertiesTicketInfo - Ticket Info of the role assignment
-type RoleAssignmentScheduleRequestPropertiesTicketInfo struct {
-	// Ticket number for the role assignment
-	TicketNumber *string `json:"ticketNumber,omitempty"`
-
-	// Ticket system name for the role assignment
-	TicketSystem *string `json:"ticketSystem,omitempty"`
-}
-
-// RoleAssignmentScheduleRequestsClientCancelOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.Cancel
-// method.
-type RoleAssignmentScheduleRequestsClientCancelOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleAssignmentScheduleRequestsClientCreateOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.Create
-// method.
-type RoleAssignmentScheduleRequestsClientCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleAssignmentScheduleRequestsClientGetOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.Get
-// method.
-type RoleAssignmentScheduleRequestsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleAssignmentScheduleRequestsClientListForScopeOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.ListForScope
-// method.
-type RoleAssignmentScheduleRequestsClientListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedule requests at or above
-	// the scope. Use $filter=principalId eq {id} to return all role assignment
-	// schedule requests at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all role
-	// assignment schedule requests requested by the current user. Use
-	// $filter=asTarget() to return all role assignment schedule requests created for the current user. Use $filter=asApprover()
-	// to return all role assignment schedule requests where the current user is an
-	// approver.
-	Filter *string
-}
-
-// RoleAssignmentScheduleRequestsClientValidateOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.Validate
-// method.
-type RoleAssignmentScheduleRequestsClientValidateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleAssignmentSchedulesClientGetOptions contains the optional parameters for the RoleAssignmentSchedulesClient.Get method.
-type RoleAssignmentSchedulesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleAssignmentSchedulesClientListForScopeOptions contains the optional parameters for the RoleAssignmentSchedulesClient.ListForScope
-// method.
-type RoleAssignmentSchedulesClientListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope.
-	// Use $filter=principalId eq {id} to return all role assignment schedules at,
-	// above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role assignment
-	// schedules for the current user. Use $filter=asTarget() to return all role
-	// assignment schedules created for the current user.
-	Filter *string
-}
-
-// RoleAssignmentsClientCreateByIDOptions contains the optional parameters for the RoleAssignmentsClient.CreateByID method.
-type RoleAssignmentsClientCreateByIDOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleAssignmentsClientCreateOptions contains the optional parameters for the RoleAssignmentsClient.Create method.
-type RoleAssignmentsClientCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleAssignmentsClientDeleteByIDOptions contains the optional parameters for the RoleAssignmentsClient.DeleteByID method.
-type RoleAssignmentsClientDeleteByIDOptions struct {
-	// Tenant ID for cross-tenant request
-	TenantID *string
-}
-
-// RoleAssignmentsClientDeleteOptions contains the optional parameters for the RoleAssignmentsClient.Delete method.
-type RoleAssignmentsClientDeleteOptions struct {
-	// Tenant ID for cross-tenant request
-	TenantID *string
-}
-
-// RoleAssignmentsClientGetByIDOptions contains the optional parameters for the RoleAssignmentsClient.GetByID method.
-type RoleAssignmentsClientGetByIDOptions struct {
-	// Tenant ID for cross-tenant request
-	TenantID *string
-}
-
-// RoleAssignmentsClientGetOptions contains the optional parameters for the RoleAssignmentsClient.Get method.
-type RoleAssignmentsClientGetOptions struct {
-	// Tenant ID for cross-tenant request
-	TenantID *string
-}
-
-// RoleAssignmentsClientListForResourceGroupOptions contains the optional parameters for the RoleAssignmentsClient.ListForResourceGroup
-// method.
-type RoleAssignmentsClientListForResourceGroupOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
-	// eq {id} to return all role assignments at, above or below the
-	// scope for the specified principal.
-	Filter *string
-	// Tenant ID for cross-tenant request
-	TenantID *string
-}
-
-// RoleAssignmentsClientListForResourceOptions contains the optional parameters for the RoleAssignmentsClient.ListForResource
-// method.
-type RoleAssignmentsClientListForResourceOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
-	// eq {id} to return all role assignments at, above or below the
-	// scope for the specified principal.
-	Filter *string
-	// Tenant ID for cross-tenant request
-	TenantID *string
-}
-
-// RoleAssignmentsClientListForScopeOptions contains the optional parameters for the RoleAssignmentsClient.ListForScope method.
-type RoleAssignmentsClientListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
-	// eq {id} to return all role assignments at, above or below the
-	// scope for the specified principal.
-	Filter *string
-	// The skipToken to apply on the operation. Use $skipToken={skiptoken} to return paged role assignments following the skipToken
-	// passed. Only supported on provider level calls.
-	SkipToken *string
-	// Tenant ID for cross-tenant request
-	TenantID *string
-}
-
-// RoleAssignmentsClientListForSubscriptionOptions contains the optional parameters for the RoleAssignmentsClient.ListForSubscription
-// method.
-type RoleAssignmentsClientListForSubscriptionOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
-	// eq {id} to return all role assignments at, above or below the
-	// scope for the specified principal.
-	Filter *string
-	// Tenant ID for cross-tenant request
-	TenantID *string
-}
-
-// RoleDefinition - Role definition.
-type RoleDefinition struct {
-	// Role definition properties.
-	Properties *RoleDefinitionProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The role definition ID.
+	// READ-ONLY; The id of resource associated with a decision record.
 	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role definition name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role definition type.
-	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// RoleDefinitionFilter - Role Definitions filter
-type RoleDefinitionFilter struct {
-	// Returns role definition with the specific name.
-	RoleName *string `json:"roleName,omitempty"`
+// AccessReviewDecisionServicePrincipalIdentity - Service Principal Decision Target
+type AccessReviewDecisionServicePrincipalIdentity struct {
+	// REQUIRED; The type of decision target : User/ServicePrincipal
+	Type *DecisionTargetType `json:"type,omitempty"`
 
-	// Returns role definition with the specific type.
-	Type *string `json:"type,omitempty"`
-}
+	// READ-ONLY; The appId for the service principal entity being reviewed
+	AppID *string `json:"appId,omitempty" azure:"ro"`
 
-// RoleDefinitionListResult - Role definition list operation result.
-type RoleDefinitionListResult struct {
-	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	// READ-ONLY; The display name of the user whose access was reviewed.
+	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
 
-	// Role definition list.
-	Value []*RoleDefinition `json:"value,omitempty"`
-}
-
-// RoleDefinitionProperties - Role definition properties.
-type RoleDefinitionProperties struct {
-	// Role definition assignable scopes.
-	AssignableScopes []*string `json:"assignableScopes,omitempty"`
-
-	// The role definition description.
-	Description *string `json:"description,omitempty"`
-
-	// Role definition permissions.
-	Permissions []*Permission `json:"permissions,omitempty"`
-
-	// The role name.
-	RoleName *string `json:"roleName,omitempty"`
-
-	// The role type.
-	RoleType *string `json:"type,omitempty"`
-}
-
-// RoleDefinitionsClientCreateOrUpdateOptions contains the optional parameters for the RoleDefinitionsClient.CreateOrUpdate
-// method.
-type RoleDefinitionsClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleDefinitionsClientDeleteOptions contains the optional parameters for the RoleDefinitionsClient.Delete method.
-type RoleDefinitionsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleDefinitionsClientGetByIDOptions contains the optional parameters for the RoleDefinitionsClient.GetByID method.
-type RoleDefinitionsClientGetByIDOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleDefinitionsClientGetOptions contains the optional parameters for the RoleDefinitionsClient.Get method.
-type RoleDefinitionsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleDefinitionsClientListOptions contains the optional parameters for the RoleDefinitionsClient.List method.
-type RoleDefinitionsClientListOptions struct {
-	// The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
-	Filter *string
-}
-
-// RoleEligibilitySchedule - Role eligibility schedule
-type RoleEligibilitySchedule struct {
-	// role eligibility schedule properties.
-	Properties *RoleEligibilityScheduleProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The role eligibility schedule Id.
+	// READ-ONLY; The id of principal whose access was reviewed.
 	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role eligibility schedule name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role eligibility schedule type.
-	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// RoleEligibilityScheduleFilter - Role eligibility schedule filter
-type RoleEligibilityScheduleFilter struct {
-	// Returns role eligibility schedule of the specific principal.
-	PrincipalID *string `json:"principalId,omitempty"`
-
-	// Returns role eligibility schedule of the specific role definition.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-
-	// Returns role eligibility schedule of the specific status.
-	Status *string `json:"status,omitempty"`
-}
-
-// RoleEligibilityScheduleInstance - Information about current or upcoming role eligibility schedule instance
-type RoleEligibilityScheduleInstance struct {
-	// Role eligibility schedule instance properties.
-	Properties *RoleEligibilityScheduleInstanceProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The role eligibility schedule instance ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role eligibility schedule instance name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role eligibility schedule instance type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// RoleEligibilityScheduleInstanceFilter - Role eligibility schedule instance filter
-type RoleEligibilityScheduleInstanceFilter struct {
-	// Returns role eligibility schedule instances of the specific principal.
-	PrincipalID *string `json:"principalId,omitempty"`
-
-	// Returns role eligibility schedule instances of the specific role definition.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-
-	// Returns role eligibility schedule instances belonging to a specific role eligibility schedule.
-	RoleEligibilityScheduleID *string `json:"roleEligibilityScheduleId,omitempty"`
-
-	// Returns role eligibility schedule instances of the specific status.
-	Status *string `json:"status,omitempty"`
-}
-
-// RoleEligibilityScheduleInstanceListResult - Role eligibility schedule instance list operation result.
-type RoleEligibilityScheduleInstanceListResult struct {
-	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// Role eligibility schedule instance list.
-	Value []*RoleEligibilityScheduleInstance `json:"value,omitempty"`
-}
-
-// RoleEligibilityScheduleInstanceProperties - Role eligibility schedule properties with scope.
-type RoleEligibilityScheduleInstanceProperties struct {
-	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-	// StringEqualsIgnoreCase
-	// 'foostoragecontainer'
-	Condition *string `json:"condition,omitempty"`
-
-	// Version of the condition. Currently accepted value is '2.0'
-	ConditionVersion *string `json:"conditionVersion,omitempty"`
-
-	// DateTime when role eligibility schedule was created
-	CreatedOn *time.Time `json:"createdOn,omitempty"`
-
-	// The endDateTime of the role eligibility schedule instance
-	EndDateTime *time.Time `json:"endDateTime,omitempty"`
-
-	// Additional properties of principal, scope and role definition
-	ExpandedProperties *ExpandedProperties `json:"expandedProperties,omitempty"`
-
-	// Membership type of the role eligibility schedule
-	MemberType *MemberType `json:"memberType,omitempty"`
-
-	// The principal ID.
-	PrincipalID *string `json:"principalId,omitempty"`
-
-	// The principal type of the assigned principal ID.
-	PrincipalType *PrincipalType `json:"principalType,omitempty"`
-
-	// The role definition ID.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-
-	// Id of the master role eligibility schedule
-	RoleEligibilityScheduleID *string `json:"roleEligibilityScheduleId,omitempty"`
-
-	// The role eligibility schedule scope.
-	Scope *string `json:"scope,omitempty"`
-
-	// The startDateTime of the role eligibility schedule instance
-	StartDateTime *time.Time `json:"startDateTime,omitempty"`
-
-	// The status of the role eligibility schedule instance
-	Status *Status `json:"status,omitempty"`
-}
-
-// RoleEligibilityScheduleInstancesClientGetOptions contains the optional parameters for the RoleEligibilityScheduleInstancesClient.Get
-// method.
-type RoleEligibilityScheduleInstancesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleEligibilityScheduleInstancesClientListForScopeOptions contains the optional parameters for the RoleEligibilityScheduleInstancesClient.ListForScope
-// method.
-type RoleEligibilityScheduleInstancesClientListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope.
-	// Use $filter=principalId eq {id} to return all role assignment schedules at,
-	// above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role eligibility
-	// schedules for the user. Use $filter=asTarget() to return all role eligibility
-	// schedules created for the current user.
-	Filter *string
-}
-
-// RoleEligibilityScheduleListResult - role eligibility schedule list operation result.
-type RoleEligibilityScheduleListResult struct {
-	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// role eligibility schedule list.
-	Value []*RoleEligibilitySchedule `json:"value,omitempty"`
-}
-
-// RoleEligibilityScheduleProperties - Role eligibility schedule properties with scope.
-type RoleEligibilityScheduleProperties struct {
-	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-	// StringEqualsIgnoreCase
-	// 'foostoragecontainer'
-	Condition *string `json:"condition,omitempty"`
-
-	// Version of the condition. Currently accepted value is '2.0'
-	ConditionVersion *string `json:"conditionVersion,omitempty"`
-
-	// DateTime when role eligibility schedule was created
-	CreatedOn *time.Time `json:"createdOn,omitempty"`
-
-	// End DateTime when role eligibility schedule
-	EndDateTime *time.Time `json:"endDateTime,omitempty"`
-
-	// Additional properties of principal, scope and role definition
-	ExpandedProperties *ExpandedProperties `json:"expandedProperties,omitempty"`
-
-	// Membership type of the role eligibility schedule
-	MemberType *MemberType `json:"memberType,omitempty"`
-
-	// The principal ID.
-	PrincipalID *string `json:"principalId,omitempty"`
-
-	// The principal type of the assigned principal ID.
-	PrincipalType *PrincipalType `json:"principalType,omitempty"`
-
-	// The role definition ID.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-
-	// The id of roleEligibilityScheduleRequest used to create this roleAssignmentSchedule
-	RoleEligibilityScheduleRequestID *string `json:"roleEligibilityScheduleRequestId,omitempty"`
-
-	// The role eligibility schedule scope.
-	Scope *string `json:"scope,omitempty"`
-
-	// Start DateTime when role eligibility schedule
-	StartDateTime *time.Time `json:"startDateTime,omitempty"`
-
-	// The status of the role eligibility schedule.
-	Status *Status `json:"status,omitempty"`
-
-	// DateTime when role eligibility schedule was modified
-	UpdatedOn *time.Time `json:"updatedOn,omitempty"`
-}
-
-// RoleEligibilityScheduleRequest - Role Eligibility schedule request
-type RoleEligibilityScheduleRequest struct {
-	// Role eligibility schedule request properties.
-	Properties *RoleEligibilityScheduleRequestProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The role eligibility schedule request ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role eligibility schedule request name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role eligibility schedule request type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// RoleEligibilityScheduleRequestFilter - Role eligibility schedule request filter
-type RoleEligibilityScheduleRequestFilter struct {
-	// Returns role eligibility requests of the specific principal.
-	PrincipalID *string `json:"principalId,omitempty"`
-
-	// Returns role eligibility requests created by specific principal.
-	RequestorID *string `json:"requestorId,omitempty"`
-
-	// Returns role eligibility requests of the specific role definition.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-
-	// Returns role eligibility requests of specific status.
-	Status *string `json:"status,omitempty"`
-}
-
-// RoleEligibilityScheduleRequestListResult - Role eligibility schedule request list operation result.
-type RoleEligibilityScheduleRequestListResult struct {
-	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// Role eligibility schedule request list.
-	Value []*RoleEligibilityScheduleRequest `json:"value,omitempty"`
-}
-
-// RoleEligibilityScheduleRequestProperties - Role eligibility schedule request properties with scope.
-type RoleEligibilityScheduleRequestProperties struct {
-	// REQUIRED; The principal ID.
-	PrincipalID *string `json:"principalId,omitempty"`
-
-	// REQUIRED; The type of the role assignment schedule request. Eg: SelfActivate, AdminAssign etc
-	RequestType *RequestType `json:"requestType,omitempty"`
-
-	// REQUIRED; The role definition ID.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-
-	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-	// StringEqualsIgnoreCase
-	// 'foostoragecontainer'
-	Condition *string `json:"condition,omitempty"`
-
-	// Version of the condition. Currently accepted value is '2.0'
-	ConditionVersion *string `json:"conditionVersion,omitempty"`
-
-	// Justification for the role eligibility
-	Justification *string `json:"justification,omitempty"`
-
-	// Schedule info of the role eligibility schedule
-	ScheduleInfo *RoleEligibilityScheduleRequestPropertiesScheduleInfo `json:"scheduleInfo,omitempty"`
-
-	// The resultant role eligibility schedule id or the role eligibility schedule id being updated
-	TargetRoleEligibilityScheduleID *string `json:"targetRoleEligibilityScheduleId,omitempty"`
-
-	// The role eligibility schedule instance id being updated
-	TargetRoleEligibilityScheduleInstanceID *string `json:"targetRoleEligibilityScheduleInstanceId,omitempty"`
-
-	// Ticket Info of the role eligibility
-	TicketInfo *RoleEligibilityScheduleRequestPropertiesTicketInfo `json:"ticketInfo,omitempty"`
-
-	// READ-ONLY; The approvalId of the role eligibility schedule request.
-	ApprovalID *string `json:"approvalId,omitempty" azure:"ro"`
-
-	// READ-ONLY; DateTime when role eligibility schedule request was created
-	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
-
-	// READ-ONLY; Additional properties of principal, scope and role definition
-	ExpandedProperties *ExpandedProperties `json:"expandedProperties,omitempty" azure:"ro"`
-
-	// READ-ONLY; The principal type of the assigned principal ID.
-	PrincipalType *PrincipalType `json:"principalType,omitempty" azure:"ro"`
-
-	// READ-ONLY; Id of the user who created this request
-	RequestorID *string `json:"requestorId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role eligibility schedule request scope.
-	Scope *string `json:"scope,omitempty" azure:"ro"`
-
-	// READ-ONLY; The status of the role eligibility schedule request.
-	Status *Status `json:"status,omitempty" azure:"ro"`
-}
-
-// RoleEligibilityScheduleRequestPropertiesScheduleInfo - Schedule info of the role eligibility schedule
-type RoleEligibilityScheduleRequestPropertiesScheduleInfo struct {
-	// Expiration of the role eligibility schedule
-	Expiration *RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration `json:"expiration,omitempty"`
-
-	// Start DateTime of the role eligibility schedule.
-	StartDateTime *time.Time `json:"startDateTime,omitempty"`
-}
-
-// RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration - Expiration of the role eligibility schedule
-type RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration struct {
-	// Duration of the role eligibility schedule in TimeSpan.
-	Duration *string `json:"duration,omitempty"`
-
-	// End DateTime of the role eligibility schedule.
-	EndDateTime *time.Time `json:"endDateTime,omitempty"`
-
-	// Type of the role eligibility schedule expiration
-	Type *Type `json:"type,omitempty"`
-}
-
-// RoleEligibilityScheduleRequestPropertiesTicketInfo - Ticket Info of the role eligibility
-type RoleEligibilityScheduleRequestPropertiesTicketInfo struct {
-	// Ticket number for the role eligibility
-	TicketNumber *string `json:"ticketNumber,omitempty"`
-
-	// Ticket system name for the role eligibility
-	TicketSystem *string `json:"ticketSystem,omitempty"`
-}
-
-// RoleEligibilityScheduleRequestsClientCancelOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.Cancel
-// method.
-type RoleEligibilityScheduleRequestsClientCancelOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleEligibilityScheduleRequestsClientCreateOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.Create
-// method.
-type RoleEligibilityScheduleRequestsClientCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleEligibilityScheduleRequestsClientGetOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.Get
-// method.
-type RoleEligibilityScheduleRequestsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleEligibilityScheduleRequestsClientListForScopeOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.ListForScope
-// method.
-type RoleEligibilityScheduleRequestsClientListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role eligibility schedule requests at or above
-	// the scope. Use $filter=principalId eq {id} to return all role eligibility
-	// schedule requests at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all role
-	// eligibility schedule requests requested by the current user. Use
-	// $filter=asTarget() to return all role eligibility schedule requests created for the current user. Use $filter=asApprover()
-	// to return all role eligibility schedule requests where the current user is an
-	// approver.
-	Filter *string
-}
-
-// RoleEligibilityScheduleRequestsClientValidateOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.Validate
-// method.
-type RoleEligibilityScheduleRequestsClientValidateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleEligibilitySchedulesClientGetOptions contains the optional parameters for the RoleEligibilitySchedulesClient.Get method.
-type RoleEligibilitySchedulesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleEligibilitySchedulesClientListForScopeOptions contains the optional parameters for the RoleEligibilitySchedulesClient.ListForScope
-// method.
-type RoleEligibilitySchedulesClientListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role eligibility schedules at or above the scope.
-	// Use $filter=principalId eq {id} to return all role eligibility schedules at,
-	// above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role eligibility
-	// schedules for the user. Use $filter=asTarget() to return all role eligibility
-	// schedules created for the current user.
-	Filter *string
-}
-
-// RoleManagementPoliciesClientDeleteOptions contains the optional parameters for the RoleManagementPoliciesClient.Delete
-// method.
-type RoleManagementPoliciesClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleManagementPoliciesClientGetOptions contains the optional parameters for the RoleManagementPoliciesClient.Get method.
-type RoleManagementPoliciesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleManagementPoliciesClientListForScopeOptions contains the optional parameters for the RoleManagementPoliciesClient.ListForScope
-// method.
-type RoleManagementPoliciesClientListForScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleManagementPoliciesClientUpdateOptions contains the optional parameters for the RoleManagementPoliciesClient.Update
-// method.
-type RoleManagementPoliciesClientUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleManagementPolicy - Role management policy
-type RoleManagementPolicy struct {
-	// Role management policy properties.
-	Properties *RoleManagementPolicyProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The role management policy Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role management policy name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role management policy type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// RoleManagementPolicyApprovalRule - The role management policy approval rule.
-type RoleManagementPolicyApprovalRule struct {
-	// REQUIRED; The type of rule
-	RuleType *RoleManagementPolicyRuleType `json:"ruleType,omitempty"`
-
-	// The id of the rule.
-	ID *string `json:"id,omitempty"`
-
-	// The approval setting
-	Setting *ApprovalSettings `json:"setting,omitempty"`
-
-	// The target of the current rule.
-	Target *RoleManagementPolicyRuleTarget `json:"target,omitempty"`
-}
-
-// GetRoleManagementPolicyRule implements the RoleManagementPolicyRuleClassification interface for type RoleManagementPolicyApprovalRule.
-func (r *RoleManagementPolicyApprovalRule) GetRoleManagementPolicyRule() *RoleManagementPolicyRule {
-	return &RoleManagementPolicyRule{
-		ID:       r.ID,
-		RuleType: r.RuleType,
-		Target:   r.Target,
+// GetAccessReviewDecisionIdentity implements the AccessReviewDecisionIdentityClassification interface for type AccessReviewDecisionServicePrincipalIdentity.
+func (a *AccessReviewDecisionServicePrincipalIdentity) GetAccessReviewDecisionIdentity() *AccessReviewDecisionIdentity {
+	return &AccessReviewDecisionIdentity{
+		Type:        a.Type,
+		ID:          a.ID,
+		DisplayName: a.DisplayName,
 	}
 }
 
-// RoleManagementPolicyAssignment - Role management policy
-type RoleManagementPolicyAssignment struct {
-	// Role management policy properties.
-	Properties *RoleManagementPolicyAssignmentProperties `json:"properties,omitempty"`
+// AccessReviewDecisionUserIdentity - User Decision Target
+type AccessReviewDecisionUserIdentity struct {
+	// REQUIRED; The type of decision target : User/ServicePrincipal
+	Type *DecisionTargetType `json:"type,omitempty"`
 
-	// READ-ONLY; The role management policy Id.
+	// READ-ONLY; The display name of the user whose access was reviewed.
+	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The id of principal whose access was reviewed.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; The role management policy name.
+	// READ-ONLY; The user principal name of the user whose access was reviewed.
+	UserPrincipalName *string `json:"userPrincipalName,omitempty" azure:"ro"`
+}
+
+// GetAccessReviewDecisionIdentity implements the AccessReviewDecisionIdentityClassification interface for type AccessReviewDecisionUserIdentity.
+func (a *AccessReviewDecisionUserIdentity) GetAccessReviewDecisionIdentity() *AccessReviewDecisionIdentity {
+	return &AccessReviewDecisionIdentity{
+		Type:        a.Type,
+		ID:          a.ID,
+		DisplayName: a.DisplayName,
+	}
+}
+
+// AccessReviewDecisionUserSignInInsightProperties - User Decision Target
+type AccessReviewDecisionUserSignInInsightProperties struct {
+	// REQUIRED; The type of insight
+	Type *AccessReviewDecisionInsightType `json:"type,omitempty"`
+
+	// READ-ONLY; Date Time when the insight was created.
+	InsightCreatedDateTime interface{} `json:"insightCreatedDateTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; Date Time when the user signed into the tenant.
+	LastSignInDateTime interface{} `json:"lastSignInDateTime,omitempty" azure:"ro"`
+}
+
+// GetAccessReviewDecisionInsightProperties implements the AccessReviewDecisionInsightPropertiesClassification interface for
+// type AccessReviewDecisionUserSignInInsightProperties.
+func (a *AccessReviewDecisionUserSignInInsightProperties) GetAccessReviewDecisionInsightProperties() *AccessReviewDecisionInsightProperties {
+	return &AccessReviewDecisionInsightProperties{
+		Type:                   a.Type,
+		InsightCreatedDateTime: a.InsightCreatedDateTime,
+	}
+}
+
+// AccessReviewDefaultSettings - Access Review Default Settings.
+type AccessReviewDefaultSettings struct {
+	// Access Review properties.
+	Properties *AccessReviewScheduleSettings `json:"properties,omitempty"`
+
+	// READ-ONLY; The access review default settings id. This is only going to be default
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The access review default settings name. This is always going to be Access Review Default Settings
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The role management policy type.
+	// READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// RoleManagementPolicyAssignmentListResult - Role management policy assignment list operation result.
-type RoleManagementPolicyAssignmentListResult struct {
+// AccessReviewDefaultSettingsClientGetOptions contains the optional parameters for the AccessReviewDefaultSettingsClient.Get
+// method.
+type AccessReviewDefaultSettingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewDefaultSettingsClientPutOptions contains the optional parameters for the AccessReviewDefaultSettingsClient.Put
+// method.
+type AccessReviewDefaultSettingsClientPutOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewHistoryDefinition - Access Review History Definition.
+type AccessReviewHistoryDefinition struct {
+	// Access Review History Definition properties.
+	Properties *AccessReviewHistoryDefinitionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The access review history definition id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The access review history definition unique id.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// AccessReviewHistoryDefinitionClientCreateOptions contains the optional parameters for the AccessReviewHistoryDefinitionClient.Create
+// method.
+type AccessReviewHistoryDefinitionClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewHistoryDefinitionClientDeleteByIDOptions contains the optional parameters for the AccessReviewHistoryDefinitionClient.DeleteByID
+// method.
+type AccessReviewHistoryDefinitionClientDeleteByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewHistoryDefinitionInstanceClientGenerateDownloadURIOptions contains the optional parameters for the AccessReviewHistoryDefinitionInstanceClient.GenerateDownloadURI
+// method.
+type AccessReviewHistoryDefinitionInstanceClientGenerateDownloadURIOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewHistoryDefinitionInstanceListResult - List of Access Review History Instances.
+type AccessReviewHistoryDefinitionInstanceListResult struct {
 	// The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 
-	// Role management policy assignment list.
-	Value []*RoleManagementPolicyAssignment `json:"value,omitempty"`
+	// Access Review History Definition's Instance list.
+	Value []*AccessReviewHistoryInstance `json:"value,omitempty"`
 }
 
-// RoleManagementPolicyAssignmentProperties - Role management policy assignment properties with scope.
-type RoleManagementPolicyAssignmentProperties struct {
-	// The policy id role management policy assignment.
-	PolicyID *string `json:"policyId,omitempty"`
-
-	// The role definition of management policy assignment.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-
-	// The role management policy scope.
-	Scope *string `json:"scope,omitempty"`
-
-	// READ-ONLY; The readonly computed rule applied to the policy.
-	EffectiveRules []RoleManagementPolicyRuleClassification `json:"effectiveRules,omitempty" azure:"ro"`
-
-	// READ-ONLY; Additional properties of scope, role definition and policy
-	PolicyAssignmentProperties *PolicyAssignmentProperties `json:"policyAssignmentProperties,omitempty" azure:"ro"`
-}
-
-// RoleManagementPolicyAssignmentsClientCreateOptions contains the optional parameters for the RoleManagementPolicyAssignmentsClient.Create
+// AccessReviewHistoryDefinitionInstancesClientListOptions contains the optional parameters for the AccessReviewHistoryDefinitionInstancesClient.List
 // method.
-type RoleManagementPolicyAssignmentsClientCreateOptions struct {
+type AccessReviewHistoryDefinitionInstancesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleManagementPolicyAssignmentsClientDeleteOptions contains the optional parameters for the RoleManagementPolicyAssignmentsClient.Delete
+// AccessReviewHistoryDefinitionListResult - List of Access Review History Definitions.
+type AccessReviewHistoryDefinitionListResult struct {
+	// The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Access Review History Definition list.
+	Value []*AccessReviewHistoryDefinition `json:"value,omitempty"`
+}
+
+// AccessReviewHistoryDefinitionProperties - Access Review History Instances.
+type AccessReviewHistoryDefinitionProperties struct {
+	// Collection of review decisions which the history data should be filtered on. For example if Approve and Deny are supplied
+	// the data will only contain review results in which the decision maker approved
+	// or denied a review request.
+	Decisions []*AccessReviewResult `json:"decisions,omitempty"`
+
+	// The display name for the history definition.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Set of access review history instances for this history definition.
+	Instances []*AccessReviewHistoryInstance `json:"instances,omitempty"`
+
+	// A collection of scopes used when selecting review history data
+	Scopes []*AccessReviewScope `json:"scopes,omitempty"`
+
+	// Recurrence settings for recurring history reports, skip for one-time reports.
+	Settings *AccessReviewHistoryScheduleSettings `json:"settings,omitempty"`
+
+	// READ-ONLY; The user or other identity who created this history definition.
+	CreatedBy *AccessReviewActorIdentity `json:"createdBy,omitempty" azure:"ro"`
+
+	// READ-ONLY; Date time when history definition was created
+	CreatedDateTime *time.Time `json:"createdDateTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; Date time used when selecting review data, all reviews included in data end on or before this date. For use
+	// only with one-time/non-recurring reports.
+	ReviewHistoryPeriodEndDateTime *time.Time `json:"reviewHistoryPeriodEndDateTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; Date time used when selecting review data, all reviews included in data start on or after this date. For use
+	// only with one-time/non-recurring reports.
+	ReviewHistoryPeriodStartDateTime *time.Time `json:"reviewHistoryPeriodStartDateTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; This read-only field specifies the of the requested review history data. This is either requested, in-progress,
+	// done or error.
+	Status *AccessReviewHistoryDefinitionStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// AccessReviewHistoryDefinitionsClientGetByIDOptions contains the optional parameters for the AccessReviewHistoryDefinitionsClient.GetByID
 // method.
-type RoleManagementPolicyAssignmentsClientDeleteOptions struct {
+type AccessReviewHistoryDefinitionsClientGetByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleManagementPolicyAssignmentsClientGetOptions contains the optional parameters for the RoleManagementPolicyAssignmentsClient.Get
+// AccessReviewHistoryDefinitionsClientListOptions contains the optional parameters for the AccessReviewHistoryDefinitionsClient.List
 // method.
-type RoleManagementPolicyAssignmentsClientGetOptions struct {
+type AccessReviewHistoryDefinitionsClientListOptions struct {
+	// The filter to apply on the operation. Only standard filters on definition name and created date are supported
+	Filter *string
+}
+
+// AccessReviewHistoryInstance - Access Review History Definition Instance.
+type AccessReviewHistoryInstance struct {
+	// Access Review History Definition Instance properties.
+	Properties *AccessReviewHistoryInstanceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The access review history definition instance id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The access review history definition instance unique id.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// AccessReviewHistoryInstanceProperties - Access Review History Definition Instance properties.
+type AccessReviewHistoryInstanceProperties struct {
+	// The display name for the parent history definition.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Date time when history data report expires and the associated data is deleted.
+	Expiration *time.Time `json:"expiration,omitempty"`
+
+	// Date time when the history data report is scheduled to be generated.
+	FulfilledDateTime *time.Time `json:"fulfilledDateTime,omitempty"`
+
+	// Date time used when selecting review data, all reviews included in data end on or before this date. For use only with one-time/non-recurring
+	// reports.
+	ReviewHistoryPeriodEndDateTime *time.Time `json:"reviewHistoryPeriodEndDateTime,omitempty"`
+
+	// Date time used when selecting review data, all reviews included in data start on or after this date. For use only with
+	// one-time/non-recurring reports.
+	ReviewHistoryPeriodStartDateTime *time.Time `json:"reviewHistoryPeriodStartDateTime,omitempty"`
+
+	// Date time when the history data report is scheduled to be generated.
+	RunDateTime *time.Time `json:"runDateTime,omitempty"`
+
+	// READ-ONLY; Uri which can be used to retrieve review history data. To generate this Uri, generateDownloadUri() must be called
+	// for a specific accessReviewHistoryDefinitionInstance. The link expires after a 24 hour
+	// period. Callers can see the expiration date time by looking at the 'se' parameter in the generated uri.
+	DownloadURI *string `json:"downloadUri,omitempty" azure:"ro"`
+
+	// READ-ONLY; Status of the requested review history instance data. This is either requested, in-progress, done or error.
+	// The state transitions are as follows - Requested -> InProgress -> Done -> Expired
+	Status *AccessReviewHistoryDefinitionStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// AccessReviewHistoryScheduleSettings - Recurrence settings of an Access Review History Definition.
+type AccessReviewHistoryScheduleSettings struct {
+	// Access Review History Definition recurrence settings.
+	Pattern *AccessReviewRecurrencePattern `json:"pattern,omitempty"`
+
+	// Access Review History Definition recurrence settings.
+	Range *AccessReviewRecurrenceRange `json:"range,omitempty"`
+}
+
+// AccessReviewInstance - Access Review Instance.
+type AccessReviewInstance struct {
+	// Access Review properties.
+	Properties *AccessReviewInstanceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The access review instance id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The access review instance name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// AccessReviewInstanceClientAcceptRecommendationsOptions contains the optional parameters for the AccessReviewInstanceClient.AcceptRecommendations
+// method.
+type AccessReviewInstanceClientAcceptRecommendationsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleManagementPolicyAssignmentsClientListForScopeOptions contains the optional parameters for the RoleManagementPolicyAssignmentsClient.ListForScope
+// AccessReviewInstanceClientApplyDecisionsOptions contains the optional parameters for the AccessReviewInstanceClient.ApplyDecisions
 // method.
-type RoleManagementPolicyAssignmentsClientListForScopeOptions struct {
+type AccessReviewInstanceClientApplyDecisionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RoleManagementPolicyAuthenticationContextRule - The role management policy authentication context rule.
-type RoleManagementPolicyAuthenticationContextRule struct {
-	// REQUIRED; The type of rule
-	RuleType *RoleManagementPolicyRuleType `json:"ruleType,omitempty"`
+// AccessReviewInstanceClientResetDecisionsOptions contains the optional parameters for the AccessReviewInstanceClient.ResetDecisions
+// method.
+type AccessReviewInstanceClientResetDecisionsOptions struct {
+	// placeholder for future optional parameters
+}
 
-	// The claim value.
-	ClaimValue *string `json:"claimValue,omitempty"`
+// AccessReviewInstanceClientSendRemindersOptions contains the optional parameters for the AccessReviewInstanceClient.SendReminders
+// method.
+type AccessReviewInstanceClientSendRemindersOptions struct {
+	// placeholder for future optional parameters
+}
 
-	// The id of the rule.
-	ID *string `json:"id,omitempty"`
+// AccessReviewInstanceClientStopOptions contains the optional parameters for the AccessReviewInstanceClient.Stop method.
+type AccessReviewInstanceClientStopOptions struct {
+	// placeholder for future optional parameters
+}
 
-	// The value indicating if rule is enabled.
+// AccessReviewInstanceContactedReviewersClientListOptions contains the optional parameters for the AccessReviewInstanceContactedReviewersClient.List
+// method.
+type AccessReviewInstanceContactedReviewersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceDecisionsClientListOptions contains the optional parameters for the AccessReviewInstanceDecisionsClient.List
+// method.
+type AccessReviewInstanceDecisionsClientListOptions struct {
+	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+	// When one specified $filter=assignedToMeToReview(), only items that
+	// are assigned to the calling user to review are returned
+	Filter *string
+}
+
+// AccessReviewInstanceListResult - List of Access Review Instances.
+type AccessReviewInstanceListResult struct {
+	// The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Access Review Instance list.
+	Value []*AccessReviewInstance `json:"value,omitempty"`
+}
+
+// AccessReviewInstanceMyDecisionsClientGetByIDOptions contains the optional parameters for the AccessReviewInstanceMyDecisionsClient.GetByID
+// method.
+type AccessReviewInstanceMyDecisionsClientGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceMyDecisionsClientListOptions contains the optional parameters for the AccessReviewInstanceMyDecisionsClient.List
+// method.
+type AccessReviewInstanceMyDecisionsClientListOptions struct {
+	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+	// When one specified $filter=assignedToMeToReview(), only items that
+	// are assigned to the calling user to review are returned
+	Filter *string
+}
+
+// AccessReviewInstanceMyDecisionsClientPatchOptions contains the optional parameters for the AccessReviewInstanceMyDecisionsClient.Patch
+// method.
+type AccessReviewInstanceMyDecisionsClientPatchOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceProperties - Access Review Instance properties.
+type AccessReviewInstanceProperties struct {
+	// This is the collection of backup reviewers.
+	BackupReviewers []*AccessReviewReviewer `json:"backupReviewers,omitempty"`
+
+	// The DateTime when the review instance is scheduled to end.
+	EndDateTime *time.Time `json:"endDateTime,omitempty"`
+
+	// This is the collection of reviewers.
+	Reviewers []*AccessReviewReviewer `json:"reviewers,omitempty"`
+
+	// The DateTime when the review instance is scheduled to be start.
+	StartDateTime *time.Time `json:"startDateTime,omitempty"`
+
+	// READ-ONLY; This field specifies the type of reviewers for a review. Usually for a review, reviewers are explicitly assigned.
+	// However, in some cases, the reviewers may not be assigned and instead be chosen
+	// dynamically. For example managers review or self review.
+	ReviewersType *AccessReviewInstanceReviewersType `json:"reviewersType,omitempty" azure:"ro"`
+
+	// READ-ONLY; This read-only field specifies the status of an access review instance.
+	Status *AccessReviewInstanceStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// AccessReviewInstancesAssignedForMyApprovalClientGetByIDOptions contains the optional parameters for the AccessReviewInstancesAssignedForMyApprovalClient.GetByID
+// method.
+type AccessReviewInstancesAssignedForMyApprovalClientGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstancesAssignedForMyApprovalClientListOptions contains the optional parameters for the AccessReviewInstancesAssignedForMyApprovalClient.List
+// method.
+type AccessReviewInstancesAssignedForMyApprovalClientListOptions struct {
+	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+	// When one specified $filter=assignedToMeToReview(), only items that
+	// are assigned to the calling user to review are returned
+	Filter *string
+}
+
+// AccessReviewInstancesClientCreateOptions contains the optional parameters for the AccessReviewInstancesClient.Create method.
+type AccessReviewInstancesClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstancesClientGetByIDOptions contains the optional parameters for the AccessReviewInstancesClient.GetByID
+// method.
+type AccessReviewInstancesClientGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstancesClientListOptions contains the optional parameters for the AccessReviewInstancesClient.List method.
+type AccessReviewInstancesClientListOptions struct {
+	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+	// When one specified $filter=assignedToMeToReview(), only items that
+	// are assigned to the calling user to review are returned
+	Filter *string
+}
+
+// AccessReviewRecurrencePattern - Recurrence Pattern of an Access Review Schedule Definition.
+type AccessReviewRecurrencePattern struct {
+	// The interval for recurrence. For a quarterly review, the interval is 3 for type : absoluteMonthly.
+	Interval *int32 `json:"interval,omitempty"`
+
+	// The recurrence type : weekly, monthly, etc.
+	Type *AccessReviewRecurrencePatternType `json:"type,omitempty"`
+}
+
+// AccessReviewRecurrenceRange - Recurrence Range of an Access Review Schedule Definition.
+type AccessReviewRecurrenceRange struct {
+	// The DateTime when the review is scheduled to end. Required if type is endDate
+	EndDate *time.Time `json:"endDate,omitempty"`
+
+	// The number of times to repeat the access review. Required and must be positive if type is numbered.
+	NumberOfOccurrences *int32 `json:"numberOfOccurrences,omitempty"`
+
+	// The DateTime when the review is scheduled to be start. This could be a date in the future. Required on create.
+	StartDate *time.Time `json:"startDate,omitempty"`
+
+	// The recurrence range type. The possible values are: endDate, noEnd, numbered.
+	Type *AccessReviewRecurrenceRangeType `json:"type,omitempty"`
+}
+
+// AccessReviewRecurrenceSettings - Recurrence Settings of an Access Review Schedule Definition.
+type AccessReviewRecurrenceSettings struct {
+	// Access Review schedule definition recurrence pattern.
+	Pattern *AccessReviewRecurrencePattern `json:"pattern,omitempty"`
+
+	// Access Review schedule definition recurrence range.
+	Range *AccessReviewRecurrenceRange `json:"range,omitempty"`
+}
+
+// AccessReviewReviewer - Descriptor for what needs to be reviewed
+type AccessReviewReviewer struct {
+	// The id of the reviewer(user/servicePrincipal)
+	PrincipalID *string `json:"principalId,omitempty"`
+
+	// READ-ONLY; The identity type : user/servicePrincipal
+	PrincipalType *AccessReviewReviewerType `json:"principalType,omitempty" azure:"ro"`
+}
+
+// AccessReviewScheduleDefinition - Access Review Schedule Definition.
+type AccessReviewScheduleDefinition struct {
+	// Access Review properties.
+	Properties *AccessReviewScheduleDefinitionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The access review schedule definition id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The access review schedule definition unique id.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// AccessReviewScheduleDefinitionListResult - List of Access Review Schedule Definitions.
+type AccessReviewScheduleDefinitionListResult struct {
+	// The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Access Review Schedule Definition list.
+	Value []*AccessReviewScheduleDefinition `json:"value,omitempty"`
+}
+
+// AccessReviewScheduleDefinitionProperties - Access Review.
+type AccessReviewScheduleDefinitionProperties struct {
+	// This is the collection of backup reviewers.
+	BackupReviewers []*AccessReviewReviewer `json:"backupReviewers,omitempty"`
+
+	// The description provided by the access review creator and visible to admins.
+	DescriptionForAdmins *string `json:"descriptionForAdmins,omitempty"`
+
+	// The description provided by the access review creator to be shown to reviewers.
+	DescriptionForReviewers *string `json:"descriptionForReviewers,omitempty"`
+
+	// The display name for the schedule definition.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// This is the collection of instances returned when one does an expand on it.
+	Instances []*AccessReviewInstance `json:"instances,omitempty"`
+
+	// This is the collection of reviewers.
+	Reviewers []*AccessReviewReviewer `json:"reviewers,omitempty"`
+
+	// Access Review Settings.
+	Settings *AccessReviewScheduleSettings `json:"settings,omitempty"`
+
+	// READ-ONLY; The user or other identity who created this review.
+	CreatedBy *AccessReviewActorIdentity `json:"createdBy,omitempty" azure:"ro"`
+
+	// READ-ONLY; This field specifies the type of reviewers for a review. Usually for a review, reviewers are explicitly assigned.
+	// However, in some cases, the reviewers may not be assigned and instead be chosen
+	// dynamically. For example managers review or self review.
+	ReviewersType *AccessReviewScheduleDefinitionReviewersType `json:"reviewersType,omitempty" azure:"ro"`
+
+	// READ-ONLY; This is used to define what to include in scope of the review. The scope definition includes the resourceId
+	// and roleDefinitionId.
+	Scope *AccessReviewScope `json:"scope,omitempty" azure:"ro"`
+
+	// READ-ONLY; This read-only field specifies the status of an accessReview.
+	Status *AccessReviewScheduleDefinitionStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions contains the optional parameters for the AccessReviewScheduleDefinitionsAssignedForMyApprovalClient.List
+// method.
+type AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions struct {
+	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+	// When one specified $filter=assignedToMeToReview(), only items that
+	// are assigned to the calling user to review are returned
+	Filter *string
+}
+
+// AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.CreateOrUpdateByID
+// method.
+type AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewScheduleDefinitionsClientDeleteByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.DeleteByID
+// method.
+type AccessReviewScheduleDefinitionsClientDeleteByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewScheduleDefinitionsClientGetByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.GetByID
+// method.
+type AccessReviewScheduleDefinitionsClientGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewScheduleDefinitionsClientListOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.List
+// method.
+type AccessReviewScheduleDefinitionsClientListOptions struct {
+	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+	// When one specified $filter=assignedToMeToReview(), only items that
+	// are assigned to the calling user to review are returned
+	Filter *string
+}
+
+// AccessReviewScheduleDefinitionsClientStopOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.Stop
+// method.
+type AccessReviewScheduleDefinitionsClientStopOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewScheduleSettings - Settings of an Access Review.
+type AccessReviewScheduleSettings struct {
+	// Flag to indicate whether auto-apply capability, to automatically change the target object access resource, is enabled.
+	// If not enabled, a user must, after the review completes, apply the access review.
+	AutoApplyDecisionsEnabled *bool `json:"autoApplyDecisionsEnabled,omitempty"`
+
+	// This specifies the behavior for the autoReview feature when an access review completes.
+	DefaultDecision *DefaultDecisionType `json:"defaultDecision,omitempty"`
+
+	// Flag to indicate whether reviewers are required to provide a justification when reviewing access.
+	DefaultDecisionEnabled *bool `json:"defaultDecisionEnabled,omitempty"`
+
+	// The duration in days for an instance.
+	InstanceDurationInDays *int32 `json:"instanceDurationInDays,omitempty"`
+
+	// Flag to indicate whether the reviewer is required to pass justification when recording a decision.
+	JustificationRequiredOnApproval *bool `json:"justificationRequiredOnApproval,omitempty"`
+
+	// Flag to indicate whether sending mails to reviewers and the review creator is enabled.
+	MailNotificationsEnabled *bool `json:"mailNotificationsEnabled,omitempty"`
+
+	// Recommendations for access reviews are calculated by looking back at 30 days of data(w.r.t the start date of the review)
+	// by default. However, in some scenarios, customers want to change how far back
+	// to look at and want to configure 60 days, 90 days, etc. instead. This setting allows customers to configure this duration.
+	// The value should be in ISO 8601 format
+	// (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert TimeSpan to a valid interval string:
+	// XmlConvert.ToString(new TimeSpan(hours, minutes, seconds))
+	RecommendationLookBackDuration *string `json:"recommendationLookBackDuration,omitempty"`
+
+	// Flag to indicate whether showing recommendations to reviewers is enabled.
+	RecommendationsEnabled *bool `json:"recommendationsEnabled,omitempty"`
+
+	// Access Review Settings.
+	Recurrence *AccessReviewRecurrenceSettings `json:"recurrence,omitempty"`
+
+	// Flag to indicate whether sending reminder emails to reviewers are enabled.
+	ReminderNotificationsEnabled *bool `json:"reminderNotificationsEnabled,omitempty"`
+}
+
+// AccessReviewScope - Descriptor for what needs to be reviewed
+type AccessReviewScope struct {
+	// This is used to indicate the resource id(s) to exclude
+	ExcludeResourceID *string `json:"excludeResourceId,omitempty"`
+
+	// This is used to indicate the role definition id(s) to exclude
+	ExcludeRoleDefinitionID *string `json:"excludeRoleDefinitionId,omitempty"`
+
+	// Flag to indicate whether to expand nested memberships or not.
+	ExpandNestedMemberships *bool `json:"expandNestedMemberships,omitempty"`
+
+	// Duration users are inactive for. The value should be in ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This
+	// code can be used to convert TimeSpan to a valid interval string:
+	// XmlConvert.ToString(new TimeSpan(hours, minutes, seconds))
+	InactiveDuration *string `json:"inactiveDuration,omitempty"`
+
+	// Flag to indicate whether to expand nested memberships or not.
+	IncludeAccessBelowResource *bool `json:"includeAccessBelowResource,omitempty"`
+
+	// Flag to indicate whether to expand nested memberships or not.
+	IncludeInheritedAccess *bool `json:"includeInheritedAccess,omitempty"`
+
+	// READ-ONLY; The role assignment state eligible/active to review
+	AssignmentState *AccessReviewScopeAssignmentState `json:"assignmentState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The identity type user/servicePrincipal to review
+	PrincipalType *AccessReviewScopePrincipalType `json:"principalType,omitempty" azure:"ro"`
+
+	// READ-ONLY; ResourceId in which this review is getting created
+	ResourceID *string `json:"resourceId,omitempty" azure:"ro"`
+
+	// READ-ONLY; This is used to indicate the role being reviewed
+	RoleDefinitionID *string `json:"roleDefinitionId,omitempty" azure:"ro"`
+}
+
+// Alert - The alert.
+type Alert struct {
+	// Alert properties.
+	Properties *AlertProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The alert ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The alert name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The alert type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// AlertConfiguration - Alert configuration.
+type AlertConfiguration struct {
+	// Alert configuration properties.
+	Properties AlertConfigurationPropertiesClassification `json:"properties,omitempty"`
+
+	// READ-ONLY; The alert configuration ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The alert configuration name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The alert configuration type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// AlertConfigurationListResult - Alert configuration list operation result.
+type AlertConfigurationListResult struct {
+	// The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Alert configuration list
+	Value []*AlertConfiguration `json:"value,omitempty"`
+}
+
+// AlertConfigurationPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetAlertConfigurationProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AlertConfigurationProperties, *AzureRolesAssignedOutsidePimAlertConfigurationProperties, *DuplicateRoleCreatedAlertConfigurationProperties,
+// - *TooManyOwnersAssignedToResourceAlertConfigurationProperties, *TooManyPermanentOwnersAssignedToResourceAlertConfigurationProperties
+type AlertConfigurationPropertiesClassification interface {
+	// GetAlertConfigurationProperties returns the AlertConfigurationProperties content of the underlying type.
+	GetAlertConfigurationProperties() *AlertConfigurationProperties
+}
+
+// AlertConfigurationProperties - Alert configuration properties.
+type AlertConfigurationProperties struct {
+	// REQUIRED; The alert configuration type.
+	AlertConfigurationType *string `json:"alertConfigurationType,omitempty"`
+
+	// True if the alert is enabled, false will disable the scanning for the specific alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 
-	// The target of the current rule.
-	Target *RoleManagementPolicyRuleTarget `json:"target,omitempty"`
+	// READ-ONLY; The alert definition ID.
+	AlertDefinitionID *string `json:"alertDefinitionId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The alert scope.
+	Scope *string `json:"scope,omitempty" azure:"ro"`
 }
 
-// GetRoleManagementPolicyRule implements the RoleManagementPolicyRuleClassification interface for type RoleManagementPolicyAuthenticationContextRule.
-func (r *RoleManagementPolicyAuthenticationContextRule) GetRoleManagementPolicyRule() *RoleManagementPolicyRule {
-	return &RoleManagementPolicyRule{
-		ID:       r.ID,
-		RuleType: r.RuleType,
-		Target:   r.Target,
-	}
+// GetAlertConfigurationProperties implements the AlertConfigurationPropertiesClassification interface for type AlertConfigurationProperties.
+func (a *AlertConfigurationProperties) GetAlertConfigurationProperties() *AlertConfigurationProperties {
+	return a
 }
 
-// RoleManagementPolicyEnablementRule - The role management policy enablement rule.
-type RoleManagementPolicyEnablementRule struct {
-	// REQUIRED; The type of rule
-	RuleType *RoleManagementPolicyRuleType `json:"ruleType,omitempty"`
-
-	// The list of enabled rules.
-	EnabledRules []*EnablementRules `json:"enabledRules,omitempty"`
-
-	// The id of the rule.
-	ID *string `json:"id,omitempty"`
-
-	// The target of the current rule.
-	Target *RoleManagementPolicyRuleTarget `json:"target,omitempty"`
+// AlertConfigurationsClientGetOptions contains the optional parameters for the AlertConfigurationsClient.Get method.
+type AlertConfigurationsClientGetOptions struct {
+	// placeholder for future optional parameters
 }
 
-// GetRoleManagementPolicyRule implements the RoleManagementPolicyRuleClassification interface for type RoleManagementPolicyEnablementRule.
-func (r *RoleManagementPolicyEnablementRule) GetRoleManagementPolicyRule() *RoleManagementPolicyRule {
-	return &RoleManagementPolicyRule{
-		ID:       r.ID,
-		RuleType: r.RuleType,
-		Target:   r.Target,
-	}
+// AlertConfigurationsClientListForScopeOptions contains the optional parameters for the AlertConfigurationsClient.ListForScope
+// method.
+type AlertConfigurationsClientListForScopeOptions struct {
+	// placeholder for future optional parameters
 }
 
-// RoleManagementPolicyExpirationRule - The role management policy expiration rule.
-type RoleManagementPolicyExpirationRule struct {
-	// REQUIRED; The type of rule
-	RuleType *RoleManagementPolicyRuleType `json:"ruleType,omitempty"`
-
-	// The id of the rule.
-	ID *string `json:"id,omitempty"`
-
-	// The value indicating whether expiration is required.
-	IsExpirationRequired *bool `json:"isExpirationRequired,omitempty"`
-
-	// The maximum duration of expiration in timespan.
-	MaximumDuration *string `json:"maximumDuration,omitempty"`
-
-	// The target of the current rule.
-	Target *RoleManagementPolicyRuleTarget `json:"target,omitempty"`
+// AlertConfigurationsClientUpdateOptions contains the optional parameters for the AlertConfigurationsClient.Update method.
+type AlertConfigurationsClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
-// GetRoleManagementPolicyRule implements the RoleManagementPolicyRuleClassification interface for type RoleManagementPolicyExpirationRule.
-func (r *RoleManagementPolicyExpirationRule) GetRoleManagementPolicyRule() *RoleManagementPolicyRule {
-	return &RoleManagementPolicyRule{
-		ID:       r.ID,
-		RuleType: r.RuleType,
-		Target:   r.Target,
-	}
+// AlertDefinition - Alert definition
+type AlertDefinition struct {
+	// Alert definition properties.
+	Properties *AlertDefinitionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The alert definition ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The alert definition name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The alert definition type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// RoleManagementPolicyListResult - Role management policy list operation result.
-type RoleManagementPolicyListResult struct {
+// AlertDefinitionListResult - Alert definition list operation result.
+type AlertDefinitionListResult struct {
 	// The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 
-	// Role management policy list.
-	Value []*RoleManagementPolicy `json:"value,omitempty"`
+	// Alert definition list
+	Value []*AlertDefinition `json:"value,omitempty"`
 }
 
-// RoleManagementPolicyNotificationRule - The role management policy notification rule.
-type RoleManagementPolicyNotificationRule struct {
-	// REQUIRED; The type of rule
-	RuleType *RoleManagementPolicyRuleType `json:"ruleType,omitempty"`
+// AlertDefinitionProperties - Alert definition properties.
+type AlertDefinitionProperties struct {
+	// READ-ONLY; The alert description.
+	Description *string `json:"description,omitempty" azure:"ro"`
 
-	// The id of the rule.
-	ID *string `json:"id,omitempty"`
+	// READ-ONLY; The alert display name.
+	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
 
-	// Determines if the notification will be sent to the recipient type specified in the policy rule.
-	IsDefaultRecipientsEnabled *bool `json:"isDefaultRecipientsEnabled,omitempty"`
+	// READ-ONLY; The ways to prevent the alert.
+	HowToPrevent *string `json:"howToPrevent,omitempty" azure:"ro"`
 
-	// The notification level.
-	NotificationLevel *NotificationLevel `json:"notificationLevel,omitempty"`
+	// READ-ONLY; True if the alert configuration can be configured; false, otherwise.
+	IsConfigurable *bool `json:"isConfigurable,omitempty" azure:"ro"`
 
-	// The list of notification recipients.
-	NotificationRecipients []*string `json:"notificationRecipients,omitempty"`
+	// READ-ONLY; True if the alert can be remediated; false, otherwise.
+	IsRemediatable *bool `json:"isRemediatable,omitempty" azure:"ro"`
 
-	// The type of notification.
-	NotificationType *NotificationDeliveryMechanism `json:"notificationType,omitempty"`
+	// READ-ONLY; The methods to mitigate the alert.
+	MitigationSteps *string `json:"mitigationSteps,omitempty" azure:"ro"`
 
-	// The recipient type.
-	RecipientType *RecipientType `json:"recipientType,omitempty"`
+	// READ-ONLY; The alert scope.
+	Scope *string `json:"scope,omitempty" azure:"ro"`
 
-	// The target of the current rule.
-	Target *RoleManagementPolicyRuleTarget `json:"target,omitempty"`
+	// READ-ONLY; Security impact of the alert.
+	SecurityImpact *string `json:"securityImpact,omitempty" azure:"ro"`
+
+	// READ-ONLY; Severity level of the alert.
+	SeverityLevel *SeverityLevel `json:"severityLevel,omitempty" azure:"ro"`
 }
 
-// GetRoleManagementPolicyRule implements the RoleManagementPolicyRuleClassification interface for type RoleManagementPolicyNotificationRule.
-func (r *RoleManagementPolicyNotificationRule) GetRoleManagementPolicyRule() *RoleManagementPolicyRule {
-	return &RoleManagementPolicyRule{
-		ID:       r.ID,
-		RuleType: r.RuleType,
-		Target:   r.Target,
+// AlertDefinitionsClientGetOptions contains the optional parameters for the AlertDefinitionsClient.Get method.
+type AlertDefinitionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertDefinitionsClientListForScopeOptions contains the optional parameters for the AlertDefinitionsClient.ListForScope
+// method.
+type AlertDefinitionsClientListForScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertIncident - Alert incident
+type AlertIncident struct {
+	// Alert incident properties.
+	Properties AlertIncidentPropertiesClassification `json:"properties,omitempty"`
+
+	// READ-ONLY; The alert incident ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The alert incident name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The alert incident type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// AlertIncidentListResult - Alert incident list operation result.
+type AlertIncidentListResult struct {
+	// The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Alert incident list
+	Value []*AlertIncident `json:"value,omitempty"`
+}
+
+// AlertIncidentPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetAlertIncidentProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AlertIncidentProperties, *AzureRolesAssignedOutsidePimAlertIncidentProperties, *DuplicateRoleCreatedAlertIncidentProperties,
+// - *TooManyOwnersAssignedToResourceAlertIncidentProperties, *TooManyPermanentOwnersAssignedToResourceAlertIncidentProperties
+type AlertIncidentPropertiesClassification interface {
+	// GetAlertIncidentProperties returns the AlertIncidentProperties content of the underlying type.
+	GetAlertIncidentProperties() *AlertIncidentProperties
+}
+
+// AlertIncidentProperties - Alert incident properties
+type AlertIncidentProperties struct {
+	// REQUIRED; The alert incident type.
+	AlertIncidentType *string `json:"alertIncidentType,omitempty"`
+}
+
+// GetAlertIncidentProperties implements the AlertIncidentPropertiesClassification interface for type AlertIncidentProperties.
+func (a *AlertIncidentProperties) GetAlertIncidentProperties() *AlertIncidentProperties { return a }
+
+// AlertIncidentsClientGetOptions contains the optional parameters for the AlertIncidentsClient.Get method.
+type AlertIncidentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertIncidentsClientListForScopeOptions contains the optional parameters for the AlertIncidentsClient.ListForScope method.
+type AlertIncidentsClientListForScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertIncidentsClientRemediateOptions contains the optional parameters for the AlertIncidentsClient.Remediate method.
+type AlertIncidentsClientRemediateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertListResult - Alert list operation result.
+type AlertListResult struct {
+	// The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Alert list
+	Value []*Alert `json:"value,omitempty"`
+}
+
+// AlertOperationClientGetOptions contains the optional parameters for the AlertOperationClient.Get method.
+type AlertOperationClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertOperationClientListForScopeOptions contains the optional parameters for the AlertOperationClient.ListForScope method.
+type AlertOperationClientListForScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertOperationListResult - Alert operation list operation result.
+type AlertOperationListResult struct {
+	// The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Alert operation list
+	Value []*AlertOperationResult `json:"value,omitempty"`
+}
+
+// AlertOperationResult - Alert operation result
+type AlertOperationResult struct {
+	// READ-ONLY; The id of the alert operation.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The status of the alert operation.
+	Status *string `json:"status,omitempty" azure:"ro"`
+}
+
+// AlertProperties - Alert properties.
+type AlertProperties struct {
+	// False by default; true if the alert is active.
+	IsActive *bool `json:"isActive,omitempty"`
+
+	// READ-ONLY; The alert configuration.
+	AlertConfiguration *AlertConfiguration `json:"alertConfiguration,omitempty" azure:"ro"`
+
+	// READ-ONLY; The alert definition.
+	AlertDefinition *AlertDefinition `json:"alertDefinition,omitempty" azure:"ro"`
+
+	// READ-ONLY; The alert incidents.
+	AlertIncidents []*AlertIncident `json:"alertIncidents,omitempty" azure:"ro"`
+
+	// READ-ONLY; The number of generated incidents of the alert.
+	IncidentCount *int32 `json:"incidentCount,omitempty" azure:"ro"`
+
+	// READ-ONLY; The date time when the alert configuration was updated or new incidents were generated.
+	LastModifiedDateTime *time.Time `json:"lastModifiedDateTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; The date time when the alert was last scanned.
+	LastScannedDateTime *time.Time `json:"lastScannedDateTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; The alert scope.
+	Scope *string `json:"scope,omitempty" azure:"ro"`
+}
+
+// AlertsClientBeginRefreshAllOptions contains the optional parameters for the AlertsClient.BeginRefreshAll method.
+type AlertsClientBeginRefreshAllOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AlertsClientBeginRefreshOptions contains the optional parameters for the AlertsClient.BeginRefresh method.
+type AlertsClientBeginRefreshOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AlertsClientGetOptions contains the optional parameters for the AlertsClient.Get method.
+type AlertsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertsClientListForScopeOptions contains the optional parameters for the AlertsClient.ListForScope method.
+type AlertsClientListForScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertsClientUpdateOptions contains the optional parameters for the AlertsClient.Update method.
+type AlertsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureRolesAssignedOutsidePimAlertConfigurationProperties - The Azure roles assigned outside PIM alert configuration properties.
+type AzureRolesAssignedOutsidePimAlertConfigurationProperties struct {
+	// REQUIRED; The alert configuration type.
+	AlertConfigurationType *string `json:"alertConfigurationType,omitempty"`
+
+	// True if the alert is enabled, false will disable the scanning for the specific alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+
+	// READ-ONLY; The alert definition ID.
+	AlertDefinitionID *string `json:"alertDefinitionId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The alert scope.
+	Scope *string `json:"scope,omitempty" azure:"ro"`
+}
+
+// GetAlertConfigurationProperties implements the AlertConfigurationPropertiesClassification interface for type AzureRolesAssignedOutsidePimAlertConfigurationProperties.
+func (a *AzureRolesAssignedOutsidePimAlertConfigurationProperties) GetAlertConfigurationProperties() *AlertConfigurationProperties {
+	return &AlertConfigurationProperties{
+		AlertDefinitionID:      a.AlertDefinitionID,
+		Scope:                  a.Scope,
+		IsEnabled:              a.IsEnabled,
+		AlertConfigurationType: a.AlertConfigurationType,
 	}
 }
 
-// RoleManagementPolicyProperties - Role management policy properties with scope.
-type RoleManagementPolicyProperties struct {
-	// The role management policy description.
-	Description *string `json:"description,omitempty"`
+// AzureRolesAssignedOutsidePimAlertIncidentProperties - Azure roles assigned outside PIM alert incident properties.
+type AzureRolesAssignedOutsidePimAlertIncidentProperties struct {
+	// REQUIRED; The alert incident type.
+	AlertIncidentType *string `json:"alertIncidentType,omitempty"`
 
-	// The role management policy display name.
-	DisplayName *string `json:"displayName,omitempty"`
+	// READ-ONLY; The assignee display name.
+	AssigneeDisplayName *string `json:"assigneeDisplayName,omitempty" azure:"ro"`
 
-	// The role management policy is default policy.
-	IsOrganizationDefault *bool `json:"isOrganizationDefault,omitempty"`
+	// READ-ONLY; The assignee ID.
+	AssigneeID *string `json:"assigneeId,omitempty" azure:"ro"`
 
-	// The rule applied to the policy.
-	Rules []RoleManagementPolicyRuleClassification `json:"rules,omitempty"`
+	// READ-ONLY; The assignee user principal name.
+	AssigneeUserPrincipalName *string `json:"assigneeUserPrincipalName,omitempty" azure:"ro"`
 
-	// The role management policy scope.
-	Scope *string `json:"scope,omitempty"`
+	// READ-ONLY; The date the assignment was activated.
+	AssignmentActivatedDate *time.Time `json:"assignmentActivatedDate,omitempty" azure:"ro"`
 
-	// READ-ONLY; The readonly computed rule applied to the policy.
-	EffectiveRules []RoleManagementPolicyRuleClassification `json:"effectiveRules,omitempty" azure:"ro"`
+	// READ-ONLY; The requestor display name.
+	RequestorDisplayName *string `json:"requestorDisplayName,omitempty" azure:"ro"`
 
-	// READ-ONLY; The name of the entity last modified it
-	LastModifiedBy *Principal `json:"lastModifiedBy,omitempty" azure:"ro"`
+	// READ-ONLY; The requestor ID.
+	RequestorID *string `json:"requestorId,omitempty" azure:"ro"`
 
-	// READ-ONLY; The last modified date time.
-	LastModifiedDateTime *time.Time `json:"lastModifiedDateTime,omitempty" azure:"ro"`
+	// READ-ONLY; The requestor user principal name.
+	RequestorUserPrincipalName *string `json:"requestorUserPrincipalName,omitempty" azure:"ro"`
 
-	// READ-ONLY; Additional properties of scope
-	PolicyProperties *PolicyProperties `json:"policyProperties,omitempty" azure:"ro"`
+	// READ-ONLY; The role definition ID.
+	RoleDefinitionID *string `json:"roleDefinitionId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The role display name.
+	RoleDisplayName *string `json:"roleDisplayName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The role template ID.
+	RoleTemplateID *string `json:"roleTemplateId,omitempty" azure:"ro"`
 }
 
-// RoleManagementPolicyRuleClassification provides polymorphic access to related types.
-// Call the interface's GetRoleManagementPolicyRule() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *RoleManagementPolicyApprovalRule, *RoleManagementPolicyAuthenticationContextRule, *RoleManagementPolicyEnablementRule,
-// - *RoleManagementPolicyExpirationRule, *RoleManagementPolicyNotificationRule, *RoleManagementPolicyRule
-type RoleManagementPolicyRuleClassification interface {
-	// GetRoleManagementPolicyRule returns the RoleManagementPolicyRule content of the underlying type.
-	GetRoleManagementPolicyRule() *RoleManagementPolicyRule
+// GetAlertIncidentProperties implements the AlertIncidentPropertiesClassification interface for type AzureRolesAssignedOutsidePimAlertIncidentProperties.
+func (a *AzureRolesAssignedOutsidePimAlertIncidentProperties) GetAlertIncidentProperties() *AlertIncidentProperties {
+	return &AlertIncidentProperties{
+		AlertIncidentType: a.AlertIncidentType,
+	}
 }
 
-// RoleManagementPolicyRule - The role management policy rule.
-type RoleManagementPolicyRule struct {
-	// REQUIRED; The type of rule
-	RuleType *RoleManagementPolicyRuleType `json:"ruleType,omitempty"`
+// DuplicateRoleCreatedAlertConfigurationProperties - The duplicate role created alert configuration.
+type DuplicateRoleCreatedAlertConfigurationProperties struct {
+	// REQUIRED; The alert configuration type.
+	AlertConfigurationType *string `json:"alertConfigurationType,omitempty"`
 
-	// The id of the rule.
-	ID *string `json:"id,omitempty"`
+	// True if the alert is enabled, false will disable the scanning for the specific alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
 
-	// The target of the current rule.
-	Target *RoleManagementPolicyRuleTarget `json:"target,omitempty"`
+	// READ-ONLY; The alert definition ID.
+	AlertDefinitionID *string `json:"alertDefinitionId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The alert scope.
+	Scope *string `json:"scope,omitempty" azure:"ro"`
 }
 
-// GetRoleManagementPolicyRule implements the RoleManagementPolicyRuleClassification interface for type RoleManagementPolicyRule.
-func (r *RoleManagementPolicyRule) GetRoleManagementPolicyRule() *RoleManagementPolicyRule { return r }
-
-// RoleManagementPolicyRuleTarget - The role management policy rule target.
-type RoleManagementPolicyRuleTarget struct {
-	// The caller of the setting.
-	Caller *string `json:"caller,omitempty"`
-
-	// The list of enforced settings.
-	EnforcedSettings []*string `json:"enforcedSettings,omitempty"`
-
-	// The list of inheritable settings.
-	InheritableSettings []*string `json:"inheritableSettings,omitempty"`
-
-	// The assignment level to which rule is applied.
-	Level *string `json:"level,omitempty"`
-
-	// The type of operation.
-	Operations []*string `json:"operations,omitempty"`
-
-	// The list of target objects.
-	TargetObjects []*string `json:"targetObjects,omitempty"`
+// GetAlertConfigurationProperties implements the AlertConfigurationPropertiesClassification interface for type DuplicateRoleCreatedAlertConfigurationProperties.
+func (d *DuplicateRoleCreatedAlertConfigurationProperties) GetAlertConfigurationProperties() *AlertConfigurationProperties {
+	return &AlertConfigurationProperties{
+		AlertDefinitionID:      d.AlertDefinitionID,
+		Scope:                  d.Scope,
+		IsEnabled:              d.IsEnabled,
+		AlertConfigurationType: d.AlertConfigurationType,
+	}
 }
 
-// UserSet - The detail of a user.
-type UserSet struct {
-	// The description of the user.
-	Description *string `json:"description,omitempty"`
+// DuplicateRoleCreatedAlertIncidentProperties - Duplicate role created alert incident properties.
+type DuplicateRoleCreatedAlertIncidentProperties struct {
+	// REQUIRED; The alert incident type.
+	AlertIncidentType *string `json:"alertIncidentType,omitempty"`
 
-	// The object id of the user.
-	ID *string `json:"id,omitempty"`
+	// READ-ONLY; The duplicate roles.
+	DuplicateRoles *string `json:"duplicateRoles,omitempty" azure:"ro"`
 
-	// The value indicating whether the user is a backup fallback approver
-	IsBackup *bool `json:"isBackup,omitempty"`
+	// READ-ONLY; The reason for the incident.
+	Reason *string `json:"reason,omitempty" azure:"ro"`
 
-	// The type of user.
-	UserType *UserType `json:"userType,omitempty"`
+	// READ-ONLY; The role name.
+	RoleName *string `json:"roleName,omitempty" azure:"ro"`
 }
 
-// ValidationResponse - Validation response
-type ValidationResponse struct {
-	// Failed validation result details
-	ErrorInfo *ValidationResponseErrorInfo `json:"errorInfo,omitempty"`
-
-	// READ-ONLY; Whether or not validation succeeded
-	IsValid *bool `json:"isValid,omitempty" azure:"ro"`
+// GetAlertIncidentProperties implements the AlertIncidentPropertiesClassification interface for type DuplicateRoleCreatedAlertIncidentProperties.
+func (d *DuplicateRoleCreatedAlertIncidentProperties) GetAlertIncidentProperties() *AlertIncidentProperties {
+	return &AlertIncidentProperties{
+		AlertIncidentType: d.AlertIncidentType,
+	}
 }
 
-// ValidationResponseErrorInfo - Failed validation result details
-type ValidationResponseErrorInfo struct {
-	// READ-ONLY; Error code indicating why validation failed
-	Code *string `json:"code,omitempty" azure:"ro"`
+// ErrorDefinition - Error description and code explaining why an operation failed.
+type ErrorDefinition struct {
+	// Error of the list gateway status.
+	Error *ErrorDefinitionProperties `json:"error,omitempty"`
+}
 
-	// READ-ONLY; Message indicating why validation failed
+// ErrorDefinitionProperties - Error description and code explaining why an operation failed.
+type ErrorDefinitionProperties struct {
+	// Error code of list gateway.
+	Code *string `json:"code,omitempty"`
+
+	// READ-ONLY; Description of the error.
 	Message *string `json:"message,omitempty" azure:"ro"`
+}
+
+// Operation - The definition of a Microsoft.Authorization operation.
+type Operation struct {
+	// Display of the operation
+	Display *OperationDisplay `json:"display,omitempty"`
+
+	// Indicates whether the operation is a data action
+	IsDataAction *bool `json:"isDataAction,omitempty"`
+
+	// Name of the operation
+	Name *string `json:"name,omitempty"`
+
+	// Origin of the operation
+	Origin *string `json:"origin,omitempty"`
+}
+
+// OperationDisplay - The display information for a Microsoft.Authorization operation.
+type OperationDisplay struct {
+	// READ-ONLY; The description for the operation.
+	Description *string `json:"description,omitempty" azure:"ro"`
+
+	// READ-ONLY; The operation that users can perform.
+	Operation *string `json:"operation,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource provider name: Microsoft.Authorization.
+	Provider *string `json:"provider,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource on which the operation is performed.
+	Resource *string `json:"resource,omitempty" azure:"ro"`
+}
+
+// OperationListResult - The result of a request to list Microsoft.Authorization operations.
+type OperationListResult struct {
+	// The URI that can be used to request the next set of paged results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The collection value.
+	Value []*Operation `json:"value,omitempty"`
+}
+
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RecordAllDecisionsProperties - Record All Decisions payload.
+type RecordAllDecisionsProperties struct {
+	// The decision to make. Approvers can take action of Approve/Deny
+	Decision *RecordAllDecisionsResult `json:"decision,omitempty"`
+
+	// Justification provided by approvers for their action
+	Justification *string `json:"justification,omitempty"`
+
+	// READ-ONLY; The id of principal which needs to be approved/denied.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The id of resource which needs to be approved/denied.
+	ResourceID *string `json:"resourceId,omitempty" azure:"ro"`
+}
+
+// ScopeAccessReviewDefaultSettingsClientGetOptions contains the optional parameters for the ScopeAccessReviewDefaultSettingsClient.Get
+// method.
+type ScopeAccessReviewDefaultSettingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewDefaultSettingsClientPutOptions contains the optional parameters for the ScopeAccessReviewDefaultSettingsClient.Put
+// method.
+type ScopeAccessReviewDefaultSettingsClientPutOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewHistoryDefinitionClientCreateOptions contains the optional parameters for the ScopeAccessReviewHistoryDefinitionClient.Create
+// method.
+type ScopeAccessReviewHistoryDefinitionClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewHistoryDefinitionClientDeleteByIDOptions contains the optional parameters for the ScopeAccessReviewHistoryDefinitionClient.DeleteByID
+// method.
+type ScopeAccessReviewHistoryDefinitionClientDeleteByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewHistoryDefinitionInstanceClientGenerateDownloadURIOptions contains the optional parameters for the ScopeAccessReviewHistoryDefinitionInstanceClient.GenerateDownloadURI
+// method.
+type ScopeAccessReviewHistoryDefinitionInstanceClientGenerateDownloadURIOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewHistoryDefinitionInstancesClientListOptions contains the optional parameters for the ScopeAccessReviewHistoryDefinitionInstancesClient.List
+// method.
+type ScopeAccessReviewHistoryDefinitionInstancesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewHistoryDefinitionsClientGetByIDOptions contains the optional parameters for the ScopeAccessReviewHistoryDefinitionsClient.GetByID
+// method.
+type ScopeAccessReviewHistoryDefinitionsClientGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewHistoryDefinitionsClientListOptions contains the optional parameters for the ScopeAccessReviewHistoryDefinitionsClient.List
+// method.
+type ScopeAccessReviewHistoryDefinitionsClientListOptions struct {
+	// The filter to apply on the operation. Only standard filters on definition name and created date are supported
+	Filter *string
+}
+
+// ScopeAccessReviewInstanceClientApplyDecisionsOptions contains the optional parameters for the ScopeAccessReviewInstanceClient.ApplyDecisions
+// method.
+type ScopeAccessReviewInstanceClientApplyDecisionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewInstanceClientRecordAllDecisionsOptions contains the optional parameters for the ScopeAccessReviewInstanceClient.RecordAllDecisions
+// method.
+type ScopeAccessReviewInstanceClientRecordAllDecisionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewInstanceClientResetDecisionsOptions contains the optional parameters for the ScopeAccessReviewInstanceClient.ResetDecisions
+// method.
+type ScopeAccessReviewInstanceClientResetDecisionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewInstanceClientSendRemindersOptions contains the optional parameters for the ScopeAccessReviewInstanceClient.SendReminders
+// method.
+type ScopeAccessReviewInstanceClientSendRemindersOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewInstanceClientStopOptions contains the optional parameters for the ScopeAccessReviewInstanceClient.Stop
+// method.
+type ScopeAccessReviewInstanceClientStopOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewInstanceContactedReviewersClientListOptions contains the optional parameters for the ScopeAccessReviewInstanceContactedReviewersClient.List
+// method.
+type ScopeAccessReviewInstanceContactedReviewersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewInstanceDecisionsClientListOptions contains the optional parameters for the ScopeAccessReviewInstanceDecisionsClient.List
+// method.
+type ScopeAccessReviewInstanceDecisionsClientListOptions struct {
+	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+	// When one specified $filter=assignedToMeToReview(), only items that
+	// are assigned to the calling user to review are returned
+	Filter *string
+}
+
+// ScopeAccessReviewInstancesClientCreateOptions contains the optional parameters for the ScopeAccessReviewInstancesClient.Create
+// method.
+type ScopeAccessReviewInstancesClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewInstancesClientGetByIDOptions contains the optional parameters for the ScopeAccessReviewInstancesClient.GetByID
+// method.
+type ScopeAccessReviewInstancesClientGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewInstancesClientListOptions contains the optional parameters for the ScopeAccessReviewInstancesClient.List
+// method.
+type ScopeAccessReviewInstancesClientListOptions struct {
+	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+	// When one specified $filter=assignedToMeToReview(), only items that
+	// are assigned to the calling user to review are returned
+	Filter *string
+}
+
+// ScopeAccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions contains the optional parameters for the ScopeAccessReviewScheduleDefinitionsClient.CreateOrUpdateByID
+// method.
+type ScopeAccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewScheduleDefinitionsClientDeleteByIDOptions contains the optional parameters for the ScopeAccessReviewScheduleDefinitionsClient.DeleteByID
+// method.
+type ScopeAccessReviewScheduleDefinitionsClientDeleteByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewScheduleDefinitionsClientGetByIDOptions contains the optional parameters for the ScopeAccessReviewScheduleDefinitionsClient.GetByID
+// method.
+type ScopeAccessReviewScheduleDefinitionsClientGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewScheduleDefinitionsClientListOptions contains the optional parameters for the ScopeAccessReviewScheduleDefinitionsClient.List
+// method.
+type ScopeAccessReviewScheduleDefinitionsClientListOptions struct {
+	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+	// When one specified $filter=assignedToMeToReview(), only items that
+	// are assigned to the calling user to review are returned
+	Filter *string
+}
+
+// ScopeAccessReviewScheduleDefinitionsClientStopOptions contains the optional parameters for the ScopeAccessReviewScheduleDefinitionsClient.Stop
+// method.
+type ScopeAccessReviewScheduleDefinitionsClientStopOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantLevelAccessReviewInstanceContactedReviewersClientListOptions contains the optional parameters for the TenantLevelAccessReviewInstanceContactedReviewersClient.List
+// method.
+type TenantLevelAccessReviewInstanceContactedReviewersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TooManyOwnersAssignedToResourceAlertConfigurationProperties - Too many owners assigned to resource alert configuration
+// properties.
+type TooManyOwnersAssignedToResourceAlertConfigurationProperties struct {
+	// REQUIRED; The alert configuration type.
+	AlertConfigurationType *string `json:"alertConfigurationType,omitempty"`
+
+	// True if the alert is enabled, false will disable the scanning for the specific alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+
+	// The threshold number of owners.
+	ThresholdNumberOfOwners *int32 `json:"thresholdNumberOfOwners,omitempty"`
+
+	// The threshold percentage of owners out of all role members.
+	ThresholdPercentageOfOwnersOutOfAllRoleMembers *int32 `json:"thresholdPercentageOfOwnersOutOfAllRoleMembers,omitempty"`
+
+	// READ-ONLY; The alert definition ID.
+	AlertDefinitionID *string `json:"alertDefinitionId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The alert scope.
+	Scope *string `json:"scope,omitempty" azure:"ro"`
+}
+
+// GetAlertConfigurationProperties implements the AlertConfigurationPropertiesClassification interface for type TooManyOwnersAssignedToResourceAlertConfigurationProperties.
+func (t *TooManyOwnersAssignedToResourceAlertConfigurationProperties) GetAlertConfigurationProperties() *AlertConfigurationProperties {
+	return &AlertConfigurationProperties{
+		AlertDefinitionID:      t.AlertDefinitionID,
+		Scope:                  t.Scope,
+		IsEnabled:              t.IsEnabled,
+		AlertConfigurationType: t.AlertConfigurationType,
+	}
+}
+
+// TooManyOwnersAssignedToResourceAlertIncidentProperties - Too many owners assigned to resource alert incident properties.
+type TooManyOwnersAssignedToResourceAlertIncidentProperties struct {
+	// REQUIRED; The alert incident type.
+	AlertIncidentType *string `json:"alertIncidentType,omitempty"`
+
+	// READ-ONLY; The assignee name.
+	AssigneeName *string `json:"assigneeName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The assignee type.
+	AssigneeType *string `json:"assigneeType,omitempty" azure:"ro"`
+}
+
+// GetAlertIncidentProperties implements the AlertIncidentPropertiesClassification interface for type TooManyOwnersAssignedToResourceAlertIncidentProperties.
+func (t *TooManyOwnersAssignedToResourceAlertIncidentProperties) GetAlertIncidentProperties() *AlertIncidentProperties {
+	return &AlertIncidentProperties{
+		AlertIncidentType: t.AlertIncidentType,
+	}
+}
+
+// TooManyPermanentOwnersAssignedToResourceAlertConfigurationProperties - Too many permanent owners assigned to resource alert
+// configuration properties.
+type TooManyPermanentOwnersAssignedToResourceAlertConfigurationProperties struct {
+	// REQUIRED; The alert configuration type.
+	AlertConfigurationType *string `json:"alertConfigurationType,omitempty"`
+
+	// True if the alert is enabled, false will disable the scanning for the specific alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+
+	// The threshold number of permanent owners.
+	ThresholdNumberOfPermanentOwners *int32 `json:"thresholdNumberOfPermanentOwners,omitempty"`
+
+	// The threshold percentage of permanent owners out of all owners.
+	ThresholdPercentageOfPermanentOwnersOutOfAllOwners *int32 `json:"thresholdPercentageOfPermanentOwnersOutOfAllOwners,omitempty"`
+
+	// READ-ONLY; The alert definition ID.
+	AlertDefinitionID *string `json:"alertDefinitionId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The alert scope.
+	Scope *string `json:"scope,omitempty" azure:"ro"`
+}
+
+// GetAlertConfigurationProperties implements the AlertConfigurationPropertiesClassification interface for type TooManyPermanentOwnersAssignedToResourceAlertConfigurationProperties.
+func (t *TooManyPermanentOwnersAssignedToResourceAlertConfigurationProperties) GetAlertConfigurationProperties() *AlertConfigurationProperties {
+	return &AlertConfigurationProperties{
+		AlertDefinitionID:      t.AlertDefinitionID,
+		Scope:                  t.Scope,
+		IsEnabled:              t.IsEnabled,
+		AlertConfigurationType: t.AlertConfigurationType,
+	}
+}
+
+// TooManyPermanentOwnersAssignedToResourceAlertIncidentProperties - Too many permanent owners assigned to resource alert
+// incident properties.
+type TooManyPermanentOwnersAssignedToResourceAlertIncidentProperties struct {
+	// REQUIRED; The alert incident type.
+	AlertIncidentType *string `json:"alertIncidentType,omitempty"`
+
+	// READ-ONLY; The assignee name.
+	AssigneeName *string `json:"assigneeName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The assignee type.
+	AssigneeType *string `json:"assigneeType,omitempty" azure:"ro"`
+}
+
+// GetAlertIncidentProperties implements the AlertIncidentPropertiesClassification interface for type TooManyPermanentOwnersAssignedToResourceAlertIncidentProperties.
+func (t *TooManyPermanentOwnersAssignedToResourceAlertIncidentProperties) GetAlertIncidentProperties() *AlertIncidentProperties {
+	return &AlertIncidentProperties{
+		AlertIncidentType: t.AlertIncidentType,
+	}
 }

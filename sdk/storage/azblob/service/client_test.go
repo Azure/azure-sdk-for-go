@@ -678,6 +678,9 @@ func (s *ServiceUnrecordedTestsSuite) TestContainerRestore() {
 	_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
 	_require.Nil(err)
 
+	// it appears that deleting the container involves acquiring a lease.
+	// since leases can only be 15-60s or infinite, we just wait for 60 seconds.
+	time.Sleep(60 * time.Second)
 	prefix := testcommon.ContainerPrefix
 	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersInclude{Metadata: true, Deleted: true}}
 	pager := svcClient.NewListContainersPager(&listOptions)
@@ -690,21 +693,9 @@ func (s *ServiceUnrecordedTestsSuite) TestContainerRestore() {
 			_require.NotNil(cont.Name)
 
 			if *cont.Deleted && *cont.Name == containerName {
-				contRestored = true
-				const maxTries = 5
-				for tries := 0; tries < maxTries; tries++ {
-					_, err = svcClient.RestoreContainer(context.Background(), containerName, *cont.Version, nil)
-					if err == nil {
-						break
-					} else if bloberror.HasCode(err, bloberror.ContainerBeingDeleted) {
-						// container is still being deleted, try again
-						time.Sleep(5 * time.Second)
-						if tries+1 < maxTries {
-							err = nil
-						}
-					}
-				}
+				_, err = svcClient.RestoreContainer(context.Background(), containerName, *cont.Version, nil)
 				_require.NoError(err)
+				contRestored = true
 				break
 			}
 		}

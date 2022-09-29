@@ -14,17 +14,17 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerDeploymentStatusList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerDeploymentStatusList.json
 func ExampleManagerDeploymentStatusClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagerDeploymentStatusClient("subscriptionC", cred, nil)
+	client, err := armnetwork.NewManagerDeploymentStatusClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -36,7 +36,7 @@ func ExampleManagerDeploymentStatusClient_List() {
 			to.Ptr("eastus"),
 			to.Ptr("westus")},
 		SkipToken: to.Ptr("FakeSkipTokenCode"),
-	}, nil)
+	}, &armnetwork.ManagerDeploymentStatusClientListOptions{Top: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -30,10 +30,10 @@ import (
 type TestAccountType string
 
 const (
-	TestAccountDefault   TestAccountType = ""
-	TestAccountSecondary TestAccountType = "SECONDARY_"
-	TestAccountPremium   TestAccountType = "PREMIUM_"
-	//TestAccountBlobStorage testAccountType = "BLOB_"
+	TestAccountDefault    TestAccountType = ""
+	TestAccountSecondary  TestAccountType = "SECONDARY_"
+	TestAccountPremium    TestAccountType = "PREMIUM_"
+	TestAccountSoftDelete TestAccountType = "SOFT_DELETE_"
 )
 
 const (

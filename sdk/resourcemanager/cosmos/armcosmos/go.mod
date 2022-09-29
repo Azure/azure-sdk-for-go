@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3
 
 go 1.18
 

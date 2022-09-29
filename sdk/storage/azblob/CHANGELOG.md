@@ -2,7 +2,6 @@
 
 ## 0.5.0 (2022-09-29)
 
-
 ### Breaking Changes
 
 * Complete architectural change for better user experience. Please view the [README](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob#readme)

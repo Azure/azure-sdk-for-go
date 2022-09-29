@@ -129,7 +129,7 @@ func (o *downloadOptions) getDownloadBlobOptions(rnge HTTPRange, rangeGetContent
 		AccessConditions:   o.AccessConditions,
 		CpkInfo:            o.CpkInfo,
 		CpkScopeInfo:       o.CpkScopeInfo,
-		Range:              o.Range,
+		Range:              rnge,
 		RangeGetContentMD5: rangeGetContentMD5,
 	}
 }

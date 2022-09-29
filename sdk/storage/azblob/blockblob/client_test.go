@@ -39,12 +39,12 @@ var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"),
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running blockblob Tests in %s mode\n", recordMode)
-	if recordMode == "live" {
+	if recordMode == recording.LiveMode {
 		suite.Run(t, &BlockBlobRecordedTestsSuite{})
 		suite.Run(t, &BlockBlobUnrecordedTestsSuite{})
-	} else if recordMode == "playback" {
+	} else if recordMode == recording.PlaybackMode {
 		suite.Run(t, &BlockBlobRecordedTestsSuite{})
-	} else if recordMode == "record" {
+	} else if recordMode == recording.RecordingMode {
 		suite.Run(t, &BlockBlobRecordedTestsSuite{})
 	}
 }

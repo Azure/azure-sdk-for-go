@@ -29,12 +29,12 @@ import (
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running service Tests in %s mode\n", recordMode)
-	if recordMode == "live" {
+	if recordMode == recording.LiveMode {
 		suite.Run(t, &ServiceRecordedTestsSuite{})
 		suite.Run(t, &ServiceUnrecordedTestsSuite{})
-	} else if recordMode == "playback" {
+	} else if recordMode == recording.PlaybackMode {
 		suite.Run(t, &ServiceRecordedTestsSuite{})
-	} else if recordMode == "record" {
+	} else if recordMode == recording.RecordingMode {
 		suite.Run(t, &ServiceRecordedTestsSuite{})
 	}
 }

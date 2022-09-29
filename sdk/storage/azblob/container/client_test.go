@@ -32,12 +32,12 @@ import (
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running container Tests in %s mode\n", recordMode)
-	if recordMode == "live" {
+	if recordMode == recording.LiveMode {
 		suite.Run(t, &ContainerRecordedTestsSuite{})
 		suite.Run(t, &ContainerUnrecordedTestsSuite{})
-	} else if recordMode == "playback" {
+	} else if recordMode == recording.PlaybackMode {
 		suite.Run(t, &ContainerRecordedTestsSuite{})
-	} else if recordMode == "record" {
+	} else if recordMode == recording.RecordingMode {
 		suite.Run(t, &ContainerRecordedTestsSuite{})
 	}
 }

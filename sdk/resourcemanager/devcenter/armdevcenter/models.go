@@ -11,6 +11,39 @@ package armdevcenter
 
 import "time"
 
+// AllowedEnvironmentType - Represents an allowed environment type.
+type AllowedEnvironmentType struct {
+	// Properties of an allowed environment type.
+	Properties *AllowedEnvironmentTypeProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// AllowedEnvironmentTypeListResult - Result of the allowed environment type list operation.
+type AllowedEnvironmentTypeListResult struct {
+	// READ-ONLY; URL to get the next set of results if there are any.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; Current page of results.
+	Value []*AllowedEnvironmentType `json:"value,omitempty" azure:"ro"`
+}
+
+// AllowedEnvironmentTypeProperties - Properties of an allowed environment type.
+type AllowedEnvironmentTypeProperties struct {
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
 // AttachedNetworkConnection - Represents an attached NetworkConnection.
 type AttachedNetworkConnection struct {
 	// Attached NetworkConnection properties.
@@ -198,27 +231,6 @@ type CatalogsClientGetOptions struct {
 type CatalogsClientListByDevCenterOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
-}
-
-// CloudError - An error response from the DevCenter service.
-type CloudError struct {
-	// REQUIRED; Error body
-	Error *CloudErrorBody `json:"error,omitempty"`
-}
-
-// CloudErrorBody - An error response from the DevCenter service.
-type CloudErrorBody struct {
-	// REQUIRED; An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
-	Code *string `json:"code,omitempty"`
-
-	// REQUIRED; A message describing the error, intended to be suitable for display in a user interface.
-	Message *string `json:"message,omitempty"`
-
-	// A list of additional details about the error.
-	Details []*CloudErrorBody `json:"details,omitempty"`
-
-	// The target of the particular error. For example, the name of the property in error.
-	Target *string `json:"target,omitempty"`
 }
 
 // DevBoxDefinition - Represents a definition for a Developer Machine.
@@ -1199,6 +1211,19 @@ type Project struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ProjectAllowedEnvironmentTypesClientGetOptions contains the optional parameters for the ProjectAllowedEnvironmentTypesClient.Get
+// method.
+type ProjectAllowedEnvironmentTypesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProjectAllowedEnvironmentTypesClientListOptions contains the optional parameters for the ProjectAllowedEnvironmentTypesClient.List
+// method.
+type ProjectAllowedEnvironmentTypesClientListOptions struct {
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // ProjectEnvironmentType - Represents an environment type.

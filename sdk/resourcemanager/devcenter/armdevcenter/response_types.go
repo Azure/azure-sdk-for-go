@@ -284,6 +284,16 @@ type PoolsClientUpdateResponse struct {
 	Pool
 }
 
+// ProjectAllowedEnvironmentTypesClientGetResponse contains the response from method ProjectAllowedEnvironmentTypesClient.Get.
+type ProjectAllowedEnvironmentTypesClientGetResponse struct {
+	AllowedEnvironmentType
+}
+
+// ProjectAllowedEnvironmentTypesClientListResponse contains the response from method ProjectAllowedEnvironmentTypesClient.List.
+type ProjectAllowedEnvironmentTypesClientListResponse struct {
+	AllowedEnvironmentTypeListResult
+}
+
 // ProjectEnvironmentTypesClientCreateOrUpdateResponse contains the response from method ProjectEnvironmentTypesClient.CreateOrUpdate.
 type ProjectEnvironmentTypesClientCreateOrUpdateResponse struct {
 	ProjectEnvironmentType

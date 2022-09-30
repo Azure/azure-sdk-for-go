@@ -67,7 +67,8 @@ type ManagedIdentityCredentialOptions struct {
 	ID ManagedIDKind
 
 	// IMDSTimeout is the timeout used during initial discoverability of the IMDS endpoint.
-	// The default is one second.
+	// Once the endpoint has been discovered, the timeout is discarded.
+	// The default value is one second.
 	IMDSTimeout time.Duration
 }
 

@@ -92,45 +92,6 @@ type Column struct {
 	Type *LogsColumnType `json:"type,omitempty"`
 }
 
-// ErrorDetail - Error details.
-type ErrorDetail struct {
-	// REQUIRED; The error's code.
-	Code *string `json:"code,omitempty"`
-
-	// REQUIRED; A human readable error message.
-	Message *string `json:"message,omitempty"`
-
-	// Additional properties that can be provided on the error details object
-	AdditionalProperties interface{} `json:"additionalProperties,omitempty"`
-
-	// Indicates resources which were responsible for the error.
-	Resources []*string `json:"resources,omitempty"`
-
-	// Indicates which property in the request is responsible for the error.
-	Target *string `json:"target,omitempty"`
-
-	// Indicates which value in 'target' is responsible for the error.
-	Value *string `json:"value,omitempty"`
-}
-
-// ErrorInfo - The code and message for an error.
-/*type ErrorInfo struct {
-	// REQUIRED; A machine readable error code.
-	Code *string `json:"code,omitempty"`
-
-	// REQUIRED; A human readable error message.
-	Message *string `json:"message,omitempty"`
-
-	// Additional properties that can be provided on the error info object
-	AdditionalProperties interface{} `json:"additionalProperties,omitempty"`
-
-	// error details.
-	Details []*ErrorDetail `json:"details,omitempty"`
-
-	// Inner error details if they exist.
-	Innererror *ErrorInfo `json:"innererror,omitempty"`
-}*/
-
 // LocalizableString - The localizable string class.
 type LocalizableString struct {
 	// REQUIRED; the invariant value.

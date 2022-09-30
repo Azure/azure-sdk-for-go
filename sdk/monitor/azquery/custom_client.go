@@ -53,9 +53,16 @@ const metricsHost string = "https://management.azure.com"
 type ErrorInfo struct {
 	// REQUIRED; A machine readable error code.
 	Code *string `json:"code,omitempty"`
+
+	// REQUIRED; A human readable error message.
+	Message *string `json:"message,omitempty"`
+
+	// A description in detail why the operation failed.
+	RawMessage json.RawMessage
 }
 
 func (e *ErrorInfo) UnmarshalJSON(data []byte) error {
+	e.RawMessage = data
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", e, err)
@@ -66,10 +73,21 @@ func (e *ErrorInfo) UnmarshalJSON(data []byte) error {
 		case "code":
 			err = unpopulate(val, "Code", &e.Code)
 			delete(rawMsg, key)
+		case "message":
+			err = unpopulate(val, "Message", &e.Message)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", e, err)
 		}
 	}
 	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ErrorInfo.
+func (e ErrorInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "code", e.Code)
+	populate(objectMap, "message", e.Message)
+	return json.Marshal(objectMap)
 }

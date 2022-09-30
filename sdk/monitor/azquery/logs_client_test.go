@@ -78,7 +78,7 @@ func TestQueryWorkspace_PartialError(t *testing.T) {
 	if err != nil {
 		t.Fatal("error with query")
 	}
-	if *res.Results.Error.Code != "PartialError" {
+	if *res.Error.Code != "PartialError" {
 		t.Fatal("expected a partial error")
 	}
 
@@ -166,8 +166,16 @@ func TestBatch_PartialError(t *testing.T) {
 	if err != nil {
 		t.Fatalf("expected non nil error: %s", err.Error())
 	}
-	if len(res.BatchResponse.Responses) != 2 {
+	if len(res.Responses) != 2 {
 		t.Fatal("expected two responses")
+	}
+	for _, resp := range res.Responses {
+		if *resp.ID == "1" && resp.Body.Error == nil {
+			t.Fatal("expected batch request 1 to fail")
+		}
+		if *resp.ID == "2" && resp.Body.Error != nil {
+			t.Fatal("expected batch request 2 to succeed")
+		}
 	}
 }
 

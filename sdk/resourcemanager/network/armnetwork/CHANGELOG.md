@@ -18,8 +18,6 @@
 - Function `PossibleDdosCustomPolicyProtocolValues` has been removed
 - Function `PossibleDdosSettingsProtectionCoverageValues` has been removed
 - Function `PossibleDdosCustomPolicyTriggerSensitivityOverrideValues` has been removed
-- Struct `CloudError` has been removed
-- Struct `CloudErrorBody` has been removed
 - Struct `ProtocolCustomSettingsFormat` has been removed
 - Field `PublicIPAddresses` of struct `DdosCustomPolicyPropertiesFormat` has been removed
 - Field `ProtocolCustomSettings` of struct `DdosCustomPolicyPropertiesFormat` has been removed

@@ -25,9 +25,15 @@ import (
 )
 
 const (
-	azureAuthorityHost         = "AZURE_AUTHORITY_HOST"
-	azureClientID              = "AZURE_CLIENT_ID"
-	azureRegionalAuthorityName = "AZURE_REGIONAL_AUTHORITY_NAME"
+	azureAuthorityHost             = "AZURE_AUTHORITY_HOST"
+	azureClientCertificatePassword = "AZURE_CLIENT_CERTIFICATE_PASSWORD"
+	azureClientCertificatePath     = "AZURE_CLIENT_CERTIFICATE_PATH"
+	azureClientID                  = "AZURE_CLIENT_ID"
+	azureClientSecret              = "AZURE_CLIENT_SECRET"
+	azurePassword                  = "AZURE_PASSWORD"
+	azureRegionalAuthorityName     = "AZURE_REGIONAL_AUTHORITY_NAME"
+	azureTenantID                  = "AZURE_TENANT_ID"
+	azureUsername                  = "AZURE_USERNAME"
 
 	organizationsTenantID   = "organizations"
 	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"

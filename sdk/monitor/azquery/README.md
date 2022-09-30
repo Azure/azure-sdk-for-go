@@ -148,15 +148,7 @@ LogsResponse
 |---Error *ErrorInfo
 	|---Code *string
 	|---Message *string
-	|---AdditionalProperties interface{}
-	|---Details []*ErrorDetail
-		|---Code *string
-		|---Message *string
-		|---AdditionalProperties interface{}
-		|---Resources []*string
-		|---Target *string
-		|---Value *string
-	|---Innererror *ErrorInfo
+	|---RawMessage json.RawMessage
 |---Render interface{}
 |---Statistics interface{}
 ```
@@ -201,6 +193,9 @@ BatchResponse
 |---Responses []*BatchQueryResponse
 	|---Body *BatchQueryResults
 		|---Error *ErrorInfo
+			|---Code *string
+			|---Message *string
+			|---RawMessage json.RawMessage
 		|---Render interface{}
 		|---Statistics interface{}
 		|---Tables []*Table

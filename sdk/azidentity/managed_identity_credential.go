@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -64,6 +65,10 @@ type ManagedIdentityCredentialOptions struct {
 	// instead of the hosting environment's default. The value may be the identity's client ID or resource ID, but note that
 	// some platforms don't accept resource IDs.
 	ID ManagedIDKind
+
+	// IMDSTimeout is the timeout used during initial discoverability of the IMDS endpoint.
+	// The default is one second.
+	IMDSTimeout time.Duration
 }
 
 // ManagedIdentityCredential authenticates an Azure managed identity in any hosting environment supporting managed identities.

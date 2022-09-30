@@ -11,7 +11,6 @@ import (
 	"errors"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -67,7 +66,6 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	msiCred, err := NewManagedIdentityCredential(o)
 	if err == nil {
 		creds = append(creds, msiCred)
-		msiCred.mic.imdsTimeout = time.Second
 	} else {
 		errorMessages = append(errorMessages, credNameManagedIdentity+": "+err.Error())
 		creds = append(creds, &defaultCredentialErrorReporter{credType: credNameManagedIdentity, err: err})

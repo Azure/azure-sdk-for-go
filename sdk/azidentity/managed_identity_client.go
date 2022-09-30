@@ -114,6 +114,10 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 	if options == nil {
 		options = &ManagedIdentityCredentialOptions{}
 	}
+	if options.IMDSTimeout == 0 {
+		options.IMDSTimeout = time.Second
+	}
+
 	cp := options.ClientOptions
 	c := managedIdentityClient{id: options.ID, endpoint: imdsEndpoint, msiType: msiTypeIMDS}
 	env := "IMDS"

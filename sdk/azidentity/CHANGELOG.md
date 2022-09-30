@@ -4,6 +4,7 @@
 
 ### Features Added
 * `ManagedIdentityCredential` caches tokens in memory
+* Added `ManagedIdentityCredentialOptions.IMDSTimeout` to configure the IMDS endpoint probe timeout.
 
 ### Bugs Fixed
 * `ClientCertificateCredential` sends only the leaf cert for SNI authentication

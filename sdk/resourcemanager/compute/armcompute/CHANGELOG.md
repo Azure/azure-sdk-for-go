@@ -1,5 +1,79 @@
 # Release History
 
+## 4.0.0 (2022-10-01)
+### Breaking Changes
+
+- Function `*CloudServicesUpdateDomainClient.BeginWalkUpdateDomain` parameter(s) have been changed from `(context.Context, string, string, int32, UpdateDomain, *CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions)` to `(context.Context, string, string, int32, *CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions)`
+- Function `*CloudServicesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, CloudService, *CloudServicesClientBeginCreateOrUpdateOptions)` to `(context.Context, string, string, *CloudServicesClientBeginCreateOrUpdateOptions)`
+- Function `*CloudServicesClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, CloudServiceUpdate, *CloudServicesClientBeginUpdateOptions)` to `(context.Context, string, string, *CloudServicesClientBeginUpdateOptions)`
+- Type of `VirtualMachineScaleSetExtensionProperties.ProtectedSettingsFromKeyVault` has been changed from `interface{}` to `*KeyVaultSecretReference`
+- Type of `GalleryDataDiskImage.Source` has been changed from `*GalleryArtifactVersionSource` to `*GalleryDiskImageSource`
+- Type of `GalleryDiskImage.Source` has been changed from `*GalleryArtifactVersionSource` to `*GalleryDiskImageSource`
+- Type of `SharingProfile.CommunityGalleryInfo` has been changed from `interface{}` to `*CommunityGalleryInfo`
+- Type of `GalleryImageVersionStorageProfile.Source` has been changed from `*GalleryArtifactVersionSource` to `*GalleryArtifactVersionFullSource`
+- Type of `VirtualMachineExtensionUpdateProperties.ProtectedSettingsFromKeyVault` has been changed from `interface{}` to `*KeyVaultSecretReference`
+- Type of `GalleryOSDiskImage.Source` has been changed from `*GalleryArtifactVersionSource` to `*GalleryDiskImageSource`
+- Type of `VirtualMachineExtensionProperties.ProtectedSettingsFromKeyVault` has been changed from `interface{}` to `*KeyVaultSecretReference`
+- Struct `CloudError` has been removed
+- Field `URI` of struct `GalleryArtifactVersionSource` has been removed
+
+### Features Added
+
+- New const `DiskControllerTypesSCSI`
+- New const `GalleryApplicationCustomActionParameterTypeString`
+- New const `PolicyViolationCategoryIPTheft`
+- New const `GalleryApplicationCustomActionParameterTypeLogOutputBlob`
+- New const `PolicyViolationCategoryImageFlaggedUnsafe`
+- New const `PolicyViolationCategoryCopyrightValidation`
+- New const `PolicyViolationCategoryOther`
+- New const `GalleryApplicationCustomActionParameterTypeConfigurationDataBlob`
+- New const `DiskControllerTypesNVMe`
+- New type alias `PolicyViolationCategory`
+- New type alias `GalleryApplicationCustomActionParameterType`
+- New type alias `DiskControllerTypes`
+- New function `PossibleDiskControllerTypesValues() []DiskControllerTypes`
+- New function `PossibleGalleryApplicationCustomActionParameterTypeValues() []GalleryApplicationCustomActionParameterType`
+- New function `PossiblePolicyViolationCategoryValues() []PolicyViolationCategory`
+- New struct `GalleryApplicationCustomAction`
+- New struct `GalleryApplicationCustomActionParameter`
+- New struct `GalleryApplicationVersionSafetyProfile`
+- New struct `GalleryArtifactSafetyProfileBase`
+- New struct `GalleryArtifactVersionFullSource`
+- New struct `GalleryDiskImageSource`
+- New struct `GalleryImageVersionSafetyProfile`
+- New struct `LatestGalleryImageVersion`
+- New struct `PolicyViolation`
+- New struct `PriorityMixPolicy`
+- New field `SafetyProfile` in struct `GalleryImageVersionProperties`
+- New field `PerformancePlus` in struct `CreationData`
+- New field `HardwareProfile` in struct `VirtualMachineScaleSetUpdateVMProfile`
+- New field `ExcludeFromLatest` in struct `TargetRegion`
+- New field `Parameters` in struct `CloudServicesClientBeginCreateOrUpdateOptions`
+- New field `OptimizedForFrequentAttach` in struct `DiskProperties`
+- New field `BurstingEnabledTime` in struct `DiskProperties`
+- New field `DiskControllerType` in struct `VirtualMachineScaleSetStorageProfile`
+- New field `PlatformFaultDomainCount` in struct `CapacityReservationProperties`
+- New field `DiskControllerType` in struct `VirtualMachineScaleSetUpdateStorageProfile`
+- New field `Parameters` in struct `CloudServicesClientBeginUpdateOptions`
+- New field `Eula` in struct `SharedGalleryImageProperties`
+- New field `PrivacyStatementURI` in struct `SharedGalleryImageProperties`
+- New field `Parameters` in struct `CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions`
+- New field `CustomActions` in struct `GalleryApplicationVersionPublishingProfile`
+- New field `DisableTCPStateTracking` in struct `VirtualMachineScaleSetUpdateNetworkConfigurationProperties`
+- New field `DisableTCPStateTracking` in struct `VirtualMachineScaleSetNetworkConfigurationProperties`
+- New field `CustomActions` in struct `GalleryApplicationProperties`
+- New field `OptimizedForFrequentAttach` in struct `DiskUpdateProperties`
+- New field `DiskControllerTypes` in struct `SupportedCapabilities`
+- New field `EnableVMAgentPlatformUpdates` in struct `LinuxConfiguration`
+- New field `EnableVMAgentPlatformUpdates` in struct `WindowsConfiguration`
+- New field `CurrentCapacity` in struct `CapacityReservationUtilization`
+- New field `DisableTCPStateTracking` in struct `VirtualMachineNetworkInterfaceConfigurationProperties`
+- New field `PriorityMixPolicy` in struct `VirtualMachineScaleSetProperties`
+- New field `DiskControllerType` in struct `StorageProfile`
+- New field `SafetyProfile` in struct `GalleryApplicationVersionProperties`
+- New field `IncrementalSnapshotFamilyID` in struct `SnapshotProperties`
+
+
 ## 3.0.1 (2022-07-29)
 ### Other Changes
 - Fix wrong module import for live test

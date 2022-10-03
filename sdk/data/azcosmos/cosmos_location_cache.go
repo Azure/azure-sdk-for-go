@@ -41,7 +41,6 @@ type AcctRegion struct {
 	name string
 	// The URL of the database account location in the Azure Cosmos DB service.
 	endpoint string
-	// props    map[string]interface{}
 }
 
 // AcctProperties represents a container for Azure Cosmos DB databases.
@@ -59,7 +58,6 @@ type locationCache struct {
 	defaultEndpt              url.URL
 	enableEndptDiscovery      bool
 	useMultipleWriteLocations bool
-	// connLimit                         int
 	rwMutex                           sync.RWMutex
 	locationUnavailabilityInfoMap     map[url.URL]locationUnavailabilityInfo
 	mapMutex                          sync.RWMutex
@@ -143,7 +141,6 @@ func (lc *locationCache) getLocation(endpoint url.URL) string {
 	firstLoc := ""
 	lc.rwMutex.RLock()
 	defer lc.rwMutex.RUnlock()
-	// TODO: Find workaround for firstLoc, maps are unordered
 	for location, uri := range lc.locationInfo.availWriteEndptsByLocation {
 		if uri == endpoint {
 			return location
@@ -182,15 +179,15 @@ func (lc *locationCache) markEndptUnavailableForWrite(endpoint url.URL) error {
 }
 
 func (lc *locationCache) markEndptUnavailable(endpoint url.URL, op opType) error {
-	currTime := time.Now()
+	now := time.Now()
 	lc.mapMutex.Lock()
 	if info, ok := lc.locationUnavailabilityInfoMap[endpoint]; ok {
-		info.lastCheckTime = currTime
+		info.lastCheckTime = now
 		info.unavailableOps |= op
 		lc.locationUnavailabilityInfoMap[endpoint] = info
 	} else {
 		info = locationUnavailabilityInfo{
-			lastCheckTime:  currTime,
+			lastCheckTime:  now,
 			unavailableOps: op,
 		}
 		lc.locationUnavailabilityInfoMap[endpoint] = info
@@ -270,7 +267,6 @@ func getEndptsByLocation(locs []AcctRegion) (map[string]url.URL, []string, error
 		if loc.name != "" {
 			endptsByLoc[loc.name] = *endpt
 			parsedLocs = append(parsedLocs, loc.name)
-			// set service pt needed?
 		}
 	}
 	return endptsByLoc, parsedLocs, nil

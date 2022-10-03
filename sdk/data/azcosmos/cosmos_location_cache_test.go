@@ -79,7 +79,6 @@ func CreateDbAcct(useMultipleWriteLocations bool, enforceSingleMasterWriteLoc bo
 func ResetLocationCache() *locationCache {
 	lc := newLocationCache(prefLocs, *defaultEndpt)
 	lc.enableEndptDiscovery = true
-	// lc.connLimit = 10
 	return lc
 }
 
@@ -180,7 +179,7 @@ func TestIsEndptUnavailable(t *testing.T) {
 func TestGetLocation(t *testing.T) {
 	lc := ResetLocationCache()
 	dbAcct := CreateDbAcct(lc.enableMultipleWriteLocations, false)
-	err := lc.dbAcctRead(dbAcct) // requires unit test of update
+	err := lc.dbAcctRead(dbAcct) 
 	if err != nil {
 		t.Fatalf("Received error Reading DB account: %s", err.Error())
 	}
@@ -238,7 +237,6 @@ func TestGetEndptsByLocation(t *testing.T) {
 	if len(parsedLocs) != len(locs) {
 		t.Errorf("Expected parsedLocs to contain %d locations, but it contained %d", len(locs), len(parsedLocs))
 	}
-	// may need to fix this, believe that maps are unordered which could cause this to fail due to ordering
 	for i, loc := range locs {
 		if parsedLocs[i] != loc.name {
 			t.Errorf("Expected parsedLocs to contain location %s, but it did not", loc.name)

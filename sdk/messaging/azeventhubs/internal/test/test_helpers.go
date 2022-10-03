@@ -4,6 +4,7 @@
 package test
 
 import (
+	"context"
 	"crypto/rand"
 	"encoding/hex"
 	"fmt"
@@ -137,4 +138,10 @@ func mustGetEnvironmentVars(t *testing.T, names []string) map[string]string {
 	}
 
 	return envVars
+}
+
+func RequireClose(t *testing.T, closeable interface {
+	Close(ctx context.Context) error
+}) {
+	require.NoError(t, closeable.Close(context.Background()))
 }

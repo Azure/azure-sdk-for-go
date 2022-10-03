@@ -19,6 +19,9 @@ import (
 // SharedKeyCredential contains an account's name and its primary or secondary key.
 type SharedKeyCredential = exported.SharedKeyCredential
 
+// UserDelegationCredential contains an account's name and its user delegation key.
+type UserDelegationCredential = exported.UserDelegationCredential
+
 // AccountSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-an-account-sas
 type AccountSignatureValues struct {
@@ -32,9 +35,9 @@ type AccountSignatureValues struct {
 	ResourceTypes string    `param:"srt"` // Create by initializing AccountSASResourceTypes and then call String()
 }
 
-// Sign uses an account's shared key credential to sign this signature values to produce
+// SignWithSharedKey uses an account's shared key credential to sign this signature values to produce
 // the proper SAS query parameters.
-func (v AccountSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (QueryParameters, error) {
+func (v AccountSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCredential) (QueryParameters, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/Constructing-an-Account-SAS
 	if v.ExpiryTime.IsZero() || v.Permissions == "" || v.ResourceTypes == "" || v.Services == "" {
 		return QueryParameters{}, errors.New("account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
@@ -83,6 +86,71 @@ func (v AccountSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (
 		// Calculated SAS signature
 		signature: signature,
 	}
+
+	return p, nil
+}
+
+// SignWithUserDelegation uses an account's UserDelegationKey to sign this signature values to produce the proper SAS query parameters.
+func (v AccountSignatureValues) SignWithUserDelegation(userDelegationCredential *UserDelegationCredential) (QueryParameters, error) {
+	// https://docs.microsoft.com/en-us/rest/api/storageservices/Constructing-an-Account-SAS
+	if v.ExpiryTime.IsZero() || v.Permissions == "" || v.ResourceTypes == "" || v.Services == "" {
+		return QueryParameters{}, errors.New("account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
+	}
+	if v.Version == "" {
+		v.Version = Version
+	}
+
+	perms, err := parseAccountPermissions(v.Permissions)
+	if err != nil {
+		return QueryParameters{}, err
+	}
+	v.Permissions = perms.String()
+
+	startTime, expiryTime, _ := formatTimesForSigning(v.StartTime, v.ExpiryTime, time.Time{})
+
+	stringToSign := strings.Join([]string{
+		exported.GetAccountName(userDelegationCredential),
+		v.Permissions,
+		v.Services,
+		v.ResourceTypes,
+		startTime,
+		expiryTime,
+		v.IPRange.String(),
+		string(v.Protocol),
+		v.Version,
+		""}, // That is right, the account SAS requires a terminating extra newline
+		"\n")
+
+	signature, err := exported.ComputeUDCHMACSHA256(userDelegationCredential, stringToSign)
+	if err != nil {
+		return QueryParameters{}, err
+	}
+	p := QueryParameters{
+		// Common SAS parameters
+		version:     v.Version,
+		protocol:    v.Protocol,
+		startTime:   v.StartTime,
+		expiryTime:  v.ExpiryTime,
+		permissions: v.Permissions,
+		ipRange:     v.IPRange,
+
+		// Account-specific SAS parameters
+		services:      v.Services,
+		resourceTypes: v.ResourceTypes,
+
+		// Calculated SAS signature
+		signature: signature,
+	}
+
+	udk := exported.GetUDKParams(userDelegationCredential)
+
+	//User delegation SAS specific parameters
+	p.signedOID = *udk.SignedOID
+	p.signedTID = *udk.SignedTID
+	p.signedStart = *udk.SignedStart
+	p.signedExpiry = *udk.SignedExpiry
+	p.signedService = *udk.SignedService
+	p.signedVersion = *udk.SignedVersion
 
 	return p, nil
 }

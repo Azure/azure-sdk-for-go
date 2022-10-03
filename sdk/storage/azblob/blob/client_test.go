@@ -21,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
@@ -33,8 +34,16 @@ import (
 )
 
 func Test(t *testing.T) {
-	suite.Run(t, &BlobRecordedTestsSuite{})
-	//suite.Run(t, &BlobUnrecordedTestsSuite{})
+	recordMode := recording.GetRecordMode()
+	t.Logf("Running blob Tests in %s mode\n", recordMode)
+	if recordMode == recording.LiveMode {
+		suite.Run(t, &BlobRecordedTestsSuite{})
+		suite.Run(t, &BlobUnrecordedTestsSuite{})
+	} else if recordMode == recording.PlaybackMode {
+		suite.Run(t, &BlobRecordedTestsSuite{})
+	} else if recordMode == recording.RecordingMode {
+		suite.Run(t, &BlobRecordedTestsSuite{})
+	}
 }
 
 // nolint
@@ -114,7 +123,7 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
 		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
-	}.Sign(credential)
+	}.SignWithSharedKey(credential)
 	_require.Nil(err)
 
 	parts, err := blob.ParseURL(bbClient.URL())
@@ -156,7 +165,7 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSASUsingCo
 		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
 		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
-	}.Sign(credential)
+	}.SignWithSharedKey(credential)
 	_require.Nil(err)
 
 	parts, err := blob.ParseURL(bbClient.URL())

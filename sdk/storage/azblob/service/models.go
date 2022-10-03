@@ -21,6 +21,24 @@ func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredentia
 	return exported.NewSharedKeyCredential(accountName, accountKey)
 }
 
+// UserDelegationCredential contains an account's name and its user delegation key.
+type UserDelegationCredential = exported.UserDelegationCredential
+
+// UserDelegationKey contains UserDelegationKey.
+type UserDelegationKey = generated.UserDelegationKey
+
+// KeyInfo contains KeyInfo struct.
+type KeyInfo = generated.KeyInfo
+
+// GetUserDelegationCredentialOptions contains optional parameters for Service.GetUserDelegationKey method
+type GetUserDelegationCredentialOptions struct {
+	// placeholder for future options
+}
+
+func (o *GetUserDelegationCredentialOptions) format() *generated.ServiceClientGetUserDelegationKeyOptions {
+	return nil
+}
+
 // AccessConditions identifies container-specific access conditions which you optionally set.
 type AccessConditions = exported.ContainerAccessConditions
 
@@ -35,6 +53,9 @@ type CreateContainerOptions = container.CreateOptions
 
 // DeleteContainerOptions contains the optional parameters for the container.Client.Delete method.
 type DeleteContainerOptions = container.DeleteOptions
+
+// RestoreContainerOptions contains the optional parameters for the container.Client.Restore method.
+type RestoreContainerOptions = container.RestoreOptions
 
 // CorsRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
 // domain. Web browsers implement a security restriction known as same-origin policy that

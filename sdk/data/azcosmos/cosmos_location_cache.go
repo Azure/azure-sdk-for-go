@@ -25,39 +25,32 @@ type locationUnavailabilityInfo struct {
 	unavailableOps opType
 }
 
-type dbAcctLocationsInfo struct {
-	prefLocations              []string
-	availWriteLocations        []string
-	availReadLocations         []string
-	availWriteEndptsByLocation map[string]url.URL
-	availReadEndptsByLocation  map[string]url.URL
-	writeEndpts                []url.URL
-	readEndpts                 []url.URL
+type databaseAccountLocationsInfo struct {
+	prefLocations                 []string
+	availWriteLocations           []string
+	availReadLocations            []string
+	availWriteEndpointsByLocation map[string]url.URL
+	availReadEndpointsByLocation  map[string]url.URL
+	writeEndpoints                []url.URL
+	readEndpoints                 []url.URL
 }
 
-// AcctRegion represents a Azure Cosmos DB Database Account in a specific region.
-type AcctRegion struct {
-	// The name of the database account location in the Azure Cosmos DB service.
-	name string
-	// The URL of the database account location in the Azure Cosmos DB service.
+type accountRegion struct {
+	name     string
 	endpoint string
 }
 
-// AcctProperties represents a container for Azure Cosmos DB databases.
-type AcctProperties struct {
-	// The list of readable regions of this database account from the Azure Cosmos DB service.
-	readRegions []AcctRegion
-	// The list of writable regions of this database account from the Azure Cosmos DB service.
-	writeRegions []AcctRegion
-	// Indicates whether multiple write locations are enabled for this database account.
+type accountProperties struct {
+	readRegions                  []accountRegion
+	writeRegions                 []accountRegion
 	enableMultipleWriteLocations bool
 }
 
 type locationCache struct {
-	locationInfo              dbAcctLocationsInfo
-	defaultEndpt              url.URL
-	enableEndptDiscovery      bool
-	useMultipleWriteLocations bool
+	locationInfo                      databaseAccountLocationsInfo
+	defaultEndpoint                   url.URL
+	enableEndpointDiscovery           bool
+	useMultipleWriteLocations         bool
 	rwMutex                           sync.RWMutex
 	locationUnavailabilityInfoMap     map[url.URL]locationUnavailabilityInfo
 	mapMutex                          sync.RWMutex
@@ -66,45 +59,45 @@ type locationCache struct {
 	unavailableLocationExpirationTime time.Duration
 }
 
-func newLocationCache(prefLocations []string, defaultEndpt url.URL) *locationCache {
+func newLocationCache(prefLocations []string, defaultEndpoint url.URL) *locationCache {
 	return &locationCache{
-		defaultEndpt:                      defaultEndpt,
-		locationInfo:                      *newDbAcctLocationsInfo(prefLocations, defaultEndpt),
+		defaultEndpoint:                   defaultEndpoint,
+		locationInfo:                      *newDatabaseAccountLocationsInfo(prefLocations, defaultEndpoint),
 		locationUnavailabilityInfoMap:     make(map[url.URL]locationUnavailabilityInfo),
 		unavailableLocationExpirationTime: defaultExpirationTime,
 	}
 }
 
-func (lc *locationCache) update(writeLocations []AcctRegion, readLocations []AcctRegion, prefList []string, enableMultipleWriteLocations bool) error {
+func (lc *locationCache) update(writeLocations []accountRegion, readLocations []accountRegion, prefList []string, enableMultipleWriteLocations bool) error {
 	lc.rwMutex.RLock()
-	nextLoc := copyDbAcctLocationsInfo(lc.locationInfo)
+	nextLoc := copyDatabaseAccountLocationsInfo(lc.locationInfo)
 	if prefList != nil {
 		nextLoc.prefLocations = prefList
 	}
 	lc.enableMultipleWriteLocations = enableMultipleWriteLocations
-	lc.refreshStaleEndpts()
+	lc.refreshStaleEndpoints()
 	if readLocations != nil {
-		availReadEndptsByLocation, availReadLocations, err := getEndptsByLocation(readLocations)
+		availReadEndpointsByLocation, availReadLocations, err := getEndpointsByLocation(readLocations)
 		if err != nil {
 			lc.rwMutex.RUnlock()
 			return err
 		}
-		nextLoc.availReadEndptsByLocation = availReadEndptsByLocation
+		nextLoc.availReadEndpointsByLocation = availReadEndpointsByLocation
 		nextLoc.availReadLocations = availReadLocations
 	}
 
 	if writeLocations != nil {
-		availWriteEndptsByLocation, availWriteLocations, err := getEndptsByLocation(writeLocations)
+		availWriteEndpointsByLocation, availWriteLocations, err := getEndpointsByLocation(writeLocations)
 		if err != nil {
 			lc.rwMutex.RUnlock()
 			return err
 		}
-		nextLoc.availWriteEndptsByLocation = availWriteEndptsByLocation
+		nextLoc.availWriteEndpointsByLocation = availWriteEndpointsByLocation
 		nextLoc.availWriteLocations = availWriteLocations
 	}
 
-	nextLoc.writeEndpts = lc.getPrefAvailableEndpts(nextLoc.availWriteEndptsByLocation, nextLoc.availWriteLocations, write, lc.defaultEndpt)
-	nextLoc.readEndpts = lc.getPrefAvailableEndpts(nextLoc.availReadEndptsByLocation, nextLoc.availReadLocations, read, nextLoc.writeEndpts[0])
+	nextLoc.writeEndpoints = lc.getPrefAvailableEndpoints(nextLoc.availWriteEndpointsByLocation, nextLoc.availWriteLocations, write, lc.defaultEndpoint)
+	nextLoc.readEndpoints = lc.getPrefAvailableEndpoints(nextLoc.availReadEndpointsByLocation, nextLoc.availReadLocations, read, nextLoc.writeEndpoints[0])
 	lc.lastUpdateTime = time.Now()
 	lc.rwMutex.RUnlock()
 	lc.rwMutex.Lock()
@@ -113,7 +106,7 @@ func (lc *locationCache) update(writeLocations []AcctRegion, readLocations []Acc
 	return nil
 }
 
-func (lc *locationCache) readEndpts() ([]url.URL, error) {
+func (lc *locationCache) readEndpoints() ([]url.URL, error) {
 	lc.mapMutex.RLock()
 	defer lc.mapMutex.RUnlock()
 	if time.Since(lc.lastUpdateTime) > lc.unavailableLocationExpirationTime && len(lc.locationUnavailabilityInfoMap) > 0 {
@@ -122,10 +115,10 @@ func (lc *locationCache) readEndpts() ([]url.URL, error) {
 			return nil, err
 		}
 	}
-	return lc.locationInfo.readEndpts, nil
+	return lc.locationInfo.readEndpoints, nil
 }
 
-func (lc *locationCache) writeEndpts() ([]url.URL, error) {
+func (lc *locationCache) writeEndpoints() ([]url.URL, error) {
 	lc.mapMutex.RLock()
 	defer lc.mapMutex.RUnlock()
 	if time.Since(lc.lastUpdateTime) > lc.unavailableLocationExpirationTime && len(lc.locationUnavailabilityInfoMap) > 0 {
@@ -134,14 +127,14 @@ func (lc *locationCache) writeEndpts() ([]url.URL, error) {
 			return nil, err
 		}
 	}
-	return lc.locationInfo.writeEndpts, nil
+	return lc.locationInfo.writeEndpoints, nil
 }
 
 func (lc *locationCache) getLocation(endpoint url.URL) string {
 	firstLoc := ""
 	lc.rwMutex.RLock()
 	defer lc.rwMutex.RUnlock()
-	for location, uri := range lc.locationInfo.availWriteEndptsByLocation {
+	for location, uri := range lc.locationInfo.availWriteEndpointsByLocation {
 		if uri == endpoint {
 			return location
 		}
@@ -150,14 +143,14 @@ func (lc *locationCache) getLocation(endpoint url.URL) string {
 		}
 	}
 
-	for location, uri := range lc.locationInfo.availReadEndptsByLocation {
+	for location, uri := range lc.locationInfo.availReadEndpointsByLocation {
 		if uri == endpoint {
 			return location
 		}
 	}
 
-	if endpoint == lc.defaultEndpt && !lc.canUseMultipleWriteLocs() {
-		if len(lc.locationInfo.availWriteEndptsByLocation) > 0 {
+	if endpoint == lc.defaultEndpoint && !lc.canUseMultipleWriteLocs() {
+		if len(lc.locationInfo.availWriteEndpointsByLocation) > 0 {
 			return firstLoc
 		}
 	}
@@ -170,15 +163,15 @@ func (lc *locationCache) canUseMultipleWriteLocs() bool {
 	return lc.useMultipleWriteLocations && lc.enableMultipleWriteLocations
 }
 
-func (lc *locationCache) markEndptUnavailableForRead(endpoint url.URL) error {
-	return lc.markEndptUnavailable(endpoint, read)
+func (lc *locationCache) markEndpointUnavailableForRead(endpoint url.URL) error {
+	return lc.markEndpointUnavailable(endpoint, read)
 }
 
-func (lc *locationCache) markEndptUnavailableForWrite(endpoint url.URL) error {
-	return lc.markEndptUnavailable(endpoint, write)
+func (lc *locationCache) markEndpointUnavailableForWrite(endpoint url.URL) error {
+	return lc.markEndpointUnavailable(endpoint, write)
 }
 
-func (lc *locationCache) markEndptUnavailable(endpoint url.URL, op opType) error {
+func (lc *locationCache) markEndpointUnavailable(endpoint url.URL, op opType) error {
 	now := time.Now()
 	lc.mapMutex.Lock()
 	if info, ok := lc.locationUnavailabilityInfoMap[endpoint]; ok {
@@ -197,11 +190,11 @@ func (lc *locationCache) markEndptUnavailable(endpoint url.URL, op opType) error
 	return err
 }
 
-func (lc *locationCache) dbAcctRead(dbAcct AcctProperties) error {
+func (lc *locationCache) databaseAccountRead(dbAcct accountProperties) error {
 	return lc.update(dbAcct.writeRegions, dbAcct.readRegions, nil, dbAcct.enableMultipleWriteLocations)
 }
 
-func (lc *locationCache) refreshStaleEndpts() {
+func (lc *locationCache) refreshStaleEndpoints() {
 	lc.mapMutex.Lock()
 	for endpoint, info := range lc.locationUnavailabilityInfoMap {
 		t := time.Since(info.lastCheckTime)
@@ -212,7 +205,7 @@ func (lc *locationCache) refreshStaleEndpts() {
 	lc.mapMutex.Unlock()
 }
 
-func (lc *locationCache) isEndptUnavailable(endpoint url.URL, ops opType) bool {
+func (lc *locationCache) isEndpointUnavailable(endpoint url.URL, ops opType) bool {
 	lc.mapMutex.RLock()
 	info, ok := lc.locationUnavailabilityInfoMap[endpoint]
 	lc.mapMutex.RUnlock()
@@ -224,80 +217,80 @@ func (lc *locationCache) isEndptUnavailable(endpoint url.URL, ops opType) bool {
 	return time.Since(info.lastCheckTime) < lc.unavailableLocationExpirationTime
 }
 
-func (lc *locationCache) getPrefAvailableEndpts(endptsByLoc map[string]url.URL, locs []string, availOps opType, fallbackEndpt url.URL) []url.URL {
-	endpts := make([]url.URL, 0)
+func (lc *locationCache) getPrefAvailableEndpoints(endpointsByLoc map[string]url.URL, locs []string, availOps opType, fallbackEndpoint url.URL) []url.URL {
+	endpoints := make([]url.URL, 0)
 	lc.rwMutex.RLock()
-	if lc.enableEndptDiscovery {
+	if lc.enableEndpointDiscovery {
 		if lc.canUseMultipleWriteLocs() || availOps&read != 0 {
-			unavailEndpts := make([]url.URL, 0)
-			unavailEndpts = append(unavailEndpts, fallbackEndpt)
+			unavailEndpoints := make([]url.URL, 0)
+			unavailEndpoints = append(unavailEndpoints, fallbackEndpoint)
 			for _, loc := range lc.locationInfo.prefLocations {
-				if endpt, ok := endptsByLoc[loc]; ok && endpt != fallbackEndpt {
-					if lc.isEndptUnavailable(endpt, availOps) {
-						unavailEndpts = append(unavailEndpts, endpt)
+				if endpoint, ok := endpointsByLoc[loc]; ok && endpoint != fallbackEndpoint {
+					if lc.isEndpointUnavailable(endpoint, availOps) {
+						unavailEndpoints = append(unavailEndpoints, endpoint)
 					} else {
-						endpts = append(endpts, endpt)
+						endpoints = append(endpoints, endpoint)
 					}
 				}
 			}
-			endpts = append(endpts, unavailEndpts...)
+			endpoints = append(endpoints, unavailEndpoints...)
 		} else {
 			for _, loc := range locs {
-				if endpt, ok := endptsByLoc[loc]; ok && loc != "" {
-					endpts = append(endpts, endpt)
+				if endpoint, ok := endpointsByLoc[loc]; ok && loc != "" {
+					endpoints = append(endpoints, endpoint)
 				}
 			}
 		}
 	}
 	lc.rwMutex.RUnlock()
-	if len(endpts) == 0 {
-		endpts = append(endpts, fallbackEndpt)
+	if len(endpoints) == 0 {
+		endpoints = append(endpoints, fallbackEndpoint)
 	}
-	return endpts
+	return endpoints
 }
 
-func getEndptsByLocation(locs []AcctRegion) (map[string]url.URL, []string, error) {
-	endptsByLoc := make(map[string]url.URL)
+func getEndpointsByLocation(locs []accountRegion) (map[string]url.URL, []string, error) {
+	endpointsByLoc := make(map[string]url.URL)
 	parsedLocs := make([]string, 0)
 	for _, loc := range locs {
-		endpt, err := url.Parse(loc.endpoint)
+		endpoint, err := url.Parse(loc.endpoint)
 		if err != nil {
 			return nil, nil, err
 		}
 		if loc.name != "" {
-			endptsByLoc[loc.name] = *endpt
+			endpointsByLoc[loc.name] = *endpoint
 			parsedLocs = append(parsedLocs, loc.name)
 		}
 	}
-	return endptsByLoc, parsedLocs, nil
+	return endpointsByLoc, parsedLocs, nil
 }
 
-func newDbAcctLocationsInfo(prefLocations []string, defaultEndpt url.URL) *dbAcctLocationsInfo {
+func newDatabaseAccountLocationsInfo(prefLocations []string, defaultEndpoint url.URL) *databaseAccountLocationsInfo {
 	availWriteLocs := make([]string, 0)
 	availReadLocs := make([]string, 0)
-	availWriteEndptsByLocation := make(map[string]url.URL)
-	availReadEndptsByLocation := make(map[string]url.URL)
-	writeEndpts := []url.URL{defaultEndpt}
-	readEndpts := []url.URL{defaultEndpt}
-	return &dbAcctLocationsInfo{
-		prefLocations:              prefLocations,
-		availWriteLocations:        availWriteLocs,
-		availReadLocations:         availReadLocs,
-		availWriteEndptsByLocation: availWriteEndptsByLocation,
-		availReadEndptsByLocation:  availReadEndptsByLocation,
-		writeEndpts:                writeEndpts,
-		readEndpts:                 readEndpts,
+	availWriteEndpointsByLocation := make(map[string]url.URL)
+	availReadEndpointsByLocation := make(map[string]url.URL)
+	writeEndpoints := []url.URL{defaultEndpoint}
+	readEndpoints := []url.URL{defaultEndpoint}
+	return &databaseAccountLocationsInfo{
+		prefLocations:                 prefLocations,
+		availWriteLocations:           availWriteLocs,
+		availReadLocations:            availReadLocs,
+		availWriteEndpointsByLocation: availWriteEndpointsByLocation,
+		availReadEndpointsByLocation:  availReadEndpointsByLocation,
+		writeEndpoints:                writeEndpoints,
+		readEndpoints:                 readEndpoints,
 	}
 }
 
-func copyDbAcctLocationsInfo(other dbAcctLocationsInfo) dbAcctLocationsInfo {
-	return dbAcctLocationsInfo{
-		prefLocations:              other.prefLocations,
-		availWriteLocations:        other.availWriteLocations,
-		availReadLocations:         other.availReadLocations,
-		availWriteEndptsByLocation: other.availWriteEndptsByLocation,
-		availReadEndptsByLocation:  other.availReadEndptsByLocation,
-		writeEndpts:                other.writeEndpts,
-		readEndpts:                 other.readEndpts,
+func copyDatabaseAccountLocationsInfo(other databaseAccountLocationsInfo) databaseAccountLocationsInfo {
+	return databaseAccountLocationsInfo{
+		prefLocations:                 other.prefLocations,
+		availWriteLocations:           other.availWriteLocations,
+		availReadLocations:            other.availReadLocations,
+		availWriteEndpointsByLocation: other.availWriteEndpointsByLocation,
+		availReadEndpointsByLocation:  other.availReadEndpointsByLocation,
+		writeEndpoints:                other.writeEndpoints,
+		readEndpoints:                 other.readEndpoints,
 	}
 }

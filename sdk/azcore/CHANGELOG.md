@@ -1,10 +1,6 @@
 # Release History
 
-## 1.1.4 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.1.4 (2022-10-06)
 
 ### Bugs Fixed
 * Don't retry a request if the `Retry-After` delay is greater than the configured `RetryOptions.MaxRetryDelay`.

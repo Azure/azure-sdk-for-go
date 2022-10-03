@@ -23,7 +23,7 @@ var kustoQuery3 string
 func ExampleNewLogsClient() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		//TODO: handle error
 	}
 
 	client := azquery.NewLogsClient(cred, nil)
@@ -33,7 +33,7 @@ func ExampleNewLogsClient() {
 func ExampleNewMetricsClient() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		//TODO: handle error
 	}
 
 	client := azquery.NewMetricsClient(cred, nil)
@@ -43,7 +43,7 @@ func ExampleNewMetricsClient() {
 func ExampleLogsClient_QueryWorkspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		//TODO: handle error
 	}
 	client := azquery.NewLogsClient(cred, nil)
 	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
@@ -52,10 +52,10 @@ func ExampleLogsClient_QueryWorkspace() {
 
 	res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, nil)
 	if err != nil {
-		panic(err)
+		//TODO: handle error
 	}
 	if res.Results.Error != nil {
-		// handle partial error
+		//TODO: handle partial error
 	}
 
 	table := res.Results.Tables[0]
@@ -68,7 +68,7 @@ func ExampleLogsClient_QueryWorkspace() {
 func ExampleLogsClient_Batch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		//TODO: handle error
 	}
 	client := azquery.NewLogsClient(cred, nil)
 	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
@@ -82,7 +82,7 @@ func ExampleLogsClient_Batch() {
 
 	res, err := client.Batch(context.TODO(), batchRequest, nil)
 	if err != nil {
-		panic(err)
+		//TODO: handle error
 	}
 
 	responses := res.BatchResponse.Responses
@@ -108,7 +108,7 @@ func ExampleMetricsClient_QueryResource() {
 			Metricnamespace: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
 		})
 	if err != nil {
-		panic(err)
+		//TODO: handle error
 	}
 	_ = res
 }

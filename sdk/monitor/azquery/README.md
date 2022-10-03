@@ -42,7 +42,7 @@ import (
 func main() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		//TODO: handle error
 	}
 
 	client := azquery.NewLogsClient(cred, nil)
@@ -60,7 +60,7 @@ import (
 func main() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		//TODO: handle error
 	}
 
 	client := azquery.NewMetricsClient(cred, nil)
@@ -126,7 +126,7 @@ timespan := "2022-08-30/2022-08-31" // ISO8601 Standard timespan
 
 res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, nil)
 if err != nil {
-	panic(err)
+	//TODO: handle error
 }
 _ = res
 ```
@@ -166,7 +166,7 @@ batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
 
 res, err := client.Batch(context.TODO(), batchRequest, nil)
 if err != nil {
-	panic(err)
+	//TODO: handle error
 }
 _ = res
 ```
@@ -222,7 +222,7 @@ additionalWorkspaces := []*string{&workspaceID2, &workspaceID3}
 
 res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan), Workspaces: additionalWorkspaces}, nil)
 if err != nil {
-	panic(err)
+	//TODO: handle error
 }
 _ = res
 ```
@@ -244,7 +244,7 @@ options := &azquery.LogsClientQueryWorkspaceOptions{Prefer: &prefer}
 res, err := client.QueryWorkspace(context.TODO(), workspaceID,
 	azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, options)
 if err != nil {
-	panic(err)
+	//TODO: handle error
 }
 _ = res
 ```
@@ -265,7 +265,7 @@ res, err := client.QueryResource(context.Background(), resourceURI,
 		Metricnamespace: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
 	})
 if err != nil {
-	panic(err)
+	//TODO: handle error
 }
 _ = res
 ```

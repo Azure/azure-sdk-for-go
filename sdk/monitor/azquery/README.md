@@ -133,7 +133,7 @@ _ = res
 Body
 |---Query *string // Kusto Query
 |---Timespan *string // ISO8601 Standard Timespan
-|---Workspaces []*string //Optional- additional workspaces to query
+|---Workspaces []*string // Optional- additional workspaces to query
 ```
 
 #### Logs query result structure
@@ -146,9 +146,7 @@ LogsResponse
 	|---Name *string
 	|---Rows [][]interface{}
 |---Error *ErrorInfo
-	|---Code *string
-	|---Message *string
-	|---RawMessage json.RawMessage
+	|---Code *string // custom error type
 |---Render interface{}
 |---Statistics interface{}
 ```
@@ -192,10 +190,8 @@ BatchRequest
 BatchResponse
 |---Responses []*BatchQueryResponse
 	|---Body *BatchQueryResults
-		|---Error *ErrorInfo
+		|---Error *ErrorInfo // custom error type
 			|---Code *string
-			|---Message *string
-			|---RawMessage json.RawMessage
 		|---Render interface{}
 		|---Statistics interface{}
 		|---Tables []*Table

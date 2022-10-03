@@ -5,7 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
-* Changed format of `ErrorInfo` struct to prevent reliance on variable error details
+* Changed format of `ErrorInfo` to custom error type
 
 ### Bugs Fixed
 

@@ -9,6 +9,7 @@ package azquery_test
 import (
 	"context"
 	"errors"
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -85,11 +86,11 @@ func TestQueryWorkspace_PartialError(t *testing.T) {
 	if err != nil {
 		t.Fatal("error with query")
 	}
-	if *res.Error.Code != "PartialError" {
+	if res.Error.Code != "PartialError" {
 		t.Fatal("expected a partial error")
 	}
-	if res.Error.RawMessage == nil {
-		t.Fatal("expected rawmessage to contain error info")
+	if !strings.Contains(res.Error.Error(), "PartialError") {
+		t.Fatal("expected error message to contain PartialError")
 	}
 
 	testSerde(t, &res)
@@ -185,11 +186,24 @@ func TestBatch_PartialError(t *testing.T) {
 		t.Fatal("expected two responses")
 	}
 	for _, resp := range res.Responses {
-		if *resp.ID == "1" && resp.Body.Error == nil {
-			t.Fatal("expected batch request 1 to fail")
+		if *resp.ID == "1" {
+			if resp.Body.Error == nil {
+				t.Fatal("expected batch request 1 to fail")
+			}
+			if resp.Body.Error.Code != "BadArgumentError" {
+				t.Fatal("expected BadArgumentError")
+			}
+			if !strings.Contains(resp.Body.Error.Error(), "BadArgumentError") {
+				t.Fatal("expected error message to contain BadArgumentError")
+			}
 		}
-		if *resp.ID == "2" && resp.Body.Error != nil {
-			t.Fatal("expected batch request 2 to succeed")
+		if *resp.ID == "2" {
+			if resp.Body.Error != nil {
+				t.Fatal("expected batch request 2 to succeed")
+			}
+			if len(resp.Body.Tables[0].Rows) != 100 {
+				t.Fatal("expected 100 rows")
+			}
 		}
 	}
 }

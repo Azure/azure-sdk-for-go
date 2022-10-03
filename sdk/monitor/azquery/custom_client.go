@@ -52,42 +52,25 @@ const metricsHost string = "https://management.azure.com"
 // ErrorInfo - The code and message for an error.
 type ErrorInfo struct {
 	// REQUIRED; A machine readable error code.
-	Code *string `json:"code,omitempty"`
+	Code string
 
-	// REQUIRED; A human readable error message.
-	Message *string `json:"message,omitempty"`
-
-	// A description in detail why the operation failed.
-	RawMessage json.RawMessage
+	// full error message detailing why the operation failed.
+	data []byte
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorInfo.
 func (e *ErrorInfo) UnmarshalJSON(data []byte) error {
-	e.RawMessage = data
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
+	e.data = data
+	ei := struct{ Code string }{}
+	if err := json.Unmarshal(data, &ei); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", e, err)
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "code":
-			err = unpopulate(val, "Code", &e.Code)
-			delete(rawMsg, key)
-		case "message":
-			err = unpopulate(val, "Message", &e.Message)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", e, err)
-		}
-	}
+	e.Code = ei.Code
+
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorInfo.
-func (e ErrorInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "message", e.Message)
-	return json.Marshal(objectMap)
+// Error implements a custom error for type ErrorInfo.
+func (e *ErrorInfo) Error() string {
+	return string(e.data)
 }

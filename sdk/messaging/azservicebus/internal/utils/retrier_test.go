@@ -86,30 +86,6 @@ func TestRetrier(t *testing.T) {
 		require.EqualValues(t, 1, called)
 	})
 
-	t.Run("Cancellation", func(t *testing.T) {
-		ctx, cancel := context.WithCancel(context.Background())
-		cancel()
-
-		isFatalFn := func(err error) bool {
-			return errors.Is(err, context.Canceled)
-		}
-
-		// it's up to
-		err := Retry(ctx, testLogEvent, "notused", func(ctx context.Context, args *RetryFnArgs) error {
-			// NOTE: it's up to the underlying function to handle cancellation. `Retry` doesn't
-			// do anything but propagate it.
-			select {
-			case <-ctx.Done():
-			default:
-				require.Fail(t, "Context should have been cancelled")
-			}
-
-			return context.Canceled
-		}, isFatalFn, exported.RetryOptions{})
-
-		require.ErrorIs(t, context.Canceled, err)
-	})
-
 	t.Run("ResetAttempts", func(t *testing.T) {
 		isFatalFn := func(err error) bool {
 			return errors.Is(err, context.Canceled)
@@ -163,6 +139,77 @@ func TestRetrier(t *testing.T) {
 		require.EqualValues(t, 1, called)
 		require.EqualValues(t, "whatever", err.Error())
 	})
+}
+
+func TestCancellationCancelsSleep(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	isFatalFn := func(err error) bool {
+		return errors.Is(err, context.Canceled)
+	}
+
+	called := 0
+
+	err := Retry(ctx, testLogEvent, "notused", func(ctx context.Context, args *RetryFnArgs) error {
+		called++
+		return errors.New("try again")
+	}, isFatalFn, exported.RetryOptions{
+		RetryDelay: time.Hour,
+	})
+
+	require.Error(t, err)
+	require.ErrorIs(t, err, context.Canceled)
+	require.Equal(t, called, 1)
+}
+
+func TestCancellationFromUserFunc(t *testing.T) {
+	alreadyCancelledCtx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	canceledfromFunc := errors.New("the user func got the cancellation signal")
+
+	isFatalFn := func(err error) bool {
+		return errors.Is(err, canceledfromFunc)
+	}
+
+	called := 0
+
+	err := Retry(alreadyCancelledCtx, testLogEvent, "notused", func(ctx context.Context, args *RetryFnArgs) error {
+		called++
+
+		select {
+		case <-ctx.Done():
+			return canceledfromFunc
+		default:
+			panic("Context should have been cancelled")
+		}
+	}, isFatalFn, exported.RetryOptions{})
+
+	require.Error(t, err)
+	require.ErrorIs(t, err, canceledfromFunc)
+}
+
+func TestCancellationTimeoutsArentPropagatedToUser(t *testing.T) {
+	isFatalFn := func(err error) bool {
+		// we want to exhaust all retries and run through the "sleep between retries" logic.
+		return false
+	}
+
+	tryAgainErr := errors.New("try again")
+	called := 0
+
+	err := Retry(context.Background(), testLogEvent, "notused", func(ctx context.Context, args *RetryFnArgs) error {
+		called++
+		require.NoError(t, ctx.Err(), "our sleep/timeout doesn't show up for users")
+		return tryAgainErr
+	}, isFatalFn, exported.RetryOptions{
+		RetryDelay: time.Millisecond,
+	})
+
+	require.Error(t, err)
+	require.ErrorIs(t, err, tryAgainErr, "error should be propagated from user callback")
+	require.Equal(t, called, 1+3, "all attempts exhausted since we never returned a fatal error")
 }
 
 func Test_calcDelay(t *testing.T) {

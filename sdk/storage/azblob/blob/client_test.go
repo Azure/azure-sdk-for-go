@@ -21,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
@@ -33,8 +34,16 @@ import (
 )
 
 func Test(t *testing.T) {
-	suite.Run(t, &BlobRecordedTestsSuite{})
-	//suite.Run(t, &BlobUnrecordedTestsSuite{})
+	recordMode := recording.GetRecordMode()
+	t.Logf("Running blob Tests in %s mode\n", recordMode)
+	if recordMode == recording.LiveMode {
+		suite.Run(t, &BlobRecordedTestsSuite{})
+		suite.Run(t, &BlobUnrecordedTestsSuite{})
+	} else if recordMode == recording.PlaybackMode {
+		suite.Run(t, &BlobRecordedTestsSuite{})
+	} else if recordMode == recording.RecordingMode {
+		suite.Run(t, &BlobRecordedTestsSuite{})
+	}
 }
 
 // nolint

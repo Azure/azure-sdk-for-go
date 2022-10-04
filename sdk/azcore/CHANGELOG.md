@@ -10,6 +10,8 @@
 * Don't retry a request if the `Retry-After` delay is greater than the configured `RetryOptions.MaxRetryDelay`.
 
 ### Other Changes
+* Removed logging URL from retry policy as it's redundant.
+* Retry policy logs when it exits due to a non-retriable status code.
 
 ## 1.1.3 (2022-09-01)
 

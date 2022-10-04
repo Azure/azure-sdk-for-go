@@ -41,9 +41,9 @@ type accountRegion struct {
 }
 
 type accountProperties struct {
-	readRegions                  []accountRegion `json:"readableLocations"`
-	writeRegions                 []accountRegion `json:"writableLocations"`
-	enableMultipleWriteLocations bool            `json:"enableMultipleWriteLocations"`
+	readRegions                  []accountRegion
+	writeRegions                 []accountRegion
+	enableMultipleWriteLocations bool
 }
 
 type locationCache struct {

@@ -1,10 +1,6 @@
 # Release History
 
-## 1.1.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.1.1 (2022-10-11)
 
 ### Bugs Fixed
 
@@ -12,8 +8,6 @@
   Code set to CodeTimeout when they fail due to no sessions being available. Examples for this have 
   been added for `AcceptNextSessionForQueue`. PR#19113.
 - Retries now respect cancellation when they're in the "delay before next try" phase.
-
-### Other Changes
 
 ## 1.1.0 (2022-08-09)
 

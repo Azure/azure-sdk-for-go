@@ -8,8 +8,11 @@ package azquery_test
 
 import (
 	"context"
+	"errors"
+	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
 	"github.com/stretchr/testify/require"
@@ -31,58 +34,72 @@ func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 		t.Fatalf("error with query, %s", err.Error())
 	}
 
-	if res.Results.Error != nil {
+	if res.Error != nil {
 		t.Fatal("expended Error to be nil")
 	}
-	if res.Results.Render != nil {
+	if res.Render != nil {
 		t.Fatal("expended Render to be nil")
 	}
-	if res.Results.Statistics != nil {
+	if res.Statistics != nil {
 		t.Fatal("expended Statistics to be nil")
 	}
-	if len(res.Results.Tables) != 1 {
+	if len(res.Tables) != 1 {
 		t.Fatal("expected one table")
 	}
-	if len(res.Results.Tables[0].Rows) != 100 {
+	if len(res.Tables[0].Rows) != 100 {
 		t.Fatal("expected 100 rows")
 	}
 
-	testSerde(t, &res.Results)
+	testSerde(t, &res)
 }
 
 func TestQueryWorkspace_BasicQueryFailure(t *testing.T) {
 	client := startLogsTest(t)
-	query := "not a valid query"
-	body := azquery.Body{
-		Query: &query,
-	}
 
-	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, nil)
+	res, err := client.QueryWorkspace(context.Background(), workspaceID, azquery.Body{Query: to.Ptr("not a valid query")}, nil)
 	if err == nil {
-		t.Fatalf("expected BadArgumentError")
+		t.Fatalf("expected an error")
 	}
-	if res.Results.Tables != nil {
+	if res.Error != nil {
+		t.Fatal("expected no error code")
+	}
+	if res.Tables != nil {
 		t.Fatalf("expected no results")
 	}
-	testSerde(t, &res.Results)
+
+	var httpErr *azcore.ResponseError
+	if !errors.As(err, &httpErr) {
+		t.Fatal("expected an azcore.ResponseError")
+	}
+	if httpErr.ErrorCode != "BadArgumentError" {
+		t.Fatal("expected a BadArgumentError")
+	}
+	if httpErr.StatusCode != 400 {
+		t.Fatal("expected a 400 error")
+	}
+
+	testSerde(t, &res)
 }
 
 func TestQueryWorkspace_PartialError(t *testing.T) {
 	client := startLogsTest(t)
 	query := "let Weight = 92233720368547758; range x from 1 to 3 step 1 | summarize percentilesw(x, Weight * 100, 50)"
-	body := azquery.Body{
-		Query: &query,
-	}
 
-	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, nil)
+	res, err := client.QueryWorkspace(context.Background(), workspaceID, azquery.Body{Query: &query}, nil)
 	if err != nil {
 		t.Fatal("error with query")
 	}
-	if *res.Results.Error.Code != "PartialError" {
+	if res.Error == nil {
+		t.Fatal("expected an error")
+	}
+	if res.Error.Code != "PartialError" {
 		t.Fatal("expected a partial error")
 	}
+	if !strings.Contains(res.Error.Error(), "PartialError") {
+		t.Fatal("expected error message to contain PartialError")
+	}
 
-	testSerde(t, &res.Results)
+	testSerde(t, &res)
 }
 
 // tests for special options: timeout, statistics, visualization
@@ -99,16 +116,16 @@ func TestQueryWorkspace_AdvancedQuerySuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error with query, %s", err.Error())
 	}
-	if res.Results.Tables == nil {
+	if res.Tables == nil {
 		t.Fatal("expected Tables results")
 	}
-	if res.Results.Error != nil {
+	if res.Error != nil {
 		t.Fatal("expended Error to be nil")
 	}
-	if res.Results.Render == nil {
+	if res.Render == nil {
 		t.Fatal("expended Render results")
 	}
-	if res.Results.Statistics == nil {
+	if res.Statistics == nil {
 		t.Fatal("expended Statistics results")
 	}
 }
@@ -126,10 +143,10 @@ func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error with query, %s", err.Error())
 	}
-	if res.Results.Error != nil {
+	if res.Error != nil {
 		t.Fatal("result error should be nil")
 	}
-	if len(res.Results.Tables[0].Rows) != 100 {
+	if len(res.Tables[0].Rows) != 100 {
 		t.Fatalf("expected 100 results, received")
 	}
 }
@@ -148,10 +165,24 @@ func TestBatch_QuerySuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("expected non nil error: %s", err.Error())
 	}
-	if len(res.BatchResponse.Responses) != 2 {
+	if len(res.Responses) != 2 {
 		t.Fatal("expected two responses")
 	}
-	testSerde(t, &res.BatchResponse)
+	for _, resp := range res.Responses {
+		if resp.Body.Error != nil {
+			t.Fatal("expected a successful response")
+		}
+		if resp.Body.Tables == nil {
+			t.Fatal("expected a response")
+		}
+		if *resp.ID == "1" && len(resp.Body.Tables[0].Rows) != 100 {
+			t.Fatal("expected 100 rows from batch request 1")
+		}
+		if *resp.ID == "2" && len(resp.Body.Tables[0].Rows) != 2 {
+			t.Fatal("expected 100 rows from batch request 1")
+		}
+	}
+	testSerde(t, &res)
 }
 
 func TestBatch_PartialError(t *testing.T) {
@@ -166,8 +197,29 @@ func TestBatch_PartialError(t *testing.T) {
 	if err != nil {
 		t.Fatalf("expected non nil error: %s", err.Error())
 	}
-	if len(res.BatchResponse.Responses) != 2 {
+	if len(res.Responses) != 2 {
 		t.Fatal("expected two responses")
+	}
+	for _, resp := range res.Responses {
+		if *resp.ID == "1" {
+			if resp.Body.Error == nil {
+				t.Fatal("expected batch request 1 to fail")
+			}
+			if resp.Body.Error.Code != "BadArgumentError" {
+				t.Fatal("expected BadArgumentError")
+			}
+			if !strings.Contains(resp.Body.Error.Error(), "BadArgumentError") {
+				t.Fatal("expected error message to contain BadArgumentError")
+			}
+		}
+		if *resp.ID == "2" {
+			if resp.Body.Error != nil {
+				t.Fatal("expected batch request 2 to succeed")
+			}
+			if len(resp.Body.Tables[0].Rows) != 100 {
+				t.Fatal("expected 100 rows")
+			}
+		}
 	}
 }
 

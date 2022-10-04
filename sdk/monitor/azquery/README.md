@@ -22,8 +22,8 @@ go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 * An [Azure subscription][azure_sub]
 * A supported Go version (the Azure SDK supports the two most recent Go releases)
-* For log queries, a Log Analytics workspace. 
-* For metric queries, a Resource URI.
+* For log queries, an [Azure Log Analytics workspace][log_analytics_workspace_create] ID. 
+* For metric queries, the Resource URI of any Azure resource (Storage Account, Key Vault, CosmosDB, etc).
 
 ### Authentication
 
@@ -77,7 +77,7 @@ For examples of Logs and Metrics queries, see the [Examples](#examples) section 
 
 The Log Analytics service applies throttling when the request rate is too high. Limits, such as the maximum number of rows returned, are also applied on the Kusto queries. For more information, see [Query API](https://docs.microsoft.com/azure/azure-monitor/service-limits#la-query-api).
 
-If you're executing a batch logs query, a throttled request will return a `LogsQueryError` object. That object's `code` value will be `ThrottledError`.
+If you're executing a batch logs query, a throttled request will return a `ErrorInfo` object. That object's `code` value will be `ThrottledError`.
 
 ### Metrics data structure
 
@@ -136,8 +136,8 @@ full example: [link][example_query_workspace]
 ```
 Body
 |---Query *string // Kusto Query
-|---Timespan *string // ISO8601 Standard Timespan- refer to timespan section for more info
-|---Workspaces []*string //Optional- additional workspaces to query
+|---Timespan *string // ISO8601 Standard Timespan
+|---Workspaces []*string // Optional- additional workspaces to query
 ```
 
 #### Logs query result structure
@@ -150,6 +150,7 @@ Results
 	|---Name *string
 	|---Rows [][]interface{}
 |---Error *ErrorInfo
+	|---Code *string // custom error type
 |---Render interface{}
 |---Statistics interface{}
 ```
@@ -193,7 +194,8 @@ BatchRequest
 BatchResponse
 |---Responses []*BatchQueryResponse
 	|---Body *BatchQueryResults
-		|---Error *ErrorInfo
+		|---Error *ErrorInfo // custom error type
+			|---Code *string
 		|---Render interface{}
 		|---Statistics interface{}
 		|---Tables []*Table
@@ -301,6 +303,12 @@ Response
 
 ## Troubleshooting
 
+### Error Handling
+
+All methods which send HTTP requests return `*azcore.ResponseError` when these requests fail. `ResponseError` has error details and the raw response from Monitor Query.
+
+For Logs, an error may also be returned in the response's `ErrorInfo` struct, usually to indicate a partial error from the service.
+
 ### Logging
 
 This module uses the logging implementation in `azcore`. To turn on logging for all Azure SDK modules, set `AZURE_SDK_GO_LOGGING` to `all`. By default the logger writes to stderr. Use the `azcore/log` package to control log output. For example, logging only HTTP request and response events, and printing them to stdout:
@@ -341,10 +349,12 @@ comments.
 [azure_monitor_create_using_portal]: https://docs.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
 [azure_monitor_overview]: https://docs.microsoft.com/azure/azure-monitor/overview
 [context]: https://pkg.go.dev/context
+[default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
 [example_batch]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-LogsClient.Batch
 [example_query_workspace]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-LogsClient.QueryWorkspace
 [kusto_query_language]: https://learn.microsoft.com/azure/data-explorer/kusto/query/
 [log_analytics_workspace]: https://learn.microsoft.com/azure/azure-monitor/logs/log-analytics-workspace-overview
+[log_analytics_workspace_create]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace?tabs=azure-portal
 [time_go]: https://pkg.go.dev/time
 [time_intervals]: https://en.wikipedia.org/wiki/ISO_8601#Time_intervals
 

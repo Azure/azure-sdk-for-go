@@ -28,7 +28,7 @@ func ExampleCloudServicesClient_BeginCreateOrUpdate_createNewCloudServiceWithMul
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "ConstosoRG", "{cs-name}", &armcompute.CloudServicesClientBeginCreateOrUpdateOptions{Parameters: &armcompute.CloudService{
+	poller, err := client.BeginCreateOrUpdate(ctx, "ConstosoRG", "{cs-name}", armcompute.CloudService{
 		Location: to.Ptr("westus"),
 		Properties: &armcompute.CloudServiceProperties{
 			Configuration: to.Ptr("{ServiceConfiguration}"),
@@ -71,8 +71,7 @@ func ExampleCloudServicesClient_BeginCreateOrUpdate_createNewCloudServiceWithMul
 			},
 			UpgradeMode: to.Ptr(armcompute.CloudServiceUpgradeModeAuto),
 		},
-	},
-	})
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -95,7 +94,7 @@ func ExampleCloudServicesClient_BeginCreateOrUpdate_createNewCloudServiceWithSin
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "ConstosoRG", "{cs-name}", &armcompute.CloudServicesClientBeginCreateOrUpdateOptions{Parameters: &armcompute.CloudService{
+	poller, err := client.BeginCreateOrUpdate(ctx, "ConstosoRG", "{cs-name}", armcompute.CloudService{
 		Location: to.Ptr("westus"),
 		Properties: &armcompute.CloudServiceProperties{
 			Configuration: to.Ptr("{ServiceConfiguration}"),
@@ -130,8 +129,7 @@ func ExampleCloudServicesClient_BeginCreateOrUpdate_createNewCloudServiceWithSin
 			},
 			UpgradeMode: to.Ptr(armcompute.CloudServiceUpgradeModeAuto),
 		},
-	},
-	})
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -154,7 +152,7 @@ func ExampleCloudServicesClient_BeginCreateOrUpdate_createNewCloudServiceWithSin
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "ConstosoRG", "{cs-name}", &armcompute.CloudServicesClientBeginCreateOrUpdateOptions{Parameters: &armcompute.CloudService{
+	poller, err := client.BeginCreateOrUpdate(ctx, "ConstosoRG", "{cs-name}", armcompute.CloudService{
 		Location: to.Ptr("westus"),
 		Properties: &armcompute.CloudServiceProperties{
 			Configuration: to.Ptr("{ServiceConfiguration}"),
@@ -201,8 +199,7 @@ func ExampleCloudServicesClient_BeginCreateOrUpdate_createNewCloudServiceWithSin
 			},
 			UpgradeMode: to.Ptr(armcompute.CloudServiceUpgradeModeAuto),
 		},
-	},
-	})
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -225,7 +222,7 @@ func ExampleCloudServicesClient_BeginCreateOrUpdate_createNewCloudServiceWithSin
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "ConstosoRG", "{cs-name}", &armcompute.CloudServicesClientBeginCreateOrUpdateOptions{Parameters: &armcompute.CloudService{
+	poller, err := client.BeginCreateOrUpdate(ctx, "ConstosoRG", "{cs-name}", armcompute.CloudService{
 		Location: to.Ptr("westus"),
 		Properties: &armcompute.CloudServiceProperties{
 			Configuration: to.Ptr("{ServiceConfiguration}"),
@@ -274,8 +271,7 @@ func ExampleCloudServicesClient_BeginCreateOrUpdate_createNewCloudServiceWithSin
 			},
 			UpgradeMode: to.Ptr(armcompute.CloudServiceUpgradeModeAuto),
 		},
-	},
-	})
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -298,12 +294,11 @@ func ExampleCloudServicesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "ConstosoRG", "{cs-name}", &armcompute.CloudServicesClientBeginUpdateOptions{Parameters: &armcompute.CloudServiceUpdate{
+	poller, err := client.BeginUpdate(ctx, "ConstosoRG", "{cs-name}", armcompute.CloudServiceUpdate{
 		Tags: map[string]*string{
 			"Documentation": to.Ptr("RestAPI"),
 		},
-	},
-	})
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

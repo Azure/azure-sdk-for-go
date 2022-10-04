@@ -966,8 +966,6 @@ type CloudServiceVaultSecretGroup struct {
 // CloudServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the CloudServicesClient.BeginCreateOrUpdate
 // method.
 type CloudServicesClientBeginCreateOrUpdateOptions struct {
-	// The cloud service object.
-	Parameters *CloudService
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1025,8 +1023,6 @@ type CloudServicesClientBeginStartOptions struct {
 
 // CloudServicesClientBeginUpdateOptions contains the optional parameters for the CloudServicesClient.BeginUpdate method.
 type CloudServicesClientBeginUpdateOptions struct {
-	// The cloud service object.
-	Parameters *CloudServiceUpdate
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1055,8 +1051,6 @@ type CloudServicesClientListOptions struct {
 // CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions contains the optional parameters for the CloudServicesUpdateDomainClient.BeginWalkUpdateDomain
 // method.
 type CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions struct {
-	// The update domain object.
-	Parameters *UpdateDomain
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }

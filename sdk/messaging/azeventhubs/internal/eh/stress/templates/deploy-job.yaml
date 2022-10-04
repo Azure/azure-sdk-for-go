@@ -15,7 +15,37 @@ spec:
       imagePullPolicy: Always
       args: 
       # (this is injected automatically. The full list of scenarios is in `../values.yaml`)
-      - {{ .Stress.Scenario }}
+      # these are some conditional blocks if we wanted to inject some custom
+      # parameters per scenario.
+      {{ if (eq .Stress.Scenario "batch") }}
+      - batch
+      - "-rounds"
+      - "100"
+      {{ else if (eq .Stress.Scenario "batchprefetchoff") }}
+      - batch
+      - "-rounds"
+      - "100"
+      - "-prefetch"
+      - "-1"
+      {{ else if (eq .Stress.Scenario "batchinfinite") }}
+      - batch
+      - "-rounds"
+      - "-1"      
+      {{ else if (eq .Stress.Scenario "processor") }}
+      - processor
+      - "-rounds"
+      - "100"
+      {{ else if (eq .Stress.Scenario "processorprefetchoff") }}
+      - processor
+      - "-rounds"
+      - "100"
+      - "-prefetch"
+      - "-1"
+      {{ else if (eq .Stress.Scenario "processorinfinite") }}
+      - processor
+      - "-rounds"
+      - "-1"
+      {{- end -}}
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}
 

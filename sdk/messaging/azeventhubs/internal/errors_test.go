@@ -4,6 +4,7 @@
 package internal
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
@@ -26,4 +27,8 @@ func TestOwnershipLost(t *testing.T) {
 	var err *exported.Error
 	require.ErrorAs(t, transformedErr, &err)
 	require.Equal(t, exported.CodeOwnershipLost, err.Code)
+
+	require.False(t, IsOwnershipLostError(&amqp.DetachError{}))
+	require.False(t, IsOwnershipLostError(&amqp.ConnectionError{}))
+	require.False(t, IsOwnershipLostError(errors.New("definitely not an ownership lost error")))
 }

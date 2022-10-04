@@ -59,7 +59,7 @@ func TransformError(err error) error {
 		return err
 	}
 
-	if isOwnershipLostError(err) {
+	if IsOwnershipLostError(err) {
 		return exported.NewError(exported.CodeOwnershipLost, err)
 	}
 
@@ -80,7 +80,7 @@ func TransformError(err error) error {
 }
 
 func IsQuickRecoveryError(err error) bool {
-	if isOwnershipLostError(err) {
+	if IsOwnershipLostError(err) {
 		return false
 	}
 
@@ -171,7 +171,7 @@ func GetRecoveryKind(err error) RecoveryKind {
 		return RecoveryKindFatal
 	}
 
-	if isOwnershipLostError(err) {
+	if IsOwnershipLostError(err) {
 		return RecoveryKindFatal
 	}
 
@@ -342,12 +342,11 @@ func isLockLostError(err error) bool {
 	return false
 }
 
-func isOwnershipLostError(err error) bool {
+func IsOwnershipLostError(err error) bool {
 	var de *amqp.DetachError
 
 	if errors.As(err, &de) {
-		var amqpError *amqp.Error
-		return errors.As(de.RemoteError, &amqpError) && amqpError.Condition == "amqp:link:stolen"
+		return de.RemoteError != nil && de.RemoteError.Condition == "amqp:link:stolen"
 	}
 
 	return false

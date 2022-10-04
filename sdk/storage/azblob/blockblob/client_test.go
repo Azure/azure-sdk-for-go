@@ -3399,3 +3399,131 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadStreamToBlobProperties() {
 	_require.Equal(len(actualBlobData), blobSize)
 	_require.EqualValues(actualBlobData, blobData)
 }
+
+func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetTierOnVersions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	archiveTier, rehydrateTier := blob.AccessTierArchive, blob.AccessTierCool
+	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+
+	versions := make([]string, 0)
+	for i := 0; i < 5; i++ {
+		uploadResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("data"+strconv.Itoa(i)))), nil)
+		_require.Nil(err)
+		_require.NotNil(uploadResp.VersionID)
+		versions = append(versions, *uploadResp.VersionID)
+	}
+
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Versions: true},
+	})
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		for _, b := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			_require.Equal(*b.Properties.AccessTier, blob.AccessTierHot)
+		}
+		if err != nil {
+			break
+		}
+	}
+
+	// set tier to archive for first three versions
+	for i := 0; i < 3; i++ {
+		bbClientWithVersionID, err := bbClient.WithVersionID(versions[i])
+		_require.Nil(err)
+		_, err = bbClientWithVersionID.SetTier(context.Background(), archiveTier, nil)
+		_require.Nil(err)
+	}
+
+	// check access tier of versions
+	for i, v := range versions {
+		bbClientWithVersionID, err := bbClient.WithVersionID(v)
+		_require.Nil(err)
+		resp, err := bbClientWithVersionID.GetProperties(context.Background(), nil)
+		_require.Nil(err)
+		if i < 3 {
+			_require.Equal(*resp.AccessTier, string(archiveTier))
+		} else {
+			_require.Equal(*resp.AccessTier, string(blob.AccessTierHot))
+		}
+	}
+
+	// Versions tiered to archive cannot be rehydrated back to hot/cool tier
+	// For detailed information refer this, https://learn.microsoft.com/en-us/rest/api/storageservices/set-blob-tier
+	bbClientWithVersionID, err := bbClient.WithVersionID(versions[0])
+	_require.Nil(err)
+	_, err = bbClientWithVersionID.SetTier(context.Background(), rehydrateTier, nil)
+	_require.NotNil(err)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetTierOnSnapshots() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	archiveTier, rehydrateTier := blob.AccessTierArchive, blob.AccessTierCool
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
+
+	snapshots := make([]string, 0)
+	for i := 0; i < 5; i++ {
+		resp, err := bbClient.CreateSnapshot(context.Background(), nil)
+		_require.Nil(err)
+		_require.NotNil(resp.Snapshot)
+		snapshots = append(snapshots, *resp.Snapshot)
+	}
+
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		for _, b := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			_require.Equal(*b.Properties.AccessTier, blob.AccessTierHot)
+		}
+		if err != nil {
+			break
+		}
+	}
+
+	// set tier to archive for first three snapshots
+	for i := 0; i < 3; i++ {
+		bbClientWithSnapshot, err := bbClient.WithSnapshot(snapshots[i])
+		_require.Nil(err)
+		_, err = bbClientWithSnapshot.SetTier(context.Background(), archiveTier, nil)
+		_require.Nil(err)
+	}
+
+	// check access tier of snapshots
+	for i, snap := range snapshots {
+		bbClientWithSnapshot, err := bbClient.WithSnapshot(snap)
+		_require.Nil(err)
+		resp, err := bbClientWithSnapshot.GetProperties(context.Background(), nil)
+		_require.Nil(err)
+		if i < 3 {
+			_require.Equal(*resp.AccessTier, string(archiveTier))
+		} else {
+			_require.Equal(*resp.AccessTier, string(blob.AccessTierHot))
+		}
+	}
+
+	// Snapshots tiered to archive cannot be rehydrated back to hot/cool tier
+	// For detailed information refer this, https://learn.microsoft.com/en-us/rest/api/storageservices/set-blob-tier
+	bbClientWithSnapshot, err := bbClient.WithSnapshot(snapshots[0])
+	_require.Nil(err)
+	_, err = bbClientWithSnapshot.SetTier(context.Background(), rehydrateTier, nil)
+	_require.NotNil(err)
+}

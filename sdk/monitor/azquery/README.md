@@ -42,10 +42,10 @@ import (
 func main() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		//TODO: handle error
 	}
 
-	client := azkeys.NewLogsClient(cred, nil)
+	client := azquery.NewLogsClient(cred, nil)
 }
 ```
 
@@ -60,16 +60,16 @@ import (
 func main() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		//TODO: handle error
 	}
 
-	client := azkeys.NewMetricsClient(cred, nil)
+	client := azquery.NewMetricsClient(cred, nil)
 }
 ```
 
 ### Execute the query
 
-For examples of Logs and Metrics queries, see the [Examples](#examples) section.
+For examples of Logs and Metrics queries, see the [Examples](#examples) section of this readme or in the example_test.go file of our GitHub repo for [azquery](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/monitor/azquery).
 
 ## Key concepts
 
@@ -117,28 +117,32 @@ The timespan can be the following string formats:
   - [Metrics result structure](#metrics-result-structure)
 
 ### Logs query
+The example below shows a basic logs query using the `QueryWorkspace` method. `QueryWorkspace` takes in a [context][context], a [Log Analytics Workspace][log_analytics_workspace] ID string, a [Body](#logs-query-body-structure) struct, and a [LogsClientQueryWorkspaceOptions](#increase-wait-time-include-statistics-include-render-visualization) struct and returns a [Results](#logs-query-result-structure) struct.
+
 ```go
-client := azquery.NewLogsClient(cred, nil)
-timespan := "2022-08-30/2022-08-31"
+workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
+query := "AzureActivity | top 10 by TimeGenerated" // Kusto query
+timespan := "2022-08-30/2022-08-31" // ISO8601 Standard timespan
 
 res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, nil)
 if err != nil {
-	panic(err)
+	//TODO: handle error
 }
 _ = res
 ```
+full example: [link][example_query_workspace]
 
 #### Logs query body structure
 ```
 Body
 |---Query *string // Kusto Query
-|---Timespan *string // ISO8601 Standard Timespan
+|---Timespan *string // ISO8601 Standard Timespan- refer to timespan section for more info
 |---Workspaces []*string //Optional- additional workspaces to query
 ```
 
 #### Logs query result structure
 ```
-LogsResponse
+Results
 |---Tables []*Table
 	|---Columns []*Column
 		|---Name *string
@@ -146,26 +150,14 @@ LogsResponse
 	|---Name *string
 	|---Rows [][]interface{}
 |---Error *ErrorInfo
-	|---Code *string
-	|---Message *string
-	|---AdditionalProperties interface{}
-	|---Details []*ErrorDetail
-		|---Code *string
-		|---Message *string
-		|---AdditionalProperties interface{}
-		|---Resources []*string
-		|---Target *string
-		|---Value *string
-	|---Innererror *ErrorInfo
 |---Render interface{}
 |---Statistics interface{}
 ```
 
 ### Batch query
+`Batch` is an advanced method allowing users to execute multiple logs queries in a single request. It takes in a [BatchRequest](#batch-query-request-structure) and returns a [BatchResponse](#batch-query-result-structure). `Batch` can return results in any order (usually in order of completion/success). Please use the `ID` attribute to identify the correct response. 
 ```go
-client := azquery.NewLogsClient(cred, nil)
-timespan := "2022-08-30/2022-08-31"
-
+timespan := "2022-08-30/2022-08-31" // ISO8601 Standard Timespan
 batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
 	{Body: &azquery.Body{Query: to.Ptr(kustoQuery1), Timespan: to.Ptr(timespan)}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID)},
 	{Body: &azquery.Body{Query: to.Ptr(kustoQuery2), Timespan: to.Ptr(timespan)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID)},
@@ -174,10 +166,11 @@ batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
 
 res, err := client.Batch(context.TODO(), batchRequest, nil)
 if err != nil {
-	panic(err)
+	//TODO: handle error
 }
 _ = res
 ```
+full example: [link][example_batch]
 
 #### Batch query request structure
 
@@ -229,7 +222,7 @@ additionalWorkspaces := []*string{&workspaceID2, &workspaceID3}
 
 res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan), Workspaces: additionalWorkspaces}, nil)
 if err != nil {
-	panic(err)
+	//TODO: handle error
 }
 _ = res
 ```
@@ -251,7 +244,7 @@ options := &azquery.LogsClientQueryWorkspaceOptions{Prefer: &prefer}
 res, err := client.QueryWorkspace(context.TODO(), workspaceID,
 	azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, options)
 if err != nil {
-	panic(err)
+	//TODO: handle error
 }
 _ = res
 ```
@@ -272,14 +265,14 @@ res, err := client.QueryResource(context.Background(), resourceURI,
 		Metricnamespace: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
 	})
 if err != nil {
-	panic(err)
+	//TODO: handle error
 }
 _ = res
 ```
 
 #### Metrics result structure
 ```
-MetricsResults
+Response
 |---Timespan *string
 |---Value []*Metric
 	|---ID *string
@@ -342,10 +335,17 @@ comments.
 
 <!-- LINKS -->
 [managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
+[azquery]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/monitor/azquery
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free/
 [azure_monitor_create_using_portal]: https://docs.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
 [azure_monitor_overview]: https://docs.microsoft.com/azure/azure-monitor/overview
+[context]: https://pkg.go.dev/context
+[example_batch]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-LogsClient.Batch
+[example_query_workspace]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-LogsClient.QueryWorkspace
+[kusto_query_language]: https://learn.microsoft.com/azure/data-explorer/kusto/query/
+[log_analytics_workspace]: https://learn.microsoft.com/azure/azure-monitor/logs/log-analytics-workspace-overview
+[time_go]: https://pkg.go.dev/time
 [time_intervals]: https://en.wikipedia.org/wiki/ISO_8601#Time_intervals
 
 [cla]: https://cla.microsoft.com

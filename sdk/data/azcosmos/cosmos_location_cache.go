@@ -41,9 +41,9 @@ type accountRegion struct {
 }
 
 type accountProperties struct {
-	readRegions                  []accountRegion
-	writeRegions                 []accountRegion
-	enableMultipleWriteLocations bool
+	readRegions                  []accountRegion `json:"readableLocations"`
+	writeRegions                 []accountRegion `json:"writableLocations"`
+	enableMultipleWriteLocations bool            `json:"enableMultipleWriteLocations"`
 }
 
 type locationCache struct {
@@ -68,13 +68,15 @@ func newLocationCache(prefLocations []string, defaultEndpoint url.URL) *location
 	}
 }
 
-func (lc *locationCache) update(writeLocations []accountRegion, readLocations []accountRegion, prefList []string, enableMultipleWriteLocations bool) error {
+func (lc *locationCache) update(writeLocations []accountRegion, readLocations []accountRegion, prefList []string, enableMultipleWriteLocations *bool) error {
 	lc.rwMutex.RLock()
 	nextLoc := copyDatabaseAccountLocationsInfo(lc.locationInfo)
 	if prefList != nil {
 		nextLoc.prefLocations = prefList
 	}
-	lc.enableMultipleWriteLocations = enableMultipleWriteLocations
+	if enableMultipleWriteLocations != nil {
+		lc.enableMultipleWriteLocations = *enableMultipleWriteLocations
+	}
 	lc.refreshStaleEndpoints()
 	if readLocations != nil {
 		availReadEndpointsByLocation, availReadLocations, err := getEndpointsByLocation(readLocations)
@@ -110,7 +112,7 @@ func (lc *locationCache) readEndpoints() ([]url.URL, error) {
 	lc.mapMutex.RLock()
 	defer lc.mapMutex.RUnlock()
 	if time.Since(lc.lastUpdateTime) > lc.unavailableLocationExpirationTime && len(lc.locationUnavailabilityInfoMap) > 0 {
-		err := lc.update(nil, nil, nil, lc.enableMultipleWriteLocations)
+		err := lc.update(nil, nil, nil, nil)
 		if err != nil {
 			return nil, err
 		}
@@ -122,7 +124,7 @@ func (lc *locationCache) writeEndpoints() ([]url.URL, error) {
 	lc.mapMutex.RLock()
 	defer lc.mapMutex.RUnlock()
 	if time.Since(lc.lastUpdateTime) > lc.unavailableLocationExpirationTime && len(lc.locationUnavailabilityInfoMap) > 0 {
-		err := lc.update(nil, nil, nil, lc.enableMultipleWriteLocations)
+		err := lc.update(nil, nil, nil, nil)
 		if err != nil {
 			return nil, err
 		}
@@ -186,12 +188,12 @@ func (lc *locationCache) markEndpointUnavailable(endpoint url.URL, op opType) er
 		lc.locationUnavailabilityInfoMap[endpoint] = info
 	}
 	lc.mapMutex.Unlock()
-	err := lc.update(nil, nil, nil, lc.enableMultipleWriteLocations)
+	err := lc.update(nil, nil, nil, nil)
 	return err
 }
 
 func (lc *locationCache) databaseAccountRead(dbAcct accountProperties) error {
-	return lc.update(dbAcct.writeRegions, dbAcct.readRegions, nil, dbAcct.enableMultipleWriteLocations)
+	return lc.update(dbAcct.writeRegions, dbAcct.readRegions, nil, &dbAcct.enableMultipleWriteLocations)
 }
 
 func (lc *locationCache) refreshStaleEndpoints() {

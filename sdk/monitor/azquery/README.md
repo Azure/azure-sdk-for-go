@@ -136,13 +136,8 @@ full example: [link][example_query_workspace]
 ```
 Body
 |---Query *string // Kusto Query
-<<<<<<< HEAD
 |---Timespan *string // ISO8601 Standard Timespan
 |---Workspaces []*string // Optional- additional workspaces to query
-=======
-|---Timespan *string // ISO8601 Standard Timespan- refer to timespan section for more info
-|---Workspaces []*string //Optional- additional workspaces to query
->>>>>>> main
 ```
 
 #### Logs query result structure
@@ -155,10 +150,7 @@ Results
 	|---Name *string
 	|---Rows [][]interface{}
 |---Error *ErrorInfo
-<<<<<<< HEAD
 	|---Code *string // custom error type
-=======
->>>>>>> main
 |---Render interface{}
 |---Statistics interface{}
 ```

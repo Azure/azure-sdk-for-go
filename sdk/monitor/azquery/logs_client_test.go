@@ -60,6 +60,9 @@ func TestQueryWorkspace_BasicQueryFailure(t *testing.T) {
 	if err == nil {
 		t.Fatalf("expected an error")
 	}
+	if res.Error != nil {
+		t.Fatal("expected no error code")
+	}
 	if res.Tables != nil {
 		t.Fatalf("expected no results")
 	}
@@ -85,6 +88,9 @@ func TestQueryWorkspace_PartialError(t *testing.T) {
 	res, err := client.QueryWorkspace(context.Background(), workspaceID, azquery.Body{Query: &query}, nil)
 	if err != nil {
 		t.Fatal("error with query")
+	}
+	if res.Error == nil {
+		t.Fatal("expected an error")
 	}
 	if res.Error.Code != "PartialError" {
 		t.Fatal("expected a partial error")
@@ -165,6 +171,15 @@ func TestBatch_QuerySuccess(t *testing.T) {
 	for _, resp := range res.Responses {
 		if resp.Body.Error != nil {
 			t.Fatal("expected a successful response")
+		}
+		if resp.Body.Tables == nil {
+			t.Fatal("expected a response")
+		}
+		if *resp.ID == "1" && len(resp.Body.Tables[0].Rows) != 100 {
+			t.Fatal("expected 100 rows from batch request 1")
+		}
+		if *resp.ID == "2" && len(resp.Body.Tables[0].Rows) != 2 {
+			t.Fatal("expected 100 rows from batch request 1")
 		}
 	}
 	testSerde(t, &res)

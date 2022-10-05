@@ -36,7 +36,7 @@ func TestUnit_PartitionClient_PrefetchOff(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, events)
 
-	require.Equal(t, uint32(3), ns.Receiver.IssuedCredit, "Non-prefetch scenarios will issue credit at the time of request")
+	require.Equal(t, []uint32{uint32(3)}, ns.Receiver.IssuedCredit, "Non-prefetch scenarios will issue credit at the time of request")
 	require.Equal(t, uint32(0), ns.Receiver.ActiveCredits, "All messages should have been received")
 	require.True(t, ns.Receiver.ManualCreditsSetFromOptions)
 }

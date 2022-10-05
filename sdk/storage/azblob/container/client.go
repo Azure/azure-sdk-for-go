@@ -10,7 +10,6 @@ import (
 	"context"
 	"errors"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -317,11 +316,7 @@ func (c *Client) GetSASURL(permissions sas.ContainerPermissions, start time.Time
 		return "", err
 	}
 
-	endpoint := c.URL()
-	if !strings.HasSuffix(endpoint, "/") {
-		endpoint += "/"
-	}
-	endpoint += "?" + qps.Encode()
+	endpoint := c.URL() + "?" + qps.Encode()
 
 	return endpoint, nil
 }

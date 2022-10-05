@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* `GetSASURL()`: for container and blob clients, don't add a forward slash before the query string
+
 ### Other Changes
 
 ## 0.5.0 (2022-09-29)
@@ -18,7 +20,7 @@
 
 ### Features Added
 
-* Added [UserDelegationCredential](https://learn.microsoft.com/rest/api/storageservices/create-user-delegation-sas) which resolves [#18976](https://github.com/Azure/azure-sdk-for-go/issues/18976), [#16916](https://github.com/Azure/azure-sdk-for-go/issues/16916), [#18977](https://github.com/Azure/azure-sdk-for-go/issues/18977) 
+* Added [UserDelegationCredential](https://learn.microsoft.com/rest/api/storageservices/create-user-delegation-sas) which resolves [#18976](https://github.com/Azure/azure-sdk-for-go/issues/18976), [#16916](https://github.com/Azure/azure-sdk-for-go/issues/16916), [#18977](https://github.com/Azure/azure-sdk-for-go/issues/18977)
 * Added [Restore Container API](https://learn.microsoft.com/rest/api/storageservices/restore-container).
 
 ### Bugs Fixed

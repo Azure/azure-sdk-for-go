@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-* GetSASURL: don't add a forward slash before the query string
+* `GetSASURL()`: for container and blob clients, don't add a forward slash before the query string
 
 ### Other Changes
 

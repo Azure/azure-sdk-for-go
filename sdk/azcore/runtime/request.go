@@ -57,26 +57,23 @@ func JoinPaths(root string, paths ...string) string {
 		root, qps = splitPath[0], splitPath[1]
 	}
 
-	var sb strings.Builder
-
-	sb.WriteString(strings.TrimRight(root, "/"))
-
-	joinedPaths := path.Join(paths...)
-	joinedPaths = strings.TrimLeft(joinedPaths, "/")
-
-	sb.WriteString("/")
-	sb.WriteString(joinedPaths)
+	p := path.Join(paths...)
 	// path.Join will remove any trailing slashes.
-	// Preserve a trailing slash if the last path element has it
-	if strings.HasSuffix(paths[len(paths)-1], "/") {
-		sb.WriteString("/")
+	// if one was provided, preserve it.
+	if strings.HasSuffix(paths[len(paths)-1], "/") && !strings.HasSuffix(p, "/") {
+		p += "/"
 	}
 
 	if qps != "" {
-		sb.WriteString("?")
-		sb.WriteString(qps)
+		p = p + "?" + qps
 	}
-	return sb.String()
+
+	if strings.HasSuffix(root, "/") && strings.HasPrefix(p, "/") {
+		root = root[:len(root)-1]
+	} else if !strings.HasSuffix(root, "/") && !strings.HasPrefix(p, "/") {
+		p = "/" + p
+	}
+	return root + p
 }
 
 // EncodeByteArray will base-64 encode the byte slice v.

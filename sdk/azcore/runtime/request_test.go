@@ -581,6 +581,16 @@ func TestJoinPaths(t *testing.T) {
 			paths:    []string{"path/one", "path/two/"},
 			expected: "http://test.contoso.com/path/one/path/two/?qp1=abc&qp2=def",
 		},
+		{
+			root:     "http://test.contoso.com/?qp1=abc&qp2=def",
+			paths:    []string{"path/one", "path/two/"},
+			expected: "http://test.contoso.com/path/one/path/two/?qp1=abc&qp2=def",
+		},
+		{
+			root:     "http://test.contoso.com/?qp1=abc&qp2=def",
+			paths:    []string{"/path/one", "path/two/"},
+			expected: "http://test.contoso.com/path/one/path/two/?qp1=abc&qp2=def",
+		},
 	}
 
 	for _, tt := range tests {

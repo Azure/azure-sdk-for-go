@@ -9,7 +9,6 @@ package service
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"net/http"
 	"strings"
 	"time"
@@ -17,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
@@ -260,6 +260,7 @@ func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.A
 
 	endpoint := s.URL()
 	if !strings.HasSuffix(endpoint, "/") {
+		// add a trailing slash to be consistent with the portal
 		endpoint += "/"
 	}
 	endpoint += "?" + qps.Encode()

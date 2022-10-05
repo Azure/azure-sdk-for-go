@@ -11,7 +11,6 @@ import (
 	"errors"
 	"io"
 	"os"
-	"strings"
 	"sync"
 	"time"
 
@@ -261,11 +260,7 @@ func (b *Client) GetSASURL(permissions sas.BlobPermissions, start time.Time, exp
 		return "", err
 	}
 
-	endpoint := b.URL()
-	if !strings.HasSuffix(endpoint, "/") {
-		endpoint += "/"
-	}
-	endpoint += "?" + qps.Encode()
+	endpoint := b.URL() + "?" + qps.Encode()
 
 	return endpoint, nil
 }

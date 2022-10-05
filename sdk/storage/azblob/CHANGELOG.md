@@ -12,6 +12,8 @@
 
 ### Other Changes
 
+* Improved docs for client constructors.
+
 ## 0.5.0 (2022-09-29)
 
 ### Breaking Changes

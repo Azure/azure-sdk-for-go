@@ -1,14 +1,16 @@
 # Release History
 
-## 0.1.2 (Unreleased)
+## 0.2.0 (Unreleased)
 
 ### Features Added
 
 - Raw AMQP message support, including full support for encoding Body (Value, Sequence and also multiple byte slices for Data). See ExampleEventDataBatch_AddEventData_rawAMQPMessages for some concrete examples.
+- Prefetch is now enabled by default. Prefetch allows the Event Hubs client to maintain a continuously full cache of events, controlled by PartitionClientOptions.Prefetch.
 
 ### Breaking Changes
 
 - EventDataBatch.NumMessages() renamed to EventDataBatch.NumEvents()
+- Prefetch is now enabled by default. To disable it set PartitionClientOptions.Prefetch to -1.
 
 ### Bugs Fixed
 

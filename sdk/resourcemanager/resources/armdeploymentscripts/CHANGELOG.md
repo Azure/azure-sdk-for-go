@@ -1,5 +1,12 @@
 # Release History
 
+## 2.0.0 (2022-10-05)
+### Breaking Changes
+
+- Struct `DeploymentScriptPropertiesBase` has been removed
+- Struct `ScriptConfigurationBase` has been removed
+
+
 ## 1.0.0 (2022-05-18)
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeploymentscripts` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.

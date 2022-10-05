@@ -365,7 +365,9 @@ func TestConsumerClient_ReceiveEvents(t *testing.T) {
 	partProps, err := producer.GetPartitionProperties(context.Background(), "0", nil)
 	require.NoError(t, err)
 
-	batch, err := producer.NewEventDataBatch(context.Background(), nil)
+	batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
+		PartitionID: to.Ptr("0"),
+	})
 	require.NoError(t, err)
 
 	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{Body: []byte("event 1")}, nil))

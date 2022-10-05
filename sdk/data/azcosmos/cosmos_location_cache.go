@@ -41,9 +41,9 @@ type accountRegion struct {
 }
 
 type accountProperties struct {
-	readRegions                  []accountRegion
-	writeRegions                 []accountRegion
-	enableMultipleWriteLocations bool
+	ReadRegions                  []accountRegion `json:"readRegions"`
+	WriteRegions                 []accountRegion `json:"writeRegions"`
+	EnableMultipleWriteLocations bool			 `json:"enableMultipleWriteLocations"`
 }
 
 type locationCache struct {
@@ -105,6 +105,7 @@ func (lc *locationCache) update(writeLocations []accountRegion, readLocations []
 	lc.rwMutex.Lock()
 	lc.locationInfo = nextLoc
 	lc.rwMutex.Unlock()
+	// TODO: log
 	return nil
 }
 
@@ -262,6 +263,8 @@ func getEndpointsByLocation(locs []accountRegion) (map[string]url.URL, []string,
 		if loc.name != "" {
 			endpointsByLoc[loc.name] = *endpoint
 			parsedLocs = append(parsedLocs, loc.name)
+		} else {
+			//TODO: log
 		}
 	}
 	return endpointsByLoc, parsedLocs, nil

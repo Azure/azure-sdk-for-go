@@ -8,6 +8,7 @@
 
 ### Bugs Fixed
 * Don't retry a request if the `Retry-After` delay is greater than the configured `RetryOptions.MaxRetryDelay`.
+* JoinPaths: do not unconditionally add a forward slash before the query string
 
 ### Other Changes
 * Removed logging URL from retry policy as it's redundant.

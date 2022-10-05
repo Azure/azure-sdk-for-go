@@ -15,6 +15,7 @@ import (
 	"fmt"
 	"io"
 	"mime/multipart"
+	"path"
 	"reflect"
 	"strings"
 	"time"
@@ -56,19 +57,26 @@ func JoinPaths(root string, paths ...string) string {
 		root, qps = splitPath[0], splitPath[1]
 	}
 
-	for i := 0; i < len(paths); i++ {
-		root = strings.TrimRight(root, "/")
-		paths[i] = strings.TrimLeft(paths[i], "/")
-		root += "/" + paths[i]
+	var sb strings.Builder
+
+	sb.WriteString(strings.TrimRight(root, "/"))
+
+	joinedPaths := path.Join(paths...)
+	joinedPaths = strings.TrimLeft(joinedPaths, "/")
+
+	sb.WriteString("/")
+	sb.WriteString(joinedPaths)
+	// path.Join will remove any trailing slashes.
+	// Preserve a trailing slash if the last path element has it
+	if strings.HasSuffix(paths[len(paths)-1], "/") {
+		sb.WriteString("/")
 	}
 
 	if qps != "" {
-		if !strings.HasSuffix(root, "/") {
-			root += "/"
-		}
-		return root + "?" + qps
+		sb.WriteString("?")
+		sb.WriteString(qps)
 	}
-	return root
+	return sb.String()
 }
 
 // EncodeByteArray will base-64 encode the byte slice v.

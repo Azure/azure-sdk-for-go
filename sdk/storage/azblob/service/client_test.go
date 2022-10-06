@@ -600,6 +600,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	//_require.Nil(err)
 }
 
+// Note: Test is commented out because it needs a valid ManagedIdentityCredential to run.
 /*func (s *ServiceRecordedTestsSuite) TestUserDelegationSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -609,7 +610,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	cred, err := azidentity.NewManagedIdentityCredential(&optsClientID)
 	_require.Nil(err)
 
-	svcClient, err := azblob.NewClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, &azblob.ClientOptions{})
+	svcClient, err := service.NewClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, &service.ClientOptions{})
 	_require.Nil(err)
 
 	// Set current and past time, create KeyInfo

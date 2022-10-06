@@ -3,7 +3,7 @@ module github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/testdata/perf
 go 1.18
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.1.2
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.1.4
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.0.1
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v0.4.0
 )

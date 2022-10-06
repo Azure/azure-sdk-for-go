@@ -7,7 +7,9 @@
 - AcceptNextSessionForQueue and AcceptNextSessionForSubscription now return an azservicebus.Error with 
   Code set to CodeTimeout when they fail due to no sessions being available. Examples for this have 
   been added for `AcceptNextSessionForQueue`. PR#19113.
-- Retries now respect cancellation when they're in the "delay before next try" phase.
+- Retries now respect cancellation when they're in the "delay before next try" phase. (PR#19216)
+- An error in connection recovery logic could waste retries, resulting in errors related to losing
+  a connection (connlost). (PR#19281)
 
 ## 1.1.0 (2022-08-09)
 

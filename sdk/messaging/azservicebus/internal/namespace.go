@@ -270,9 +270,11 @@ func (ns *Namespace) Check() error {
 var ErrClientClosed = NewErrNonRetriable("client has been closed by user")
 
 // Recover destroys the currently held AMQP connection and recreates it, if needed.
-// If a new is actually created (rather than just cached) then the returned bool
-// will be true. Any links that were created from the original connection will need to
-// be recreated.
+//
+// If the user should recreate their links (either a new connection was created or
+// the connection they used to create their links is outdated) then this function returns
+// (true, nil).
+// If no action is required from the user this function will return (false, nil)
 func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) (bool, error) {
 	if err := ns.Check(); err != nil {
 		return false, err
@@ -286,9 +288,10 @@ func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) (bool, err
 	}
 
 	if ns.connID != theirConnID {
-		log.Writef(exported.EventConn, "Skipping connection recovery, already recovered: %d vs %d", ns.connID, theirConnID)
 		// we've already recovered since the client last tried.
-		return false, nil
+		// they should recover their links since their connection is old.
+		log.Writef(exported.EventConn, "Skipping connection recovery, already recovered: %d vs %d. Links will still be recovered.", ns.connID, theirConnID)
+		return true, nil
 	}
 
 	if ns.client != nil {

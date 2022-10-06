@@ -218,7 +218,7 @@ func (links *AMQPLinksImpl) recoverConnection(ctx context.Context, theirID LinkI
 	links.mu.Lock()
 	defer links.mu.Unlock()
 
-	created, err := links.ns.Recover(ctx, uint64(theirID.Conn))
+	shouldRecreate, err := links.ns.Recover(ctx, uint64(theirID.Conn))
 
 	if err != nil {
 		log.Writef(exported.EventConn, "Recover connection failure: %s", err)
@@ -230,8 +230,8 @@ func (links *AMQPLinksImpl) recoverConnection(ctx context.Context, theirID LinkI
 	// - the link they received an error on is our current link, so it needs to be recreated.
 	//   (if it wasn't the same then we've already recovered and created a new link,
 	//    so no recovery would be needed)
-	if created || theirID.Link == links.id.Link {
-		log.Writef(exported.EventConn, "recreating link: c: %v, current:%v, old:%v", created, links.id, theirID)
+	if shouldRecreate || theirID.Link == links.id.Link {
+		log.Writef(exported.EventConn, "recreating link: c: %v, current:%v, old:%v", shouldRecreate, links.id, theirID)
 		if err := links.initWithoutLocking(ctx); err != nil {
 			return err
 		}

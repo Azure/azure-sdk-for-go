@@ -9,10 +9,12 @@
 ### Bugs Fixed
 
 * `GetSASURL()`: for container and blob clients, don't add a forward slash before the query string
+* Fixed issue [#19249](https://github.com/Azure/azure-sdk-for-go/issues/19249) by increasing service version to '2020-02-10'.
 
 ### Other Changes
 
 * Improved docs for client constructors.
+* Updating azcore version to 1.1.4
 
 ## 0.5.0 (2022-09-29)
 

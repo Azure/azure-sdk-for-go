@@ -95,7 +95,7 @@ func MarshalAsByteArray(req *policy.Request, v []byte, format Base64Encoding) er
 
 // MarshalAsJSON calls json.Marshal() to get the JSON encoding of v then calls SetBody.
 func MarshalAsJSON(req *policy.Request, v interface{}) error {
-	if omit := os.Getenv("AZURE_SDK_GO_OMIT_READONLY"); omit != "" {
+	if omit := os.Getenv("AZURE_SDK_GO_OMIT_READONLY"); omit == "true" {
 		v = cloneWithoutReadOnlyFields(v)
 	}
 	b, err := json.Marshal(v)

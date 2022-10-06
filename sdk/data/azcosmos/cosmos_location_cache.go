@@ -263,9 +263,8 @@ func getEndpointsByLocation(locs []accountRegion) (map[string]url.URL, []string,
 		if loc.name != "" {
 			endpointsByLoc[loc.name] = *endpoint
 			parsedLocs = append(parsedLocs, loc.name)
-		} else {
-			//TODO: log
 		}
+		// TODO else: log
 	}
 	return endpointsByLoc, parsedLocs, nil
 }

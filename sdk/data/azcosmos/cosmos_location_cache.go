@@ -12,17 +12,17 @@ import (
 const defaultExpirationTime time.Duration = time.Minute * 5
 
 const (
-	none opType = iota
+	none requestedOperations = iota
 	read
 	write
 	all
 )
 
-type opType int
+type requestedOperations int
 
 type locationUnavailabilityInfo struct {
 	lastCheckTime  time.Time
-	unavailableOps opType
+	unavailableOps requestedOperations
 }
 
 type databaseAccountLocationsInfo struct {
@@ -174,7 +174,7 @@ func (lc *locationCache) markEndpointUnavailableForWrite(endpoint url.URL) error
 	return lc.markEndpointUnavailable(endpoint, write)
 }
 
-func (lc *locationCache) markEndpointUnavailable(endpoint url.URL, op opType) error {
+func (lc *locationCache) markEndpointUnavailable(endpoint url.URL, op requestedOperations) error {
 	now := time.Now()
 	lc.mapMutex.Lock()
 	if info, ok := lc.locationUnavailabilityInfoMap[endpoint]; ok {
@@ -208,7 +208,7 @@ func (lc *locationCache) refreshStaleEndpoints() {
 	lc.mapMutex.Unlock()
 }
 
-func (lc *locationCache) isEndpointUnavailable(endpoint url.URL, ops opType) bool {
+func (lc *locationCache) isEndpointUnavailable(endpoint url.URL, ops requestedOperations) bool {
 	lc.mapMutex.RLock()
 	info, ok := lc.locationUnavailabilityInfoMap[endpoint]
 	lc.mapMutex.RUnlock()
@@ -220,7 +220,7 @@ func (lc *locationCache) isEndpointUnavailable(endpoint url.URL, ops opType) boo
 	return time.Since(info.lastCheckTime) < lc.unavailableLocationExpirationTime
 }
 
-func (lc *locationCache) getPrefAvailableEndpoints(endpointsByLoc map[string]url.URL, locs []string, availOps opType, fallbackEndpoint url.URL) []url.URL {
+func (lc *locationCache) getPrefAvailableEndpoints(endpointsByLoc map[string]url.URL, locs []string, availOps requestedOperations, fallbackEndpoint url.URL) []url.URL {
 	endpoints := make([]url.URL, 0)
 	lc.rwMutex.RLock()
 	if lc.enableEndpointDiscovery {

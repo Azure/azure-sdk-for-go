@@ -14,6 +14,7 @@
 ### Other Changes
 
 * Improved docs for client constructors.
+* Updating azcore version to 1.1.4
 
 ## 0.5.0 (2022-09-29)
 

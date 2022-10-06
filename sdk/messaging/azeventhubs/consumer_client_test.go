@@ -346,9 +346,15 @@ func TestConsumerClient_NoPrefetch(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, []string{"event 1", "event 2"}, getSortedBodies(events))
 
+	ctx, cancel = context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
 	events, err = partClient.ReceiveEvents(ctx, 1, nil)
 	require.NoError(t, err)
 	require.Equal(t, []string{"event 3"}, getSortedBodies(events))
+
+	ctx, cancel = context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
 
 	events, err = partClient.ReceiveEvents(ctx, 1, nil)
 	require.NoError(t, err)
@@ -402,9 +408,15 @@ func TestConsumerClient_ReceiveEvents(t *testing.T) {
 			require.NoError(t, err)
 			require.Equal(t, []string{"event 1", "event 2"}, getSortedBodies(events))
 
+			ctx, cancel = context.WithTimeout(context.Background(), time.Minute)
+			defer cancel()
+
 			events, err = partClient.ReceiveEvents(ctx, 1, nil)
 			require.NoError(t, err)
 			require.Equal(t, []string{"event 3"}, getSortedBodies(events))
+
+			ctx, cancel = context.WithTimeout(context.Background(), time.Minute)
+			defer cancel()
 
 			events, err = partClient.ReceiveEvents(ctx, 1, nil)
 			require.NoError(t, err)

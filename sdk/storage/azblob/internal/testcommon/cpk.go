@@ -7,7 +7,18 @@
 // Contains common helpers for TESTS ONLY
 package testcommon
 
-import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+import (
+	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/stretchr/testify/require"
+)
+
+const (
+	EncryptionScopeEnvVar = "AZURE_STORAGE_ENCRYPTION_SCOPE"
+)
 
 var testEncryptedKey = "MDEyMzQ1NjcwMTIzNDU2NzAxMjM0NTY3MDEyMzQ1Njc="
 var testEncryptedHash = "3QFFFpRA5+XANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE="
@@ -26,9 +37,14 @@ var TestInvalidCPKByValue = blob.CpkInfo{
 	EncryptionAlgorithm: &testEncryptionAlgorithm,
 }
 
-var testEncryptedScope = "blobgokeytestscope"
-var TestCPKByScope = blob.CpkScopeInfo{
-	EncryptionScope: &testEncryptedScope,
+func GetCPKScopeInfo(t *testing.T) blob.CpkScopeInfo {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return blob.CpkScopeInfo{EncryptionScope: to.Ptr("blobgokeytestscope")}
+	}
+
+	encryptionScope, err := GetRequiredEnv(EncryptionScopeEnvVar)
+	require.NoError(t, err)
+	return blob.CpkScopeInfo{EncryptionScope: &encryptionScope}
 }
 
 var testInvalidEncryptedScope = "mumbojumboscope"

@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+* Changed format of `ErrorInfo` to custom error type
 
 ### Bugs Fixed
 

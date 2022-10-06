@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
@@ -29,8 +30,16 @@ import (
 )
 
 func Test(t *testing.T) {
-	suite.Run(t, &ContainerRecordedTestsSuite{})
-	//suite.Run(t, &ContainerUnrecordedTestsSuite{})
+	recordMode := recording.GetRecordMode()
+	t.Logf("Running container Tests in %s mode\n", recordMode)
+	if recordMode == recording.LiveMode {
+		suite.Run(t, &ContainerRecordedTestsSuite{})
+		suite.Run(t, &ContainerUnrecordedTestsSuite{})
+	} else if recordMode == recording.PlaybackMode {
+		suite.Run(t, &ContainerRecordedTestsSuite{})
+	} else if recordMode == recording.RecordingMode {
+		suite.Run(t, &ContainerRecordedTestsSuite{})
+	}
 }
 
 // nolint
@@ -1338,7 +1347,7 @@ func (s *ContainerRecordedTestsSuite) TestBlobListWrapperListingError() {
 func (s *ContainerUnrecordedTestsSuite) TestSetEmptyAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(nil, testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -1353,7 +1362,7 @@ func (s *ContainerUnrecordedTestsSuite) TestSetEmptyAccessPolicy() {
 func (s *ContainerUnrecordedTestsSuite) TestSetAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(nil, testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -1384,7 +1393,7 @@ func (s *ContainerUnrecordedTestsSuite) TestSetAccessPolicy() {
 func (s *ContainerUnrecordedTestsSuite) TestSetMultipleAccessPolicies() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(nil, testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -1435,7 +1444,7 @@ func (s *ContainerUnrecordedTestsSuite) TestSetMultipleAccessPolicies() {
 func (s *ContainerUnrecordedTestsSuite) TestSetNullAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(nil, testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)

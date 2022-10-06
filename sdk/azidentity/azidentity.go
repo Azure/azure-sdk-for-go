@@ -35,6 +35,37 @@ const (
 	tenantIDValidationErr   = "invalid tenantID. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names"
 )
 
+func getConfidentialClient(clientID, tenantID string, cred confidential.Credential, co *azcore.ClientOptions, additionalOpts ...confidential.Option) (confidential.Client, error) {
+	if !validTenantID(tenantID) {
+		return confidential.Client{}, errors.New(tenantIDValidationErr)
+	}
+	authorityHost, err := setAuthorityHost(co.Cloud)
+	if err != nil {
+		return confidential.Client{}, err
+	}
+	o := []confidential.Option{
+		confidential.WithAuthority(runtime.JoinPaths(authorityHost, tenantID)),
+		confidential.WithAzureRegion(os.Getenv(azureRegionalAuthorityName)),
+		confidential.WithHTTPClient(newPipelineAdapter(co)),
+	}
+	o = append(o, additionalOpts...)
+	return confidential.New(clientID, cred, o...)
+}
+
+func getPublicClient(clientID, tenantID string, co *azcore.ClientOptions) (public.Client, error) {
+	if !validTenantID(tenantID) {
+		return public.Client{}, errors.New(tenantIDValidationErr)
+	}
+	authorityHost, err := setAuthorityHost(co.Cloud)
+	if err != nil {
+		return public.Client{}, err
+	}
+	return public.New(clientID,
+		public.WithAuthority(runtime.JoinPaths(authorityHost, tenantID)),
+		public.WithHTTPClient(newPipelineAdapter(co)),
+	)
+}
+
 // setAuthorityHost initializes the authority host for credentials. Precedence is:
 // 1. cloud.Configuration.ActiveDirectoryAuthorityHost value set by user
 // 2. value of AZURE_AUTHORITY_HOST

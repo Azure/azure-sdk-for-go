@@ -261,13 +261,9 @@ func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) (bool, err
 	}
 
 	if ns.connID != theirConnID {
-		// the only time this can happen is if their connection is older than the one
-		// that's current. So they should recreate their links.
-
-		log.Writef(exported.EventConn, "Skipping connection recovery, already recovered: %d vs %d", ns.connID, theirConnID)
 		// we've already recovered since the client last tried.
 		// they should recover their links since their connection is old.
-		//	return true, nil
+		log.Writef(exported.EventConn, "Skipping connection recovery, already recovered: %d vs %d. Links will still be recovered.", ns.connID, theirConnID)
 		return true, nil
 	}
 

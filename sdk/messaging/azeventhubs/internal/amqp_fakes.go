@@ -1,18 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package test
+package internal
 
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 )
 
 type FakeNSForPartClient struct {
-	internal.NamespaceForAMQPLinks
+	NamespaceForAMQPLinks
 	Receiver *FakeAMQPReceiver
 }
 

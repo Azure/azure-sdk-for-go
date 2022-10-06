@@ -8,6 +8,7 @@ package azquery_test
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -22,7 +23,7 @@ var kustoQuery3 string
 func ExampleNewLogsClient() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		//TODO: handle error
 	}
 
 	client := azquery.NewLogsClient(cred, nil)
@@ -32,7 +33,7 @@ func ExampleNewLogsClient() {
 func ExampleNewMetricsClient() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		//TODO: handle error
 	}
 
 	client := azquery.NewMetricsClient(cred, nil)
@@ -40,20 +41,38 @@ func ExampleNewMetricsClient() {
 }
 
 func ExampleLogsClient_QueryWorkspace() {
-	client := azquery.NewLogsClient(cred, nil)
-	timespan := "2022-08-30/2022-08-31"
-
-	res, err := client.QueryWorkspace(context.TODO(), workspaceID,
-		azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, nil)
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		//TODO: handle error
 	}
-	_ = res
+	client := azquery.NewLogsClient(cred, nil)
+	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
+	query := "AzureActivity | top 10 by TimeGenerated"     // Kusto query
+	timespan := "2022-08-30/2022-08-31"                    // ISO8601 Standard timespan
+
+	res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, nil)
+	if err != nil {
+		//TODO: handle error
+	}
+	if res.Results.Error != nil {
+		//TODO: handle partial error
+	}
+
+	table := res.Results.Tables[0]
+	fmt.Println("Response rows:")
+	for _, row := range table.Rows {
+		fmt.Println(row)
+	}
 }
 
 func ExampleLogsClient_Batch() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		//TODO: handle error
+	}
 	client := azquery.NewLogsClient(cred, nil)
-	timespan := "2022-08-30/2022-08-31"
+	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
+	timespan := "2022-08-30/2022-08-31"                    // ISO8601 Standard Timespan
 
 	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
 		{Body: &azquery.Body{Query: to.Ptr(kustoQuery1), Timespan: to.Ptr(timespan)}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID)},
@@ -63,9 +82,16 @@ func ExampleLogsClient_Batch() {
 
 	res, err := client.Batch(context.TODO(), batchRequest, nil)
 	if err != nil {
-		panic(err)
+		//TODO: handle error
 	}
-	_ = res
+
+	responses := res.BatchResponse.Responses
+	fmt.Println("ID's of successful responses:")
+	for _, response := range responses {
+		if response.Body.Error == nil {
+			fmt.Println(*response.ID)
+		}
+	}
 }
 
 func ExampleMetricsClient_QueryResource() {
@@ -82,7 +108,7 @@ func ExampleMetricsClient_QueryResource() {
 			Metricnamespace: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
 		})
 	if err != nil {
-		panic(err)
+		//TODO: handle error
 	}
 	_ = res
 }

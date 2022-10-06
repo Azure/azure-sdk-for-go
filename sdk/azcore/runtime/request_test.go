@@ -544,17 +544,59 @@ func TestRequestSetBodyContentLengthHeader(t *testing.T) {
 }
 
 func TestJoinPaths(t *testing.T) {
-	if path := JoinPaths(""); path != "" {
-		t.Fatalf("unexpected path %s", path)
-	}
-	expected := "http://test.contoso.com/path/one/path/two/path/three/path/four/"
-	if path := JoinPaths("http://test.contoso.com/", "/path/one", "path/two", "/path/three/", "path/four/"); path != expected {
-		t.Fatalf("got %s, expected %s", path, expected)
+	type joinTest struct {
+		root     string
+		paths    []string
+		expected string
 	}
 
-	expected = "http://test.contoso.com/path/one/path/two/?qp1=abc&qp2=def"
-	if path := JoinPaths("http://test.contoso.com/?qp1=abc&qp2=def", "/path/one", "path/two"); path != expected {
-		t.Fatalf("got %s, expected %s", path, expected)
+	tests := []joinTest{
+		{
+			root:     "",
+			paths:    nil,
+			expected: "",
+		},
+		{
+			root:     "/",
+			paths:    nil,
+			expected: "/",
+		},
+		{
+			root:     "http://test.contoso.com/",
+			paths:    []string{"/path/one", "path/two", "/path/three/", "path/four/"},
+			expected: "http://test.contoso.com/path/one/path/two/path/three/path/four/",
+		},
+		{
+			root:     "http://test.contoso.com",
+			paths:    []string{"path/one", "path/two", "/path/three/", "path/four/"},
+			expected: "http://test.contoso.com/path/one/path/two/path/three/path/four/",
+		},
+		{
+			root:     "http://test.contoso.com/?qp1=abc&qp2=def",
+			paths:    []string{"/path/one", "path/two"},
+			expected: "http://test.contoso.com/path/one/path/two?qp1=abc&qp2=def",
+		},
+		{
+			root:     "http://test.contoso.com?qp1=abc&qp2=def",
+			paths:    []string{"path/one", "path/two/"},
+			expected: "http://test.contoso.com/path/one/path/two/?qp1=abc&qp2=def",
+		},
+		{
+			root:     "http://test.contoso.com/?qp1=abc&qp2=def",
+			paths:    []string{"path/one", "path/two/"},
+			expected: "http://test.contoso.com/path/one/path/two/?qp1=abc&qp2=def",
+		},
+		{
+			root:     "http://test.contoso.com/?qp1=abc&qp2=def",
+			paths:    []string{"/path/one", "path/two/"},
+			expected: "http://test.contoso.com/path/one/path/two/?qp1=abc&qp2=def",
+		},
+	}
+
+	for _, tt := range tests {
+		if path := JoinPaths(tt.root, tt.paths...); path != tt.expected {
+			t.Fatalf("got %s, expected %s", path, tt.expected)
+		}
 	}
 }
 

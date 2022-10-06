@@ -515,7 +515,7 @@ const (
 	StorageErrorCodeEmptyMetadataKey                                  StorageErrorCode = "EmptyMetadataKey"
 	StorageErrorCodeFeatureVersionMismatch                            StorageErrorCode = "FeatureVersionMismatch"
 	StorageErrorCodeIncrementalCopyBlobMismatch                       StorageErrorCode = "IncrementalCopyBlobMismatch"
-	StorageErrorCodeIncrementalCopyOfEralierVersionSnapshotNotAllowed StorageErrorCode = "IncrementalCopyOfEralierVersionSnapshotNotAllowed"
+	StorageErrorCodeIncrementalCopyOfEarlierVersionSnapshotNotAllowed StorageErrorCode = "IncrementalCopyOfEarlierVersionSnapshotNotAllowed"
 	StorageErrorCodeIncrementalCopySourceMustBeSnapshot               StorageErrorCode = "IncrementalCopySourceMustBeSnapshot"
 	StorageErrorCodeInfiniteLeaseDurationRequired                     StorageErrorCode = "InfiniteLeaseDurationRequired"
 	StorageErrorCodeInsufficientAccountPermissions                    StorageErrorCode = "InsufficientAccountPermissions"
@@ -633,7 +633,7 @@ func PossibleStorageErrorCodeValues() []StorageErrorCode {
 		StorageErrorCodeEmptyMetadataKey,
 		StorageErrorCodeFeatureVersionMismatch,
 		StorageErrorCodeIncrementalCopyBlobMismatch,
-		StorageErrorCodeIncrementalCopyOfEralierVersionSnapshotNotAllowed,
+		StorageErrorCodeIncrementalCopyOfEarlierVersionSnapshotNotAllowed,
 		StorageErrorCodeIncrementalCopySourceMustBeSnapshot,
 		StorageErrorCodeInfiniteLeaseDurationRequired,
 		StorageErrorCodeInsufficientAccountPermissions,

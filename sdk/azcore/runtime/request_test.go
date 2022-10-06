@@ -14,6 +14,7 @@ import (
 	"mime"
 	"mime/multipart"
 	"net/http"
+	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -341,6 +342,10 @@ func TestCloneWithoutReadOnlyFieldsEndToEnd(t *testing.T) {
 		ID:   &id,
 		Name: &name,
 	}
+
+	os.Setenv("AZURE_SDK_GO_OMIT_READONLY", "true")
+	defer os.Unsetenv("AZURE_SDK_GO_OMIT_READONLY")
+
 	err = MarshalAsJSON(req, nro)
 	if err != nil {
 		t.Fatal(err)
@@ -357,6 +362,35 @@ func TestCloneWithoutReadOnlyFieldsEndToEnd(t *testing.T) {
 	if um.ID != nil {
 		t.Fatalf("expected nil ID, got %d", *um.ID)
 	}
+}
+
+func TestCloneWithReadOnlyFieldsEndToEnd(t *testing.T) {
+	req, err := NewRequest(context.Background(), http.MethodPost, "https://contoso.com")
+	require.NoError(t, err)
+
+	id := int32(123)
+	name := "widget"
+	type withReadOnly struct {
+		ID   *int32  `json:"id" azure:"ro"`
+		Name *string `json:"name"`
+	}
+	nro := withReadOnly{
+		ID:   &id,
+		Name: &name,
+	}
+
+	err = MarshalAsJSON(req, nro)
+	require.NoError(t, err)
+
+	b, err := io.ReadAll(req.Raw().Body)
+	require.NoError(t, err)
+
+	um := withReadOnly{}
+	err = json.Unmarshal(b, &um)
+	require.NoError(t, err)
+
+	require.NotNil(t, um.ID)
+	require.Equal(t, int32(123), *um.ID)
 }
 
 func TestCloneWithoutReadOnlyFieldsCloneEmbedded(t *testing.T) {

@@ -10,6 +10,7 @@
 * Fixed an issue in `runtime.SetMultipartFormData` to properly handle slices of `io.ReadSeekCloser`.
 
 ### Other Changes
+* Retain contents of read-only fields when sending requests.
 
 ## 1.1.4 (2022-10-06)
 

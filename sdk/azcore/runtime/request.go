@@ -15,6 +15,7 @@ import (
 	"fmt"
 	"io"
 	"mime/multipart"
+	"os"
 	"path"
 	"reflect"
 	"strings"
@@ -94,7 +95,9 @@ func MarshalAsByteArray(req *policy.Request, v []byte, format Base64Encoding) er
 
 // MarshalAsJSON calls json.Marshal() to get the JSON encoding of v then calls SetBody.
 func MarshalAsJSON(req *policy.Request, v interface{}) error {
-	v = cloneWithoutReadOnlyFields(v)
+	if omit := os.Getenv("AZURE_SDK_GO_OMIT_READONLY"); omit != "" {
+		v = cloneWithoutReadOnlyFields(v)
+	}
 	b, err := json.Marshal(v)
 	if err != nil {
 		return fmt.Errorf("error marshalling type %T: %s", v, err)

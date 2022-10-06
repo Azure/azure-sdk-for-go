@@ -14,7 +14,6 @@ import (
 	"mime"
 	"mime/multipart"
 	"net/http"
-	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -343,8 +342,7 @@ func TestCloneWithoutReadOnlyFieldsEndToEnd(t *testing.T) {
 		Name: &name,
 	}
 
-	os.Setenv("AZURE_SDK_GO_OMIT_READONLY", "true")
-	defer os.Unsetenv("AZURE_SDK_GO_OMIT_READONLY")
+	t.Setenv("AZURE_SDK_GO_OMIT_READONLY", "true")
 
 	err = MarshalAsJSON(req, nro)
 	if err != nil {

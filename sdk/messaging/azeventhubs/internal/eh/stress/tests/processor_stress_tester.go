@@ -180,8 +180,8 @@ func (inf *processorStressTest) Run(ctx context.Context) error {
 			}(cp.PartitionID)
 		}
 
-		log.Printf("Done sending events...")
 		wg.Wait()
+		log.Printf("Done sending events...")
 		close(endPositionsCh)
 
 		endPositions := channelToSortedSlice(endPositionsCh, func(a, b azeventhubs.PartitionProperties) bool {

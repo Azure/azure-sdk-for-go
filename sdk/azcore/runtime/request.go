@@ -119,16 +119,30 @@ func MarshalAsXML(req *policy.Request, v interface{}) error {
 func SetMultipartFormData(req *policy.Request, formData map[string]interface{}) error {
 	body := bytes.Buffer{}
 	writer := multipart.NewWriter(&body)
+
+	writeContent := func(fieldname, filename string, src io.Reader) error {
+		fd, err := writer.CreateFormFile(fieldname, filename)
+		if err != nil {
+			return err
+		}
+		// copy the data to the form file
+		if _, err = io.Copy(fd, src); err != nil {
+			return err
+		}
+		return nil
+	}
+
 	for k, v := range formData {
 		if rsc, ok := v.(io.ReadSeekCloser); ok {
-			// this is the body to upload, the key is its file name
-			fd, err := writer.CreateFormFile(k, k)
-			if err != nil {
+			if err := writeContent(k, k, rsc); err != nil {
 				return err
 			}
-			// copy the data to the form file
-			if _, err = io.Copy(fd, rsc); err != nil {
-				return err
+			continue
+		} else if rscs, ok := v.([]io.ReadSeekCloser); ok {
+			for _, rsc := range rscs {
+				if err := writeContent(k, k, rsc); err != nil {
+					return err
+				}
 			}
 			continue
 		}

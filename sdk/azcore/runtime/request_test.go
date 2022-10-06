@@ -23,6 +23,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/stretchr/testify/require"
 )
 
 type testJSON struct {
@@ -635,6 +636,11 @@ func TestSetMultipartFormData(t *testing.T) {
 		"string": "value",
 		"int":    1,
 		"data":   exported.NopCloser(strings.NewReader("some data")),
+		"datum": []io.ReadSeekCloser{
+			exported.NopCloser(strings.NewReader("first part")),
+			exported.NopCloser(strings.NewReader("second part")),
+			exported.NopCloser(strings.NewReader("third part")),
+		},
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -647,6 +653,7 @@ func TestSetMultipartFormData(t *testing.T) {
 		t.Fatalf("unexpected media type %s", mt)
 	}
 	reader := multipart.NewReader(req.Raw().Body, params["boundary"])
+	var datum []io.ReadSeekCloser
 	for {
 		part, err := reader.NextPart()
 		if err == io.EOF {
@@ -682,8 +689,22 @@ func TestSetMultipartFormData(t *testing.T) {
 			if tr := string(dataPart[:9]); tr != "some data" {
 				t.Fatalf("unexpected value %s", tr)
 			}
+		case "datum":
+			content, err := io.ReadAll(part)
+			require.NoError(t, err)
+			datum = append(datum, exported.NopCloser(bytes.NewReader(content)))
 		default:
 			t.Fatalf("unexpected part %s", fn)
 		}
 	}
+	require.Len(t, datum, 3)
+	first, err := io.ReadAll(datum[0])
+	require.NoError(t, err)
+	second, err := io.ReadAll(datum[1])
+	require.NoError(t, err)
+	third, err := io.ReadAll(datum[2])
+	require.NoError(t, err)
+	require.Equal(t, "first part", string(first))
+	require.Equal(t, "second part", string(second))
+	require.Equal(t, "third part", string(third))
 }

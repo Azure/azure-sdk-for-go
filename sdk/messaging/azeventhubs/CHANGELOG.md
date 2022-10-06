@@ -4,8 +4,8 @@
 
 ### Features Added
 
-- Raw AMQP message support, including full support for encoding Body (Value, Sequence and also multiple byte slices for Data). See ExampleEventDataBatch_AddEventData_rawAMQPMessages for some concrete examples.
-- Prefetch is now enabled by default. Prefetch allows the Event Hubs client to maintain a continuously full cache of events, controlled by PartitionClientOptions.Prefetch.
+- Raw AMQP message support, including full support for encoding Body (Value, Sequence and also multiple byte slices for Data). See ExampleEventDataBatch_AddEventData_rawAMQPMessages for some concrete examples. (PR#19156)
+- Prefetch is now enabled by default. Prefetch allows the Event Hubs client to maintain a continuously full cache of events, controlled by PartitionClientOptions.Prefetch. (PR#19281)
 
 ### Breaking Changes
 
@@ -13,6 +13,9 @@
 - Prefetch is now enabled by default. To disable it set PartitionClientOptions.Prefetch to -1.
 
 ### Bugs Fixed
+
+- An error in connection recovery logic could waste retries, resulting in errors related to losing
+  a connection (connlost). (PR#19281)
 
 ### Other Changes
 

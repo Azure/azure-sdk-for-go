@@ -43,7 +43,7 @@ type accountRegion struct {
 type accountProperties struct {
 	ReadRegions                  []accountRegion `json:"readRegions"`
 	WriteRegions                 []accountRegion `json:"writeRegions"`
-	EnableMultipleWriteLocations bool			 `json:"enableMultipleWriteLocations"`
+	EnableMultipleWriteLocations bool            `json:"enableMultipleWriteLocations"`
 }
 
 type locationCache struct {
@@ -194,7 +194,7 @@ func (lc *locationCache) markEndpointUnavailable(endpoint url.URL, op opType) er
 }
 
 func (lc *locationCache) databaseAccountRead(dbAcct accountProperties) error {
-	return lc.update(dbAcct.writeRegions, dbAcct.readRegions, nil, &dbAcct.enableMultipleWriteLocations)
+	return lc.update(dbAcct.WriteRegions, dbAcct.ReadRegions, nil, &dbAcct.EnableMultipleWriteLocations)
 }
 
 func (lc *locationCache) refreshStaleEndpoints() {

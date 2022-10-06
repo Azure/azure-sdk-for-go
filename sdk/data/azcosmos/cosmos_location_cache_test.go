@@ -73,7 +73,7 @@ func CreateDatabaseAccount(useMultipleWriteLocations bool, enforceSingleMasterWr
 		writeRegions = []accountRegion{loc1}
 	}
 	readRegions := []accountRegion{loc1, loc2, loc4}
-	return accountProperties{writeRegions: writeRegions, readRegions: readRegions, enableMultipleWriteLocations: useMultipleWriteLocations}
+	return accountProperties{WriteRegions: writeRegions, ReadRegions: readRegions, EnableMultipleWriteLocations: useMultipleWriteLocations}
 }
 
 func ResetLocationCache() *locationCache {
@@ -183,14 +183,14 @@ func TestGetLocation(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Received error Reading DB account: %s", err.Error())
 	}
-	if dbAcct.writeRegions == nil || len(dbAcct.writeRegions) == 0 {
+	if dbAcct.WriteRegions == nil || len(dbAcct.WriteRegions) == 0 {
 		t.Fatal("Write Regions are empty")
 	}
 	actual := lc.getLocation(*defaultEndpoint)
 	if actual == "" {
 		t.Errorf("Expected GetLocation to return a valid location when provided the default endpoint, but it did not")
 	}
-	for _, region := range dbAcct.writeRegions {
+	for _, region := range dbAcct.WriteRegions {
 		url, err := url.Parse(region.endpoint)
 		if err != nil {
 			t.Errorf("Failed to parse endpoint %s, %s", region.endpoint, err)
@@ -202,7 +202,7 @@ func TestGetLocation(t *testing.T) {
 		}
 	}
 
-	for _, region := range dbAcct.readRegions {
+	for _, region := range dbAcct.ReadRegions {
 		url, err := url.Parse(region.endpoint)
 		if err != nil {
 			t.Errorf("Failed to parse endpoint %s, %s", region.endpoint, err)

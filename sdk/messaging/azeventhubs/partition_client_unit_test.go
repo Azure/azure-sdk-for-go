@@ -8,14 +8,14 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 	"github.com/stretchr/testify/require"
 )
 
 func TestUnit_PartitionClient_PrefetchOff(t *testing.T) {
-	ns := &test.FakeNSForPartClient{
-		Receiver: &test.FakeAMQPReceiver{
+	ns := &internal.FakeNSForPartClient{
+		Receiver: &internal.FakeAMQPReceiver{
 			Messages: []*amqp.Message{
 				{}, {}, {},
 			},
@@ -53,8 +53,8 @@ func TestUnit_PartitionClient_PrefetchOffOnlyBackfillsCredits(t *testing.T) {
 
 	for _, td := range testData {
 		t.Run(td.Name, func(t *testing.T) {
-			ns := &test.FakeNSForPartClient{
-				Receiver: &test.FakeAMQPReceiver{
+			ns := &internal.FakeNSForPartClient{
+				Receiver: &internal.FakeAMQPReceiver{
 					Messages: []*amqp.Message{{}, {}, {}},
 				},
 			}
@@ -95,8 +95,8 @@ func TestUnit_PartitionClient_PrefetchOn(t *testing.T) {
 	}
 
 	for _, td := range testData {
-		ns := &test.FakeNSForPartClient{
-			Receiver: &test.FakeAMQPReceiver{
+		ns := &internal.FakeNSForPartClient{
+			Receiver: &internal.FakeAMQPReceiver{
 				Messages: []*amqp.Message{{}, {}, {}},
 			},
 		}

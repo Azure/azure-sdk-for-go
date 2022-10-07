@@ -550,6 +550,44 @@ func TestHostAndScheme(t *testing.T) {
 	require.Equal(t, r.host(), "localhost:5000")
 }
 
+func TestRecordingAssetConfigNotExist(t *testing.T) {
+	assetPath, err := getAssetsConfigPath(".", 0)
+	require.NoError(t, err)
+	require.Equal(t, assetPath, "")
+}
+
+func TestRecordingAssetConfigNoGitRepo(t *testing.T) {
+	_, err := getAssetsConfigPath("../../../../", 0)
+	require.Error(t, err)
+}
+
+func TestRecordingAssetConfigInCwd(t *testing.T) {
+	_ = os.Remove(recordingAssetConfigName)
+	defer os.Remove(recordingAssetConfigName)
+
+	_, err := os.Create(recordingAssetConfigName)
+	require.NoError(t, err)
+	expected, err := filepath.Abs(recordingAssetConfigName)
+	require.NoError(t, err)
+
+	assetPath, err := getAssetsConfigPath(".", 0)
+	require.Equal(t, assetPath, expected)
+}
+
+func TestRecordingAssetConfigInParent(t *testing.T) {
+	parentAssetPath := "../" + recordingAssetConfigName
+	_ = os.Remove(parentAssetPath)
+	defer os.Remove(parentAssetPath)
+
+	_, err := os.Create(parentAssetPath)
+	require.NoError(t, err)
+	expected, err := filepath.Abs(parentAssetPath)
+	require.NoError(t, err)
+
+	assetPath, err := getAssetsConfigPath(".", 0)
+	require.Equal(t, assetPath, expected)
+}
+
 func TestFindProxyCertLocation(t *testing.T) {
 	savedValue, ok := os.LookupEnv("PROXY_CERT")
 	if ok {

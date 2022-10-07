@@ -4,6 +4,8 @@
 
 ### Features Added
 
+Support test recording assets external to repository
+
 ### Breaking Changes
 
 ### Bugs Fixed

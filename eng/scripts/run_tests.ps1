@@ -1,8 +1,9 @@
 #Requires -Version 7.0
 
 Param(
+    [Parameter(Mandatory = $true)]
     [string] $serviceDirectory,
-    [string] $testTimeout
+    [string] $testTimeout = "1s"
 )
 
 $ErrorActionPreference = 'Stop'

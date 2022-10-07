@@ -14,6 +14,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/fs"
 	"log"
 	"math/rand"
 	"net/http"
@@ -54,6 +55,7 @@ const (
 	randomSeedVariableName      = "randomSeed"
 	nowVariableName             = "now"
 	ModeEnvironmentVariableName = "AZURE_TEST_MODE"
+	recordingAssetConfigName    = "assets.json"
 )
 
 // Inspired by https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
@@ -577,6 +579,37 @@ func getTestId(pathToRecordings string, t *testing.T) string {
 	return path.Join(pathToRecordings, "recordings", t.Name()+".json")
 }
 
+// Traverse up from a recording path until an asset config file is found.
+// Stop searching when the root of the git repository or the filesystem root is reached.
+// This function assumes the asset config will be located in the service directory or above.
+func getAssetsConfigPath(fromPath string, depth int) (string, error) {
+	assetConfigPath := path.Join(fromPath, recordingAssetConfigName)
+	gitDirectoryPath := path.Join(fromPath, ".git")
+
+	if _, err := os.Stat(assetConfigPath); err == nil {
+		return filepath.Abs(assetConfigPath)
+	} else if !errors.Is(err, fs.ErrNotExist) {
+		return "", err
+	}
+
+	if _, err := os.Stat(gitDirectoryPath); err == nil {
+		return "", nil
+	} else if !errors.Is(err, fs.ErrNotExist) {
+		return "", err
+	}
+
+	// Cludgy failsafe so we don't end up in an infinite loop at root
+	// in edge cases where there is no .git directory to stop execution
+	maxDepth := 7
+	if depth >= maxDepth {
+		return "", fmt.Errorf(
+			"Stopping at search depth of %d parent directories looking for %s or git root",
+			depth, recordingAssetConfigName)
+	}
+
+	return getAssetsConfigPath(path.Join(fromPath, ".."), depth+1)
+}
+
 // Start tells the test proxy to begin accepting requests for a given test
 func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) error {
 	if options == nil {
@@ -595,6 +628,15 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 
 	testId := getTestId(pathToRecordings, t)
 
+	cwd, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+	assetConfigPath, err := getAssetsConfigPath(cwd, 0)
+	if err != nil {
+		return err
+	}
+
 	url := fmt.Sprintf("%s/%s/start", options.baseURL(), recordMode)
 
 	req, err := http.NewRequest("POST", url, nil)
@@ -603,7 +645,11 @@ func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) err
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	marshalled, err := json.Marshal(map[string]string{"x-recording-file": testId})
+	reqBody := map[string]string{"x-recording-file": testId}
+	if assetConfigPath != "" {
+		reqBody["x-recording-assets-file"] = assetConfigPath
+	}
+	marshalled, err := json.Marshal(reqBody)
 	if err != nil {
 		return err
 	}

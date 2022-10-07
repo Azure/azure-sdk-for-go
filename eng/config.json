@@ -2,11 +2,11 @@
     "Packages": [
         {
             "Name": "azappconfig",
-            "CoverageGoal": 0.20
+            "CoverageGoal": 0.19
         },
         {
             "Name": "azblob",
-            "CoverageGoal": 0.00
+            "CoverageGoal": 0.30
         },
         {
             "Name": "azcore",
@@ -68,6 +68,10 @@
         {
             "Name": "messaging/internal",
             "CoverageGoal": 0.40
+        },
+        {
+            "Name": "monitor/azquery",
+            "CoverageGoal": 0.80
         },
         {
             "Name": "resourcemanager",

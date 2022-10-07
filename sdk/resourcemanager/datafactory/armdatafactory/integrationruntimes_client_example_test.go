@@ -28,9 +28,7 @@ func ExampleIntegrationRuntimesClient_NewListByFactoryPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByFactoryPager("exampleResourceGroup",
-		"exampleFactoryName",
-		nil)
+	pager := client.NewListByFactoryPager("exampleResourceGroup", "exampleFactoryName", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -54,17 +52,12 @@ func ExampleIntegrationRuntimesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleIntegrationRuntime",
-		armdatafactory.IntegrationRuntimeResource{
-			Properties: &armdatafactory.SelfHostedIntegrationRuntime{
-				Type:        to.Ptr(armdatafactory.IntegrationRuntimeTypeSelfHosted),
-				Description: to.Ptr("A selfhosted integration runtime"),
-			},
+	res, err := client.CreateOrUpdate(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", armdatafactory.IntegrationRuntimeResource{
+		Properties: &armdatafactory.SelfHostedIntegrationRuntime{
+			Type:        to.Ptr(armdatafactory.IntegrationRuntimeTypeSelfHosted),
+			Description: to.Ptr("A selfhosted integration runtime"),
 		},
-		&armdatafactory.IntegrationRuntimesClientCreateOrUpdateOptions{IfMatch: nil})
+	}, &armdatafactory.IntegrationRuntimesClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -83,11 +76,7 @@ func ExampleIntegrationRuntimesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleIntegrationRuntime",
-		&armdatafactory.IntegrationRuntimesClientGetOptions{IfNoneMatch: nil})
+	res, err := client.Get(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", &armdatafactory.IntegrationRuntimesClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -106,15 +95,10 @@ func ExampleIntegrationRuntimesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleIntegrationRuntime",
-		armdatafactory.UpdateIntegrationRuntimeRequest{
-			AutoUpdate:        to.Ptr(armdatafactory.IntegrationRuntimeAutoUpdateOff),
-			UpdateDelayOffset: to.Ptr("\"PT3H\""),
-		},
-		nil)
+	res, err := client.Update(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", armdatafactory.UpdateIntegrationRuntimeRequest{
+		AutoUpdate:        to.Ptr(armdatafactory.IntegrationRuntimeAutoUpdateOff),
+		UpdateDelayOffset: to.Ptr("\"PT3H\""),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -133,11 +117,7 @@ func ExampleIntegrationRuntimesClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleIntegrationRuntime",
-		nil)
+	_, err = client.Delete(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -154,11 +134,7 @@ func ExampleIntegrationRuntimesClient_GetStatus() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetStatus(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleIntegrationRuntime",
-		nil)
+	res, err := client.GetStatus(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -177,11 +153,7 @@ func ExampleIntegrationRuntimesClient_ListOutboundNetworkDependenciesEndpoints()
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListOutboundNetworkDependenciesEndpoints(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleIntegrationRuntime",
-		nil)
+	res, err := client.ListOutboundNetworkDependenciesEndpoints(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -200,11 +172,7 @@ func ExampleIntegrationRuntimesClient_GetConnectionInfo() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetConnectionInfo(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleIntegrationRuntime",
-		nil)
+	res, err := client.GetConnectionInfo(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -223,14 +191,9 @@ func ExampleIntegrationRuntimesClient_RegenerateAuthKey() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.RegenerateAuthKey(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleIntegrationRuntime",
-		armdatafactory.IntegrationRuntimeRegenerateKeyParameters{
-			KeyName: to.Ptr(armdatafactory.IntegrationRuntimeAuthKeyNameAuthKey2),
-		},
-		nil)
+	res, err := client.RegenerateAuthKey(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", armdatafactory.IntegrationRuntimeRegenerateKeyParameters{
+		KeyName: to.Ptr(armdatafactory.IntegrationRuntimeAuthKeyNameAuthKey2),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -249,11 +212,7 @@ func ExampleIntegrationRuntimesClient_ListAuthKeys() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListAuthKeys(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleIntegrationRuntime",
-		nil)
+	res, err := client.ListAuthKeys(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -272,11 +231,7 @@ func ExampleIntegrationRuntimesClient_BeginStart() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStart(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleManagedIntegrationRuntime",
-		nil)
+	poller, err := client.BeginStart(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleManagedIntegrationRuntime", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -299,11 +254,7 @@ func ExampleIntegrationRuntimesClient_BeginStop() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStop(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleManagedIntegrationRuntime",
-		nil)
+	poller, err := client.BeginStop(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleManagedIntegrationRuntime", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -324,11 +275,7 @@ func ExampleIntegrationRuntimesClient_SyncCredentials() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.SyncCredentials(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleIntegrationRuntime",
-		nil)
+	_, err = client.SyncCredentials(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -345,11 +292,7 @@ func ExampleIntegrationRuntimesClient_GetMonitoringData() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetMonitoringData(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleIntegrationRuntime",
-		nil)
+	res, err := client.GetMonitoringData(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -368,11 +311,7 @@ func ExampleIntegrationRuntimesClient_Upgrade() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Upgrade(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleIntegrationRuntime",
-		nil)
+	_, err = client.Upgrade(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -389,14 +328,9 @@ func ExampleIntegrationRuntimesClient_RemoveLinks() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.RemoveLinks(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleIntegrationRuntime",
-		armdatafactory.LinkedIntegrationRuntimeRequest{
-			LinkedFactoryName: to.Ptr("exampleFactoryName-linked"),
-		},
-		nil)
+	_, err = client.RemoveLinks(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", armdatafactory.LinkedIntegrationRuntimeRequest{
+		LinkedFactoryName: to.Ptr("exampleFactoryName-linked"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -413,17 +347,12 @@ func ExampleIntegrationRuntimesClient_CreateLinkedIntegrationRuntime() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateLinkedIntegrationRuntime(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"exampleIntegrationRuntime",
-		armdatafactory.CreateLinkedIntegrationRuntimeRequest{
-			Name:                to.Ptr("bfa92911-9fb6-4fbe-8f23-beae87bc1c83"),
-			DataFactoryLocation: to.Ptr("West US"),
-			DataFactoryName:     to.Ptr("e9955d6d-56ea-4be3-841c-52a12c1a9981"),
-			SubscriptionID:      to.Ptr("061774c7-4b5a-4159-a55b-365581830283"),
-		},
-		nil)
+	res, err := client.CreateLinkedIntegrationRuntime(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", armdatafactory.CreateLinkedIntegrationRuntimeRequest{
+		Name:                to.Ptr("bfa92911-9fb6-4fbe-8f23-beae87bc1c83"),
+		DataFactoryLocation: to.Ptr("West US"),
+		DataFactoryName:     to.Ptr("e9955d6d-56ea-4be3-841c-52a12c1a9981"),
+		SubscriptionID:      to.Ptr("061774c7-4b5a-4159-a55b-365581830283"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

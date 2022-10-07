@@ -27,10 +27,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		nil)
+	res, err := client.Get(ctx, "exampleResourceGroup", "exampleFactoryName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

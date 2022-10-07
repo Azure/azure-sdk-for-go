@@ -58,7 +58,7 @@ func NewPercentileSourceTargetClient(subscriptionID string, credential azcore.To
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given account, source and target region.
 // This url is only for PBS and Replication Latency data
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-15-preview
+// Generated from API version 2022-08-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // sourceRegion - Source region from which data is written. Cosmos DB region, with spaces between words and each word capitalized.
@@ -118,7 +118,7 @@ func (client *PercentileSourceTargetClient) listMetricsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-15-preview")
+	reqQP.Set("api-version", "2022-08-15")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

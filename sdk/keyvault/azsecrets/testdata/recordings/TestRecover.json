@@ -1,13 +1,13 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakevault/secrets/secret422508987?api-version=7.3",
+      "RequestUri": "https://fakevault.local/secrets/secret422508987?api-version=7.3",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-azsecrets/v0.8.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
       },
       "RequestBody": null,
       "StatusCode": 401,
@@ -15,16 +15,16 @@
         "Cache-Control": "no-cache",
         "Content-Length": "97",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 20 Jun 2022 17:05:51 GMT",
+        "Date": "Fri, 02 Sep 2022 22:36:28 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://vault.azure.net\u0022",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://local\u0022",
         "X-Content-Type-Options": "nosniff",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "eastus",
-        "x-ms-keyvault-service-version": "1.9.422.1",
-        "x-ms-request-id": "aad41d2a-0cff-489c-8fb8-b3e25e0d6f19"
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.501.1",
+        "x-ms-request-id": "9c21a62a-24af-4452-8bf3-5660f115513e"
       },
       "ResponseBody": {
         "error": {
@@ -34,7 +34,7 @@
       }
     },
     {
-      "RequestUri": "https://fakevault/secrets/secret422508987?api-version=7.3",
+      "RequestUri": "https://fakevault.local/secrets/secret422508987?api-version=7.3",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -42,7 +42,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "26",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azsecrets/v0.8.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
       },
       "RequestBody": {
         "value": "value422508987"
@@ -50,77 +50,77 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "250",
+        "Content-Length": "247",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 20 Jun 2022 17:05:53 GMT",
+        "Date": "Fri, 02 Sep 2022 22:36:28 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "eastus",
-        "x-ms-keyvault-service-version": "1.9.422.1",
-        "x-ms-request-id": "9862b2b5-b548-4a46-999d-378eb69695c9"
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.501.1",
+        "x-ms-request-id": "42666853-c42a-4b57-8842-625173ee2dff"
       },
       "ResponseBody": {
         "value": "value422508987",
-        "id": "https://fakevault/secrets/secret422508987/c6aa4c0ad3fe40238db205cf9629517a",
+        "id": "https://fakevault.local/secrets/secret422508987/c36751ca0b954ff28c313f9b3c39befb",
         "attributes": {
           "enabled": true,
-          "created": 1655744754,
-          "updated": 1655744754,
-          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "recoverableDays": 7
+          "created": 1662158189,
+          "updated": 1662158189,
+          "recoveryLevel": "Recoverable\u002BPurgeable",
+          "recoverableDays": 90
         }
       }
     },
     {
-      "RequestUri": "https://fakevault/secrets/secret422508987?api-version=7.3",
+      "RequestUri": "https://fakevault.local/secrets/secret422508987?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azsecrets/v0.8.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "346",
+        "Content-Length": "349",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 20 Jun 2022 17:05:54 GMT",
+        "Date": "Fri, 02 Sep 2022 22:36:29 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "eastus",
-        "x-ms-keyvault-service-version": "1.9.422.1",
-        "x-ms-request-id": "400845e5-9a49-4e01-999e-934ca25887e9"
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.501.1",
+        "x-ms-request-id": "01da7a01-c73a-4a5a-b69d-9d646ad1c03d"
       },
       "ResponseBody": {
-        "recoveryId": "https://fakevault/deletedsecrets/secret422508987",
-        "deletedDate": 1655744754,
-        "scheduledPurgeDate": 1656349554,
-        "id": "https://fakevault/secrets/secret422508987/c6aa4c0ad3fe40238db205cf9629517a",
+        "recoveryId": "https://fakevault.local/deletedsecrets/secret422508987",
+        "deletedDate": 1662158189,
+        "scheduledPurgeDate": 1669934189,
+        "id": "https://fakevault.local/secrets/secret422508987/c36751ca0b954ff28c313f9b3c39befb",
         "attributes": {
           "enabled": true,
-          "created": 1655744754,
-          "updated": 1655744754,
-          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "recoverableDays": 7
+          "created": 1662158189,
+          "updated": 1662158189,
+          "recoveryLevel": "Recoverable\u002BPurgeable",
+          "recoverableDays": 90
         }
       }
     },
     {
-      "RequestUri": "https://fakevault/deletedsecrets/secret422508987?api-version=7.3",
+      "RequestUri": "https://fakevault.local/deletedsecrets/secret422508987?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azsecrets/v0.8.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
       },
       "RequestBody": null,
       "StatusCode": 404,
@@ -128,15 +128,15 @@
         "Cache-Control": "no-cache",
         "Content-Length": "89",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 20 Jun 2022 17:05:54 GMT",
+        "Date": "Fri, 02 Sep 2022 22:36:29 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "eastus",
-        "x-ms-keyvault-service-version": "1.9.422.1",
-        "x-ms-request-id": "eccc5183-4265-49fb-bbdf-62263e29d3b1"
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.501.1",
+        "x-ms-request-id": "3c827de0-8566-4ae5-9510-4873c78db293"
       },
       "ResponseBody": {
         "error": {
@@ -146,153 +146,89 @@
       }
     },
     {
-      "RequestUri": "https://fakevault/deletedsecrets/secret422508987?api-version=7.3",
+      "RequestUri": "https://fakevault.local/deletedsecrets/secret422508987?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azsecrets/v0.8.0 (go1.18; linux)"
-      },
-      "RequestBody": null,
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "89",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 20 Jun 2022 17:06:03 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "eastus",
-        "x-ms-keyvault-service-version": "1.9.422.1",
-        "x-ms-request-id": "cc9d237a-c03b-42ed-90b3-8bfc5b33f93c"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "SecretNotFound",
-          "message": "Deleted Secret not found: secret422508987"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakevault/deletedsecrets/secret422508987?api-version=7.3",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azsecrets/v0.8.0 (go1.18; linux)"
-      },
-      "RequestBody": null,
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "89",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 20 Jun 2022 17:06:13 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "eastus",
-        "x-ms-keyvault-service-version": "1.9.422.1",
-        "x-ms-request-id": "d8955394-5073-4946-88b1-7ca543fd11b6"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "SecretNotFound",
-          "message": "Deleted Secret not found: secret422508987"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakevault/deletedsecrets/secret422508987?api-version=7.3",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azsecrets/v0.8.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "346",
+        "Content-Length": "349",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 20 Jun 2022 17:06:24 GMT",
+        "Date": "Fri, 02 Sep 2022 22:36:39 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "eastus",
-        "x-ms-keyvault-service-version": "1.9.422.1",
-        "x-ms-request-id": "b7ca2856-9953-40d3-aefc-d0a1b7f5ff0d"
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.501.1",
+        "x-ms-request-id": "a0db9a18-7776-4a73-b093-a56fa1af703c"
       },
       "ResponseBody": {
-        "recoveryId": "https://fakevault/deletedsecrets/secret422508987",
-        "deletedDate": 1655744754,
-        "scheduledPurgeDate": 1656349554,
-        "id": "https://fakevault/secrets/secret422508987/c6aa4c0ad3fe40238db205cf9629517a",
+        "recoveryId": "https://fakevault.local/deletedsecrets/secret422508987",
+        "deletedDate": 1662158189,
+        "scheduledPurgeDate": 1669934189,
+        "id": "https://fakevault.local/secrets/secret422508987/c36751ca0b954ff28c313f9b3c39befb",
         "attributes": {
           "enabled": true,
-          "created": 1655744754,
-          "updated": 1655744754,
-          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "recoverableDays": 7
+          "created": 1662158189,
+          "updated": 1662158189,
+          "recoveryLevel": "Recoverable\u002BPurgeable",
+          "recoverableDays": 90
         }
       }
     },
     {
-      "RequestUri": "https://fakevault/deletedsecrets/secret422508987/recover?api-version=7.3",
+      "RequestUri": "https://fakevault.local/deletedsecrets/secret422508987/recover?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-azsecrets/v0.8.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "225",
+        "Content-Length": "222",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 20 Jun 2022 17:06:24 GMT",
+        "Date": "Fri, 02 Sep 2022 22:36:39 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "eastus",
-        "x-ms-keyvault-service-version": "1.9.422.1",
-        "x-ms-request-id": "492f60b1-e74b-4c41-ba38-16f847820a2c"
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.501.1",
+        "x-ms-request-id": "9cb1e3d2-308e-4887-b7e0-e3d29857349b"
       },
       "ResponseBody": {
-        "id": "https://fakevault/secrets/secret422508987/c6aa4c0ad3fe40238db205cf9629517a",
+        "id": "https://fakevault.local/secrets/secret422508987/c36751ca0b954ff28c313f9b3c39befb",
         "attributes": {
           "enabled": true,
-          "created": 1655744754,
-          "updated": 1655744754,
-          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "recoverableDays": 7
+          "created": 1662158189,
+          "updated": 1662158189,
+          "recoveryLevel": "Recoverable\u002BPurgeable",
+          "recoverableDays": 90
         }
       }
     },
     {
-      "RequestUri": "https://fakevault/secrets/secret422508987/?api-version=7.3",
+      "RequestUri": "https://fakevault.local/secrets/secret422508987/?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azsecrets/v0.8.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
       },
       "RequestBody": null,
       "StatusCode": 404,
@@ -300,15 +236,15 @@
         "Cache-Control": "no-cache",
         "Content-Length": "312",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 20 Jun 2022 17:06:24 GMT",
+        "Date": "Fri, 02 Sep 2022 22:36:39 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "eastus",
-        "x-ms-keyvault-service-version": "1.9.422.1",
-        "x-ms-request-id": "ffe65d55-b7f4-4c33-9f79-c95ff219803e"
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.501.1",
+        "x-ms-request-id": "6e71d124-9df2-4e85-b388-24c4367fe6ed"
       },
       "ResponseBody": {
         "error": {
@@ -318,142 +254,78 @@
       }
     },
     {
-      "RequestUri": "https://fakevault/secrets/secret422508987/?api-version=7.3",
+      "RequestUri": "https://fakevault.local/secrets/secret422508987/?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azsecrets/v0.8.0 (go1.18; linux)"
-      },
-      "RequestBody": null,
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "312",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 20 Jun 2022 17:06:34 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "eastus",
-        "x-ms-keyvault-service-version": "1.9.422.1",
-        "x-ms-request-id": "5bccc018-cefd-46e5-a7cf-b0bb40b7719b"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "SecretNotFound",
-          "message": "A secret with (name/id) secret422508987 was not found in this key vault. If you recently deleted this secret you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakevault/secrets/secret422508987/?api-version=7.3",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azsecrets/v0.8.0 (go1.18; linux)"
-      },
-      "RequestBody": null,
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "312",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 20 Jun 2022 17:06:44 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "eastus",
-        "x-ms-keyvault-service-version": "1.9.422.1",
-        "x-ms-request-id": "d0c10286-f0ac-442d-b8a1-39e6297c72ce"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "SecretNotFound",
-          "message": "A secret with (name/id) secret422508987 was not found in this key vault. If you recently deleted this secret you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakevault/secrets/secret422508987/?api-version=7.3",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azsecrets/v0.8.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "250",
+        "Content-Length": "247",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 20 Jun 2022 17:06:54 GMT",
+        "Date": "Fri, 02 Sep 2022 22:36:49 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "eastus",
-        "x-ms-keyvault-service-version": "1.9.422.1",
-        "x-ms-request-id": "b65a8f41-9a68-4029-90a9-559722021849"
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.501.1",
+        "x-ms-request-id": "2598fd2a-fb24-4fbf-860b-72086cf024cb"
       },
       "ResponseBody": {
         "value": "value422508987",
-        "id": "https://fakevault/secrets/secret422508987/c6aa4c0ad3fe40238db205cf9629517a",
+        "id": "https://fakevault.local/secrets/secret422508987/c36751ca0b954ff28c313f9b3c39befb",
         "attributes": {
           "enabled": true,
-          "created": 1655744754,
-          "updated": 1655744754,
-          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "recoverableDays": 7
+          "created": 1662158189,
+          "updated": 1662158189,
+          "recoveryLevel": "Recoverable\u002BPurgeable",
+          "recoverableDays": 90
         }
       }
     },
     {
-      "RequestUri": "https://fakevault/secrets/secret422508987?api-version=7.3",
+      "RequestUri": "https://fakevault.local/secrets/secret422508987?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azsecrets/v0.8.0 (go1.18; linux)"
+        "User-Agent": "azsdk-go-azsecrets/v0.10.0 (go1.19; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "346",
+        "Content-Length": "349",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 20 Jun 2022 17:06:54 GMT",
+        "Date": "Fri, 02 Sep 2022 22:36:49 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "eastus",
-        "x-ms-keyvault-service-version": "1.9.422.1",
-        "x-ms-request-id": "bd753f90-edc7-4d22-9dc8-53a6a1b1a73b"
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.501.1",
+        "x-ms-request-id": "8a6cb9a6-dce1-421a-aa33-b72bcb293200"
       },
       "ResponseBody": {
-        "recoveryId": "https://fakevault/deletedsecrets/secret422508987",
-        "deletedDate": 1655744815,
-        "scheduledPurgeDate": 1656349615,
-        "id": "https://fakevault/secrets/secret422508987/c6aa4c0ad3fe40238db205cf9629517a",
+        "recoveryId": "https://fakevault.local/deletedsecrets/secret422508987",
+        "deletedDate": 1662158209,
+        "scheduledPurgeDate": 1669934209,
+        "id": "https://fakevault.local/secrets/secret422508987/c36751ca0b954ff28c313f9b3c39befb",
         "attributes": {
           "enabled": true,
-          "created": 1655744754,
-          "updated": 1655744754,
-          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-          "recoverableDays": 7
+          "created": 1662158189,
+          "updated": 1662158189,
+          "recoveryLevel": "Recoverable\u002BPurgeable",
+          "recoverableDays": 90
         }
       }
     }

@@ -269,7 +269,6 @@ func (client *FleetMembersClient) getHandleResponse(resp *http.Response) (FleetM
 }
 
 // NewListByFleetPager - Lists the members of a fleet.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-07-02-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // fleetName - The name of the Fleet resource.

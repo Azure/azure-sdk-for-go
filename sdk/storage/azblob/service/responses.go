@@ -16,6 +16,9 @@ type CreateContainerResponse = generated.ContainerClientCreateResponse
 // DeleteContainerResponse contains the response from method container.Client.Delete
 type DeleteContainerResponse = generated.ContainerClientDeleteResponse
 
+// RestoreContainerResponse contains the response from method container.Client.Restore
+type RestoreContainerResponse = generated.ContainerClientRestoreResponse
+
 // GetAccountInfoResponse contains the response from method Client.GetAccountInfo.
 type GetAccountInfoResponse = generated.ServiceClientGetAccountInfoResponse
 
@@ -33,3 +36,6 @@ type GetStatisticsResponse = generated.ServiceClientGetStatisticsResponse
 
 // FilterBlobsResponse contains the response from method Client.FilterBlobs.
 type FilterBlobsResponse = generated.ServiceClientFilterBlobsResponse
+
+// GetUserDelegationKeyResponse contains the response from method ServiceClient.GetUserDelegationKey.
+type GetUserDelegationKeyResponse = generated.ServiceClientGetUserDelegationKeyResponse

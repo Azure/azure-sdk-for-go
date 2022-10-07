@@ -7,8 +7,28 @@
 package bloberror
 
 import (
+	"errors"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
+
+// HasCode returns true if the provided error is an *azcore.ResponseError
+// with its ErrorCode field equal to one of the specified Codes.
+func HasCode(err error, codes ...Code) bool {
+	var respErr *azcore.ResponseError
+	if !errors.As(err, &respErr) {
+		return false
+	}
+
+	for _, code := range codes {
+		if respErr.ErrorCode == string(code) {
+			return true
+		}
+	}
+
+	return false
+}
 
 // Code - Error codes returned by the service
 type Code = generated.StorageErrorCode

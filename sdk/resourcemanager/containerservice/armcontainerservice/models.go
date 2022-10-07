@@ -121,6 +121,13 @@ type AgentPoolUpgradeSettings struct {
 	MaxSurge *string `json:"maxSurge,omitempty"`
 }
 
+// AgentPoolWindowsProfile - The Windows agent pool's specific profile.
+type AgentPoolWindowsProfile struct {
+	// The default value is false. Outbound NAT can only be disabled if the cluster outboundType is NAT Gateway and the Windows
+	// agent pool does not have node public IP enabled.
+	DisableOutboundNat *bool `json:"disableOutboundNat,omitempty"`
+}
+
 // AgentPoolsClientAbortLatestOperationOptions contains the optional parameters for the AgentPoolsClient.AbortLatestOperation
 // method.
 type AgentPoolsClientAbortLatestOperationOptions struct {
@@ -170,24 +177,6 @@ type AgentPoolsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AzureEntityResource - The resource model definition for an Azure Resource Manager resource with an etag.
-type AzureEntityResource struct {
-	// READ-ONLY; Resource Etag.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
 // AzureKeyVaultKms - Azure Key Vault key management service settings for the security profile.
 type AzureKeyVaultKms struct {
 	// Whether to enable Azure Key Vault key management service. The default is false.
@@ -207,27 +196,6 @@ type AzureKeyVaultKms struct {
 	// Resource ID of key vault. When keyVaultNetworkAccess is Private, this field is required and must be a valid resource ID.
 	// When keyVaultNetworkAccess is Public, leave the field empty.
 	KeyVaultResourceID *string `json:"keyVaultResourceId,omitempty"`
-}
-
-// CloudError - An error response from the Container service.
-type CloudError struct {
-	// Details about the error.
-	Error *CloudErrorBody `json:"error,omitempty"`
-}
-
-// CloudErrorBody - An error response from the Container service.
-type CloudErrorBody struct {
-	// An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
-	Code *string `json:"code,omitempty"`
-
-	// A list of additional details about the error.
-	Details []*CloudErrorBody `json:"details,omitempty"`
-
-	// A message describing the error, intended to be suitable for display in a user interface.
-	Message *string `json:"message,omitempty"`
-
-	// The target of the particular error. For example, the name of the property in error.
-	Target *string `json:"target,omitempty"`
 }
 
 // CommandResultProperties - The results of a run command
@@ -272,12 +240,6 @@ type CredentialResults struct {
 	Kubeconfigs []*CredentialResult `json:"kubeconfigs,omitempty" azure:"ro"`
 }
 
-// DiagnosticsProfile - Profile for diagnostics on the container service cluster.
-type DiagnosticsProfile struct {
-	// REQUIRED; Profile for diagnostics on the container service VMs.
-	VMDiagnostics *VMDiagnostics `json:"vmDiagnostics,omitempty"`
-}
-
 // EndpointDependency - A domain name that AKS agent nodes are reaching at.
 type EndpointDependency struct {
 	// The domain name of the dependency.
@@ -300,40 +262,6 @@ type EndpointDetail struct {
 
 	// The protocol used for connection
 	Protocol *string `json:"protocol,omitempty"`
-}
-
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
-
-	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ErrorDetail - The error detail.
-type ErrorDetail struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.).
-type ErrorResponse struct {
-	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // ExtendedLocation - The complex type of the extended location.
@@ -543,6 +471,22 @@ type FleetsClientUpdateOptions struct {
 	IfMatch *string
 	// The properties of a Fleet to update.
 	Parameters *FleetPatch
+}
+
+// GuardrailsProfile - The Guardrails profile.
+type GuardrailsProfile struct {
+	// REQUIRED; The guardrails level to be used. By default, Guardrails is enabled for all namespaces except those that AKS excludes
+	// via systemExcludedNamespaces
+	Level *Level `json:"level,omitempty"`
+
+	// REQUIRED; The version of constraints to use
+	Version *string `json:"version,omitempty"`
+
+	// List of namespaces excluded from guardrails checks
+	ExcludedNamespaces []*string `json:"excludedNamespaces,omitempty"`
+
+	// READ-ONLY; List of namespaces specified by AKS to be excluded from Guardrails
+	SystemExcludedNamespaces []*string `json:"systemExcludedNamespaces,omitempty" azure:"ro"`
 }
 
 // KubeletConfig - See AKS custom node configuration [https://docs.microsoft.com/azure/aks/custom-node-configuration] for
@@ -968,6 +912,9 @@ type ManagedClusterAgentPoolProfile struct {
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
 	VnetSubnetID *string `json:"vnetSubnetID,omitempty"`
 
+	// The Windows agent pool's specific profile.
+	WindowsProfile *AgentPoolWindowsProfile `json:"windowsProfile,omitempty"`
+
 	// Determines the type of workload a node can run.
 	WorkloadRuntime *WorkloadRuntime `json:"workloadRuntime,omitempty"`
 
@@ -1137,6 +1084,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
 	VnetSubnetID *string `json:"vnetSubnetID,omitempty"`
 
+	// The Windows agent pool's specific profile.
+	WindowsProfile *AgentPoolWindowsProfile `json:"windowsProfile,omitempty"`
+
 	// Determines the type of workload a node can run.
 	WorkloadRuntime *WorkloadRuntime `json:"workloadRuntime,omitempty"`
 
@@ -1245,6 +1195,9 @@ type ManagedClusterLoadBalancerProfile struct {
 	// The desired number of allocated SNAT ports per VM. Allowed values are in the range of 0 to 64000 (inclusive). The default
 	// value is 0 which results in Azure dynamically allocating ports.
 	AllocatedOutboundPorts *int32 `json:"allocatedOutboundPorts,omitempty"`
+
+	// The type of the managed inbound Load Balancer BackendPool.
+	BackendPoolType *BackendPoolType `json:"backendPoolType,omitempty"`
 
 	// The effective outbound IP resources of the cluster load balancer.
 	EffectiveOutboundIPs []*ResourceReference `json:"effectiveOutboundIPs,omitempty"`
@@ -1472,6 +1425,9 @@ type ManagedClusterProperties struct {
 
 	// This cannot be updated once the Managed Cluster has been created.
 	FqdnSubdomain *string `json:"fqdnSubdomain,omitempty"`
+
+	// The guardrails profile holds all the guardrails information for a given cluster
+	GuardrailsProfile *GuardrailsProfile `json:"guardrailsProfile,omitempty"`
 
 	// Configurations for provisioning the cluster with HTTP proxy servers.
 	HTTPProxyConfig *ManagedClusterHTTPProxyConfig `json:"httpProxyConfig,omitempty"`
@@ -2061,35 +2017,6 @@ type ManagedServiceIdentityUserAssignedIdentitiesValue struct {
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 }
 
-// MasterProfile - Profile for the container service master.
-type MasterProfile struct {
-	// REQUIRED; DNS prefix to be used to create the FQDN for the master pool.
-	DNSPrefix *string `json:"dnsPrefix,omitempty"`
-
-	// REQUIRED; Size of agent VMs.
-	VMSize *ContainerServiceVMSizeTypes `json:"vmSize,omitempty"`
-
-	// Number of masters (VMs) in the container service cluster. Allowed values are 1, 3, and 5. The default value is 1.
-	Count *Count `json:"count,omitempty"`
-
-	// FirstConsecutiveStaticIP used to specify the first static ip of masters.
-	FirstConsecutiveStaticIP *string `json:"firstConsecutiveStaticIP,omitempty"`
-
-	// OS Disk Size in GB to be used to specify the disk size for every machine in this master/agent pool. If you specify 0, it
-	// will apply the default osDisk size according to the vmSize specified.
-	OSDiskSizeGB *int32 `json:"osDiskSizeGB,omitempty"`
-
-	// Storage profile specifies what kind of storage used. Choose from StorageAccount and ManagedDisks. Leave it empty, we will
-	// choose for you based on the orchestrator choice.
-	StorageProfile *ContainerServiceStorageProfileTypes `json:"storageProfile,omitempty"`
-
-	// VNet SubnetID specifies the VNet's subnet identifier.
-	VnetSubnetID *string `json:"vnetSubnetID,omitempty"`
-
-	// READ-ONLY; FQDN for the master pool.
-	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
-}
-
 // NetworkProfile - Profile of network configuration.
 type NetworkProfile struct {
 	// An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified
@@ -2103,6 +2030,12 @@ type NetworkProfile struct {
 	// IP families are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is IPv4. For
 	// dual-stack, the expected values are IPv4 and IPv6.
 	IPFamilies []*IPFamily `json:"ipFamilies,omitempty"`
+
+	// Holds configuration customizations for kube-proxy. Any values not defined will use the kube-proxy defaulting behavior.
+	// See https://v
+	// .docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/ where is represented by a - string. Kubernetes
+	// version 1.23 would be '1-23'.
+	KubeProxyConfig *NetworkProfileKubeProxyConfig `json:"kubeProxyConfig,omitempty"`
 
 	// Profile of the cluster load balancer.
 	LoadBalancerProfile *ManagedClusterLoadBalancerProfile `json:"loadBalancerProfile,omitempty"`
@@ -2161,6 +2094,38 @@ type NetworkProfileForSnapshot struct {
 
 	// networkPolicy for managed cluster snapshot.
 	NetworkPolicy *NetworkPolicy `json:"networkPolicy,omitempty"`
+}
+
+// NetworkProfileKubeProxyConfig - Holds configuration customizations for kube-proxy. Any values not defined will use the
+// kube-proxy defaulting behavior. See https://v
+// .docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/ where is represented by a - string. Kubernetes
+// version 1.23 would be '1-23'.
+type NetworkProfileKubeProxyConfig struct {
+	// Whether to enable on kube-proxy on the cluster (if no 'kubeProxyConfig' exists, kube-proxy is enabled in AKS by default
+	// without these customizations).
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Holds configuration customizations for IPVS. May only be specified if 'mode' is set to 'IPVS'.
+	IpvsConfig *NetworkProfileKubeProxyConfigIpvsConfig `json:"ipvsConfig,omitempty"`
+
+	// Specify which proxy mode to use ('IPTABLES' or 'IPVS')
+	Mode *Mode `json:"mode,omitempty"`
+}
+
+// NetworkProfileKubeProxyConfigIpvsConfig - Holds configuration customizations for IPVS. May only be specified if 'mode'
+// is set to 'IPVS'.
+type NetworkProfileKubeProxyConfigIpvsConfig struct {
+	// IPVS scheduler, for more information please see http://www.linuxvirtualserver.org/docs/scheduling.html.
+	Scheduler *IpvsScheduler `json:"scheduler,omitempty"`
+
+	// The timeout value used for IPVS TCP sessions after receiving a FIN in seconds. Must be a positive integer value.
+	TCPFinTimeoutSeconds *int32 `json:"tcpFinTimeoutSeconds,omitempty"`
+
+	// The timeout value used for idle IPVS TCP sessions in seconds. Must be a positive integer value.
+	TCPTimeoutSeconds *int32 `json:"tcpTimeoutSeconds,omitempty"`
+
+	// The timeout value used for IPVS UDP packets in seconds. Must be a positive integer value.
+	UDPTimeoutSeconds *int32 `json:"udpTimeoutSeconds,omitempty"`
 }
 
 // OSOptionProfile - The OS option profile.
@@ -2366,21 +2331,6 @@ type ResolvePrivateLinkServiceIDClientPOSTOptions struct {
 	// placeholder for future optional parameters
 }
 
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
 // ResourceReference - A reference to an Azure resource.
 type ResourceReference struct {
 	// The fully qualified Azure resource id.
@@ -2512,18 +2462,6 @@ type SnapshotsClientListOptions struct {
 // SnapshotsClientUpdateTagsOptions contains the optional parameters for the SnapshotsClient.UpdateTags method.
 type SnapshotsClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
-}
-
-// SubResource - Reference to another subresource.
-type SubResource struct {
-	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource that is unique within a resource group. This name can be used to access the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SysctlConfig - Sysctl settings for Linux agent nodes.
@@ -2660,28 +2598,6 @@ type TimeSpan struct {
 	Start *time.Time `json:"start,omitempty"`
 }
 
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
-// and a 'location'
-type TrackedResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
-
-	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
 // TrustedAccessRole - Trusted access role definition.
 type TrustedAccessRole struct {
 	// READ-ONLY; Name of role, name is unique under a source resource type
@@ -2799,15 +2715,6 @@ type UserAssignedIdentity struct {
 
 	// The resource ID of the user assigned identity.
 	ResourceID *string `json:"resourceId,omitempty"`
-}
-
-// VMDiagnostics - Profile for diagnostics on the container service VMs.
-type VMDiagnostics struct {
-	// REQUIRED; Whether the VM diagnostic agent is provisioned on the VM.
-	Enabled *bool `json:"enabled,omitempty"`
-
-	// READ-ONLY; The URI of the storage account where diagnostics are stored.
-	StorageURI *string `json:"storageUri,omitempty" azure:"ro"`
 }
 
 // WindowsGmsaProfile - Windows gMSA Profile in the managed cluster.

@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net"
 	"net/url"
 	"strconv"
 	"strings"
@@ -37,46 +38,6 @@ const (
 	HeaderIfUnmodifiedSince = "If-Unmodified-Since"
 	HeaderRange             = "Range"
 )
-
-const CountToEnd = 0
-
-// HTTPRange defines a range of bytes within an HTTP resource, starting at offset and
-// ending at offset+count. A zero-value HttpRange indicates the entire resource. An HttpRange
-// which has an offset but na zero value count indicates from the offset to the resource's end.
-type HTTPRange struct {
-	Offset int64
-	Count  int64
-}
-
-func (r HTTPRange) Format() *string {
-	if r.Offset == 0 && r.Count == 0 { // Do common case first for performance
-		return nil // No specified range
-	}
-	endOffset := "" // if count == CountToEnd (0)
-	if r.Count > 0 {
-		endOffset = strconv.FormatInt((r.Offset+r.Count)-1, 10)
-	}
-	dataRange := fmt.Sprintf("bytes=%v-%s", r.Offset, endOffset)
-	return &dataRange
-}
-
-func GetSourceRange(offset, count *int64) *string {
-	if offset == nil && count == nil {
-		return nil
-	}
-	newOffset := int64(0)
-	newCount := int64(CountToEnd)
-
-	if offset != nil {
-		newOffset = *offset
-	}
-
-	if count != nil {
-		newCount = *count
-	}
-
-	return (&HTTPRange{Offset: newOffset, Count: newCount}).Format()
-}
 
 // CopyOptions returns a zero-value T if opts is nil.
 // If opts is not nil, a copy is made and its address returned.
@@ -255,4 +216,23 @@ func GetClientOptions[T any](o *T) *T {
 		return new(T)
 	}
 	return o
+}
+
+// IsIPEndpointStyle checkes if URL's host is IP, in this case the storage account endpoint will be composed as:
+// http(s)://IP(:port)/storageaccount/container/...
+// As url's Host property, host could be both host or host:port
+func IsIPEndpointStyle(host string) bool {
+	if host == "" {
+		return false
+	}
+	if h, _, err := net.SplitHostPort(host); err == nil {
+		host = h
+	}
+	// For IPv6, there could be case where SplitHostPort fails for cannot finding port.
+	// In this case, eliminate the '[' and ']' in the URL.
+	// For details about IPv6 URL, please refer to https://tools.ietf.org/html/rfc2732
+	if host[0] == '[' && host[len(host)-1] == ']' {
+		host = host[1 : len(host)-1]
+	}
+	return net.ParseIP(host) != nil
 }

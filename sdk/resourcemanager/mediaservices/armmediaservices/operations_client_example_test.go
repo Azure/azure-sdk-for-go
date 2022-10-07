@@ -27,8 +27,7 @@ func ExampleOperationsClient_List() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.List(ctx,
-		nil)
+	res, err := client.List(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

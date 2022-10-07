@@ -12,12 +12,14 @@ import (
 	"context"
 	"log"
 
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streaming-locators-list.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/streaming-locators-list.json
 func ExampleStreamingLocatorsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,12 +30,10 @@ func ExampleStreamingLocatorsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("contoso",
-		"contosomedia",
-		&armmediaservices.StreamingLocatorsClientListOptions{Filter: nil,
-			Top:     nil,
-			Orderby: nil,
-		})
+	pager := client.NewListPager("contoso", "contosomedia", &armmediaservices.StreamingLocatorsClientListOptions{Filter: nil,
+		Top:     nil,
+		Orderby: nil,
+	})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -46,7 +46,7 @@ func ExampleStreamingLocatorsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streaming-locators-get-by-name.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/streaming-locators-get-by-name.json
 func ExampleStreamingLocatorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,11 +57,7 @@ func ExampleStreamingLocatorsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"contoso",
-		"contosomedia",
-		"clearStreamingLocator",
-		nil)
+	res, err := client.Get(ctx, "contoso", "contosomedia", "clearStreamingLocator", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -69,8 +65,8 @@ func ExampleStreamingLocatorsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streaming-locators-create-clear.json
-func ExampleStreamingLocatorsClient_Create() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/streaming-locators-create-clear.json
+func ExampleStreamingLocatorsClient_Create_createsAStreamingLocatorWithClearStreaming() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -80,23 +76,81 @@ func ExampleStreamingLocatorsClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Create(ctx,
-		"contoso",
-		"contosomedia",
-		"UserCreatedClearStreamingLocator",
-		armmediaservices.StreamingLocator{
-			Properties: &armmediaservices.StreamingLocatorProperties{
-				AssetName:           to.Ptr("ClimbingMountRainier"),
-				StreamingPolicyName: to.Ptr("clearStreamingPolicy"),
-			},
+	_, err = client.Create(ctx, "contoso", "contosomedia", "UserCreatedClearStreamingLocator", armmediaservices.StreamingLocator{
+		Properties: &armmediaservices.StreamingLocatorProperties{
+			AssetName:           to.Ptr("ClimbingMountRainier"),
+			StreamingPolicyName: to.Ptr("clearStreamingPolicy"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streaming-locators-delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/streaming-locators-create-secure.json
+func ExampleStreamingLocatorsClient_Create_createsAStreamingLocatorWithSecureStreaming() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmediaservices.NewStreamingLocatorsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = client.Create(ctx, "contoso", "contosomedia", "UserCreatedSecureStreamingLocator", armmediaservices.StreamingLocator{
+		Properties: &armmediaservices.StreamingLocatorProperties{
+			AssetName:           to.Ptr("ClimbingMountRainier"),
+			EndTime:             to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2028-12-31T23:59:59.9999999Z"); return t }()),
+			StartTime:           to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-01T00:00:00Z"); return t }()),
+			StreamingPolicyName: to.Ptr("secureStreamingPolicy"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/streaming-locators-create-secure-userDefinedContentKeys.json
+func ExampleStreamingLocatorsClient_Create_createsAStreamingLocatorWithUserDefinedContentKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmediaservices.NewStreamingLocatorsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = client.Create(ctx, "contoso", "contosomedia", "UserCreatedSecureStreamingLocatorWithUserDefinedContentKeys", armmediaservices.StreamingLocator{
+		Properties: &armmediaservices.StreamingLocatorProperties{
+			AssetName: to.Ptr("ClimbingMountRainier"),
+			ContentKeys: []*armmediaservices.StreamingLocatorContentKey{
+				{
+					ID:                              to.Ptr("60000000-0000-0000-0000-000000000001"),
+					LabelReferenceInStreamingPolicy: to.Ptr("aesDefaultKey"),
+					Value:                           to.Ptr("1UqLohAfWsEGkULYxHjYZg=="),
+				},
+				{
+					ID:                              to.Ptr("60000000-0000-0000-0000-000000000004"),
+					LabelReferenceInStreamingPolicy: to.Ptr("cencDefaultKey"),
+					Value:                           to.Ptr("4UqLohAfWsEGkULYxHjYZg=="),
+				},
+				{
+					ID:                              to.Ptr("60000000-0000-0000-0000-000000000007"),
+					LabelReferenceInStreamingPolicy: to.Ptr("cbcsDefaultKey"),
+					Value:                           to.Ptr("7UqLohAfWsEGkULYxHjYZg=="),
+				}},
+			StreamingLocatorID:  to.Ptr("90000000-0000-0000-0000-00000000000A"),
+			StreamingPolicyName: to.Ptr("secureStreamingPolicy"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/streaming-locators-delete.json
 func ExampleStreamingLocatorsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,17 +161,13 @@ func ExampleStreamingLocatorsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"contoso",
-		"contosomedia",
-		"clearStreamingLocator",
-		nil)
+	_, err = client.Delete(ctx, "contoso", "contosomedia", "clearStreamingLocator", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streaming-locators-list-content-keys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/streaming-locators-list-content-keys.json
 func ExampleStreamingLocatorsClient_ListContentKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,11 +178,7 @@ func ExampleStreamingLocatorsClient_ListContentKeys() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListContentKeys(ctx,
-		"contoso",
-		"contosomedia",
-		"secureStreamingLocator",
-		nil)
+	res, err := client.ListContentKeys(ctx, "contoso", "contosomedia", "secureStreamingLocator", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -140,8 +186,8 @@ func ExampleStreamingLocatorsClient_ListContentKeys() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/streaming-locators-list-paths-streaming-and-download.json
-func ExampleStreamingLocatorsClient_ListPaths() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/streaming-locators-list-paths-streaming-and-download.json
+func ExampleStreamingLocatorsClient_ListPaths_listPathsWhichHasStreamingPathsAndDownloadPaths() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -151,11 +197,26 @@ func ExampleStreamingLocatorsClient_ListPaths() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListPaths(ctx,
-		"contoso",
-		"contosomedia",
-		"clearStreamingLocator",
-		nil)
+	res, err := client.ListPaths(ctx, "contoso", "contosomedia", "clearStreamingLocator", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/streaming-locators-list-paths-streaming-only.json
+func ExampleStreamingLocatorsClient_ListPaths_listPathsWhichHasStreamingPathsOnly() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmediaservices.NewStreamingLocatorsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.ListPaths(ctx, "contoso", "contosomedia", "secureStreamingLocator", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -11,7 +11,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "armcontainerservice"
-	moduleVersion = "v2.1.0-beta.1"
+	moduleVersion = "v2.2.0-beta.1"
 )
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent
@@ -49,6 +49,24 @@ func PossibleAgentPoolTypeValues() []AgentPoolType {
 	return []AgentPoolType{
 		AgentPoolTypeAvailabilitySet,
 		AgentPoolTypeVirtualMachineScaleSets,
+	}
+}
+
+// BackendPoolType - The type of the managed inbound Load Balancer BackendPool.
+type BackendPoolType string
+
+const (
+	// BackendPoolTypeNodeIP - The type of the managed inbound Load Balancer BackendPool. https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#configure-load-balancer-backend.
+	BackendPoolTypeNodeIP BackendPoolType = "NodeIP"
+	// BackendPoolTypeNodeIPConfiguration - The type of the managed inbound Load Balancer BackendPool. https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#configure-load-balancer-backend.
+	BackendPoolTypeNodeIPConfiguration BackendPoolType = "NodeIPConfiguration"
+)
+
+// PossibleBackendPoolTypeValues returns the possible values for the BackendPoolType const type.
+func PossibleBackendPoolTypeValues() []BackendPoolType {
+	return []BackendPoolType{
+		BackendPoolTypeNodeIP,
+		BackendPoolTypeNodeIPConfiguration,
 	}
 }
 
@@ -671,6 +689,24 @@ func PossibleIPFamilyValues() []IPFamily {
 	}
 }
 
+// IpvsScheduler - IPVS scheduler, for more information please see http://www.linuxvirtualserver.org/docs/scheduling.html.
+type IpvsScheduler string
+
+const (
+	// IpvsSchedulerLeastConnection - Least Connection
+	IpvsSchedulerLeastConnection IpvsScheduler = "LeastConnection"
+	// IpvsSchedulerRoundRobin - Round Robin
+	IpvsSchedulerRoundRobin IpvsScheduler = "RoundRobin"
+)
+
+// PossibleIpvsSchedulerValues returns the possible values for the IpvsScheduler const type.
+func PossibleIpvsSchedulerValues() []IpvsScheduler {
+	return []IpvsScheduler{
+		IpvsSchedulerLeastConnection,
+		IpvsSchedulerRoundRobin,
+	}
+}
+
 // KeyVaultNetworkAccessTypes - Network access of key vault. The possible values are Public and Private. Public means the
 // key vault allows public access from all networks. Private means the key vault disables public access and
 // enables private link. The default value is Public.
@@ -704,6 +740,25 @@ func PossibleKubeletDiskTypeValues() []KubeletDiskType {
 	return []KubeletDiskType{
 		KubeletDiskTypeOS,
 		KubeletDiskTypeTemporary,
+	}
+}
+
+// Level - The guardrails level to be used. By default, Guardrails is enabled for all namespaces except those that AKS excludes
+// via systemExcludedNamespaces
+type Level string
+
+const (
+	LevelEnforcement Level = "Enforcement"
+	LevelOff         Level = "Off"
+	LevelWarning     Level = "Warning"
+)
+
+// PossibleLevelValues returns the possible values for the Level const type.
+func PossibleLevelValues() []Level {
+	return []Level{
+		LevelEnforcement,
+		LevelOff,
+		LevelWarning,
 	}
 }
 
@@ -798,6 +853,24 @@ func PossibleManagedClusterSKUTierValues() []ManagedClusterSKUTier {
 	return []ManagedClusterSKUTier{
 		ManagedClusterSKUTierFree,
 		ManagedClusterSKUTierPaid,
+	}
+}
+
+// Mode - Specify which proxy mode to use ('IPTABLES' or 'IPVS')
+type Mode string
+
+const (
+	// ModeIPTABLES - IPTables proxy mode
+	ModeIPTABLES Mode = "IPTABLES"
+	// ModeIPVS - IPVS proxy mode. Must be using Kubernetes version >= 1.22.
+	ModeIPVS Mode = "IPVS"
+)
+
+// PossibleModeValues returns the possible values for the Mode const type.
+func PossibleModeValues() []Mode {
+	return []Mode{
+		ModeIPTABLES,
+		ModeIPVS,
 	}
 }
 
@@ -911,6 +984,7 @@ type OSSKU string
 
 const (
 	OSSKUCBLMariner  OSSKU = "CBLMariner"
+	OSSKUMariner     OSSKU = "Mariner"
 	OSSKUUbuntu      OSSKU = "Ubuntu"
 	OSSKUWindows2019 OSSKU = "Windows2019"
 	OSSKUWindows2022 OSSKU = "Windows2022"
@@ -920,6 +994,7 @@ const (
 func PossibleOSSKUValues() []OSSKU {
 	return []OSSKU{
 		OSSKUCBLMariner,
+		OSSKUMariner,
 		OSSKUUbuntu,
 		OSSKUWindows2019,
 		OSSKUWindows2022,

@@ -1,0 +1,51 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example/providers/microsoft.insights/metricNamespaces?api-version=2017-12-01-preview\u0026startTime=2022-08-01T15%3A53%3A00Z",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azquery/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json",
+        "Date": "Thu, 08 Sep 2022 00:01:53 GMT",
+        "Request-Context": "appId=cid-v1:b021da79-5252-4375-9df5-2e17c1dcd822",
+        "Server": "Microsoft-IIS/10.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": [
+          "Accept-Encoding",
+          "Accept-Encoding"
+        ],
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "05d5400e-d66c-4033-a03a-2aef97b799c4",
+        "x-ms-ratelimit-remaining-subscription-reads": "11998",
+        "x-ms-request-id": "{05d5400e-d66c-4033-a03a-2aef97b799c4}",
+        "x-ms-routing-request-id": "CENTRALUS:20220908T000153Z:05d5400e-d66c-4033-a03a-2aef97b799c4",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example/providers/microsoft.insights/metricNamespaces/microsoft.appconfiguration-configurationstores",
+            "name": "microsoft.appconfiguration-configurationstores",
+            "type": "Microsoft.Insights/metricNamespaces",
+            "classification": "Platform",
+            "properties": {
+              "metricNamespaceName": "microsoft.appconfiguration/configurationstores"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
+}

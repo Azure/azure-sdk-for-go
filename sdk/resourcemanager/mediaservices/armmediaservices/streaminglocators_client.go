@@ -58,7 +58,7 @@ func NewStreamingLocatorsClient(subscriptionID string, credential azcore.TokenCr
 
 // Create - Create a Streaming Locator in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // streamingLocatorName - The Streaming Locator name.
@@ -104,7 +104,7 @@ func (client *StreamingLocatorsClient) createCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -121,7 +121,7 @@ func (client *StreamingLocatorsClient) createHandleResponse(resp *http.Response)
 
 // Delete - Deletes a Streaming Locator in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // streamingLocatorName - The Streaming Locator name.
@@ -166,7 +166,7 @@ func (client *StreamingLocatorsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -174,7 +174,7 @@ func (client *StreamingLocatorsClient) deleteCreateRequest(ctx context.Context, 
 
 // Get - Get the details of a Streaming Locator in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // streamingLocatorName - The Streaming Locator name.
@@ -218,7 +218,7 @@ func (client *StreamingLocatorsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -235,7 +235,7 @@ func (client *StreamingLocatorsClient) getHandleResponse(resp *http.Response) (S
 
 // NewListPager - Lists the Streaming Locators in the account
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - StreamingLocatorsClientListOptions contains the optional parameters for the StreamingLocatorsClient.List method.
@@ -287,7 +287,7 @@ func (client *StreamingLocatorsClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -313,7 +313,7 @@ func (client *StreamingLocatorsClient) listHandleResponse(resp *http.Response) (
 
 // ListContentKeys - List Content Keys used by this Streaming Locator
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // streamingLocatorName - The Streaming Locator name.
@@ -358,7 +358,7 @@ func (client *StreamingLocatorsClient) listContentKeysCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -375,7 +375,7 @@ func (client *StreamingLocatorsClient) listContentKeysHandleResponse(resp *http.
 
 // ListPaths - List Paths supported by this Streaming Locator
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // streamingLocatorName - The Streaming Locator name.
@@ -420,7 +420,7 @@ func (client *StreamingLocatorsClient) listPathsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -28,7 +28,6 @@ import (
 
 // constants used throughout this package
 const (
-	accessTokenRespSuccess   = `{"access_token": "` + tokenValue + `", "expires_in": 3600}`
 	accessTokenRespMalformed = `{"access_token": 0, "expires_in": 3600}`
 	badTenantID              = "bad_tenant"
 	tenantDiscoveryResponse  = `{
@@ -98,10 +97,13 @@ const (
 		"msgraph_host": "graph.microsoft.com",
 		"rbac_url": "https://pas.windows.net"
 		}`
-	tokenValue = "new_token"
+	tokenExpiresIn = 3600
+	tokenValue     = "new_token"
 )
 
-var instanceDiscoveryResponse = []byte(`{
+var (
+	accessTokenRespSuccess    = fmt.Sprintf(`{"access_token": "%s", "expires_in": %d}`, tokenValue, tokenExpiresIn)
+	instanceDiscoveryResponse = []byte(`{
 	"tenant_discovery_endpoint": "https://login.microsoftonline.com/tenant/v2.0/.well-known/openid-configuration",
 	"api-version": "1.1",
 	"metadata": [
@@ -117,6 +119,7 @@ var instanceDiscoveryResponse = []byte(`{
 		}
 	]
 }`)
+)
 
 // constants for this file
 const (

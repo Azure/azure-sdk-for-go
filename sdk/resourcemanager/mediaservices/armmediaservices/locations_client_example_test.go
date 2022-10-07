@@ -28,13 +28,10 @@ func ExampleLocationsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckNameAvailability(ctx,
-		"japanwest",
-		armmediaservices.CheckNameAvailabilityInput{
-			Name: to.Ptr("contosotv"),
-			Type: to.Ptr("videoAnalyzers"),
-		},
-		nil)
+	res, err := client.CheckNameAvailability(ctx, "japanwest", armmediaservices.CheckNameAvailabilityInput{
+		Name: to.Ptr("contosotv"),
+		Type: to.Ptr("videoAnalyzers"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

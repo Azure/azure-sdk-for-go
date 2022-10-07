@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakemhsm/keys/testcrud2971044356/create?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testcrud2971044356/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -17,7 +17,7 @@
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://local\u0022",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-request-id": "a871df06-f64d-11ec-bfb4-6045bda27deb",
@@ -26,7 +26,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakemhsm/keys/testcrud2971044356/create?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testcrud2971044356/create?api-version=7.3",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -83,7 +83,7 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakemhsm/keys/testcrud2971044356/032e7e9ee2a242872b9a0bc4a74f4ac5",
+          "kid": "https://fakemhsm.local/keys/testcrud2971044356/032e7e9ee2a242872b9a0bc4a74f4ac5",
           "kty": "RSA-HSM",
           "n": "nfU4aWu80mTsInI8uJLk4Eq1JFSFGoBubS3H13BUq1vPpHxzyx3gXwUHmC6xKLGXWmxIv1SJ_SKaerhISonG1j_Mja8laRaSxrOlyVn3_covBtXKSm94QDAGYyyaFWlbE1cjKyvhMj5no5hBkj6UvgxNoZy2uH9ckz1OqrYF2oEWp8Ldl4mMfvJQAePdnWkkj6J2-PbSHUhfQot0SAYTZ-vDe6-eRWrh9cTAX-5APyo8FQ3m9PGvgLlZXxGZ-U4bxnfumZ4RmTpkFyGV05tDZUs1KlQ-V2hkYhdRuYMAdtpSd3ApREROFJa9CH_EErSEhefgn1_hVCGTLFZxjVa6xw"
         },
@@ -93,7 +93,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/testcrud2971044356/?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testcrud2971044356/?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -138,7 +138,7 @@
             "encrypt",
             "wrapKey"
           ],
-          "kid": "https://fakemhsm/keys/testcrud2971044356/032e7e9ee2a242872b9a0bc4a74f4ac5",
+          "kid": "https://fakemhsm.local/keys/testcrud2971044356/032e7e9ee2a242872b9a0bc4a74f4ac5",
           "kty": "RSA-HSM",
           "n": "nfU4aWu80mTsInI8uJLk4Eq1JFSFGoBubS3H13BUq1vPpHxzyx3gXwUHmC6xKLGXWmxIv1SJ_SKaerhISonG1j_Mja8laRaSxrOlyVn3_covBtXKSm94QDAGYyyaFWlbE1cjKyvhMj5no5hBkj6UvgxNoZy2uH9ckz1OqrYF2oEWp8Ldl4mMfvJQAePdnWkkj6J2-PbSHUhfQot0SAYTZ-vDe6-eRWrh9cTAX-5APyo8FQ3m9PGvgLlZXxGZ-U4bxnfumZ4RmTpkFyGV05tDZUs1KlQ-V2hkYhdRuYMAdtpSd3ApREROFJa9CH_EErSEhefgn1_hVCGTLFZxjVa6xw"
         },
@@ -148,7 +148,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/testcrud2971044356/032e7e9ee2a242872b9a0bc4a74f4ac5?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testcrud2971044356/032e7e9ee2a242872b9a0bc4a74f4ac5?api-version=7.3",
       "RequestMethod": "PATCH",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -198,7 +198,7 @@
             "encrypt",
             "decrypt"
           ],
-          "kid": "https://fakemhsm/keys/testcrud2971044356/032e7e9ee2a242872b9a0bc4a74f4ac5",
+          "kid": "https://fakemhsm.local/keys/testcrud2971044356/032e7e9ee2a242872b9a0bc4a74f4ac5",
           "kty": "RSA-HSM",
           "n": "nfU4aWu80mTsInI8uJLk4Eq1JFSFGoBubS3H13BUq1vPpHxzyx3gXwUHmC6xKLGXWmxIv1SJ_SKaerhISonG1j_Mja8laRaSxrOlyVn3_covBtXKSm94QDAGYyyaFWlbE1cjKyvhMj5no5hBkj6UvgxNoZy2uH9ckz1OqrYF2oEWp8Ldl4mMfvJQAePdnWkkj6J2-PbSHUhfQot0SAYTZ-vDe6-eRWrh9cTAX-5APyo8FQ3m9PGvgLlZXxGZ-U4bxnfumZ4RmTpkFyGV05tDZUs1KlQ-V2hkYhdRuYMAdtpSd3ApREROFJa9CH_EErSEhefgn1_hVCGTLFZxjVa6xw"
         },
@@ -208,7 +208,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm/keys/testcrud2971044356?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/keys/testcrud2971044356?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -253,11 +253,11 @@
             "sign",
             "verify"
           ],
-          "kid": "https://fakemhsm/keys/testcrud2971044356/032e7e9ee2a242872b9a0bc4a74f4ac5",
+          "kid": "https://fakemhsm.local/keys/testcrud2971044356/032e7e9ee2a242872b9a0bc4a74f4ac5",
           "kty": "RSA-HSM",
           "n": "nfU4aWu80mTsInI8uJLk4Eq1JFSFGoBubS3H13BUq1vPpHxzyx3gXwUHmC6xKLGXWmxIv1SJ_SKaerhISonG1j_Mja8laRaSxrOlyVn3_covBtXKSm94QDAGYyyaFWlbE1cjKyvhMj5no5hBkj6UvgxNoZy2uH9ckz1OqrYF2oEWp8Ldl4mMfvJQAePdnWkkj6J2-PbSHUhfQot0SAYTZ-vDe6-eRWrh9cTAX-5APyo8FQ3m9PGvgLlZXxGZ-U4bxnfumZ4RmTpkFyGV05tDZUs1KlQ-V2hkYhdRuYMAdtpSd3ApREROFJa9CH_EErSEhefgn1_hVCGTLFZxjVa6xw"
         },
-        "recoveryId": "https://fakemhsm/deletedkeys/testcrud2971044356",
+        "recoveryId": "https://fakemhsm.local/deletedkeys/testcrud2971044356",
         "scheduledPurgeDate": 1656962194,
         "tags": {
           "key": "value"
@@ -265,7 +265,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm/deletedkeys/testcrud2971044356?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/deletedkeys/testcrud2971044356?api-version=7.3",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -311,11 +311,11 @@
             "decrypt",
             "wrapKey"
           ],
-          "kid": "https://fakemhsm/keys/testcrud2971044356/032e7e9ee2a242872b9a0bc4a74f4ac5",
+          "kid": "https://fakemhsm.local/keys/testcrud2971044356/032e7e9ee2a242872b9a0bc4a74f4ac5",
           "kty": "RSA-HSM",
           "n": "nfU4aWu80mTsInI8uJLk4Eq1JFSFGoBubS3H13BUq1vPpHxzyx3gXwUHmC6xKLGXWmxIv1SJ_SKaerhISonG1j_Mja8laRaSxrOlyVn3_covBtXKSm94QDAGYyyaFWlbE1cjKyvhMj5no5hBkj6UvgxNoZy2uH9ckz1OqrYF2oEWp8Ldl4mMfvJQAePdnWkkj6J2-PbSHUhfQot0SAYTZ-vDe6-eRWrh9cTAX-5APyo8FQ3m9PGvgLlZXxGZ-U4bxnfumZ4RmTpkFyGV05tDZUs1KlQ-V2hkYhdRuYMAdtpSd3ApREROFJa9CH_EErSEhefgn1_hVCGTLFZxjVa6xw"
         },
-        "recoveryId": "https://fakemhsm/deletedkeys/testcrud2971044356",
+        "recoveryId": "https://fakemhsm.local/deletedkeys/testcrud2971044356",
         "scheduledPurgeDate": 1656962194,
         "tags": {
           "key": "value"
@@ -323,7 +323,7 @@
       }
     },
     {
-      "RequestUri": "https://fakemhsm/deletedkeys/testcrud2971044356?api-version=7.3",
+      "RequestUri": "https://fakemhsm.local/deletedkeys/testcrud2971044356?api-version=7.3",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",

@@ -43,27 +43,16 @@ type CpkScopeInfo = generated.CpkScopeInfo
 // HTTPHeaders contains a group of parameters for the BlobClient.SetHTTPHeaders method.
 type HTTPHeaders = generated.BlobHTTPHeaders
 
-// SASProtocol indicates the http/https.
-type SASProtocol = exported.SASProtocol
-
-// IPRange represents a SAS IP range's start IP and (optionally) end IP.
-type IPRange = exported.IPRange
-
-// SASQueryParameters object represents the components that make up an Azure Storage SAS' query parameters.
-// You parse a map of query parameters into its fields by calling Sign(). You add the components
-// to a query parameter map by calling AddToValues().
-// NOTE: Changing any field requires computing a new SAS signature using a XxxSASSignatureValues type.
-type SASQueryParameters = exported.SASQueryParameters
-
 // SourceModifiedAccessConditions contains a group of parameters for the BlobClient.StartCopyFromURL method.
 type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
 
-// SASPermissions type simplifies creating the permissions string for an Azure Storage blob SAS.
-// Initialize an instance of this type and then call its String method to set BlobSASSignatureValues's Permissions field.
-type SASPermissions = exported.BlobSASPermissions
-
 // Tags represent map of blob index tags
 type Tags = generated.BlobTag
+
+// HTTPRange defines a range of bytes within an HTTP resource, starting at offset and
+// ending at offset+count. A zero-value HTTPRange indicates the entire resource. An HTTPRange
+// which has an offset but no zero value count indicates from the offset to the resource's end.
+type HTTPRange = exported.HTTPRange
 
 // Request Model Declaration -------------------------------------------------------------------------------------------
 
@@ -73,9 +62,8 @@ type DownloadStreamOptions struct {
 	// range is less than or equal to 4 MB in size.
 	RangeGetContentMD5 *bool
 
-	// Optional, you can specify whether a particular range of the blob is read
-	Offset *int64
-	Count  *int64
+	// Range specifies a range of bytes.  The default value is all bytes.
+	Range HTTPRange
 
 	AccessConditions *AccessConditions
 	CpkInfo          *CpkInfo
@@ -87,20 +75,9 @@ func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, 
 		return nil, nil, nil, nil
 	}
 
-	offset := int64(0)
-	count := int64(CountToEnd)
-
-	if o.Offset != nil {
-		offset = *o.Offset
-	}
-
-	if o.Count != nil {
-		count = *o.Count
-	}
-
 	basics := generated.BlobClientDownloadOptions{
 		RangeGetContentMD5: o.RangeGetContentMD5,
-		Range:              shared.HTTPRange{Offset: offset, Count: count}.Format(),
+		Range:              exported.FormatHTTPRange(o.Range),
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
@@ -111,11 +88,8 @@ func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, 
 
 // downloadOptions contains common options used by the DownloadBuffer and DownloadFile functions.
 type downloadOptions struct {
-	// Count is the number of bytes to download.  Specify 0 to download the entire blob (this is the default).
-	Count int64
-
-	// Offset is the byte offset within the blob to start the download.  The default value is zero.
-	Offset int64
+	// Range specifies a range of bytes.  The default value is all bytes.
+	Range HTTPRange
 
 	// BlockSize specifies the block size to use for each parallel download; the default size is DefaultDownloadBlockSize.
 	BlockSize int64
@@ -130,8 +104,8 @@ type downloadOptions struct {
 	CpkInfo      *CpkInfo
 	CpkScopeInfo *CpkScopeInfo
 
-	// Parallelism indicates the maximum number of blocks to download in parallel (0=default)
-	Parallelism uint16
+	// Concurrency indicates the maximum number of blocks to download in parallel (0=default)
+	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
 	RetryReaderOptionsPerBlock RetryReaderOptions
@@ -147,7 +121,7 @@ func (o *downloadOptions) getBlobPropertiesOptions() *GetPropertiesOptions {
 	}
 }
 
-func (o *downloadOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMD5 *bool) *DownloadStreamOptions {
+func (o *downloadOptions) getDownloadBlobOptions(rnge HTTPRange, rangeGetContentMD5 *bool) *DownloadStreamOptions {
 	if o == nil {
 		return nil
 	}
@@ -155,19 +129,15 @@ func (o *downloadOptions) getDownloadBlobOptions(offSet, count int64, rangeGetCo
 		AccessConditions:   o.AccessConditions,
 		CpkInfo:            o.CpkInfo,
 		CpkScopeInfo:       o.CpkScopeInfo,
-		Offset:             &offSet,
-		Count:              &count,
+		Range:              rnge,
 		RangeGetContentMD5: rangeGetContentMD5,
 	}
 }
 
 // DownloadBufferOptions contains the optional parameters for the DownloadBuffer method.
 type DownloadBufferOptions struct {
-	// Count is the number of bytes to download.  Specify 0 to download the entire blob (this is the default).
-	Count int64
-
-	// Offset is the byte offset within the blob to start the download.  The default value is zero.
-	Offset int64
+	// Range specifies a range of bytes.  The default value is all bytes.
+	Range HTTPRange
 
 	// BlockSize specifies the block size to use for each parallel download; the default size is DefaultDownloadBlockSize.
 	BlockSize int64
@@ -184,8 +154,8 @@ type DownloadBufferOptions struct {
 	// CpkScopeInfo contains a group of parameters for client provided encryption scope.
 	CpkScopeInfo *CpkScopeInfo
 
-	// Parallelism indicates the maximum number of blocks to download in parallel (0=default)
-	Parallelism uint16
+	// Concurrency indicates the maximum number of blocks to download in parallel (0=default)
+	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
 	RetryReaderOptionsPerBlock RetryReaderOptions
@@ -193,11 +163,8 @@ type DownloadBufferOptions struct {
 
 // DownloadFileOptions contains the optional parameters for the DownloadFile method.
 type DownloadFileOptions struct {
-	// Count is the number of bytes to download.  Specify 0 to download the entire blob (this is the default).
-	Count int64
-
-	// Offset is the byte offset within the blob to start the download.  The default value is zero.
-	Offset int64
+	// Range specifies a range of bytes.  The default value is all bytes.
+	Range HTTPRange
 
 	// BlockSize specifies the block size to use for each parallel download; the default size is DefaultDownloadBlockSize.
 	BlockSize int64
@@ -212,8 +179,8 @@ type DownloadFileOptions struct {
 	CpkInfo      *CpkInfo
 	CpkScopeInfo *CpkScopeInfo
 
-	// Parallelism indicates the maximum number of blocks to download in parallel (0=default)
-	Parallelism uint16
+	// Concurrency indicates the maximum number of blocks to download in parallel.  The default value is 5.
+	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
 	RetryReaderOptionsPerBlock RetryReaderOptions

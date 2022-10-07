@@ -1,5 +1,12 @@
 # Release History
 
+## 0.7.0 (2022-08-19)
+### Features Added
+
+- New field `Origin` in struct `Operation`
+- New field `Comment` in struct `AlertsClientChangeStateOptions`
+
+
 ## 0.6.0 (2022-05-17)
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertsmanagement/armalertsmanagement` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 0.6.0, which contains breaking changes.

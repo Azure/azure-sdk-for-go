@@ -23,6 +23,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/stretchr/testify/require"
 )
 
 type testJSON struct {
@@ -544,17 +545,59 @@ func TestRequestSetBodyContentLengthHeader(t *testing.T) {
 }
 
 func TestJoinPaths(t *testing.T) {
-	if path := JoinPaths(""); path != "" {
-		t.Fatalf("unexpected path %s", path)
-	}
-	expected := "http://test.contoso.com/path/one/path/two/path/three/path/four/"
-	if path := JoinPaths("http://test.contoso.com/", "/path/one", "path/two", "/path/three/", "path/four/"); path != expected {
-		t.Fatalf("got %s, expected %s", path, expected)
+	type joinTest struct {
+		root     string
+		paths    []string
+		expected string
 	}
 
-	expected = "http://test.contoso.com/path/one/path/two/?qp1=abc&qp2=def"
-	if path := JoinPaths("http://test.contoso.com/?qp1=abc&qp2=def", "/path/one", "path/two"); path != expected {
-		t.Fatalf("got %s, expected %s", path, expected)
+	tests := []joinTest{
+		{
+			root:     "",
+			paths:    nil,
+			expected: "",
+		},
+		{
+			root:     "/",
+			paths:    nil,
+			expected: "/",
+		},
+		{
+			root:     "http://test.contoso.com/",
+			paths:    []string{"/path/one", "path/two", "/path/three/", "path/four/"},
+			expected: "http://test.contoso.com/path/one/path/two/path/three/path/four/",
+		},
+		{
+			root:     "http://test.contoso.com",
+			paths:    []string{"path/one", "path/two", "/path/three/", "path/four/"},
+			expected: "http://test.contoso.com/path/one/path/two/path/three/path/four/",
+		},
+		{
+			root:     "http://test.contoso.com/?qp1=abc&qp2=def",
+			paths:    []string{"/path/one", "path/two"},
+			expected: "http://test.contoso.com/path/one/path/two?qp1=abc&qp2=def",
+		},
+		{
+			root:     "http://test.contoso.com?qp1=abc&qp2=def",
+			paths:    []string{"path/one", "path/two/"},
+			expected: "http://test.contoso.com/path/one/path/two/?qp1=abc&qp2=def",
+		},
+		{
+			root:     "http://test.contoso.com/?qp1=abc&qp2=def",
+			paths:    []string{"path/one", "path/two/"},
+			expected: "http://test.contoso.com/path/one/path/two/?qp1=abc&qp2=def",
+		},
+		{
+			root:     "http://test.contoso.com/?qp1=abc&qp2=def",
+			paths:    []string{"/path/one", "path/two/"},
+			expected: "http://test.contoso.com/path/one/path/two/?qp1=abc&qp2=def",
+		},
+	}
+
+	for _, tt := range tests {
+		if path := JoinPaths(tt.root, tt.paths...); path != tt.expected {
+			t.Fatalf("got %s, expected %s", path, tt.expected)
+		}
 	}
 }
 
@@ -593,6 +636,11 @@ func TestSetMultipartFormData(t *testing.T) {
 		"string": "value",
 		"int":    1,
 		"data":   exported.NopCloser(strings.NewReader("some data")),
+		"datum": []io.ReadSeekCloser{
+			exported.NopCloser(strings.NewReader("first part")),
+			exported.NopCloser(strings.NewReader("second part")),
+			exported.NopCloser(strings.NewReader("third part")),
+		},
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -605,6 +653,7 @@ func TestSetMultipartFormData(t *testing.T) {
 		t.Fatalf("unexpected media type %s", mt)
 	}
 	reader := multipart.NewReader(req.Raw().Body, params["boundary"])
+	var datum []io.ReadSeekCloser
 	for {
 		part, err := reader.NextPart()
 		if err == io.EOF {
@@ -640,8 +689,22 @@ func TestSetMultipartFormData(t *testing.T) {
 			if tr := string(dataPart[:9]); tr != "some data" {
 				t.Fatalf("unexpected value %s", tr)
 			}
+		case "datum":
+			content, err := io.ReadAll(part)
+			require.NoError(t, err)
+			datum = append(datum, exported.NopCloser(bytes.NewReader(content)))
 		default:
 			t.Fatalf("unexpected part %s", fn)
 		}
 	}
+	require.Len(t, datum, 3)
+	first, err := io.ReadAll(datum[0])
+	require.NoError(t, err)
+	second, err := io.ReadAll(datum[1])
+	require.NoError(t, err)
+	third, err := io.ReadAll(datum[2])
+	require.NoError(t, err)
+	require.Equal(t, "first part", string(first))
+	require.Equal(t, "second part", string(second))
+	require.Equal(t, "third part", string(third))
 }

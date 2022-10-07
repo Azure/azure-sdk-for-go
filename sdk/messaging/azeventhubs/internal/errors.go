@@ -59,8 +59,8 @@ func TransformError(err error) error {
 		return err
 	}
 
-	if isLockLostError(err) {
-		return exported.NewError(exported.CodeLockLost, err)
+	if isOwnershipLostError(err) {
+		return exported.NewError(exported.CodeOwnershipLost, err)
 	}
 
 	rk := GetRecoveryKind(err)
@@ -79,7 +79,11 @@ func TransformError(err error) error {
 	}
 }
 
-func IsDetachError(err error) bool {
+func IsQuickRecoveryError(err error) bool {
+	if isOwnershipLostError(err) {
+		return false
+	}
+
 	var de *amqp.DetachError
 	return errors.As(err, &de)
 }
@@ -167,9 +171,12 @@ func GetRecoveryKind(err error) RecoveryKind {
 		return RecoveryKindFatal
 	}
 
+	if isOwnershipLostError(err) {
+		return RecoveryKindFatal
+	}
+
 	// check the "special" AMQP errors that aren't condition-based.
-	if errors.Is(err, amqp.ErrLinkClosed) ||
-		IsDetachError(err) {
+	if errors.Is(err, amqp.ErrLinkClosed) || IsQuickRecoveryError(err) {
 		return RecoveryKindLink
 	}
 
@@ -330,6 +337,17 @@ func isLockLostError(err error) bool {
 	// got the message on with an expired locktoken.
 	if errors.As(err, &amqpErr) && amqpErr.Condition == errorConditionLockLost {
 		return true
+	}
+
+	return false
+}
+
+func isOwnershipLostError(err error) bool {
+	var de *amqp.DetachError
+
+	if errors.As(err, &de) {
+		var amqpError *amqp.Error
+		return errors.As(de.RemoteError, &amqpError) && amqpError.Condition == "amqp:link:stolen"
 	}
 
 	return false

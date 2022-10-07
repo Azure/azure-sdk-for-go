@@ -33,6 +33,8 @@ type BlobClientOptions struct {
 }
 
 // NewBlobClient creates a blob lease client for the provided blob client.
+//   - client - an instance of a blob client
+//   - options - client options; pass nil to accept the default values
 func NewBlobClient[T appendblob.Client | blob.Client | blockblob.Client | pageblob.Client](client *T, options *BlobClientOptions) (*BlobClient, error) {
 	var leaseID *string
 	if options != nil {

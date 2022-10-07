@@ -1,5 +1,43 @@
 # Release History
 
+## 1.3.0 (2022-09-07)
+### Features Added
+
+- New const `NotebookParameterTypeBool`
+- New const `NotebookReferenceTypeNotebookReference`
+- New const `NotebookParameterTypeString`
+- New const `SparkJobReferenceTypeSparkJobDefinitionReference`
+- New const `NotebookParameterTypeInt`
+- New const `BigDataPoolReferenceTypeBigDataPoolReference`
+- New const `NotebookParameterTypeFloat`
+- New type alias `NotebookParameterType`
+- New type alias `SparkJobReferenceType`
+- New type alias `NotebookReferenceType`
+- New type alias `BigDataPoolReferenceType`
+- New function `*AzureSynapseArtifactsLinkedService.GetLinkedService() *LinkedService`
+- New function `PossibleBigDataPoolReferenceTypeValues() []BigDataPoolReferenceType`
+- New function `PossibleNotebookParameterTypeValues() []NotebookParameterType`
+- New function `*SynapseSparkJobDefinitionActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `*GoogleSheetsLinkedService.GetLinkedService() *LinkedService`
+- New function `*SynapseNotebookActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `PossibleNotebookReferenceTypeValues() []NotebookReferenceType`
+- New function `PossibleSparkJobReferenceTypeValues() []SparkJobReferenceType`
+- New function `*SynapseNotebookActivity.GetActivity() *Activity`
+- New function `*SynapseSparkJobDefinitionActivity.GetActivity() *Activity`
+- New struct `AzureSynapseArtifactsLinkedService`
+- New struct `AzureSynapseArtifactsLinkedServiceTypeProperties`
+- New struct `BigDataPoolParametrizationReference`
+- New struct `GoogleSheetsLinkedService`
+- New struct `GoogleSheetsLinkedServiceTypeProperties`
+- New struct `NotebookParameter`
+- New struct `SynapseNotebookActivity`
+- New struct `SynapseNotebookActivityTypeProperties`
+- New struct `SynapseNotebookReference`
+- New struct `SynapseSparkJobActivityTypeProperties`
+- New struct `SynapseSparkJobDefinitionActivity`
+- New struct `SynapseSparkJobReference`
+
+
 ## 1.2.0 (2022-06-15)
 ### Features Added
 

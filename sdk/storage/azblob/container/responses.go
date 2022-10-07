@@ -16,6 +16,9 @@ type CreateResponse = generated.ContainerClientCreateResponse
 // DeleteResponse contains the response from method Client.Delete.
 type DeleteResponse = generated.ContainerClientDeleteResponse
 
+// RestoreResponse contains the response from method Client.Restore.
+type RestoreResponse = generated.ContainerClientRestoreResponse
+
 // GetPropertiesResponse contains the response from method Client.GetProperties.
 type GetPropertiesResponse = generated.ContainerClientGetPropertiesResponse
 

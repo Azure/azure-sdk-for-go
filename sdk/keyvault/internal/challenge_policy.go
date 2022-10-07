@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 
@@ -23,21 +24,35 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 )
 
-const headerAuthorization = "Authorization"
-const bearerHeader = "Bearer "
+const (
+	headerAuthorization = "Authorization"
+	challengeMatchError = `challenge resource "%s" doesn't match the requested domain. Set DisableChallengeResourceVerification to true in your client options to disable. See https://aka.ms/azsdk/blog/vault-uri for more information`
+	bearerHeader        = "Bearer "
+)
+
+type KeyVaultChallengePolicyOptions struct {
+	// DisableChallengeResourceVerification controls whether the policy requires the
+	// authentication challenge resource to match the Key Vault or Managed HSM domain
+	DisableChallengeResourceVerification bool
+}
 
 type KeyVaultChallengePolicy struct {
 	// mainResource is the resource to be retrieved using the tenant specified in the credential
-	mainResource *temporal.Resource[azcore.AccessToken, acquiringResourceState]
-	cred         azcore.TokenCredential
-	scope        *string
-	tenantID     *string
+	mainResource            *temporal.Resource[azcore.AccessToken, acquiringResourceState]
+	cred                    azcore.TokenCredential
+	scope                   *string
+	tenantID                *string
+	verifyChallengeResource bool
 }
 
-func NewKeyVaultChallengePolicy(cred azcore.TokenCredential) *KeyVaultChallengePolicy {
+func NewKeyVaultChallengePolicy(cred azcore.TokenCredential, opts *KeyVaultChallengePolicyOptions) *KeyVaultChallengePolicy {
+	if opts == nil {
+		opts = &KeyVaultChallengePolicyOptions{}
+	}
 	return &KeyVaultChallengePolicy{
-		cred:         cred,
-		mainResource: temporal.NewResource(acquire),
+		cred:                    cred,
+		mainResource:            temporal.NewResource(acquire),
+		verifyChallengeResource: !opts.DisableChallengeResourceVerification,
 	}
 }
 
@@ -63,7 +78,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 			// the request failed for some other reason, don't try any further
 			return resp, nil
 		}
-		err = k.findScopeAndTenant(resp)
+		err = k.findScopeAndTenant(resp, req.Raw())
 		if err != nil {
 			return nil, err
 		}
@@ -92,7 +107,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 		k.mainResource.Expire()
 
 		// Find the scope and tenant again in case they have changed
-		err := k.findScopeAndTenant(resp)
+		err := k.findScopeAndTenant(resp, req.Raw())
 		if err != nil {
 			// Error parsing challenge, doomed to fail. Return
 			return resp, cloneReqErr
@@ -146,7 +161,7 @@ func (c *challengePolicyError) Unwrap() error {
 var _ errorinfo.NonRetriable = (*challengePolicyError)(nil)
 
 // sets the k.scope and k.tenantID from the WWW-Authenticate header
-func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error {
+func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response, req *http.Request) error {
 	authHeader := resp.Header.Get("WWW-Authenticate")
 	if authHeader == "" {
 		return &challengePolicyError{err: errors.New("response has no WWW-Authenticate header for challenge authentication")}
@@ -170,17 +185,29 @@ func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error 
 	}
 
 	k.tenantID = parseTenant(vals["authorization"])
-	if scope, ok := vals["scope"]; ok {
-		k.scope = &scope
-	} else if resource, ok := vals["resource"]; ok {
-		if !strings.HasSuffix(resource, "/.default") {
-			resource += "/.default"
-		}
-		k.scope = &resource
-	} else {
+	scope := ""
+	if v, ok := vals["scope"]; ok {
+		scope = v
+	} else if v, ok := vals["resource"]; ok {
+		scope = v
+	}
+	if scope == "" {
 		return &challengePolicyError{err: errors.New("could not find a valid resource in the WWW-Authenticate header")}
 	}
-
+	if k.verifyChallengeResource {
+		// the challenge resource's host must match the requested vault's host
+		parsed, err := url.Parse(scope)
+		if err != nil {
+			return &challengePolicyError{err: fmt.Errorf(`invalid challenge resource "%s": %v`, scope, err)}
+		}
+		if !strings.HasSuffix(req.URL.Host, "."+parsed.Host) {
+			return &challengePolicyError{err: fmt.Errorf(challengeMatchError, scope)}
+		}
+		if !strings.HasSuffix(scope, "/.default") {
+			scope += "/.default"
+		}
+	}
+	k.scope = &scope
 	return nil
 }
 

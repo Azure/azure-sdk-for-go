@@ -12,6 +12,7 @@ package generated
 import (
 	"context"
 	"encoding/base64"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"io"
@@ -114,10 +115,10 @@ func (client *AppendBlobClient) appendBlockCreateRequest(ctx context.Context, co
 		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*modifiedAccessConditions.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*modifiedAccessConditions.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Raw().Header["x-ms-if-tags"] = []string{*modifiedAccessConditions.IfTags}
@@ -134,7 +135,7 @@ func (client *AppendBlobClient) appendBlockCreateRequest(ctx context.Context, co
 func (client *AppendBlobClient) appendBlockHandleResponse(resp *http.Response) (AppendBlobClientAppendBlockResponse, error) {
 	result := AppendBlobClientAppendBlockResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -286,10 +287,10 @@ func (client *AppendBlobClient) appendBlockFromURLCreateRequest(ctx context.Cont
 		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*modifiedAccessConditions.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*modifiedAccessConditions.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Raw().Header["x-ms-if-tags"] = []string{*modifiedAccessConditions.IfTags}
@@ -301,10 +302,10 @@ func (client *AppendBlobClient) appendBlockFromURLCreateRequest(ctx context.Cont
 		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{sourceModifiedAccessConditions.SourceIfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfMatch != nil {
-		req.Raw().Header["x-ms-source-if-match"] = []string{*sourceModifiedAccessConditions.SourceIfMatch}
+		req.Raw().Header["x-ms-source-if-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfMatch)}
 	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatch != nil {
-		req.Raw().Header["x-ms-source-if-none-match"] = []string{*sourceModifiedAccessConditions.SourceIfNoneMatch}
+		req.Raw().Header["x-ms-source-if-none-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfNoneMatch)}
 	}
 	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
 	if options != nil && options.RequestID != nil {
@@ -321,7 +322,7 @@ func (client *AppendBlobClient) appendBlockFromURLCreateRequest(ctx context.Cont
 func (client *AppendBlobClient) appendBlockFromURLHandleResponse(resp *http.Response) (AppendBlobClientAppendBlockFromURLResponse, error) {
 	result := AppendBlobClientAppendBlockFromURLResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -467,10 +468,10 @@ func (client *AppendBlobClient) createCreateRequest(ctx context.Context, content
 		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*modifiedAccessConditions.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*modifiedAccessConditions.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Raw().Header["x-ms-if-tags"] = []string{*modifiedAccessConditions.IfTags}
@@ -499,7 +500,7 @@ func (client *AppendBlobClient) createCreateRequest(ctx context.Context, content
 func (client *AppendBlobClient) createHandleResponse(resp *http.Response) (AppendBlobClientCreateResponse, error) {
 	result := AppendBlobClientCreateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -600,10 +601,10 @@ func (client *AppendBlobClient) sealCreateRequest(ctx context.Context, options *
 		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*modifiedAccessConditions.IfMatch}
+		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
 	}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*modifiedAccessConditions.IfNoneMatch}
+		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
 	}
 	if appendPositionAccessConditions != nil && appendPositionAccessConditions.AppendPosition != nil {
 		req.Raw().Header["x-ms-blob-condition-appendpos"] = []string{strconv.FormatInt(*appendPositionAccessConditions.AppendPosition, 10)}
@@ -616,7 +617,7 @@ func (client *AppendBlobClient) sealCreateRequest(ctx context.Context, options *
 func (client *AppendBlobClient) sealHandleResponse(resp *http.Response) (AppendBlobClientSealResponse, error) {
 	result := AppendBlobClientSealResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)

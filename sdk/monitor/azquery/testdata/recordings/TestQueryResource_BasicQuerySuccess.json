@@ -1,0 +1,3666 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example/providers/Microsoft.Insights/metrics?aggregation=Average%2Ccount\u0026api-version=2018-01-01\u0026interval=PT1M\u0026metricnamespace=Microsoft.AppConfiguration%2FconfigurationStores\u0026orderby=Average\u002Basc\u0026timespan=PT12H",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azquery/v0.1.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Expose-Headers": "Request-Context",
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json",
+        "Date": "Thu, 08 Sep 2022 00:01:48 GMT",
+        "Request-Context": "appId=cid-v1:b021da79-5252-4375-9df5-2e17c1dcd822",
+        "Server": "Microsoft-IIS/10.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": [
+          "Accept-Encoding",
+          "Accept-Encoding"
+        ],
+        "X-AspNet-Version": "4.0.30319",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "266160d3-ddb3-4323-becf-fbfae33249d2",
+        "x-ms-ratelimit-remaining-subscription-reads": "11999",
+        "x-ms-request-id": "{266160d3-ddb3-4323-becf-fbfae33249d2}",
+        "x-ms-routing-request-id": "CENTRALUS:20220908T000148Z:266160d3-ddb3-4323-becf-fbfae33249d2",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "cost": 1438,
+        "timespan": "2022-09-07T12:00:48Z/2022-09-08T00:00:48Z",
+        "interval": "PT1M",
+        "value": [
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example/providers/Microsoft.Insights/metrics/HttpIncomingRequestCount",
+            "type": "Microsoft.Insights/metrics",
+            "name": {
+              "value": "HttpIncomingRequestCount",
+              "localizedValue": "HttpIncomingRequestCount"
+            },
+            "displayDescription": "Total number of incoming http requests.",
+            "unit": "Count",
+            "timeseries": [
+              {
+                "metadatavalues": [],
+                "data": [
+                  {
+                    "timeStamp": "2022-09-07T12:00:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:01:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:02:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:03:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:04:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:05:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:06:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:07:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:08:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:09:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:10:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:11:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:12:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:13:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:14:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:15:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:16:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:17:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:18:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:19:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:20:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:21:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:22:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:23:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:24:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:25:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:26:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:27:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:28:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:29:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:30:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:31:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:32:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:33:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:34:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:35:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:36:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:37:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:38:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:39:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:40:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:41:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:42:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:43:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:44:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:45:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:46:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:47:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:48:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:49:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:50:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:51:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:52:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:53:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:54:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:55:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:56:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:57:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:58:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T12:59:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:00:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:01:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:02:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:03:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:04:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:05:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:06:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:07:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:08:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:09:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:10:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:11:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:12:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:13:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:14:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:15:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:16:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:17:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:18:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:19:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:20:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:21:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:22:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:23:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:24:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:25:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:26:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:27:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:28:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:29:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:30:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:31:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:32:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:33:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:34:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:35:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:36:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:37:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:38:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:39:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:40:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:41:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:42:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:43:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:44:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:45:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:46:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:47:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:48:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:49:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:50:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:51:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:52:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:53:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:54:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:55:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:56:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:57:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:58:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T13:59:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:00:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:01:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:02:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:03:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:04:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:05:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:06:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:07:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:08:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:09:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:10:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:11:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:12:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:13:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:14:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:15:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:16:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:17:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:18:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:19:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:20:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:21:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:22:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:23:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:24:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:25:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:26:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:27:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:28:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:29:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:30:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:31:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:32:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:33:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:34:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:35:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:36:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:37:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:38:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:39:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:40:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:41:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:42:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:43:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:44:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:45:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:46:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:47:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:48:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:49:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:50:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:51:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:52:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:53:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:54:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:55:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:56:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:57:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:58:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T14:59:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:00:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:01:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:02:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:03:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:04:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:05:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:06:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:07:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:08:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:09:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:10:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:11:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:12:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:13:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:14:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:15:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:16:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:17:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:18:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:19:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:20:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:21:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:22:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:23:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:24:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:25:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:26:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:27:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:28:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:29:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:30:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:31:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:32:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:33:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:34:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:35:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:36:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:37:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:38:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:39:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:40:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:41:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:42:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:43:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:44:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:45:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:46:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:47:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:48:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:49:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:50:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:51:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:52:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:53:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:54:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:55:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:56:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:57:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:58:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T15:59:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:00:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:01:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:02:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:03:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:04:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:05:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:06:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:07:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:08:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:09:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:10:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:11:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:12:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:13:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:14:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:15:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:16:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:17:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:18:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:19:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:20:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:21:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:22:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:23:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:24:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:25:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:26:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:27:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:28:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:29:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:30:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:31:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:32:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:33:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:34:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:35:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:36:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:37:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:38:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:39:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:40:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:41:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:42:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:43:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:44:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:45:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:46:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:47:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:48:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:49:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:50:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:51:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:52:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:53:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:54:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:55:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:56:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:57:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:58:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T16:59:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:00:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:01:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:02:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:03:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:04:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:05:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:06:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:07:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:08:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:09:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:10:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:11:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:12:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:13:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:14:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:15:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:16:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:17:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:18:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:19:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:20:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:21:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:22:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:23:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:24:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:25:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:26:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:27:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:28:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:29:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:30:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:31:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:32:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:33:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:34:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:35:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:36:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:37:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:38:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:39:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:40:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:41:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:42:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:43:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:44:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:45:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:46:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:47:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:48:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:49:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:50:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:51:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:52:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:53:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:54:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:55:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:56:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:57:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:58:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T17:59:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:00:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:01:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:02:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:03:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:04:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:05:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:06:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:07:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:08:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:09:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:10:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:11:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:12:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:13:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:14:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:15:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:16:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:17:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:18:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:19:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:20:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:21:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:22:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:23:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:24:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:25:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:26:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:27:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:28:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:29:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:30:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:31:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:32:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:33:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:34:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:35:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:36:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:37:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:38:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:39:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:40:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:41:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:42:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:43:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:44:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:45:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:46:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:47:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:48:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:49:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:50:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:51:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:52:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:53:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:54:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:55:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:56:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:57:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:58:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T18:59:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:00:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:01:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:02:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:03:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:04:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:05:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:06:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:07:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:08:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:09:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:10:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:11:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:12:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:13:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:14:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:15:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:16:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:17:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:18:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:19:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:20:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:21:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:22:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:23:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:24:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:25:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:26:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:27:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:28:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:29:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:30:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:31:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:32:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:33:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:34:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:35:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:36:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:37:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:38:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:39:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:40:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:41:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:42:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:43:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:44:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:45:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:46:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:47:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:48:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:49:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:50:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:51:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:52:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:53:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:54:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:55:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:56:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:57:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:58:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T19:59:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:00:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:01:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:02:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:03:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:04:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:05:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:06:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:07:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:08:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:09:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:10:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:11:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:12:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:13:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:14:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:15:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:16:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:17:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:18:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:19:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:20:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:21:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:22:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:23:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:24:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:25:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:26:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:27:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:28:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:29:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:30:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:31:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:32:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:33:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:34:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:35:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:36:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:37:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:38:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:39:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:40:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:41:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:42:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:43:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:44:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:45:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:46:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:47:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:48:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:49:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:50:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:51:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:52:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:53:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:54:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:55:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:56:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:57:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:58:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T20:59:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:00:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:01:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:02:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:03:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:04:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:05:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:06:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:07:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:08:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:09:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:10:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:11:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:12:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:13:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:14:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:15:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:16:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:17:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:18:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:19:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:20:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:21:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:22:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:23:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:24:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:25:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:26:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:27:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:28:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:29:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:30:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:31:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:32:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:33:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:34:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:35:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:36:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:37:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:38:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:39:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:40:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:41:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:42:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:43:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:44:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:45:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:46:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:47:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:48:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:49:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:50:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:51:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:52:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:53:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:54:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:55:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:56:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:57:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:58:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T21:59:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:00:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:01:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:02:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:03:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:04:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:05:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:06:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:07:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:08:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:09:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:10:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:11:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:12:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:13:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:14:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:15:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:16:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:17:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:18:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:19:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:20:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:21:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:22:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:23:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:24:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:25:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:26:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:27:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:28:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:29:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:30:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:31:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:32:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:33:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:34:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:35:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:36:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:37:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:38:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:39:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:40:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:41:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:42:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:43:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:44:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:45:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:46:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:47:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:48:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:49:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:50:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:51:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:52:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:53:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:54:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:55:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:56:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:57:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:58:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T22:59:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:00:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:01:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:02:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:03:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:04:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:05:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:06:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:07:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:08:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:09:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:10:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:11:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:12:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:13:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:14:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:15:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:16:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:17:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:18:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:19:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:20:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:21:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:22:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:23:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:24:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:25:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:26:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:27:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:28:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:29:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:30:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:31:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:32:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:33:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:34:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:35:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:36:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:37:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:38:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:39:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:40:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:41:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:42:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:43:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:44:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:45:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:46:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:47:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:48:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:49:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:50:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:51:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:52:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:53:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:54:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:55:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:56:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:57:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:58:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  },
+                  {
+                    "timeStamp": "2022-09-07T23:59:00Z",
+                    "count": 0.0,
+                    "average": 0.0
+                  }
+                ]
+              }
+            ],
+            "errorCode": "Success"
+          }
+        ],
+        "namespace": "Microsoft.AppConfiguration/configurationStores",
+        "resourceregion": "westus"
+      }
+    }
+  ],
+  "Variables": {}
+}

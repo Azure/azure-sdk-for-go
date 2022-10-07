@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.2 (Unreleased)
+## 1.1.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.1 (2022-08-30)
+
+### Bugs Fixed
+* Fix seed not stable with `GenerateAlphaNumericID` when playback
+
+## 1.1.0 (2022-08-24)
+
+### Features Added
+* Add `GenerateAlphaNumericID` to testutil
 
 ## 1.0.1 (2022-06-23)
 

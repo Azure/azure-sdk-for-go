@@ -249,7 +249,6 @@ func (client *FleetsClient) getHandleResponse(resp *http.Response) (FleetsClient
 }
 
 // NewListPager - Lists fleets in the specified subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-07-02-preview
 // options - FleetsClientListOptions contains the optional parameters for the FleetsClient.List method.
 func (client *FleetsClient) NewListPager(options *FleetsClientListOptions) *runtime.Pager[FleetsClientListResponse] {
@@ -308,7 +307,6 @@ func (client *FleetsClient) listHandleResponse(resp *http.Response) (FleetsClien
 }
 
 // NewListByResourceGroupPager - Lists fleets in the specified subscription and resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-07-02-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - FleetsClientListByResourceGroupOptions contains the optional parameters for the FleetsClient.ListByResourceGroup

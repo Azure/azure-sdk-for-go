@@ -1,5 +1,111 @@
 # Release History
 
+## 2.0.0-beta.2 (2022-09-19)
+
+### Features Added
+
+- New const `FileImportStateFatalError`
+- New const `AutomationRuleBooleanConditionSupportedOperatorOr`
+- New const `DeviceImportanceHigh`
+- New const `FileImportStateWaitingForUpload`
+- New const `ConditionTypeBoolean`
+- New const `FileImportStateIngestedWithErrors`
+- New const `AutomationRuleBooleanConditionSupportedOperatorAnd`
+- New const `ConditionTypePropertyArray`
+- New const `TriggersOnAlerts`
+- New const `DeviceImportanceNormal`
+- New const `FileImportStateUnspecified`
+- New const `FileImportContentTypeUnspecified`
+- New const `IngestionModeIngestAnyValidRecords`
+- New const `AutomationRulePropertyArrayConditionSupportedArrayTypeCustomDetails`
+- New const `AutomationRulePropertyArrayConditionSupportedArrayTypeCustomDetailValues`
+- New const `FileFormatUnspecified`
+- New const `DeleteStatusNotDeleted`
+- New const `AutomationRulePropertyConditionSupportedPropertyAlertAnalyticRuleIDs`
+- New const `FileFormatCSV`
+- New const `AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsKey`
+- New const `FileImportStateInvalid`
+- New const `DeleteStatusUnspecified`
+- New const `FileImportContentTypeStixIndicator`
+- New const `DeviceImportanceUnknown`
+- New const `DeviceImportanceLow`
+- New const `FileImportStateInProgress`
+- New const `AutomationRulePropertyConditionSupportedPropertyIncidentUpdatedBySource`
+- New const `DeleteStatusDeleted`
+- New const `FileImportStateIngested`
+- New const `FileFormatJSON`
+- New const `IngestionModeIngestOnlyIfAllAreValid`
+- New const `EntityTypeNic`
+- New const `EntityKindNic`
+- New const `AutomationRulePropertyArrayConditionSupportedArrayConditionTypeAnyItem`
+- New const `AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsValue`
+- New const `FileImportContentTypeBasicIndicator`
+- New const `IngestionModeUnspecified`
+- New type alias `IngestionMode`
+- New type alias `DeviceImportance`
+- New type alias `FileFormat`
+- New type alias `FileImportState`
+- New type alias `DeleteStatus`
+- New type alias `FileImportContentType`
+- New type alias `AutomationRuleBooleanConditionSupportedOperator`
+- New type alias `AutomationRulePropertyArrayConditionSupportedArrayType`
+- New type alias `AutomationRulePropertyArrayConditionSupportedArrayConditionType`
+- New function `PossibleDeviceImportanceValues() []DeviceImportance`
+- New function `PossibleFileImportStateValues() []FileImportState`
+- New function `*PropertyArrayConditionProperties.GetAutomationRuleCondition() *AutomationRuleCondition`
+- New function `*BooleanConditionProperties.GetAutomationRuleCondition() *AutomationRuleCondition`
+- New function `*NicEntity.GetEntity() *Entity`
+- New function `PossibleFileFormatValues() []FileFormat`
+- New function `NewFileImportsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*FileImportsClient, error)`
+- New function `PossibleAutomationRuleBooleanConditionSupportedOperatorValues() []AutomationRuleBooleanConditionSupportedOperator`
+- New function `*FileImportsClient.NewListPager(string, string, *FileImportsClientListOptions) *runtime.Pager[FileImportsClientListResponse]`
+- New function `*FileImportsClient.Create(context.Context, string, string, string, FileImport, *FileImportsClientCreateOptions) (FileImportsClientCreateResponse, error)`
+- New function `PossibleDeleteStatusValues() []DeleteStatus`
+- New function `*FileImportsClient.BeginDelete(context.Context, string, string, string, *FileImportsClientBeginDeleteOptions) (*runtime.Poller[FileImportsClientDeleteResponse], error)`
+- New function `PossibleIngestionModeValues() []IngestionMode`
+- New function `PossibleAutomationRulePropertyArrayConditionSupportedArrayTypeValues() []AutomationRulePropertyArrayConditionSupportedArrayType`
+- New function `PossibleFileImportContentTypeValues() []FileImportContentType`
+- New function `*FileImportsClient.Get(context.Context, string, string, string, *FileImportsClientGetOptions) (FileImportsClientGetResponse, error)`
+- New function `PossibleAutomationRulePropertyArrayConditionSupportedArrayConditionTypeValues() []AutomationRulePropertyArrayConditionSupportedArrayConditionType`
+- New struct `AutomationRuleBooleanCondition`
+- New struct `AutomationRulePropertyArrayValuesCondition`
+- New struct `BooleanConditionProperties`
+- New struct `FileImport`
+- New struct `FileImportList`
+- New struct `FileImportProperties`
+- New struct `FileImportsClient`
+- New struct `FileImportsClientBeginDeleteOptions`
+- New struct `FileImportsClientCreateOptions`
+- New struct `FileImportsClientCreateResponse`
+- New struct `FileImportsClientDeleteResponse`
+- New struct `FileImportsClientGetOptions`
+- New struct `FileImportsClientGetResponse`
+- New struct `FileImportsClientListOptions`
+- New struct `FileImportsClientListResponse`
+- New struct `FileMetadata`
+- New struct `NicEntity`
+- New struct `NicEntityProperties`
+- New struct `PropertyArrayConditionProperties`
+- New struct `ValidationError`
+- New field `DeviceSubType` in struct `IoTDeviceEntityProperties`
+- New field `Sensor` in struct `IoTDeviceEntityProperties`
+- New field `Zone` in struct `IoTDeviceEntityProperties`
+- New field `Importance` in struct `IoTDeviceEntityProperties`
+- New field `IsAuthorized` in struct `IoTDeviceEntityProperties`
+- New field `PurdueLayer` in struct `IoTDeviceEntityProperties`
+- New field `IsScanner` in struct `IoTDeviceEntityProperties`
+- New field `NicEntityIDs` in struct `IoTDeviceEntityProperties`
+- New field `IsProgramming` in struct `IoTDeviceEntityProperties`
+- New field `Owners` in struct `IoTDeviceEntityProperties`
+- New field `Site` in struct `IoTDeviceEntityProperties`
+- New field `OutputStream` in struct `DataConnectorConnectBody`
+- New field `DataCollectionEndpoint` in struct `DataConnectorConnectBody`
+- New field `DataCollectionRuleImmutableID` in struct `DataConnectorConnectBody`
+- New field `EventGroupingSettings` in struct `QueryBasedAlertRuleTemplateProperties`
+- New field `EventGroupingSettings` in struct `NrtAlertRuleTemplateProperties`
+- New field `EventGroupingSettings` in struct `NrtAlertRuleProperties`
+
+
 ## 2.0.0-beta.1 (2022-05-24)
 ### Breaking Changes
 

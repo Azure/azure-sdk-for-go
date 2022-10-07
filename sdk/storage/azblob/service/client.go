@@ -16,11 +16,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -31,8 +33,10 @@ type ClientOptions struct {
 // Client represents a URL to the Azure Blob Storage service allowing you to manipulate blob containers.
 type Client base.Client[generated.ServiceClient]
 
-// NewClient creates a Client object using the specified URL, Azure AD credential, and options.
-// Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
+// NewClient creates an instance of Client with the specified values.
+//   - serviceURL - the URL of the storage account e.g. https://<account>.blob.core.windows.net/
+//   - cred - an Azure AD credential, typically obtained via the azidentity module
+//   - options - client options; pass nil to accept the default values
 func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := shared.GetClientOptions(options)
@@ -42,8 +46,10 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 	return (*Client)(base.NewServiceClient(serviceURL, pl, nil)), nil
 }
 
-// NewClientWithNoCredential creates a Client object using the specified URL and options.
-// Example of serviceURL: https://<your_storage_account>.blob.core.windows.net?<SAS token>
+// NewClientWithNoCredential creates an instance of Client with the specified values.
+// This is used to anonymously access a storage account or with a shared access signature (SAS) token.
+//   - serviceURL - the URL of the storage account e.g. https://<account>.blob.core.windows.net/?<sas token>
+//   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
@@ -51,8 +57,10 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 	return (*Client)(base.NewServiceClient(serviceURL, pl, nil)), nil
 }
 
-// NewClientWithSharedKeyCredential creates a Client object using the specified URL, shared key, and options.
-// Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
+// NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
+//   - serviceURL - the URL of the storage account e.g. https://<account>.blob.core.windows.net/
+//   - cred - a SharedKeyCredential created with the matching storage account and access key
+//   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
@@ -62,8 +70,9 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 	return (*Client)(base.NewServiceClient(serviceURL, pl, cred)), nil
 }
 
-// NewClientFromConnectionString creates a service client from the given connection string.
-// nolint
+// NewClientFromConnectionString creates an instance of Client with the specified values.
+//   - connectionString - a connection string for the desired storage account
+//   - options - client options; pass nil to accept the default values
 func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
 	parsed, err := shared.ParseConnectionString(connectionString)
 	if err != nil {
@@ -79,6 +88,23 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 	}
 
 	return NewClientWithNoCredential(parsed.ServiceURL, options)
+}
+
+// GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceURL object.
+// OAuth is required for this call, as well as any role that can delegate access to the storage account.
+func (s *Client) GetUserDelegationCredential(ctx context.Context, info KeyInfo, o *GetUserDelegationCredentialOptions) (*UserDelegationCredential, error) {
+	url, err := blob.ParseURL(s.URL())
+	if err != nil {
+		return nil, err
+	}
+
+	getUserDelegationKeyOptions := o.format()
+	udk, err := s.generated().GetUserDelegationKey(ctx, info, getUserDelegationKeyOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	return exported.NewUserDelegationCredential(strings.Split(url.Host, ".")[0], udk.UserDelegationKey), nil
 }
 
 func (s *Client) generated() *generated.ServiceClient {
@@ -120,6 +146,14 @@ func (s *Client) DeleteContainer(ctx context.Context, containerName string, opti
 	containerClient := s.NewContainerClient(containerName)
 	containerDeleteResp, err := containerClient.Delete(ctx, options)
 	return containerDeleteResp, err
+}
+
+// RestoreContainer restores soft-deleted container
+// Operation will only be successful if used within the specified number of days set in the delete retention policy
+func (s *Client) RestoreContainer(ctx context.Context, deletedContainerName string, deletedContainerVersion string, options *RestoreContainerOptions) (RestoreContainerResponse, error) {
+	containerClient := s.NewContainerClient(deletedContainerName)
+	containerRestoreResp, err := containerClient.Restore(ctx, deletedContainerVersion, options)
+	return containerRestoreResp, err
 }
 
 // GetAccountInfo provides account level information
@@ -213,26 +247,27 @@ func (s *Client) GetStatistics(ctx context.Context, o *GetStatisticsOptions) (Ge
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 // This validity can be checked with CanGetAccountSASToken().
-func (s *Client) GetSASURL(resources SASResourceTypes, permissions SASPermissions, services SASServices, start time.Time, expiry time.Time) (string, error) {
+func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, services sas.AccountServices, start time.Time, expiry time.Time) (string, error) {
 	if s.sharedKey() == nil {
 		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}
 
-	qps, err := SASSignatureValues{
-		Version:       exported.SASVersion,
-		Protocol:      exported.SASProtocolHTTPS,
+	qps, err := sas.AccountSignatureValues{
+		Version:       sas.Version,
+		Protocol:      sas.ProtocolHTTPS,
 		Permissions:   permissions.String(),
 		Services:      services.String(),
 		ResourceTypes: resources.String(),
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
-	}.Sign(s.sharedKey())
+	}.SignWithSharedKey(s.sharedKey())
 	if err != nil {
 		return "", err
 	}
 
 	endpoint := s.URL()
 	if !strings.HasSuffix(endpoint, "/") {
+		// add a trailing slash to be consistent with the portal
 		endpoint += "/"
 	}
 	endpoint += "?" + qps.Encode()

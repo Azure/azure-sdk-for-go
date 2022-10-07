@@ -27,7 +27,10 @@ type Client struct {
 	svc *service.Client
 }
 
-// NewClient creates a BlobClient object using the specified URL, Azure AD credential, and options.
+// NewClient creates an instance of Client with the specified values.
+//   - serviceURL - the URL of the storage account e.g. https://<account>.blob.core.windows.net/
+//   - cred - an Azure AD credential, typically obtained via the azidentity module
+//   - options - client options; pass nil to accept the default values
 func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	var clientOptions *service.ClientOptions
 	if options != nil {
@@ -43,7 +46,10 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 	}, nil
 }
 
-// NewClientWithNoCredential creates a BlobClient object using the specified URL and options.
+// NewClientWithNoCredential creates an instance of Client with the specified values.
+// This is used to anonymously access a storage account or with a shared access signature (SAS) token.
+//   - serviceURL - the URL of the storage account e.g. https://<account>.blob.core.windows.net/?<sas token>
+//   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
 	var clientOptions *service.ClientOptions
 	if options != nil {
@@ -59,7 +65,10 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 	}, nil
 }
 
-// NewClientWithSharedKeyCredential creates a BlobClient object using the specified URL, shared key, and options.
+// NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
+//   - serviceURL - the URL of the storage account e.g. https://<account>.blob.core.windows.net/
+//   - cred - a SharedKeyCredential created with the matching storage account and access key
+//   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, cred, (*service.ClientOptions)(options))
 	if err != nil {
@@ -71,7 +80,9 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 	}, nil
 }
 
-// NewClientFromConnectionString creates BlobClient from a connection String
+// NewClientFromConnectionString creates an instance of Client with the specified values.
+//   - connectionString - a connection string for the desired storage account
+//   - options - client options; pass nil to accept the default values
 func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
@@ -111,10 +122,10 @@ func (c *Client) DeleteBlob(ctx context.Context, containerName string, blobName 
 	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).Delete(ctx, o)
 }
 
-// NewListBlobsPager returns a pager for blobs starting from the specified Marker. Use an empty
+// NewListBlobsFlatPager returns a pager for blobs starting from the specified Marker. Use an empty
 // Marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-blobs.
-func (c *Client) NewListBlobsPager(containerName string, o *ListBlobsOptions) *runtime.Pager[ListBlobsResponse] {
+func (c *Client) NewListBlobsFlatPager(containerName string, o *ListBlobsFlatOptions) *runtime.Pager[ListBlobsFlatResponse] {
 	return c.svc.NewContainerClient(containerName).NewListBlobsFlatPager(o)
 }
 

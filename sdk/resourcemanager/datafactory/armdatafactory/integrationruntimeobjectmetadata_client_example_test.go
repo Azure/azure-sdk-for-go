@@ -28,11 +28,7 @@ func ExampleIntegrationRuntimeObjectMetadataClient_BeginRefresh() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRefresh(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"testactivityv2",
-		nil)
+	poller, err := client.BeginRefresh(ctx, "exampleResourceGroup", "exampleFactoryName", "testactivityv2", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -55,14 +51,10 @@ func ExampleIntegrationRuntimeObjectMetadataClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"exampleResourceGroup",
-		"exampleFactoryName",
-		"testactivityv2",
-		&armdatafactory.IntegrationRuntimeObjectMetadataClientGetOptions{GetMetadataRequest: &armdatafactory.GetSsisObjectMetadataRequest{
-			MetadataPath: to.Ptr("ssisFolders"),
-		},
-		})
+	res, err := client.Get(ctx, "exampleResourceGroup", "exampleFactoryName", "testactivityv2", &armdatafactory.IntegrationRuntimeObjectMetadataClientGetOptions{GetMetadataRequest: &armdatafactory.GetSsisObjectMetadataRequest{
+		MetadataPath: to.Ptr("ssisFolders"),
+	},
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

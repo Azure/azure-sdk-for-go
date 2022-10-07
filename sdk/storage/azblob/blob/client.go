@@ -11,7 +11,6 @@ import (
 	"errors"
 	"io"
 	"os"
-	"strings"
 	"sync"
 	"time"
 
@@ -22,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -32,7 +32,10 @@ type ClientOptions struct {
 // Client represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
 type Client base.Client[generated.BlobClient]
 
-// NewClient creates a Client object using the specified URL, Azure AD credential, and options.
+// NewClient creates an instance of Client with the specified values.
+//   - blobURL - the URL of the blob e.g. https://<account>.blob.core.windows.net/container/blob.txt
+//   - cred - an Azure AD credential, typically obtained via the azidentity module
+//   - options - client options; pass nil to accept the default values
 func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := shared.GetClientOptions(options)
@@ -42,7 +45,10 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 	return (*Client)(base.NewBlobClient(blobURL, pl, nil)), nil
 }
 
-// NewClientWithNoCredential creates a Client object using the specified URL and options.
+// NewClientWithNoCredential creates an instance of Client with the specified values.
+// This is used to anonymously access a blob or with a shared access signature (SAS) token.
+//   - blobURL - the URL of the blob e.g. https://<account>.blob.core.windows.net/container/blob.txt?<sas token>
+//   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
@@ -50,7 +56,10 @@ func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client,
 	return (*Client)(base.NewBlobClient(blobURL, pl, nil)), nil
 }
 
-// NewClientWithSharedKeyCredential creates a Client object using the specified URL, shared key, and options.
+// NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
+//   - blobURL - the URL of the blob e.g. https://<account>.blob.core.windows.net/container/blob.txt
+//   - cred - a SharedKeyCredential created with the matching blob's storage account and access key
+//   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
@@ -60,7 +69,11 @@ func NewClientWithSharedKeyCredential(blobURL string, cred *SharedKeyCredential,
 	return (*Client)(base.NewBlobClient(blobURL, pl, cred)), nil
 }
 
-// NewClientFromConnectionString creates Client from a connection String
+// NewClientFromConnectionString creates an instance of Client with the specified values.
+//   - connectionString - a connection string for the desired storage account
+//   - containerName - the name of the container within the storage account
+//   - blobName - the name of the blob within the container
+//   - options - client options; pass nil to accept the default values
 func NewClientFromConnectionString(connectionString, containerName, blobName string, options *ClientOptions) (*Client, error) {
 	parsed, err := shared.ParseConnectionString(connectionString)
 	if err != nil {
@@ -95,7 +108,7 @@ func (b *Client) URL() string {
 // WithSnapshot creates a new Client object identical to the source but with the specified snapshot timestamp.
 // Pass "" to remove the snapshot returning a URL to the base blob.
 func (b *Client) WithSnapshot(snapshot string) (*Client, error) {
-	p, err := exported.ParseURL(b.URL())
+	p, err := ParseURL(b.URL())
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +120,7 @@ func (b *Client) WithSnapshot(snapshot string) (*Client, error) {
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
 // Pass "" to remove the versionID returning a URL to the base blob.
 func (b *Client) WithVersionID(versionID string) (*Client, error) {
-	p, err := exported.ParseURL(b.URL())
+	p, err := ParseURL(b.URL())
 	if err != nil {
 		return nil, err
 	}
@@ -235,42 +248,41 @@ func (b *Client) CopyFromURL(ctx context.Context, copySource string, options *Co
 	return resp, err
 }
 
-// GetSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
+// GetSASURL is a convenience method for generating a SAS token for the currently pointed at blob.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (b *Client) GetSASToken(permissions SASPermissions, start time.Time, expiry time.Time) (string, error) {
-	urlParts, _ := exported.ParseURL(b.URL())
+func (b *Client) GetSASURL(permissions sas.BlobPermissions, start time.Time, expiry time.Time) (string, error) {
+	if b.sharedKey() == nil {
+		return "", errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
+	}
 
-	t, err := time.Parse(exported.SnapshotTimeFormat, urlParts.Snapshot)
+	urlParts, err := ParseURL(b.URL())
+	if err != nil {
+		return "", err
+	}
+
+	t, err := time.Parse(SnapshotTimeFormat, urlParts.Snapshot)
 
 	if err != nil {
 		t = time.Time{}
 	}
 
-	if b.sharedKey() == nil {
-		return "", errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
-	}
-
-	qps, err := exported.BlobSASSignatureValues{
+	qps, err := sas.BlobSignatureValues{
 		ContainerName: urlParts.ContainerName,
 		BlobName:      urlParts.BlobName,
 		SnapshotTime:  t,
-		Version:       exported.SASVersion,
+		Version:       sas.Version,
 
 		Permissions: permissions.String(),
 
 		StartTime:  start.UTC(),
 		ExpiryTime: expiry.UTC(),
-	}.Sign(b.sharedKey())
+	}.SignWithSharedKey(b.sharedKey())
 
 	if err != nil {
 		return "", err
 	}
 
-	endpoint := b.URL()
-	if !strings.HasSuffix(endpoint, "/") {
-		endpoint += "/"
-	}
-	endpoint += "?" + qps.Encode()
+	endpoint := b.URL() + "?" + qps.Encode()
 
 	return endpoint, nil
 }
@@ -283,15 +295,15 @@ func (b *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 		o.BlockSize = DefaultDownloadBlockSize
 	}
 
-	count := o.Count
+	count := o.Range.Count
 	if count == CountToEnd { // If size not specified, calculate it
 		// If we don't have the length at all, get it
-		downloadBlobOptions := o.getDownloadBlobOptions(0, CountToEnd, nil)
+		downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{}, nil)
 		dr, err := b.DownloadStream(ctx, downloadBlobOptions)
 		if err != nil {
 			return 0, err
 		}
-		count = *dr.ContentLength - o.Offset
+		count = *dr.ContentLength - o.Range.Offset
 	}
 
 	if count <= 0 {
@@ -307,10 +319,13 @@ func (b *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 		OperationName: "downloadBlobToWriterAt",
 		TransferSize:  count,
 		ChunkSize:     o.BlockSize,
-		Parallelism:   o.Parallelism,
+		Concurrency:   o.Concurrency,
 		Operation: func(chunkStart int64, count int64, ctx context.Context) error {
 
-			downloadBlobOptions := o.getDownloadBlobOptions(chunkStart+o.Offset, count, nil)
+			downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{
+				Offset: chunkStart + o.Range.Offset,
+				Count:  count,
+			}, nil)
 			dr, err := b.DownloadStream(ctx, downloadBlobOptions)
 			if err != nil {
 				return err
@@ -356,25 +371,10 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		return DownloadStreamResponse{}, err
 	}
 
-	offset := int64(0)
-	count := int64(CountToEnd)
-
-	if o.Offset != nil {
-		offset = *o.Offset
-	}
-
-	if o.Count != nil {
-		count = *o.Count
-	}
-
-	eTag := ""
-	if dr.ETag != nil {
-		eTag = *dr.ETag
-	}
 	return DownloadStreamResponse{
 		client:                     b,
 		BlobClientDownloadResponse: dr,
-		getInfo:                    httpGetterInfo{Offset: offset, Count: count, ETag: eTag},
+		getInfo:                    httpGetterInfo{Range: o.Range, ETag: dr.ETag},
 		ObjectReplicationRules:     deserializeORSPolicies(dr.ObjectReplicationRules),
 		cpkInfo:                    o.CpkInfo,
 		cpkScope:                   o.CpkScopeInfo,
@@ -400,7 +400,7 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	// 1. Calculate the size of the destination file
 	var size int64
 
-	count := do.Count
+	count := do.Range.Count
 	if count == CountToEnd {
 		// Try to get Azure blob's size
 		getBlobPropertiesOptions := do.getBlobPropertiesOptions()
@@ -408,7 +408,7 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 		if err != nil {
 			return 0, err
 		}
-		size = *props.ContentLength - do.Offset
+		size = *props.ContentLength - do.Range.Offset
 	} else {
 		size = count
 	}

@@ -121,6 +121,16 @@ type PartitionClientOptions struct {
 	// from partition clients with a lower OwnerLevel.
 	// Default is off.
 	OwnerLevel *int64
+
+	// Prefetch represents the size of the internal prefetch buffer. When set,
+	// this client will attempt to always maintain an internal cache of events of
+	// this size, asynchronously, increasing the odds that ReceiveEvents() will use
+	// a locally stored cache of events, rather than having to wait for events to
+	// arrive from the network.
+	//
+	// Defaults to 300 events if Prefetch == 0.
+	// Disabled if Prefetch < 0.
+	Prefetch int32
 }
 
 // NewPartitionClient creates a client that can receive events from a partition. By default it starts
@@ -158,6 +168,11 @@ func (cc *ConsumerClient) GetPartitionProperties(ctx context.Context, partitionI
 	}
 
 	return getPartitionProperties(ctx, cc.namespace, rpcLink.Link, cc.eventHub, partitionID, options)
+}
+
+// ID is the identifier for this ConsumerClient.
+func (cc *ConsumerClient) ID() string {
+	return cc.clientID
 }
 
 type consumerClientDetails struct {

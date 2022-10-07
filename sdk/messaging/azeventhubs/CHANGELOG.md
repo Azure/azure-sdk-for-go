@@ -14,9 +14,6 @@
 
 ### Bugs Fixed
 
-- An error in connection recovery logic could waste retries, resulting in errors related to losing
-  a connection (connlost). (PR#19281)
-
 ### Other Changes
 
 ## 0.1.1 (2022-09-08)

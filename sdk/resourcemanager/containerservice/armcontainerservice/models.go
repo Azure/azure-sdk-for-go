@@ -73,6 +73,12 @@ type AgentPoolListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
+// AgentPoolNetworkProfile - Network settings of an agent pool.
+type AgentPoolNetworkProfile struct {
+	// IPTags of instance-level public IPs.
+	NodePublicIPTags []*IPTag `json:"nodePublicIPTags,omitempty"`
+}
+
 // AgentPoolUpgradeProfile - The list of available upgrades for an agent pool.
 type AgentPoolUpgradeProfile struct {
 	// REQUIRED; The properties of the agent pool upgrade profile.
@@ -489,6 +495,15 @@ type GuardrailsProfile struct {
 	SystemExcludedNamespaces []*string `json:"systemExcludedNamespaces,omitempty" azure:"ro"`
 }
 
+// IPTag - Contains the IPTag associated with the object.
+type IPTag struct {
+	// The IP tag type. Example: RoutingPreference.
+	IPTagType *string `json:"ipTagType,omitempty"`
+
+	// The value of the IP tag associated with the public IP. Example: Internet.
+	Tag *string `json:"tag,omitempty"`
+}
+
 // KubeletConfig - See AKS custom node configuration [https://docs.microsoft.com/azure/aks/custom-node-configuration] for
 // more details.
 type KubeletConfig struct {
@@ -832,6 +847,9 @@ type ManagedClusterAgentPoolProfile struct {
 	// and best practices, see: https://docs.microsoft.com/azure/aks/use-system-pools
 	Mode *AgentPoolMode `json:"mode,omitempty"`
 
+	// Network-related settings of an agent pool.
+	NetworkProfile *AgentPoolNetworkProfile `json:"networkProfile,omitempty"`
+
 	// The node labels to be persisted across all nodes in agent pool.
 	NodeLabels map[string]*string `json:"nodeLabels,omitempty"`
 
@@ -1003,6 +1021,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent pool restrictions
 	// and best practices, see: https://docs.microsoft.com/azure/aks/use-system-pools
 	Mode *AgentPoolMode `json:"mode,omitempty"`
+
+	// Network-related settings of an agent pool.
+	NetworkProfile *AgentPoolNetworkProfile `json:"networkProfile,omitempty"`
 
 	// The node labels to be persisted across all nodes in agent pool.
 	NodeLabels map[string]*string `json:"nodeLabels,omitempty"`

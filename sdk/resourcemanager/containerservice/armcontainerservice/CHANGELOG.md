@@ -1,5 +1,14 @@
 # Release History
 
+## 2.2.0-beta.2 (2022-09-29)
+### Features Added
+
+- New struct `AgentPoolNetworkProfile`
+- New struct `IPTag`
+- New field `NetworkProfile` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `NetworkProfile` in struct `ManagedClusterAgentPoolProfile`
+
+
 ## 2.2.0-beta.1 (2022-09-17)
 ### Features Added
 

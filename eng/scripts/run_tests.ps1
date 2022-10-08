@@ -5,6 +5,8 @@ Param(
     [string] $testTimeout
 )
 
+$ErrorActionPreference = 'Stop'
+
 Push-Location sdk/$serviceDirectory
 Write-Host "##[command] Executing 'go test -timeout $testTimeout -v -coverprofile coverage.txt ./...' in sdk/$serviceDirectory"
 
@@ -12,7 +14,7 @@ go test -timeout $testTimeout -v -coverprofile coverage.txt ./... | Tee-Object -
 # go test will return a non-zero exit code on test failures so don't skip generating the report in this case
 $GOTESTEXITCODE = $LASTEXITCODE
 
-Get-Content outfile.txt | go-junit-report > report.xml
+Get-Content -Raw outfile.txt | go-junit-report > report.xml
 
 # if no tests were actually run (e.g. examples) delete the coverage file so it's omitted from the coverage report
 if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simplematch -quiet) {
@@ -32,8 +34,8 @@ if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simpl
     Get-Content ./coverage.json | gocov-xml > ./coverage.xml
     Get-Content ./coverage.json | gocov-html > ./coverage.html
 
-    Move-Item ./coverage.xml $repoRoot
-    Move-Item ./coverage.html $repoRoot
+    Move-Item -Force ./coverage.xml $repoRoot
+    Move-Item -Force ./coverage.html $repoRoot
 
     # use internal tool to fail if coverage is too low
     Pop-Location

@@ -1,11 +1,6 @@
 # Release History
 
 ## 0.2.0 (2022-09-29)
-### Breaking Changes
-
-- Struct `CloudError` has been removed
-- Struct `CloudErrorBody` has been removed
-
 ### Features Added
 
 - New function `NewProjectAllowedEnvironmentTypesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ProjectAllowedEnvironmentTypesClient, error)`

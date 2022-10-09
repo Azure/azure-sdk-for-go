@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0-beta.1 (2022-09-29)
+## 2.2.0-beta.1 (2022-10-09)
 ### Features Added
 
 - New const `ThroughputPolicyTypeEqual`

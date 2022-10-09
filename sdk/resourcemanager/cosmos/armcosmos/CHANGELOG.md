@@ -1,10 +1,6 @@
 # Release History
 
 ## 3.0.0-beta.1 (2022-09-29)
-### Breaking Changes
-
-- Struct `CloudError` has been removed
-
 ### Features Added
 
 - New const `ThroughputPolicyTypeEqual`

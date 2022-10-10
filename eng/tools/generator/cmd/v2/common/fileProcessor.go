@@ -405,3 +405,14 @@ func UpdateOnboardChangelogVersion(packageRootPath, versionNumber string) error 
 
 	return nil
 }
+
+func GetAlwaysSetBodyParamRequiredFlag(path string) (string, error) {
+	buildGo, err := os.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+	if strings.Contains(string(buildGo), "-alwaysSetBodyParamRequired") {
+		return "-alwaysSetBodyParamRequired", nil
+	}
+	return "", nil
+}

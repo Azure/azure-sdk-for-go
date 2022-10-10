@@ -247,7 +247,7 @@ func (inf *processorStressTest) receiveForever(ctx context.Context, partClient *
 			continue
 		}
 
-		if ehErr := (*azeventhubs.Error)(nil); errors.As(err, &ehErr) && ehErr.Code == azeventhubs.CodeOwnershipLost {
+		if ehErr := (*azeventhubs.Error)(nil); errors.As(err, &ehErr) && ehErr.Code == azeventhubs.ErrorCodeOwnershipLost {
 			// this can happen as partitions are rebalanced between processors - Event Hubs
 			// actually detaches us with this error.
 			inf.TC.TrackMetric(MetricOwnershipLost, 1.0, map[string]string{

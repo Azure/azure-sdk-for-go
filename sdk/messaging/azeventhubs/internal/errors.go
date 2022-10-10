@@ -60,7 +60,7 @@ func TransformError(err error) error {
 	}
 
 	if IsOwnershipLostError(err) {
-		return exported.NewError(exported.CodeOwnershipLost, err)
+		return exported.NewError(exported.ErrorCodeOwnershipLost, err)
 	}
 
 	rk := GetRecoveryKind(err)
@@ -70,9 +70,9 @@ func TransformError(err error) error {
 		// note that we could give back a more differentiated error code
 		// here but it's probably best to just give the customer the simplest
 		// recovery mechanism possible.
-		return exported.NewError(exported.CodeConnectionLost, err)
+		return exported.NewError(exported.ErrorCodeConnectionLost, err)
 	case RecoveryKindConn:
-		return exported.NewError(exported.CodeConnectionLost, err)
+		return exported.NewError(exported.ErrorCodeConnectionLost, err)
 	default:
 		// isn't one of our specifically called out cases so we'll just return it.
 		return err

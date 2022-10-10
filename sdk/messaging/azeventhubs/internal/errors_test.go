@@ -26,7 +26,7 @@ func TestOwnershipLost(t *testing.T) {
 
 	var err *exported.Error
 	require.ErrorAs(t, transformedErr, &err)
-	require.Equal(t, exported.CodeOwnershipLost, err.Code)
+	require.Equal(t, exported.ErrorCodeOwnershipLost, err.Code)
 
 	require.False(t, IsOwnershipLostError(&amqp.DetachError{}))
 	require.False(t, IsOwnershipLostError(&amqp.ConnectionError{}))

@@ -22,19 +22,19 @@ import (
 // are subject to change.
 type Error = exported.Error
 
-// Code is an error code, usable by consuming code to work with
+// ErrorCode is an error code, usable by consuming code to work with
 // programatically.
-type Code = exported.Code
+type ErrorCode = exported.ErrorCode
 
 const (
-	// CodeConnectionLost means our connection was lost and all retry attempts failed.
+	// ErrorCodeConnectionLost means our connection was lost and all retry attempts failed.
 	// This typically reflects an extended outage or connection disruption and may
 	// require manual intervention.
-	CodeConnectionLost = exported.CodeConnectionLost
+	ErrorCodeConnectionLost = exported.ErrorCodeConnectionLost
 
-	// CodeOwnershipLost means that a partition that you were reading from was opened
+	// ErrorCodeOwnershipLost means that a partition that you were reading from was opened
 	// by another link with a higher epoch/owner level.
-	CodeOwnershipLost = exported.CodeOwnershipLost
+	ErrorCodeOwnershipLost = exported.ErrorCodeOwnershipLost
 )
 
 // ConsumerClientOptions configures optional parameters for a ConsumerClient.
@@ -47,7 +47,7 @@ type ConsumerClientOptions struct {
 
 	// NewWebSocketConn is a function that can create a net.Conn for use with websockets.
 	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
-	NewWebSocketConn func(ctx context.Context, args WebSocketConnArgs) (net.Conn, error)
+	NewWebSocketConn func(ctx context.Context, args WebSocketConnParams) (net.Conn, error)
 
 	// RetryOptions controls how often operations are retried from this client and any
 	// Receivers and Senders created from this client.

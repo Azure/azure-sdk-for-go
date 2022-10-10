@@ -14,9 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 )
 
-// EventRetry is the name for retry events
-const EventRetry = "azsb.Retry"
-
 type RetryFnArgs struct {
 	// I is the iteration of the retry "loop" and starts at 0.
 	// The 0th iteration is the first call, and doesn't count as a retry.
@@ -51,7 +48,12 @@ func Retry(ctx context.Context, eventName log.Event, operation string, o exporte
 		if i > 0 {
 			sleep := calcDelay(ro, i)
 			log.Writef(eventName, "(%s) Retry attempt %d sleeping for %s", operation, i, sleep)
-			time.Sleep(sleep)
+
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			case <-time.After(sleep):
+			}
 		}
 
 		args := RetryFnArgs{

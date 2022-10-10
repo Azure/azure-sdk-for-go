@@ -237,7 +237,6 @@ func (client *DatasetsClient) getHandleResponse(resp *http.Response) (DatasetsCl
 }
 
 // NewListByFactoryPager - Lists datasets.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.

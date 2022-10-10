@@ -30,11 +30,11 @@ const (
 	// ErrorCodeConnectionLost means our connection was lost and all retry attempts failed.
 	// This typically reflects an extended outage or connection disruption and may
 	// require manual intervention.
-	ErrorCodeConnectionLost = exported.ErrorCodeConnectionLost
+	ErrorCodeConnectionLost ErrorCode = exported.ErrorCodeConnectionLost
 
 	// ErrorCodeOwnershipLost means that a partition that you were reading from was opened
 	// by another link with a higher epoch/owner level.
-	ErrorCodeOwnershipLost = exported.ErrorCodeOwnershipLost
+	ErrorCodeOwnershipLost ErrorCode = exported.ErrorCodeOwnershipLost
 )
 
 // ConsumerClientOptions configures optional parameters for a ConsumerClient.

@@ -3,11 +3,11 @@
 
 package exported
 
-// NOTE: this struct is exported via client.go:NewWebSocketConnArgs
+// NOTE: this struct is exported via client.go:WebSocketConnParams
 
-// WebSocketConnArgs are the arguments to the NewWebSocketConn function you pass if you want
+// WebSocketConnParams are the arguments to the NewWebSocketConn function you pass if you want
 // to enable websockets.
-type WebSocketConnArgs struct {
+type WebSocketConnParams struct {
 	// Host is the the `wss://<host>` to connect to
 	Host string
 }

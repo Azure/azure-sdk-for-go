@@ -156,16 +156,16 @@ func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 }
 
 // Close releases resources for this client.
-func (cc *PartitionClient) Close(ctx context.Context) error {
-	if cc.links != nil {
-		return cc.links.Close(ctx)
+func (pc *PartitionClient) Close(ctx context.Context) error {
+	if pc.links != nil {
+		return pc.links.Close(ctx)
 	}
 
 	return nil
 }
 
-func (s *PartitionClient) getEntityPath(partitionID string) string {
-	return fmt.Sprintf("%s/ConsumerGroups/%s/Partitions/%s", s.eventHub, s.consumerGroup, partitionID)
+func (pc *PartitionClient) getEntityPath(partitionID string) string {
+	return fmt.Sprintf("%s/ConsumerGroups/%s/Partitions/%s", pc.eventHub, pc.consumerGroup, partitionID)
 }
 
 func (pc *PartitionClient) newEventHubConsumerLink(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (internal.AMQPReceiverCloser, error) {

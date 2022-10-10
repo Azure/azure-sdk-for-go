@@ -137,7 +137,7 @@ func processEvents(partitionClient *azeventhubs.ProcessorPartitionClient) error 
 		// Timing out (context.DeadlineExceeded) is fine. We didn't receive our 100 events
 		// but we might have received _some_ events.
 		if err != nil && !errors.Is(err, context.DeadlineExceeded) {
-			if eventHubError := (*azeventhubs.Error)(nil); errors.As(err, &eventHubError) && eventHubError.Code == exported.CodeOwnershipLost {
+			if eventHubError := (*azeventhubs.Error)(nil); errors.As(err, &eventHubError) && eventHubError.Code == exported.ErrorCodeOwnershipLost {
 				// This means that the partition was "stolen" - this can happen as partitions are balanced between
 				// consumers. We'll exit here and just let our "defer closePartitionResources" handle closing
 				// resources, including the ProcessorPartitionClient.

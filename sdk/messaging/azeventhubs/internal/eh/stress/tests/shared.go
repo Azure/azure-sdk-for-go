@@ -365,7 +365,7 @@ func closeOrPanic(closeable interface {
 		// Issue: https://github.com/Azure/azure-sdk-for-go/issues/19220
 
 		var eherr *azeventhubs.Error
-		if errors.As(err, &eherr) && eherr.Code == azeventhubs.CodeConnectionLost {
+		if errors.As(err, &eherr) && eherr.Code == azeventhubs.ErrorCodeConnectionLost {
 			// for now we'll say this is okay - it didn't interfere with the core operation
 			// of the test.
 			return

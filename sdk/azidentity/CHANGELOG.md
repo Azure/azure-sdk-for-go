@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.3 (Unreleased)
+## 1.2.0-beta.3 (2022-10-11)
 
 ### Features Added
 * `ManagedIdentityCredential` caches tokens in memory

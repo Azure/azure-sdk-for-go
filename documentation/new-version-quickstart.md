@@ -17,6 +17,10 @@ You will need Go 1.18 and latest version of resource management modules.
 
 You will need to authenticate to Azure either by using Azure CLI to sign in or setting environment variables.
 
+### Upgrade Go version
+
+You could download and install the latest version of Go from [here](https://go.dev/doc/install). It will replace the existed Go on your machine. If you want to install multiple Go versions on the same machine, you could refer this [doc](https://go.dev/doc/manage-install).
+
 ### Using Azure CLI to Sign In
 
 You could easily use `az login` in command line to sign in to Azure via your default browser. Detail instructions can be found in [Sign in with Azure CLI](https://docs.microsoft.com/cli/azure/authenticate-azure-cli).

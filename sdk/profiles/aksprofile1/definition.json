@@ -1,9 +1,0 @@
-{
-  "profileName": "aksprofile1",
-  "modules": [
-    {
-      "rp": "resources",
-      "tag": "package-resources-2018-05"
-    }
-  ]
-}

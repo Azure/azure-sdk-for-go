@@ -258,6 +258,28 @@ type CalculatePriceResponsePropertiesPricingCurrencyTotal struct {
 	Amount       *float64 `json:"amount,omitempty"`
 }
 
+// CalculateRefundRequest ...
+type CalculateRefundRequest struct {
+	// ID - Fully qualified identifier of the reservation order being returned
+	ID         *string                           `json:"id,omitempty"`
+	Properties *CalculateRefundRequestProperties `json:"properties,omitempty"`
+}
+
+// CalculateRefundRequestProperties ...
+type CalculateRefundRequestProperties struct {
+	// Scope - The scope of the refund, e.g. Reservation
+	Scope               *string   `json:"scope,omitempty"`
+	ReservationToReturn *ToReturn `json:"reservationToReturn,omitempty"`
+}
+
+// CalculateRefundResponse ...
+type CalculateRefundResponse struct {
+	autorest.Response `json:"-"`
+	// ID - Fully qualified identifier of the reservation being returned
+	ID         *string                   `json:"id,omitempty"`
+	Properties *RefundResponseProperties `json:"properties,omitempty"`
+}
+
 // Catalog ...
 type Catalog struct {
 	// ResourceType - READ-ONLY; The type of resource the SKU applies to.
@@ -533,7 +555,7 @@ type ExchangeResponseProperties struct {
 
 // ExtendedErrorInfo ...
 type ExtendedErrorInfo struct {
-	// Code - Possible values include: 'ErrorResponseCodeNotSpecified', 'ErrorResponseCodeInternalServerError', 'ErrorResponseCodeServerTimeout', 'ErrorResponseCodeAuthorizationFailed', 'ErrorResponseCodeBadRequest', 'ErrorResponseCodeClientCertificateThumbprintNotSet', 'ErrorResponseCodeInvalidRequestContent', 'ErrorResponseCodeOperationFailed', 'ErrorResponseCodeHTTPMethodNotSupported', 'ErrorResponseCodeInvalidRequestURI', 'ErrorResponseCodeMissingTenantID', 'ErrorResponseCodeInvalidTenantID', 'ErrorResponseCodeInvalidReservationOrderID', 'ErrorResponseCodeInvalidReservationID', 'ErrorResponseCodeReservationIDNotInReservationOrder', 'ErrorResponseCodeReservationOrderNotFound', 'ErrorResponseCodeInvalidSubscriptionID', 'ErrorResponseCodeInvalidAccessToken', 'ErrorResponseCodeInvalidLocationID', 'ErrorResponseCodeUnauthenticatedRequestsThrottled', 'ErrorResponseCodeInvalidHealthCheckType', 'ErrorResponseCodeForbidden', 'ErrorResponseCodeBillingScopeIDCannotBeChanged', 'ErrorResponseCodeAppliedScopesNotAssociatedWithCommerceAccount', 'ErrorResponseCodePatchValuesSameAsExisting', 'ErrorResponseCodeRoleAssignmentCreationFailed', 'ErrorResponseCodeReservationOrderCreationFailed', 'ErrorResponseCodeReservationOrderNotEnabled', 'ErrorResponseCodeCapacityUpdateScopesFailed', 'ErrorResponseCodeUnsupportedReservationTerm', 'ErrorResponseCodeReservationOrderIDAlreadyExists', 'ErrorResponseCodeRiskCheckFailed', 'ErrorResponseCodeCreateQuoteFailed', 'ErrorResponseCodeActivateQuoteFailed', 'ErrorResponseCodeNonsupportedAccountID', 'ErrorResponseCodePaymentInstrumentNotFound', 'ErrorResponseCodeMissingAppliedScopesForSingle', 'ErrorResponseCodeNoValidReservationsToReRate', 'ErrorResponseCodeReRateOnlyAllowedForEA', 'ErrorResponseCodeOperationCannotBePerformedInCurrentState', 'ErrorResponseCodeInvalidSingleAppliedScopesCount', 'ErrorResponseCodeInvalidFulfillmentRequestParameters', 'ErrorResponseCodeNotSupportedCountry', 'ErrorResponseCodeInvalidRefundQuantity', 'ErrorResponseCodePurchaseError', 'ErrorResponseCodeBillingCustomerInputError', 'ErrorResponseCodeBillingPaymentInstrumentSoftError', 'ErrorResponseCodeBillingPaymentInstrumentHardError', 'ErrorResponseCodeBillingTransientError', 'ErrorResponseCodeBillingError', 'ErrorResponseCodeFulfillmentConfigurationError', 'ErrorResponseCodeFulfillmentOutOfStockError', 'ErrorResponseCodeFulfillmentTransientError', 'ErrorResponseCodeFulfillmentError', 'ErrorResponseCodeCalculatePriceFailed', 'ErrorResponseCodeAppliedScopesSameAsExisting'
+	// Code - Possible values include: 'ErrorResponseCodeNotSpecified', 'ErrorResponseCodeInternalServerError', 'ErrorResponseCodeServerTimeout', 'ErrorResponseCodeAuthorizationFailed', 'ErrorResponseCodeBadRequest', 'ErrorResponseCodeClientCertificateThumbprintNotSet', 'ErrorResponseCodeInvalidRequestContent', 'ErrorResponseCodeOperationFailed', 'ErrorResponseCodeHTTPMethodNotSupported', 'ErrorResponseCodeInvalidRequestURI', 'ErrorResponseCodeMissingTenantID', 'ErrorResponseCodeInvalidTenantID', 'ErrorResponseCodeInvalidReservationOrderID', 'ErrorResponseCodeInvalidReservationID', 'ErrorResponseCodeReservationIDNotInReservationOrder', 'ErrorResponseCodeReservationOrderNotFound', 'ErrorResponseCodeInvalidSubscriptionID', 'ErrorResponseCodeInvalidAccessToken', 'ErrorResponseCodeInvalidLocationID', 'ErrorResponseCodeUnauthenticatedRequestsThrottled', 'ErrorResponseCodeInvalidHealthCheckType', 'ErrorResponseCodeForbidden', 'ErrorResponseCodeBillingScopeIDCannotBeChanged', 'ErrorResponseCodeAppliedScopesNotAssociatedWithCommerceAccount', 'ErrorResponseCodePatchValuesSameAsExisting', 'ErrorResponseCodeRoleAssignmentCreationFailed', 'ErrorResponseCodeReservationOrderCreationFailed', 'ErrorResponseCodeReservationOrderNotEnabled', 'ErrorResponseCodeCapacityUpdateScopesFailed', 'ErrorResponseCodeUnsupportedReservationTerm', 'ErrorResponseCodeReservationOrderIDAlreadyExists', 'ErrorResponseCodeRiskCheckFailed', 'ErrorResponseCodeCreateQuoteFailed', 'ErrorResponseCodeActivateQuoteFailed', 'ErrorResponseCodeNonsupportedAccountID', 'ErrorResponseCodePaymentInstrumentNotFound', 'ErrorResponseCodeMissingAppliedScopesForSingle', 'ErrorResponseCodeNoValidReservationsToReRate', 'ErrorResponseCodeReRateOnlyAllowedForEA', 'ErrorResponseCodeOperationCannotBePerformedInCurrentState', 'ErrorResponseCodeInvalidSingleAppliedScopesCount', 'ErrorResponseCodeInvalidFulfillmentRequestParameters', 'ErrorResponseCodeNotSupportedCountry', 'ErrorResponseCodeInvalidRefundQuantity', 'ErrorResponseCodePurchaseError', 'ErrorResponseCodeBillingCustomerInputError', 'ErrorResponseCodeBillingPaymentInstrumentSoftError', 'ErrorResponseCodeBillingPaymentInstrumentHardError', 'ErrorResponseCodeBillingTransientError', 'ErrorResponseCodeBillingError', 'ErrorResponseCodeFulfillmentConfigurationError', 'ErrorResponseCodeFulfillmentOutOfStockError', 'ErrorResponseCodeFulfillmentTransientError', 'ErrorResponseCodeFulfillmentError', 'ErrorResponseCodeCalculatePriceFailed', 'ErrorResponseCodeAppliedScopesSameAsExisting', 'ErrorResponseCodeSelfServiceRefundNotSupported', 'ErrorResponseCodeRefundLimitExceeded'
 	Code    ErrorResponseCode `json:"code,omitempty"`
 	Message *string           `json:"message,omitempty"`
 }
@@ -1311,8 +1333,8 @@ type OrderProperties struct {
 	OriginalQuantity *int32 `json:"originalQuantity,omitempty"`
 	// Term - Possible values include: 'ReservationTermP1Y', 'ReservationTermP3Y', 'ReservationTermP5Y'
 	Term ReservationTerm `json:"term,omitempty"`
-	// ProvisioningState - Current state of the reservation. Possible values include: 'ProvisioningState1Creating', 'ProvisioningState1PendingResourceHold', 'ProvisioningState1ConfirmedResourceHold', 'ProvisioningState1PendingBilling', 'ProvisioningState1ConfirmedBilling', 'ProvisioningState1Created', 'ProvisioningState1Succeeded', 'ProvisioningState1Cancelled', 'ProvisioningState1Expired', 'ProvisioningState1BillingFailed', 'ProvisioningState1Failed', 'ProvisioningState1Split', 'ProvisioningState1Merged'
-	ProvisioningState ProvisioningState1 `json:"provisioningState,omitempty"`
+	// ProvisioningState - Current state of the reservation. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStatePendingResourceHold', 'ProvisioningStateConfirmedResourceHold', 'ProvisioningStatePendingBilling', 'ProvisioningStateConfirmedBilling', 'ProvisioningStateCreated', 'ProvisioningStateSucceeded', 'ProvisioningStateCancelled', 'ProvisioningStateExpired', 'ProvisioningStateBillingFailed', 'ProvisioningStateFailed', 'ProvisioningStateSplit', 'ProvisioningStateMerged'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// BillingPlan - Possible values include: 'ReservationBillingPlanUpfront', 'ReservationBillingPlanMonthly'
 	BillingPlan          ReservationBillingPlan       `json:"billingPlan,omitempty"`
 	PlanInformation      *OrderBillingPlanInformation `json:"planInformation,omitempty"`
@@ -2582,6 +2604,75 @@ func (future *QuotaUpdateFuture) result(client QuotaClient) (so SetObject, err e
 		}
 	}
 	return
+}
+
+// RefundBillingInformation billing information
+type RefundBillingInformation struct {
+	// BillingPlan - Possible values include: 'ReservationBillingPlanUpfront', 'ReservationBillingPlanMonthly'
+	BillingPlan ReservationBillingPlan `json:"billingPlan,omitempty"`
+	// CompletedTransactions - The number of completed transactions in this reservation's payment
+	CompletedTransactions *int32 `json:"completedTransactions,omitempty"`
+	// TotalTransactions - The number of total transactions in this reservation's payment
+	TotalTransactions                        *int32 `json:"totalTransactions,omitempty"`
+	BillingCurrencyTotalPaidAmount           *Price `json:"billingCurrencyTotalPaidAmount,omitempty"`
+	BillingCurrencyProratedAmount            *Price `json:"billingCurrencyProratedAmount,omitempty"`
+	BillingCurrencyRemainingCommitmentAmount *Price `json:"billingCurrencyRemainingCommitmentAmount,omitempty"`
+}
+
+// RefundPolicyError error details
+type RefundPolicyError struct {
+	// Code - Possible values include: 'ErrorResponseCodeNotSpecified', 'ErrorResponseCodeInternalServerError', 'ErrorResponseCodeServerTimeout', 'ErrorResponseCodeAuthorizationFailed', 'ErrorResponseCodeBadRequest', 'ErrorResponseCodeClientCertificateThumbprintNotSet', 'ErrorResponseCodeInvalidRequestContent', 'ErrorResponseCodeOperationFailed', 'ErrorResponseCodeHTTPMethodNotSupported', 'ErrorResponseCodeInvalidRequestURI', 'ErrorResponseCodeMissingTenantID', 'ErrorResponseCodeInvalidTenantID', 'ErrorResponseCodeInvalidReservationOrderID', 'ErrorResponseCodeInvalidReservationID', 'ErrorResponseCodeReservationIDNotInReservationOrder', 'ErrorResponseCodeReservationOrderNotFound', 'ErrorResponseCodeInvalidSubscriptionID', 'ErrorResponseCodeInvalidAccessToken', 'ErrorResponseCodeInvalidLocationID', 'ErrorResponseCodeUnauthenticatedRequestsThrottled', 'ErrorResponseCodeInvalidHealthCheckType', 'ErrorResponseCodeForbidden', 'ErrorResponseCodeBillingScopeIDCannotBeChanged', 'ErrorResponseCodeAppliedScopesNotAssociatedWithCommerceAccount', 'ErrorResponseCodePatchValuesSameAsExisting', 'ErrorResponseCodeRoleAssignmentCreationFailed', 'ErrorResponseCodeReservationOrderCreationFailed', 'ErrorResponseCodeReservationOrderNotEnabled', 'ErrorResponseCodeCapacityUpdateScopesFailed', 'ErrorResponseCodeUnsupportedReservationTerm', 'ErrorResponseCodeReservationOrderIDAlreadyExists', 'ErrorResponseCodeRiskCheckFailed', 'ErrorResponseCodeCreateQuoteFailed', 'ErrorResponseCodeActivateQuoteFailed', 'ErrorResponseCodeNonsupportedAccountID', 'ErrorResponseCodePaymentInstrumentNotFound', 'ErrorResponseCodeMissingAppliedScopesForSingle', 'ErrorResponseCodeNoValidReservationsToReRate', 'ErrorResponseCodeReRateOnlyAllowedForEA', 'ErrorResponseCodeOperationCannotBePerformedInCurrentState', 'ErrorResponseCodeInvalidSingleAppliedScopesCount', 'ErrorResponseCodeInvalidFulfillmentRequestParameters', 'ErrorResponseCodeNotSupportedCountry', 'ErrorResponseCodeInvalidRefundQuantity', 'ErrorResponseCodePurchaseError', 'ErrorResponseCodeBillingCustomerInputError', 'ErrorResponseCodeBillingPaymentInstrumentSoftError', 'ErrorResponseCodeBillingPaymentInstrumentHardError', 'ErrorResponseCodeBillingTransientError', 'ErrorResponseCodeBillingError', 'ErrorResponseCodeFulfillmentConfigurationError', 'ErrorResponseCodeFulfillmentOutOfStockError', 'ErrorResponseCodeFulfillmentTransientError', 'ErrorResponseCodeFulfillmentError', 'ErrorResponseCodeCalculatePriceFailed', 'ErrorResponseCodeAppliedScopesSameAsExisting', 'ErrorResponseCodeSelfServiceRefundNotSupported', 'ErrorResponseCodeRefundLimitExceeded'
+	Code    ErrorResponseCode `json:"code,omitempty"`
+	Message *string           `json:"message,omitempty"`
+}
+
+// RefundPolicyResult refund policy result
+type RefundPolicyResult struct {
+	Properties *RefundPolicyResultProperty `json:"properties,omitempty"`
+}
+
+// RefundPolicyResultProperty refund policy result property
+type RefundPolicyResultProperty struct {
+	ConsumedRefundsTotal *Price `json:"consumedRefundsTotal,omitempty"`
+	MaxRefundLimit       *Price `json:"maxRefundLimit,omitempty"`
+	// PolicyErrors - Refund Policy errors
+	PolicyErrors *[]RefundPolicyError `json:"policyErrors,omitempty"`
+}
+
+// RefundRequest ...
+type RefundRequest struct {
+	Properties *RefundRequestProperties `json:"properties,omitempty"`
+}
+
+// RefundRequestProperties ...
+type RefundRequestProperties struct {
+	// SessionID - SessionId that was returned by CalculateRefund API.
+	SessionID *string `json:"sessionId,omitempty"`
+	// Scope - The scope of the refund, e.g. Reservation
+	Scope               *string   `json:"scope,omitempty"`
+	ReservationToReturn *ToReturn `json:"reservationToReturn,omitempty"`
+	// ReturnReason - The reason of returning the reservation
+	ReturnReason *string `json:"returnReason,omitempty"`
+}
+
+// RefundResponse ...
+type RefundResponse struct {
+	autorest.Response `json:"-"`
+	// ID - Fully qualified identifier of the reservation being returned
+	ID         *string                   `json:"id,omitempty"`
+	Properties *RefundResponseProperties `json:"properties,omitempty"`
+}
+
+// RefundResponseProperties ...
+type RefundResponseProperties struct {
+	// SessionID - Refund session identifier
+	SessionID *string `json:"sessionId,omitempty"`
+	// Quantity - Quantity to be returned
+	Quantity            *int32                    `json:"quantity,omitempty"`
+	BillingRefundAmount *Price                    `json:"billingRefundAmount,omitempty"`
+	PricingRefundAmount *Price                    `json:"pricingRefundAmount,omitempty"`
+	PolicyResult        *RefundPolicyResult       `json:"policyResult,omitempty"`
+	BillingInformation  *RefundBillingInformation `json:"billingInformation,omitempty"`
 }
 
 // RenewPropertiesResponse ...

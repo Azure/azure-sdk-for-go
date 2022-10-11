@@ -59,6 +59,31 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	return []CreatedByType{CreatedByTypeApplication, CreatedByTypeKey, CreatedByTypeManagedIdentity, CreatedByTypeUser}
 }
 
+// DisplayProvisioningState enumerates the values for display provisioning state.
+type DisplayProvisioningState string
+
+const (
+	// DisplayProvisioningStateCancelled ...
+	DisplayProvisioningStateCancelled DisplayProvisioningState = "Cancelled"
+	// DisplayProvisioningStateExpired ...
+	DisplayProvisioningStateExpired DisplayProvisioningState = "Expired"
+	// DisplayProvisioningStateExpiring ...
+	DisplayProvisioningStateExpiring DisplayProvisioningState = "Expiring"
+	// DisplayProvisioningStateFailed ...
+	DisplayProvisioningStateFailed DisplayProvisioningState = "Failed"
+	// DisplayProvisioningStatePending ...
+	DisplayProvisioningStatePending DisplayProvisioningState = "Pending"
+	// DisplayProvisioningStateProcessing ...
+	DisplayProvisioningStateProcessing DisplayProvisioningState = "Processing"
+	// DisplayProvisioningStateSucceeded ...
+	DisplayProvisioningStateSucceeded DisplayProvisioningState = "Succeeded"
+)
+
+// PossibleDisplayProvisioningStateValues returns an array of possible values for the DisplayProvisioningState const type.
+func PossibleDisplayProvisioningStateValues() []DisplayProvisioningState {
+	return []DisplayProvisioningState{DisplayProvisioningStateCancelled, DisplayProvisioningStateExpired, DisplayProvisioningStateExpiring, DisplayProvisioningStateFailed, DisplayProvisioningStatePending, DisplayProvisioningStateProcessing, DisplayProvisioningStateSucceeded}
+}
+
 // ErrorResponseCode enumerates the values for error response code.
 type ErrorResponseCode string
 
@@ -153,6 +178,8 @@ const (
 	ErrorResponseCodePaymentInstrumentNotFound ErrorResponseCode = "PaymentInstrumentNotFound"
 	// ErrorResponseCodePurchaseError ...
 	ErrorResponseCodePurchaseError ErrorResponseCode = "PurchaseError"
+	// ErrorResponseCodeRefundLimitExceeded ...
+	ErrorResponseCodeRefundLimitExceeded ErrorResponseCode = "RefundLimitExceeded"
 	// ErrorResponseCodeReRateOnlyAllowedForEA ...
 	ErrorResponseCodeReRateOnlyAllowedForEA ErrorResponseCode = "ReRateOnlyAllowedForEA"
 	// ErrorResponseCodeReservationIDNotInReservationOrder ...
@@ -169,6 +196,8 @@ const (
 	ErrorResponseCodeRiskCheckFailed ErrorResponseCode = "RiskCheckFailed"
 	// ErrorResponseCodeRoleAssignmentCreationFailed ...
 	ErrorResponseCodeRoleAssignmentCreationFailed ErrorResponseCode = "RoleAssignmentCreationFailed"
+	// ErrorResponseCodeSelfServiceRefundNotSupported ...
+	ErrorResponseCodeSelfServiceRefundNotSupported ErrorResponseCode = "SelfServiceRefundNotSupported"
 	// ErrorResponseCodeServerTimeout ...
 	ErrorResponseCodeServerTimeout ErrorResponseCode = "ServerTimeout"
 	// ErrorResponseCodeUnauthenticatedRequestsThrottled ...
@@ -179,7 +208,7 @@ const (
 
 // PossibleErrorResponseCodeValues returns an array of possible values for the ErrorResponseCode const type.
 func PossibleErrorResponseCodeValues() []ErrorResponseCode {
-	return []ErrorResponseCode{ErrorResponseCodeActivateQuoteFailed, ErrorResponseCodeAppliedScopesNotAssociatedWithCommerceAccount, ErrorResponseCodeAppliedScopesSameAsExisting, ErrorResponseCodeAuthorizationFailed, ErrorResponseCodeBadRequest, ErrorResponseCodeBillingCustomerInputError, ErrorResponseCodeBillingError, ErrorResponseCodeBillingPaymentInstrumentHardError, ErrorResponseCodeBillingPaymentInstrumentSoftError, ErrorResponseCodeBillingScopeIDCannotBeChanged, ErrorResponseCodeBillingTransientError, ErrorResponseCodeCalculatePriceFailed, ErrorResponseCodeCapacityUpdateScopesFailed, ErrorResponseCodeClientCertificateThumbprintNotSet, ErrorResponseCodeCreateQuoteFailed, ErrorResponseCodeForbidden, ErrorResponseCodeFulfillmentConfigurationError, ErrorResponseCodeFulfillmentError, ErrorResponseCodeFulfillmentOutOfStockError, ErrorResponseCodeFulfillmentTransientError, ErrorResponseCodeHTTPMethodNotSupported, ErrorResponseCodeInternalServerError, ErrorResponseCodeInvalidAccessToken, ErrorResponseCodeInvalidFulfillmentRequestParameters, ErrorResponseCodeInvalidHealthCheckType, ErrorResponseCodeInvalidLocationID, ErrorResponseCodeInvalidRefundQuantity, ErrorResponseCodeInvalidRequestContent, ErrorResponseCodeInvalidRequestURI, ErrorResponseCodeInvalidReservationID, ErrorResponseCodeInvalidReservationOrderID, ErrorResponseCodeInvalidSingleAppliedScopesCount, ErrorResponseCodeInvalidSubscriptionID, ErrorResponseCodeInvalidTenantID, ErrorResponseCodeMissingAppliedScopesForSingle, ErrorResponseCodeMissingTenantID, ErrorResponseCodeNonsupportedAccountID, ErrorResponseCodeNotSpecified, ErrorResponseCodeNotSupportedCountry, ErrorResponseCodeNoValidReservationsToReRate, ErrorResponseCodeOperationCannotBePerformedInCurrentState, ErrorResponseCodeOperationFailed, ErrorResponseCodePatchValuesSameAsExisting, ErrorResponseCodePaymentInstrumentNotFound, ErrorResponseCodePurchaseError, ErrorResponseCodeReRateOnlyAllowedForEA, ErrorResponseCodeReservationIDNotInReservationOrder, ErrorResponseCodeReservationOrderCreationFailed, ErrorResponseCodeReservationOrderIDAlreadyExists, ErrorResponseCodeReservationOrderNotEnabled, ErrorResponseCodeReservationOrderNotFound, ErrorResponseCodeRiskCheckFailed, ErrorResponseCodeRoleAssignmentCreationFailed, ErrorResponseCodeServerTimeout, ErrorResponseCodeUnauthenticatedRequestsThrottled, ErrorResponseCodeUnsupportedReservationTerm}
+	return []ErrorResponseCode{ErrorResponseCodeActivateQuoteFailed, ErrorResponseCodeAppliedScopesNotAssociatedWithCommerceAccount, ErrorResponseCodeAppliedScopesSameAsExisting, ErrorResponseCodeAuthorizationFailed, ErrorResponseCodeBadRequest, ErrorResponseCodeBillingCustomerInputError, ErrorResponseCodeBillingError, ErrorResponseCodeBillingPaymentInstrumentHardError, ErrorResponseCodeBillingPaymentInstrumentSoftError, ErrorResponseCodeBillingScopeIDCannotBeChanged, ErrorResponseCodeBillingTransientError, ErrorResponseCodeCalculatePriceFailed, ErrorResponseCodeCapacityUpdateScopesFailed, ErrorResponseCodeClientCertificateThumbprintNotSet, ErrorResponseCodeCreateQuoteFailed, ErrorResponseCodeForbidden, ErrorResponseCodeFulfillmentConfigurationError, ErrorResponseCodeFulfillmentError, ErrorResponseCodeFulfillmentOutOfStockError, ErrorResponseCodeFulfillmentTransientError, ErrorResponseCodeHTTPMethodNotSupported, ErrorResponseCodeInternalServerError, ErrorResponseCodeInvalidAccessToken, ErrorResponseCodeInvalidFulfillmentRequestParameters, ErrorResponseCodeInvalidHealthCheckType, ErrorResponseCodeInvalidLocationID, ErrorResponseCodeInvalidRefundQuantity, ErrorResponseCodeInvalidRequestContent, ErrorResponseCodeInvalidRequestURI, ErrorResponseCodeInvalidReservationID, ErrorResponseCodeInvalidReservationOrderID, ErrorResponseCodeInvalidSingleAppliedScopesCount, ErrorResponseCodeInvalidSubscriptionID, ErrorResponseCodeInvalidTenantID, ErrorResponseCodeMissingAppliedScopesForSingle, ErrorResponseCodeMissingTenantID, ErrorResponseCodeNonsupportedAccountID, ErrorResponseCodeNotSpecified, ErrorResponseCodeNotSupportedCountry, ErrorResponseCodeNoValidReservationsToReRate, ErrorResponseCodeOperationCannotBePerformedInCurrentState, ErrorResponseCodeOperationFailed, ErrorResponseCodePatchValuesSameAsExisting, ErrorResponseCodePaymentInstrumentNotFound, ErrorResponseCodePurchaseError, ErrorResponseCodeRefundLimitExceeded, ErrorResponseCodeReRateOnlyAllowedForEA, ErrorResponseCodeReservationIDNotInReservationOrder, ErrorResponseCodeReservationOrderCreationFailed, ErrorResponseCodeReservationOrderIDAlreadyExists, ErrorResponseCodeReservationOrderNotEnabled, ErrorResponseCodeReservationOrderNotFound, ErrorResponseCodeRiskCheckFailed, ErrorResponseCodeRoleAssignmentCreationFailed, ErrorResponseCodeSelfServiceRefundNotSupported, ErrorResponseCodeServerTimeout, ErrorResponseCodeUnauthenticatedRequestsThrottled, ErrorResponseCodeUnsupportedReservationTerm}
 }
 
 // ExchangeOperationResultStatus enumerates the values for exchange operation result status.
@@ -229,6 +258,65 @@ const (
 // PossibleKindValues returns an array of possible values for the Kind const type.
 func PossibleKindValues() []Kind {
 	return []Kind{KindMicrosoftCompute}
+}
+
+// Location enumerates the values for location.
+type Location string
+
+const (
+	// LocationAustraliaeast ...
+	LocationAustraliaeast Location = "australiaeast"
+	// LocationAustraliasoutheast ...
+	LocationAustraliasoutheast Location = "australiasoutheast"
+	// LocationBrazilsouth ...
+	LocationBrazilsouth Location = "brazilsouth"
+	// LocationCanadacentral ...
+	LocationCanadacentral Location = "canadacentral"
+	// LocationCanadaeast ...
+	LocationCanadaeast Location = "canadaeast"
+	// LocationCentralindia ...
+	LocationCentralindia Location = "centralindia"
+	// LocationCentralus ...
+	LocationCentralus Location = "centralus"
+	// LocationEastasia ...
+	LocationEastasia Location = "eastasia"
+	// LocationEastus ...
+	LocationEastus Location = "eastus"
+	// LocationEastus2 ...
+	LocationEastus2 Location = "eastus2"
+	// LocationJapaneast ...
+	LocationJapaneast Location = "japaneast"
+	// LocationJapanwest ...
+	LocationJapanwest Location = "japanwest"
+	// LocationNorthcentralus ...
+	LocationNorthcentralus Location = "northcentralus"
+	// LocationNortheurope ...
+	LocationNortheurope Location = "northeurope"
+	// LocationSouthcentralus ...
+	LocationSouthcentralus Location = "southcentralus"
+	// LocationSoutheastasia ...
+	LocationSoutheastasia Location = "southeastasia"
+	// LocationSouthindia ...
+	LocationSouthindia Location = "southindia"
+	// LocationUksouth ...
+	LocationUksouth Location = "uksouth"
+	// LocationUkwest ...
+	LocationUkwest Location = "ukwest"
+	// LocationWestcentralus ...
+	LocationWestcentralus Location = "westcentralus"
+	// LocationWesteurope ...
+	LocationWesteurope Location = "westeurope"
+	// LocationWestindia ...
+	LocationWestindia Location = "westindia"
+	// LocationWestus ...
+	LocationWestus Location = "westus"
+	// LocationWestus2 ...
+	LocationWestus2 Location = "westus2"
+)
+
+// PossibleLocationValues returns an array of possible values for the Location const type.
+func PossibleLocationValues() []Location {
+	return []Location{LocationAustraliaeast, LocationAustraliasoutheast, LocationBrazilsouth, LocationCanadacentral, LocationCanadaeast, LocationCentralindia, LocationCentralus, LocationEastasia, LocationEastus, LocationEastus2, LocationJapaneast, LocationJapanwest, LocationNorthcentralus, LocationNortheurope, LocationSouthcentralus, LocationSoutheastasia, LocationSouthindia, LocationUksouth, LocationUkwest, LocationWestcentralus, LocationWesteurope, LocationWestindia, LocationWestus, LocationWestus2}
 }
 
 // OperationStatus enumerates the values for operation status.
@@ -304,43 +392,6 @@ const (
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{ProvisioningStateBillingFailed, ProvisioningStateCancelled, ProvisioningStateConfirmedBilling, ProvisioningStateConfirmedResourceHold, ProvisioningStateCreated, ProvisioningStateCreating, ProvisioningStateExpired, ProvisioningStateFailed, ProvisioningStateMerged, ProvisioningStatePendingBilling, ProvisioningStatePendingResourceHold, ProvisioningStateSplit, ProvisioningStateSucceeded}
-}
-
-// ProvisioningState1 enumerates the values for provisioning state 1.
-type ProvisioningState1 string
-
-const (
-	// ProvisioningState1BillingFailed ...
-	ProvisioningState1BillingFailed ProvisioningState1 = "BillingFailed"
-	// ProvisioningState1Cancelled ...
-	ProvisioningState1Cancelled ProvisioningState1 = "Cancelled"
-	// ProvisioningState1ConfirmedBilling ...
-	ProvisioningState1ConfirmedBilling ProvisioningState1 = "ConfirmedBilling"
-	// ProvisioningState1ConfirmedResourceHold ...
-	ProvisioningState1ConfirmedResourceHold ProvisioningState1 = "ConfirmedResourceHold"
-	// ProvisioningState1Created ...
-	ProvisioningState1Created ProvisioningState1 = "Created"
-	// ProvisioningState1Creating ...
-	ProvisioningState1Creating ProvisioningState1 = "Creating"
-	// ProvisioningState1Expired ...
-	ProvisioningState1Expired ProvisioningState1 = "Expired"
-	// ProvisioningState1Failed ...
-	ProvisioningState1Failed ProvisioningState1 = "Failed"
-	// ProvisioningState1Merged ...
-	ProvisioningState1Merged ProvisioningState1 = "Merged"
-	// ProvisioningState1PendingBilling ...
-	ProvisioningState1PendingBilling ProvisioningState1 = "PendingBilling"
-	// ProvisioningState1PendingResourceHold ...
-	ProvisioningState1PendingResourceHold ProvisioningState1 = "PendingResourceHold"
-	// ProvisioningState1Split ...
-	ProvisioningState1Split ProvisioningState1 = "Split"
-	// ProvisioningState1Succeeded ...
-	ProvisioningState1Succeeded ProvisioningState1 = "Succeeded"
-)
-
-// PossibleProvisioningState1Values returns an array of possible values for the ProvisioningState1 const type.
-func PossibleProvisioningState1Values() []ProvisioningState1 {
-	return []ProvisioningState1{ProvisioningState1BillingFailed, ProvisioningState1Cancelled, ProvisioningState1ConfirmedBilling, ProvisioningState1ConfirmedResourceHold, ProvisioningState1Created, ProvisioningState1Creating, ProvisioningState1Expired, ProvisioningState1Failed, ProvisioningState1Merged, ProvisioningState1PendingBilling, ProvisioningState1PendingResourceHold, ProvisioningState1Split, ProvisioningState1Succeeded}
 }
 
 // QuotaRequestState enumerates the values for quota request state.
@@ -509,4 +560,46 @@ const (
 // PossibleStatusCodeValues returns an array of possible values for the StatusCode const type.
 func PossibleStatusCodeValues() []StatusCode {
 	return []StatusCode{StatusCodeActive, StatusCodeExpired, StatusCodeMerged, StatusCodeNone, StatusCodePaymentInstrumentError, StatusCodePending, StatusCodeProcessing, StatusCodePurchaseError, StatusCodeSplit, StatusCodeSucceeded}
+}
+
+// UserFriendlyAppliedScopeType enumerates the values for user friendly applied scope type.
+type UserFriendlyAppliedScopeType string
+
+const (
+	// UserFriendlyAppliedScopeTypeManagementGroup ...
+	UserFriendlyAppliedScopeTypeManagementGroup UserFriendlyAppliedScopeType = "ManagementGroup"
+	// UserFriendlyAppliedScopeTypeNone ...
+	UserFriendlyAppliedScopeTypeNone UserFriendlyAppliedScopeType = "None"
+	// UserFriendlyAppliedScopeTypeResourceGroup ...
+	UserFriendlyAppliedScopeTypeResourceGroup UserFriendlyAppliedScopeType = "ResourceGroup"
+	// UserFriendlyAppliedScopeTypeShared ...
+	UserFriendlyAppliedScopeTypeShared UserFriendlyAppliedScopeType = "Shared"
+	// UserFriendlyAppliedScopeTypeSingle ...
+	UserFriendlyAppliedScopeTypeSingle UserFriendlyAppliedScopeType = "Single"
+)
+
+// PossibleUserFriendlyAppliedScopeTypeValues returns an array of possible values for the UserFriendlyAppliedScopeType const type.
+func PossibleUserFriendlyAppliedScopeTypeValues() []UserFriendlyAppliedScopeType {
+	return []UserFriendlyAppliedScopeType{UserFriendlyAppliedScopeTypeManagementGroup, UserFriendlyAppliedScopeTypeNone, UserFriendlyAppliedScopeTypeResourceGroup, UserFriendlyAppliedScopeTypeShared, UserFriendlyAppliedScopeTypeSingle}
+}
+
+// UserFriendlyRenewState enumerates the values for user friendly renew state.
+type UserFriendlyRenewState string
+
+const (
+	// UserFriendlyRenewStateNotApplicable ...
+	UserFriendlyRenewStateNotApplicable UserFriendlyRenewState = "NotApplicable"
+	// UserFriendlyRenewStateNotRenewed ...
+	UserFriendlyRenewStateNotRenewed UserFriendlyRenewState = "NotRenewed"
+	// UserFriendlyRenewStateOff ...
+	UserFriendlyRenewStateOff UserFriendlyRenewState = "Off"
+	// UserFriendlyRenewStateOn ...
+	UserFriendlyRenewStateOn UserFriendlyRenewState = "On"
+	// UserFriendlyRenewStateRenewed ...
+	UserFriendlyRenewStateRenewed UserFriendlyRenewState = "Renewed"
+)
+
+// PossibleUserFriendlyRenewStateValues returns an array of possible values for the UserFriendlyRenewState const type.
+func PossibleUserFriendlyRenewStateValues() []UserFriendlyRenewState {
+	return []UserFriendlyRenewState{UserFriendlyRenewStateNotApplicable, UserFriendlyRenewStateNotRenewed, UserFriendlyRenewStateOff, UserFriendlyRenewStateOn, UserFriendlyRenewStateRenewed}
 }

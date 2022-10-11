@@ -9,11 +9,10 @@
 
 package operationalinsightsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2020-03-01-preview/operationalinsights/operationalinsightsapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2022-02-01-preview/operationalinsights/operationalinsightsapi"
 
 type AvailableServiceTiersClientAPI = original.AvailableServiceTiersClientAPI
 type ClustersClientAPI = original.ClustersClientAPI
-type DataCollectorLogsClientAPI = original.DataCollectorLogsClientAPI
 type DataExportsClientAPI = original.DataExportsClientAPI
 type DataSourcesClientAPI = original.DataSourcesClientAPI
 type DeletedWorkspacesClientAPI = original.DeletedWorkspacesClientAPI
@@ -24,6 +23,8 @@ type LinkedStorageAccountsClientAPI = original.LinkedStorageAccountsClientAPI
 type ManagementGroupsClientAPI = original.ManagementGroupsClientAPI
 type OperationStatusesClientAPI = original.OperationStatusesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type QueriesClientAPI = original.QueriesClientAPI
+type QueryPacksClientAPI = original.QueryPacksClientAPI
 type SavedSearchesClientAPI = original.SavedSearchesClientAPI
 type SchemaClientAPI = original.SchemaClientAPI
 type SharedKeysClientAPI = original.SharedKeysClientAPI

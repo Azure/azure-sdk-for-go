@@ -12,11 +12,20 @@ package locks
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/locks"
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-05-01/locks"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	Application     CreatedByType = original.Application
+	Key             CreatedByType = original.Key
+	ManagedIdentity CreatedByType = original.ManagedIdentity
+	User            CreatedByType = original.User
 )
 
 type LockLevel = original.LockLevel
@@ -29,6 +38,9 @@ const (
 
 type AuthorizationOperationsClient = original.AuthorizationOperationsClient
 type BaseClient = original.BaseClient
+type ErrorAdditionalInfo = original.ErrorAdditionalInfo
+type ErrorDetail = original.ErrorDetail
+type ErrorResponse = original.ErrorResponse
 type ManagementLockListResult = original.ManagementLockListResult
 type ManagementLockListResultIterator = original.ManagementLockListResultIterator
 type ManagementLockListResultPage = original.ManagementLockListResultPage
@@ -41,6 +53,7 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type SystemData = original.SystemData
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -71,6 +84,9 @@ func NewOperationListResultPage(cur OperationListResult, getNextPage func(contex
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
 func PossibleLockLevelValues() []LockLevel {
 	return original.PossibleLockLevelValues()

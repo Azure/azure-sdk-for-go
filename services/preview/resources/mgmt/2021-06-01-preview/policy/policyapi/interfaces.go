@@ -97,3 +97,35 @@ type ExemptionsClientAPI interface {
 }
 
 var _ ExemptionsClientAPI = (*policy.ExemptionsClient)(nil)
+
+// VariablesClientAPI contains the set of methods on the VariablesClient type.
+type VariablesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, variableName string, parameters policy.Variable) (result policy.Variable, err error)
+	CreateOrUpdateAtManagementGroup(ctx context.Context, managementGroupID string, variableName string, parameters policy.Variable) (result policy.Variable, err error)
+	Delete(ctx context.Context, variableName string) (result autorest.Response, err error)
+	DeleteAtManagementGroup(ctx context.Context, managementGroupID string, variableName string) (result autorest.Response, err error)
+	Get(ctx context.Context, variableName string) (result policy.Variable, err error)
+	GetAtManagementGroup(ctx context.Context, managementGroupID string, variableName string) (result policy.Variable, err error)
+	List(ctx context.Context) (result policy.VariableListResultPage, err error)
+	ListComplete(ctx context.Context) (result policy.VariableListResultIterator, err error)
+	ListForManagementGroup(ctx context.Context, managementGroupID string) (result policy.VariableListResultPage, err error)
+	ListForManagementGroupComplete(ctx context.Context, managementGroupID string) (result policy.VariableListResultIterator, err error)
+}
+
+var _ VariablesClientAPI = (*policy.VariablesClient)(nil)
+
+// VariableValuesClientAPI contains the set of methods on the VariableValuesClient type.
+type VariableValuesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, variableName string, variableValueName string, parameters policy.VariableValue) (result policy.VariableValue, err error)
+	CreateOrUpdateAtManagementGroup(ctx context.Context, managementGroupID string, variableName string, variableValueName string, parameters policy.VariableValue) (result policy.VariableValue, err error)
+	Delete(ctx context.Context, variableName string, variableValueName string) (result autorest.Response, err error)
+	DeleteAtManagementGroup(ctx context.Context, managementGroupID string, variableName string, variableValueName string) (result autorest.Response, err error)
+	Get(ctx context.Context, variableName string, variableValueName string) (result policy.VariableValue, err error)
+	GetAtManagementGroup(ctx context.Context, managementGroupID string, variableName string, variableValueName string) (result policy.VariableValue, err error)
+	List(ctx context.Context, variableName string) (result policy.VariableValueListResultPage, err error)
+	ListComplete(ctx context.Context, variableName string) (result policy.VariableValueListResultIterator, err error)
+	ListForManagementGroup(ctx context.Context, managementGroupID string, variableName string) (result policy.VariableValueListResultPage, err error)
+	ListForManagementGroupComplete(ctx context.Context, managementGroupID string, variableName string) (result policy.VariableValueListResultIterator, err error)
+}
+
+var _ VariableValuesClientAPI = (*policy.VariableValuesClient)(nil)

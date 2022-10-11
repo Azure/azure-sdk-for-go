@@ -12,7 +12,7 @@ package resources
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2021-04-01/resources"
 )
 
 const (
@@ -22,21 +22,21 @@ const (
 type AliasPathAttributes = original.AliasPathAttributes
 
 const (
-	AliasPathAttributesModifiable AliasPathAttributes = original.AliasPathAttributesModifiable
-	AliasPathAttributesNone       AliasPathAttributes = original.AliasPathAttributesNone
+	Modifiable AliasPathAttributes = original.Modifiable
+	None       AliasPathAttributes = original.None
 )
 
 type AliasPathTokenType = original.AliasPathTokenType
 
 const (
-	AliasPathTokenTypeAny          AliasPathTokenType = original.AliasPathTokenTypeAny
-	AliasPathTokenTypeArray        AliasPathTokenType = original.AliasPathTokenTypeArray
-	AliasPathTokenTypeBoolean      AliasPathTokenType = original.AliasPathTokenTypeBoolean
-	AliasPathTokenTypeInteger      AliasPathTokenType = original.AliasPathTokenTypeInteger
-	AliasPathTokenTypeNotSpecified AliasPathTokenType = original.AliasPathTokenTypeNotSpecified
-	AliasPathTokenTypeNumber       AliasPathTokenType = original.AliasPathTokenTypeNumber
-	AliasPathTokenTypeObject       AliasPathTokenType = original.AliasPathTokenTypeObject
-	AliasPathTokenTypeString       AliasPathTokenType = original.AliasPathTokenTypeString
+	Any          AliasPathTokenType = original.Any
+	Array        AliasPathTokenType = original.Array
+	Boolean      AliasPathTokenType = original.Boolean
+	Integer      AliasPathTokenType = original.Integer
+	NotSpecified AliasPathTokenType = original.NotSpecified
+	Number       AliasPathTokenType = original.Number
+	Object       AliasPathTokenType = original.Object
+	String       AliasPathTokenType = original.String
 )
 
 type AliasPatternType = original.AliasPatternType
@@ -57,19 +57,20 @@ const (
 type ChangeType = original.ChangeType
 
 const (
-	ChangeTypeCreate   ChangeType = original.ChangeTypeCreate
-	ChangeTypeDelete   ChangeType = original.ChangeTypeDelete
-	ChangeTypeDeploy   ChangeType = original.ChangeTypeDeploy
-	ChangeTypeIgnore   ChangeType = original.ChangeTypeIgnore
-	ChangeTypeModify   ChangeType = original.ChangeTypeModify
-	ChangeTypeNoChange ChangeType = original.ChangeTypeNoChange
+	Create      ChangeType = original.Create
+	Delete      ChangeType = original.Delete
+	Deploy      ChangeType = original.Deploy
+	Ignore      ChangeType = original.Ignore
+	Modify      ChangeType = original.Modify
+	NoChange    ChangeType = original.NoChange
+	Unsupported ChangeType = original.Unsupported
 )
 
 type DeploymentMode = original.DeploymentMode
 
 const (
-	DeploymentModeComplete    DeploymentMode = original.DeploymentModeComplete
-	DeploymentModeIncremental DeploymentMode = original.DeploymentModeIncremental
+	Complete    DeploymentMode = original.Complete
+	Incremental DeploymentMode = original.Incremental
 )
 
 type ExpressionEvaluationOptionsScopeType = original.ExpressionEvaluationOptionsScopeType
@@ -80,20 +81,36 @@ const (
 	ExpressionEvaluationOptionsScopeTypeOuter        ExpressionEvaluationOptionsScopeType = original.ExpressionEvaluationOptionsScopeTypeOuter
 )
 
+type ExtendedLocationType = original.ExtendedLocationType
+
+const (
+	EdgeZone ExtendedLocationType = original.EdgeZone
+)
+
 type OnErrorDeploymentType = original.OnErrorDeploymentType
 
 const (
-	OnErrorDeploymentTypeLastSuccessful     OnErrorDeploymentType = original.OnErrorDeploymentTypeLastSuccessful
-	OnErrorDeploymentTypeSpecificDeployment OnErrorDeploymentType = original.OnErrorDeploymentTypeSpecificDeployment
+	LastSuccessful     OnErrorDeploymentType = original.LastSuccessful
+	SpecificDeployment OnErrorDeploymentType = original.SpecificDeployment
 )
 
 type PropertyChangeType = original.PropertyChangeType
 
 const (
-	PropertyChangeTypeArray  PropertyChangeType = original.PropertyChangeTypeArray
-	PropertyChangeTypeCreate PropertyChangeType = original.PropertyChangeTypeCreate
-	PropertyChangeTypeDelete PropertyChangeType = original.PropertyChangeTypeDelete
-	PropertyChangeTypeModify PropertyChangeType = original.PropertyChangeTypeModify
+	PropertyChangeTypeArray    PropertyChangeType = original.PropertyChangeTypeArray
+	PropertyChangeTypeCreate   PropertyChangeType = original.PropertyChangeTypeCreate
+	PropertyChangeTypeDelete   PropertyChangeType = original.PropertyChangeTypeDelete
+	PropertyChangeTypeModify   PropertyChangeType = original.PropertyChangeTypeModify
+	PropertyChangeTypeNoEffect PropertyChangeType = original.PropertyChangeTypeNoEffect
+)
+
+type ProviderAuthorizationConsentState = original.ProviderAuthorizationConsentState
+
+const (
+	ProviderAuthorizationConsentStateConsented    ProviderAuthorizationConsentState = original.ProviderAuthorizationConsentStateConsented
+	ProviderAuthorizationConsentStateNotRequired  ProviderAuthorizationConsentState = original.ProviderAuthorizationConsentStateNotRequired
+	ProviderAuthorizationConsentStateNotSpecified ProviderAuthorizationConsentState = original.ProviderAuthorizationConsentStateNotSpecified
+	ProviderAuthorizationConsentStateRequired     ProviderAuthorizationConsentState = original.ProviderAuthorizationConsentStateRequired
 )
 
 type ProvisioningOperation = original.ProvisioningOperation
@@ -148,8 +165,8 @@ const (
 type WhatIfResultFormat = original.WhatIfResultFormat
 
 const (
-	WhatIfResultFormatFullResourcePayloads WhatIfResultFormat = original.WhatIfResultFormatFullResourcePayloads
-	WhatIfResultFormatResourceIDOnly       WhatIfResultFormat = original.WhatIfResultFormatResourceIDOnly
+	FullResourcePayloads WhatIfResultFormat = original.FullResourcePayloads
+	ResourceIDOnly       WhatIfResultFormat = original.ResourceIDOnly
 )
 
 type APIProfile = original.APIProfile
@@ -210,6 +227,7 @@ type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorResponse = original.ErrorResponse
 type ExportTemplateRequest = original.ExportTemplateRequest
 type ExpressionEvaluationOptions = original.ExpressionEvaluationOptions
+type ExtendedLocation = original.ExtendedLocation
 type GenericResource = original.GenericResource
 type GenericResourceExpanded = original.GenericResourceExpanded
 type GenericResourceFilter = original.GenericResourceFilter
@@ -241,19 +259,25 @@ type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
 type ParametersLink = original.ParametersLink
+type Permission = original.Permission
 type Plan = original.Plan
 type Provider = original.Provider
+type ProviderConsentDefinition = original.ProviderConsentDefinition
 type ProviderExtendedLocation = original.ProviderExtendedLocation
 type ProviderListResult = original.ProviderListResult
 type ProviderListResultIterator = original.ProviderListResultIterator
 type ProviderListResultPage = original.ProviderListResultPage
 type ProviderOperationDisplayProperties = original.ProviderOperationDisplayProperties
+type ProviderPermission = original.ProviderPermission
+type ProviderPermissionListResult = original.ProviderPermissionListResult
+type ProviderRegistrationRequest = original.ProviderRegistrationRequest
 type ProviderResourceType = original.ProviderResourceType
 type ProviderResourceTypeListResult = original.ProviderResourceTypeListResult
 type ProviderResourceTypesClient = original.ProviderResourceTypesClient
 type ProvidersClient = original.ProvidersClient
 type Reference = original.Reference
 type Resource = original.Resource
+type RoleDefinition = original.RoleDefinition
 type ScopedDeployment = original.ScopedDeployment
 type ScopedDeploymentWhatIf = original.ScopedDeploymentWhatIf
 type Sku = original.Sku
@@ -398,11 +422,17 @@ func PossibleDeploymentModeValues() []DeploymentMode {
 func PossibleExpressionEvaluationOptionsScopeTypeValues() []ExpressionEvaluationOptionsScopeType {
 	return original.PossibleExpressionEvaluationOptionsScopeTypeValues()
 }
+func PossibleExtendedLocationTypeValues() []ExtendedLocationType {
+	return original.PossibleExtendedLocationTypeValues()
+}
 func PossibleOnErrorDeploymentTypeValues() []OnErrorDeploymentType {
 	return original.PossibleOnErrorDeploymentTypeValues()
 }
 func PossiblePropertyChangeTypeValues() []PropertyChangeType {
 	return original.PossiblePropertyChangeTypeValues()
+}
+func PossibleProviderAuthorizationConsentStateValues() []ProviderAuthorizationConsentState {
+	return original.PossibleProviderAuthorizationConsentStateValues()
 }
 func PossibleProvisioningOperationValues() []ProvisioningOperation {
 	return original.PossibleProvisioningOperationValues()

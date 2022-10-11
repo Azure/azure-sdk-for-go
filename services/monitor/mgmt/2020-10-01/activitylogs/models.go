@@ -19,22 +19,22 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2020-10-01/activitylogs"
 
-// ActionGroup a pointer to an Azure Action Group.
-type ActionGroup struct {
+// ActionGroupForActivityLogAlerts a pointer to an Azure Action Group.
+type ActionGroupForActivityLogAlerts struct {
 	// ActionGroupID - The resource ID of the Action Group. This cannot be null or empty.
 	ActionGroupID *string `json:"actionGroupId,omitempty"`
 	// WebhookProperties - the dictionary of custom properties to include with the post operation. These data are appended to the webhook payload.
 	WebhookProperties map[string]*string `json:"webhookProperties"`
 }
 
-// MarshalJSON is the custom marshaler for ActionGroup.
-func (ag ActionGroup) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for ActionGroupForActivityLogAlerts.
+func (agfala ActionGroupForActivityLogAlerts) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ag.ActionGroupID != nil {
-		objectMap["actionGroupId"] = ag.ActionGroupID
+	if agfala.ActionGroupID != nil {
+		objectMap["actionGroupId"] = agfala.ActionGroupID
 	}
-	if ag.WebhookProperties != nil {
-		objectMap["webhookProperties"] = ag.WebhookProperties
+	if agfala.WebhookProperties != nil {
+		objectMap["webhookProperties"] = agfala.WebhookProperties
 	}
 	return json.Marshal(objectMap)
 }
@@ -42,7 +42,7 @@ func (ag ActionGroup) MarshalJSON() ([]byte, error) {
 // ActionList a list of Activity Log Alert rule actions.
 type ActionList struct {
 	// ActionGroups - The list of the Action Groups.
-	ActionGroups *[]ActionGroup `json:"actionGroups,omitempty"`
+	ActionGroups *[]ActionGroupForActivityLogAlerts `json:"actionGroups,omitempty"`
 }
 
 // AlertResource an Activity Log Alert rule resource.
@@ -50,15 +50,15 @@ type AlertResource struct {
 	autorest.Response `json:"-"`
 	// AlertRuleProperties - The Activity Log Alert rule properties of the resource.
 	*AlertRuleProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; The resource Id.
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The name of the resource.
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource.
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Location - The location of the resource. Since Azure Activity Log Alerts is a global service, the location of the rules should always be 'global'.
+	// Location - Resource location
 	Location *string `json:"location,omitempty"`
-	// Tags - The tags of the resource.
+	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -419,17 +419,17 @@ type AlertRuleProperties struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// AzureResource an Azure resource object.
+// AzureResource an azure resource object
 type AzureResource struct {
-	// ID - READ-ONLY; The resource Id.
+	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The name of the resource.
+	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource.
+	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Location - The location of the resource. Since Azure Activity Log Alerts is a global service, the location of the rules should always be 'global'.
+	// Location - Resource location
 	Location *string `json:"location,omitempty"`
-	// Tags - The tags of the resource.
+	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
 }
 

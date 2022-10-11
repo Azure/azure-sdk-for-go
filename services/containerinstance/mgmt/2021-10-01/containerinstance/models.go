@@ -509,10 +509,6 @@ type ContainerExecResponse struct {
 // ContainerGroup a container group.
 type ContainerGroup struct {
 	autorest.Response `json:"-"`
-	// Identity - The identity of the container group, if configured.
-	Identity *ContainerGroupIdentity `json:"identity,omitempty"`
-	// ContainerGroupProperties - The container group properties
-	*ContainerGroupProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; The resource id.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The resource name.
@@ -525,17 +521,15 @@ type ContainerGroup struct {
 	Tags map[string]*string `json:"tags"`
 	// Zones - The zones for the container group.
 	Zones *[]string `json:"zones,omitempty"`
+	// Identity - The identity of the container group, if configured.
+	Identity *ContainerGroupIdentity `json:"identity,omitempty"`
+	// ContainerGroupProperties - The container group properties
+	*ContainerGroupProperties `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ContainerGroup.
 func (cg ContainerGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if cg.Identity != nil {
-		objectMap["identity"] = cg.Identity
-	}
-	if cg.ContainerGroupProperties != nil {
-		objectMap["properties"] = cg.ContainerGroupProperties
-	}
 	if cg.Location != nil {
 		objectMap["location"] = cg.Location
 	}
@@ -544,6 +538,12 @@ func (cg ContainerGroup) MarshalJSON() ([]byte, error) {
 	}
 	if cg.Zones != nil {
 		objectMap["zones"] = cg.Zones
+	}
+	if cg.Identity != nil {
+		objectMap["identity"] = cg.Identity
+	}
+	if cg.ContainerGroupProperties != nil {
+		objectMap["properties"] = cg.ContainerGroupProperties
 	}
 	return json.Marshal(objectMap)
 }
@@ -557,24 +557,6 @@ func (cg *ContainerGroup) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "identity":
-			if v != nil {
-				var identity ContainerGroupIdentity
-				err = json.Unmarshal(*v, &identity)
-				if err != nil {
-					return err
-				}
-				cg.Identity = &identity
-			}
-		case "properties":
-			if v != nil {
-				var containerGroupProperties ContainerGroupProperties
-				err = json.Unmarshal(*v, &containerGroupProperties)
-				if err != nil {
-					return err
-				}
-				cg.ContainerGroupProperties = &containerGroupProperties
-			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -629,6 +611,24 @@ func (cg *ContainerGroup) UnmarshalJSON(body []byte) error {
 				}
 				cg.Zones = &zones
 			}
+		case "identity":
+			if v != nil {
+				var identity ContainerGroupIdentity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				cg.Identity = &identity
+			}
+		case "properties":
+			if v != nil {
+				var containerGroupProperties ContainerGroupProperties
+				err = json.Unmarshal(*v, &containerGroupProperties)
+				if err != nil {
+					return err
+				}
+				cg.ContainerGroupProperties = &containerGroupProperties
+			}
 		}
 	}
 
@@ -649,8 +649,8 @@ type ContainerGroupIdentity struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// Type - The type of identity used for the container group. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities from the container group. Possible values include: 'ResourceIdentityTypeSystemAssigned', 'ResourceIdentityTypeUserAssigned', 'ResourceIdentityTypeSystemAssignedUserAssigned', 'ResourceIdentityTypeNone'
 	Type ResourceIdentityType `json:"type,omitempty"`
-	// UserAssignedIdentities - The list of user identities associated with the container group. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*ContainerGroupIdentityUserAssignedIdentitiesValue `json:"userAssignedIdentities"`
+	// UserAssignedIdentities - The list of user identities associated with the container group.
+	UserAssignedIdentities map[string]*UserAssignedIdentities `json:"userAssignedIdentities"`
 }
 
 // MarshalJSON is the custom marshaler for ContainerGroupIdentity.
@@ -662,20 +662,6 @@ func (cgiVar ContainerGroupIdentity) MarshalJSON() ([]byte, error) {
 	if cgiVar.UserAssignedIdentities != nil {
 		objectMap["userAssignedIdentities"] = cgiVar.UserAssignedIdentities
 	}
-	return json.Marshal(objectMap)
-}
-
-// ContainerGroupIdentityUserAssignedIdentitiesValue ...
-type ContainerGroupIdentityUserAssignedIdentitiesValue struct {
-	// PrincipalID - READ-ONLY; The principal id of user assigned identity.
-	PrincipalID *string `json:"principalId,omitempty"`
-	// ClientID - READ-ONLY; The client id of user assigned identity.
-	ClientID *string `json:"clientId,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ContainerGroupIdentityUserAssignedIdentitiesValue.
-func (cgiAiv ContainerGroupIdentityUserAssignedIdentitiesValue) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }
 
@@ -928,6 +914,59 @@ type ContainerGroupPropertiesInstanceView struct {
 func (cgV ContainerGroupPropertiesInstanceView) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// ContainerGroupPropertiesModel the container group properties
+type ContainerGroupPropertiesModel struct {
+	// Identity - The identity of the container group, if configured.
+	Identity *ContainerGroupIdentity `json:"identity,omitempty"`
+	// ContainerGroupProperties - The container group properties
+	*ContainerGroupProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ContainerGroupPropertiesModel.
+func (cgpm ContainerGroupPropertiesModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cgpm.Identity != nil {
+		objectMap["identity"] = cgpm.Identity
+	}
+	if cgpm.ContainerGroupProperties != nil {
+		objectMap["properties"] = cgpm.ContainerGroupProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ContainerGroupPropertiesModel struct.
+func (cgpm *ContainerGroupPropertiesModel) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "identity":
+			if v != nil {
+				var identity ContainerGroupIdentity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				cgpm.Identity = &identity
+			}
+		case "properties":
+			if v != nil {
+				var containerGroupProperties ContainerGroupProperties
+				err = json.Unmarshal(*v, &containerGroupProperties)
+				if err != nil {
+					return err
+				}
+				cgpm.ContainerGroupProperties = &containerGroupProperties
+			}
+		}
+	}
+
+	return nil
 }
 
 // ContainerGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -1432,8 +1471,8 @@ type IPAddress struct {
 	IP *string `json:"ip,omitempty"`
 	// DNSNameLabel - The Dns name label for the IP.
 	DNSNameLabel *string `json:"dnsNameLabel,omitempty"`
-	// DNSNameLabelReusePolicy - The value representing the security enum. Possible values include: 'AutoGeneratedDomainNameLabelScopeUnsecure', 'AutoGeneratedDomainNameLabelScopeTenantReuse', 'AutoGeneratedDomainNameLabelScopeSubscriptionReuse', 'AutoGeneratedDomainNameLabelScopeResourceGroupReuse', 'AutoGeneratedDomainNameLabelScopeNoreuse'
-	DNSNameLabelReusePolicy AutoGeneratedDomainNameLabelScope `json:"dnsNameLabelReusePolicy,omitempty"`
+	// AutoGeneratedDomainNameLabelScope - The value representing the security enum. The 'Unsecure' value is the default value if not selected and means the object's domain name label is not secured against subdomain takeover. The 'TenantReuse' value is the default value if selected and means the object's domain name label can be reused within the same tenant. The 'SubscriptionReuse' value means the object's domain name label can be reused within the same subscription. The 'ResourceGroupReuse' value means the object's domain name label can be reused within the same resource group. The 'NoReuse' value means the object's domain name label cannot be reused within the same resource group, subscription, or tenant. Possible values include: 'DNSNameLabelReusePolicyUnsecure', 'DNSNameLabelReusePolicyTenantReuse', 'DNSNameLabelReusePolicySubscriptionReuse', 'DNSNameLabelReusePolicyResourceGroupReuse', 'DNSNameLabelReusePolicyNoreuse'
+	AutoGeneratedDomainNameLabelScope DNSNameLabelReusePolicy `json:"autoGeneratedDomainNameLabelScope,omitempty"`
 	// Fqdn - READ-ONLY; The FQDN for the IP.
 	Fqdn *string `json:"fqdn,omitempty"`
 }
@@ -1453,8 +1492,8 @@ func (ia IPAddress) MarshalJSON() ([]byte, error) {
 	if ia.DNSNameLabel != nil {
 		objectMap["dnsNameLabel"] = ia.DNSNameLabel
 	}
-	if ia.DNSNameLabelReusePolicy != "" {
-		objectMap["dnsNameLabelReusePolicy"] = ia.DNSNameLabelReusePolicy
+	if ia.AutoGeneratedDomainNameLabelScope != "" {
+		objectMap["autoGeneratedDomainNameLabelScope"] = ia.AutoGeneratedDomainNameLabelScope
 	}
 	return json.Marshal(objectMap)
 }
@@ -1758,8 +1797,47 @@ type ResourceRequirements struct {
 	Limits *ResourceLimits `json:"limits,omitempty"`
 }
 
+// SubnetServiceAssociationLinkDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type SubnetServiceAssociationLinkDeleteFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SubnetServiceAssociationLinkClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *SubnetServiceAssociationLinkDeleteFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for SubnetServiceAssociationLinkDeleteFuture.Result.
+func (future *SubnetServiceAssociationLinkDeleteFuture) result(client SubnetServiceAssociationLinkClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerinstance.SubnetServiceAssociationLinkDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("containerinstance.SubnetServiceAssociationLinkDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // Usage a single usage result
 type Usage struct {
+	// ID - READ-ONLY; Id of the usage result
+	ID *string `json:"id,omitempty"`
 	// Unit - READ-ONLY; Unit of the usage result
 	Unit *string `json:"unit,omitempty"`
 	// CurrentValue - READ-ONLY; The current usage of the resource
@@ -1799,6 +1877,22 @@ type UsageName struct {
 
 // MarshalJSON is the custom marshaler for UsageName.
 func (u UsageName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// UserAssignedIdentities the list of user identities associated with the container group. The user
+// identity dictionary key references will be ARM resource ids in the form:
+// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+type UserAssignedIdentities struct {
+	// PrincipalID - READ-ONLY; The principal id of user assigned identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// ClientID - READ-ONLY; The client id of user assigned identity.
+	ClientID *string `json:"clientId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UserAssignedIdentities.
+func (uai UserAssignedIdentities) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }

@@ -67,6 +67,7 @@
 | `github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/security/mgmt/v3.0/security/CHANGELOG.md) |
 | `github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v5.0/sql` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/sql/mgmt/v5.0/sql/CHANGELOG.md) |
 | `github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2022-03-01/reservations` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/reservations/mgmt/2022-03-01/reservations/CHANGELOG.md) |
+
 ## `v66.0.0`
 
 ### Breaking Changes

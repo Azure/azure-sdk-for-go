@@ -158,7 +158,7 @@ func (v AccountSignatureValues) SignWithUserDelegation(userDelegationCredential 
 // AccountPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's Permissions field.
 type AccountPermissions struct {
-	Read, Write, Delete, DeletePreviousVersion, List, Add, Create, Update, Process, Tag, FilterByTags bool
+	Read, Write, Delete, DeletePreviousVersion, List, Add, Create, Update, Process, Tag, FilterByTags, PermanentDelete bool
 }
 
 // String produces the SAS permissions string for an Azure Storage account.
@@ -198,6 +198,9 @@ func (p *AccountPermissions) String() string {
 	if p.FilterByTags {
 		buffer.WriteRune('f')
 	}
+	if p.PermanentDelete {
+		buffer.WriteRune('y')
+	}
 	return buffer.String()
 }
 
@@ -228,6 +231,8 @@ func parseAccountPermissions(s string) (AccountPermissions, error) {
 			p.Tag = true
 		case 'f':
 			p.FilterByTags = true
+		case 'y':
+			p.PermanentDelete = true
 		default:
 			return AccountPermissions{}, fmt.Errorf("invalid permission character: '%v'", r)
 		}

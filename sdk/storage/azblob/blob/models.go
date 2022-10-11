@@ -225,11 +225,9 @@ func (o *UndeleteOptions) format() *generated.BlobClientUndeleteOptions {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-type BlobDeleteType = generated.DeleteType
-
+// PermanentDeleteOptions contains DeleteOptions for the Client.PermanentDelete API
 type PermanentDeleteOptions struct {
 	DeleteOptions
-	BlobDeleteType *BlobDeleteType
 }
 
 func (o *PermanentDeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
@@ -237,9 +235,11 @@ func (o *PermanentDeleteOptions) format() (*generated.BlobClientDeleteOptions, *
 		return nil, nil, nil
 	}
 
+	BlobDeleteType := DeleteTypePermanent
+	
 	basics := generated.BlobClientDeleteOptions{
 		DeleteSnapshots: o.DeleteSnapshots,
-		DeleteType:      o.BlobDeleteType,
+		DeleteType:      &BlobDeleteType,
 	}
 
 	if o.AccessConditions == nil {

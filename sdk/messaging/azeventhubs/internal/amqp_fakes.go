@@ -13,6 +13,8 @@ import (
 type FakeNSForPartClient struct {
 	NamespaceForAMQPLinks
 	Receiver *FakeAMQPReceiver
+
+	RecoverFn func(ctx context.Context, clientRevision uint64) error
 }
 
 type FakeAMQPSession struct {
@@ -37,6 +39,14 @@ type FakeAMQPReceiver struct {
 	ManualCreditsSetFromOptions bool
 
 	Messages []*amqp.Message
+
+	NameForLink string
+
+	CloseCalled int
+}
+
+func (ns *FakeNSForPartClient) Recover(ctx context.Context, clientRevision uint64) error {
+	return ns.RecoverFn(ctx, clientRevision)
 }
 
 func (ns *FakeNSForPartClient) NegotiateClaim(ctx context.Context, entityPath string) (context.CancelFunc, <-chan struct{}, error) {
@@ -71,6 +81,10 @@ func (r *FakeAMQPReceiver) IssueCredit(credit uint32) error {
 	return nil
 }
 
+func (r *FakeAMQPReceiver) LinkName() string {
+	return r.NameForLink
+}
+
 func (r *FakeAMQPReceiver) Receive(ctx context.Context) (*amqp.Message, error) {
 	if len(r.Messages) > 0 {
 		r.ActiveCredits--
@@ -80,4 +94,9 @@ func (r *FakeAMQPReceiver) Receive(ctx context.Context) (*amqp.Message, error) {
 	}
 
 	return nil, nil
+}
+
+func (r *FakeAMQPReceiver) Close(ctx context.Context) error {
+	r.CloseCalled++
+	return nil
 }

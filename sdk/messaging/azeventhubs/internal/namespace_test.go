@@ -341,61 +341,74 @@ func TestNamespaceUpdateClientWithoutLock(t *testing.T) {
 	require.Same(t, origClient, client)
 }
 
-// TODO: will fix in the next PR
-// func TestNamespaceConnectionRecovery(t *testing.T) {
-// 	newClientCount := 0
-// 	var fakeClientErr error
+func TestNamespaceConnectionRecovery(t *testing.T) {
+	type testData struct {
+		NS              *Namespace
+		NewClientCount  int
+		FakeClientError error
+	}
 
-// 	ns := &Namespace{
-// 		connID: 2,
-// 		newClientFn: func(ctx context.Context) (amqpwrap.AMQPClient, error) {
-// 			newClientCount++
-// 			return nil, fakeClientErr
-// 		},
-// 	}
+	init := func() *testData {
+		td := &testData{}
+		td.NS = &Namespace{
+			connID: 2,
+			newClientFn: func(ctx context.Context) (amqpwrap.AMQPClient, error) {
+				td.NewClientCount++
+				return nil, td.FakeClientError
+			},
+		}
+		return td
+	}
 
-// 	// ie, my connection is stale (it doesn't actually matter if the connID is >, although that's impossible
-// 	// since it means their connection came from the future)
-// 	origConnID := ns.connID
+	t.Run("stale connection ID", func(t *testing.T) {
+		testData := init()
 
-// 	shouldRecreate, err := ns.Recover(context.Background(), ns.connID-1)
-// 	require.True(t, shouldRecreate, "connection we used for our links was stale (connID: 1 != connID: 2), so links should be recreated")
-// 	require.Zero(t, newClientCount, "existing client is re-used")
-// 	require.Equal(t, origConnID, ns.connID, "no new client created, connID is unchanged")
-// 	require.NoError(t, err)
+		// ie, my connection is stale (it doesn't actually matter if the connID is >, although that's impossible
+		// since it means their connection came from the future)
+		origConnID := testData.NS.connID
 
-// 	// this time the connection must be having errors AND it matches our current ID
-// 	origConnID = ns.connID
-// 	origClient := &fakeAMQPClient{}
-// 	ns.client = origClient
+		err := testData.NS.Recover(context.Background(), testData.NS.connID-1)
+		require.Zero(t, testData.NewClientCount, "existing client is re-used")
+		require.Equal(t, origConnID, testData.NS.connID, "no new client created, connID is unchanged")
+		require.NoError(t, err)
+	})
 
-// 	shouldRecreate, err = ns.Recover(context.Background(), ns.connID)
-// 	require.True(t, shouldRecreate, "new client was created so we have to recreate links")
-// 	require.Equal(t, 1, newClientCount, "new client is created (assumption is if it matches then our current connection is returning errors)")
-// 	require.Equal(t, origConnID+1, ns.connID, "new client created, connID increments")
-// 	require.NoError(t, err)
-// 	require.Equal(t, 1, origClient.closeCalled, "old client is closed")
-// 	require.NotSame(t, origClient, ns.client, "new client instance created")
+	t.Run("connection matches", func(t *testing.T) {
+		testData := init()
 
-// 	// and the last outcome - we did try to recover, but failed. We will end up in a state
-// 	// where the client will be nil, so the next attempt to get the client will create
-// 	// a new one.
-// 	fakeClientErr = errors.New("we failed to create the connection!")
-// 	origConnID = ns.connID
-// 	newClientCount = 0
+		// this time the connection must be having errors AND it matches our current ID
+		origConnID := testData.NS.connID
+		origClient := &fakeAMQPClient{}
+		testData.NS.client = origClient
 
-// 	shouldRecreate, err = ns.Recover(context.Background(), origConnID)
-// 	require.Equal(t, fakeClientErr, err)
-// 	require.False(t, shouldRecreate)
-// 	require.Equal(t, 1, newClientCount, "we did attempt to create a new client, it just failed.")
-// 	require.Equal(t, origConnID, ns.connID, "new client failed to be created so the conn ID is unchanged")
+		err := testData.NS.Recover(context.Background(), testData.NS.connID)
+		require.Equal(t, 1, testData.NewClientCount, "new client is created (assumption is if it matches then our current connection is returning errors)")
+		require.Equal(t, origConnID+1, testData.NS.connID, "new client created, connID increments")
+		require.NoError(t, err)
+		require.Equal(t, 1, origClient.closeCalled, "old client is closed")
+		require.NotSame(t, origClient, testData.NS.client, "new client instance created")
+	})
 
-// 	// if the namespace is closed then this function fails.
-// 	ns.Close(context.Background(), true)
-// 	shouldRecreate, err = ns.Recover(context.Background(), origConnID)
-// 	require.ErrorIs(t, err, ErrClientClosed)
-// 	require.False(t, shouldRecreate)
-// }
+	t.Run("recover but failed", func(t *testing.T) {
+		testData := init()
+
+		// and the last outcome - we did try to recover, but failed. We will end up in a state
+		// where the client will be nil, so the next attempt to get the client will create
+		// a new one.
+		testData.FakeClientError = errors.New("we failed to create the connection!")
+		origConnID := testData.NS.connID
+
+		err := testData.NS.Recover(context.Background(), origConnID)
+		require.Equal(t, testData.FakeClientError, err)
+		require.Equal(t, 1, testData.NewClientCount, "we did attempt to create a new client, it just failed.")
+		require.Equal(t, origConnID, testData.NS.connID, "new client failed to be created so the conn ID is unchanged")
+
+		// if the namespace is closed then this function fails.
+		testData.NS.Close(context.Background(), true)
+		err = testData.NS.Recover(context.Background(), origConnID)
+		require.ErrorIs(t, err, ErrClientClosed)
+	})
+}
 
 type fakeAMQPClient struct {
 	amqpwrap.AMQPClient

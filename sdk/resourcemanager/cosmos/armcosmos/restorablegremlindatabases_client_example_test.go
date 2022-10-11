@@ -16,14 +16,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBRestorableSqlDatabaseList.json
-func ExampleRestorableSQLDatabasesClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-08-15-preview/examples/CosmosDBRestorableGremlinDatabaseList.json
+func ExampleRestorableGremlinDatabasesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewRestorableSQLDatabasesClient("2296c272-5d55-40d9-bc05-4d56dc2d7588", cred, nil)
+	client, err := armcosmos.NewRestorableGremlinDatabasesClient("2296c272-5d55-40d9-bc05-4d56dc2d7588", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

@@ -365,7 +365,6 @@ func (client *CloudServicesClient) getInstanceViewHandleResponse(resp *http.Resp
 
 // NewListPager - Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the
 // next page of Cloud Services. Do this till nextLink is null to fetch all the Cloud Services.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-04
 // resourceGroupName - Name of the resource group.
 // options - CloudServicesClientListOptions contains the optional parameters for the CloudServicesClient.List method.
@@ -431,7 +430,6 @@ func (client *CloudServicesClient) listHandleResponse(resp *http.Response) (Clou
 // NewListAllPager - Gets a list of all cloud services in the subscription, regardless of the associated resource group. Use
 // nextLink property in the response to get the next page of Cloud Services. Do this till nextLink
 // is null to fetch all the Cloud Services.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-04
 // options - CloudServicesClientListAllOptions contains the optional parameters for the CloudServicesClient.ListAll method.
 func (client *CloudServicesClient) NewListAllPager(options *CloudServicesClientListAllOptions) *runtime.Pager[CloudServicesClientListAllResponse] {

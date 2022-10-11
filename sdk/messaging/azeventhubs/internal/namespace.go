@@ -43,7 +43,7 @@ type (
 		tlsConfig     *tls.Config
 		userAgent     string
 
-		newWebSocketConn func(ctx context.Context, args exported.WebSocketConnArgs) (net.Conn, error)
+		newWebSocketConn func(ctx context.Context, args exported.WebSocketConnParams) (net.Conn, error)
 
 		// NOTE: exported only so it can be checked in a test
 		RetryOptions exported.RetryOptions
@@ -117,7 +117,7 @@ func NamespaceWithUserAgent(userAgent string) NamespaceOption {
 }
 
 // NamespaceWithWebSocket configures the namespace and all entities to use wss:// rather than amqps://
-func NamespaceWithWebSocket(newWebSocketConn func(ctx context.Context, args exported.WebSocketConnArgs) (net.Conn, error)) NamespaceOption {
+func NamespaceWithWebSocket(newWebSocketConn func(ctx context.Context, args exported.WebSocketConnParams) (net.Conn, error)) NamespaceOption {
 	return func(ns *Namespace) error {
 		ns.newWebSocketConn = newWebSocketConn
 		return nil
@@ -175,7 +175,7 @@ func (ns *Namespace) newClientImpl(ctx context.Context) (amqpwrap.AMQPClient, er
 	}
 
 	if ns.newWebSocketConn != nil {
-		nConn, err := ns.newWebSocketConn(ctx, exported.WebSocketConnArgs{
+		nConn, err := ns.newWebSocketConn(ctx, exported.WebSocketConnParams{
 			Host: ns.getWSSHostURI() + "$servicebus/websocket",
 		})
 
@@ -243,9 +243,11 @@ func (ns *Namespace) Check() error {
 var ErrClientClosed = NewErrNonRetriable("client has been closed by user")
 
 // Recover destroys the currently held AMQP connection and recreates it, if needed.
-// If a new is actually created (rather than just cached) then the returned bool
-// will be true. Any links that were created from the original connection will need to
-// be recreated.
+//
+// If the user should recreate their links (either a new connection was created or
+// the connection they used to create their links is outdated) then this function returns
+// (true, nil).
+// If no action is required from the user this function will return (false, nil)
 func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) (bool, error) {
 	if err := ns.Check(); err != nil {
 		return false, err
@@ -259,8 +261,7 @@ func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) (bool, err
 	}
 
 	if ns.connID != theirConnID {
-		log.Writef(exported.EventConn, "Skipping connection recovery, already recovered: %d vs %d", ns.connID, theirConnID)
-		// we've already recovered since the client last tried.
+		log.Writef(exported.EventConn, "Skipping connection recovery, already recovered: %d vs %d. Links will still be recovered.", ns.connID, theirConnID)
 		return false, nil
 	}
 

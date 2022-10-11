@@ -2,6 +2,50 @@
 
 This guide is intended to assist in the migration from the `azure-event-hubs-go` package to the latest beta releases (and eventual GA) of the `github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs`.
 
+Our goal with this newest package was to export components that can be easily integrated into multiple styles of application, while still mapping close to the underlying resources for AMQP. This includes making TCP connection sharing simple (a must when multiplexing across multiple partitions), making batching boundaries more explicit and also integrating with the `azidentity` package, opening up a large number of authentication methods.
+
+These changes are described in more detail, below.
+
+### TCP connection sharing
+
+In AMQP there are is a concept of a connection and links. AMQP Connections are TCP connections. Links are a logical conduit within an AMQP connection and there are typically many of them but they use the same connection and do not require their own socket.
+
+The prior version of this package did not allow you to share an AMQP connection when sending events, which meant sending to multiple partitions would require a TCP connection per partition. If your application used more than a few partitions this could use up a scarce resource.
+
+In the newer version of the library each top-level client (ProducerClient or ConsumerClient) owns their own TCP connection. For instance, in ProducerClient, sending to separate partitions creates multiple links internally, but not multiple TCP connections. ConsumerClient works similarly - it has a single TCP connection and calling ConsumerClient.NewPartitionClient creates new links, but not new TCP connections.
+
+If you want to split activity across multiple TCP connections you can still do so by creating multiple instances of ProducerClient or ConsumerClient.
+
+Some examples:
+
+```go
+// consumerClient will own a TCP connection.
+consumerClient, err := azeventhubs.NewConsumerClient(/* arguments elided for example */)      
+
+// Close the TCP connection (and any child links)
+defer consumerClient.Close(context.TODO())    
+
+// this call will lazily create a set of AMQP links using the consumerClient's TCP connection.
+partClient0, err := consumerClient.NewPartitionClient("0", nil)
+defer partClient0.Close(context.TODO())     // will close the AMQP link, not the connection
+
+// this call will also lazily create a set of AMQP links using the consumerClient's TCP connection.
+partClient1, err := consumerClient.NewPartitionClient("1", nil)
+defer partClient1.Close(context.TODO())     // will close the AMQP link, not the connection
+```
+
+```go
+// will lazily create an AMQP connection
+producerClient, err := azeventhubs.NewProducerClient(/* arguments elided for example */)
+
+// close the TCP connection (and any child links created for sending events)
+defer producerClient.Close(context.TODO())
+
+// these calls will lazily create a set of AMQP links using the producerClient's TCP connection.
+producerClient.SendEventBatch(context.TODO(), eventDataBatchForPartition0, nil)
+producerClient.SendEventBatch(context.TODO(), eventDataBatchForPartition1, nil)
+```
+
 ## Clients
 
 The `Hub` type has been replaced by two types:

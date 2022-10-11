@@ -9,11 +9,9 @@ package azidentity
 import (
 	"context"
 	"errors"
-	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 )
 
@@ -39,26 +37,15 @@ func NewClientAssertionCredential(tenantID, clientID string, getAssertion func(c
 	if getAssertion == nil {
 		return nil, errors.New("getAssertion must be a function that returns assertions")
 	}
-	if !validTenantID(tenantID) {
-		return nil, errors.New(tenantIDValidationErr)
-	}
 	if options == nil {
 		options = &ClientAssertionCredentialOptions{}
-	}
-	authorityHost, err := setAuthorityHost(options.Cloud)
-	if err != nil {
-		return nil, err
 	}
 	cred := confidential.NewCredFromAssertionCallback(
 		func(ctx context.Context, _ confidential.AssertionRequestOptions) (string, error) {
 			return getAssertion(ctx)
 		},
 	)
-	c, err := confidential.New(clientID, cred,
-		confidential.WithAuthority(runtime.JoinPaths(authorityHost, tenantID)),
-		confidential.WithAzureRegion(os.Getenv(azureRegionalAuthorityName)),
-		confidential.WithHTTPClient(newPipelineAdapter(&options.ClientOptions)),
-	)
+	c, err := getConfidentialClient(clientID, tenantID, cred, &options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

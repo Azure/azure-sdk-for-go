@@ -64,7 +64,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	if options == nil {
 		options = &EnvironmentCredentialOptions{}
 	}
-	tenantID := os.Getenv("AZURE_TENANT_ID")
+	tenantID := os.Getenv(azureTenantID)
 	if tenantID == "" {
 		return nil, errors.New("missing environment variable AZURE_TENANT_ID")
 	}
@@ -72,7 +72,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	if clientID == "" {
 		return nil, errors.New("missing environment variable " + azureClientID)
 	}
-	if clientSecret := os.Getenv("AZURE_CLIENT_SECRET"); clientSecret != "" {
+	if clientSecret := os.Getenv(azureClientSecret); clientSecret != "" {
 		log.Write(EventAuthentication, "EnvironmentCredential will authenticate with ClientSecretCredential")
 		o := &ClientSecretCredentialOptions{ClientOptions: options.ClientOptions}
 		cred, err := NewClientSecretCredential(tenantID, clientID, clientSecret, o)
@@ -81,14 +81,14 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		}
 		return &EnvironmentCredential{cred: cred}, nil
 	}
-	if certPath := os.Getenv("AZURE_CLIENT_CERTIFICATE_PATH"); certPath != "" {
+	if certPath := os.Getenv(azureClientCertificatePath); certPath != "" {
 		log.Write(EventAuthentication, "EnvironmentCredential will authenticate with ClientCertificateCredential")
 		certData, err := os.ReadFile(certPath)
 		if err != nil {
 			return nil, fmt.Errorf(`failed to read certificate file "%s": %v`, certPath, err)
 		}
 		var password []byte
-		if v := os.Getenv("AZURE_CLIENT_CERTIFICATE_PASSWORD"); v != "" {
+		if v := os.Getenv(azureClientCertificatePassword); v != "" {
 			password = []byte(v)
 		}
 		certs, key, err := ParseCertificates(certData, password)
@@ -105,8 +105,8 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		}
 		return &EnvironmentCredential{cred: cred}, nil
 	}
-	if username := os.Getenv("AZURE_USERNAME"); username != "" {
-		if password := os.Getenv("AZURE_PASSWORD"); password != "" {
+	if username := os.Getenv(azureUsername); username != "" {
+		if password := os.Getenv(azurePassword); password != "" {
 			log.Write(EventAuthentication, "EnvironmentCredential will authenticate with UsernamePasswordCredential")
 			o := &UsernamePasswordCredentialOptions{ClientOptions: options.ClientOptions}
 			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, o)

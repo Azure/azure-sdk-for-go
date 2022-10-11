@@ -11,7 +11,7 @@ package armnetwork
 
 const (
 	moduleName    = "armnetwork"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v2.0.0"
 )
 
 // Access - Access to be allowed or denied.
@@ -27,6 +27,26 @@ func PossibleAccessValues() []Access {
 	return []Access{
 		AccessAllow,
 		AccessDeny,
+	}
+}
+
+// ActionType - Defines the action to take on rule match.
+type ActionType string
+
+const (
+	ActionTypeAllow          ActionType = "Allow"
+	ActionTypeAnomalyScoring ActionType = "AnomalyScoring"
+	ActionTypeBlock          ActionType = "Block"
+	ActionTypeLog            ActionType = "Log"
+)
+
+// PossibleActionTypeValues returns the possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{
+		ActionTypeAllow,
+		ActionTypeAnomalyScoring,
+		ActionTypeBlock,
+		ActionTypeLog,
 	}
 }
 
@@ -81,6 +101,22 @@ func PossibleApplicationGatewayBackendHealthServerHealthValues() []ApplicationGa
 		ApplicationGatewayBackendHealthServerHealthPartial,
 		ApplicationGatewayBackendHealthServerHealthUnknown,
 		ApplicationGatewayBackendHealthServerHealthUp,
+	}
+}
+
+// ApplicationGatewayClientRevocationOptions - Verify client certificate revocation status.
+type ApplicationGatewayClientRevocationOptions string
+
+const (
+	ApplicationGatewayClientRevocationOptionsNone ApplicationGatewayClientRevocationOptions = "None"
+	ApplicationGatewayClientRevocationOptionsOCSP ApplicationGatewayClientRevocationOptions = "OCSP"
+)
+
+// PossibleApplicationGatewayClientRevocationOptionsValues returns the possible values for the ApplicationGatewayClientRevocationOptions const type.
+func PossibleApplicationGatewayClientRevocationOptionsValues() []ApplicationGatewayClientRevocationOptions {
+	return []ApplicationGatewayClientRevocationOptions{
+		ApplicationGatewayClientRevocationOptionsNone,
+		ApplicationGatewayClientRevocationOptionsOCSP,
 	}
 }
 
@@ -223,6 +259,26 @@ func PossibleApplicationGatewayRequestRoutingRuleTypeValues() []ApplicationGatew
 	return []ApplicationGatewayRequestRoutingRuleType{
 		ApplicationGatewayRequestRoutingRuleTypeBasic,
 		ApplicationGatewayRequestRoutingRuleTypePathBasedRouting,
+	}
+}
+
+// ApplicationGatewayRuleSetStatusOptions - The rule set status
+type ApplicationGatewayRuleSetStatusOptions string
+
+const (
+	ApplicationGatewayRuleSetStatusOptionsDeprecated ApplicationGatewayRuleSetStatusOptions = "Deprecated"
+	ApplicationGatewayRuleSetStatusOptionsGA         ApplicationGatewayRuleSetStatusOptions = "GA"
+	ApplicationGatewayRuleSetStatusOptionsPreview    ApplicationGatewayRuleSetStatusOptions = "Preview"
+	ApplicationGatewayRuleSetStatusOptionsSupported  ApplicationGatewayRuleSetStatusOptions = "Supported"
+)
+
+// PossibleApplicationGatewayRuleSetStatusOptionsValues returns the possible values for the ApplicationGatewayRuleSetStatusOptions const type.
+func PossibleApplicationGatewayRuleSetStatusOptionsValues() []ApplicationGatewayRuleSetStatusOptions {
+	return []ApplicationGatewayRuleSetStatusOptions{
+		ApplicationGatewayRuleSetStatusOptionsDeprecated,
+		ApplicationGatewayRuleSetStatusOptionsGA,
+		ApplicationGatewayRuleSetStatusOptionsPreview,
+		ApplicationGatewayRuleSetStatusOptionsSupported,
 	}
 }
 
@@ -397,6 +453,63 @@ func PossibleApplicationGatewayTierValues() []ApplicationGatewayTier {
 		ApplicationGatewayTierStandardV2,
 		ApplicationGatewayTierWAF,
 		ApplicationGatewayTierWAFV2,
+	}
+}
+
+type ApplicationGatewayTierTypes string
+
+const (
+	ApplicationGatewayTierTypesStandard   ApplicationGatewayTierTypes = "Standard"
+	ApplicationGatewayTierTypesStandardV2 ApplicationGatewayTierTypes = "Standard_v2"
+	ApplicationGatewayTierTypesWAF        ApplicationGatewayTierTypes = "WAF"
+	ApplicationGatewayTierTypesWAFV2      ApplicationGatewayTierTypes = "WAF_v2"
+)
+
+// PossibleApplicationGatewayTierTypesValues returns the possible values for the ApplicationGatewayTierTypes const type.
+func PossibleApplicationGatewayTierTypesValues() []ApplicationGatewayTierTypes {
+	return []ApplicationGatewayTierTypes{
+		ApplicationGatewayTierTypesStandard,
+		ApplicationGatewayTierTypesStandardV2,
+		ApplicationGatewayTierTypesWAF,
+		ApplicationGatewayTierTypesWAFV2,
+	}
+}
+
+// ApplicationGatewayWafRuleActionTypes - The string representation of the web application firewall rule action.
+type ApplicationGatewayWafRuleActionTypes string
+
+const (
+	ApplicationGatewayWafRuleActionTypesAllow          ApplicationGatewayWafRuleActionTypes = "Allow"
+	ApplicationGatewayWafRuleActionTypesAnomalyScoring ApplicationGatewayWafRuleActionTypes = "AnomalyScoring"
+	ApplicationGatewayWafRuleActionTypesBlock          ApplicationGatewayWafRuleActionTypes = "Block"
+	ApplicationGatewayWafRuleActionTypesLog            ApplicationGatewayWafRuleActionTypes = "Log"
+	ApplicationGatewayWafRuleActionTypesNone           ApplicationGatewayWafRuleActionTypes = "None"
+)
+
+// PossibleApplicationGatewayWafRuleActionTypesValues returns the possible values for the ApplicationGatewayWafRuleActionTypes const type.
+func PossibleApplicationGatewayWafRuleActionTypesValues() []ApplicationGatewayWafRuleActionTypes {
+	return []ApplicationGatewayWafRuleActionTypes{
+		ApplicationGatewayWafRuleActionTypesAllow,
+		ApplicationGatewayWafRuleActionTypesAnomalyScoring,
+		ApplicationGatewayWafRuleActionTypesBlock,
+		ApplicationGatewayWafRuleActionTypesLog,
+		ApplicationGatewayWafRuleActionTypesNone,
+	}
+}
+
+// ApplicationGatewayWafRuleStateTypes - The string representation of the web application firewall rule state.
+type ApplicationGatewayWafRuleStateTypes string
+
+const (
+	ApplicationGatewayWafRuleStateTypesDisabled ApplicationGatewayWafRuleStateTypes = "Disabled"
+	ApplicationGatewayWafRuleStateTypesEnabled  ApplicationGatewayWafRuleStateTypes = "Enabled"
+)
+
+// PossibleApplicationGatewayWafRuleStateTypesValues returns the possible values for the ApplicationGatewayWafRuleStateTypes const type.
+func PossibleApplicationGatewayWafRuleStateTypesValues() []ApplicationGatewayWafRuleStateTypes {
+	return []ApplicationGatewayWafRuleStateTypes{
+		ApplicationGatewayWafRuleStateTypesDisabled,
+		ApplicationGatewayWafRuleStateTypesEnabled,
 	}
 }
 
@@ -666,6 +779,7 @@ const (
 	CommissionedStateCommissionedNoInternetAdvertise CommissionedState = "CommissionedNoInternetAdvertise"
 	CommissionedStateCommissioning                   CommissionedState = "Commissioning"
 	CommissionedStateDecommissioning                 CommissionedState = "Decommissioning"
+	CommissionedStateDeprovisioned                   CommissionedState = "Deprovisioned"
 	CommissionedStateDeprovisioning                  CommissionedState = "Deprovisioning"
 	CommissionedStateProvisioned                     CommissionedState = "Provisioned"
 	CommissionedStateProvisioning                    CommissionedState = "Provisioning"
@@ -678,6 +792,7 @@ func PossibleCommissionedStateValues() []CommissionedState {
 		CommissionedStateCommissionedNoInternetAdvertise,
 		CommissionedStateCommissioning,
 		CommissionedStateDecommissioning,
+		CommissionedStateDeprovisioned,
 		CommissionedStateDeprovisioning,
 		CommissionedStateProvisioned,
 		CommissionedStateProvisioning,
@@ -878,61 +993,39 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// DdosCustomPolicyProtocol - The protocol for which the DDoS protection policy is being customized.
-type DdosCustomPolicyProtocol string
+// CustomIPPrefixType - Type of custom IP prefix. Should be Singular, Parent, or Child.
+type CustomIPPrefixType string
 
 const (
-	DdosCustomPolicyProtocolSyn DdosCustomPolicyProtocol = "Syn"
-	DdosCustomPolicyProtocolTCP DdosCustomPolicyProtocol = "Tcp"
-	DdosCustomPolicyProtocolUDP DdosCustomPolicyProtocol = "Udp"
+	CustomIPPrefixTypeChild    CustomIPPrefixType = "Child"
+	CustomIPPrefixTypeParent   CustomIPPrefixType = "Parent"
+	CustomIPPrefixTypeSingular CustomIPPrefixType = "Singular"
 )
 
-// PossibleDdosCustomPolicyProtocolValues returns the possible values for the DdosCustomPolicyProtocol const type.
-func PossibleDdosCustomPolicyProtocolValues() []DdosCustomPolicyProtocol {
-	return []DdosCustomPolicyProtocol{
-		DdosCustomPolicyProtocolSyn,
-		DdosCustomPolicyProtocolTCP,
-		DdosCustomPolicyProtocolUDP,
+// PossibleCustomIPPrefixTypeValues returns the possible values for the CustomIPPrefixType const type.
+func PossibleCustomIPPrefixTypeValues() []CustomIPPrefixType {
+	return []CustomIPPrefixType{
+		CustomIPPrefixTypeChild,
+		CustomIPPrefixTypeParent,
+		CustomIPPrefixTypeSingular,
 	}
 }
 
-// DdosCustomPolicyTriggerSensitivityOverride - The customized DDoS protection trigger rate sensitivity degrees. High: Trigger
-// rate set with most sensitivity w.r.t. normal traffic. Default: Trigger rate set with moderate sensitivity w.r.t. normal
-// traffic. Low: Trigger rate set with less sensitivity w.r.t. normal traffic. Relaxed: Trigger rate set with least sensitivity
-// w.r.t. normal traffic.
-type DdosCustomPolicyTriggerSensitivityOverride string
+// DdosSettingsProtectionMode - The DDoS protection mode of the public IP
+type DdosSettingsProtectionMode string
 
 const (
-	DdosCustomPolicyTriggerSensitivityOverrideDefault DdosCustomPolicyTriggerSensitivityOverride = "Default"
-	DdosCustomPolicyTriggerSensitivityOverrideHigh    DdosCustomPolicyTriggerSensitivityOverride = "High"
-	DdosCustomPolicyTriggerSensitivityOverrideLow     DdosCustomPolicyTriggerSensitivityOverride = "Low"
-	DdosCustomPolicyTriggerSensitivityOverrideRelaxed DdosCustomPolicyTriggerSensitivityOverride = "Relaxed"
+	DdosSettingsProtectionModeDisabled                DdosSettingsProtectionMode = "Disabled"
+	DdosSettingsProtectionModeEnabled                 DdosSettingsProtectionMode = "Enabled"
+	DdosSettingsProtectionModeVirtualNetworkInherited DdosSettingsProtectionMode = "VirtualNetworkInherited"
 )
 
-// PossibleDdosCustomPolicyTriggerSensitivityOverrideValues returns the possible values for the DdosCustomPolicyTriggerSensitivityOverride const type.
-func PossibleDdosCustomPolicyTriggerSensitivityOverrideValues() []DdosCustomPolicyTriggerSensitivityOverride {
-	return []DdosCustomPolicyTriggerSensitivityOverride{
-		DdosCustomPolicyTriggerSensitivityOverrideDefault,
-		DdosCustomPolicyTriggerSensitivityOverrideHigh,
-		DdosCustomPolicyTriggerSensitivityOverrideLow,
-		DdosCustomPolicyTriggerSensitivityOverrideRelaxed,
-	}
-}
-
-// DdosSettingsProtectionCoverage - The DDoS protection policy customizability of the public IP. Only standard coverage will
-// have the ability to be customized.
-type DdosSettingsProtectionCoverage string
-
-const (
-	DdosSettingsProtectionCoverageBasic    DdosSettingsProtectionCoverage = "Basic"
-	DdosSettingsProtectionCoverageStandard DdosSettingsProtectionCoverage = "Standard"
-)
-
-// PossibleDdosSettingsProtectionCoverageValues returns the possible values for the DdosSettingsProtectionCoverage const type.
-func PossibleDdosSettingsProtectionCoverageValues() []DdosSettingsProtectionCoverage {
-	return []DdosSettingsProtectionCoverage{
-		DdosSettingsProtectionCoverageBasic,
-		DdosSettingsProtectionCoverageStandard,
+// PossibleDdosSettingsProtectionModeValues returns the possible values for the DdosSettingsProtectionMode const type.
+func PossibleDdosSettingsProtectionModeValues() []DdosSettingsProtectionMode {
+	return []DdosSettingsProtectionMode{
+		DdosSettingsProtectionModeDisabled,
+		DdosSettingsProtectionModeEnabled,
+		DdosSettingsProtectionModeVirtualNetworkInherited,
 	}
 }
 
@@ -1354,6 +1447,22 @@ func PossibleExpressRoutePortAuthorizationUseStatusValues() []ExpressRoutePortAu
 	}
 }
 
+// ExpressRoutePortsBillingType - The billing type of the ExpressRoutePort resource.
+type ExpressRoutePortsBillingType string
+
+const (
+	ExpressRoutePortsBillingTypeMeteredData   ExpressRoutePortsBillingType = "MeteredData"
+	ExpressRoutePortsBillingTypeUnlimitedData ExpressRoutePortsBillingType = "UnlimitedData"
+)
+
+// PossibleExpressRoutePortsBillingTypeValues returns the possible values for the ExpressRoutePortsBillingType const type.
+func PossibleExpressRoutePortsBillingTypeValues() []ExpressRoutePortsBillingType {
+	return []ExpressRoutePortsBillingType{
+		ExpressRoutePortsBillingTypeMeteredData,
+		ExpressRoutePortsBillingTypeUnlimitedData,
+	}
+}
+
 // ExpressRoutePortsEncapsulation - Encapsulation method on physical ports.
 type ExpressRoutePortsEncapsulation string
 
@@ -1662,6 +1771,36 @@ func PossibleGatewayLoadBalancerTunnelProtocolValues() []GatewayLoadBalancerTunn
 	}
 }
 
+// Geo - The Geo for CIDR advertising. Should be an Geo code.
+type Geo string
+
+const (
+	GeoAFRI    Geo = "AFRI"
+	GeoAPAC    Geo = "APAC"
+	GeoAQ      Geo = "AQ"
+	GeoEURO    Geo = "EURO"
+	GeoGLOBAL  Geo = "GLOBAL"
+	GeoLATAM   Geo = "LATAM"
+	GeoME      Geo = "ME"
+	GeoNAM     Geo = "NAM"
+	GeoOCEANIA Geo = "OCEANIA"
+)
+
+// PossibleGeoValues returns the possible values for the Geo const type.
+func PossibleGeoValues() []Geo {
+	return []Geo{
+		GeoAFRI,
+		GeoAPAC,
+		GeoAQ,
+		GeoEURO,
+		GeoGLOBAL,
+		GeoLATAM,
+		GeoME,
+		GeoNAM,
+		GeoOCEANIA,
+	}
+}
+
 // GroupConnectivity - Group connectivity type.
 type GroupConnectivity string
 
@@ -1966,6 +2105,22 @@ func PossibleIsGlobalValues() []IsGlobal {
 	}
 }
 
+// IsWorkloadProtected - Value indicating whether the IP address is DDoS workload protected or not.
+type IsWorkloadProtected string
+
+const (
+	IsWorkloadProtectedFalse IsWorkloadProtected = "False"
+	IsWorkloadProtectedTrue  IsWorkloadProtected = "True"
+)
+
+// PossibleIsWorkloadProtectedValues returns the possible values for the IsWorkloadProtected const type.
+func PossibleIsWorkloadProtectedValues() []IsWorkloadProtected {
+	return []IsWorkloadProtected{
+		IsWorkloadProtectedFalse,
+		IsWorkloadProtectedTrue,
+	}
+}
+
 // IssueType - The type of issue.
 type IssueType string
 
@@ -2092,12 +2247,14 @@ type ManagedRuleEnabledState string
 
 const (
 	ManagedRuleEnabledStateDisabled ManagedRuleEnabledState = "Disabled"
+	ManagedRuleEnabledStateEnabled  ManagedRuleEnabledState = "Enabled"
 )
 
 // PossibleManagedRuleEnabledStateValues returns the possible values for the ManagedRuleEnabledState const type.
 func PossibleManagedRuleEnabledStateValues() []ManagedRuleEnabledState {
 	return []ManagedRuleEnabledState{
 		ManagedRuleEnabledStateDisabled,
+		ManagedRuleEnabledStateEnabled,
 	}
 }
 
@@ -2119,14 +2276,16 @@ func PossibleNatGatewaySKUNameValues() []NatGatewaySKUName {
 type NetworkIntentPolicyBasedService string
 
 const (
-	NetworkIntentPolicyBasedServiceAll  NetworkIntentPolicyBasedService = "All"
-	NetworkIntentPolicyBasedServiceNone NetworkIntentPolicyBasedService = "None"
+	NetworkIntentPolicyBasedServiceAll            NetworkIntentPolicyBasedService = "All"
+	NetworkIntentPolicyBasedServiceAllowRulesOnly NetworkIntentPolicyBasedService = "AllowRulesOnly"
+	NetworkIntentPolicyBasedServiceNone           NetworkIntentPolicyBasedService = "None"
 )
 
 // PossibleNetworkIntentPolicyBasedServiceValues returns the possible values for the NetworkIntentPolicyBasedService const type.
 func PossibleNetworkIntentPolicyBasedServiceValues() []NetworkIntentPolicyBasedService {
 	return []NetworkIntentPolicyBasedService{
 		NetworkIntentPolicyBasedServiceAll,
+		NetworkIntentPolicyBasedServiceAllowRulesOnly,
 		NetworkIntentPolicyBasedServiceNone,
 	}
 }
@@ -2226,6 +2385,24 @@ func PossibleNextHopTypeValues() []NextHopType {
 		NextHopTypeVirtualAppliance,
 		NextHopTypeVirtualNetworkGateway,
 		NextHopTypeVnetLocal,
+	}
+}
+
+// NextStep - Supported next step behaviors after a rule is applied to a matched route
+type NextStep string
+
+const (
+	NextStepContinue  NextStep = "Continue"
+	NextStepTerminate NextStep = "Terminate"
+	NextStepUnknown   NextStep = "Unknown"
+)
+
+// PossibleNextStepValues returns the possible values for the NextStep const type.
+func PossibleNextStepValues() []NextStep {
+	return []NextStep{
+		NextStepContinue,
+		NextStepTerminate,
+		NextStepUnknown,
 	}
 }
 
@@ -2702,6 +2879,51 @@ func PossibleRouteFilterRuleTypeValues() []RouteFilterRuleType {
 	}
 }
 
+// RouteMapActionType - Kind of actions which can be taken on a matched route. Add, Replace, Remove refer to parameters on
+// the route, like community or prefix
+type RouteMapActionType string
+
+const (
+	RouteMapActionTypeAdd     RouteMapActionType = "Add"
+	RouteMapActionTypeDrop    RouteMapActionType = "Drop"
+	RouteMapActionTypeRemove  RouteMapActionType = "Remove"
+	RouteMapActionTypeReplace RouteMapActionType = "Replace"
+	RouteMapActionTypeUnknown RouteMapActionType = "Unknown"
+)
+
+// PossibleRouteMapActionTypeValues returns the possible values for the RouteMapActionType const type.
+func PossibleRouteMapActionTypeValues() []RouteMapActionType {
+	return []RouteMapActionType{
+		RouteMapActionTypeAdd,
+		RouteMapActionTypeDrop,
+		RouteMapActionTypeRemove,
+		RouteMapActionTypeReplace,
+		RouteMapActionTypeUnknown,
+	}
+}
+
+// RouteMapMatchCondition - Match condition to apply RouteMap rules.
+type RouteMapMatchCondition string
+
+const (
+	RouteMapMatchConditionContains    RouteMapMatchCondition = "Contains"
+	RouteMapMatchConditionEquals      RouteMapMatchCondition = "Equals"
+	RouteMapMatchConditionNotContains RouteMapMatchCondition = "NotContains"
+	RouteMapMatchConditionNotEquals   RouteMapMatchCondition = "NotEquals"
+	RouteMapMatchConditionUnknown     RouteMapMatchCondition = "Unknown"
+)
+
+// PossibleRouteMapMatchConditionValues returns the possible values for the RouteMapMatchCondition const type.
+func PossibleRouteMapMatchConditionValues() []RouteMapMatchCondition {
+	return []RouteMapMatchCondition{
+		RouteMapMatchConditionContains,
+		RouteMapMatchConditionEquals,
+		RouteMapMatchConditionNotContains,
+		RouteMapMatchConditionNotEquals,
+		RouteMapMatchConditionUnknown,
+	}
+}
+
 // RouteNextHopType - The type of Azure hop the packet should be sent to.
 type RouteNextHopType string
 
@@ -2953,6 +3175,22 @@ func PossibleSeverityValues() []Severity {
 	return []Severity{
 		SeverityError,
 		SeverityWarning,
+	}
+}
+
+// SlotType - Specifies slot info on a cloud service
+type SlotType string
+
+const (
+	SlotTypeProduction SlotType = "Production"
+	SlotTypeStaging    SlotType = "Staging"
+)
+
+// PossibleSlotTypeValues returns the possible values for the SlotType const type.
+func PossibleSlotTypeValues() []SlotType {
+	return []SlotType{
+		SlotTypeProduction,
+		SlotTypeStaging,
 	}
 }
 
@@ -3516,6 +3754,23 @@ func PossibleVirtualWanSecurityProviderTypeValues() []VirtualWanSecurityProvider
 	}
 }
 
+// VnetLocalRouteOverrideCriteria - Parameter determining whether NVA in spoke vnet is bypassed for traffic with destination
+// in spoke vnet.
+type VnetLocalRouteOverrideCriteria string
+
+const (
+	VnetLocalRouteOverrideCriteriaContains VnetLocalRouteOverrideCriteria = "Contains"
+	VnetLocalRouteOverrideCriteriaEqual    VnetLocalRouteOverrideCriteria = "Equal"
+)
+
+// PossibleVnetLocalRouteOverrideCriteriaValues returns the possible values for the VnetLocalRouteOverrideCriteria const type.
+func PossibleVnetLocalRouteOverrideCriteriaValues() []VnetLocalRouteOverrideCriteria {
+	return []VnetLocalRouteOverrideCriteria{
+		VnetLocalRouteOverrideCriteriaContains,
+		VnetLocalRouteOverrideCriteriaEqual,
+	}
+}
+
 // WebApplicationFirewallAction - Type of Actions.
 type WebApplicationFirewallAction string
 
@@ -3680,6 +3935,7 @@ const (
 	WebApplicationFirewallTransformTrim             WebApplicationFirewallTransform = "Trim"
 	WebApplicationFirewallTransformURLDecode        WebApplicationFirewallTransform = "UrlDecode"
 	WebApplicationFirewallTransformURLEncode        WebApplicationFirewallTransform = "UrlEncode"
+	WebApplicationFirewallTransformUppercase        WebApplicationFirewallTransform = "Uppercase"
 )
 
 // PossibleWebApplicationFirewallTransformValues returns the possible values for the WebApplicationFirewallTransform const type.
@@ -3691,5 +3947,6 @@ func PossibleWebApplicationFirewallTransformValues() []WebApplicationFirewallTra
 		WebApplicationFirewallTransformTrim,
 		WebApplicationFirewallTransformURLDecode,
 		WebApplicationFirewallTransformURLEncode,
+		WebApplicationFirewallTransformUppercase,
 	}
 }

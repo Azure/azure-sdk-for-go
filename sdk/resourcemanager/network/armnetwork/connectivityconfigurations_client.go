@@ -59,7 +59,7 @@ func NewConnectivityConfigurationsClient(subscriptionID string, credential azcor
 
 // CreateOrUpdate - Creates/Updates a new network manager connectivity configuration
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // networkManagerName - The name of the network manager.
 // configurationName - The name of the network manager connectivity configuration.
@@ -105,7 +105,7 @@ func (client *ConnectivityConfigurationsClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, connectivityConfiguration)
@@ -123,7 +123,7 @@ func (client *ConnectivityConfigurationsClient) createOrUpdateHandleResponse(res
 // BeginDelete - Deletes a network manager connectivity configuration, specified by the resource group, network manager name,
 // and connectivity configuration name
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // networkManagerName - The name of the network manager.
 // configurationName - The name of the network manager connectivity configuration.
@@ -146,7 +146,7 @@ func (client *ConnectivityConfigurationsClient) BeginDelete(ctx context.Context,
 // Delete - Deletes a network manager connectivity configuration, specified by the resource group, network manager name, and
 // connectivity configuration name
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-05-01
 func (client *ConnectivityConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, options *ConnectivityConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkManagerName, configurationName, options)
 	if err != nil {
@@ -186,7 +186,7 @@ func (client *ConnectivityConfigurationsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-05-01")
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
@@ -198,7 +198,7 @@ func (client *ConnectivityConfigurationsClient) deleteCreateRequest(ctx context.
 // Get - Gets a Network Connectivity Configuration, specified by the resource group, network manager name, and connectivity
 // Configuration name
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // networkManagerName - The name of the network manager.
 // configurationName - The name of the network manager connectivity configuration.
@@ -243,7 +243,7 @@ func (client *ConnectivityConfigurationsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -259,8 +259,7 @@ func (client *ConnectivityConfigurationsClient) getHandleResponse(resp *http.Res
 }
 
 // NewListPager - Lists all the network manager connectivity configuration in a specified network manager.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // networkManagerName - The name of the network manager.
 // options - ConnectivityConfigurationsClientListOptions contains the optional parameters for the ConnectivityConfigurationsClient.List
@@ -313,7 +312,7 @@ func (client *ConnectivityConfigurationsClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-05-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

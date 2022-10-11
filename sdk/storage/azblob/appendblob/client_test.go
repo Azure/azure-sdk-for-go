@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
@@ -29,8 +30,16 @@ import (
 )
 
 func Test(t *testing.T) {
-	suite.Run(t, &AppendBlobRecordedTestsSuite{})
-	//suite.Run(t, &AppendBlobUnrecordedTestsSuite{})
+	recordMode := recording.GetRecordMode()
+	t.Logf("Running appendblob Tests in %s mode\n", recordMode)
+	if recordMode == recording.LiveMode {
+		suite.Run(t, &AppendBlobRecordedTestsSuite{})
+		suite.Run(t, &AppendBlobUnrecordedTestsSuite{})
+	} else if recordMode == recording.PlaybackMode {
+		suite.Run(t, &AppendBlobRecordedTestsSuite{})
+	} else if recordMode == recording.RecordingMode {
+		suite.Run(t, &AppendBlobRecordedTestsSuite{})
+	}
 }
 
 // nolint
@@ -1505,6 +1514,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPK() {
 func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
+	encryptionScope := testcommon.GetCPKScopeInfo(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
@@ -1513,7 +1523,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 	abClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
 
 	createAppendBlobOptions := appendblob.CreateOptions{
-		CpkScopeInfo: &testcommon.TestCPKByScope,
+		CpkScopeInfo: &encryptionScope,
 	}
 	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
 	_require.Nil(err)
@@ -1522,7 +1532,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 	words := []string{"AAA ", "BBB ", "CCC "}
 	for index, word := range words {
 		appendBlockOptions := appendblob.AppendBlockOptions{
-			CpkScopeInfo: &testcommon.TestCPKByScope,
+			CpkScopeInfo: &encryptionScope,
 		}
 		resp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader(word)), &appendBlockOptions)
 		_require.Nil(err)
@@ -1538,12 +1548,12 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 		_require.NotNil(resp.Date)
 		_require.Equal((*resp.Date).IsZero(), false)
 		_require.Equal(*resp.IsServerEncrypted, true)
-		_require.EqualValues(resp.EncryptionScope, testcommon.TestCPKByScope.EncryptionScope)
+		_require.EqualValues(*encryptionScope.EncryptionScope, *resp.EncryptionScope)
 	}
 
 	// Download blob to do data integrity check.
 	downloadBlobOptions := blob.DownloadStreamOptions{
-		CpkScopeInfo: &testcommon.TestCPKByScope,
+		CpkScopeInfo: &encryptionScope,
 	}
 	downloadResp, err := abClient.DownloadStream(context.Background(), &downloadBlobOptions)
 	_require.Nil(err)
@@ -1551,7 +1561,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 	data, err := io.ReadAll(downloadResp.Body)
 	_require.Nil(err)
 	_require.EqualValues(string(data), "AAA BBB CCC ")
-	_require.EqualValues(*downloadResp.EncryptionScope, *testcommon.TestCPKByScope.EncryptionScope)
+	_require.EqualValues(*downloadResp.EncryptionScope, *encryptionScope.EncryptionScope)
 }
 
 //nolint

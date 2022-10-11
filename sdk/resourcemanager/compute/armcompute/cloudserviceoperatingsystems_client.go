@@ -175,7 +175,6 @@ func (client *CloudServiceOperatingSystemsClient) getOSVersionHandleResponse(res
 // NewListOSFamiliesPager - Gets a list of all guest operating system families available to be specified in the XML service
 // configuration (.cscfg) for a cloud service. Use nextLink property in the response to get the next page
 // of OS Families. Do this till nextLink is null to fetch all the OS Families.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-04
 // location - Name of the location that the OS families pertain to.
 // options - CloudServiceOperatingSystemsClientListOSFamiliesOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.ListOSFamilies
@@ -242,7 +241,6 @@ func (client *CloudServiceOperatingSystemsClient) listOSFamiliesHandleResponse(r
 // NewListOSVersionsPager - Gets a list of all guest operating system versions available to be specified in the XML service
 // configuration (.cscfg) for a cloud service. Use nextLink property in the response to get the next page
 // of OS versions. Do this till nextLink is null to fetch all the OS versions.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-04
 // location - Name of the location that the OS versions pertain to.
 // options - CloudServiceOperatingSystemsClientListOSVersionsOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.ListOSVersions

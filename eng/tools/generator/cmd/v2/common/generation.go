@@ -218,7 +218,11 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 
 		if !generateParam.SkipGenerateExample {
 			log.Printf("Generate examples...")
-			if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName)); err != nil {
+			flag, err := GetAlwaysSetBodyParamRequiredFlag(filepath.Join(packagePath, "build.go"))
+			if err != nil {
+				return nil, err
+			}
+			if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName), flag); err != nil {
 				return nil, err
 			}
 		}
@@ -277,7 +281,11 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		// Example generation should be the last step because the package import relay on the new calculated version
 		if !generateParam.SkipGenerateExample {
 			log.Printf("Generate examples...")
-			if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName)); err != nil {
+			flag, err := GetAlwaysSetBodyParamRequiredFlag(filepath.Join(packagePath, "build.go"))
+			if err != nil {
+				return nil, err
+			}
+			if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName), flag); err != nil {
 				return nil, err
 			}
 		}

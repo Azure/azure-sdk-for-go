@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryApplication_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryApplication_Create.json
 func ExampleGalleryApplicationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,21 +28,30 @@ func ExampleGalleryApplicationsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"myResourceGroup",
-		"myGalleryName",
-		"myGalleryApplicationName",
-		armcompute.GalleryApplication{
-			Location: to.Ptr("West US"),
-			Properties: &armcompute.GalleryApplicationProperties{
-				Description:         to.Ptr("This is the gallery application description."),
-				Eula:                to.Ptr("This is the gallery application EULA."),
-				PrivacyStatementURI: to.Ptr("myPrivacyStatementUri}"),
-				ReleaseNoteURI:      to.Ptr("myReleaseNoteUri"),
-				SupportedOSType:     to.Ptr(armcompute.OperatingSystemTypesWindows),
-			},
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myGalleryName", "myGalleryApplicationName", armcompute.GalleryApplication{
+		Location: to.Ptr("West US"),
+		Properties: &armcompute.GalleryApplicationProperties{
+			Description: to.Ptr("This is the gallery application description."),
+			CustomActions: []*armcompute.GalleryApplicationCustomAction{
+				{
+					Name:        to.Ptr("myCustomAction"),
+					Description: to.Ptr("This is the custom action description."),
+					Parameters: []*armcompute.GalleryApplicationCustomActionParameter{
+						{
+							Name:         to.Ptr("myCustomActionParameter"),
+							Type:         to.Ptr(armcompute.GalleryApplicationCustomActionParameterTypeString),
+							Description:  to.Ptr("This is the description of the parameter"),
+							DefaultValue: to.Ptr("default value of parameter."),
+							Required:     to.Ptr(false),
+						}},
+					Script: to.Ptr("myCustomActionScript"),
+				}},
+			Eula:                to.Ptr("This is the gallery application EULA."),
+			PrivacyStatementURI: to.Ptr("myPrivacyStatementUri}"),
+			ReleaseNoteURI:      to.Ptr("myReleaseNoteUri"),
+			SupportedOSType:     to.Ptr(armcompute.OperatingSystemTypesWindows),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -54,7 +63,7 @@ func ExampleGalleryApplicationsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryApplication_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryApplication_Update.json
 func ExampleGalleryApplicationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,20 +74,29 @@ func ExampleGalleryApplicationsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"myResourceGroup",
-		"myGalleryName",
-		"myGalleryApplicationName",
-		armcompute.GalleryApplicationUpdate{
-			Properties: &armcompute.GalleryApplicationProperties{
-				Description:         to.Ptr("This is the gallery application description."),
-				Eula:                to.Ptr("This is the gallery application EULA."),
-				PrivacyStatementURI: to.Ptr("myPrivacyStatementUri}"),
-				ReleaseNoteURI:      to.Ptr("myReleaseNoteUri"),
-				SupportedOSType:     to.Ptr(armcompute.OperatingSystemTypesWindows),
-			},
+	poller, err := client.BeginUpdate(ctx, "myResourceGroup", "myGalleryName", "myGalleryApplicationName", armcompute.GalleryApplicationUpdate{
+		Properties: &armcompute.GalleryApplicationProperties{
+			Description: to.Ptr("This is the gallery application description."),
+			CustomActions: []*armcompute.GalleryApplicationCustomAction{
+				{
+					Name:        to.Ptr("myCustomAction"),
+					Description: to.Ptr("This is the custom action description."),
+					Parameters: []*armcompute.GalleryApplicationCustomActionParameter{
+						{
+							Name:         to.Ptr("myCustomActionParameter"),
+							Type:         to.Ptr(armcompute.GalleryApplicationCustomActionParameterTypeString),
+							Description:  to.Ptr("This is the description of the parameter"),
+							DefaultValue: to.Ptr("default value of parameter."),
+							Required:     to.Ptr(false),
+						}},
+					Script: to.Ptr("myCustomActionScript"),
+				}},
+			Eula:                to.Ptr("This is the gallery application EULA."),
+			PrivacyStatementURI: to.Ptr("myPrivacyStatementUri}"),
+			ReleaseNoteURI:      to.Ptr("myReleaseNoteUri"),
+			SupportedOSType:     to.Ptr(armcompute.OperatingSystemTypesWindows),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -90,7 +108,7 @@ func ExampleGalleryApplicationsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryApplication_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryApplication_Get.json
 func ExampleGalleryApplicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,11 +119,7 @@ func ExampleGalleryApplicationsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"myResourceGroup",
-		"myGalleryName",
-		"myGalleryApplicationName",
-		nil)
+	res, err := client.Get(ctx, "myResourceGroup", "myGalleryName", "myGalleryApplicationName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -113,7 +127,7 @@ func ExampleGalleryApplicationsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryApplication_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryApplication_Delete.json
 func ExampleGalleryApplicationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,11 +138,7 @@ func ExampleGalleryApplicationsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"myResourceGroup",
-		"myGalleryName",
-		"myGalleryApplicationName",
-		nil)
+	poller, err := client.BeginDelete(ctx, "myResourceGroup", "myGalleryName", "myGalleryApplicationName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -138,7 +148,7 @@ func ExampleGalleryApplicationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryApplication_ListByGallery.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryApplication_ListByGallery.json
 func ExampleGalleryApplicationsClient_NewListByGalleryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,9 +159,7 @@ func ExampleGalleryApplicationsClient_NewListByGalleryPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByGalleryPager("myResourceGroup",
-		"myGalleryName",
-		nil)
+	pager := client.NewListByGalleryPager("myResourceGroup", "myGalleryName", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

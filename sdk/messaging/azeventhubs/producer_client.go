@@ -20,8 +20,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 )
 
-// WebSocketConnArgs are passed to your web socket creation function (ClientOptions.NewWebSocketConn)
-type WebSocketConnArgs = exported.WebSocketConnArgs
+// WebSocketConnParams are passed to your web socket creation function (ClientOptions.NewWebSocketConn)
+type WebSocketConnParams = exported.WebSocketConnParams
 
 // RetryOptions represent the options for retries.
 type RetryOptions = exported.RetryOptions
@@ -37,7 +37,7 @@ type ProducerClientOptions struct {
 
 	// NewWebSocketConn is a function that can create a net.Conn for use with websockets.
 	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
-	NewWebSocketConn func(ctx context.Context, args WebSocketConnArgs) (net.Conn, error)
+	NewWebSocketConn func(ctx context.Context, params WebSocketConnParams) (net.Conn, error)
 
 	// RetryOptions controls how often operations are retried from this client and any
 	// Receivers and Senders created from this client.

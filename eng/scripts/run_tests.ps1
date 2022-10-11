@@ -3,7 +3,7 @@
 Param(
     [Parameter(Mandatory = $true)]
     [string] $serviceDirectory,
-    [string] $testTimeout = "1s"
+    [string] $testTimeout = "10s"
 )
 
 $ErrorActionPreference = 'Stop'

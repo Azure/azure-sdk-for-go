@@ -1,14 +1,5 @@
 # CHANGELOG
 
-## `v67.1.0`
-
-### New Packages
-
-- `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2022-03-03/compute`
-- `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2022-07-02/compute`
-- `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2022-08-01/compute`
-- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2022-05-01/network`
-
 ## `v67.0.0`
 
 ### New Packages
@@ -16,6 +7,9 @@
 - `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2022-03-01/compute`
 - `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2022-03-02/compute`
 - `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2022-04-04/compute`
+- `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2022-03-03/compute`
+- `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2022-07-02/compute`
+- `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2022-08-01/compute`
 - `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2022-04-01/containerservice`
 - `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2022-06-01/containerservice`
 - `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2022-07-01/containerservice`
@@ -24,6 +18,7 @@
 - `github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2022-07-01/keyvault`
 - `github.com/Azure/azure-sdk-for-go/services/kubernetesconfiguration/mgmt/2022-07-01/kubernetesconfiguration`
 - `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2022-01-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2022-05-01/network`
 - `github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2021-06-01/operationalinsights`
 - `github.com/Azure/azure-sdk-for-go/services/preview/keyvault/mgmt/2021-11-01-preview/keyvault`
 - `github.com/Azure/azure-sdk-for-go/services/preview/maintenance/mgmt/2021-09-01-preview/maintenance`

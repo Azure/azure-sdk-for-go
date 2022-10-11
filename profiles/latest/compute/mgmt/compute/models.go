@@ -12,7 +12,7 @@ package compute
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2022-04-04/compute"
+	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2022-08-01/compute"
 )
 
 const (
@@ -147,6 +147,13 @@ type DiffDiskPlacement = original.DiffDiskPlacement
 const (
 	CacheDisk    DiffDiskPlacement = original.CacheDisk
 	ResourceDisk DiffDiskPlacement = original.ResourceDisk
+)
+
+type DiskControllerTypes = original.DiskControllerTypes
+
+const (
+	NVMe DiskControllerTypes = original.NVMe
+	SCSI DiskControllerTypes = original.SCSI
 )
 
 type DiskCreateOption = original.DiskCreateOption
@@ -1399,6 +1406,7 @@ type PirCommunityGalleryResource = original.PirCommunityGalleryResource
 type PirResource = original.PirResource
 type PirSharedGalleryResource = original.PirSharedGalleryResource
 type Plan = original.Plan
+type PriorityMixPolicy = original.PriorityMixPolicy
 type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointConnection = original.PrivateEndpointConnection
 type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
@@ -2397,6 +2405,9 @@ func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
 }
 func PossibleDiffDiskPlacementValues() []DiffDiskPlacement {
 	return original.PossibleDiffDiskPlacementValues()
+}
+func PossibleDiskControllerTypesValues() []DiskControllerTypes {
+	return original.PossibleDiskControllerTypesValues()
 }
 func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 	return original.PossibleDiskCreateOptionTypesValues()

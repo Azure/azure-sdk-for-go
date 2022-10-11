@@ -53,7 +53,7 @@ type GenerateParam struct {
 	RemoveTagSet        bool
 }
 
-func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string) ([]GenerateResult, []error) {
+func (ctx *GenerateContext) GenerateForAutomation(readme, goVersion string) ([]GenerateResult, []error) {
 	absReadme, err := filepath.Abs(filepath.Join(ctx.SpecPath, readme))
 	if err != nil {
 		return nil, []error{

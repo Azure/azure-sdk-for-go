@@ -12,7 +12,7 @@ package network
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2022-01-01/network"
+	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2022-05-01/network"
 )
 
 const (
@@ -24,6 +24,15 @@ type Access = original.Access
 const (
 	Allow Access = original.Allow
 	Deny  Access = original.Deny
+)
+
+type ActionType = original.ActionType
+
+const (
+	ActionTypeAllow          ActionType = original.ActionTypeAllow
+	ActionTypeAnomalyScoring ActionType = original.ActionTypeAnomalyScoring
+	ActionTypeBlock          ActionType = original.ActionTypeBlock
+	ActionTypeLog            ActionType = original.ActionTypeLog
 )
 
 type AddressPrefixType = original.AddressPrefixType
@@ -41,6 +50,13 @@ const (
 	Partial  ApplicationGatewayBackendHealthServerHealth = original.Partial
 	Unknown  ApplicationGatewayBackendHealthServerHealth = original.Unknown
 	Up       ApplicationGatewayBackendHealthServerHealth = original.Up
+)
+
+type ApplicationGatewayClientRevocationOptions = original.ApplicationGatewayClientRevocationOptions
+
+const (
+	None ApplicationGatewayClientRevocationOptions = original.None
+	OCSP ApplicationGatewayClientRevocationOptions = original.OCSP
 )
 
 type ApplicationGatewayCookieBasedAffinity = original.ApplicationGatewayCookieBasedAffinity
@@ -104,6 +120,15 @@ type ApplicationGatewayRequestRoutingRuleType = original.ApplicationGatewayReque
 const (
 	Basic            ApplicationGatewayRequestRoutingRuleType = original.Basic
 	PathBasedRouting ApplicationGatewayRequestRoutingRuleType = original.PathBasedRouting
+)
+
+type ApplicationGatewayRuleSetStatusOptions = original.ApplicationGatewayRuleSetStatusOptions
+
+const (
+	Deprecated ApplicationGatewayRuleSetStatusOptions = original.Deprecated
+	GA         ApplicationGatewayRuleSetStatusOptions = original.GA
+	Preview    ApplicationGatewayRuleSetStatusOptions = original.Preview
+	Supported  ApplicationGatewayRuleSetStatusOptions = original.Supported
 )
 
 type ApplicationGatewaySkuName = original.ApplicationGatewaySkuName
@@ -185,6 +210,32 @@ const (
 	ApplicationGatewayTierStandardV2 ApplicationGatewayTier = original.ApplicationGatewayTierStandardV2
 	ApplicationGatewayTierWAF        ApplicationGatewayTier = original.ApplicationGatewayTierWAF
 	ApplicationGatewayTierWAFV2      ApplicationGatewayTier = original.ApplicationGatewayTierWAFV2
+)
+
+type ApplicationGatewayTierTypes = original.ApplicationGatewayTierTypes
+
+const (
+	ApplicationGatewayTierTypesStandard   ApplicationGatewayTierTypes = original.ApplicationGatewayTierTypesStandard
+	ApplicationGatewayTierTypesStandardV2 ApplicationGatewayTierTypes = original.ApplicationGatewayTierTypesStandardV2
+	ApplicationGatewayTierTypesWAF        ApplicationGatewayTierTypes = original.ApplicationGatewayTierTypesWAF
+	ApplicationGatewayTierTypesWAFV2      ApplicationGatewayTierTypes = original.ApplicationGatewayTierTypesWAFV2
+)
+
+type ApplicationGatewayWafRuleActionTypes = original.ApplicationGatewayWafRuleActionTypes
+
+const (
+	ApplicationGatewayWafRuleActionTypesAllow          ApplicationGatewayWafRuleActionTypes = original.ApplicationGatewayWafRuleActionTypesAllow
+	ApplicationGatewayWafRuleActionTypesAnomalyScoring ApplicationGatewayWafRuleActionTypes = original.ApplicationGatewayWafRuleActionTypesAnomalyScoring
+	ApplicationGatewayWafRuleActionTypesBlock          ApplicationGatewayWafRuleActionTypes = original.ApplicationGatewayWafRuleActionTypesBlock
+	ApplicationGatewayWafRuleActionTypesLog            ApplicationGatewayWafRuleActionTypes = original.ApplicationGatewayWafRuleActionTypesLog
+	ApplicationGatewayWafRuleActionTypesNone           ApplicationGatewayWafRuleActionTypes = original.ApplicationGatewayWafRuleActionTypesNone
+)
+
+type ApplicationGatewayWafRuleStateTypes = original.ApplicationGatewayWafRuleStateTypes
+
+const (
+	ApplicationGatewayWafRuleStateTypesDisabled ApplicationGatewayWafRuleStateTypes = original.ApplicationGatewayWafRuleStateTypesDisabled
+	ApplicationGatewayWafRuleStateTypesEnabled  ApplicationGatewayWafRuleStateTypes = original.ApplicationGatewayWafRuleStateTypesEnabled
 )
 
 type AssociationType = original.AssociationType
@@ -308,6 +359,7 @@ const (
 	CommissionedNoInternetAdvertise CommissionedState = original.CommissionedNoInternetAdvertise
 	Commissioning                   CommissionedState = original.Commissioning
 	Decommissioning                 CommissionedState = original.Decommissioning
+	Deprovisioned                   CommissionedState = original.Deprovisioned
 	Deprovisioning                  CommissionedState = original.Deprovisioning
 	Provisioned                     CommissionedState = original.Provisioned
 	Provisioning                    CommissionedState = original.Provisioning
@@ -399,28 +451,20 @@ const (
 	User            CreatedByType = original.User
 )
 
-type DdosCustomPolicyProtocol = original.DdosCustomPolicyProtocol
+type CustomIPPrefixType = original.CustomIPPrefixType
 
 const (
-	DdosCustomPolicyProtocolSyn DdosCustomPolicyProtocol = original.DdosCustomPolicyProtocolSyn
-	DdosCustomPolicyProtocolTCP DdosCustomPolicyProtocol = original.DdosCustomPolicyProtocolTCP
-	DdosCustomPolicyProtocolUDP DdosCustomPolicyProtocol = original.DdosCustomPolicyProtocolUDP
+	Child    CustomIPPrefixType = original.Child
+	Parent   CustomIPPrefixType = original.Parent
+	Singular CustomIPPrefixType = original.Singular
 )
 
-type DdosCustomPolicyTriggerSensitivityOverride = original.DdosCustomPolicyTriggerSensitivityOverride
+type DdosSettingsProtectionMode = original.DdosSettingsProtectionMode
 
 const (
-	DdosCustomPolicyTriggerSensitivityOverrideDefault DdosCustomPolicyTriggerSensitivityOverride = original.DdosCustomPolicyTriggerSensitivityOverrideDefault
-	DdosCustomPolicyTriggerSensitivityOverrideHigh    DdosCustomPolicyTriggerSensitivityOverride = original.DdosCustomPolicyTriggerSensitivityOverrideHigh
-	DdosCustomPolicyTriggerSensitivityOverrideLow     DdosCustomPolicyTriggerSensitivityOverride = original.DdosCustomPolicyTriggerSensitivityOverrideLow
-	DdosCustomPolicyTriggerSensitivityOverrideRelaxed DdosCustomPolicyTriggerSensitivityOverride = original.DdosCustomPolicyTriggerSensitivityOverrideRelaxed
-)
-
-type DdosSettingsProtectionCoverage = original.DdosSettingsProtectionCoverage
-
-const (
-	DdosSettingsProtectionCoverageBasic    DdosSettingsProtectionCoverage = original.DdosSettingsProtectionCoverageBasic
-	DdosSettingsProtectionCoverageStandard DdosSettingsProtectionCoverage = original.DdosSettingsProtectionCoverageStandard
+	DdosSettingsProtectionModeDisabled                DdosSettingsProtectionMode = original.DdosSettingsProtectionModeDisabled
+	DdosSettingsProtectionModeEnabled                 DdosSettingsProtectionMode = original.DdosSettingsProtectionModeEnabled
+	DdosSettingsProtectionModeVirtualNetworkInherited DdosSettingsProtectionMode = original.DdosSettingsProtectionModeVirtualNetworkInherited
 )
 
 type DeleteExistingPeering = original.DeleteExistingPeering
@@ -449,8 +493,8 @@ const (
 type DestinationPortBehavior = original.DestinationPortBehavior
 
 const (
-	ListenIfAvailable DestinationPortBehavior = original.ListenIfAvailable
-	None              DestinationPortBehavior = original.None
+	DestinationPortBehaviorListenIfAvailable DestinationPortBehavior = original.DestinationPortBehaviorListenIfAvailable
+	DestinationPortBehaviorNone              DestinationPortBehavior = original.DestinationPortBehaviorNone
 )
 
 type DhGroup = original.DhGroup
@@ -602,6 +646,13 @@ const (
 	ExpressRoutePortAuthorizationUseStatusInUse     ExpressRoutePortAuthorizationUseStatus = original.ExpressRoutePortAuthorizationUseStatusInUse
 )
 
+type ExpressRoutePortsBillingType = original.ExpressRoutePortsBillingType
+
+const (
+	ExpressRoutePortsBillingTypeMeteredData   ExpressRoutePortsBillingType = original.ExpressRoutePortsBillingTypeMeteredData
+	ExpressRoutePortsBillingTypeUnlimitedData ExpressRoutePortsBillingType = original.ExpressRoutePortsBillingTypeUnlimitedData
+)
+
 type ExpressRoutePortsEncapsulation = original.ExpressRoutePortsEncapsulation
 
 const (
@@ -696,6 +747,20 @@ const (
 	GatewayLoadBalancerTunnelProtocolNative GatewayLoadBalancerTunnelProtocol = original.GatewayLoadBalancerTunnelProtocolNative
 	GatewayLoadBalancerTunnelProtocolNone   GatewayLoadBalancerTunnelProtocol = original.GatewayLoadBalancerTunnelProtocolNone
 	GatewayLoadBalancerTunnelProtocolVXLAN  GatewayLoadBalancerTunnelProtocol = original.GatewayLoadBalancerTunnelProtocolVXLAN
+)
+
+type Geo = original.Geo
+
+const (
+	AFRI    Geo = original.AFRI
+	APAC    Geo = original.APAC
+	AQ      Geo = original.AQ
+	EURO    Geo = original.EURO
+	GLOBAL  Geo = original.GLOBAL
+	LATAM   Geo = original.LATAM
+	ME      Geo = original.ME
+	NAM     Geo = original.NAM
+	OCEANIA Geo = original.OCEANIA
 )
 
 type GroupConnectivity = original.GroupConnectivity
@@ -805,8 +870,9 @@ const (
 type IntentPolicyBasedService = original.IntentPolicyBasedService
 
 const (
-	IntentPolicyBasedServiceAll  IntentPolicyBasedService = original.IntentPolicyBasedServiceAll
-	IntentPolicyBasedServiceNone IntentPolicyBasedService = original.IntentPolicyBasedServiceNone
+	IntentPolicyBasedServiceAll            IntentPolicyBasedService = original.IntentPolicyBasedServiceAll
+	IntentPolicyBasedServiceAllowRulesOnly IntentPolicyBasedService = original.IntentPolicyBasedServiceAllowRulesOnly
+	IntentPolicyBasedServiceNone           IntentPolicyBasedService = original.IntentPolicyBasedServiceNone
 )
 
 type InterfaceAuxiliaryMode = original.InterfaceAuxiliaryMode
@@ -864,6 +930,13 @@ type IsGlobal = original.IsGlobal
 const (
 	IsGlobalFalse IsGlobal = original.IsGlobalFalse
 	IsGlobalTrue  IsGlobal = original.IsGlobalTrue
+)
+
+type IsWorkloadProtected = original.IsWorkloadProtected
+
+const (
+	IsWorkloadProtectedFalse IsWorkloadProtected = original.IsWorkloadProtectedFalse
+	IsWorkloadProtectedTrue  IsWorkloadProtected = original.IsWorkloadProtectedTrue
 )
 
 type IssueType = original.IssueType
@@ -948,6 +1021,7 @@ type ManagedRuleEnabledState = original.ManagedRuleEnabledState
 
 const (
 	ManagedRuleEnabledStateDisabled ManagedRuleEnabledState = original.ManagedRuleEnabledStateDisabled
+	ManagedRuleEnabledStateEnabled  ManagedRuleEnabledState = original.ManagedRuleEnabledStateEnabled
 )
 
 type NatGatewaySkuName = original.NatGatewaySkuName
@@ -965,6 +1039,14 @@ const (
 	NextHopTypeVirtualAppliance      NextHopType = original.NextHopTypeVirtualAppliance
 	NextHopTypeVirtualNetworkGateway NextHopType = original.NextHopTypeVirtualNetworkGateway
 	NextHopTypeVnetLocal             NextHopType = original.NextHopTypeVnetLocal
+)
+
+type NextStep = original.NextStep
+
+const (
+	NextStepContinue  NextStep = original.NextStepContinue
+	NextStepTerminate NextStep = original.NextStepTerminate
+	NextStepUnknown   NextStep = original.NextStepUnknown
 )
 
 type OfficeTrafficCategory = original.OfficeTrafficCategory
@@ -1179,6 +1261,26 @@ const (
 	ResourceIdentityTypeUserAssigned               ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
 )
 
+type RouteMapActionType = original.RouteMapActionType
+
+const (
+	RouteMapActionTypeAdd     RouteMapActionType = original.RouteMapActionTypeAdd
+	RouteMapActionTypeDrop    RouteMapActionType = original.RouteMapActionTypeDrop
+	RouteMapActionTypeRemove  RouteMapActionType = original.RouteMapActionTypeRemove
+	RouteMapActionTypeReplace RouteMapActionType = original.RouteMapActionTypeReplace
+	RouteMapActionTypeUnknown RouteMapActionType = original.RouteMapActionTypeUnknown
+)
+
+type RouteMapMatchCondition = original.RouteMapMatchCondition
+
+const (
+	RouteMapMatchConditionContains    RouteMapMatchCondition = original.RouteMapMatchConditionContains
+	RouteMapMatchConditionEquals      RouteMapMatchCondition = original.RouteMapMatchConditionEquals
+	RouteMapMatchConditionNotContains RouteMapMatchCondition = original.RouteMapMatchConditionNotContains
+	RouteMapMatchConditionNotEquals   RouteMapMatchCondition = original.RouteMapMatchConditionNotEquals
+	RouteMapMatchConditionUnknown     RouteMapMatchCondition = original.RouteMapMatchConditionUnknown
+)
+
 type RouteNextHopType = original.RouteNextHopType
 
 const (
@@ -1307,6 +1409,13 @@ type Severity = original.Severity
 const (
 	SeverityError   Severity = original.SeverityError
 	SeverityWarning Severity = original.SeverityWarning
+)
+
+type SlotType = original.SlotType
+
+const (
+	Production SlotType = original.Production
+	Staging    SlotType = original.Staging
 )
 
 type SyncRemoteAddressSpace = original.SyncRemoteAddressSpace
@@ -1477,6 +1586,13 @@ const (
 	Native   VirtualWanSecurityProviderType = original.Native
 )
 
+type VnetLocalRouteOverrideCriteria = original.VnetLocalRouteOverrideCriteria
+
+const (
+	VnetLocalRouteOverrideCriteriaContains VnetLocalRouteOverrideCriteria = original.VnetLocalRouteOverrideCriteriaContains
+	VnetLocalRouteOverrideCriteriaEqual    VnetLocalRouteOverrideCriteria = original.VnetLocalRouteOverrideCriteriaEqual
+)
+
 type VpnAuthenticationType = original.VpnAuthenticationType
 
 const (
@@ -1631,11 +1747,13 @@ const (
 	Lowercase        WebApplicationFirewallTransform = original.Lowercase
 	RemoveNulls      WebApplicationFirewallTransform = original.RemoveNulls
 	Trim             WebApplicationFirewallTransform = original.Trim
+	Uppercase        WebApplicationFirewallTransform = original.Uppercase
 	URLDecode        WebApplicationFirewallTransform = original.URLDecode
 	URLEncode        WebApplicationFirewallTransform = original.URLEncode
 )
 
 type AadAuthenticationParameters = original.AadAuthenticationParameters
+type Action = original.Action
 type ActiveBaseSecurityAdminRule = original.ActiveBaseSecurityAdminRule
 type ActiveConfigurationParameter = original.ActiveConfigurationParameter
 type ActiveConnectivityConfiguration = original.ActiveConnectivityConfiguration
@@ -1686,6 +1804,7 @@ type ApplicationGatewayConnectionDraining = original.ApplicationGatewayConnectio
 type ApplicationGatewayCustomError = original.ApplicationGatewayCustomError
 type ApplicationGatewayFirewallDisabledRuleGroup = original.ApplicationGatewayFirewallDisabledRuleGroup
 type ApplicationGatewayFirewallExclusion = original.ApplicationGatewayFirewallExclusion
+type ApplicationGatewayFirewallManifestRuleSet = original.ApplicationGatewayFirewallManifestRuleSet
 type ApplicationGatewayFirewallRule = original.ApplicationGatewayFirewallRule
 type ApplicationGatewayFirewallRuleGroup = original.ApplicationGatewayFirewallRuleGroup
 type ApplicationGatewayFirewallRuleSet = original.ApplicationGatewayFirewallRuleSet
@@ -1760,6 +1879,13 @@ type ApplicationGatewayTrustedRootCertificatePropertiesFormat = original.Applica
 type ApplicationGatewayURLConfiguration = original.ApplicationGatewayURLConfiguration
 type ApplicationGatewayURLPathMap = original.ApplicationGatewayURLPathMap
 type ApplicationGatewayURLPathMapPropertiesFormat = original.ApplicationGatewayURLPathMapPropertiesFormat
+type ApplicationGatewayWafDynamicManifestPropertiesResult = original.ApplicationGatewayWafDynamicManifestPropertiesResult
+type ApplicationGatewayWafDynamicManifestResult = original.ApplicationGatewayWafDynamicManifestResult
+type ApplicationGatewayWafDynamicManifestResultList = original.ApplicationGatewayWafDynamicManifestResultList
+type ApplicationGatewayWafDynamicManifestResultListIterator = original.ApplicationGatewayWafDynamicManifestResultListIterator
+type ApplicationGatewayWafDynamicManifestResultListPage = original.ApplicationGatewayWafDynamicManifestResultListPage
+type ApplicationGatewayWafDynamicManifestsClient = original.ApplicationGatewayWafDynamicManifestsClient
+type ApplicationGatewayWafDynamicManifestsDefaultClient = original.ApplicationGatewayWafDynamicManifestsDefaultClient
 type ApplicationGatewayWebApplicationFirewallConfiguration = original.ApplicationGatewayWebApplicationFirewallConfiguration
 type ApplicationGatewaysBackendHealthFuture = original.ApplicationGatewaysBackendHealthFuture
 type ApplicationGatewaysBackendHealthOnDemandFuture = original.ApplicationGatewaysBackendHealthOnDemandFuture
@@ -1963,6 +2089,7 @@ type ContainerNetworkInterfaceConfigurationPropertiesFormat = original.Container
 type ContainerNetworkInterfaceIPConfiguration = original.ContainerNetworkInterfaceIPConfiguration
 type ContainerNetworkInterfaceIPConfigurationPropertiesFormat = original.ContainerNetworkInterfaceIPConfigurationPropertiesFormat
 type ContainerNetworkInterfacePropertiesFormat = original.ContainerNetworkInterfacePropertiesFormat
+type Criterion = original.Criterion
 type CrossTenantScopes = original.CrossTenantScopes
 type CustomDNSConfigPropertiesFormat = original.CustomDNSConfigPropertiesFormat
 type CustomIPPrefix = original.CustomIPPrefix
@@ -1991,6 +2118,7 @@ type DdosProtectionPlansDeleteFuture = original.DdosProtectionPlansDeleteFuture
 type DdosSettings = original.DdosSettings
 type DefaultAdminPropertiesFormat = original.DefaultAdminPropertiesFormat
 type DefaultAdminRule = original.DefaultAdminRule
+type DefaultRuleSetPropertyFormat = original.DefaultRuleSetPropertyFormat
 type DefaultSecurityRulesClient = original.DefaultSecurityRulesClient
 type Delegation = original.Delegation
 type DeleteBastionShareableLinkFuture = original.DeleteBastionShareableLinkFuture
@@ -2014,6 +2142,7 @@ type EffectiveNetworkSecurityGroupListResult = original.EffectiveNetworkSecurity
 type EffectiveNetworkSecurityRule = original.EffectiveNetworkSecurityRule
 type EffectiveRoute = original.EffectiveRoute
 type EffectiveRouteListResult = original.EffectiveRouteListResult
+type EffectiveRouteMapRoute = original.EffectiveRouteMapRoute
 type EffectiveRoutesParameters = original.EffectiveRoutesParameters
 type EffectiveSecurityAdminRule = original.EffectiveSecurityAdminRule
 type EndpointServiceResult = original.EndpointServiceResult
@@ -2212,6 +2341,8 @@ type GenerateExpressRoutePortsLOAResult = original.GenerateExpressRoutePortsLOAR
 type GeneratevirtualwanvpnserverconfigurationvpnprofileFuture = original.GeneratevirtualwanvpnserverconfigurationvpnprofileFuture
 type GetActiveSessionsAllFuture = original.GetActiveSessionsAllFuture
 type GetActiveSessionsFuture = original.GetActiveSessionsFuture
+type GetInboundRoutesParameters = original.GetInboundRoutesParameters
+type GetOutboundRoutesParameters = original.GetOutboundRoutesParameters
 type GetVpnSitesConfigurationRequest = original.GetVpnSitesConfigurationRequest
 type Group = original.Group
 type GroupListResult = original.GroupListResult
@@ -2326,6 +2457,9 @@ type ListHubVirtualNetworkConnectionsResultPage = original.ListHubVirtualNetwork
 type ListP2SVpnGatewaysResult = original.ListP2SVpnGatewaysResult
 type ListP2SVpnGatewaysResultIterator = original.ListP2SVpnGatewaysResultIterator
 type ListP2SVpnGatewaysResultPage = original.ListP2SVpnGatewaysResultPage
+type ListRouteMapsResult = original.ListRouteMapsResult
+type ListRouteMapsResultIterator = original.ListRouteMapsResultIterator
+type ListRouteMapsResultPage = original.ListRouteMapsResultPage
 type ListRoutingIntentResult = original.ListRoutingIntentResult
 type ListRoutingIntentResultIterator = original.ListRoutingIntentResultIterator
 type ListRoutingIntentResultPage = original.ListRoutingIntentResultPage
@@ -2518,6 +2652,7 @@ type PacketCapturesCreateFuture = original.PacketCapturesCreateFuture
 type PacketCapturesDeleteFuture = original.PacketCapturesDeleteFuture
 type PacketCapturesGetStatusFuture = original.PacketCapturesGetStatusFuture
 type PacketCapturesStopFuture = original.PacketCapturesStopFuture
+type Parameter = original.Parameter
 type PatchObject = original.PatchObject
 type PatchRouteFilter = original.PatchRouteFilter
 type PatchRouteFilterRule = original.PatchRouteFilterRule
@@ -2586,7 +2721,6 @@ type ProfilesClient = original.ProfilesClient
 type ProfilesDeleteFuture = original.ProfilesDeleteFuture
 type PropagatedRouteTable = original.PropagatedRouteTable
 type ProtocolConfiguration = original.ProtocolConfiguration
-type ProtocolCustomSettingsFormat = original.ProtocolCustomSettingsFormat
 type PublicIPAddress = original.PublicIPAddress
 type PublicIPAddressDNSSettings = original.PublicIPAddressDNSSettings
 type PublicIPAddressListResult = original.PublicIPAddressListResult
@@ -2596,7 +2730,9 @@ type PublicIPAddressPropertiesFormat = original.PublicIPAddressPropertiesFormat
 type PublicIPAddressSku = original.PublicIPAddressSku
 type PublicIPAddressesClient = original.PublicIPAddressesClient
 type PublicIPAddressesCreateOrUpdateFuture = original.PublicIPAddressesCreateOrUpdateFuture
+type PublicIPAddressesDdosProtectionStatusFuture = original.PublicIPAddressesDdosProtectionStatusFuture
 type PublicIPAddressesDeleteFuture = original.PublicIPAddressesDeleteFuture
+type PublicIPDdosProtectionStatusResult = original.PublicIPDdosProtectionStatusResult
 type PublicIPPrefix = original.PublicIPPrefix
 type PublicIPPrefixListResult = original.PublicIPPrefixListResult
 type PublicIPPrefixListResultIterator = original.PublicIPPrefixListResultIterator
@@ -2645,6 +2781,12 @@ type RouteFiltersDeleteFuture = original.RouteFiltersDeleteFuture
 type RouteListResult = original.RouteListResult
 type RouteListResultIterator = original.RouteListResultIterator
 type RouteListResultPage = original.RouteListResultPage
+type RouteMap = original.RouteMap
+type RouteMapProperties = original.RouteMapProperties
+type RouteMapRule = original.RouteMapRule
+type RouteMapsClient = original.RouteMapsClient
+type RouteMapsCreateOrUpdateFuture = original.RouteMapsCreateOrUpdateFuture
+type RouteMapsDeleteFuture = original.RouteMapsDeleteFuture
 type RoutePropertiesFormat = original.RoutePropertiesFormat
 type RouteTable = original.RouteTable
 type RouteTableListResult = original.RouteTableListResult
@@ -2753,6 +2895,7 @@ type StaticMemberListResultPage = original.StaticMemberListResultPage
 type StaticMemberProperties = original.StaticMemberProperties
 type StaticMembersClient = original.StaticMembersClient
 type StaticRoute = original.StaticRoute
+type StaticRoutesConfig = original.StaticRoutesConfig
 type String = original.String
 type SubResource = original.SubResource
 type Subnet = original.Subnet
@@ -2767,6 +2910,9 @@ type SubnetsDeleteFuture = original.SubnetsDeleteFuture
 type SubnetsPrepareNetworkPoliciesFuture = original.SubnetsPrepareNetworkPoliciesFuture
 type SubnetsUnprepareNetworkPoliciesFuture = original.SubnetsUnprepareNetworkPoliciesFuture
 type SubscriptionNetworkManagerConnectionsClient = original.SubscriptionNetworkManagerConnectionsClient
+type SwapResource = original.SwapResource
+type SwapResourceListResult = original.SwapResourceListResult
+type SwapResourceProperties = original.SwapResourceProperties
 type SystemData = original.SystemData
 type TagsObject = original.TagsObject
 type Topology = original.Topology
@@ -2792,6 +2938,8 @@ type UsagesListResultPage = original.UsagesListResultPage
 type VM = original.VM
 type VerificationIPFlowParameters = original.VerificationIPFlowParameters
 type VerificationIPFlowResult = original.VerificationIPFlowResult
+type VipSwapClient = original.VipSwapClient
+type VipSwapCreateFuture = original.VipSwapCreateFuture
 type VirtualAppliance = original.VirtualAppliance
 type VirtualApplianceListResult = original.VirtualApplianceListResult
 type VirtualApplianceListResultIterator = original.VirtualApplianceListResultIterator
@@ -2843,9 +2991,14 @@ type VirtualHubsClient = original.VirtualHubsClient
 type VirtualHubsCreateOrUpdateFuture = original.VirtualHubsCreateOrUpdateFuture
 type VirtualHubsDeleteFuture = original.VirtualHubsDeleteFuture
 type VirtualHubsGetEffectiveVirtualHubRoutesFuture = original.VirtualHubsGetEffectiveVirtualHubRoutesFuture
+type VirtualHubsGetInboundRoutesFuture = original.VirtualHubsGetInboundRoutesFuture
+type VirtualHubsGetOutboundRoutesFuture = original.VirtualHubsGetOutboundRoutesFuture
 type VirtualNetwork = original.VirtualNetwork
 type VirtualNetworkBgpCommunities = original.VirtualNetworkBgpCommunities
 type VirtualNetworkConnectionGatewayReference = original.VirtualNetworkConnectionGatewayReference
+type VirtualNetworkDdosProtectionStatusResult = original.VirtualNetworkDdosProtectionStatusResult
+type VirtualNetworkDdosProtectionStatusResultIterator = original.VirtualNetworkDdosProtectionStatusResultIterator
+type VirtualNetworkDdosProtectionStatusResultPage = original.VirtualNetworkDdosProtectionStatusResultPage
 type VirtualNetworkEncryption = original.VirtualNetworkEncryption
 type VirtualNetworkGateway = original.VirtualNetworkGateway
 type VirtualNetworkGatewayConnection = original.VirtualNetworkGatewayConnection
@@ -2878,6 +3031,9 @@ type VirtualNetworkGatewayNatRuleProperties = original.VirtualNetworkGatewayNatR
 type VirtualNetworkGatewayNatRulesClient = original.VirtualNetworkGatewayNatRulesClient
 type VirtualNetworkGatewayNatRulesCreateOrUpdateFuture = original.VirtualNetworkGatewayNatRulesCreateOrUpdateFuture
 type VirtualNetworkGatewayNatRulesDeleteFuture = original.VirtualNetworkGatewayNatRulesDeleteFuture
+type VirtualNetworkGatewayPolicyGroup = original.VirtualNetworkGatewayPolicyGroup
+type VirtualNetworkGatewayPolicyGroupMember = original.VirtualNetworkGatewayPolicyGroupMember
+type VirtualNetworkGatewayPolicyGroupProperties = original.VirtualNetworkGatewayPolicyGroupProperties
 type VirtualNetworkGatewayPropertiesFormat = original.VirtualNetworkGatewayPropertiesFormat
 type VirtualNetworkGatewaySku = original.VirtualNetworkGatewaySku
 type VirtualNetworkGatewaysClient = original.VirtualNetworkGatewaysClient
@@ -2926,6 +3082,8 @@ type VirtualNetworkUsageName = original.VirtualNetworkUsageName
 type VirtualNetworksClient = original.VirtualNetworksClient
 type VirtualNetworksCreateOrUpdateFuture = original.VirtualNetworksCreateOrUpdateFuture
 type VirtualNetworksDeleteFuture = original.VirtualNetworksDeleteFuture
+type VirtualNetworksListDdosProtectionStatusAllFuture = original.VirtualNetworksListDdosProtectionStatusAllFuture
+type VirtualNetworksListDdosProtectionStatusFuture = original.VirtualNetworksListDdosProtectionStatusFuture
 type VirtualRouter = original.VirtualRouter
 type VirtualRouterAutoScaleConfiguration = original.VirtualRouterAutoScaleConfiguration
 type VirtualRouterListResult = original.VirtualRouterListResult
@@ -2952,6 +3110,8 @@ type VirtualWansClient = original.VirtualWansClient
 type VirtualWansCreateOrUpdateFuture = original.VirtualWansCreateOrUpdateFuture
 type VirtualWansDeleteFuture = original.VirtualWansDeleteFuture
 type VnetRoute = original.VnetRoute
+type VngClientConnectionConfiguration = original.VngClientConnectionConfiguration
+type VngClientConnectionConfigurationProperties = original.VngClientConnectionConfigurationProperties
 type VpnClientConfiguration = original.VpnClientConfiguration
 type VpnClientConnectionHealth = original.VpnClientConnectionHealth
 type VpnClientConnectionHealthDetail = original.VpnClientConnectionHealthDetail
@@ -3112,6 +3272,24 @@ func NewApplicationGatewayPrivateLinkResourcesClient(subscriptionID string) Appl
 }
 func NewApplicationGatewayPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) ApplicationGatewayPrivateLinkResourcesClient {
 	return original.NewApplicationGatewayPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewApplicationGatewayWafDynamicManifestResultListIterator(page ApplicationGatewayWafDynamicManifestResultListPage) ApplicationGatewayWafDynamicManifestResultListIterator {
+	return original.NewApplicationGatewayWafDynamicManifestResultListIterator(page)
+}
+func NewApplicationGatewayWafDynamicManifestResultListPage(cur ApplicationGatewayWafDynamicManifestResultList, getNextPage func(context.Context, ApplicationGatewayWafDynamicManifestResultList) (ApplicationGatewayWafDynamicManifestResultList, error)) ApplicationGatewayWafDynamicManifestResultListPage {
+	return original.NewApplicationGatewayWafDynamicManifestResultListPage(cur, getNextPage)
+}
+func NewApplicationGatewayWafDynamicManifestsClient(subscriptionID string) ApplicationGatewayWafDynamicManifestsClient {
+	return original.NewApplicationGatewayWafDynamicManifestsClient(subscriptionID)
+}
+func NewApplicationGatewayWafDynamicManifestsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationGatewayWafDynamicManifestsClient {
+	return original.NewApplicationGatewayWafDynamicManifestsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewApplicationGatewayWafDynamicManifestsDefaultClient(subscriptionID string) ApplicationGatewayWafDynamicManifestsDefaultClient {
+	return original.NewApplicationGatewayWafDynamicManifestsDefaultClient(subscriptionID)
+}
+func NewApplicationGatewayWafDynamicManifestsDefaultClientWithBaseURI(baseURI string, subscriptionID string) ApplicationGatewayWafDynamicManifestsDefaultClient {
+	return original.NewApplicationGatewayWafDynamicManifestsDefaultClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewApplicationGatewaysClient(subscriptionID string) ApplicationGatewaysClient {
 	return original.NewApplicationGatewaysClient(subscriptionID)
@@ -3671,6 +3849,12 @@ func NewListP2SVpnGatewaysResultIterator(page ListP2SVpnGatewaysResultPage) List
 func NewListP2SVpnGatewaysResultPage(cur ListP2SVpnGatewaysResult, getNextPage func(context.Context, ListP2SVpnGatewaysResult) (ListP2SVpnGatewaysResult, error)) ListP2SVpnGatewaysResultPage {
 	return original.NewListP2SVpnGatewaysResultPage(cur, getNextPage)
 }
+func NewListRouteMapsResultIterator(page ListRouteMapsResultPage) ListRouteMapsResultIterator {
+	return original.NewListRouteMapsResultIterator(page)
+}
+func NewListRouteMapsResultPage(cur ListRouteMapsResult, getNextPage func(context.Context, ListRouteMapsResult) (ListRouteMapsResult, error)) ListRouteMapsResultPage {
+	return original.NewListRouteMapsResultPage(cur, getNextPage)
+}
 func NewListRoutingIntentResultIterator(page ListRoutingIntentResultPage) ListRoutingIntentResultIterator {
 	return original.NewListRoutingIntentResultIterator(page)
 }
@@ -4055,6 +4239,12 @@ func NewRouteListResultIterator(page RouteListResultPage) RouteListResultIterato
 func NewRouteListResultPage(cur RouteListResult, getNextPage func(context.Context, RouteListResult) (RouteListResult, error)) RouteListResultPage {
 	return original.NewRouteListResultPage(cur, getNextPage)
 }
+func NewRouteMapsClient(subscriptionID string) RouteMapsClient {
+	return original.NewRouteMapsClient(subscriptionID)
+}
+func NewRouteMapsClientWithBaseURI(baseURI string, subscriptionID string) RouteMapsClient {
+	return original.NewRouteMapsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewRouteTableListResultIterator(page RouteTableListResultPage) RouteTableListResultIterator {
 	return original.NewRouteTableListResultIterator(page)
 }
@@ -4229,6 +4419,12 @@ func NewUsagesListResultIterator(page UsagesListResultPage) UsagesListResultIter
 func NewUsagesListResultPage(cur UsagesListResult, getNextPage func(context.Context, UsagesListResult) (UsagesListResult, error)) UsagesListResultPage {
 	return original.NewUsagesListResultPage(cur, getNextPage)
 }
+func NewVipSwapClient(subscriptionID string) VipSwapClient {
+	return original.NewVipSwapClient(subscriptionID)
+}
+func NewVipSwapClientWithBaseURI(baseURI string, subscriptionID string) VipSwapClient {
+	return original.NewVipSwapClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewVirtualApplianceListResultIterator(page VirtualApplianceListResultPage) VirtualApplianceListResultIterator {
 	return original.NewVirtualApplianceListResultIterator(page)
 }
@@ -4294,6 +4490,12 @@ func NewVirtualHubsClient(subscriptionID string) VirtualHubsClient {
 }
 func NewVirtualHubsClientWithBaseURI(baseURI string, subscriptionID string) VirtualHubsClient {
 	return original.NewVirtualHubsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVirtualNetworkDdosProtectionStatusResultIterator(page VirtualNetworkDdosProtectionStatusResultPage) VirtualNetworkDdosProtectionStatusResultIterator {
+	return original.NewVirtualNetworkDdosProtectionStatusResultIterator(page)
+}
+func NewVirtualNetworkDdosProtectionStatusResultPage(cur VirtualNetworkDdosProtectionStatusResult, getNextPage func(context.Context, VirtualNetworkDdosProtectionStatusResult) (VirtualNetworkDdosProtectionStatusResult, error)) VirtualNetworkDdosProtectionStatusResultPage {
+	return original.NewVirtualNetworkDdosProtectionStatusResultPage(cur, getNextPage)
 }
 func NewVirtualNetworkGatewayConnectionListResultIterator(page VirtualNetworkGatewayConnectionListResultPage) VirtualNetworkGatewayConnectionListResultIterator {
 	return original.NewVirtualNetworkGatewayConnectionListResultIterator(page)
@@ -4487,11 +4689,17 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleAccessValues() []Access {
 	return original.PossibleAccessValues()
 }
+func PossibleActionTypeValues() []ActionType {
+	return original.PossibleActionTypeValues()
+}
 func PossibleAddressPrefixTypeValues() []AddressPrefixType {
 	return original.PossibleAddressPrefixTypeValues()
 }
 func PossibleApplicationGatewayBackendHealthServerHealthValues() []ApplicationGatewayBackendHealthServerHealth {
 	return original.PossibleApplicationGatewayBackendHealthServerHealthValues()
+}
+func PossibleApplicationGatewayClientRevocationOptionsValues() []ApplicationGatewayClientRevocationOptions {
+	return original.PossibleApplicationGatewayClientRevocationOptionsValues()
 }
 func PossibleApplicationGatewayCookieBasedAffinityValues() []ApplicationGatewayCookieBasedAffinity {
 	return original.PossibleApplicationGatewayCookieBasedAffinityValues()
@@ -4517,6 +4725,9 @@ func PossibleApplicationGatewayRedirectTypeValues() []ApplicationGatewayRedirect
 func PossibleApplicationGatewayRequestRoutingRuleTypeValues() []ApplicationGatewayRequestRoutingRuleType {
 	return original.PossibleApplicationGatewayRequestRoutingRuleTypeValues()
 }
+func PossibleApplicationGatewayRuleSetStatusOptionsValues() []ApplicationGatewayRuleSetStatusOptions {
+	return original.PossibleApplicationGatewayRuleSetStatusOptionsValues()
+}
 func PossibleApplicationGatewaySkuNameValues() []ApplicationGatewaySkuName {
 	return original.PossibleApplicationGatewaySkuNameValues()
 }
@@ -4532,8 +4743,17 @@ func PossibleApplicationGatewaySslPolicyTypeValues() []ApplicationGatewaySslPoli
 func PossibleApplicationGatewaySslProtocolValues() []ApplicationGatewaySslProtocol {
 	return original.PossibleApplicationGatewaySslProtocolValues()
 }
+func PossibleApplicationGatewayTierTypesValues() []ApplicationGatewayTierTypes {
+	return original.PossibleApplicationGatewayTierTypesValues()
+}
 func PossibleApplicationGatewayTierValues() []ApplicationGatewayTier {
 	return original.PossibleApplicationGatewayTierValues()
+}
+func PossibleApplicationGatewayWafRuleActionTypesValues() []ApplicationGatewayWafRuleActionTypes {
+	return original.PossibleApplicationGatewayWafRuleActionTypesValues()
+}
+func PossibleApplicationGatewayWafRuleStateTypesValues() []ApplicationGatewayWafRuleStateTypes {
+	return original.PossibleApplicationGatewayWafRuleStateTypesValues()
 }
 func PossibleAssociationTypeValues() []AssociationType {
 	return original.PossibleAssociationTypeValues()
@@ -4616,14 +4836,11 @@ func PossibleCoverageLevelValues() []CoverageLevel {
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()
 }
-func PossibleDdosCustomPolicyProtocolValues() []DdosCustomPolicyProtocol {
-	return original.PossibleDdosCustomPolicyProtocolValues()
+func PossibleCustomIPPrefixTypeValues() []CustomIPPrefixType {
+	return original.PossibleCustomIPPrefixTypeValues()
 }
-func PossibleDdosCustomPolicyTriggerSensitivityOverrideValues() []DdosCustomPolicyTriggerSensitivityOverride {
-	return original.PossibleDdosCustomPolicyTriggerSensitivityOverrideValues()
-}
-func PossibleDdosSettingsProtectionCoverageValues() []DdosSettingsProtectionCoverage {
-	return original.PossibleDdosSettingsProtectionCoverageValues()
+func PossibleDdosSettingsProtectionModeValues() []DdosSettingsProtectionMode {
+	return original.PossibleDdosSettingsProtectionModeValues()
 }
 func PossibleDeleteExistingPeeringValues() []DeleteExistingPeering {
 	return original.PossibleDeleteExistingPeeringValues()
@@ -4691,6 +4908,9 @@ func PossibleExpressRoutePeeringTypeValues() []ExpressRoutePeeringType {
 func PossibleExpressRoutePortAuthorizationUseStatusValues() []ExpressRoutePortAuthorizationUseStatus {
 	return original.PossibleExpressRoutePortAuthorizationUseStatusValues()
 }
+func PossibleExpressRoutePortsBillingTypeValues() []ExpressRoutePortsBillingType {
+	return original.PossibleExpressRoutePortsBillingTypeValues()
+}
 func PossibleExpressRoutePortsEncapsulationValues() []ExpressRoutePortsEncapsulation {
 	return original.PossibleExpressRoutePortsEncapsulationValues()
 }
@@ -4729,6 +4949,9 @@ func PossibleGatewayLoadBalancerTunnelInterfaceTypeValues() []GatewayLoadBalance
 }
 func PossibleGatewayLoadBalancerTunnelProtocolValues() []GatewayLoadBalancerTunnelProtocol {
 	return original.PossibleGatewayLoadBalancerTunnelProtocolValues()
+}
+func PossibleGeoValues() []Geo {
+	return original.PossibleGeoValues()
 }
 func PossibleGroupConnectivityValues() []GroupConnectivity {
 	return original.PossibleGroupConnectivityValues()
@@ -4790,6 +5013,9 @@ func PossibleIpsecIntegrityValues() []IpsecIntegrity {
 func PossibleIsGlobalValues() []IsGlobal {
 	return original.PossibleIsGlobalValues()
 }
+func PossibleIsWorkloadProtectedValues() []IsWorkloadProtected {
+	return original.PossibleIsWorkloadProtectedValues()
+}
 func PossibleIssueTypeValues() []IssueType {
 	return original.PossibleIssueTypeValues()
 }
@@ -4825,6 +5051,9 @@ func PossibleNatGatewaySkuNameValues() []NatGatewaySkuName {
 }
 func PossibleNextHopTypeValues() []NextHopType {
 	return original.PossibleNextHopTypeValues()
+}
+func PossibleNextStepValues() []NextStep {
+	return original.PossibleNextStepValues()
 }
 func PossibleOfficeTrafficCategoryValues() []OfficeTrafficCategory {
 	return original.PossibleOfficeTrafficCategoryValues()
@@ -4898,6 +5127,12 @@ func PossiblePublicIPPrefixSkuTierValues() []PublicIPPrefixSkuTier {
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
 }
+func PossibleRouteMapActionTypeValues() []RouteMapActionType {
+	return original.PossibleRouteMapActionTypeValues()
+}
+func PossibleRouteMapMatchConditionValues() []RouteMapMatchCondition {
+	return original.PossibleRouteMapMatchConditionValues()
+}
 func PossibleRouteNextHopTypeValues() []RouteNextHopType {
 	return original.PossibleRouteNextHopTypeValues()
 }
@@ -4942,6 +5177,9 @@ func PossibleServiceProviderProvisioningStateValues() []ServiceProviderProvision
 }
 func PossibleSeverityValues() []Severity {
 	return original.PossibleSeverityValues()
+}
+func PossibleSlotTypeValues() []SlotType {
+	return original.PossibleSlotTypeValues()
 }
 func PossibleSyncRemoteAddressSpaceValues() []SyncRemoteAddressSpace {
 	return original.PossibleSyncRemoteAddressSpaceValues()
@@ -4996,6 +5234,9 @@ func PossibleVirtualNetworkPrivateLinkServiceNetworkPoliciesValues() []VirtualNe
 }
 func PossibleVirtualWanSecurityProviderTypeValues() []VirtualWanSecurityProviderType {
 	return original.PossibleVirtualWanSecurityProviderTypeValues()
+}
+func PossibleVnetLocalRouteOverrideCriteriaValues() []VnetLocalRouteOverrideCriteria {
+	return original.PossibleVnetLocalRouteOverrideCriteriaValues()
 }
 func PossibleVpnAuthenticationTypeValues() []VpnAuthenticationType {
 	return original.PossibleVpnAuthenticationTypeValues()

@@ -9,12 +9,14 @@
 
 package networkapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2022-01-01/network/networkapi"
+import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2022-05-01/network/networkapi"
 
 type AdminRuleCollectionsClientAPI = original.AdminRuleCollectionsClientAPI
 type AdminRulesClientAPI = original.AdminRulesClientAPI
 type ApplicationGatewayPrivateEndpointConnectionsClientAPI = original.ApplicationGatewayPrivateEndpointConnectionsClientAPI
 type ApplicationGatewayPrivateLinkResourcesClientAPI = original.ApplicationGatewayPrivateLinkResourcesClientAPI
+type ApplicationGatewayWafDynamicManifestsClientAPI = original.ApplicationGatewayWafDynamicManifestsClientAPI
+type ApplicationGatewayWafDynamicManifestsDefaultClientAPI = original.ApplicationGatewayWafDynamicManifestsDefaultClientAPI
 type ApplicationGatewaysClientAPI = original.ApplicationGatewaysClientAPI
 type ApplicationSecurityGroupsClientAPI = original.ApplicationSecurityGroupsClientAPI
 type AvailableDelegationsClientAPI = original.AvailableDelegationsClientAPI
@@ -93,6 +95,7 @@ type PublicIPPrefixesClientAPI = original.PublicIPPrefixesClientAPI
 type ResourceNavigationLinksClientAPI = original.ResourceNavigationLinksClientAPI
 type RouteFilterRulesClientAPI = original.RouteFilterRulesClientAPI
 type RouteFiltersClientAPI = original.RouteFiltersClientAPI
+type RouteMapsClientAPI = original.RouteMapsClientAPI
 type RouteTablesClientAPI = original.RouteTablesClientAPI
 type RoutesClientAPI = original.RoutesClientAPI
 type RoutingIntentClientAPI = original.RoutingIntentClientAPI
@@ -110,6 +113,7 @@ type StaticMembersClientAPI = original.StaticMembersClientAPI
 type SubnetsClientAPI = original.SubnetsClientAPI
 type SubscriptionNetworkManagerConnectionsClientAPI = original.SubscriptionNetworkManagerConnectionsClientAPI
 type UsagesClientAPI = original.UsagesClientAPI
+type VipSwapClientAPI = original.VipSwapClientAPI
 type VirtualApplianceSitesClientAPI = original.VirtualApplianceSitesClientAPI
 type VirtualApplianceSkusClientAPI = original.VirtualApplianceSkusClientAPI
 type VirtualAppliancesClientAPI = original.VirtualAppliancesClientAPI

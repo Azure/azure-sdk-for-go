@@ -21,7 +21,7 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type BasicTestSuite struct {
+type PrivatednsTestSuite struct {
 	suite.Suite
 
 	ctx               context.Context
@@ -34,14 +34,14 @@ type BasicTestSuite struct {
 	subscriptionId    string
 }
 
-func (testsuite *BasicTestSuite) SetupSuite() {
+func (testsuite *PrivatednsTestSuite) SetupSuite() {
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.globalLocation = "Global"
 	testsuite.privateZoneName = "scenario_privatezone.com"
-	testsuite.location = testutil.GetEnv("LOCATION", "westus")
+	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "")
 
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/privatedns/armprivatedns/testdata")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
@@ -50,27 +50,23 @@ func (testsuite *BasicTestSuite) SetupSuite() {
 	testsuite.Prepare()
 }
 
-func (testsuite *BasicTestSuite) TearDownSuite() {
-	// testsuite.Cleanup()
+func (testsuite *PrivatednsTestSuite) TearDownSuite() {
 	_, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
 	testsuite.Require().NoError(err)
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestBasicTestSuite(t *testing.T) {
-	suite.Run(t, new(BasicTestSuite))
+func TestPrivatednsTestSuite(t *testing.T) {
+	suite.Run(t, new(PrivatednsTestSuite))
 }
 
-func (testsuite *BasicTestSuite) Prepare() {
+func (testsuite *PrivatednsTestSuite) Prepare() {
 	var err error
 	// From step PrivateZone_Create
 	privateZonesClient, err := armprivatedns.NewPrivateZonesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	privateZonesClientCreateOrUpdateResponsePoller, err := privateZonesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.privateZoneName, armprivatedns.PrivateZone{
 		Location: to.Ptr(testsuite.globalLocation),
-		Tags: map[string]*string{
-			"key1": to.Ptr("value1"),
-		},
 	}, &armprivatedns.PrivateZonesClientBeginCreateOrUpdateOptions{IfMatch: nil,
 		IfNoneMatch: nil,
 	})
@@ -80,7 +76,7 @@ func (testsuite *BasicTestSuite) Prepare() {
 }
 
 // Microsoft.Network/privateDnsZones
-func (testsuite *BasicTestSuite) TestPrivatezone() {
+func (testsuite *PrivatednsTestSuite) TestPrivatezone() {
 	var err error
 	// From step PrivateZone_Update
 	privateZonesClient, err := armprivatedns.NewPrivateZonesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
@@ -116,7 +112,7 @@ func (testsuite *BasicTestSuite) TestPrivatezone() {
 }
 
 // Microsoft.Network/privateDnsZones/{recordType}/{relativeRecordSetName}
-func (testsuite *BasicTestSuite) TestRecordset() {
+func (testsuite *PrivatednsTestSuite) TestRecordset() {
 	relativeRecordSetName := "scenario_recordset"
 	var err error
 	// From step RecordSet_Create
@@ -178,7 +174,7 @@ func (testsuite *BasicTestSuite) TestRecordset() {
 }
 
 // Microsoft.Network/privateDnsZones/virtualNetworkLinks
-func (testsuite *BasicTestSuite) TestVirtualnetworklink() {
+func (testsuite *PrivatednsTestSuite) TestVirtualnetworklink() {
 	var virtaulNetworkId string
 	virtualNetworkLinkName := "scenario_vnetlink"
 	var err error
@@ -240,9 +236,6 @@ func (testsuite *BasicTestSuite) TestVirtualnetworklink() {
 	testsuite.Require().NoError(err)
 	virtualNetworkLinksClientCreateOrUpdateResponsePoller, err := virtualNetworkLinksClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.privateZoneName, virtualNetworkLinkName, armprivatedns.VirtualNetworkLink{
 		Location: to.Ptr(testsuite.globalLocation),
-		Tags: map[string]*string{
-			"key1": to.Ptr("value1"),
-		},
 		Properties: &armprivatedns.VirtualNetworkLinkProperties{
 			RegistrationEnabled: to.Ptr(false),
 			VirtualNetwork: &armprivatedns.SubResource{
@@ -287,14 +280,3 @@ func (testsuite *BasicTestSuite) TestVirtualnetworklink() {
 	_, err = testutil.PollForTest(testsuite.ctx, virtualNetworkLinksClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)
 }
-
-// func (testsuite *BasicTestSuite) Cleanup() {
-// 	var err error
-// 	// From step PrivateZone_Delete
-// 	privateZonesClient, err := armprivatedns.NewPrivateZonesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
-// 	testsuite.Require().NoError(err)
-// 	privateZonesClientDeleteResponsePoller, err := privateZonesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.privateZoneName, &armprivatedns.PrivateZonesClientBeginDeleteOptions{IfMatch: nil})
-// 	testsuite.Require().NoError(err)
-// 	_, err = testutil.PollForTest(testsuite.ctx, privateZonesClientDeleteResponsePoller)
-// 	testsuite.Require().NoError(err)
-// }

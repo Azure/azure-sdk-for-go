@@ -9,17 +9,17 @@
         "Authorization": "Sanitized",
         "Content-Length": "21",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": {
-        "location": "westus"
+        "location": "eastus"
       },
       "StatusCode": 201,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "225",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:46:19 GMT",
+        "Date": "Tue, 11 Oct 2022 07:29:28 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -27,13 +27,13 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-writes": "1199",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064619Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T072929Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg",
         "name": "go-sdk-test-rg",
         "type": "Microsoft.Resources/resourceGroups",
-        "location": "westus",
+        "location": "eastus",
         "properties": {
           "provisioningState": "Succeeded"
         }
@@ -46,24 +46,21 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "46",
+        "Content-Length": "21",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": {
-        "location": "Global",
-        "tags": {
-          "key1": "value1"
-        }
+        "location": "Global"
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRQcml2YXRlRG5zWm9uZTsyNzYyMzg2ZC0yNWI0LTQyYTctYTFjZi1mMWMxN2YzOTdjMDFfOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQx?api-version=2020-06-01",
+        "Azure-AsyncOperation": "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRQcml2YXRlRG5zWm9uZTs0YmUxNGQ3ZS1iODM4LTQ4NWItYmIxNy1iOGM5MWUzYTY2MjZfOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQx?api-version=2020-06-01",
         "Cache-Control": "private",
         "Content-Length": "2",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:46:26 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRQcml2YXRlRG5zWm9uZTsyNzYyMzg2ZC0yNWI0LTQyYTctYTFjZi1mMWMxN2YzOTdjMDFfOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQx?api-version=2020-06-01",
+        "Date": "Tue, 11 Oct 2022 07:29:34 GMT",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRQcml2YXRlRG5zWm9uZTs0YmUxNGQ3ZS1iODM4LTQ4NWItYmIxNy1iOGM5MWUzYTY2MjZfOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQx?api-version=2020-06-01",
         "Retry-After": "30",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -72,36 +69,34 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "11999",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064626Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T072934Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {}
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRQcml2YXRlRG5zWm9uZTsyNzYyMzg2ZC0yNWI0LTQyYTctYTFjZi1mMWMxN2YzOTdjMDFfOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQx?api-version=2020-06-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRQcml2YXRlRG5zWm9uZTs0YmUxNGQ3ZS1iODM4LTQ4NWItYmIxNy1iOGM5MWUzYTY2MjZfOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQx?api-version=2020-06-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "private",
-        "Content-Encoding": "gzip",
+        "Content-Length": "22",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:46:56 GMT",
+        "Date": "Tue, 11 Oct 2022 07:30:04 GMT",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "499",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064656Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073005Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -114,26 +109,24 @@
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "private",
-        "Content-Encoding": "gzip",
+        "Content-Length": "678",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:46:56 GMT",
+        "Date": "Tue, 11 Oct 2022 07:30:05 GMT",
         "ETag": "00000000-0000-0000-0000-000000000000",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "499",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064657Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073005Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -142,11 +135,8 @@
         "type": "Microsoft.Network/privateDnsZones",
         "etag": "00000000-0000-0000-0000-000000000000",
         "location": "global",
-        "tags": {
-          "key1": "value1"
-        },
         "properties": {
-          "internalId": "SW1tdXRhYmxlWm9uZUlkZW50aXR5OzdlYTVhMDUyLTUxZDEtNDBhMi05ZTBlLWI4ZjRhOWM2NDBkNjsw",
+          "internalId": "SW1tdXRhYmxlWm9uZUlkZW50aXR5OzJhYWQ5NGNmLWUyNzAtNDg1OS04ZmQ0LWU5OTM0YjM1NWQ3OTsw",
           "maxNumberOfRecordSets": 25000,
           "maxNumberOfVirtualNetworkLinks": 1000,
           "maxNumberOfVirtualNetworkLinksWithRegistration": 100,
@@ -166,7 +156,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "26",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": {
         "tags": {
@@ -175,12 +165,12 @@
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRQcml2YXRlRG5zWm9uZTs2OGUyODgyOC00ZWMxLTQ2NDYtYWI0ZS0xZjU5NTMxZTg5ZjFfOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQx?api-version=2020-06-01",
+        "Azure-AsyncOperation": "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRQcml2YXRlRG5zWm9uZTthODBjZmM0My05MzU1LTRjY2YtYTdiYi01YzMxZjI0YTg4ODBfOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQx?api-version=2020-06-01",
         "Cache-Control": "private",
         "Content-Length": "2",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:46:59 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRQcml2YXRlRG5zWm9uZTs2OGUyODgyOC00ZWMxLTQ2NDYtYWI0ZS0xZjU5NTMxZTg5ZjFfOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQx?api-version=2020-06-01",
+        "Date": "Tue, 11 Oct 2022 07:30:07 GMT",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRQcml2YXRlRG5zWm9uZTthODBjZmM0My05MzU1LTRjY2YtYTdiYi01YzMxZjI0YTg4ODBfOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQx?api-version=2020-06-01",
         "Retry-After": "30",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -189,36 +179,34 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "11998",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064659Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073008Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {}
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRQcml2YXRlRG5zWm9uZTs2OGUyODgyOC00ZWMxLTQ2NDYtYWI0ZS0xZjU5NTMxZTg5ZjFfOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQx?api-version=2020-06-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRQcml2YXRlRG5zWm9uZTthODBjZmM0My05MzU1LTRjY2YtYTdiYi01YzMxZjI0YTg4ODBfOTJmOTVkOGYtM2M2Ny00MTI0LTkxYzctOGNmMDdjZGJmMjQx?api-version=2020-06-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "private",
-        "Content-Encoding": "gzip",
+        "Content-Length": "22",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:47:29 GMT",
+        "Date": "Tue, 11 Oct 2022 07:30:37 GMT",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "498",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064729Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073038Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -231,26 +219,24 @@
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "private",
-        "Content-Encoding": "gzip",
+        "Content-Length": "703",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:47:29 GMT",
+        "Date": "Tue, 11 Oct 2022 07:30:38 GMT",
         "ETag": "00000000-0000-0000-0000-000000000000",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "498",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064730Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073039Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -263,7 +249,7 @@
           "key2": "value2"
         },
         "properties": {
-          "internalId": "SW1tdXRhYmxlWm9uZUlkZW50aXR5OzdlYTVhMDUyLTUxZDEtNDBhMi05ZTBlLWI4ZjRhOWM2NDBkNjsw",
+          "internalId": "SW1tdXRhYmxlWm9uZUlkZW50aXR5OzJhYWQ5NGNmLWUyNzAtNDg1OS04ZmQ0LWU5OTM0YjM1NWQ3OTsw",
           "maxNumberOfRecordSets": 25000,
           "maxNumberOfVirtualNetworkLinks": 1000,
           "maxNumberOfVirtualNetworkLinksWithRegistration": 100,
@@ -281,26 +267,24 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "private",
-        "Content-Encoding": "gzip",
+        "Content-Length": "703",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:47:29 GMT",
+        "Date": "Tue, 11 Oct 2022 07:30:39 GMT",
         "ETag": "00000000-0000-0000-0000-000000000000",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "497",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064730Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073040Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -313,7 +297,7 @@
           "key2": "value2"
         },
         "properties": {
-          "internalId": "SW1tdXRhYmxlWm9uZUlkZW50aXR5OzdlYTVhMDUyLTUxZDEtNDBhMi05ZTBlLWI4ZjRhOWM2NDBkNjsw",
+          "internalId": "SW1tdXRhYmxlWm9uZUlkZW50aXR5OzJhYWQ5NGNmLWUyNzAtNDg1OS04ZmQ0LWU5OTM0YjM1NWQ3OTsw",
           "maxNumberOfRecordSets": 25000,
           "maxNumberOfVirtualNetworkLinks": 1000,
           "maxNumberOfVirtualNetworkLinksWithRegistration": 100,
@@ -331,49 +315,29 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "private",
-        "Content-Encoding": "gzip",
+        "Content-Length": "715",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:47:30 GMT",
+        "Date": "Tue, 11 Oct 2022 07:30:39 GMT",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-resource-entities-read": "59995",
+        "x-ms-ratelimit-remaining-subscription-resource-entities-read": "59999",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "496",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064730Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073040Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "value": [
           {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsZones/privatezone1.com",
-            "name": "privatezone1.com",
-            "type": "Microsoft.Network/privateDnsZones",
-            "etag": "00000000-0000-0000-0000-000000000000",
-            "location": "global",
-            "tags": {},
-            "properties": {
-              "internalId": "SW1tdXRhYmxlWm9uZUlkZW50aXR5OzljYTZjMDMyLTdkNjUtNDU2MC1hNmFhLWJjNTZmNWZmMDAyMTsw",
-              "maxNumberOfRecordSets": 25000,
-              "maxNumberOfVirtualNetworkLinks": 1000,
-              "maxNumberOfVirtualNetworkLinksWithRegistration": 100,
-              "numberOfRecordSets": 1,
-              "numberOfVirtualNetworkLinks": 0,
-              "numberOfVirtualNetworkLinksWithRegistration": 0,
-              "provisioningState": "Succeeded"
-            }
-          },
-          {
             "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsZones/scenario_privatezone.com",
             "name": "scenario_privatezone.com",
             "type": "Microsoft.Network/privateDnsZones",
@@ -383,70 +347,11 @@
               "key2": "value2"
             },
             "properties": {
-              "internalId": "SW1tdXRhYmxlWm9uZUlkZW50aXR5OzdlYTVhMDUyLTUxZDEtNDBhMi05ZTBlLWI4ZjRhOWM2NDBkNjsw",
+              "internalId": "SW1tdXRhYmxlWm9uZUlkZW50aXR5OzJhYWQ5NGNmLWUyNzAtNDg1OS04ZmQ0LWU5OTM0YjM1NWQ3OTsw",
               "maxNumberOfRecordSets": 25000,
               "maxNumberOfVirtualNetworkLinks": 1000,
               "maxNumberOfVirtualNetworkLinksWithRegistration": 100,
               "numberOfRecordSets": 1,
-              "numberOfVirtualNetworkLinks": 0,
-              "numberOfVirtualNetworkLinksWithRegistration": 0,
-              "provisioningState": "Succeeded"
-            }
-          },
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsZones/scenario_privatezone.com",
-            "name": "scenario_privatezone.com",
-            "type": "Microsoft.Network/privateDnsZones",
-            "etag": "00000000-0000-0000-0000-000000000000",
-            "location": "global",
-            "tags": {
-              "key2": "value2"
-            },
-            "properties": {
-              "internalId": "SW1tdXRhYmxlWm9uZUlkZW50aXR5OzEwMDYyNGQ5LTQ0MmItNGMzMy1iNjIyLWYyMThhOWJjYjY4Mjsw",
-              "maxNumberOfRecordSets": 25000,
-              "maxNumberOfVirtualNetworkLinks": 1000,
-              "maxNumberOfVirtualNetworkLinksWithRegistration": 100,
-              "numberOfRecordSets": 1,
-              "numberOfVirtualNetworkLinks": 0,
-              "numberOfVirtualNetworkLinksWithRegistration": 0,
-              "provisioningState": "Succeeded"
-            }
-          },
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/mc_go-sdk-test-rg_private_k8s2_eastus/providers/Microsoft.Network/privateDnsZones/00000000-0000-0000-0000-000000000000.privatelink.eastus.azmk8s.io",
-            "name": "00000000-0000-0000-0000-000000000000.privatelink.eastus.azmk8s.io",
-            "type": "Microsoft.Network/privateDnsZones",
-            "etag": "00000000-0000-0000-0000-000000000000",
-            "location": "global",
-            "tags": {},
-            "properties": {
-              "internalId": "SW1tdXRhYmxlWm9uZUlkZW50aXR5O2NmYzM5NjZlLTZhMDItNGFiZi1iNTUxLTRjZGI0MmMwMmQ3ZDsw",
-              "maxNumberOfRecordSets": 25000,
-              "maxNumberOfVirtualNetworkLinks": 1000,
-              "maxNumberOfVirtualNetworkLinksWithRegistration": 100,
-              "numberOfRecordSets": 2,
-              "numberOfVirtualNetworkLinks": 0,
-              "numberOfVirtualNetworkLinksWithRegistration": 0,
-              "provisioningState": "Succeeded"
-            }
-          },
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/mc_go-sdk-test-rg_private_k8s_eastus/providers/Microsoft.Network/privateDnsZones/00000000-0000-0000-0000-000000000000.privatelink.eastus.azmk8s.io",
-            "name": "00000000-0000-0000-0000-000000000000.privatelink.eastus.azmk8s.io",
-            "type": "Microsoft.Network/privateDnsZones",
-            "etag": "00000000-0000-0000-0000-000000000000",
-            "location": "global",
-            "tags": {
-              "archv2": "",
-              "tier": "production"
-            },
-            "properties": {
-              "internalId": "SW1tdXRhYmxlWm9uZUlkZW50aXR5O2E5N2U1ZWEyLWJlZDYtNDcwNy1iM2M0LTQ2MzJiOWViYmRkYzsw",
-              "maxNumberOfRecordSets": 25000,
-              "maxNumberOfVirtualNetworkLinks": 1000,
-              "maxNumberOfVirtualNetworkLinksWithRegistration": 100,
-              "numberOfRecordSets": 2,
               "numberOfVirtualNetworkLinks": 0,
               "numberOfVirtualNetworkLinksWithRegistration": 0,
               "provisioningState": "Succeeded"
@@ -462,26 +367,24 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "private",
-        "Content-Encoding": "gzip",
+        "Content-Length": "715",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:47:30 GMT",
+        "Date": "Tue, 11 Oct 2022 07:30:40 GMT",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-resource-entities-read": "59994",
+        "x-ms-ratelimit-remaining-subscription-resource-entities-read": "59998",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "495",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064730Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073041Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -496,7 +399,7 @@
               "key2": "value2"
             },
             "properties": {
-              "internalId": "SW1tdXRhYmxlWm9uZUlkZW50aXR5OzdlYTVhMDUyLTUxZDEtNDBhMi05ZTBlLWI4ZjRhOWM2NDBkNjsw",
+              "internalId": "SW1tdXRhYmxlWm9uZUlkZW50aXR5OzJhYWQ5NGNmLWUyNzAtNDg1OS04ZmQ0LWU5OTM0YjM1NWQ3OTsw",
               "maxNumberOfRecordSets": 25000,
               "maxNumberOfVirtualNetworkLinks": 1000,
               "maxNumberOfVirtualNetworkLinksWithRegistration": 100,
@@ -518,7 +421,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "95",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": {
         "properties": {
@@ -538,7 +441,7 @@
         "Cache-Control": "private",
         "Content-Length": "484",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:47:32 GMT",
+        "Date": "Tue, 11 Oct 2022 07:30:42 GMT",
         "ETag": "00000000-0000-0000-0000-000000000000",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -547,7 +450,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "11999",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064733Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073043Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -579,7 +482,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "45",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": {
         "properties": {
@@ -591,20 +494,18 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "private",
-        "Content-Encoding": "gzip",
+        "Content-Length": "484",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:47:33 GMT",
+        "Date": "Tue, 11 Oct 2022 07:30:44 GMT",
         "ETag": "00000000-0000-0000-0000-000000000000",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "11998",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064734Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073045Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -634,26 +535,24 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "private",
-        "Content-Encoding": "gzip",
+        "Content-Length": "484",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:47:33 GMT",
+        "Date": "Tue, 11 Oct 2022 07:30:46 GMT",
         "ETag": "00000000-0000-0000-0000-000000000000",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "499",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064734Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073046Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -683,26 +582,24 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "private",
-        "Content-Encoding": "gzip",
+        "Content-Length": "496",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:47:34 GMT",
+        "Date": "Tue, 11 Oct 2022 07:30:46 GMT",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-entities-read": "59999",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "498",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064734Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073046Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -736,26 +633,24 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "private",
-        "Content-Encoding": "gzip",
+        "Content-Length": "1041",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:47:34 GMT",
+        "Date": "Tue, 11 Oct 2022 07:30:48 GMT",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-entities-read": "59998",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "499",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064735Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073048Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -809,14 +704,14 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "private",
         "Content-Length": "0",
-        "Date": "Thu, 25 Aug 2022 06:47:35 GMT",
+        "Date": "Tue, 11 Oct 2022 07:30:50 GMT",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-AspNet-Version": "4.0.30319",
@@ -824,7 +719,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "11999",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064736Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073050Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": null
@@ -838,7 +733,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "668",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": {
         "properties": {
@@ -888,11 +783,11 @@
       },
       "StatusCode": 201,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkAndSubnet_Create/operationStatuses/08585401968283394687?api-version=2021-04-01",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkAndSubnet_Create/operationStatuses/08585361334295228962?api-version=2021-04-01",
         "Cache-Control": "no-cache",
         "Content-Length": "661",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:47:40 GMT",
+        "Date": "Tue, 11 Oct 2022 07:31:02 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -900,7 +795,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-writes": "1198",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064740Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073102Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkAndSubnet_Create",
@@ -916,8 +811,8 @@
           },
           "mode": "Incremental",
           "provisioningState": "Accepted",
-          "timestamp": "2022-08-25T06:47:39.5779624Z",
-          "duration": "PT0.0000878S",
+          "timestamp": "2022-10-11T07:30:59.5370235Z",
+          "duration": "PT0.0001781S",
           "correlationId": "00000000-0000-0000-0000-000000000000",
           "providers": [
             {
@@ -937,60 +832,56 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkAndSubnet_Create/operationStatuses/08585401968283394687?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkAndSubnet_Create/operationStatuses/08585361334295228962?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
-        "Content-Length": "21",
+        "Content-Length": "20",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:47:40 GMT",
+        "Date": "Tue, 11 Oct 2022 07:31:03 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11999",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064741Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073103Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "status": "Accepted"
+        "status": "Running"
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkAndSubnet_Create/operationStatuses/08585401968283394687?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkAndSubnet_Create/operationStatuses/08585361334295228962?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "22",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:48:10 GMT",
+        "Date": "Tue, 11 Oct 2022 07:31:34 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11998",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064811Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073134Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Succeeded"
@@ -1002,25 +893,23 @@
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
         "Content-Length": "1025",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:48:11 GMT",
+        "Date": "Tue, 11 Oct 2022 07:31:34 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11997",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064812Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073135Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkAndSubnet_Create",
@@ -1036,8 +925,8 @@
           },
           "mode": "Incremental",
           "provisioningState": "Succeeded",
-          "timestamp": "2022-08-25T06:47:58.0037665Z",
-          "duration": "PT18.4258919S",
+          "timestamp": "2022-10-11T07:31:16.7180065Z",
+          "duration": "PT17.1811611S",
           "correlationId": "00000000-0000-0000-0000-000000000000",
           "providers": [
             {
@@ -1074,9 +963,9 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "252",
+        "Content-Length": "227",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": {
         "location": "Global",
@@ -1085,19 +974,16 @@
           "virtualNetwork": {
             "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/pn-network"
           }
-        },
-        "tags": {
-          "key1": "value1"
         }
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7ZTJlYjVhNDctMjdjYi00ZTJjLThiOTEtMTcyNmE3YThjMTBlXzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
+        "Azure-AsyncOperation": "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7NDZhNDE5MjYtM2QwZS00MmFiLTkyODEtZjk4M2I3MDZjYzExXzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
         "Cache-Control": "private",
         "Content-Length": "2",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:48:15 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7ZTJlYjVhNDctMjdjYi00ZTJjLThiOTEtMTcyNmE3YThjMTBlXzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
+        "Date": "Tue, 11 Oct 2022 07:31:40 GMT",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7NDZhNDE5MjYtM2QwZS00MmFiLTkyODEtZjk4M2I3MDZjYzExXzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
         "Retry-After": "30",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -1106,28 +992,28 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "11999",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064816Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073141Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {}
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7ZTJlYjVhNDctMjdjYi00ZTJjLThiOTEtMTcyNmE3YThjMTBlXzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7NDZhNDE5MjYtM2QwZS00MmFiLTkyODEtZjk4M2I3MDZjYzExXzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7ZTJlYjVhNDctMjdjYi00ZTJjLThiOTEtMTcyNmE3YThjMTBlXzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
+        "Azure-AsyncOperation": "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7NDZhNDE5MjYtM2QwZS00MmFiLTkyODEtZjk4M2I3MDZjYzExXzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
         "Cache-Control": "private",
         "Content-Length": "23",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:48:46 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7ZTJlYjVhNDctMjdjYi00ZTJjLThiOTEtMTcyNmE3YThjMTBlXzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
+        "Date": "Tue, 11 Oct 2022 07:32:11 GMT",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7NDZhNDE5MjYtM2QwZS00MmFiLTkyODEtZjk4M2I3MDZjYzExXzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
         "Retry-After": "30",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -1136,7 +1022,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "497",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064847Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073212Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -1144,30 +1030,28 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7ZTJlYjVhNDctMjdjYi00ZTJjLThiOTEtMTcyNmE3YThjMTBlXzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7NDZhNDE5MjYtM2QwZS00MmFiLTkyODEtZjk4M2I3MDZjYzExXzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "private",
-        "Content-Encoding": "gzip",
+        "Content-Length": "22",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:49:17 GMT",
+        "Date": "Tue, 11 Oct 2022 07:32:42 GMT",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "496",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064917Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073242Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -1180,26 +1064,24 @@
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "private",
-        "Content-Encoding": "gzip",
+        "Content-Length": "653",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:49:17 GMT",
+        "Date": "Tue, 11 Oct 2022 07:32:43 GMT",
         "ETag": "\u002200000000-0000-0000-0000-000000000000\u0022",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "499",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064918Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073244Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -1208,9 +1090,6 @@
         "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
         "etag": "\u002200000000-0000-0000-0000-000000000000\u0022",
         "location": "global",
-        "tags": {
-          "key1": "value1"
-        },
         "properties": {
           "provisioningState": "Succeeded",
           "registrationEnabled": false,
@@ -1230,7 +1109,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "68",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": {
         "properties": {
@@ -1242,12 +1121,12 @@
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7ZmIyYzQ5NWQtZDcyYS00YWJkLWI2NGEtZDQ5NGM5NjA2ODQ2XzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
+        "Azure-AsyncOperation": "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7NjkxMzQ3MDctMThhYy00NDIzLTlmNzktMzYzN2I1ZDZjNzE1XzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
         "Cache-Control": "private",
         "Content-Length": "2",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:49:19 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7ZmIyYzQ5NWQtZDcyYS00YWJkLWI2NGEtZDQ5NGM5NjA2ODQ2XzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
+        "Date": "Tue, 11 Oct 2022 07:32:47 GMT",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7NjkxMzQ3MDctMThhYy00NDIzLTlmNzktMzYzN2I1ZDZjNzE1XzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
         "Retry-After": "30",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -1256,28 +1135,28 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "11998",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064920Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073248Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {}
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7ZmIyYzQ5NWQtZDcyYS00YWJkLWI2NGEtZDQ5NGM5NjA2ODQ2XzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7NjkxMzQ3MDctMThhYy00NDIzLTlmNzktMzYzN2I1ZDZjNzE1XzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7ZmIyYzQ5NWQtZDcyYS00YWJkLWI2NGEtZDQ5NGM5NjA2ODQ2XzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
+        "Azure-AsyncOperation": "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7NjkxMzQ3MDctMThhYy00NDIzLTlmNzktMzYzN2I1ZDZjNzE1XzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
         "Cache-Control": "private",
         "Content-Length": "23",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:49:49 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7ZmIyYzQ5NWQtZDcyYS00YWJkLWI2NGEtZDQ5NGM5NjA2ODQ2XzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
+        "Date": "Tue, 11 Oct 2022 07:33:19 GMT",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7NjkxMzQ3MDctMThhYy00NDIzLTlmNzktMzYzN2I1ZDZjNzE1XzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
         "Retry-After": "30",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -1286,7 +1165,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "495",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T064950Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073319Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -1294,30 +1173,28 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7ZmIyYzQ5NWQtZDcyYS00YWJkLWI2NGEtZDQ5NGM5NjA2ODQ2XzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRWaXJ0dWFsTmV0d29ya0xpbms7NjkxMzQ3MDctMThhYy00NDIzLTlmNzktMzYzN2I1ZDZjNzE1XzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "private",
-        "Content-Encoding": "gzip",
+        "Content-Length": "22",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:50:21 GMT",
+        "Date": "Tue, 11 Oct 2022 07:33:51 GMT",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "494",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T065021Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073351Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -1330,26 +1207,24 @@
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "private",
-        "Content-Encoding": "gzip",
+        "Content-Length": "677",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:50:21 GMT",
+        "Date": "Tue, 11 Oct 2022 07:33:51 GMT",
         "ETag": "\u002200000000-0000-0000-0000-000000000000\u0022",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "498",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T065021Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073352Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -1378,26 +1253,24 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "private",
-        "Content-Encoding": "gzip",
+        "Content-Length": "677",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:50:22 GMT",
+        "Date": "Tue, 11 Oct 2022 07:33:52 GMT",
         "ETag": "\u002200000000-0000-0000-0000-000000000000\u0022",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "497",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T065022Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073352Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -1426,26 +1299,24 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "private",
-        "Content-Encoding": "gzip",
+        "Content-Length": "689",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:50:22 GMT",
+        "Date": "Tue, 11 Oct 2022 07:33:52 GMT",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-entities-read": "59999",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "496",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T065022Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073353Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -1478,16 +1349,16 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtEZWxldGVWaXJ0dWFsTmV0d29ya0xpbms7ZjVhMzE0YmEtMzljMy00OTIxLTgzODUtYzQ5ZDUwN2YyMjY3XzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
+        "Azure-AsyncOperation": "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtEZWxldGVWaXJ0dWFsTmV0d29ya0xpbms7ZTM0YjM4ZjUtYTliMi00NDA0LTg3YmYtNThhMWRlZDM4MjYzXzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
         "Cache-Control": "private",
         "Content-Length": "0",
-        "Date": "Thu, 25 Aug 2022 06:50:24 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtEZWxldGVWaXJ0dWFsTmV0d29ya0xpbms7ZjVhMzE0YmEtMzljMy00OTIxLTgzODUtYzQ5ZDUwN2YyMjY3XzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
+        "Date": "Tue, 11 Oct 2022 07:33:56 GMT",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtEZWxldGVWaXJ0dWFsTmV0d29ya0xpbms7ZTM0YjM4ZjUtYTliMi00NDA0LTg3YmYtNThhMWRlZDM4MjYzXzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
         "Retry-After": "30",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -1496,28 +1367,28 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "11999",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T065024Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073356Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtEZWxldGVWaXJ0dWFsTmV0d29ya0xpbms7ZjVhMzE0YmEtMzljMy00OTIxLTgzODUtYzQ5ZDUwN2YyMjY3XzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtEZWxldGVWaXJ0dWFsTmV0d29ya0xpbms7ZTM0YjM4ZjUtYTliMi00NDA0LTg3YmYtNThhMWRlZDM4MjYzXzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtEZWxldGVWaXJ0dWFsTmV0d29ya0xpbms7ZjVhMzE0YmEtMzljMy00OTIxLTgzODUtYzQ5ZDUwN2YyMjY3XzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
+        "Azure-AsyncOperation": "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtEZWxldGVWaXJ0dWFsTmV0d29ya0xpbms7ZTM0YjM4ZjUtYTliMi00NDA0LTg3YmYtNThhMWRlZDM4MjYzXzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
         "Cache-Control": "private",
         "Content-Length": "23",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:50:54 GMT",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtEZWxldGVWaXJ0dWFsTmV0d29ya0xpbms7ZjVhMzE0YmEtMzljMy00OTIxLTgzODUtYzQ5ZDUwN2YyMjY3XzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
+        "Date": "Tue, 11 Oct 2022 07:34:26 GMT",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtEZWxldGVWaXJ0dWFsTmV0d29ya0xpbms7ZTM0YjM4ZjUtYTliMi00NDA0LTg3YmYtNThhMWRlZDM4MjYzXzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
         "Retry-After": "30",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -1526,7 +1397,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "493",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T065055Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073427Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -1534,30 +1405,28 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtEZWxldGVWaXJ0dWFsTmV0d29ya0xpbms7ZjVhMzE0YmEtMzljMy00OTIxLTgzODUtYzQ5ZDUwN2YyMjY3XzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtEZWxldGVWaXJ0dWFsTmV0d29ya0xpbms7ZTM0YjM4ZjUtYTliMi00NDA0LTg3YmYtNThhMWRlZDM4MjYzXzkyZjk1ZDhmLTNjNjctNDEyNC05MWM3LThjZjA3Y2RiZjI0MQ==?api-version=2020-06-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armprivatedns/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "private",
-        "Content-Encoding": "gzip",
+        "Content-Length": "22",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 25 Aug 2022 06:51:25 GMT",
+        "Date": "Tue, 11 Oct 2022 07:34:58 GMT",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "492",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T065125Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073458Z:00000000-0000-0000-0000-000000000000",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -1571,16 +1440,16 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.18.3; Windows_NT)"
+        "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Thu, 25 Aug 2022 06:51:28 GMT",
+        "Date": "Tue, 11 Oct 2022 07:35:02 GMT",
         "Expires": "-1",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1HTzoyRFNESzoyRFRFU1Q6MkQ3NTgtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2021-04-01",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1HTzoyRFNESzoyRFRFU1Q6MkQ2MDUtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2021-04-01",
         "Pragma": "no-cache",
         "Retry-After": "15",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -1588,7 +1457,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-deletes": "14999",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20220825T065128Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221011T073502Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
     }

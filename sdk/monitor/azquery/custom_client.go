@@ -77,7 +77,7 @@ func (e *ErrorInfo) Error() string {
 
 type Row []any
 
-func (r Row) GetValueByIndex[T interface{}](index int) T {
+func (r Row) GetValueByIndex[T any](index int, goalType T) T {
 	return r[index].(string)
 }
 

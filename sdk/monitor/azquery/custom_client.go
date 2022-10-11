@@ -74,3 +74,13 @@ func (e *ErrorInfo) UnmarshalJSON(data []byte) error {
 func (e *ErrorInfo) Error() string {
 	return string(e.data)
 }
+
+type Row []any
+
+func (r Row) GetValueByIndex[T interface{}](index int) T {
+	return r[index].(string)
+}
+
+//func (r Row) GetValueName(columnName string) string {
+//return r[index].(string)
+//}

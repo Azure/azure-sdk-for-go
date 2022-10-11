@@ -9,6 +9,7 @@ package azquery_test
 import (
 	"context"
 	"errors"
+	"fmt"
 	"strings"
 	"testing"
 
@@ -20,6 +21,60 @@ import (
 
 var query string = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n" + "[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789, 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}})];" + "range x from 1 to 100 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long"
 
+type employee struct {
+	name  string
+	id    float64
+	hired bool
+}
+
+func TestRows(t *testing.T) {
+	client := startLogsTest(t)
+	workspaceID = "c524b65f-8303-46f1-8310-0545284a8feb"
+	query = "let dt = datatable (Name: string, Id: long, Hired: bool)\n" + "['grace', 1, true];" + "range x from 1 to 100 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Id"
+	res, err := client.QueryWorkspace(context.Background(), workspaceID, azquery.Body{Query: to.Ptr(query)}, nil)
+	if err != nil {
+		t.Fatalf("error with query, %s", err.Error())
+	}
+	if res.Error != nil {
+		t.Fatal("expected no partial error")
+	}
+
+	var employees []employee
+	fmt.Println("Hello world")
+	for _, table := range res.Tables {
+		for _, row := range table.Rows {
+			for _, item := range row {
+				fmt.Printf("type is: %T \n", item)
+			}
+			employees = append(employees, employee{name: row.GetValueByIndex(2), id: row[3].(float64), hired: row[4].(bool)})
+		}
+	}
+	fmt.Println(res.Tables[0].Rows[0])
+	fmt.Print(employees)
+	/*for _, table := range res.Tables {
+		for _, col := range table.Columns {
+			fmt.Print(*col.Name + "    ")
+		}
+		fmt.Println()
+		for _, row := range table.Rows {
+			for _, item := range row {
+				fmt.Print(item)
+				fmt.Print(" ")
+			}
+			fmt.Println()
+
+		}
+	}*/
+	t.Fatal("haha")
+	/*for table in data:
+	for col in table.columns:
+		print(col + "    ", end="")
+	for row in table.rows:
+		for item in row:
+			print(item, end="")
+		print('\n')*/
+
+}
 func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 	client := startLogsTest(t)
 

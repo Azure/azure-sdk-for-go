@@ -353,7 +353,7 @@ type Table struct {
 	Name *string `json:"name,omitempty"`
 
 	// REQUIRED; The resulting rows from this query.
-	Rows [][]interface{} `json:"rows,omitempty"`
+	Rows []Row `json:"rows,omitempty"`
 }
 
 // TimeSeriesElement - A time series result type. The discriminator value is always TimeSeries in this case.

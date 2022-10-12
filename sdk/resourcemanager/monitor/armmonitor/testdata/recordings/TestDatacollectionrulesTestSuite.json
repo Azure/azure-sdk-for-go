@@ -323,7 +323,7 @@
               "value": "00000000-0000-0000-0000-000000000000"
             },
             "azureClientSecret": {
-              "value": "3wg8Q~_jfgaehE4ElYnWenqYtoVxnxpBxNW77cP-"
+              "value": "00000000-0000-0000-0000-000000000000"
             },
             "location": {
               "value": "eastus"
@@ -484,7 +484,7 @@
             },
             "azureClientSecret": {
               "type": "String",
-              "value": "3wg8Q~_jfgaehE4ElYnWenqYtoVxnxpBxNW77cP-"
+              "value": "00000000-0000-0000-0000-000000000000"
             },
             "location": {
               "type": "String",
@@ -976,7 +976,7 @@
             },
             "azureClientSecret": {
               "type": "String",
-              "value": "3wg8Q~_jfgaehE4ElYnWenqYtoVxnxpBxNW77cP-"
+              "value": "00000000-0000-0000-0000-000000000000"
             },
             "location": {
               "type": "String",

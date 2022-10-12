@@ -2,7 +2,8 @@
 
 ## 0.1.1 (2022-10-12)
 
-- retract sdk/resourcemanager/elasticsans/armelasticsans package
+### Other Changes
+- Retract this module because of wrong namespace.
 
 ## 0.1.0 (2022-09-20)
 

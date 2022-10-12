@@ -23,18 +23,20 @@ import (
 type ActivitylogalertsTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx                  context.Context
+	cred                 azcore.TokenCredential
+	options              *arm.ClientOptions
+	activityLogAlertName string
+	location             string
+	resourceGroupName    string
+	subscriptionId       string
 }
 
 func (testsuite *ActivitylogalertsTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/monitor/armmonitor/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
+	testsuite.activityLogAlertName = testutil.GenerateAlphaNumericID(testsuite.T(), "activitylogalertna", 6)
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
@@ -56,12 +58,11 @@ func TestActivitylogalertsTestSuite(t *testing.T) {
 
 // Microsoft.Insights/activityLogAlerts
 func (testsuite *ActivitylogalertsTestSuite) TestActivitylogalert() {
-	activityLogAlertName := testutil.GenerateAlphaNumericID(testsuite.T(), "activitylogalertna", 6)
 	var err error
 	// From step ActivityLogAlerts_Create
 	activityLogAlertsClient, err := armmonitor.NewActivityLogAlertsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = activityLogAlertsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, activityLogAlertName, armmonitor.ActivityLogAlertResource{
+	_, err = activityLogAlertsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.activityLogAlertName, armmonitor.ActivityLogAlertResource{
 		Location: to.Ptr("Global"),
 		Properties: &armmonitor.AlertRuleProperties{
 			Condition: &armmonitor.AlertRuleAllOfCondition{
@@ -98,11 +99,11 @@ func (testsuite *ActivitylogalertsTestSuite) TestActivitylogalert() {
 	}
 
 	// From step ActivityLogAlerts_Get
-	_, err = activityLogAlertsClient.Get(testsuite.ctx, testsuite.resourceGroupName, activityLogAlertName, nil)
+	_, err = activityLogAlertsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.activityLogAlertName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ActivityLogAlerts_Update
-	_, err = activityLogAlertsClient.Update(testsuite.ctx, testsuite.resourceGroupName, activityLogAlertName, armmonitor.AlertRulePatchObject{
+	_, err = activityLogAlertsClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.activityLogAlertName, armmonitor.AlertRulePatchObject{
 		Properties: &armmonitor.AlertRulePatchProperties{
 			Enabled: to.Ptr(false),
 		},
@@ -114,6 +115,6 @@ func (testsuite *ActivitylogalertsTestSuite) TestActivitylogalert() {
 	testsuite.Require().NoError(err)
 
 	// From step ActivityLogAlerts_Delete
-	_, err = activityLogAlertsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, activityLogAlertName, nil)
+	_, err = activityLogAlertsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.activityLogAlertName, nil)
 	testsuite.Require().NoError(err)
 }

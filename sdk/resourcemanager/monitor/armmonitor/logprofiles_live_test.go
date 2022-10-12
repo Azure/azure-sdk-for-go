@@ -138,8 +138,8 @@ func (testsuite *LogprofilesTestSuite) Prepare() {
 	testsuite.storageAccountId = deploymentExtend.Properties.Outputs.(map[string]interface{})["storageAccountId"].(map[string]interface{})["value"].(string)
 }
 
-// Microsoft.Insights/actionGroups
-func (testsuite *LogprofilesTestSuite) TestActiongroups() {
+// Microsoft.Insights/logprofiles
+func (testsuite *LogprofilesTestSuite) TestLogprofiles() {
 	logProfileName := "logprofilena"
 	var err error
 	// From step LogProfiles_CreateOrUpdate

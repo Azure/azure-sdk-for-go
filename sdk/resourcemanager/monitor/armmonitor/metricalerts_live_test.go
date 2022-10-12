@@ -27,6 +27,7 @@ type MetricalertsTestSuite struct {
 	ctx               context.Context
 	cred              azcore.TokenCredential
 	options           *arm.ClientOptions
+	ruleName          string
 	subnetId          string
 	virtualMachineId  string
 	vnicId            string
@@ -40,6 +41,7 @@ func (testsuite *MetricalertsTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/monitor/armmonitor/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
+	testsuite.ruleName = testutil.GenerateAlphaNumericID(testsuite.T(), "metricalertna", 6)
 	testsuite.adminPassword = testutil.GetEnv("ADMIN_PASSWORD", "")
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
@@ -292,13 +294,12 @@ func (testsuite *MetricalertsTestSuite) Prepare() {
 
 // Microsoft.Insights/metricAlerts
 func (testsuite *MetricalertsTestSuite) TestMetricalert() {
-	ruleName := testutil.GenerateAlphaNumericID(testsuite.T(), "metricalertna", 6)
 	var statusName string
 	var err error
 	// From step MetricAlerts_Create
 	metricAlertsClient, err := armmonitor.NewMetricAlertsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = metricAlertsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, ruleName, armmonitor.MetricAlertResource{
+	_, err = metricAlertsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.ruleName, armmonitor.MetricAlertResource{
 		Location: to.Ptr("global"),
 		Properties: &armmonitor.MetricAlertProperties{
 			Description:  to.Ptr("This is the description of the rule1"),
@@ -349,11 +350,11 @@ func (testsuite *MetricalertsTestSuite) TestMetricalert() {
 	}
 
 	// From step MetricAlerts_Get
-	_, err = metricAlertsClient.Get(testsuite.ctx, testsuite.resourceGroupName, ruleName, nil)
+	_, err = metricAlertsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.ruleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step MetricAlerts_Update
-	_, err = metricAlertsClient.Update(testsuite.ctx, testsuite.resourceGroupName, ruleName, armmonitor.MetricAlertResourcePatch{
+	_, err = metricAlertsClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.ruleName, armmonitor.MetricAlertResourcePatch{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 		},
@@ -363,15 +364,15 @@ func (testsuite *MetricalertsTestSuite) TestMetricalert() {
 	// From step MetricAlertsStatus_List
 	metricAlertsStatusClient, err := armmonitor.NewMetricAlertsStatusClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	metricAlertsStatusClientListResponse, err := metricAlertsStatusClient.List(testsuite.ctx, testsuite.resourceGroupName, ruleName, nil)
+	metricAlertsStatusClientListResponse, err := metricAlertsStatusClient.List(testsuite.ctx, testsuite.resourceGroupName, testsuite.ruleName, nil)
 	testsuite.Require().NoError(err)
 	statusName = *metricAlertsStatusClientListResponse.Value[0].Name
 
 	// From step MetricAlertsStatus_ListByName
-	_, err = metricAlertsStatusClient.ListByName(testsuite.ctx, testsuite.resourceGroupName, ruleName, statusName, nil)
+	_, err = metricAlertsStatusClient.ListByName(testsuite.ctx, testsuite.resourceGroupName, testsuite.ruleName, statusName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step MetricAlerts_Delete
-	_, err = metricAlertsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, ruleName, nil)
+	_, err = metricAlertsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.ruleName, nil)
 	testsuite.Require().NoError(err)
 }

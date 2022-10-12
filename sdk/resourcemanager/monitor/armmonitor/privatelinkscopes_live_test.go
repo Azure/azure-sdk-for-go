@@ -26,6 +26,7 @@ type PrivatelinkscopesTestSuite struct {
 	ctx               context.Context
 	cred              azcore.TokenCredential
 	options           *arm.ClientOptions
+	scopeName         string
 	location          string
 	resourceGroupName string
 	subscriptionId    string
@@ -35,6 +36,7 @@ func (testsuite *PrivatelinkscopesTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/monitor/armmonitor/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
+	testsuite.scopeName = testutil.GenerateAlphaNumericID(testsuite.T(), "linkscopena", 6)
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
@@ -56,12 +58,11 @@ func TestPrivatelinkscopesTestSuite(t *testing.T) {
 
 // microsoft.insights/privateLinkScopes
 func (testsuite *PrivatelinkscopesTestSuite) TestPrivatelinkscope() {
-	scopeName := testutil.GenerateAlphaNumericID(testsuite.T(), "linkscopena", 6)
 	var err error
 	// From step PrivateLinkScopes_Create
 	privateLinkScopesClient, err := armmonitor.NewPrivateLinkScopesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = privateLinkScopesClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, scopeName, armmonitor.AzureMonitorPrivateLinkScope{
+	_, err = privateLinkScopesClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.scopeName, armmonitor.AzureMonitorPrivateLinkScope{
 		Location: to.Ptr("Global"),
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -83,11 +84,11 @@ func (testsuite *PrivatelinkscopesTestSuite) TestPrivatelinkscope() {
 	}
 
 	// From step PrivateLinkScopes_Get
-	_, err = privateLinkScopesClient.Get(testsuite.ctx, testsuite.resourceGroupName, scopeName, nil)
+	_, err = privateLinkScopesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.scopeName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step PrivateLinkScopes_UpdateTags
-	_, err = privateLinkScopesClient.UpdateTags(testsuite.ctx, testsuite.resourceGroupName, scopeName, armmonitor.TagsResource{
+	_, err = privateLinkScopesClient.UpdateTags(testsuite.ctx, testsuite.resourceGroupName, testsuite.scopeName, armmonitor.TagsResource{
 		Tags: map[string]*string{
 			"Tag1": to.Ptr("Value1"),
 			"Tag2": to.Ptr("Value2"),
@@ -96,7 +97,7 @@ func (testsuite *PrivatelinkscopesTestSuite) TestPrivatelinkscope() {
 	testsuite.Require().NoError(err)
 
 	// From step PrivateLinkScopes_Delete
-	privateLinkScopesClientDeleteResponsePoller, err := privateLinkScopesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, scopeName, nil)
+	privateLinkScopesClientDeleteResponsePoller, err := privateLinkScopesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.scopeName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, privateLinkScopesClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)

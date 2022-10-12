@@ -27,6 +27,7 @@ type ScheduledqueryrulesTestSuite struct {
 	ctx               context.Context
 	cred              azcore.TokenCredential
 	options           *arm.ClientOptions
+	ruleName          string
 	workspaceId       string
 	location          string
 	resourceGroupName string
@@ -37,6 +38,7 @@ func (testsuite *ScheduledqueryrulesTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/monitor/armmonitor/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
+	testsuite.ruleName = testutil.GenerateAlphaNumericID(testsuite.T(), "schedulequeryrulena", 6)
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
@@ -110,28 +112,15 @@ func (testsuite *ScheduledqueryrulesTestSuite) Prepare() {
 
 // Microsoft.Insights/scheduledQueryRules
 func (testsuite *ScheduledqueryrulesTestSuite) TestScheduledqueryrule() {
-	ruleName := testutil.GenerateAlphaNumericID(testsuite.T(), "schedulequeryrulena", 6)
 	var err error
 	// From step ScheduledQueryRules_Create
 	scheduledQueryRulesClient, err := armmonitor.NewScheduledQueryRulesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = scheduledQueryRulesClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, ruleName, armmonitor.LogSearchRuleResource{
+	_, err = scheduledQueryRulesClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.ruleName, armmonitor.LogSearchRuleResource{
 		Location: to.Ptr(testsuite.location),
 		Properties: &armmonitor.LogSearchRule{
 			Description: to.Ptr("log search rule description"),
-			Action:      &armmonitor.AlertingAction{
-				Severity: to.Ptr(armmonitor.AlertSeverityOne),
-				Trigger: &armmonitor.TriggerCondition{
-					Threshold: to.Ptr[float64](3),
-					ThresholdOperator: to.Ptr(armmonitor.ConditionalOperatorGreaterThan),
-					MetricTrigger: &armmonitor.LogMetricTrigger{
-						MetricColumn: to.Ptr("Computer"),
-						MetricTriggerType: to.Ptr(armmonitor.MetricTriggerTypeConsecutive),
-						Threshold: to.Ptr[float64](5),
-						ThresholdOperator: to.Ptr(armmonitor.ConditionalOperatorGreaterThan),
-					},
-				},
-			},
+			Action:      &armmonitor.Action{},
 			Enabled:     to.Ptr(armmonitor.Enabled("true")),
 			Schedule: &armmonitor.Schedule{
 				FrequencyInMinutes:  to.Ptr[int32](15),
@@ -163,11 +152,11 @@ func (testsuite *ScheduledqueryrulesTestSuite) TestScheduledqueryrule() {
 	}
 
 	// From step ScheduledQueryRules_Get
-	_, err = scheduledQueryRulesClient.Get(testsuite.ctx, testsuite.resourceGroupName, ruleName, nil)
+	_, err = scheduledQueryRulesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.ruleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ScheduledQueryRules_Update
-	_, err = scheduledQueryRulesClient.Update(testsuite.ctx, testsuite.resourceGroupName, ruleName, armmonitor.LogSearchRuleResourcePatch{
+	_, err = scheduledQueryRulesClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.ruleName, armmonitor.LogSearchRuleResourcePatch{
 		Properties: &armmonitor.LogSearchRulePatch{
 			Enabled: to.Ptr(armmonitor.EnabledTrue),
 		},
@@ -175,6 +164,6 @@ func (testsuite *ScheduledqueryrulesTestSuite) TestScheduledqueryrule() {
 	testsuite.Require().NoError(err)
 
 	// From step ScheduledQueryRules_Delete
-	_, err = scheduledQueryRulesClient.Delete(testsuite.ctx, testsuite.resourceGroupName, ruleName, nil)
+	_, err = scheduledQueryRulesClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.ruleName, nil)
 	testsuite.Require().NoError(err)
 }

@@ -26,6 +26,7 @@ type ActiongroupsTestSuite struct {
 	ctx               context.Context
 	cred              azcore.TokenCredential
 	options           *arm.ClientOptions
+	actionGroupName   string
 	location          string
 	resourceGroupName string
 	subscriptionId    string
@@ -35,6 +36,7 @@ func (testsuite *ActiongroupsTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/monitor/armmonitor/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
+	testsuite.actionGroupName = testutil.GenerateAlphaNumericID(testsuite.T(), "actiongroupna", 6)
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
@@ -56,12 +58,11 @@ func TestActiongroupsTestSuite(t *testing.T) {
 
 // Microsoft.Insights/actionGroups
 func (testsuite *ActiongroupsTestSuite) TestActiongroups() {
-	actionGroupName := testutil.GenerateAlphaNumericID(testsuite.T(), "actiongroupna", 6)
 	var err error
 	// From step ActionGroups_Create
 	actionGroupsClient, err := armmonitor.NewActionGroupsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = actionGroupsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, actionGroupName, armmonitor.ActionGroupResource{
+	_, err = actionGroupsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.actionGroupName, armmonitor.ActionGroupResource{
 		Location: to.Ptr("Global"),
 		Properties: &armmonitor.ActionGroup{
 			EmailReceivers: []*armmonitor.EmailReceiver{
@@ -83,11 +84,11 @@ func (testsuite *ActiongroupsTestSuite) TestActiongroups() {
 	testsuite.Require().NoError(err)
 
 	// From step ActionGroups_Get
-	_, err = actionGroupsClient.Get(testsuite.ctx, testsuite.resourceGroupName, actionGroupName, nil)
+	_, err = actionGroupsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.actionGroupName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step ActionGroups_Update
-	_, err = actionGroupsClient.Update(testsuite.ctx, testsuite.resourceGroupName, actionGroupName, armmonitor.ActionGroupPatchBody{
+	_, err = actionGroupsClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.actionGroupName, armmonitor.ActionGroupPatchBody{
 		Properties: &armmonitor.ActionGroupPatch{
 			Enabled: to.Ptr(false),
 		},
@@ -115,6 +116,6 @@ func (testsuite *ActiongroupsTestSuite) TestActiongroups() {
 	}
 
 	// From step ActionGroups_Delete
-	_, err = actionGroupsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, actionGroupName, nil)
+	_, err = actionGroupsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.actionGroupName, nil)
 	testsuite.Require().NoError(err)
 }

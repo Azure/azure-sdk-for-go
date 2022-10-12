@@ -23,24 +23,26 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type AutoscalesettingsTestSuite struct {
+type AutoscaleTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	subnetId          string
-	vmssId            string
-	adminPassword     string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx                  context.Context
+	cred                 azcore.TokenCredential
+	options              *arm.ClientOptions
+	autoscaleSettingName string
+	subnetId             string
+	vmssId               string
+	adminPassword        string
+	location             string
+	resourceGroupName    string
+	subscriptionId       string
 }
 
-func (testsuite *AutoscalesettingsTestSuite) SetupSuite() {
+func (testsuite *AutoscaleTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/monitor/armmonitor/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
+	testsuite.autoscaleSettingName = testutil.GenerateAlphaNumericID(testsuite.T(), "autoscalesettingna", 6)
 	testsuite.adminPassword = testutil.GetEnv("ADMIN_PASSWORD", "")
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
@@ -52,17 +54,17 @@ func (testsuite *AutoscalesettingsTestSuite) SetupSuite() {
 	testsuite.Prepare()
 }
 
-func (testsuite *AutoscalesettingsTestSuite) TearDownSuite() {
+func (testsuite *AutoscaleTestSuite) TearDownSuite() {
 	_, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
 	testsuite.Require().NoError(err)
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestAutoscalesettingsTestSuite(t *testing.T) {
-	suite.Run(t, new(AutoscalesettingsTestSuite))
+func TestAutoscaleTestSuite(t *testing.T) {
+	suite.Run(t, new(AutoscaleTestSuite))
 }
 
-func (testsuite *AutoscalesettingsTestSuite) Prepare() {
+func (testsuite *AutoscaleTestSuite) Prepare() {
 	var err error
 	// From step NetworkAndSubnet_Create
 	template := map[string]interface{}{
@@ -304,13 +306,12 @@ func (testsuite *AutoscalesettingsTestSuite) Prepare() {
 }
 
 // Microsoft.Insights/autoscalesettings
-func (testsuite *AutoscalesettingsTestSuite) TestAutoscalesettings() {
-	autoscaleSettingName := testutil.GenerateAlphaNumericID(testsuite.T(), "autoscalesettingna", 6)
+func (testsuite *AutoscaleTestSuite) TestAutoscalesettings() {
 	var err error
 	// From step AutoscaleSettings_Create
 	autoscaleSettingsClient, err := armmonitor.NewAutoscaleSettingsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = autoscaleSettingsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, autoscaleSettingName, armmonitor.AutoscaleSettingResource{
+	_, err = autoscaleSettingsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.autoscaleSettingName, armmonitor.AutoscaleSettingResource{
 		Location: to.Ptr(testsuite.location),
 		Tags:     map[string]*string{},
 		Properties: &armmonitor.AutoscaleSetting{
@@ -346,7 +347,7 @@ func (testsuite *AutoscalesettingsTestSuite) TestAutoscalesettings() {
 	testsuite.Require().NoError(err)
 
 	// From step AutoscaleSettings_Update
-	_, err = autoscaleSettingsClient.Update(testsuite.ctx, testsuite.resourceGroupName, autoscaleSettingName, armmonitor.AutoscaleSettingResourcePatch{
+	_, err = autoscaleSettingsClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.autoscaleSettingName, armmonitor.AutoscaleSettingResourcePatch{
 		Tags: map[string]*string{
 			"$type": to.Ptr("Microsoft.WindowsAzure.Management.Common.Storage.CasePreservedDictionary"),
 		},
@@ -370,9 +371,17 @@ func (testsuite *AutoscalesettingsTestSuite) TestAutoscalesettings() {
 	}
 
 	// From step AutoscaleSettings_Get
-	_, err = autoscaleSettingsClient.Get(testsuite.ctx, testsuite.resourceGroupName, autoscaleSettingName, nil)
+	_, err = autoscaleSettingsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.autoscaleSettingName, nil)
 	testsuite.Require().NoError(err)
 
+	// From step AutoscaleSettings_Delete
+	_, err = autoscaleSettingsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.autoscaleSettingName, nil)
+	testsuite.Require().NoError(err)
+}
+
+// Microsoft.Insights/eventcategories
+func (testsuite *AutoscaleTestSuite) TestEventcategories() {
+	var err error
 	// From step EventCategories_List
 	eventCategoriesClient, err := armmonitor.NewEventCategoriesClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
@@ -382,14 +391,14 @@ func (testsuite *AutoscalesettingsTestSuite) TestAutoscalesettings() {
 		testsuite.Require().NoError(err)
 		break
 	}
+}
 
+// Microsoft.Insights/operations
+func (testsuite *AutoscaleTestSuite) TestOperations() {
+	var err error
 	// From step Operations_List
 	operationsClient, err := armmonitor.NewOperationsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = operationsClient.List(testsuite.ctx, nil)
-	testsuite.Require().NoError(err)
-
-	// From step AutoscaleSettings_Delete
-	_, err = autoscaleSettingsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, autoscaleSettingName, nil)
 	testsuite.Require().NoError(err)
 }

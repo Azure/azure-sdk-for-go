@@ -21,7 +21,7 @@
 ### Bugs Fixed
 
 - Retries now respect cancellation when they're in the "delay before next try" phase. (PR#19295)
-- Fixed a potential leak which could cause us to open and leak a $cbs link connection, resulting in errors. (PR#TBD)
+- Fixed a potential leak which could cause us to open and leak a $cbs link connection, resulting in errors. (PR#19326)
 
 ### Other Changes
 

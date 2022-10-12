@@ -347,7 +347,6 @@
                 "type": "string"
               },
               "azureClientSecret": {
-                "defaultValue": "$(azureClientSecret)",
                 "type": "string"
               },
               "location": {

@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.0 (Unreleased)
+## 0.2.0 (2022-10-13)
 
 ### Features Added
 
@@ -20,7 +20,8 @@
 
 ### Bugs Fixed
 
-- Retries now respect cancellation when they're in the "delay before next try" phase. (PR#TBD)
+- Retries now respect cancellation when they're in the "delay before next try" phase. (PR#19295)
+- Fixed a potential leak which could cause us to open and leak a $cbs link connection, resulting in errors. (PR#TBD)
 
 ### Other Changes
 

@@ -409,13 +409,3 @@ func TestNamespaceConnectionRecovery(t *testing.T) {
 		require.ErrorIs(t, err, ErrClientClosed)
 	})
 }
-
-type fakeAMQPClient struct {
-	amqpwrap.AMQPClient
-	closeCalled int
-}
-
-func (f *fakeAMQPClient) Close() error {
-	f.closeCalled++
-	return nil
-}

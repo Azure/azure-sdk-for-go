@@ -81,8 +81,8 @@ func (testsuite *PostgresqlTestSuite) Prepare() {
 			AdministratorLoginPassword: to.Ptr(testsuite.adminPassword),
 		},
 		SKU: &armpostgresql.SKU{
-			Name:   to.Ptr("GP_Gen5_8"),
 			Family: to.Ptr("Gen5"),
+			Name:   to.Ptr("GP_Gen5_8"),
 			Tier:   to.Ptr(armpostgresql.SKUTierGeneralPurpose),
 		},
 		Tags: map[string]*string{

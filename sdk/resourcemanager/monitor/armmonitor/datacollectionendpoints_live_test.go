@@ -23,18 +23,20 @@ import (
 type DatacollectionendpointsTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx                        context.Context
+	cred                       azcore.TokenCredential
+	options                    *arm.ClientOptions
+	dataCollectionEndpointName string
+	location                   string
+	resourceGroupName          string
+	subscriptionId             string
 }
 
 func (testsuite *DatacollectionendpointsTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/monitor/armmonitor/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
+	testsuite.dataCollectionEndpointName = testutil.GenerateAlphaNumericID(testsuite.T(), "datacollectionendpointna", 6)
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
@@ -56,23 +58,20 @@ func TestDatacollectionendpointsTestSuite(t *testing.T) {
 
 // Microsoft.Insights/dataCollectionEndpoints
 func (testsuite *DatacollectionendpointsTestSuite) TestDatacollectionendpoint() {
-	dataCollectionEndpointName := testutil.GenerateAlphaNumericID(testsuite.T(), "datacollectionendpointna", 6)
 	var err error
 	// From step DataCollectionEndpoints_Create
 	dataCollectionEndpointsClient, err := armmonitor.NewDataCollectionEndpointsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = dataCollectionEndpointsClient.Create(testsuite.ctx, testsuite.resourceGroupName, dataCollectionEndpointName, 
-		&armmonitor.DataCollectionEndpointsClientCreateOptions{
-			Body: &armmonitor.DataCollectionEndpointResource{
-				Location: to.Ptr(testsuite.location),
-				Properties: &armmonitor.DataCollectionEndpointResourceProperties{
-					NetworkACLs: &armmonitor.DataCollectionEndpointNetworkACLs{
-						PublicNetworkAccess: to.Ptr(armmonitor.KnownPublicNetworkAccessOptionsEnabled),
-					},
+	_, err = dataCollectionEndpointsClient.Create(testsuite.ctx, testsuite.resourceGroupName, testsuite.dataCollectionEndpointName, &armmonitor.DataCollectionEndpointsClientCreateOptions{
+		Body: &armmonitor.DataCollectionEndpointResource{
+			Location: to.Ptr(testsuite.location),
+			Properties: &armmonitor.DataCollectionEndpointResourceProperties{
+				NetworkACLs: &armmonitor.DataCollectionEndpointNetworkACLs{
+					PublicNetworkAccess: to.Ptr(armmonitor.KnownPublicNetworkAccessOptionsEnabled),
 				},
 			},
 		},
-	)
+	})
 	testsuite.Require().NoError(err)
 
 	// From step DataCollectionEndpoints_ListBySubscription
@@ -84,7 +83,7 @@ func (testsuite *DatacollectionendpointsTestSuite) TestDatacollectionendpoint() 
 	}
 
 	// From step DataCollectionEndpoints_Get
-	_, err = dataCollectionEndpointsClient.Get(testsuite.ctx, testsuite.resourceGroupName, dataCollectionEndpointName, nil)
+	_, err = dataCollectionEndpointsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.dataCollectionEndpointName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step DataCollectionEndpoints_ListByResourceGroup
@@ -96,23 +95,21 @@ func (testsuite *DatacollectionendpointsTestSuite) TestDatacollectionendpoint() 
 	}
 
 	// From step DataCollectionEndpoints_Update
-	_, err = dataCollectionEndpointsClient.Update(testsuite.ctx, testsuite.resourceGroupName, dataCollectionEndpointName,
-		&armmonitor.DataCollectionEndpointsClientUpdateOptions{
-			Body: &armmonitor.ResourceForUpdate{
-				Tags: map[string]*string{
-					"tag1": to.Ptr("A"),
-					"tag2": to.Ptr("B"),
-					"tag3": to.Ptr("C"),
-				},
+	_, err = dataCollectionEndpointsClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.dataCollectionEndpointName, &armmonitor.DataCollectionEndpointsClientUpdateOptions{
+		Body: &armmonitor.ResourceForUpdate{
+			Tags: map[string]*string{
+				"tag1": to.Ptr("A"),
+				"tag2": to.Ptr("B"),
+				"tag3": to.Ptr("C"),
 			},
 		},
-	)
+	})
 	testsuite.Require().NoError(err)
 
 	// From step DataCollectionRuleAssociations_ListByDataCollectionEndpoint
 	dataCollectionRuleAssociationsClient, err := armmonitor.NewDataCollectionRuleAssociationsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	dataCollectionRuleAssociationsClientNewListByDataCollectionEndpointPager := dataCollectionRuleAssociationsClient.NewListByDataCollectionEndpointPager(testsuite.resourceGroupName, dataCollectionEndpointName, nil)
+	dataCollectionRuleAssociationsClientNewListByDataCollectionEndpointPager := dataCollectionRuleAssociationsClient.NewListByDataCollectionEndpointPager(testsuite.resourceGroupName, testsuite.dataCollectionEndpointName, nil)
 	for dataCollectionRuleAssociationsClientNewListByDataCollectionEndpointPager.More() {
 		_, err := dataCollectionRuleAssociationsClientNewListByDataCollectionEndpointPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
@@ -120,6 +117,6 @@ func (testsuite *DatacollectionendpointsTestSuite) TestDatacollectionendpoint() 
 	}
 
 	// From step DataCollectionEndpoints_Delete
-	_, err = dataCollectionEndpointsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, dataCollectionEndpointName, nil)
+	_, err = dataCollectionEndpointsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.dataCollectionEndpointName, nil)
 	testsuite.Require().NoError(err)
 }

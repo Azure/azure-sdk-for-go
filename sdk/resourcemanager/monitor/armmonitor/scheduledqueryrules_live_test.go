@@ -35,14 +35,14 @@ type ScheduledqueryrulesTestSuite struct {
 }
 
 func (testsuite *ScheduledqueryrulesTestSuite) SetupSuite() {
-	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/monitor/armmonitor/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.ruleName = testutil.GenerateAlphaNumericID(testsuite.T(), "schedulequeryrulena", 6)
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "")
 
+	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/monitor/armmonitor/testdata")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -119,8 +119,20 @@ func (testsuite *ScheduledqueryrulesTestSuite) TestScheduledqueryrule() {
 	_, err = scheduledQueryRulesClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.ruleName, armmonitor.LogSearchRuleResource{
 		Location: to.Ptr(testsuite.location),
 		Properties: &armmonitor.LogSearchRule{
-			Description: to.Ptr("log search rule description"),
-			Action:      &armmonitor.Action{},
+			Description: to.Ptr("log search rule description"),		
+			Action:      &armmonitor.AlertingAction{
+				Severity: to.Ptr(armmonitor.AlertSeverityOne),
+				Trigger: &armmonitor.TriggerCondition{
+					Threshold: to.Ptr[float64](3),
+					ThresholdOperator: to.Ptr(armmonitor.ConditionalOperatorGreaterThan),
+					MetricTrigger: &armmonitor.LogMetricTrigger{
+						MetricColumn: to.Ptr("Computer"),
+						MetricTriggerType: to.Ptr(armmonitor.MetricTriggerTypeConsecutive),
+						Threshold: to.Ptr[float64](5),
+						ThresholdOperator: to.Ptr(armmonitor.ConditionalOperatorGreaterThan),
+					},
+				},
+			},
 			Enabled:     to.Ptr(armmonitor.Enabled("true")),
 			Schedule: &armmonitor.Schedule{
 				FrequencyInMinutes:  to.Ptr[int32](15),

@@ -23,20 +23,28 @@ import (
 type TopicsTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	namespaceName     string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx                   context.Context
+	cred                  azcore.TokenCredential
+	options               *arm.ClientOptions
+	authorizationRuleName string
+	namespaceName         string
+	ruleName              string
+	subscriptionName      string
+	topicName             string
+	location              string
+	resourceGroupName     string
+	subscriptionId        string
 }
 
 func (testsuite *TopicsTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/servicebus/armservicebus/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
+	testsuite.authorizationRuleName = testutil.GenerateAlphaNumericID(testsuite.T(), "topicauthrule", 6)
 	testsuite.namespaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "sbnamespacet", 6)
+	testsuite.ruleName = testutil.GenerateAlphaNumericID(testsuite.T(), "rulena", 6)
+	testsuite.subscriptionName = testutil.GenerateAlphaNumericID(testsuite.T(), "subscriptionna", 6)
+	testsuite.topicName = testutil.GenerateAlphaNumericID(testsuite.T(), "topicna", 6)
 	testsuite.location = testutil.GetEnv("LOCATION", "westus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "")
@@ -81,15 +89,11 @@ func (testsuite *TopicsTestSuite) Prepare() {
 
 // Microsoft.ServiceBus/namespaces/topics
 func (testsuite *TopicsTestSuite) TestTopic() {
-	authorizationRuleName := testutil.GenerateAlphaNumericID(testsuite.T(), "topicauthrule", 6)
-	ruleName := testutil.GenerateAlphaNumericID(testsuite.T(), "rulena", 6)
-	subscriptionName := testutil.GenerateAlphaNumericID(testsuite.T(), "subscriptionna", 6)
-	topicName := testutil.GenerateAlphaNumericID(testsuite.T(), "topicna", 6)
 	var err error
 	// From step Topic_Create
 	topicsClient, err := armservicebus.NewTopicsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = topicsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, topicName, armservicebus.SBTopic{
+	_, err = topicsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, armservicebus.SBTopic{
 		Properties: &armservicebus.SBTopicProperties{
 			EnableExpress: to.Ptr(true),
 		},
@@ -97,7 +101,7 @@ func (testsuite *TopicsTestSuite) TestTopic() {
 	testsuite.Require().NoError(err)
 
 	// From step Topic_Get
-	_, err = topicsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, topicName, nil)
+	_, err = topicsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Topic_ListByNamespace
@@ -111,7 +115,7 @@ func (testsuite *TopicsTestSuite) TestTopic() {
 	}
 
 	// From step Topic_CreateAuthorizationRule
-	_, err = topicsClient.CreateOrUpdateAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, topicName, authorizationRuleName, armservicebus.SBAuthorizationRule{
+	_, err = topicsClient.CreateOrUpdateAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.authorizationRuleName, armservicebus.SBAuthorizationRule{
 		Properties: &armservicebus.SBAuthorizationRuleProperties{
 			Rights: []*armservicebus.AccessRights{
 				to.Ptr(armservicebus.AccessRightsListen),
@@ -121,11 +125,11 @@ func (testsuite *TopicsTestSuite) TestTopic() {
 	testsuite.Require().NoError(err)
 
 	// From step Topic_GetAuthorizationRule
-	_, err = topicsClient.GetAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, topicName, authorizationRuleName, nil)
+	_, err = topicsClient.GetAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Topic_ListAuthorizationRules
-	topicsClientNewListAuthorizationRulesPager := topicsClient.NewListAuthorizationRulesPager(testsuite.resourceGroupName, testsuite.namespaceName, topicName, nil)
+	topicsClientNewListAuthorizationRulesPager := topicsClient.NewListAuthorizationRulesPager(testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, nil)
 	for topicsClientNewListAuthorizationRulesPager.More() {
 		_, err := topicsClientNewListAuthorizationRulesPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
@@ -133,23 +137,23 @@ func (testsuite *TopicsTestSuite) TestTopic() {
 	}
 
 	// From step Topic_RegenerateKeys
-	_, err = topicsClient.RegenerateKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, topicName, authorizationRuleName, armservicebus.RegenerateAccessKeyParameters{
+	_, err = topicsClient.RegenerateKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.authorizationRuleName, armservicebus.RegenerateAccessKeyParameters{
 		KeyType: to.Ptr(armservicebus.KeyTypePrimaryKey),
 	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Topic_ListKeys
-	_, err = topicsClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, topicName, authorizationRuleName, nil)
+	_, err = topicsClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Topic_DeleteAuthorizationRule
-	_, err = topicsClient.DeleteAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, topicName, authorizationRuleName, nil)
+	_, err = topicsClient.DeleteAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Subscription_Create
 	subscriptionsClient, err := armservicebus.NewSubscriptionsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = subscriptionsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, topicName, subscriptionName, armservicebus.SBSubscription{
+	_, err = subscriptionsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.subscriptionName, armservicebus.SBSubscription{
 		Properties: &armservicebus.SBSubscriptionProperties{
 			EnableBatchedOperations: to.Ptr(true),
 		},
@@ -157,11 +161,11 @@ func (testsuite *TopicsTestSuite) TestTopic() {
 	testsuite.Require().NoError(err)
 
 	// From step Subscription_Get
-	_, err = subscriptionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, topicName, subscriptionName, nil)
+	_, err = subscriptionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.subscriptionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Subscription_ListByTopic
-	subscriptionsClientNewListByTopicPager := subscriptionsClient.NewListByTopicPager(testsuite.resourceGroupName, testsuite.namespaceName, topicName, &armservicebus.SubscriptionsClientListByTopicOptions{Skip: nil,
+	subscriptionsClientNewListByTopicPager := subscriptionsClient.NewListByTopicPager(testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, &armservicebus.SubscriptionsClientListByTopicOptions{Skip: nil,
 		Top: nil,
 	})
 	for subscriptionsClientNewListByTopicPager.More() {
@@ -173,7 +177,7 @@ func (testsuite *TopicsTestSuite) TestTopic() {
 	// From step Rule_Create
 	rulesClient, err := armservicebus.NewRulesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = rulesClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, topicName, subscriptionName, ruleName, armservicebus.Rule{
+	_, err = rulesClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.subscriptionName, testsuite.ruleName, armservicebus.Rule{
 		Properties: &armservicebus.Ruleproperties{
 			CorrelationFilter: &armservicebus.CorrelationFilter{
 				Properties: map[string]*string{
@@ -186,11 +190,11 @@ func (testsuite *TopicsTestSuite) TestTopic() {
 	testsuite.Require().NoError(err)
 
 	// From step Rule_Get
-	_, err = rulesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, topicName, subscriptionName, ruleName, nil)
+	_, err = rulesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.subscriptionName, testsuite.ruleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Rule_ListBySubscription
-	rulesClientNewListBySubscriptionsPager := rulesClient.NewListBySubscriptionsPager(testsuite.resourceGroupName, testsuite.namespaceName, topicName, subscriptionName, &armservicebus.RulesClientListBySubscriptionsOptions{Skip: nil,
+	rulesClientNewListBySubscriptionsPager := rulesClient.NewListBySubscriptionsPager(testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.subscriptionName, &armservicebus.RulesClientListBySubscriptionsOptions{Skip: nil,
 		Top: nil,
 	})
 	for rulesClientNewListBySubscriptionsPager.More() {
@@ -200,15 +204,15 @@ func (testsuite *TopicsTestSuite) TestTopic() {
 	}
 
 	// From step Rule_Delete
-	_, err = rulesClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, topicName, subscriptionName, ruleName, nil)
+	_, err = rulesClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.subscriptionName, testsuite.ruleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Subscription_Delete
-	_, err = subscriptionsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, topicName, subscriptionName, nil)
+	_, err = subscriptionsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, testsuite.subscriptionName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Topic_Delete
-	_, err = topicsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, topicName, nil)
+	_, err = topicsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.topicName, nil)
 	testsuite.Require().NoError(err)
 }
 

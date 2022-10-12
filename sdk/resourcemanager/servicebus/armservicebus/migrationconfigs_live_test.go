@@ -28,6 +28,7 @@ type MigrationconfigsTestSuite struct {
 	options           *arm.ClientOptions
 	namespaceName     string
 	namespaceName2    string
+	postMigrationName string
 	recondNamespaceId string
 	location          string
 	resourceGroupName string
@@ -40,6 +41,7 @@ func (testsuite *MigrationconfigsTestSuite) SetupSuite() {
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.namespaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "sbnamespacemc", 6)
 	testsuite.namespaceName2 = testutil.GenerateAlphaNumericID(testsuite.T(), "sbnamespacetwomc", 6)
+	testsuite.postMigrationName = testutil.GenerateAlphaNumericID(testsuite.T(), "postmigrationna", 6)
 	testsuite.location = testutil.GetEnv("LOCATION", "westus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "")
@@ -97,14 +99,13 @@ func (testsuite *MigrationconfigsTestSuite) Prepare() {
 
 // Microsoft.ServiceBus/namespaces/migrationConfigurations
 func (testsuite *MigrationconfigsTestSuite) TestMigrationconfig() {
-	postMigrationName := testutil.GenerateAlphaNumericID(testsuite.T(), "postmigrationna", 6)
 	var err error
 	// From step MigrationConfig_Create
 	migrationConfigsClient, err := armservicebus.NewMigrationConfigsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	migrationConfigsClientCreateAndStartMigrationResponsePoller, err := migrationConfigsClient.BeginCreateAndStartMigration(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.MigrationConfigurationNameDefault, armservicebus.MigrationConfigProperties{
 		Properties: &armservicebus.MigrationConfigPropertiesProperties{
-			PostMigrationName: to.Ptr(postMigrationName),
+			PostMigrationName: to.Ptr(testsuite.postMigrationName),
 			TargetNamespace:   to.Ptr(testsuite.recondNamespaceId),
 		},
 	}, nil)

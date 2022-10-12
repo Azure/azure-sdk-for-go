@@ -23,18 +23,22 @@ import (
 type NamespacesTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx                   context.Context
+	cred                  azcore.TokenCredential
+	options               *arm.ClientOptions
+	authorizationRuleName string
+	namespaceName         string
+	location              string
+	resourceGroupName     string
+	subscriptionId        string
 }
 
 func (testsuite *NamespacesTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/servicebus/armservicebus/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
+	testsuite.authorizationRuleName = testutil.GenerateAlphaNumericID(testsuite.T(), "sbauthrule", 6)
+	testsuite.namespaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "sbnamespace", 6)
 	testsuite.location = testutil.GetEnv("LOCATION", "westus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "")
@@ -56,19 +60,17 @@ func TestNamespacesTestSuite(t *testing.T) {
 
 // Microsoft.ServiceBus/namespaces
 func (testsuite *NamespacesTestSuite) TestNamespace() {
-	authorizationRuleName := testutil.GenerateAlphaNumericID(testsuite.T(), "sbauthrule", 6)
-	namespaceName := testutil.GenerateAlphaNumericID(testsuite.T(), "sbnamespace", 6)
 	var err error
 	// From step Namespace_CheckNameAvailability
 	namespacesClient, err := armservicebus.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = namespacesClient.CheckNameAvailability(testsuite.ctx, armservicebus.CheckNameAvailability{
-		Name: to.Ptr(namespaceName),
+		Name: to.Ptr(testsuite.namespaceName),
 	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Namespace_Create
-	namespacesClientCreateOrUpdateResponsePoller, err := namespacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, namespaceName, armservicebus.SBNamespace{
+	namespacesClientCreateOrUpdateResponsePoller, err := namespacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.SBNamespace{
 		Location: to.Ptr(testsuite.location),
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
@@ -84,7 +86,7 @@ func (testsuite *NamespacesTestSuite) TestNamespace() {
 	testsuite.Require().NoError(err)
 
 	// From step Namespace_Update
-	_, err = namespacesClient.Update(testsuite.ctx, testsuite.resourceGroupName, namespaceName, armservicebus.SBNamespaceUpdateParameters{
+	_, err = namespacesClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armservicebus.SBNamespaceUpdateParameters{
 		Location: to.Ptr(testsuite.location),
 		Tags: map[string]*string{
 			"tag3": to.Ptr("value3"),
@@ -94,7 +96,7 @@ func (testsuite *NamespacesTestSuite) TestNamespace() {
 	testsuite.Require().NoError(err)
 
 	// From step Namespace_Get
-	_, err = namespacesClient.Get(testsuite.ctx, testsuite.resourceGroupName, namespaceName, nil)
+	_, err = namespacesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Namespace_List
@@ -124,7 +126,7 @@ func (testsuite *NamespacesTestSuite) TestNamespace() {
 	}
 
 	// From step Namespace_CreateAuthorizationRule
-	_, err = namespacesClient.CreateOrUpdateAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, namespaceName, authorizationRuleName, armservicebus.SBAuthorizationRule{
+	_, err = namespacesClient.CreateOrUpdateAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, armservicebus.SBAuthorizationRule{
 		Properties: &armservicebus.SBAuthorizationRuleProperties{
 			Rights: []*armservicebus.AccessRights{
 				to.Ptr(armservicebus.AccessRightsListen),
@@ -134,11 +136,11 @@ func (testsuite *NamespacesTestSuite) TestNamespace() {
 	testsuite.Require().NoError(err)
 
 	// From step Namespace_GetAuthorizationRule
-	_, err = namespacesClient.GetAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, namespaceName, authorizationRuleName, nil)
+	_, err = namespacesClient.GetAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Namespace_ListAuthorizationRules
-	namespacesClientNewListAuthorizationRulesPager := namespacesClient.NewListAuthorizationRulesPager(testsuite.resourceGroupName, namespaceName, nil)
+	namespacesClientNewListAuthorizationRulesPager := namespacesClient.NewListAuthorizationRulesPager(testsuite.resourceGroupName, testsuite.namespaceName, nil)
 	for namespacesClientNewListAuthorizationRulesPager.More() {
 		_, err := namespacesClientNewListAuthorizationRulesPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
@@ -146,21 +148,21 @@ func (testsuite *NamespacesTestSuite) TestNamespace() {
 	}
 
 	// From step Namespace_RegenerateKeys
-	_, err = namespacesClient.RegenerateKeys(testsuite.ctx, testsuite.resourceGroupName, namespaceName, authorizationRuleName, armservicebus.RegenerateAccessKeyParameters{
+	_, err = namespacesClient.RegenerateKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, armservicebus.RegenerateAccessKeyParameters{
 		KeyType: to.Ptr(armservicebus.KeyTypePrimaryKey),
 	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Namespace_ListKeys
-	_, err = namespacesClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, namespaceName, authorizationRuleName, nil)
+	_, err = namespacesClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Namespace_GetNetworkRuleSet
-	_, err = namespacesClient.GetNetworkRuleSet(testsuite.ctx, testsuite.resourceGroupName, namespaceName, nil)
+	_, err = namespacesClient.GetNetworkRuleSet(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Namespace_ListNetworkRuleSets
-	namespacesClientNewListNetworkRuleSetsPager := namespacesClient.NewListNetworkRuleSetsPager(testsuite.resourceGroupName, namespaceName, nil)
+	namespacesClientNewListNetworkRuleSetsPager := namespacesClient.NewListNetworkRuleSetsPager(testsuite.resourceGroupName, testsuite.namespaceName, nil)
 	for namespacesClientNewListNetworkRuleSetsPager.More() {
 		_, err := namespacesClientNewListNetworkRuleSetsPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
@@ -168,11 +170,11 @@ func (testsuite *NamespacesTestSuite) TestNamespace() {
 	}
 
 	// From step Namespace_DeleteAuthorizationRule
-	_, err = namespacesClient.DeleteAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, namespaceName, authorizationRuleName, nil)
+	_, err = namespacesClient.DeleteAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Namespace_Delete
-	namespacesClientDeleteResponsePoller, err := namespacesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, namespaceName, nil)
+	namespacesClientDeleteResponsePoller, err := namespacesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, namespacesClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)

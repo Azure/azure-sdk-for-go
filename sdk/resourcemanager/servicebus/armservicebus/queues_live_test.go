@@ -23,20 +23,24 @@ import (
 type QueuesTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	namespaceName     string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx                   context.Context
+	cred                  azcore.TokenCredential
+	options               *arm.ClientOptions
+	authorizationRuleName string
+	namespaceName         string
+	queueName             string
+	location              string
+	resourceGroupName     string
+	subscriptionId        string
 }
 
 func (testsuite *QueuesTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/servicebus/armservicebus/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
+	testsuite.authorizationRuleName = testutil.GenerateAlphaNumericID(testsuite.T(), "queueauthrule", 6)
 	testsuite.namespaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "sbnamespaceq", 6)
+	testsuite.queueName = testutil.GenerateAlphaNumericID(testsuite.T(), "queuena", 6)
 	testsuite.location = testutil.GetEnv("LOCATION", "westus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "")
@@ -81,13 +85,11 @@ func (testsuite *QueuesTestSuite) Prepare() {
 
 // Microsoft.ServiceBus/namespaces/queues
 func (testsuite *QueuesTestSuite) TestQueue() {
-	authorizationRuleName := testutil.GenerateAlphaNumericID(testsuite.T(), "queueauthrule", 6)
-	queueName := testutil.GenerateAlphaNumericID(testsuite.T(), "queuena", 6)
 	var err error
 	// From step Queue_Create
 	queuesClient, err := armservicebus.NewQueuesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = queuesClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, queueName, armservicebus.SBQueue{
+	_, err = queuesClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.queueName, armservicebus.SBQueue{
 		Properties: &armservicebus.SBQueueProperties{
 			EnablePartitioning: to.Ptr(true),
 		},
@@ -95,7 +97,7 @@ func (testsuite *QueuesTestSuite) TestQueue() {
 	testsuite.Require().NoError(err)
 
 	// From step Queue_Get
-	_, err = queuesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, queueName, nil)
+	_, err = queuesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.queueName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Queue_ListByNamespace
@@ -109,7 +111,7 @@ func (testsuite *QueuesTestSuite) TestQueue() {
 	}
 
 	// From step Queue_CreateAuthorizationRule
-	_, err = queuesClient.CreateOrUpdateAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, queueName, authorizationRuleName, armservicebus.SBAuthorizationRule{
+	_, err = queuesClient.CreateOrUpdateAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.queueName, testsuite.authorizationRuleName, armservicebus.SBAuthorizationRule{
 		Properties: &armservicebus.SBAuthorizationRuleProperties{
 			Rights: []*armservicebus.AccessRights{
 				to.Ptr(armservicebus.AccessRightsListen),
@@ -119,11 +121,11 @@ func (testsuite *QueuesTestSuite) TestQueue() {
 	testsuite.Require().NoError(err)
 
 	// From step Queue_GetAuthorizationRule
-	_, err = queuesClient.GetAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, queueName, authorizationRuleName, nil)
+	_, err = queuesClient.GetAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.queueName, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Queue_ListAuthorizationRules
-	queuesClientNewListAuthorizationRulesPager := queuesClient.NewListAuthorizationRulesPager(testsuite.resourceGroupName, testsuite.namespaceName, queueName, nil)
+	queuesClientNewListAuthorizationRulesPager := queuesClient.NewListAuthorizationRulesPager(testsuite.resourceGroupName, testsuite.namespaceName, testsuite.queueName, nil)
 	for queuesClientNewListAuthorizationRulesPager.More() {
 		_, err := queuesClientNewListAuthorizationRulesPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
@@ -131,21 +133,21 @@ func (testsuite *QueuesTestSuite) TestQueue() {
 	}
 
 	// From step Queue_RegenerateKeys
-	_, err = queuesClient.RegenerateKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, queueName, authorizationRuleName, armservicebus.RegenerateAccessKeyParameters{
+	_, err = queuesClient.RegenerateKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.queueName, testsuite.authorizationRuleName, armservicebus.RegenerateAccessKeyParameters{
 		KeyType: to.Ptr(armservicebus.KeyTypePrimaryKey),
 	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Queue_ListKeys
-	_, err = queuesClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, queueName, authorizationRuleName, nil)
+	_, err = queuesClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.queueName, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Queue_DeleteAuthorizationRule
-	_, err = queuesClient.DeleteAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, queueName, authorizationRuleName, nil)
+	_, err = queuesClient.DeleteAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.queueName, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Queue_Delete
-	_, err = queuesClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, queueName, nil)
+	_, err = queuesClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.queueName, nil)
 	testsuite.Require().NoError(err)
 }
 

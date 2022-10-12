@@ -39,7 +39,7 @@ func (testsuite *PostgresqlTestSuite) SetupSuite() {
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.serverName = testutil.GenerateAlphaNumericID(testsuite.T(), "pgservers", 6)
-	testsuite.adminPassword = testutil.GetEnv("ADMIN_PASSWORD", "")
+	testsuite.adminPassword = testutil.GetEnv("ADMIN_PASSWORD", "000000000000")
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")

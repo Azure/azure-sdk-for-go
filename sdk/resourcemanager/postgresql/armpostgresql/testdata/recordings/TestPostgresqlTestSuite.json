@@ -54,7 +54,7 @@
         "location": "eastus",
         "properties": {
           "administratorLogin": "cloudsa",
-          "administratorLoginPassword": "Password01!@#",
+          "administratorLoginPassword": "000000000000",
           "createMode": "Default",
           "minimalTlsVersion": "TLS1_2",
           "sslEnforcement": "Enabled",
@@ -6942,7 +6942,7 @@
       },
       "RequestBody": {
         "properties": {
-          "administratorLoginPassword": "Password01!@#",
+          "administratorLoginPassword": "000000000000",
           "minimalTlsVersion": "TLS1_2",
           "sslEnforcement": "Enabled"
         }

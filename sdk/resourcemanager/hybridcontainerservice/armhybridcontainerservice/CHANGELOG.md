@@ -1,5 +1,9 @@
 # Release History
 
+## 0.1.1 (2022-10-12)
+### Other Changes
+- Loosen Go version requirement.
+
 ## 0.1.0 (2022-09-13)
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 0.1.0, which contains breaking changes.

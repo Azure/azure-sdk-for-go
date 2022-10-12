@@ -20,7 +20,7 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type BasicTestSuite struct {
+type ContainerregistryTestSuite struct {
 	suite.Suite
 
 	ctx                context.Context
@@ -30,7 +30,9 @@ type BasicTestSuite struct {
 	importPipelineName string
 	registryName       string
 	replicationName    string
+	scopeMapId         string
 	scopeMapName       string
+	tokenId            string
 	tokenName          string
 	webhookName        string
 	location           string
@@ -38,7 +40,7 @@ type BasicTestSuite struct {
 	subscriptionId     string
 }
 
-func (testsuite *BasicTestSuite) SetupSuite() {
+func (testsuite *ContainerregistryTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/containerregistry/armcontainerregistry/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
@@ -56,33 +58,25 @@ func (testsuite *BasicTestSuite) SetupSuite() {
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
+	testsuite.Prepare()
 }
 
-func (testsuite *BasicTestSuite) TearDownSuite() {
+func (testsuite *ContainerregistryTestSuite) TearDownSuite() {
+	testsuite.Cleanup()
 	_, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
 	testsuite.Require().NoError(err)
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestBasicTestSuite(t *testing.T) {
-	suite.Run(t, new(BasicTestSuite))
+func TestContainerregistryTestSuite(t *testing.T) {
+	suite.Run(t, new(ContainerregistryTestSuite))
 }
 
-// Microsoft.ContainerRegistry/registries
-func (testsuite *BasicTestSuite) TestContainerregister() {
-	var scopeMapId string
-	var tokenId string
+func (testsuite *ContainerregistryTestSuite) Prepare() {
 	var err error
-	// From step Registries_CheckNameAvailability
+	// From step Registries_Create
 	registriesClient, err := armcontainerregistry.NewRegistriesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = registriesClient.CheckNameAvailability(testsuite.ctx, armcontainerregistry.RegistryNameCheckRequest{
-		Name: to.Ptr("myRegistry"),
-		Type: to.Ptr("Microsoft.ContainerRegistry/registries"),
-	}, nil)
-	testsuite.Require().NoError(err)
-
-	// From step Registries_Create
 	registriesClientCreateResponsePoller, err := registriesClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, armcontainerregistry.Registry{
 		Location: to.Ptr(testsuite.location),
 		Tags: map[string]*string{
@@ -97,6 +91,51 @@ func (testsuite *BasicTestSuite) TestContainerregister() {
 	}, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, registriesClientCreateResponsePoller)
+	testsuite.Require().NoError(err)
+
+	// From step ScopeMaps_Create
+	scopeMapsClient, err := armcontainerregistry.NewScopeMapsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	scopeMapsClientCreateResponsePoller, err := scopeMapsClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.scopeMapName, armcontainerregistry.ScopeMap{
+		Properties: &armcontainerregistry.ScopeMapProperties{
+			Description: to.Ptr("Developer Scopes"),
+			Actions: []*string{
+				to.Ptr("repositories/myrepository/content/write"),
+				to.Ptr("repositories/myrepository/content/delete")},
+		},
+	}, nil)
+	testsuite.Require().NoError(err)
+	var scopeMapsClientCreateResponse *armcontainerregistry.ScopeMapsClientCreateResponse
+	scopeMapsClientCreateResponse, err = testutil.PollForTest(testsuite.ctx, scopeMapsClientCreateResponsePoller)
+	testsuite.Require().NoError(err)
+	testsuite.scopeMapId = *scopeMapsClientCreateResponse.ID
+
+	// From step Tokens_Create
+	tokensClient, err := armcontainerregistry.NewTokensClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	tokensClientCreateResponsePoller, err := tokensClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.tokenName, armcontainerregistry.Token{
+		Properties: &armcontainerregistry.TokenProperties{
+			ScopeMapID: to.Ptr(testsuite.scopeMapId),
+			Status:     to.Ptr(armcontainerregistry.TokenStatusDisabled),
+		},
+	}, nil)
+	testsuite.Require().NoError(err)
+	var tokensClientCreateResponse *armcontainerregistry.TokensClientCreateResponse
+	tokensClientCreateResponse, err = testutil.PollForTest(testsuite.ctx, tokensClientCreateResponsePoller)
+	testsuite.Require().NoError(err)
+	testsuite.tokenId = *tokensClientCreateResponse.ID
+}
+
+// Microsoft.ContainerRegistry/registries
+func (testsuite *ContainerregistryTestSuite) TestContainerregister() {
+	var err error
+	// From step Registries_CheckNameAvailability
+	registriesClient, err := armcontainerregistry.NewRegistriesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	_, err = registriesClient.CheckNameAvailability(testsuite.ctx, armcontainerregistry.RegistryNameCheckRequest{
+		Name: to.Ptr("myRegistry"),
+		Type: to.Ptr("Microsoft.ContainerRegistry/registries"),
+	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Registries_List
@@ -139,6 +178,22 @@ func (testsuite *BasicTestSuite) TestContainerregister() {
 	_, err = testutil.PollForTest(testsuite.ctx, registriesClientUpdateResponsePoller)
 	testsuite.Require().NoError(err)
 
+	// From step Registries_ListPrivateLinkResources
+	registriesClientNewListPrivateLinkResourcesPager := registriesClient.NewListPrivateLinkResourcesPager(testsuite.resourceGroupName, testsuite.registryName, nil)
+	for registriesClientNewListPrivateLinkResourcesPager.More() {
+		_, err := registriesClientNewListPrivateLinkResourcesPager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+		break
+	}
+
+	// From step Registries_GetPrivateLinkResource
+	_, err = registriesClient.GetPrivateLinkResource(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, "registry", nil)
+	testsuite.Require().NoError(err)
+}
+
+// Microsoft.ContainerRegistry/registries/webhooks
+func (testsuite *ContainerregistryTestSuite) TestWebhooks() {
+	var err error
 	// From step Webhooks_Create
 	webhooksClient, err := armcontainerregistry.NewWebhooksClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
@@ -209,14 +264,21 @@ func (testsuite *BasicTestSuite) TestContainerregister() {
 		break
 	}
 
+	// From step Webhooks_Delete
+	webhooksClientDeleteResponsePoller, err := webhooksClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.webhookName, nil)
+	testsuite.Require().NoError(err)
+	_, err = testutil.PollForTest(testsuite.ctx, webhooksClientDeleteResponsePoller)
+	testsuite.Require().NoError(err)
+}
+
+// Microsoft.ContainerRegistry/registries/replications
+func (testsuite *ContainerregistryTestSuite) TestReplications() {
+	var err error
 	// From step Replications_Create
 	replicationsClient, err := armcontainerregistry.NewReplicationsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	replicationsClientCreateResponsePoller, err := replicationsClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.replicationName, armcontainerregistry.Replication{
 		Location: to.Ptr("westus2"),
-		Tags: map[string]*string{
-			"key": to.Ptr("value"),
-		},
 	}, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, replicationsClientCreateResponsePoller)
@@ -244,24 +306,19 @@ func (testsuite *BasicTestSuite) TestContainerregister() {
 	_, err = testutil.PollForTest(testsuite.ctx, replicationsClientUpdateResponsePoller)
 	testsuite.Require().NoError(err)
 
-	// From step ScopeMaps_Create
+	// From step Replications_Delete
+	replicationsClientDeleteResponsePoller, err := replicationsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.replicationName, nil)
+	testsuite.Require().NoError(err)
+	_, err = testutil.PollForTest(testsuite.ctx, replicationsClientDeleteResponsePoller)
+	testsuite.Require().NoError(err)
+}
+
+// Microsoft.ContainerRegistry/registries/scopeMaps
+func (testsuite *ContainerregistryTestSuite) TestScopemaps() {
+	var err error
+	// From step ScopeMaps_List
 	scopeMapsClient, err := armcontainerregistry.NewScopeMapsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	scopeMapsClientCreateResponsePoller, err := scopeMapsClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.scopeMapName, armcontainerregistry.ScopeMap{
-		Properties: &armcontainerregistry.ScopeMapProperties{
-			Description: to.Ptr("Developer Scopes"),
-			Actions: []*string{
-				to.Ptr("repositories/myrepository/content/write"),
-				to.Ptr("repositories/myrepository/content/delete")},
-		},
-	}, nil)
-	testsuite.Require().NoError(err)
-	var scopeMapsClientCreateResponse *armcontainerregistry.ScopeMapsClientCreateResponse
-	scopeMapsClientCreateResponse, err = testutil.PollForTest(testsuite.ctx, scopeMapsClientCreateResponsePoller)
-	testsuite.Require().NoError(err)
-	scopeMapId = *scopeMapsClientCreateResponse.ID
-
-	// From step ScopeMaps_List
 	scopeMapsClientNewListPager := scopeMapsClient.NewListPager(testsuite.resourceGroupName, testsuite.registryName, nil)
 	for scopeMapsClientNewListPager.More() {
 		_, err := scopeMapsClientNewListPager.NextPage(testsuite.ctx)
@@ -285,23 +342,14 @@ func (testsuite *BasicTestSuite) TestContainerregister() {
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, scopeMapsClientUpdateResponsePoller)
 	testsuite.Require().NoError(err)
+}
 
-	// From step Tokens_Create
+// Microsoft.ContainerRegistry/registries/tokens
+func (testsuite *ContainerregistryTestSuite) TestTokens() {
+	var err error
+	// From step Tokens_List
 	tokensClient, err := armcontainerregistry.NewTokensClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	tokensClientCreateResponsePoller, err := tokensClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.tokenName, armcontainerregistry.Token{
-		Properties: &armcontainerregistry.TokenProperties{
-			ScopeMapID: to.Ptr(scopeMapId),
-			Status:     to.Ptr(armcontainerregistry.TokenStatusDisabled),
-		},
-	}, nil)
-	testsuite.Require().NoError(err)
-	var tokensClientCreateResponse *armcontainerregistry.TokensClientCreateResponse
-	tokensClientCreateResponse, err = testutil.PollForTest(testsuite.ctx, tokensClientCreateResponsePoller)
-	testsuite.Require().NoError(err)
-	tokenId = *tokensClientCreateResponse.ID
-
-	// From step Tokens_List
 	tokensClientNewListPager := tokensClient.NewListPager(testsuite.resourceGroupName, testsuite.registryName, nil)
 	for tokensClientNewListPager.More() {
 		_, err := tokensClientNewListPager.NextPage(testsuite.ctx)
@@ -316,16 +364,22 @@ func (testsuite *BasicTestSuite) TestContainerregister() {
 	// From step Tokens_Update
 	tokensClientUpdateResponsePoller, err := tokensClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.tokenName, armcontainerregistry.TokenUpdateParameters{
 		Properties: &armcontainerregistry.TokenUpdateProperties{
-			ScopeMapID: to.Ptr(scopeMapId),
+			ScopeMapID: to.Ptr(testsuite.scopeMapId),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, tokensClientUpdateResponsePoller)
 	testsuite.Require().NoError(err)
+}
 
+// Microsoft.ContainerRegistry/registries/generateCredentials
+func (testsuite *ContainerregistryTestSuite) TestRegistrycredentials() {
+	var err error
 	// From step Registries_GenerateCredentials
+	registriesClient, err := armcontainerregistry.NewRegistriesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	registriesClientGenerateCredentialsResponsePoller, err := registriesClient.BeginGenerateCredentials(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, armcontainerregistry.GenerateCredentialsParameters{
-		TokenID: to.Ptr(tokenId),
+		TokenID: to.Ptr(testsuite.tokenId),
 	}, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, registriesClientGenerateCredentialsResponsePoller)
@@ -340,7 +394,11 @@ func (testsuite *BasicTestSuite) TestContainerregister() {
 	// From step Registries_ListCredentials
 	_, err = registriesClient.ListCredentials(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, nil)
 	testsuite.Require().NoError(err)
+}
 
+// Microsoft.ContainerRegistry/registries/exportPipelines
+func (testsuite *ContainerregistryTestSuite) TestExportpipelines() {
+	var err error
 	// From step ExportPipelines_Create
 	exportPipelinesClient, err := armcontainerregistry.NewExportPipelinesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
@@ -375,6 +433,16 @@ func (testsuite *BasicTestSuite) TestContainerregister() {
 	_, err = exportPipelinesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.exportPipelineName, nil)
 	testsuite.Require().NoError(err)
 
+	// From step ExportPipelines_Delete
+	exportPipelinesClientDeleteResponsePoller, err := exportPipelinesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.exportPipelineName, nil)
+	testsuite.Require().NoError(err)
+	_, err = testutil.PollForTest(testsuite.ctx, exportPipelinesClientDeleteResponsePoller)
+	testsuite.Require().NoError(err)
+}
+
+// Microsoft.ContainerRegistry/registries/importPipelines
+func (testsuite *ContainerregistryTestSuite) TestImportpipelines() {
+	var err error
 	// From step ImportPipelines_Create
 	importPipelinesClient, err := armcontainerregistry.NewImportPipelinesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
@@ -411,6 +479,16 @@ func (testsuite *BasicTestSuite) TestContainerregister() {
 	_, err = importPipelinesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.importPipelineName, nil)
 	testsuite.Require().NoError(err)
 
+	// From step ImportPipelines_Delete
+	importPipelinesClientDeleteResponsePoller, err := importPipelinesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.importPipelineName, nil)
+	testsuite.Require().NoError(err)
+	_, err = testutil.PollForTest(testsuite.ctx, importPipelinesClientDeleteResponsePoller)
+	testsuite.Require().NoError(err)
+}
+
+// Microsoft.ContainerRegistry/operations
+func (testsuite *ContainerregistryTestSuite) TestOperations() {
+	var err error
 	// From step Operations_List
 	operationsClient, err := armcontainerregistry.NewOperationsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
@@ -420,56 +498,29 @@ func (testsuite *BasicTestSuite) TestContainerregister() {
 		testsuite.Require().NoError(err)
 		break
 	}
+}
 
-	// From step Registries_ListPrivateLinkResources
-	registriesClientNewListPrivateLinkResourcesPager := registriesClient.NewListPrivateLinkResourcesPager(testsuite.resourceGroupName, testsuite.registryName, nil)
-	for registriesClientNewListPrivateLinkResourcesPager.More() {
-		_, err := registriesClientNewListPrivateLinkResourcesPager.NextPage(testsuite.ctx)
-		testsuite.Require().NoError(err)
-		break
-	}
-
-	// From step Registries_GetPrivateLinkResource
-	_, err = registriesClient.GetPrivateLinkResource(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, "registry", nil)
-	testsuite.Require().NoError(err)
-
-	// From step ImportPipelines_Delete
-	importPipelinesClientDeleteResponsePoller, err := importPipelinesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.importPipelineName, nil)
-	testsuite.Require().NoError(err)
-	_, err = testutil.PollForTest(testsuite.ctx, importPipelinesClientDeleteResponsePoller)
-	testsuite.Require().NoError(err)
-
-	// From step ExportPipelines_Delete
-	exportPipelinesClientDeleteResponsePoller, err := exportPipelinesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.exportPipelineName, nil)
-	testsuite.Require().NoError(err)
-	_, err = testutil.PollForTest(testsuite.ctx, exportPipelinesClientDeleteResponsePoller)
-	testsuite.Require().NoError(err)
-
+func (testsuite *ContainerregistryTestSuite) Cleanup() {
+	var err error
 	// From step Tokens_Delete
+	tokensClient, err := armcontainerregistry.NewTokensClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	tokensClientDeleteResponsePoller, err := tokensClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.tokenName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, tokensClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step ScopeMaps_Delete
+	scopeMapsClient, err := armcontainerregistry.NewScopeMapsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	scopeMapsClientDeleteResponsePoller, err := scopeMapsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.scopeMapName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, scopeMapsClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)
 
-	// From step Replications_Delete
-	replicationsClientDeleteResponsePoller, err := replicationsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.replicationName, nil)
-	testsuite.Require().NoError(err)
-	_, err = testutil.PollForTest(testsuite.ctx, replicationsClientDeleteResponsePoller)
-	testsuite.Require().NoError(err)
-
-	// From step Webhooks_Delete
-	webhooksClientDeleteResponsePoller, err := webhooksClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.webhookName, nil)
-	testsuite.Require().NoError(err)
-	_, err = testutil.PollForTest(testsuite.ctx, webhooksClientDeleteResponsePoller)
-	testsuite.Require().NoError(err)
-
 	// From step Registries_Delete
+	registriesClient, err := armcontainerregistry.NewRegistriesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	registriesClientDeleteResponsePoller, err := registriesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, registriesClientDeleteResponsePoller)

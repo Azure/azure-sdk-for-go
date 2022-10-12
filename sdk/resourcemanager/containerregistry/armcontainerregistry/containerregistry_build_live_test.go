@@ -20,7 +20,7 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type Basic2TestSuite struct {
+type ContainerregistryBuildTestSuite struct {
 	suite.Suite
 
 	ctx               context.Context
@@ -35,7 +35,7 @@ type Basic2TestSuite struct {
 	subscriptionId    string
 }
 
-func (testsuite *Basic2TestSuite) SetupSuite() {
+func (testsuite *ContainerregistryBuildTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/containerregistry/armcontainerregistry/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
@@ -53,17 +53,17 @@ func (testsuite *Basic2TestSuite) SetupSuite() {
 	testsuite.Prepare()
 }
 
-func (testsuite *Basic2TestSuite) TearDownSuite() {
+func (testsuite *ContainerregistryBuildTestSuite) TearDownSuite() {
 	_, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
 	testsuite.Require().NoError(err)
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestBasic2TestSuite(t *testing.T) {
-	suite.Run(t, new(Basic2TestSuite))
+func TestContainerregistryBuildTestSuite(t *testing.T) {
+	suite.Run(t, new(ContainerregistryBuildTestSuite))
 }
 
-func (testsuite *Basic2TestSuite) Prepare() {
+func (testsuite *ContainerregistryBuildTestSuite) Prepare() {
 	var err error
 	// From step Registries_Create2
 	registriesClient, err := armcontainerregistry.NewRegistriesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
@@ -82,9 +82,8 @@ func (testsuite *Basic2TestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 }
 
-// Container Registry Build Test
-func (testsuite *Basic2TestSuite) TestContainerregisterBuild() {
-	var runId string
+// Microsoft.ContainerRegistry/registries/agentPools
+func (testsuite *ContainerregistryBuildTestSuite) TestAgentpools() {
 	var err error
 	// From step AgentPools_Create
 	agentPoolsClient, err := armcontainerregistry.NewAgentPoolsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
@@ -130,6 +129,17 @@ func (testsuite *Basic2TestSuite) TestContainerregisterBuild() {
 	_, err = agentPoolsClient.GetQueueStatus(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.agentPoolName, nil)
 	testsuite.Require().NoError(err)
 
+	// From step AgentPools_Delete
+	agentPoolsClientDeleteResponsePoller, err := agentPoolsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.agentPoolName, nil)
+	testsuite.Require().NoError(err)
+	_, err = testutil.PollForTest(testsuite.ctx, agentPoolsClientDeleteResponsePoller)
+	testsuite.Require().NoError(err)
+}
+
+// Microsoft.ContainerRegistry/registries/tasks
+func (testsuite *ContainerregistryBuildTestSuite) TestTasks() {
+	var runId string
+	var err error
 	// From step Tasks_Create
 	tasksClient, err := armcontainerregistry.NewTasksClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
@@ -343,11 +353,5 @@ func (testsuite *Basic2TestSuite) TestContainerregisterBuild() {
 	tasksClientDeleteResponsePoller, err := tasksClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.taskName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, tasksClientDeleteResponsePoller)
-	testsuite.Require().NoError(err)
-
-	// From step AgentPools_Delete
-	agentPoolsClientDeleteResponsePoller, err := agentPoolsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.agentPoolName, nil)
-	testsuite.Require().NoError(err)
-	_, err = testutil.PollForTest(testsuite.ctx, agentPoolsClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)
 }

@@ -244,6 +244,24 @@ func (o *SetTierOptions) format() (*generated.BlobClientSetTierOptions, *generat
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// SetExpiryOptions contains the optional parameters for the Client.SetExpiry method.
+type SetExpiryOptions struct {
+	// The time to set the blob to expiry
+	ExpiresOn *string
+}
+
+func (o *SetExpiryOptions) format() *generated.BlobClientSetExpiryOptions {
+	if o == nil {
+		return nil
+	}
+
+	return &generated.BlobClientSetExpiryOptions{
+		ExpiresOn: o.ExpiresOn,
+	}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method
 type GetPropertiesOptions struct {
 	AccessConditions *AccessConditions

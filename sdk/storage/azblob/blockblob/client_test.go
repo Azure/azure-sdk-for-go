@@ -3540,3 +3540,26 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetTierOnSnapshots() {
 	_, err = bbClientWithSnapshot.SetTier(context.Background(), rehydrateTier, nil)
 	_require.NotNil(err)
 }
+
+func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiry() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Nil(resp.ExpiresOn)
+
+	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryOptionsNeverExpire, nil)
+	_require.Nil(err)
+
+	resp, err = bbClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Nil(resp.ExpiresOn)
+}

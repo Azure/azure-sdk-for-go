@@ -158,6 +158,12 @@ func (b *Client) SetTier(ctx context.Context, tier AccessTier, o *SetTierOptions
 	return resp, err
 }
 
+func (b *Client) SetExpiry(ctx context.Context, expiryOptions ExpiryOptions, o *SetExpiryOptions) (SetExpiryResponse, error) {
+	opts := o.format()
+	resp, err := b.generated().SetExpiry(ctx, expiryOptions, opts)
+	return resp, err
+}
+
 // GetProperties returns the blob's properties.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-properties.
 func (b *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {

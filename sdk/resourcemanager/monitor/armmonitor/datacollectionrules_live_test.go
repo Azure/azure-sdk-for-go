@@ -45,7 +45,7 @@ func (testsuite *DatacollectionrulesTestSuite) SetupSuite() {
 	testsuite.dataCollectionRuleName = testutil.GenerateAlphaNumericID(testsuite.T(), "datacollectionrulena", 6)
 	testsuite.managedClustersName = testutil.GenerateAlphaNumericID(testsuite.T(), "associationaks", 6)
 	testsuite.azureClientId = testutil.GetEnv("AZURE_CLIENT_ID", "")
-	testsuite.azureClientSecret = testutil.GetEnv("AZURE_CLIENT_SECRET", "")
+	testsuite.azureClientSecret = testutil.GetEnv("AZURE_CLIENT_SECRET", "00000000-0000-0000-0000-000000000000")
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")

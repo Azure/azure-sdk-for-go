@@ -7,7 +7,9 @@
 package blockblob
 
 import (
+	"encoding/binary"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/hashing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
@@ -72,8 +74,12 @@ type StageBlockOptions struct {
 
 	LeaseAccessConditions *blob.LeaseAccessConditions
 
-	// Specify the transactional crc64 for the body, to be validated by the service.
-	TransactionalContentCRC64 []byte
+	// Let the SDK hash for you (providing the hash type(s) specified voids their relevance in this option).
+	// nil = None default
+	TransactionalValidationOption hashing.StorageTransferValidationOption
+
+	// Specify the transactional crc64 for the body, to be validated by the service. Should be hashed using hashing.CRC64Table or hashing.CRC64Polynomial
+	TransactionalContentCRC64 uint64
 
 	// Specify the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMD5 []byte
@@ -85,10 +91,18 @@ func (o *StageBlockOptions) format() (*generated.BlockBlobClientStageBlockOption
 		return nil, nil, nil, nil
 	}
 
-	return &generated.BlockBlobClientStageBlockOptions{
-		TransactionalContentCRC64: o.TransactionalContentCRC64,
-		TransactionalContentMD5:   o.TransactionalContentMD5,
-	}, o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo
+	options := &generated.BlockBlobClientStageBlockOptions{
+		TransactionalContentMD5: o.TransactionalContentMD5,
+	}
+
+	if o.TransactionalValidationOption == hashing.StorageTransferValidationOptionCRC64 || o.TransactionalContentCRC64 != 0 {
+		options.TransactionalContentCRC64 = make([]byte, 8)
+		// If the validation option is specified & the CRC is 0, it will be 0, and get overwritten anyway with the new hash.
+		// Thus, it's OK to run putUint64 here.
+		binary.LittleEndian.PutUint64(options.TransactionalContentCRC64, o.TransactionalContentCRC64)
+	}
+
+	return options, o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -256,6 +270,8 @@ type UploadStreamOptions struct {
 	// Each concurrent upload will create a buffer of size BlockSize.  The default value is one.
 	Concurrency int
 
+	TransferValidationOption hashing.StorageTransferValidationOption
+
 	HTTPHeaders      *blob.HTTPHeaders
 	Metadata         map[string]string
 	AccessConditions *blob.AccessConditions
@@ -290,9 +306,10 @@ func (u *UploadStreamOptions) format() error {
 func (u *UploadStreamOptions) getStageBlockOptions() *StageBlockOptions {
 	leaseAccessConditions, _ := exported.FormatBlobAccessConditions(u.AccessConditions)
 	return &StageBlockOptions{
-		CpkInfo:               u.CpkInfo,
-		CpkScopeInfo:          u.CpkScopeInfo,
-		LeaseAccessConditions: leaseAccessConditions,
+		TransactionalValidationOption: u.TransferValidationOption,
+		CpkInfo:                       u.CpkInfo,
+		CpkScopeInfo:                  u.CpkScopeInfo,
+		LeaseAccessConditions:         leaseAccessConditions,
 	}
 }
 

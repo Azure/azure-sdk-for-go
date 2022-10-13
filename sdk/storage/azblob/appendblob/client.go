@@ -8,6 +8,8 @@ package appendblob
 
 import (
 	"context"
+	"encoding/binary"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/hashing"
 	"io"
 	"os"
 
@@ -139,6 +141,15 @@ func (ab *Client) AppendBlock(ctx context.Context, body io.ReadSeekCloser, o *Ap
 	}
 
 	appendOptions, appendPositionAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions, leaseAccessConditions := o.format()
+
+	if o.TransactionalContentCRC64 == 0 && o.TransactionalValidationOption != hashing.StorageTransferValidationOptionNone {
+		body, err = hashing.NewHashingReadWrapper(body, o.TransactionalValidationOption)
+
+		if o.TransactionalValidationOption&hashing.StorageTransferValidationOptionCRC64 == hashing.StorageTransferValidationOptionCRC64 {
+			appendOptions.TransactionalContentCRC64 = make([]byte, 8)
+			binary.LittleEndian.PutUint64(appendOptions.TransactionalContentCRC64, (body.(*hashing.ReadWrapper)).CRC64Hash())
+		}
+	}
 
 	resp, err := ab.generated().AppendBlock(ctx, count, body, appendOptions, leaseAccessConditions, appendPositionAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions)
 

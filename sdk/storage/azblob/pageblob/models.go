@@ -7,6 +7,8 @@
 package pageblob
 
 import (
+	"encoding/binary"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/hashing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
@@ -89,7 +91,12 @@ type UploadPagesOptions struct {
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range blob.HTTPRange
 
-	TransactionalContentCRC64 []byte
+	// Let the SDK hash for you (providing the hash type(s) specified voids their relevance in this option).
+	// nil = None default
+	TransactionalValidationOption hashing.StorageTransferValidationOption
+
+	// Specify the transactional crc64 for the body, to be validated by the service. Should be hashed using hashing.CRC64Table or hashing.CRC64Polynomial
+	TransactionalContentCRC64 uint64
 	// Specify the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMD5 []byte
 
@@ -106,9 +113,15 @@ func (o *UploadPagesOptions) format() (*generated.PageBlobClientUploadPagesOptio
 	}
 
 	options := &generated.PageBlobClientUploadPagesOptions{
-		TransactionalContentCRC64: o.TransactionalContentCRC64,
-		TransactionalContentMD5:   o.TransactionalContentMD5,
-		Range:                     exported.FormatHTTPRange(o.Range),
+		TransactionalContentMD5: o.TransactionalContentMD5,
+		Range:                   exported.FormatHTTPRange(o.Range),
+	}
+
+	if o.TransactionalValidationOption == hashing.StorageTransferValidationOptionCRC64 || o.TransactionalContentCRC64 != 0 {
+		options.TransactionalContentCRC64 = make([]byte, 8)
+		// If the validation option is specified & the CRC is 0, it will be 0, and get overwritten anyway with the new hash.
+		// Thus, it's OK to run putUint64 here.
+		binary.LittleEndian.PutUint64(options.TransactionalContentCRC64, o.TransactionalContentCRC64)
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)

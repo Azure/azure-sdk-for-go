@@ -1,5 +1,15 @@
 # Release History
 
+## 0.6.0
+
+### Breaking Changes
+
+* CRC64 transactional hashes are now supplied with a `uint64` rather than a `[]byte` to conform with Golang's `hash/crc64` package
+
+### Features Added
+
+* Added the custom CRC64 polynomial used by storage for transactional hashes, and implemented automatic hashing for transactions.
+
 ## 0.5.0 (2022-09-29)
 
 ### Breaking Changes

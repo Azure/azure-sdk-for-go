@@ -11,7 +11,7 @@ package armdevhub
 
 const (
 	moduleName    = "armdevhub"
-	moduleVersion = "v0.1.1"
+	moduleVersion = "v0.2.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

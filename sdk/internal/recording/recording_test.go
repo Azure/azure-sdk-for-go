@@ -564,62 +564,48 @@ func TestGitRootNotFound(t *testing.T) {
 }
 
 func TestRecordingAssetConfigNotExist(t *testing.T) {
-	assetPath, err := getAssetsConfigLocation(".")
+	absPath, relPath, err := getAssetsConfigLocation(".")
 	require.NoError(t, err)
-	require.Equal(t, "", assetPath)
+	require.Equal(t, "", absPath)
+	require.Equal(t, "", relPath)
 }
 
 func TestRecordingAssetConfigOutOfBounds(t *testing.T) {
-	assetPath, err := getAssetsConfigLocation("../../../../")
+	absPath, relPath, err := getAssetsConfigLocation("../../../../")
 	require.NoError(t, err)
-	require.Equal(t, "", assetPath)
+	require.Equal(t, "", absPath)
+	require.Equal(t, "", relPath)
 }
 
-func TestRecordingAssetConfigInCwd(t *testing.T) {
-	recordingPath := "sdk/internal/recording"
+func TestRecordingAssetConfig(t *testing.T) {
+	cases := []struct{ expectedDirectory, searchDirectory, testFileLocation string }{
+		{"sdk/internal/recording", "sdk/internal/recording", recordingAssetConfigName},
+		{"sdk/internal/recording", "sdk/internal/recording/", recordingAssetConfigName},
+		{"sdk/internal", "sdk/internal/recording", "../" + recordingAssetConfigName},
+		{"sdk/internal", "sdk/internal/recording/", "../" + recordingAssetConfigName},
+	}
+
 	cwd, err := os.Getwd()
 	require.NoError(t, err)
 	gitRoot, err := getGitRoot(cwd)
 	require.NoError(t, err)
 
-	assetConfigPath := path.Join(gitRoot, recordingPath, recordingAssetConfigName)
-	_ = os.Remove(assetConfigPath)
-	defer func() {
-		err := os.Remove(assetConfigPath)
+	for _, c := range cases {
+		_ = os.Remove(c.testFileLocation)
+		o, err := os.Create(c.testFileLocation)
 		require.NoError(t, err)
-	}()
+		o.Close()
 
-	o, err := os.Create(assetConfigPath)
-	o.Close()
-	require.NoError(t, err)
-	expected, err := filepath.Abs(recordingAssetConfigName)
-	require.NoError(t, err)
-
-	assetPath, err := getAssetsConfigLocation(recordingPath)
-	require.NoError(t, err)
-	require.Equal(t, expected, assetPath)
-	assetPath, err = getAssetsConfigLocation(recordingPath + "/")
-	require.NoError(t, err)
-	require.Equal(t, expected, assetPath)
-}
-
-func TestRecordingAssetConfigInParent(t *testing.T) {
-	parentAssetPath := "../" + recordingAssetConfigName
-	_ = os.Remove(parentAssetPath)
-	defer func() {
-		err := os.Remove(parentAssetPath)
+		absPath, relPath, err := getAssetsConfigLocation(c.searchDirectory)
 		require.NoError(t, err)
-	}()
+		expected := c.expectedDirectory + "/" + recordingAssetConfigName
+		absPathExpected := path.Join(gitRoot, expected)
+		require.Equal(t, absPathExpected, absPath)
+		require.Equal(t, expected, relPath)
 
-	o, err := os.Create(parentAssetPath)
-	o.Close()
-	require.NoError(t, err)
-	expected, err := filepath.Abs(parentAssetPath)
-	require.NoError(t, err)
-
-	assetPath, err := getAssetsConfigLocation("sdk/internal/recording")
-	require.NoError(t, err)
-	require.Equal(t, expected, assetPath)
+		err = os.Remove(c.testFileLocation)
+		require.NoError(t, err)
+	}
 }
 
 func TestFindProxyCertLocation(t *testing.T) {

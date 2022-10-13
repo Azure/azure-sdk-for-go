@@ -706,8 +706,20 @@ func (s *ServiceRecordedTestsSuite) TestContainerRestore() {
 
 	_require.Equal(contRestored, true)
 
-	_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
-	_require.Nil(err)
+	for i := 0; i < 5; i++ {
+		_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
+		if err == nil {
+			// container was deleted
+			break
+		} else if bloberror.HasCode(err, bloberror.Code("ConcurrentContainerOperationInProgress")) {
+			// the container is still being restored, sleep a bit then try again
+			time.Sleep(10 * time.Second)
+		} else {
+			// some other error
+			break
+		}
+	}
+	_require.NoError(err)
 }
 
 func (s *ServiceRecordedTestsSuite) TestContainerRestoreFailures() {

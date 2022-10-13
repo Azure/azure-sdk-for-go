@@ -11,7 +11,7 @@ package armelasticsans
 
 const (
 	moduleName    = "armelasticsans"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.1.1"
 )
 
 // CreatedByType - The type of identity that created the resource.

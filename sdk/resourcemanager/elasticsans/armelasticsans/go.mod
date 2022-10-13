@@ -1,6 +1,6 @@
 module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsans/armelasticsans
 
-go 1.19
+go 1.18
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.0.0
@@ -19,3 +19,5 @@ require (
 	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e // indirect
 	golang.org/x/text v0.3.7 // indirect
 )
+
+retract [v0.0.0-00000000000000-000000000000, v0.1.1]

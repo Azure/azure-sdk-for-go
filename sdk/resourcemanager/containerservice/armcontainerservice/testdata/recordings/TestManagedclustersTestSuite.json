@@ -71,7 +71,7 @@
           "dnsPrefix": "dnsprefix1",
           "servicePrincipalProfile": {
             "clientId": "00000000-0000-0000-0000-000000000000",
-            "secret": "3wg8Q~_jfgaehE4ElYnWenqYtoVxnxpBxNW77cP-"
+            "secret": "00000000-0000-0000-0000-000000000000"
           }
         }
       },

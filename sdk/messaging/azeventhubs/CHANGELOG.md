@@ -23,8 +23,6 @@
 - Retries now respect cancellation when they're in the "delay before next try" phase. (PR#19295)
 - Fixed a potential leak which could cause us to open and leak a $cbs link connection, resulting in errors. (PR#19326)
 
-### Other Changes
-
 ## 0.1.1 (2022-09-08)
 
 ### Features Added

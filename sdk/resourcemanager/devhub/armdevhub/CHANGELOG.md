@@ -1,5 +1,17 @@
 # Release History
 
+## 0.2.0 (2022-10-13)
+### Breaking Changes
+
+- Function `NewWorkflowClient` parameter(s) have been changed from `(string, *string, azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewDeveloperHubServiceClient` parameter(s) have been changed from `(string, string, string, azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `*DeveloperHubServiceClient.GitHubOAuthCallback` parameter(s) have been changed from `(context.Context, string, *DeveloperHubServiceClientGitHubOAuthCallbackOptions)` to `(context.Context, string, string, string, *DeveloperHubServiceClientGitHubOAuthCallbackOptions)`
+
+### Features Added
+
+- New field `ManagedClusterResource` in struct `WorkflowClientListByResourceGroupOptions`
+
+
 ## 0.1.1 (2022-10-12)
 ### Other Changes
 - Loosen Go version requirement.

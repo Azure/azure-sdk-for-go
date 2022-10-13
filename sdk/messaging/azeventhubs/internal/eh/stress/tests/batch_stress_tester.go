@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package tests
 
 import (
@@ -174,12 +175,19 @@ func consumeForBatchTester(ctx context.Context, round int64, cc *azeventhubs.Con
 	defer log.Printf("[r:%d/%d,p:%s] Done receiving messages from partition", round, params.rounds, params.partitionID)
 
 	total := 0
+	numCancels := 0
+	const cancelLimit = 5
 
 	analyzeErrorFn := func(err error) error {
 		if err != nil {
 			if errors.Is(err, context.DeadlineExceeded) || errors.Is(err, context.Canceled) {
 				// track these, we can use it as a proxy for "network was slow" or similar.
 				testData.TC.TrackMetric(MetricDeadlineExceeded, float64(1), nil)
+				numCancels++
+
+				if numCancels >= cancelLimit {
+					return fmt.Errorf("cancellation errors were received %d times in a row. Stopping test as this indicates a problem", numCancels)
+				}
 			} else {
 				return fmt.Errorf("received %d/%d, but then got err: %w", total, params.numToSend, err)
 			}
@@ -193,8 +201,8 @@ func consumeForBatchTester(ctx context.Context, round int64, cc *azeventhubs.Con
 		events, err := partClient.ReceiveEvents(ctx, params.batchSize, nil)
 		cancel()
 
-		if analyzeErrorFn(err) != nil {
-			panic(analyzeErrorFn(err))
+		if err := analyzeErrorFn(err); err != nil {
+			panic(err)
 		}
 
 		testData.TC.TrackMetric(MetricReceived, float64(len(events)), nil)

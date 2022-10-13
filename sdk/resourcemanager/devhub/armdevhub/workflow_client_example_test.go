@@ -24,7 +24,7 @@ func ExampleWorkflowClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevhub.NewWorkflowClient("subscriptionId1", nil, cred, nil)
+	client, err := armdevhub.NewWorkflowClient("subscriptionId1", nil, "<workflow-name>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -48,7 +48,7 @@ func ExampleWorkflowClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevhub.NewWorkflowClient("subscriptionId1", to.Ptr("/subscriptions/subscriptionId1/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1"), cred, nil)
+	client, err := armdevhub.NewWorkflowClient("subscriptionId1", to.Ptr("/subscriptions/subscriptionId1/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1"), "<workflow-name>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -72,11 +72,11 @@ func ExampleWorkflowClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevhub.NewWorkflowClient("subscriptionId1", nil, cred, nil)
+	client, err := armdevhub.NewWorkflowClient("subscriptionId1", nil, "workflow1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resourceGroup1", "workflow1", nil)
+	res, err := client.Get(ctx, "resourceGroup1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -91,11 +91,11 @@ func ExampleWorkflowClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevhub.NewWorkflowClient("subscriptionId1", nil, cred, nil)
+	client, err := armdevhub.NewWorkflowClient("subscriptionId1", nil, "workflow1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "resourceGroup1", "workflow1", armdevhub.Workflow{
+	res, err := client.CreateOrUpdate(ctx, "resourceGroup1", armdevhub.Workflow{
 		Location: to.Ptr("location1"),
 		Tags: map[string]*string{
 			"appname": to.Ptr("testApp"),
@@ -143,11 +143,11 @@ func ExampleWorkflowClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevhub.NewWorkflowClient("subscriptionId1", nil, cred, nil)
+	client, err := armdevhub.NewWorkflowClient("subscriptionId1", nil, "workflow1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Delete(ctx, "resourceGroup1", "workflow1", nil)
+	res, err := client.Delete(ctx, "resourceGroup1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -162,11 +162,11 @@ func ExampleWorkflowClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevhub.NewWorkflowClient("subscriptionId1", nil, cred, nil)
+	client, err := armdevhub.NewWorkflowClient("subscriptionId1", nil, "workflow1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "resourceGroup1", "workflow1", armdevhub.TagsObject{
+	res, err := client.UpdateTags(ctx, "resourceGroup1", armdevhub.TagsObject{
 		Tags: map[string]*string{
 			"promote":     to.Ptr("false"),
 			"resourceEnv": to.Ptr("testing"),

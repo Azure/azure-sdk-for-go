@@ -29,15 +29,17 @@ type WorkflowClient struct {
 	host                   string
 	subscriptionID         string
 	managedClusterResource *string
+	workflowName           string
 	pl                     runtime.Pipeline
 }
 
 // NewWorkflowClient creates a new instance of WorkflowClient with the specified values.
 // subscriptionID - The ID of the target subscription.
+// workflowName - The name of the workflow resource.
 // managedClusterResource - The ManagedCluster resource associated with the workflows.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewWorkflowClient(subscriptionID string, managedClusterResource *string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowClient, error) {
+func NewWorkflowClient(subscriptionID string, workflowName string, managedClusterResource *string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -52,6 +54,7 @@ func NewWorkflowClient(subscriptionID string, managedClusterResource *string, cr
 	client := &WorkflowClient{
 		subscriptionID:         subscriptionID,
 		managedClusterResource: managedClusterResource,
+		workflowName:           workflowName,
 		host:                   ep,
 		pl:                     pl,
 	}
@@ -62,10 +65,9 @@ func NewWorkflowClient(subscriptionID string, managedClusterResource *string, cr
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
-// workflowName - The name of the workflow resource.
 // options - WorkflowClientCreateOrUpdateOptions contains the optional parameters for the WorkflowClient.CreateOrUpdate method.
-func (client *WorkflowClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workflowName string, parameters Workflow, options *WorkflowClientCreateOrUpdateOptions) (WorkflowClientCreateOrUpdateResponse, error) {
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workflowName, parameters, options)
+func (client *WorkflowClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, parameters Workflow, options *WorkflowClientCreateOrUpdateOptions) (WorkflowClientCreateOrUpdateResponse, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, parameters, options)
 	if err != nil {
 		return WorkflowClientCreateOrUpdateResponse{}, err
 	}
@@ -80,7 +82,7 @@ func (client *WorkflowClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *WorkflowClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, parameters Workflow, options *WorkflowClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *WorkflowClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, parameters Workflow, options *WorkflowClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/workflows/{workflowName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -90,10 +92,10 @@ func (client *WorkflowClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workflowName == "" {
-		return nil, errors.New("parameter workflowName cannot be empty")
+	if client.workflowName == "" {
+		return nil, errors.New("parameter client.workflowName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
+	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(client.workflowName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -118,10 +120,9 @@ func (client *WorkflowClient) createOrUpdateHandleResponse(resp *http.Response) 
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
-// workflowName - The name of the workflow resource.
 // options - WorkflowClientDeleteOptions contains the optional parameters for the WorkflowClient.Delete method.
-func (client *WorkflowClient) Delete(ctx context.Context, resourceGroupName string, workflowName string, options *WorkflowClientDeleteOptions) (WorkflowClientDeleteResponse, error) {
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workflowName, options)
+func (client *WorkflowClient) Delete(ctx context.Context, resourceGroupName string, options *WorkflowClientDeleteOptions) (WorkflowClientDeleteResponse, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
 		return WorkflowClientDeleteResponse{}, err
 	}
@@ -136,7 +137,7 @@ func (client *WorkflowClient) Delete(ctx context.Context, resourceGroupName stri
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *WorkflowClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, options *WorkflowClientDeleteOptions) (*policy.Request, error) {
+func (client *WorkflowClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, options *WorkflowClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/workflows/{workflowName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -146,10 +147,10 @@ func (client *WorkflowClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workflowName == "" {
-		return nil, errors.New("parameter workflowName cannot be empty")
+	if client.workflowName == "" {
+		return nil, errors.New("parameter client.workflowName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
+	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(client.workflowName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -174,10 +175,9 @@ func (client *WorkflowClient) deleteHandleResponse(resp *http.Response) (Workflo
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
-// workflowName - The name of the workflow resource.
 // options - WorkflowClientGetOptions contains the optional parameters for the WorkflowClient.Get method.
-func (client *WorkflowClient) Get(ctx context.Context, resourceGroupName string, workflowName string, options *WorkflowClientGetOptions) (WorkflowClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, workflowName, options)
+func (client *WorkflowClient) Get(ctx context.Context, resourceGroupName string, options *WorkflowClientGetOptions) (WorkflowClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
 		return WorkflowClientGetResponse{}, err
 	}
@@ -192,7 +192,7 @@ func (client *WorkflowClient) Get(ctx context.Context, resourceGroupName string,
 }
 
 // getCreateRequest creates the Get request.
-func (client *WorkflowClient) getCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, options *WorkflowClientGetOptions) (*policy.Request, error) {
+func (client *WorkflowClient) getCreateRequest(ctx context.Context, resourceGroupName string, options *WorkflowClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/workflows/{workflowName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -202,10 +202,10 @@ func (client *WorkflowClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workflowName == "" {
-		return nil, errors.New("parameter workflowName cannot be empty")
+	if client.workflowName == "" {
+		return nil, errors.New("parameter client.workflowName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
+	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(client.workflowName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -355,11 +355,10 @@ func (client *WorkflowClient) listByResourceGroupHandleResponse(resp *http.Respo
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
-// workflowName - The name of the workflow resource.
 // parameters - Parameters supplied to the Update Workflow Tags operation.
 // options - WorkflowClientUpdateTagsOptions contains the optional parameters for the WorkflowClient.UpdateTags method.
-func (client *WorkflowClient) UpdateTags(ctx context.Context, resourceGroupName string, workflowName string, parameters TagsObject, options *WorkflowClientUpdateTagsOptions) (WorkflowClientUpdateTagsResponse, error) {
-	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, workflowName, parameters, options)
+func (client *WorkflowClient) UpdateTags(ctx context.Context, resourceGroupName string, parameters TagsObject, options *WorkflowClientUpdateTagsOptions) (WorkflowClientUpdateTagsResponse, error) {
+	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, parameters, options)
 	if err != nil {
 		return WorkflowClientUpdateTagsResponse{}, err
 	}
@@ -374,7 +373,7 @@ func (client *WorkflowClient) UpdateTags(ctx context.Context, resourceGroupName 
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
-func (client *WorkflowClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, workflowName string, parameters TagsObject, options *WorkflowClientUpdateTagsOptions) (*policy.Request, error) {
+func (client *WorkflowClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, parameters TagsObject, options *WorkflowClientUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/workflows/{workflowName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -384,10 +383,10 @@ func (client *WorkflowClient) updateTagsCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workflowName == "" {
-		return nil, errors.New("parameter workflowName cannot be empty")
+	if client.workflowName == "" {
+		return nil, errors.New("parameter client.workflowName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
+	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(client.workflowName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err

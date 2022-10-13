@@ -22,13 +22,14 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type BasicTestSuite struct {
+type ManagedclustersTestSuite struct {
 	suite.Suite
 
 	ctx               context.Context
 	cred              azcore.TokenCredential
 	options           *arm.ClientOptions
 	agentPoolName     string
+	agentpoolId       string
 	configName        string
 	resourceName      string
 	azureClientId     string
@@ -38,38 +39,37 @@ type BasicTestSuite struct {
 	subscriptionId    string
 }
 
-func (testsuite *BasicTestSuite) SetupSuite() {
+func (testsuite *ManagedclustersTestSuite) SetupSuite() {
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.agentPoolName = "agentpoolna"
 	testsuite.configName = "configna"
 	testsuite.resourceName = "containerservicena"
-	testsuite.azureClientId = testutil.GetEnv("AZURE_CLIENT_ID", "00000000-0000-0000-0000-000000000000")
-	testsuite.azureClientSecret = testutil.GetEnv("AZURE_CLIENT_SECRET", "secret")
+	testsuite.azureClientId = testutil.GetEnv("AZURE_CLIENT_ID", "")
+	testsuite.azureClientSecret = testutil.GetEnv("AZURE_CLIENT_SECRET", "")
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "")
 
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/containerservice/armcontainerservice/testdata")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
+	testsuite.Prepare()
 }
 
-func (testsuite *BasicTestSuite) TearDownSuite() {
+func (testsuite *ManagedclustersTestSuite) TearDownSuite() {
+	testsuite.Cleanup()
 	_, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
 	testsuite.Require().NoError(err)
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestBasicTestSuite(t *testing.T) {
-	suite.Run(t, new(BasicTestSuite))
+func TestManagedclustersTestSuite(t *testing.T) {
+	suite.Run(t, new(ManagedclustersTestSuite))
 }
 
-// Microsoft.ContainerService/managedClusters
-func (testsuite *BasicTestSuite) TestScenario0() {
-	var agentpoolId string
-	var commandId string
+func (testsuite *ManagedclustersTestSuite) Prepare() {
 	var err error
 	// From step ManagedClusters_CreateOrUpdate
 	managedClustersClient, err := armcontainerservice.NewManagedClustersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
@@ -102,7 +102,59 @@ func (testsuite *BasicTestSuite) TestScenario0() {
 	_, err = testutil.PollForTest(testsuite.ctx, managedClustersClientCreateOrUpdateResponsePoller)
 	testsuite.Require().NoError(err)
 
+	// From step AgentPools_CreateOrUpdate
+	agentPoolsClient, err := armcontainerservice.NewAgentPoolsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	agentPoolsClientCreateOrUpdateResponsePoller, err := agentPoolsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, testsuite.agentPoolName, armcontainerservice.AgentPool{
+		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
+			Count: to.Ptr[int32](1),
+			Mode:  to.Ptr(armcontainerservice.AgentPoolModeUser),
+			NodeLabels: map[string]*string{
+				"key1": to.Ptr("val1"),
+			},
+			NodeTaints: []*string{
+				to.Ptr("Key1=Value1:NoSchedule")},
+			OrchestratorVersion:    to.Ptr(""),
+			OSType:                 to.Ptr(armcontainerservice.OSTypeLinux),
+			ScaleSetEvictionPolicy: to.Ptr(armcontainerservice.ScaleSetEvictionPolicyDelete),
+			ScaleSetPriority:       to.Ptr(armcontainerservice.ScaleSetPrioritySpot),
+			Tags: map[string]*string{
+				"name1": to.Ptr("val1"),
+			},
+			VMSize: to.Ptr("Standard_DS2_v2"),
+		},
+	}, nil)
+	testsuite.Require().NoError(err)
+	var agentPoolsClientCreateOrUpdateResponse *armcontainerservice.AgentPoolsClientCreateOrUpdateResponse
+	agentPoolsClientCreateOrUpdateResponse, err = testutil.PollForTest(testsuite.ctx, agentPoolsClientCreateOrUpdateResponsePoller)
+	testsuite.Require().NoError(err)
+	testsuite.agentpoolId = *agentPoolsClientCreateOrUpdateResponse.ID
+
+	// From step Snapshots_CreateOrUpdate
+	snapshotsClient, err := armcontainerservice.NewSnapshotsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	_, err = snapshotsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, armcontainerservice.Snapshot{
+		Location: to.Ptr(testsuite.location),
+		Tags: map[string]*string{
+			"key1": to.Ptr("val1"),
+			"key2": to.Ptr("val2"),
+		},
+		Properties: &armcontainerservice.SnapshotProperties{
+			CreationData: &armcontainerservice.CreationData{
+				SourceResourceID: to.Ptr(testsuite.agentpoolId),
+			},
+		},
+	}, nil)
+	testsuite.Require().NoError(err)
+}
+
+// Microsoft.ContainerService/managedClusters
+func (testsuite *ManagedclustersTestSuite) TestContainserservice() {
+	var commandId string
+	var err error
 	// From step ManagedClusters_GetOSOptions
+	managedClustersClient, err := armcontainerservice.NewManagedClustersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	_, err = managedClustersClient.GetOSOptions(testsuite.ctx, testsuite.location, &armcontainerservice.ManagedClustersClientGetOSOptionsOptions{ResourceType: nil})
 	testsuite.Require().NoError(err)
 
@@ -188,36 +240,14 @@ func (testsuite *BasicTestSuite) TestScenario0() {
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, managedClustersClientStartResponsePoller)
 	testsuite.Require().NoError(err)
+}
 
-	// From step AgentPools_CreateOrUpdate
+// Microsoft.ContainerService/managedClusters/agentPools
+func (testsuite *ManagedclustersTestSuite) TestAgentpools() {
+	var err error
+	// From step AgentPools_List
 	agentPoolsClient, err := armcontainerservice.NewAgentPoolsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	agentPoolsClientCreateOrUpdateResponsePoller, err := agentPoolsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, testsuite.agentPoolName, armcontainerservice.AgentPool{
-		Properties: &armcontainerservice.ManagedClusterAgentPoolProfileProperties{
-			Count: to.Ptr[int32](1),
-			Mode:  to.Ptr(armcontainerservice.AgentPoolModeUser),
-			NodeLabels: map[string]*string{
-				"key1": to.Ptr("val1"),
-			},
-			NodeTaints: []*string{
-				to.Ptr("Key1=Value1:NoSchedule")},
-			OrchestratorVersion:    to.Ptr(""),
-			OSType:                 to.Ptr(armcontainerservice.OSTypeLinux),
-			ScaleSetEvictionPolicy: to.Ptr(armcontainerservice.ScaleSetEvictionPolicyDelete),
-			ScaleSetPriority:       to.Ptr(armcontainerservice.ScaleSetPrioritySpot),
-			Tags: map[string]*string{
-				"name1": to.Ptr("val1"),
-			},
-			VMSize: to.Ptr("Standard_DS2_v2"),
-		},
-	}, nil)
-	testsuite.Require().NoError(err)
-	var agentPoolsClientCreateOrUpdateResponse *armcontainerservice.AgentPoolsClientCreateOrUpdateResponse
-	agentPoolsClientCreateOrUpdateResponse, err = testutil.PollForTest(testsuite.ctx, agentPoolsClientCreateOrUpdateResponsePoller)
-	testsuite.Require().NoError(err)
-	agentpoolId = *agentPoolsClientCreateOrUpdateResponse.ID
-
-	// From step AgentPools_List
 	agentPoolsClientNewListPager := agentPoolsClient.NewListPager(testsuite.resourceGroupName, testsuite.resourceName, nil)
 	for agentPoolsClientNewListPager.More() {
 		_, err := agentPoolsClientNewListPager.NextPage(testsuite.ctx)
@@ -242,25 +272,14 @@ func (testsuite *BasicTestSuite) TestScenario0() {
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, agentPoolsClientUpgradeNodeImageVersionResponsePoller)
 	testsuite.Require().NoError(err)
+}
 
-	// From step Snapshots_CreateOrUpdate
+// Microsoft.ContainerService/snapshots
+func (testsuite *ManagedclustersTestSuite) TestSnapshots() {
+	var err error
+	// From step Snapshots_List
 	snapshotsClient, err := armcontainerservice.NewSnapshotsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = snapshotsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, armcontainerservice.Snapshot{
-		Location: to.Ptr(testsuite.location),
-		Tags: map[string]*string{
-			"key1": to.Ptr("val1"),
-			"key2": to.Ptr("val2"),
-		},
-		Properties: &armcontainerservice.SnapshotProperties{
-			CreationData: &armcontainerservice.CreationData{
-				SourceResourceID: to.Ptr(agentpoolId),
-			},
-		},
-	}, nil)
-	testsuite.Require().NoError(err)
-
-	// From step Snapshots_List
 	snapshotsClientNewListPager := snapshotsClient.NewListPager(nil)
 	for snapshotsClientNewListPager.More() {
 		_, err := snapshotsClientNewListPager.NextPage(testsuite.ctx)
@@ -279,7 +298,11 @@ func (testsuite *BasicTestSuite) TestScenario0() {
 	// From step Snapshots_Get
 	_, err = snapshotsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, nil)
 	testsuite.Require().NoError(err)
+}
 
+// Microsoft.ContainerService/managedClusters/maintenanceConfigurations
+func (testsuite *ManagedclustersTestSuite) TestMaintenanceconfigurations() {
+	var err error
 	// From step MaintenanceConfigurations_CreateOrUpdate
 	maintenanceConfigurationsClient, err := armcontainerservice.NewMaintenanceConfigurationsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
@@ -316,18 +339,27 @@ func (testsuite *BasicTestSuite) TestScenario0() {
 	// From step MaintenanceConfigurations_Delete
 	_, err = maintenanceConfigurationsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, testsuite.configName, nil)
 	testsuite.Require().NoError(err)
+}
 
+func (testsuite *ManagedclustersTestSuite) Cleanup() {
+	var err error
 	// From step Snapshots_Delete
+	snapshotsClient, err := armcontainerservice.NewSnapshotsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	_, err = snapshotsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step AgentPools_Delete
+	agentPoolsClient, err := armcontainerservice.NewAgentPoolsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	agentPoolsClientDeleteResponsePoller, err := agentPoolsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, testsuite.agentPoolName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, agentPoolsClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step ManagedClusters_Stop
+	managedClustersClient, err := armcontainerservice.NewManagedClustersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	managedClustersClientStopResponsePoller, err := managedClustersClient.BeginStop(testsuite.ctx, testsuite.resourceGroupName, testsuite.resourceName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, managedClustersClientStopResponsePoller)

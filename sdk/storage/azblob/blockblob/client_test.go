@@ -1812,6 +1812,9 @@ func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobVersion() {
 		_require.Nil(err)
 	}
 
+	// adding wait after delete
+	time.Sleep(10 * time.Second)
+
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Versions: true},
 	})
@@ -1819,6 +1822,9 @@ func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobVersion() {
 
 	_, err = bbClient.Undelete(context.Background(), nil)
 	_require.Nil(err)
+
+	// adding wait after undelete
+	time.Sleep(10 * time.Second)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Versions: true},
@@ -1872,6 +1878,9 @@ func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobSnapshot() {
 		_require.Nil(err)
 	}
 
+	// adding wait after delete
+	time.Sleep(10 * time.Second)
+
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Snapshots: true},
 	})
@@ -1879,6 +1888,9 @@ func (s *BlockBlobRecordedTestsSuite) TestUndeleteBlockBlobSnapshot() {
 
 	_, err = bbClient.Undelete(context.Background(), nil)
 	_require.Nil(err)
+
+	// adding wait after undelete
+	time.Sleep(10 * time.Second)
 
 	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Snapshots: true},

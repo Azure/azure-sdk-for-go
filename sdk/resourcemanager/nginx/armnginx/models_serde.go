@@ -282,6 +282,7 @@ func (c ConfigurationProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "files", c.Files)
 	populate(objectMap, "package", c.Package)
+	populate(objectMap, "protectedFiles", c.ProtectedFiles)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
 	populate(objectMap, "rootFile", c.RootFile)
 	return json.Marshal(objectMap)
@@ -301,6 +302,9 @@ func (c *ConfigurationProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "package":
 			err = unpopulate(val, "Package", &c.Package)
+			delete(rawMsg, key)
+		case "protectedFiles":
+			err = unpopulate(val, "ProtectedFiles", &c.ProtectedFiles)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &c.ProvisioningState)

@@ -13,7 +13,7 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Deployments_Get.json
@@ -36,7 +36,7 @@ func ExampleDeploymentsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Deployments_Create.json
-func ExampleDeploymentsClient_BeginCreate() {
+func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -46,7 +46,7 @@ func ExampleDeploymentsClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "myDeployment", &armnginx.DeploymentsClientBeginCreateOptions{Body: nil})
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myDeployment", &armnginx.DeploymentsClientBeginCreateOrUpdateOptions{Body: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

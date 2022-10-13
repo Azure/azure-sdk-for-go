@@ -9,8 +9,8 @@
 
 package armnginx
 
-// CertificatesClientCreateResponse contains the response from method CertificatesClient.Create.
-type CertificatesClientCreateResponse struct {
+// CertificatesClientCreateOrUpdateResponse contains the response from method CertificatesClient.CreateOrUpdate.
+type CertificatesClientCreateOrUpdateResponse struct {
 	Certificate
 }
 
@@ -49,8 +49,8 @@ type ConfigurationsClientListResponse struct {
 	ConfigurationListResponse
 }
 
-// DeploymentsClientCreateResponse contains the response from method DeploymentsClient.Create.
-type DeploymentsClientCreateResponse struct {
+// DeploymentsClientCreateOrUpdateResponse contains the response from method DeploymentsClient.CreateOrUpdate.
+type DeploymentsClientCreateOrUpdateResponse struct {
 	Deployment
 }
 

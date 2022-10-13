@@ -78,65 +78,6 @@ func (c *CheckNameAvailabilityParameters) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CommonProperties.
-func (c CommonProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "enableNonSslPort", c.EnableNonSSLPort)
-	populate(objectMap, "minimumTlsVersion", c.MinimumTLSVersion)
-	populate(objectMap, "publicNetworkAccess", c.PublicNetworkAccess)
-	populate(objectMap, "redisConfiguration", c.RedisConfiguration)
-	populate(objectMap, "redisVersion", c.RedisVersion)
-	populate(objectMap, "replicasPerMaster", c.ReplicasPerMaster)
-	populate(objectMap, "replicasPerPrimary", c.ReplicasPerPrimary)
-	populate(objectMap, "shardCount", c.ShardCount)
-	populate(objectMap, "tenantSettings", c.TenantSettings)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CommonProperties.
-func (c *CommonProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", c, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "enableNonSslPort":
-			err = unpopulate(val, "EnableNonSSLPort", &c.EnableNonSSLPort)
-			delete(rawMsg, key)
-		case "minimumTlsVersion":
-			err = unpopulate(val, "MinimumTLSVersion", &c.MinimumTLSVersion)
-			delete(rawMsg, key)
-		case "publicNetworkAccess":
-			err = unpopulate(val, "PublicNetworkAccess", &c.PublicNetworkAccess)
-			delete(rawMsg, key)
-		case "redisConfiguration":
-			err = unpopulate(val, "RedisConfiguration", &c.RedisConfiguration)
-			delete(rawMsg, key)
-		case "redisVersion":
-			err = unpopulate(val, "RedisVersion", &c.RedisVersion)
-			delete(rawMsg, key)
-		case "replicasPerMaster":
-			err = unpopulate(val, "ReplicasPerMaster", &c.ReplicasPerMaster)
-			delete(rawMsg, key)
-		case "replicasPerPrimary":
-			err = unpopulate(val, "ReplicasPerPrimary", &c.ReplicasPerPrimary)
-			delete(rawMsg, key)
-		case "shardCount":
-			err = unpopulate(val, "ShardCount", &c.ShardCount)
-			delete(rawMsg, key)
-		case "tenantSettings":
-			err = unpopulate(val, "TenantSettings", &c.TenantSettings)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", c, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type CommonPropertiesRedisConfiguration.
 func (c CommonPropertiesRedisConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -273,77 +214,6 @@ func (c *CreateParameters) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "zones":
 			err = unpopulate(val, "Zones", &c.Zones)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", c, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CreateProperties.
-func (c CreateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "enableNonSslPort", c.EnableNonSSLPort)
-	populate(objectMap, "minimumTlsVersion", c.MinimumTLSVersion)
-	populate(objectMap, "publicNetworkAccess", c.PublicNetworkAccess)
-	populate(objectMap, "redisConfiguration", c.RedisConfiguration)
-	populate(objectMap, "redisVersion", c.RedisVersion)
-	populate(objectMap, "replicasPerMaster", c.ReplicasPerMaster)
-	populate(objectMap, "replicasPerPrimary", c.ReplicasPerPrimary)
-	populate(objectMap, "sku", c.SKU)
-	populate(objectMap, "shardCount", c.ShardCount)
-	populate(objectMap, "staticIP", c.StaticIP)
-	populate(objectMap, "subnetId", c.SubnetID)
-	populate(objectMap, "tenantSettings", c.TenantSettings)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CreateProperties.
-func (c *CreateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", c, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "enableNonSslPort":
-			err = unpopulate(val, "EnableNonSSLPort", &c.EnableNonSSLPort)
-			delete(rawMsg, key)
-		case "minimumTlsVersion":
-			err = unpopulate(val, "MinimumTLSVersion", &c.MinimumTLSVersion)
-			delete(rawMsg, key)
-		case "publicNetworkAccess":
-			err = unpopulate(val, "PublicNetworkAccess", &c.PublicNetworkAccess)
-			delete(rawMsg, key)
-		case "redisConfiguration":
-			err = unpopulate(val, "RedisConfiguration", &c.RedisConfiguration)
-			delete(rawMsg, key)
-		case "redisVersion":
-			err = unpopulate(val, "RedisVersion", &c.RedisVersion)
-			delete(rawMsg, key)
-		case "replicasPerMaster":
-			err = unpopulate(val, "ReplicasPerMaster", &c.ReplicasPerMaster)
-			delete(rawMsg, key)
-		case "replicasPerPrimary":
-			err = unpopulate(val, "ReplicasPerPrimary", &c.ReplicasPerPrimary)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, "SKU", &c.SKU)
-			delete(rawMsg, key)
-		case "shardCount":
-			err = unpopulate(val, "ShardCount", &c.ShardCount)
-			delete(rawMsg, key)
-		case "staticIP":
-			err = unpopulate(val, "StaticIP", &c.StaticIP)
-			delete(rawMsg, key)
-		case "subnetId":
-			err = unpopulate(val, "SubnetID", &c.SubnetID)
-			delete(rawMsg, key)
-		case "tenantSettings":
-			err = unpopulate(val, "TenantSettings", &c.TenantSettings)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -842,8 +712,10 @@ func (l *LinkedServerCreateParameters) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type LinkedServerCreateProperties.
 func (l LinkedServerCreateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "geoReplicatedPrimaryHostName", l.GeoReplicatedPrimaryHostName)
 	populate(objectMap, "linkedRedisCacheId", l.LinkedRedisCacheID)
 	populate(objectMap, "linkedRedisCacheLocation", l.LinkedRedisCacheLocation)
+	populate(objectMap, "primaryHostName", l.PrimaryHostName)
 	populate(objectMap, "serverRole", l.ServerRole)
 	return json.Marshal(objectMap)
 }
@@ -857,11 +729,17 @@ func (l *LinkedServerCreateProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "geoReplicatedPrimaryHostName":
+			err = unpopulate(val, "GeoReplicatedPrimaryHostName", &l.GeoReplicatedPrimaryHostName)
+			delete(rawMsg, key)
 		case "linkedRedisCacheId":
 			err = unpopulate(val, "LinkedRedisCacheID", &l.LinkedRedisCacheID)
 			delete(rawMsg, key)
 		case "linkedRedisCacheLocation":
 			err = unpopulate(val, "LinkedRedisCacheLocation", &l.LinkedRedisCacheLocation)
+			delete(rawMsg, key)
+		case "primaryHostName":
+			err = unpopulate(val, "PrimaryHostName", &l.PrimaryHostName)
 			delete(rawMsg, key)
 		case "serverRole":
 			err = unpopulate(val, "ServerRole", &l.ServerRole)
@@ -877,8 +755,10 @@ func (l *LinkedServerCreateProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type LinkedServerProperties.
 func (l LinkedServerProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "geoReplicatedPrimaryHostName", l.GeoReplicatedPrimaryHostName)
 	populate(objectMap, "linkedRedisCacheId", l.LinkedRedisCacheID)
 	populate(objectMap, "linkedRedisCacheLocation", l.LinkedRedisCacheLocation)
+	populate(objectMap, "primaryHostName", l.PrimaryHostName)
 	populate(objectMap, "provisioningState", l.ProvisioningState)
 	populate(objectMap, "serverRole", l.ServerRole)
 	return json.Marshal(objectMap)
@@ -893,11 +773,17 @@ func (l *LinkedServerProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "geoReplicatedPrimaryHostName":
+			err = unpopulate(val, "GeoReplicatedPrimaryHostName", &l.GeoReplicatedPrimaryHostName)
+			delete(rawMsg, key)
 		case "linkedRedisCacheId":
 			err = unpopulate(val, "LinkedRedisCacheID", &l.LinkedRedisCacheID)
 			delete(rawMsg, key)
 		case "linkedRedisCacheLocation":
 			err = unpopulate(val, "LinkedRedisCacheLocation", &l.LinkedRedisCacheLocation)
+			delete(rawMsg, key)
+		case "primaryHostName":
+			err = unpopulate(val, "PrimaryHostName", &l.PrimaryHostName)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &l.ProvisioningState)
@@ -1176,65 +1062,6 @@ func (o *OperationListResult) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &o.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", o, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationStatus.
-func (o OperationStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", o.EndTime)
-	populate(objectMap, "error", o.Error)
-	populate(objectMap, "id", o.ID)
-	populate(objectMap, "name", o.Name)
-	populate(objectMap, "operations", o.Operations)
-	populate(objectMap, "percentComplete", o.PercentComplete)
-	populate(objectMap, "properties", o.Properties)
-	populateTimeRFC3339(objectMap, "startTime", o.StartTime)
-	populate(objectMap, "status", o.Status)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OperationStatus.
-func (o *OperationStatus) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", o, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, "EndTime", &o.EndTime)
-			delete(rawMsg, key)
-		case "error":
-			err = unpopulate(val, "Error", &o.Error)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, "ID", &o.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &o.Name)
-			delete(rawMsg, key)
-		case "operations":
-			err = unpopulate(val, "Operations", &o.Operations)
-			delete(rawMsg, key)
-		case "percentComplete":
-			err = unpopulate(val, "PercentComplete", &o.PercentComplete)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, "Properties", &o.Properties)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &o.StartTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, "Status", &o.Status)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1637,109 +1464,6 @@ func (p *PrivateLinkServiceConnectionState) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Properties.
-func (p Properties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accessKeys", p.AccessKeys)
-	populate(objectMap, "enableNonSslPort", p.EnableNonSSLPort)
-	populate(objectMap, "hostName", p.HostName)
-	populate(objectMap, "instances", p.Instances)
-	populate(objectMap, "linkedServers", p.LinkedServers)
-	populate(objectMap, "minimumTlsVersion", p.MinimumTLSVersion)
-	populate(objectMap, "port", p.Port)
-	populate(objectMap, "privateEndpointConnections", p.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", p.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", p.PublicNetworkAccess)
-	populate(objectMap, "redisConfiguration", p.RedisConfiguration)
-	populate(objectMap, "redisVersion", p.RedisVersion)
-	populate(objectMap, "replicasPerMaster", p.ReplicasPerMaster)
-	populate(objectMap, "replicasPerPrimary", p.ReplicasPerPrimary)
-	populate(objectMap, "sku", p.SKU)
-	populate(objectMap, "sslPort", p.SSLPort)
-	populate(objectMap, "shardCount", p.ShardCount)
-	populate(objectMap, "staticIP", p.StaticIP)
-	populate(objectMap, "subnetId", p.SubnetID)
-	populate(objectMap, "tenantSettings", p.TenantSettings)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Properties.
-func (p *Properties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", p, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "accessKeys":
-			err = unpopulate(val, "AccessKeys", &p.AccessKeys)
-			delete(rawMsg, key)
-		case "enableNonSslPort":
-			err = unpopulate(val, "EnableNonSSLPort", &p.EnableNonSSLPort)
-			delete(rawMsg, key)
-		case "hostName":
-			err = unpopulate(val, "HostName", &p.HostName)
-			delete(rawMsg, key)
-		case "instances":
-			err = unpopulate(val, "Instances", &p.Instances)
-			delete(rawMsg, key)
-		case "linkedServers":
-			err = unpopulate(val, "LinkedServers", &p.LinkedServers)
-			delete(rawMsg, key)
-		case "minimumTlsVersion":
-			err = unpopulate(val, "MinimumTLSVersion", &p.MinimumTLSVersion)
-			delete(rawMsg, key)
-		case "port":
-			err = unpopulate(val, "Port", &p.Port)
-			delete(rawMsg, key)
-		case "privateEndpointConnections":
-			err = unpopulate(val, "PrivateEndpointConnections", &p.PrivateEndpointConnections)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, "ProvisioningState", &p.ProvisioningState)
-			delete(rawMsg, key)
-		case "publicNetworkAccess":
-			err = unpopulate(val, "PublicNetworkAccess", &p.PublicNetworkAccess)
-			delete(rawMsg, key)
-		case "redisConfiguration":
-			err = unpopulate(val, "RedisConfiguration", &p.RedisConfiguration)
-			delete(rawMsg, key)
-		case "redisVersion":
-			err = unpopulate(val, "RedisVersion", &p.RedisVersion)
-			delete(rawMsg, key)
-		case "replicasPerMaster":
-			err = unpopulate(val, "ReplicasPerMaster", &p.ReplicasPerMaster)
-			delete(rawMsg, key)
-		case "replicasPerPrimary":
-			err = unpopulate(val, "ReplicasPerPrimary", &p.ReplicasPerPrimary)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, "SKU", &p.SKU)
-			delete(rawMsg, key)
-		case "sslPort":
-			err = unpopulate(val, "SSLPort", &p.SSLPort)
-			delete(rawMsg, key)
-		case "shardCount":
-			err = unpopulate(val, "ShardCount", &p.ShardCount)
-			delete(rawMsg, key)
-		case "staticIP":
-			err = unpopulate(val, "StaticIP", &p.StaticIP)
-			delete(rawMsg, key)
-		case "subnetId":
-			err = unpopulate(val, "SubnetID", &p.SubnetID)
-			delete(rawMsg, key)
-		case "tenantSettings":
-			err = unpopulate(val, "TenantSettings", &p.TenantSettings)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", p, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type ProxyResource.
 func (p ProxyResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2093,69 +1817,6 @@ func (u *UpdateParameters) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "tags":
 			err = unpopulate(val, "Tags", &u.Tags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", u, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UpdateProperties.
-func (u UpdateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "enableNonSslPort", u.EnableNonSSLPort)
-	populate(objectMap, "minimumTlsVersion", u.MinimumTLSVersion)
-	populate(objectMap, "publicNetworkAccess", u.PublicNetworkAccess)
-	populate(objectMap, "redisConfiguration", u.RedisConfiguration)
-	populate(objectMap, "redisVersion", u.RedisVersion)
-	populate(objectMap, "replicasPerMaster", u.ReplicasPerMaster)
-	populate(objectMap, "replicasPerPrimary", u.ReplicasPerPrimary)
-	populate(objectMap, "sku", u.SKU)
-	populate(objectMap, "shardCount", u.ShardCount)
-	populate(objectMap, "tenantSettings", u.TenantSettings)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type UpdateProperties.
-func (u *UpdateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", u, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "enableNonSslPort":
-			err = unpopulate(val, "EnableNonSSLPort", &u.EnableNonSSLPort)
-			delete(rawMsg, key)
-		case "minimumTlsVersion":
-			err = unpopulate(val, "MinimumTLSVersion", &u.MinimumTLSVersion)
-			delete(rawMsg, key)
-		case "publicNetworkAccess":
-			err = unpopulate(val, "PublicNetworkAccess", &u.PublicNetworkAccess)
-			delete(rawMsg, key)
-		case "redisConfiguration":
-			err = unpopulate(val, "RedisConfiguration", &u.RedisConfiguration)
-			delete(rawMsg, key)
-		case "redisVersion":
-			err = unpopulate(val, "RedisVersion", &u.RedisVersion)
-			delete(rawMsg, key)
-		case "replicasPerMaster":
-			err = unpopulate(val, "ReplicasPerMaster", &u.ReplicasPerMaster)
-			delete(rawMsg, key)
-		case "replicasPerPrimary":
-			err = unpopulate(val, "ReplicasPerPrimary", &u.ReplicasPerPrimary)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, "SKU", &u.SKU)
-			delete(rawMsg, key)
-		case "shardCount":
-			err = unpopulate(val, "ShardCount", &u.ShardCount)
-			delete(rawMsg, key)
-		case "tenantSettings":
-			err = unpopulate(val, "TenantSettings", &u.TenantSettings)
 			delete(rawMsg, key)
 		}
 		if err != nil {

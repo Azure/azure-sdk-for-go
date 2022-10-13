@@ -1,5 +1,9 @@
 # Release History
 
+## 0.5.1 (2022-10-13)
+### Other Changes
+
+
 ## 0.5.0 (2022-05-17)
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 0.5.0, which contains breaking changes.

@@ -105,8 +105,6 @@ func BatchStressTester(ctx context.Context) error {
 		return err
 	}
 
-	defer closeOrPanic(producerClient)
-
 	// we're going to read (and re-read these events over and over in our tests)
 	log.Printf("Sending messages to partition %s", params.partitionID)
 
@@ -117,6 +115,8 @@ func BatchStressTester(ctx context.Context) error {
 		numExtraBytes: params.paddingBytes,
 		testData:      testData,
 	})
+
+	closeOrPanic(producerClient)
 
 	if err != nil {
 		log.Fatalf("Failed to send events to partition %s: %s", params.partitionID, err)

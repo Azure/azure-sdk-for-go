@@ -11,10 +11,6 @@ import (
 	"context"
 	"encoding/base64"
 	"errors"
-	"io"
-	"os"
-	"sync"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
@@ -25,6 +21,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
+	"io"
+	"os"
+	"sync"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -218,6 +217,9 @@ func (bb *Client) CommitBlockList(ctx context.Context, base64BlockIDs []string, 
 			Timeout:                   options.Timeout,
 			TransactionalContentCRC64: options.TransactionalContentCRC64,
 			TransactionalContentMD5:   options.TransactionalContentMD5,
+			LegalHold:                 options.LegalHold,
+			ImmutabilityPolicyMode:    options.ImmutabilityPolicyMode,
+			ImmutabilityPolicyExpiry:  options.ImmutabilityPolicyExpiryTime,
 		}
 
 		headers = options.HTTPHeaders

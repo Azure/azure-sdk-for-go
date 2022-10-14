@@ -261,8 +261,8 @@ func getCanonicalName(account string, containerName string, blobName string, dir
 // Initialize an instance of this type and then call its String method to set BlobSASSignatureValues's Permissions field.
 // All permissions descriptions can be found here: https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas#permissions-for-a-directory-container-or-blob
 type ContainerPermissions struct {
-	Read, Add, Create, Write, Delete, DeletePreviousVersion, List, Tag bool
-	Execute, ModifyOwnership, ModifyPermissions                        bool // Hierarchical Namespace only
+	Read, Add, Create, Write, Delete, DeletePreviousVersion, List, Tag, SetImmutabilityPolicy bool
+	Execute, ModifyOwnership, ModifyPermissions                                               bool // Hierarchical Namespace only
 }
 
 // String produces the SAS permissions string for an Azure Storage container.
@@ -292,6 +292,9 @@ func (p *ContainerPermissions) String() string {
 	}
 	if p.Tag {
 		b.WriteRune('t')
+	}
+	if p.SetImmutabilityPolicy {
+		b.WriteRune('i')
 	}
 	if p.Execute {
 		b.WriteRune('e')
@@ -342,7 +345,7 @@ func (p *ContainerPermissions) String() string {
 // BlobPermissions type simplifies creating the permissions string for an Azure Storage blob SAS.
 // Initialize an instance of this type and then call its String method to set BlobSASSignatureValues's Permissions field.
 type BlobPermissions struct {
-	Read, Add, Create, Write, Delete, DeletePreviousVersion, Tag, List, Move, Execute, Ownership, Permissions bool
+	Read, Add, Create, Write, Delete, DeletePreviousVersion, Tag, List, Move, Execute, Ownership, Permissions, SetImmutabilityPolicy bool
 }
 
 // String produces the SAS permissions string for an Azure Storage blob.
@@ -369,6 +372,9 @@ func (p *BlobPermissions) String() string {
 	}
 	if p.Tag {
 		b.WriteRune('t')
+	}
+	if p.SetImmutabilityPolicy {
+		b.WriteRune('i')
 	}
 	if p.List {
 		b.WriteRune('l')
@@ -407,6 +413,8 @@ func parseBlobPermissions(s string) (BlobPermissions, error) {
 			p.DeletePreviousVersion = true
 		case 't':
 			p.Tag = true
+		case 'i':
+			p.SetImmutabilityPolicy = true
 		case 'l':
 			p.List = true
 		case 'm':

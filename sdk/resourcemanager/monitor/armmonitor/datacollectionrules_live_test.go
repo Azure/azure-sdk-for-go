@@ -129,15 +129,19 @@ func (testsuite *DatacollectionrulesTestSuite) Prepare() {
 		"parameters": map[string]interface{}{
 			"azureClientId": map[string]interface{}{
 				"type":         "string",
+				"defaultValue": "$(azureClientId)",
 			},
 			"azureClientSecret": map[string]interface{}{
 				"type":         "string",
+				"defaultValue": "$(azureClientSecret)",
 			},
 			"location": map[string]interface{}{
 				"type":         "string",
+				"defaultValue": "$(location)",
 			},
 			"managedClustersName": map[string]interface{}{
 				"type":         "string",
+				"defaultValue": "$(managedClustersName)",
 			},
 		},
 		"resources": []interface{}{

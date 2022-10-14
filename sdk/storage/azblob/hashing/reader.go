@@ -34,7 +34,7 @@ func (h *ReadWrapper) Close() error {
 	return nil
 }
 
-func NewHashingReadWrapper(r io.ReadSeekCloser, validationOption StorageTransferValidationOption) (*ReadWrapper, error) {
+func NewReadWrapper(r io.ReadSeekCloser, validationOption StorageTransferValidationOption) (*ReadWrapper, error) {
 	buf, err := io.ReadAll(r)
 	if err != nil {
 		return nil, err

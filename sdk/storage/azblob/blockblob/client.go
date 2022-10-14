@@ -159,7 +159,7 @@ func (bb *Client) StageBlock(ctx context.Context, base64BlockID string, body io.
 	opts, leaseAccessConditions, cpkInfo, cpkScopeInfo := options.format()
 
 	if options.TransactionalContentCRC64 == 0 && options.TransactionalValidationOption != hashing.StorageTransferValidationOptionNone {
-		body, err = hashing.NewHashingReadWrapper(body, options.TransactionalValidationOption)
+		body, err = hashing.NewReadWrapper(body, options.TransactionalValidationOption)
 
 		if options.TransactionalValidationOption&hashing.StorageTransferValidationOptionCRC64 == hashing.StorageTransferValidationOptionCRC64 {
 			opts.TransactionalContentCRC64 = make([]byte, 8)

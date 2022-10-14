@@ -143,7 +143,7 @@ func (ab *Client) AppendBlock(ctx context.Context, body io.ReadSeekCloser, o *Ap
 	appendOptions, appendPositionAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions, leaseAccessConditions := o.format()
 
 	if o.TransactionalContentCRC64 == 0 && o.TransactionalValidationOption != hashing.StorageTransferValidationOptionNone {
-		body, err = hashing.NewHashingReadWrapper(body, o.TransactionalValidationOption)
+		body, err = hashing.NewReadWrapper(body, o.TransactionalValidationOption)
 
 		if o.TransactionalValidationOption&hashing.StorageTransferValidationOptionCRC64 == hashing.StorageTransferValidationOptionCRC64 {
 			appendOptions.TransactionalContentCRC64 = make([]byte, 8)

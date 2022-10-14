@@ -45,7 +45,7 @@ func (testsuite *ManagedclustersTestSuite) SetupSuite() {
 	testsuite.agentPoolName = "agentpoolna"
 	testsuite.configName = "configna"
 	testsuite.resourceName = "containerservicena"
-	testsuite.azureClientId = testutil.GetEnv("AZURE_CLIENT_ID", "")
+	testsuite.azureClientId = testutil.GetEnv("AZURE_CLIENT_ID", "000000000000")
 	testsuite.azureClientSecret = testutil.GetEnv("AZURE_CLIENT_SECRET", "000000000000")
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")

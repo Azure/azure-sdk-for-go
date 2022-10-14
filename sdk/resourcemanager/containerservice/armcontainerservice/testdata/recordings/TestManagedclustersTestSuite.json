@@ -70,7 +70,7 @@
           ],
           "dnsPrefix": "dnsprefix1",
           "servicePrincipalProfile": {
-            "clientId": "00000000-0000-0000-0000-000000000000",
+            "clientId": "000000000000",
             "secret": "000000000000"
           }
         }
@@ -135,7 +135,7 @@
             }
           ],
           "servicePrincipalProfile": {
-            "clientId": "00000000-0000-0000-0000-000000000000"
+            "clientId": "000000000000"
           },
           "nodeResourceGroup": "MC_go-sdk-test-rg_containerservicena_eastus",
           "enableRBAC": true,
@@ -1210,7 +1210,7 @@
             }
           ],
           "servicePrincipalProfile": {
-            "clientId": "00000000-0000-0000-0000-000000000000"
+            "clientId": "000000000000"
           },
           "nodeResourceGroup": "MC_go-sdk-test-rg_containerservicena_eastus",
           "enableRBAC": true,
@@ -2404,7 +2404,7 @@
                 }
               ],
               "servicePrincipalProfile": {
-                "clientId": "00000000-0000-0000-0000-000000000000"
+                "clientId": "000000000000"
               },
               "nodeResourceGroup": "MC_go-sdk-test-rg_containerservicena_eastus",
               "enableRBAC": true,
@@ -2567,7 +2567,7 @@
                 }
               ],
               "servicePrincipalProfile": {
-                "clientId": "00000000-0000-0000-0000-000000000000"
+                "clientId": "000000000000"
               },
               "nodeResourceGroup": "MC_go-sdk-test-rg_containerservicena_eastus",
               "enableRBAC": true,
@@ -2891,7 +2891,7 @@
             }
           ],
           "servicePrincipalProfile": {
-            "clientId": "00000000-0000-0000-0000-000000000000"
+            "clientId": "000000000000"
           },
           "nodeResourceGroup": "MC_go-sdk-test-rg_containerservicena_eastus",
           "enableRBAC": true,
@@ -3129,7 +3129,7 @@
             }
           ],
           "servicePrincipalProfile": {
-            "clientId": "00000000-0000-0000-0000-000000000000"
+            "clientId": "000000000000"
           },
           "nodeResourceGroup": "MC_go-sdk-test-rg_containerservicena_eastus",
           "enableRBAC": true,

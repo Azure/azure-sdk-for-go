@@ -9,12 +9,13 @@ package network
 import (
 	"context"
 	"encoding/json"
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
-	"net/http"
 )
 
 // The package's fully qualified name.
@@ -33117,6 +33118,8 @@ type PrivateEndpointProperties struct {
 	IPConfigurations *[]PrivateEndpointIPConfiguration `json:"ipConfigurations,omitempty"`
 	// CustomNetworkInterfaceName - The custom name of the network interface attached to the private endpoint.
 	CustomNetworkInterfaceName *string `json:"customNetworkInterfaceName,omitempty"`
+	// ResourceGUID - READ-ONLY; The resource GUID property of the NAT gateway resource.
+	ResourceGUID *string `json:"resourceGuid,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for PrivateEndpointProperties.

@@ -1,5 +1,24 @@
 # Release History
 
+## 3.0.0 (2022-10-14)
+### Breaking Changes
+
+- Struct `CommonProperties` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `FirewallRuleCreateParameters` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `TrackedResource` has been removed
+
+### Features Added
+
+- New field `PrimaryHostName` in struct `LinkedServerCreateProperties`
+- New field `GeoReplicatedPrimaryHostName` in struct `LinkedServerCreateProperties`
+- New field `GeoReplicatedPrimaryHostName` in struct `LinkedServerProperties`
+- New field `PrimaryHostName` in struct `LinkedServerProperties`
+
+
 ## 2.0.0 (2022-09-01)
 ### Breaking Changes
 

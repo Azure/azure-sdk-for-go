@@ -320,10 +320,10 @@
           "mode": "Incremental",
           "parameters": {
             "azureClientId": {
-              "value": "00000000-0000-0000-0000-000000000000"
+              "value": "000000000000"
             },
             "azureClientSecret": {
-              "value": "00000000-0000-0000-0000-000000000000"
+              "value": "000000000000"
             },
             "location": {
               "value": "eastus"
@@ -479,11 +479,11 @@
           "parameters": {
             "azureClientId": {
               "type": "String",
-              "value": "00000000-0000-0000-0000-000000000000"
+              "value": "000000000000"
             },
             "azureClientSecret": {
               "type": "String",
-              "value": "00000000-0000-0000-0000-000000000000"
+              "value": "000000000000"
             },
             "location": {
               "type": "String",
@@ -971,11 +971,11 @@
           "parameters": {
             "azureClientId": {
               "type": "String",
-              "value": "00000000-0000-0000-0000-000000000000"
+              "value": "000000000000"
             },
             "azureClientSecret": {
               "type": "String",
-              "value": "00000000-0000-0000-0000-000000000000"
+              "value": "000000000000"
             },
             "location": {
               "type": "String",

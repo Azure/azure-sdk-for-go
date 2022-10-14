@@ -1,15 +1,6 @@
 # Release History
 
-## 3.0.0 (2022-10-14)
-### Breaking Changes
-
-- Struct `CommonProperties` has been removed
-- Struct `ErrorDetail` has been removed
-- Struct `ErrorResponse` has been removed
-- Struct `FirewallRuleCreateParameters` has been removed
-- Struct `ProxyResource` has been removed
-- Struct `Resource` has been removed
-- Struct `TrackedResource` has been removed
+## 2.1.0 (2022-10-14)
 
 ### Features Added
 

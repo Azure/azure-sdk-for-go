@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.1(2022-10-14)
+## 2.0.1 (2022-10-14)
 ### Others Changes
 - Update live test dependencies
 

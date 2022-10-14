@@ -265,7 +265,7 @@ func (testsuite *DatacollectionrulesTestSuite) TestDatacollectionrule() {
 	dataCollectionRulesClient, err := armmonitor.NewDataCollectionRulesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	dataCollectionRulesClientCreateResponse, err := dataCollectionRulesClient.Create(testsuite.ctx, testsuite.resourceGroupName, testsuite.dataCollectionRuleName, &armmonitor.DataCollectionRulesClientCreateOptions{
-		Body:  &armmonitor.DataCollectionRuleResource{
+		Body: &armmonitor.DataCollectionRuleResource{
 			Location: to.Ptr(testsuite.location),
 			Properties: &armmonitor.DataCollectionRuleResourceProperties{
 				DataFlows: []*armmonitor.DataFlow{

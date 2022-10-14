@@ -119,21 +119,21 @@ func (testsuite *ScheduledqueryrulesTestSuite) TestScheduledqueryrule() {
 	_, err = scheduledQueryRulesClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.ruleName, armmonitor.LogSearchRuleResource{
 		Location: to.Ptr(testsuite.location),
 		Properties: &armmonitor.LogSearchRule{
-			Description: to.Ptr("log search rule description"),		
-			Action:      &armmonitor.AlertingAction{
+			Description: to.Ptr("log search rule description"),
+			Action: &armmonitor.AlertingAction{
 				Severity: to.Ptr(armmonitor.AlertSeverityOne),
 				Trigger: &armmonitor.TriggerCondition{
-					Threshold: to.Ptr[float64](3),
+					Threshold:         to.Ptr[float64](3),
 					ThresholdOperator: to.Ptr(armmonitor.ConditionalOperatorGreaterThan),
 					MetricTrigger: &armmonitor.LogMetricTrigger{
-						MetricColumn: to.Ptr("Computer"),
+						MetricColumn:      to.Ptr("Computer"),
 						MetricTriggerType: to.Ptr(armmonitor.MetricTriggerTypeConsecutive),
-						Threshold: to.Ptr[float64](5),
+						Threshold:         to.Ptr[float64](5),
 						ThresholdOperator: to.Ptr(armmonitor.ConditionalOperatorGreaterThan),
 					},
 				},
 			},
-			Enabled:     to.Ptr(armmonitor.Enabled("true")),
+			Enabled: to.Ptr(armmonitor.Enabled("true")),
 			Schedule: &armmonitor.Schedule{
 				FrequencyInMinutes:  to.Ptr[int32](15),
 				TimeWindowInMinutes: to.Ptr[int32](15),

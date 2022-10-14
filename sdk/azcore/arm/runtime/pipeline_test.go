@@ -20,7 +20,26 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/stretchr/testify/require"
 )
+
+func TestNewPipelineWithAPIVersion(t *testing.T) {
+	version := "42"
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse()
+	pl, err := NewPipeline("...", "...", mockCredential{}, azruntime.PipelineOptions{}, &arm.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			APIVersion: version,
+		},
+	})
+	require.NoError(t, err)
+	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	require.NoError(t, err)
+	res, err := pl.Do(req)
+	require.NoError(t, err)
+	require.Equal(t, version, res.Request.URL.Query().Get(string(apiVersion)))
+}
 
 func TestNewPipelineWithOptions(t *testing.T) {
 	srv, close := mock.NewServer()

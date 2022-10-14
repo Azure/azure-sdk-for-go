@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package internal
 
 import (
@@ -75,24 +76,33 @@ func (l *Links[LinkT]) RecoverIfNeeded(ctx context.Context, partitionID string, 
 	case RecoveryKindNone:
 		return nil
 	case RecoveryKindLink:
-		// close and recreate
 		return l.closePartitionLinkIfMatch(ctx, partitionID, lwid.Link.LinkName())
 	case RecoveryKindConn:
-		created, err := l.ns.Recover(ctx, lwid.ConnID)
-
-		if err != nil {
+		// There are two possibilities here:
+		//
+		// 1. (stale) The caller got this error but the `lwid` they're passing us is 'stale' - ie, '
+		//    the connection the error happened on doesn't exist anymore (we recovered already) or
+		//    the link itself is no longer active in our cache.
+		//
+		// 2. (current) The caller got this error and is the current link and/or connection, so we're going to
+		//    need to recycle the connection (possibly) and links.
+		//
+		// For #1, we basically don't need to do anything. Recover(old-connection-id) will be a no-op
+		// and the closePartitionLinkIfMatch() will no-op as well since the link they passed us will
+		// not match the current link.
+		//
+		// For #2, we may recreate the connection. It's possible we won't if the connection itself
+		// has already been recovered by another goroutine. After that we'll recycle the link if
+		// it matches - we don't care about what happened with the connection because the link ID is
+		// unique - it wouldn't match unless it really was the same one that got the error.
+		if err := l.ns.Recover(ctx, lwid.ConnID); err != nil {
 			return err
 		}
 
-		if !created {
-			return nil
-		}
-
-		if err := l.closeLinks(ctx, false); err != nil {
-			return err
-		}
-
-		return nil
+		// We only close _this_ partition's link. Other partitions will also get an error, and will recover.
+		// We used to close _all_ the links, but no longer do that since it's possible (when we do receiver
+		// redirect) to have more than one active connection at a time.
+		return l.closePartitionLinkIfMatch(ctx, partitionID, lwid.Link.LinkName())
 	default:
 		return err
 	}
@@ -334,6 +344,9 @@ func (l *Links[LinkT]) checkOpen() error {
 	return nil
 }
 
+// closePartitionLinkIfMatch will close the link in the cache if it matches the passed in linkName.
+// This is similar to how an etag works - we'll only close it if you are working with the latest link -
+// if not, it's a no-op since somebody else has already 'saved' (recovered) before you.
 func (l *Links[LinkT]) closePartitionLinkIfMatch(ctx context.Context, partitionID string, linkName string) error {
 	l.linksMu.RLock()
 	current, exists := l.links[partitionID]

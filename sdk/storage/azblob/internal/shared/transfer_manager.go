@@ -22,7 +22,7 @@ type TransferManager interface {
 
 	// Put may or may not put the buffer into underlying storage, depending on settings.
 	// The buffer must not be touched after this has been called.
-	Put(b []byte) // nolint
+	Put(b []byte)
 
 	// Run will use a goroutine pool entry to run a function. This blocks until a pool
 	// goroutine becomes available.
@@ -78,7 +78,7 @@ func (s staticBuffer) Get() []byte {
 }
 
 // Put implements TransferManager.Put().
-func (s staticBuffer) Put(b []byte) { // nolint
+func (s staticBuffer) Put(b []byte) {
 	select {
 	case s.buffers <- b:
 	default: // This shouldn't happen, but just in case they call Put() with there own buffer.
@@ -128,7 +128,8 @@ func NewSyncPool(size, concurrency int) (TransferManager, error) {
 		threadpool: threadpool,
 		pool: sync.Pool{
 			New: func() interface{} {
-				return make([]byte, size)
+				buf := make([]byte, size)
+				return &buf
 			},
 		},
 	}, nil
@@ -136,13 +137,12 @@ func NewSyncPool(size, concurrency int) (TransferManager, error) {
 
 // Get implements TransferManager.Get().
 func (s *syncPool) Get() []byte {
-	return s.pool.Get().([]byte)
+	return *s.pool.Get().(*[]byte)
 }
 
 // Put implements TransferManager.Put().
-// nolint
 func (s *syncPool) Put(b []byte) {
-	s.pool.Put(b)
+	s.pool.Put(&b)
 }
 
 // Run implements TransferManager.Run().

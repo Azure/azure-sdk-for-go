@@ -74,7 +74,6 @@ func (s *ServiceRecordedTestsSuite) TestGetAccountInfo() {
 	_require.NotZero(sAccInfo)
 }
 
-// nolint
 func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -95,7 +94,6 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 }
 
-// nolint
 func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -156,7 +154,6 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	_require.GreaterOrEqual(count, 0)
 }
 
-// nolint
 func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -458,7 +455,6 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooSmall
 	_require.NotNil(err)
 }
 
-// nolint
 func (s *ServiceUnrecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooLarge() {
 	_require := require.New(s.T())
 	var svcClient *service.Client

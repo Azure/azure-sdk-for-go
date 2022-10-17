@@ -42,22 +42,18 @@ func Test(t *testing.T) {
 	}
 }
 
-// nolint
 func (s *ContainerRecordedTestsSuite) BeforeTest(suite string, test string) {
 	testcommon.BeforeTest(s.T(), suite, test)
 }
 
-// nolint
 func (s *ContainerRecordedTestsSuite) AfterTest(suite string, test string) {
 	testcommon.AfterTest(s.T(), suite, test)
 }
 
-// nolint
 func (s *ContainerUnrecordedTestsSuite) BeforeTest(suite string, test string) {
 
 }
 
-// nolint
 func (s *ContainerUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 }
@@ -70,7 +66,6 @@ type ContainerUnrecordedTestsSuite struct {
 	suite.Suite
 }
 
-//nolint
 //func (s *ContainerUnrecordedTestsSuite) TestNewContainerClientValidName() {
 //	_require := require.New(s.T())
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -85,7 +80,6 @@ type ContainerUnrecordedTestsSuite struct {
 //	_require.Equal(testURL.URL(), correctURL)
 //}
 
-//nolint
 //func (s *ContainerUnrecordedTestsSuite) TestCreateRootContainerURL() {
 //	_require := require.New(s.T())
 //	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1358,7 +1352,6 @@ func (s *ContainerUnrecordedTestsSuite) TestSetEmptyAccessPolicy() {
 	_require.Nil(err)
 }
 
-// nolint
 func (s *ContainerUnrecordedTestsSuite) TestSetAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1389,7 +1382,6 @@ func (s *ContainerUnrecordedTestsSuite) TestSetAccessPolicy() {
 	_require.Nil(err)
 }
 
-// nolint
 func (s *ContainerUnrecordedTestsSuite) TestSetMultipleAccessPolicies() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1440,7 +1432,6 @@ func (s *ContainerUnrecordedTestsSuite) TestSetMultipleAccessPolicies() {
 	_require.Len(resp.SignedIdentifiers, 3)
 }
 
-// nolint
 func (s *ContainerUnrecordedTestsSuite) TestSetNullAccessPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

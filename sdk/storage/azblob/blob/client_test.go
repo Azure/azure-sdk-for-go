@@ -46,22 +46,18 @@ func Test(t *testing.T) {
 	}
 }
 
-// nolint
 func (s *BlobRecordedTestsSuite) BeforeTest(suite string, test string) {
 	testcommon.BeforeTest(s.T(), suite, test)
 }
 
-// nolint
 func (s *BlobRecordedTestsSuite) AfterTest(suite string, test string) {
 	testcommon.AfterTest(s.T(), suite, test)
 }
 
-// nolint
 func (s *BlobUnrecordedTestsSuite) BeforeTest(suite string, test string) {
 
 }
 
-// nolint
 func (s *BlobUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 }
@@ -74,7 +70,6 @@ type BlobUnrecordedTestsSuite struct {
 	suite.Suite
 }
 
-// nolint
 func (s *BlobUnrecordedTestsSuite) TestCreateBlobClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -98,7 +93,6 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClient() {
 	_require.Equal(bbClient.URL(), correctURL)
 }
 
-// nolint
 func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -141,7 +135,6 @@ func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	_require.Equal(blobURLParts, correctURL)
 }
 
-// nolint
 func (s *BlobUnrecordedTestsSuite) TestCreateBlobClientWithSnapshotAndSASUsingConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -406,7 +399,6 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourcePrivate() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.CannotVerifyCopySource)
 }
 
-////nolint
 //func (s *BlobUnrecordedTestsSuite) TestBlobStartCopyUsingSASSrc() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -482,7 +474,6 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopySourcePrivate() {
 //	_ = resp2.Body(nil).Close()
 //}
 
-// nolint
 func (s *BlobUnrecordedTestsSuite) TestBlobStartCopyUsingSASDest() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1010,7 +1001,6 @@ func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestIfNoneMatchFalse() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.TargetConditionNotMet)
 }
 
-// nolint
 func (s *BlobUnrecordedTestsSuite) TestBlobAbortCopyInProgress() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -3175,7 +3165,6 @@ func (s *BlobRecordedTestsSuite) TestBlobClientPartsSASQueryTimes() {
 	}
 }
 
-////nolint
 //func (s *BlobUnrecordedTestsSuite) TestDownloadBlockBlobUnexpectedEOF() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -3209,7 +3198,6 @@ func (s *BlobRecordedTestsSuite) TestBlobClientPartsSASQueryTimes() {
 //	_require.EqualValues(buf, []byte(testcommon.BlockBlobDefaultData))
 //}
 
-////nolint
 //func InjectErrorInRetryReaderOptions(err error) *blob.RetryReaderOptions {
 //	return &blob.RetryReaderOptions{
 //		MaxRetryRequests:       1,

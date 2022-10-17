@@ -33,22 +33,18 @@ func Test(t *testing.T) {
 	}
 }
 
-// nolint
 func (s *LeaseRecordedTestsSuite) BeforeTest(suite string, test string) {
 	testcommon.BeforeTest(s.T(), suite, test)
 }
 
-// nolint
 func (s *LeaseRecordedTestsSuite) AfterTest(suite string, test string) {
 	testcommon.AfterTest(s.T(), suite, test)
 }
 
-// nolint
 func (s *LeaseUnrecordedTestsSuite) BeforeTest(suite string, test string) {
 
 }
 
-// nolint
 func (s *LeaseUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 }

@@ -41,9 +41,9 @@ func TestAPIVersionPolicy(t *testing.T) {
 			res, err := pl.Do(req)
 			require.NoError(t, err)
 			if header {
-				require.Equal(t, version, res.Request.Header.Get(s))
+				require.Equal(t, version, res.Request.Header.Get(name))
 			} else {
-				require.Equal(t, version, res.Request.URL.Query().Get(s))
+				require.Equal(t, version, res.Request.URL.Query().Get(name))
 			}
 
 			// the policy should override an existing value
@@ -59,9 +59,9 @@ func TestAPIVersionPolicy(t *testing.T) {
 			res, err = pl.Do(req)
 			require.NoError(t, err)
 			if header {
-				require.Equal(t, version, res.Request.Header.Get(s))
+				require.Equal(t, version, res.Request.Header.Get(name))
 			} else {
-				require.Equal(t, version, res.Request.URL.Query().Get(s))
+				require.Equal(t, version, res.Request.URL.Query().Get(name))
 			}
 		})
 	}

@@ -21,7 +21,7 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type BasicTestSuite struct {
+type EventhubTestSuite struct {
 	suite.Suite
 
 	ctx                   context.Context
@@ -33,13 +33,15 @@ type BasicTestSuite struct {
 	eventHubName          string
 	namespaceName         string
 	schemaGroupName       string
+	storageAccountId      string
 	storageAccountName    string
 	location              string
 	resourceGroupName     string
 	subscriptionId        string
 }
 
-func (testsuite *BasicTestSuite) SetupSuite() {
+func (testsuite *EventhubTestSuite) SetupSuite() {
+	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/eventhub/armeventhub/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.applicationGroupName = testutil.GenerateAlphaNumericID(testsuite.T(), "applicatio", 6)
@@ -51,47 +53,30 @@ func (testsuite *BasicTestSuite) SetupSuite() {
 	testsuite.storageAccountName = "storageeventhub2"
 	testsuite.location = testutil.GetEnv("LOCATION", "westus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "")
+	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 
-	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/eventhub/armeventhub/testdata")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
+	testsuite.Prepare()
 }
 
-func (testsuite *BasicTestSuite) TearDownSuite() {
+func (testsuite *EventhubTestSuite) TearDownSuite() {
+	testsuite.Cleanup()
 	_, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
 	testsuite.Require().NoError(err)
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestBasicTestSuite(t *testing.T) {
-	suite.Run(t, new(BasicTestSuite))
+func TestEventhubTestSuite(t *testing.T) {
+	suite.Run(t, new(EventhubTestSuite))
 }
 
-// Microsoft.EventHub/namespaces
-func (testsuite *BasicTestSuite) TestNamespace() {
-	var storageAccountId string
+func (testsuite *EventhubTestSuite) Prepare() {
 	var err error
-	// From step Namespaces_CheckNameAvailability
+	// From step Namespaces_CreateOrUpdate
 	namespacesClient, err := armeventhub.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = namespacesClient.CheckNameAvailability(testsuite.ctx, armeventhub.CheckNameAvailabilityParameter{
-		Name: to.Ptr("sdk-Namespace-8458"),
-	}, nil)
-	testsuite.Require().NoError(err)
-
-	// From step Operations_List
-	operationsClient, err := armeventhub.NewOperationsClient(testsuite.cred, testsuite.options)
-	testsuite.Require().NoError(err)
-	operationsClientNewListPager := operationsClient.NewListPager(nil)
-	for operationsClientNewListPager.More() {
-		_, err := operationsClientNewListPager.NextPage(testsuite.ctx)
-		testsuite.Require().NoError(err)
-		break
-	}
-
-	// From step Namespaces_CreateOrUpdate
 	namespacesClientCreateOrUpdateResponsePoller, err := namespacesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armeventhub.EHNamespace{
 		Location: to.Ptr(testsuite.location),
 		SKU: &armeventhub.SKU{
@@ -101,80 +86,6 @@ func (testsuite *BasicTestSuite) TestNamespace() {
 	}, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, namespacesClientCreateOrUpdateResponsePoller)
-	testsuite.Require().NoError(err)
-
-	// From step Namespaces_List
-	namespacesClientNewListPager := namespacesClient.NewListPager(nil)
-	for namespacesClientNewListPager.More() {
-		_, err := namespacesClientNewListPager.NextPage(testsuite.ctx)
-		testsuite.Require().NoError(err)
-		break
-	}
-
-	// From step Namespaces_ListAuthorizationRules
-	namespacesClientNewListAuthorizationRulesPager := namespacesClient.NewListAuthorizationRulesPager(testsuite.resourceGroupName, testsuite.namespaceName, nil)
-	for namespacesClientNewListAuthorizationRulesPager.More() {
-		_, err := namespacesClientNewListAuthorizationRulesPager.NextPage(testsuite.ctx)
-		testsuite.Require().NoError(err)
-		break
-	}
-
-	// From step Namespaces_ListNetworkRuleSet
-	_, err = namespacesClient.ListNetworkRuleSet(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, nil)
-	testsuite.Require().NoError(err)
-
-	// From step Namespaces_GetNetworkRuleSet
-	_, err = namespacesClient.GetNetworkRuleSet(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, nil)
-	testsuite.Require().NoError(err)
-
-	// From step Namespaces_ListByResourceGroup
-	namespacesClientNewListByResourceGroupPager := namespacesClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
-	for namespacesClientNewListByResourceGroupPager.More() {
-		_, err := namespacesClientNewListByResourceGroupPager.NextPage(testsuite.ctx)
-		testsuite.Require().NoError(err)
-		break
-	}
-
-	// From step Namespaces_Get
-	_, err = namespacesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, nil)
-	testsuite.Require().NoError(err)
-
-	// From step Namespaces_Update
-	_, err = namespacesClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armeventhub.EHNamespace{
-		Location: to.Ptr(testsuite.location),
-		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
-		},
-	}, nil)
-	testsuite.Require().NoError(err)
-
-	// From step Namespaces_CreateOrUpdateAuthorizationRule
-	_, err = namespacesClient.CreateOrUpdateAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, armeventhub.AuthorizationRule{
-		Properties: &armeventhub.AuthorizationRuleProperties{
-			Rights: []*armeventhub.AccessRights{
-				to.Ptr(armeventhub.AccessRightsListen),
-				to.Ptr(armeventhub.AccessRightsSend)},
-		},
-	}, nil)
-	testsuite.Require().NoError(err)
-
-	// From step Namespaces_GetAuthorizationRule
-	_, err = namespacesClient.GetAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, nil)
-	testsuite.Require().NoError(err)
-
-	// From step Namespaces_ListKeys
-	_, err = namespacesClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, nil)
-	testsuite.Require().NoError(err)
-
-	// From step Namespaces_RegenerateKeys
-	_, err = namespacesClient.RegenerateKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, armeventhub.RegenerateAccessKeyParameters{
-		KeyType: to.Ptr(armeventhub.KeyTypePrimaryKey),
-	}, nil)
-	testsuite.Require().NoError(err)
-
-	// From step Namespaces_DeleteAuthorizationRule
-	_, err = namespacesClient.DeleteAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step StorageAccount_Create
@@ -251,7 +162,7 @@ func (testsuite *BasicTestSuite) TestNamespace() {
 	}
 	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "StorageAccount_Create", &deployment)
 	testsuite.Require().NoError(err)
-	storageAccountId = deploymentExtend.Properties.Outputs.(map[string]interface{})["storageAccountId"].(map[string]interface{})["value"].(string)
+	testsuite.storageAccountId = deploymentExtend.Properties.Outputs.(map[string]interface{})["storageAccountId"].(map[string]interface{})["value"].(string)
 
 	// From step EventHubs_CreateOrUpdate
 	eventHubsClient, err := armeventhub.NewEventHubsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
@@ -264,7 +175,7 @@ func (testsuite *BasicTestSuite) TestNamespace() {
 					Properties: &armeventhub.DestinationProperties{
 						ArchiveNameFormat:        to.Ptr("{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}"),
 						BlobContainer:            to.Ptr("container"),
-						StorageAccountResourceID: to.Ptr(storageAccountId),
+						StorageAccountResourceID: to.Ptr(testsuite.storageAccountId),
 					},
 				},
 				Enabled:           to.Ptr(true),
@@ -278,8 +189,100 @@ func (testsuite *BasicTestSuite) TestNamespace() {
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
+}
 
+// Microsoft.EventHub/namespaces
+func (testsuite *EventhubTestSuite) TestNamespace() {
+	var err error
+	// From step Namespaces_CheckNameAvailability
+	namespacesClient, err := armeventhub.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	_, err = namespacesClient.CheckNameAvailability(testsuite.ctx, armeventhub.CheckNameAvailabilityParameter{
+		Name: to.Ptr("sdk-Namespace-8458"),
+	}, nil)
+	testsuite.Require().NoError(err)
+
+	// From step Namespaces_List
+	namespacesClientNewListPager := namespacesClient.NewListPager(nil)
+	for namespacesClientNewListPager.More() {
+		_, err := namespacesClientNewListPager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+		break
+	}
+
+	// From step Namespaces_ListAuthorizationRules
+	namespacesClientNewListAuthorizationRulesPager := namespacesClient.NewListAuthorizationRulesPager(testsuite.resourceGroupName, testsuite.namespaceName, nil)
+	for namespacesClientNewListAuthorizationRulesPager.More() {
+		_, err := namespacesClientNewListAuthorizationRulesPager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+		break
+	}
+
+	// From step Namespaces_ListNetworkRuleSet
+	_, err = namespacesClient.ListNetworkRuleSet(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, nil)
+	testsuite.Require().NoError(err)
+
+	// From step Namespaces_GetNetworkRuleSet
+	_, err = namespacesClient.GetNetworkRuleSet(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, nil)
+	testsuite.Require().NoError(err)
+
+	// From step Namespaces_ListByResourceGroup
+	namespacesClientNewListByResourceGroupPager := namespacesClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
+	for namespacesClientNewListByResourceGroupPager.More() {
+		_, err := namespacesClientNewListByResourceGroupPager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+		break
+	}
+
+	// From step Namespaces_Get
+	_, err = namespacesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, nil)
+	testsuite.Require().NoError(err)
+
+	// From step Namespaces_Update
+	_, err = namespacesClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, armeventhub.EHNamespace{
+		Location: to.Ptr(testsuite.location),
+		Tags: map[string]*string{
+			"tag1": to.Ptr("value1"),
+			"tag2": to.Ptr("value2"),
+		},
+	}, nil)
+	testsuite.Require().NoError(err)
+
+	// From step Namespaces_CreateOrUpdateAuthorizationRule
+	_, err = namespacesClient.CreateOrUpdateAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, armeventhub.AuthorizationRule{
+		Properties: &armeventhub.AuthorizationRuleProperties{
+			Rights: []*armeventhub.AccessRights{
+				to.Ptr(armeventhub.AccessRightsListen),
+				to.Ptr(armeventhub.AccessRightsSend)},
+		},
+	}, nil)
+	testsuite.Require().NoError(err)
+
+	// From step Namespaces_GetAuthorizationRule
+	_, err = namespacesClient.GetAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, nil)
+	testsuite.Require().NoError(err)
+
+	// From step Namespaces_ListKeys
+	_, err = namespacesClient.ListKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, nil)
+	testsuite.Require().NoError(err)
+
+	// From step Namespaces_RegenerateKeys
+	_, err = namespacesClient.RegenerateKeys(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, armeventhub.RegenerateAccessKeyParameters{
+		KeyType: to.Ptr(armeventhub.KeyTypePrimaryKey),
+	}, nil)
+	testsuite.Require().NoError(err)
+
+	// From step Namespaces_DeleteAuthorizationRule
+	_, err = namespacesClient.DeleteAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.authorizationRuleName, nil)
+	testsuite.Require().NoError(err)
+}
+
+// Microsoft.EventHub/namespaces/eventhubs
+func (testsuite *EventhubTestSuite) TestEventhubs() {
+	var err error
 	// From step EventHubs_ListByNamespace
+	eventHubsClient, err := armeventhub.NewEventHubsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	eventHubsClientNewListByNamespacePager := eventHubsClient.NewListByNamespacePager(testsuite.resourceGroupName, testsuite.namespaceName, &armeventhub.EventHubsClientListByNamespaceOptions{Skip: nil,
 		Top: nil,
 	})
@@ -325,6 +328,14 @@ func (testsuite *BasicTestSuite) TestNamespace() {
 	}, nil)
 	testsuite.Require().NoError(err)
 
+	// From step EventHubs_DeleteAuthorizationRule
+	_, err = eventHubsClient.DeleteAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.eventHubName, testsuite.authorizationRuleName, nil)
+	testsuite.Require().NoError(err)
+}
+
+// Microsoft.EventHub/namespaces/eventhubs/consumergroups
+func (testsuite *EventhubTestSuite) TestConsumergroups() {
+	var err error
 	// From step ConsumerGroups_CreateOrUpdate
 	consumerGroupsClient, err := armeventhub.NewConsumerGroupsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
@@ -349,14 +360,14 @@ func (testsuite *BasicTestSuite) TestNamespace() {
 	_, err = consumerGroupsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.eventHubName, testsuite.consumerGroupName, nil)
 	testsuite.Require().NoError(err)
 
-	// From step EventHubs_DeleteAuthorizationRule
-	_, err = eventHubsClient.DeleteAuthorizationRule(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.eventHubName, testsuite.authorizationRuleName, nil)
+	// From step ConsumerGroups_Delete
+	_, err = consumerGroupsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.eventHubName, testsuite.consumerGroupName, nil)
 	testsuite.Require().NoError(err)
+}
 
-	// From step EventHubs_Delete
-	_, err = eventHubsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.eventHubName, nil)
-	testsuite.Require().NoError(err)
-
+// Microsoft.EventHub/namespaces/applicationGroups
+func (testsuite *EventhubTestSuite) TestApplicationgroup() {
+	var err error
 	// From step ApplicationGroup_CreateOrUpdateApplicationGroup
 	applicationGroupClient, err := armeventhub.NewApplicationGroupClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
@@ -399,6 +410,14 @@ func (testsuite *BasicTestSuite) TestNamespace() {
 	_, err = applicationGroupClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.applicationGroupName, nil)
 	testsuite.Require().NoError(err)
 
+	// From step ApplicationGroup_Delete
+	_, err = applicationGroupClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.applicationGroupName, nil)
+	testsuite.Require().NoError(err)
+}
+
+// Microsoft.EventHub/namespaces/schemagroups
+func (testsuite *EventhubTestSuite) TestSchemaregistry() {
+	var err error
 	// From step SchemaRegistry_CreateOrUpdate
 	schemaRegistryClient, err := armeventhub.NewSchemaRegistryClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
@@ -428,16 +447,33 @@ func (testsuite *BasicTestSuite) TestNamespace() {
 	// From step SchemaRegistry_Delete
 	_, err = schemaRegistryClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.schemaGroupName, nil)
 	testsuite.Require().NoError(err)
+}
 
-	// From step ConsumerGroups_Delete
-	_, err = consumerGroupsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.eventHubName, testsuite.consumerGroupName, nil)
+// Microsoft.EventHub/operations
+func (testsuite *EventhubTestSuite) TestOperations() {
+	var err error
+	// From step Operations_List
+	operationsClient, err := armeventhub.NewOperationsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
+	operationsClientNewListPager := operationsClient.NewListPager(nil)
+	for operationsClientNewListPager.More() {
+		_, err := operationsClientNewListPager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+		break
+	}
+}
 
-	// From step ApplicationGroup_Delete
-	_, err = applicationGroupClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.applicationGroupName, nil)
+func (testsuite *EventhubTestSuite) Cleanup() {
+	var err error
+	// From step EventHubs_Delete
+	eventHubsClient, err := armeventhub.NewEventHubsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	_, err = eventHubsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, testsuite.eventHubName, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Namespaces_Delete
+	namespacesClient, err := armeventhub.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
 	namespacesClientDeleteResponsePoller, err := namespacesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, namespacesClientDeleteResponsePoller)

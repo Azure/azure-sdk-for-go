@@ -494,6 +494,78 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobHTTPHeaders() {
 	_require.EqualValues(h, testcommon.BasicHeaders)
 }
 
+func (s *BlockBlobRecordedTestsSuite) TestUploadWithImmutabilityPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	currentTime, err := time.Parse(time.UnixDate, "Tue Oct 18 10:00:00 GMT 2022")
+	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingLocked)
+	_require.Nil(err)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	legalHold := true
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(body), &blockblob.UploadOptions{
+		ImmutabilityPolicyExpiryTime: &currentTime,
+		ImmutabilityPolicyMode:       &policy,
+		LegalHold:                    &legalHold,
+		HTTPHeaders:                  &testcommon.BasicHeaders,
+	})
+
+	_require.Nil(err)
+
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	policy1 := blob.ImmutabilityPolicyMode("locked")
+	_require.Equal(resp.ImmutabilityPolicyMode, &policy1)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListWithImmutabilityPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.GetContainerClient(containerName, svcClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(blockBlobName, containerClient)
+
+	blockIDs := testcommon.GenerateBlockIDsList(1)
+	_, err = bbClient.StageBlock(context.Background(), blockIDs[0], streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
+	_require.Nil(err)
+
+	currentTime, err := time.Parse(time.UnixDate, "Tue Oct 18 10:00:00 GMT 2022")
+	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingLocked)
+	legalHold := true
+
+	options := blockblob.CommitBlockListOptions{
+		ImmutabilityPolicyExpiryTime: &currentTime,
+		ImmutabilityPolicyMode:       &policy,
+		LegalHold:                    &legalHold,
+	}
+
+	_, err = bbClient.CommitBlockList(context.Background(), blockIDs, &options)
+	_require.Nil(err)
+
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	policy1 := blob.ImmutabilityPolicyMode("locked")
+	_require.Equal(resp.ImmutabilityPolicyMode, &policy1)
+}
+
 func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobMetadataNotEmpty() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

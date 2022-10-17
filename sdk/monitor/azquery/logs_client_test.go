@@ -9,7 +9,6 @@ package azquery_test
 import (
 	"context"
 	"errors"
-	"fmt"
 	"strings"
 	"testing"
 
@@ -21,63 +20,41 @@ import (
 
 var query string = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n" + "[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789, 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}})];" + "range x from 1 to 100 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long"
 
-type employee struct {
-	name  string
-	id    float64
-	hired bool
+type queryResult struct {
+	Long   int64
+	String string
+	Bool   bool
 }
 
-func TestRows(t *testing.T) {
+/*func TestRowsTry2(t *testing.T) {
 	client := startLogsTest(t)
-	workspaceID = "c524b65f-8303-46f1-8310-0545284a8feb"
-	query = "let dt = datatable (Name: string, Id: long, Hired: bool)\n" + "['grace', 1, true];" + "range x from 1 to 100 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Id"
 	res, err := client.QueryWorkspace(context.Background(), workspaceID, azquery.Body{Query: to.Ptr(query)}, nil)
 	if err != nil {
-		t.Fatalf("error with query, %s", err.Error())
+		t.Fatalf("error with query: %s", err)
 	}
 	if res.Error != nil {
 		t.Fatal("expected no partial error")
 	}
 
-	var employees []employee
-	fmt.Println("Hello world")
+	var queryResults []queryResult
 	for _, table := range res.Tables {
-		for _, row := range table.Rows {
-			for _, item := range row {
-				fmt.Printf("type is: %T \n", item)
+		queryResults = make([]queryResult, len(table.Rows))
+		indexLong := table.GetColumnIndex("Long")
+		indexString := table.GetColumnIndex("String")
+		indexBool := table.GetColumnIndex("Bool")
+
+		for index, row := range table.Rows {
+			queryResults[index] = queryResult{
+				Long:   int64(row[indexLong].(float64)),
+				String: row[indexString].(string),
+				Bool:   row[indexBool].(bool),
 			}
-			employees = append(employees, employee{name: row.GetValueByIndex(2), id: row[3].(float64), hired: row[4].(bool)})
 		}
 	}
-	fmt.Println(res.Tables[0].Rows[0])
-	fmt.Print(employees)
-	/*for _, table := range res.Tables {
-		for _, col := range table.Columns {
-			fmt.Print(*col.Name + "    ")
-		}
-		fmt.Println()
-		for _, row := range table.Rows {
-			for _, item := range row {
-				fmt.Print(item)
-				fmt.Print(" ")
-			}
-			fmt.Println()
+}*/
 
-		}
-	}*/
-	t.Fatal("haha")
-	/*for table in data:
-	for col in table.columns:
-		print(col + "    ", end="")
-	for row in table.rows:
-		for item in row:
-			print(item, end="")
-		print('\n')*/
-
-}
 func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 	client := startLogsTest(t)
-
 	body := azquery.Body{
 		Query:    to.Ptr(query),
 		Timespan: to.Ptr("2015-12-31/2016-01-01"),
@@ -86,11 +63,10 @@ func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {
 
 	res, err := client.QueryWorkspace(context.Background(), workspaceID, body, nil)
 	if err != nil {
-		t.Fatalf("error with query, %s", err.Error())
+		t.Fatalf("error with query, %s", err)
 	}
-
 	if res.Error != nil {
-		t.Fatal("expended Error to be nil")
+		t.Fatalf("expended Error to be nil: %s", res.Error)
 	}
 	if res.Render != nil {
 		t.Fatal("expended Render to be nil")
@@ -116,7 +92,7 @@ func TestQueryWorkspace_BasicQueryFailure(t *testing.T) {
 		t.Fatalf("expected an error")
 	}
 	if res.Error != nil {
-		t.Fatal("expected no error code")
+		t.Fatalf("expected no error code: %s", res.Error)
 	}
 	if res.Tables != nil {
 		t.Fatalf("expected no results")
@@ -142,7 +118,7 @@ func TestQueryWorkspace_PartialError(t *testing.T) {
 
 	res, err := client.QueryWorkspace(context.Background(), workspaceID, azquery.Body{Query: &query}, nil)
 	if err != nil {
-		t.Fatal("error with query")
+		t.Fatalf("error with query: %s", err)
 	}
 	if res.Error == nil {
 		t.Fatal("expected an error")
@@ -175,7 +151,7 @@ func TestQueryWorkspace_AdvancedQuerySuccess(t *testing.T) {
 		t.Fatal("expected Tables results")
 	}
 	if res.Error != nil {
-		t.Fatal("expended Error to be nil")
+		t.Fatalf("expended Error to be nil: %s", res.Error)
 	}
 	if res.Render == nil {
 		t.Fatal("expended Render results")
@@ -199,7 +175,7 @@ func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
 		t.Fatalf("error with query, %s", err.Error())
 	}
 	if res.Error != nil {
-		t.Fatal("result error should be nil")
+		t.Fatalf("result error should be nil: %s", res.Error)
 	}
 	if len(res.Tables[0].Rows) != 100 {
 		t.Fatalf("expected 100 results, received")
@@ -218,14 +194,14 @@ func TestBatch_QuerySuccess(t *testing.T) {
 
 	res, err := client.Batch(context.Background(), batchRequest, nil)
 	if err != nil {
-		t.Fatalf("expected non nil error: %s", err.Error())
+		t.Fatalf("expected non nil error: %s", err)
 	}
 	if len(res.Responses) != 2 {
 		t.Fatal("expected two responses")
 	}
 	for _, resp := range res.Responses {
 		if resp.Body.Error != nil {
-			t.Fatal("expected a successful response")
+			t.Fatalf("expected non nil error: %s", resp.Body.Error)
 		}
 		if resp.Body.Tables == nil {
 			t.Fatal("expected a response")
@@ -269,7 +245,7 @@ func TestBatch_PartialError(t *testing.T) {
 		}
 		if *resp.ID == "2" {
 			if resp.Body.Error != nil {
-				t.Fatal("expected batch request 2 to succeed")
+				t.Fatalf("expected batch request 2 to succeed: %s", resp.Body.Error)
 			}
 			if len(resp.Body.Tables[0].Rows) != 100 {
 				t.Fatal("expected 100 rows")

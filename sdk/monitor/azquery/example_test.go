@@ -54,11 +54,11 @@ func ExampleLogsClient_QueryWorkspace() {
 	if err != nil {
 		//TODO: handle error
 	}
-	if res.Results.Error != nil {
+	if res.Error != nil {
 		//TODO: handle partial error
 	}
 
-	table := res.Results.Tables[0]
+	table := res.Tables[0]
 	fmt.Println("Response rows:")
 	for _, row := range table.Rows {
 		fmt.Println(row)

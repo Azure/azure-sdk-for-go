@@ -77,10 +77,6 @@ func (e *ErrorInfo) Error() string {
 
 type Row []any
 
-func (r Row) GetValueByIndex[T any](index int, goalType T) T {
-	return r[index].(string)
+func (t Table) GetColumnIndex(name string) int {
+	return t.columnIndexLookup[name]
 }
-
-//func (r Row) GetValueName(columnName string) string {
-//return r[index].(string)
-//}

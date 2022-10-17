@@ -354,6 +354,8 @@ type Table struct {
 
 	// REQUIRED; The resulting rows from this query.
 	Rows []Row `json:"rows,omitempty"`
+
+	columnIndexLookup map[string]int
 }
 
 // TimeSeriesElement - A time series result type. The discriminator value is always TimeSeries in this case.

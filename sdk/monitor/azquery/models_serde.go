@@ -769,6 +769,10 @@ func (t *Table) UnmarshalJSON(data []byte) error {
 		case "columns":
 			err = unpopulate(val, "Columns", &t.Columns)
 			delete(rawMsg, key)
+			t.columnIndexLookup = map[string]int{}
+			for i, v := range t.Columns {
+				t.columnIndexLookup[*v.Name] = i
+			}
 		case "name":
 			err = unpopulate(val, "Name", &t.Name)
 			delete(rawMsg, key)

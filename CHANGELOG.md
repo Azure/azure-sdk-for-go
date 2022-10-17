@@ -60,18 +60,18 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2019-04-01/reservations` | [details](https://github.com/Azure/azure-sdk-for-go/tree/legacy/services/preview/reservations/mgmt/2019-04-01/reservations/CHANGELOG.md) |
-| `github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2019-07-19-preview/reservations` | [details](https://github.com/Azure/azure-sdk-for-go/tree/legacy/services/preview/reservations/mgmt/2019-07-19-preview/reservations/CHANGELOG.md) |
-| `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2021-06-01-preview/policy` | [details](https://github.com/Azure/azure-sdk-for-go/tree/legacy/services/preview/resources/mgmt/2021-06-01-preview/policy/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2019-04-01/reservations` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v67.0.0/services/preview/reservations/mgmt/2019-04-01/reservations/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2019-07-19-preview/reservations` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v67.0.0/services/preview/reservations/mgmt/2019-07-19-preview/reservations/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2021-06-01-preview/policy` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v67.0.0/services/preview/resources/mgmt/2021-06-01-preview/policy/CHANGELOG.md) |
 ### Breaking Changes
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2021-10-01/containerinstance` | [details](https://github.com/Azure/azure-sdk-for-go/tree/legacy/services/containerinstance/mgmt/2021-10-01/containerinstance/CHANGELOG.md) |
-| `github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2020-10-01/activitylogs` | [details](https://github.com/Azure/azure-sdk-for-go/tree/legacy/services/monitor/mgmt/2020-10-01/activitylogs/CHANGELOG.md) |
-| `github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security` | [details](https://github.com/Azure/azure-sdk-for-go/tree/legacy/services/preview/security/mgmt/v3.0/security/CHANGELOG.md) |
-| `github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v5.0/sql` | [details](https://github.com/Azure/azure-sdk-for-go/tree/legacy/services/preview/sql/mgmt/v5.0/sql/CHANGELOG.md) |
-| `github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2022-03-01/reservations` | [details](https://github.com/Azure/azure-sdk-for-go/tree/legacy/services/reservations/mgmt/2022-03-01/reservations/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2021-10-01/containerinstance` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v67.0.0/services/containerinstance/mgmt/2021-10-01/containerinstance/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2020-10-01/activitylogs` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v67.0.0/services/monitor/mgmt/2020-10-01/activitylogs/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v67.0.0/services/preview/security/mgmt/v3.0/security/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v5.0/sql` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v67.0.0/services/preview/sql/mgmt/v5.0/sql/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2022-03-01/reservations` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v67.0.0/services/reservations/mgmt/2022-03-01/reservations/CHANGELOG.md) |
 
 ## `v66.0.0`
 

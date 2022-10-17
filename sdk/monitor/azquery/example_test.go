@@ -47,7 +47,7 @@ func ExampleNewMetricsClient() {
 	_ = client
 }
 
-func ExampeLogsClient_QueryWorkspace() {
+func ExampleLogsClient_QueryWorkspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		//TODO: handle error

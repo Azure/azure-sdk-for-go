@@ -546,7 +546,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListWithImmutabilityPolicy
 	_, err = bbClient.StageBlock(context.Background(), blockIDs[0], streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
 	_require.Nil(err)
 
-	currentTime, err := time.Parse(time.UnixDate, "Tue Oct 18 10:00:00 GMT 2022")
+	currentTime, _ := time.Parse(time.UnixDate, "Tue Oct 18 10:00:00 GMT 2022")
 	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingLocked)
 	legalHold := true
 

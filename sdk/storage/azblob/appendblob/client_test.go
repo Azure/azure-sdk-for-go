@@ -41,22 +41,18 @@ func Test(t *testing.T) {
 	}
 }
 
-// nolint
 func (s *AppendBlobRecordedTestsSuite) BeforeTest(suite string, test string) {
 	testcommon.BeforeTest(s.T(), suite, test)
 }
 
-// nolint
 func (s *AppendBlobRecordedTestsSuite) AfterTest(suite string, test string) {
 	testcommon.AfterTest(s.T(), suite, test)
 }
 
-// nolint
 func (s *AppendBlobUnrecordedTestsSuite) BeforeTest(suite string, test string) {
 
 }
 
-// nolint
 func (s *AppendBlobUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 }
@@ -82,7 +78,6 @@ func createNewAppendBlob(ctx context.Context, _require *require.Assertions, appe
 	return abClient
 }
 
-// nolint
 func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlock() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -120,7 +115,6 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlock() {
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(2))
 }
 
-// nolint
 func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockWithMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -172,7 +166,6 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockWithMD5() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MD5Mismatch)
 }
 
-//nolint
 //func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURL() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -268,7 +261,6 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockWithMD5() {
 //	_ = downloadresp.BodyReader(nil).Close()
 //}
 
-//nolint
 //func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithMD5() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -1219,7 +1211,6 @@ func (s *AppendBlobRecordedTestsSuite) TestSeal() {
 }
 
 // TODO: Learn about the behaviour of AppendPosition
-// nolint
 //func (s *AppendBlobUnrecordedTestsSuite) TestSealWithAppendConditions() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -1563,7 +1554,6 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 	_require.EqualValues(*downloadResp.EncryptionScope, *encryptionScope.EncryptionScope)
 }
 
-//nolint
 //func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithCPK() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -1673,7 +1663,6 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 //	_require.EqualValues(destData, srcData)
 //}
 
-//nolint
 //func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithCPKScope() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()

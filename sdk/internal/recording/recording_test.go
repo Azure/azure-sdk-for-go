@@ -551,15 +551,14 @@ func TestHostAndScheme(t *testing.T) {
 	require.Equal(t, r.host(), "localhost:5000")
 }
 
-func TestGitRoot(t *testing.T) {
+func TestGitRootDetection(t *testing.T) {
 	cwd, err := os.Getwd()
 	require.NoError(t, err)
-	_, err = getGitRoot(cwd)
+	gitRoot, err := getGitRoot(cwd)
 	require.NoError(t, err)
-}
 
-func TestGitRootNotFound(t *testing.T) {
-	_, err := getGitRoot("../../../../")
+	parentDir, _ := filepath.Split(gitRoot)
+	_, err = getGitRoot(parentDir)
 	require.Error(t, err)
 }
 

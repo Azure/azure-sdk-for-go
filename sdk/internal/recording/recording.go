@@ -584,22 +584,14 @@ func getGitRoot(fromPath string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	gitDirectoryPath := path.Join(absPath, ".git")
+	cmd := exec.Command("git", "rev-parse", "--show-toplevel")
+	cmd.Dir = absPath
 
-	if _, err := os.Stat(gitDirectoryPath); err == nil {
-		return absPath, nil
-	} else if !errors.Is(err, fs.ErrNotExist) {
-		return "", err
+	root, err := cmd.CombinedOutput()
+	if err != nil {
+		return "", fmt.Errorf("Unable to find git root for path '%s'", absPath)
 	}
-
-	trimmedPath := strings.TrimRight(absPath, string(os.PathSeparator))
-	parentDir, _ := filepath.Split(trimmedPath)
-	// If the parent directory is the same as current dir, we've reached root
-	if parentDir == trimmedPath {
-		return "", fmt.Errorf("Unable to find git root")
-	}
-
-	return getGitRoot(parentDir)
+	return strings.TrimSpace(bytes.NewBuffer(root).String()), nil
 }
 
 // Traverse up from a recording path until an asset config file is found.

@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## `v67.1.0`
+## `v67.0.1`
 
 ### Deprecated Packages
 - `github.com/Azure/azure-sdk-for-go/services/preview/iotspaces/mgmt/2017-10-01-preview/iotspaces`

@@ -26,18 +26,16 @@ import (
 // WorkflowClient contains the methods for the Workflow group.
 // Don't use this type directly, use NewWorkflowClient() instead.
 type WorkflowClient struct {
-	host                   string
-	subscriptionID         string
-	managedClusterResource *string
-	pl                     runtime.Pipeline
+	host           string
+	subscriptionID string
+	pl             runtime.Pipeline
 }
 
 // NewWorkflowClient creates a new instance of WorkflowClient with the specified values.
 // subscriptionID - The ID of the target subscription.
-// managedClusterResource - The ManagedCluster resource associated with the workflows.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewWorkflowClient(subscriptionID string, managedClusterResource *string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowClient, error) {
+func NewWorkflowClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -50,10 +48,9 @@ func NewWorkflowClient(subscriptionID string, managedClusterResource *string, cr
 		return nil, err
 	}
 	client := &WorkflowClient{
-		subscriptionID:         subscriptionID,
-		managedClusterResource: managedClusterResource,
-		host:                   ep,
-		pl:                     pl,
+		subscriptionID: subscriptionID,
+		host:           ep,
+		pl:             pl,
 	}
 	return client, nil
 }
@@ -334,8 +331,8 @@ func (client *WorkflowClient) listByResourceGroupCreateRequest(ctx context.Conte
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-04-01-preview")
-	if client.managedClusterResource != nil {
-		reqQP.Set("managedClusterResource", *client.managedClusterResource)
+	if options != nil && options.ManagedClusterResource != nil {
+		reqQP.Set("managedClusterResource", *options.ManagedClusterResource)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

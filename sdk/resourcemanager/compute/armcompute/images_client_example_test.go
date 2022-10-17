@@ -14,11 +14,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_CreateFromABlobWithDiskEncryptionSet.json
-func ExampleImagesClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/imageExamples/Image_CreateFromABlobWithDiskEncryptionSet.json
+func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromABlobWithDiskEncryptionSetResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -28,25 +28,21 @@ func ExampleImagesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"myResourceGroup",
-		"myImage",
-		armcompute.Image{
-			Location: to.Ptr("West US"),
-			Properties: &armcompute.ImageProperties{
-				StorageProfile: &armcompute.ImageStorageProfile{
-					OSDisk: &armcompute.ImageOSDisk{
-						BlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd"),
-						DiskEncryptionSet: &armcompute.DiskEncryptionSetParameters{
-							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}"),
-						},
-						OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
-						OSType:  to.Ptr(armcompute.OperatingSystemTypesLinux),
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myImage", armcompute.Image{
+		Location: to.Ptr("West US"),
+		Properties: &armcompute.ImageProperties{
+			StorageProfile: &armcompute.ImageStorageProfile{
+				OSDisk: &armcompute.ImageOSDisk{
+					BlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd"),
+					DiskEncryptionSet: &armcompute.DiskEncryptionSetParameters{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}"),
 					},
+					OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
+					OSType:  to.Ptr(armcompute.OperatingSystemTypesLinux),
 				},
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -58,7 +54,352 @@ func ExampleImagesClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/imageExamples/Image_CreateFromABlob.json
+func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromABlob() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewImagesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myImage", armcompute.Image{
+		Location: to.Ptr("West US"),
+		Properties: &armcompute.ImageProperties{
+			StorageProfile: &armcompute.ImageStorageProfile{
+				OSDisk: &armcompute.ImageOSDisk{
+					BlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd"),
+					OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
+					OSType:  to.Ptr(armcompute.OperatingSystemTypesLinux),
+				},
+				ZoneResilient: to.Ptr(true),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/imageExamples/Image_CreateFromAManagedDiskWithDiskEncryptionSet.json
+func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromAManagedDiskWithDiskEncryptionSetResource() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewImagesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myImage", armcompute.Image{
+		Location: to.Ptr("West US"),
+		Properties: &armcompute.ImageProperties{
+			StorageProfile: &armcompute.ImageStorageProfile{
+				OSDisk: &armcompute.ImageOSDisk{
+					DiskEncryptionSet: &armcompute.DiskEncryptionSetParameters{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}"),
+					},
+					Snapshot: &armcompute.SubResource{
+						ID: to.Ptr("subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot"),
+					},
+					OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
+					OSType:  to.Ptr(armcompute.OperatingSystemTypesLinux),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/imageExamples/Image_CreateFromAManagedDisk.json
+func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromAManagedDisk() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewImagesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myImage", armcompute.Image{
+		Location: to.Ptr("West US"),
+		Properties: &armcompute.ImageProperties{
+			StorageProfile: &armcompute.ImageStorageProfile{
+				OSDisk: &armcompute.ImageOSDisk{
+					ManagedDisk: &armcompute.SubResource{
+						ID: to.Ptr("subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk"),
+					},
+					OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
+					OSType:  to.Ptr(armcompute.OperatingSystemTypesLinux),
+				},
+				ZoneResilient: to.Ptr(true),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/imageExamples/Image_CreateFromASnapshotWithDiskEncryptionSet.json
+func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromASnapshotWithDiskEncryptionSetResource() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewImagesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myImage", armcompute.Image{
+		Location: to.Ptr("West US"),
+		Properties: &armcompute.ImageProperties{
+			StorageProfile: &armcompute.ImageStorageProfile{
+				OSDisk: &armcompute.ImageOSDisk{
+					DiskEncryptionSet: &armcompute.DiskEncryptionSetParameters{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}"),
+					},
+					ManagedDisk: &armcompute.SubResource{
+						ID: to.Ptr("subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk"),
+					},
+					OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
+					OSType:  to.Ptr(armcompute.OperatingSystemTypesLinux),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/imageExamples/Image_CreateFromASnapshot.json
+func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromASnapshot() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewImagesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myImage", armcompute.Image{
+		Location: to.Ptr("West US"),
+		Properties: &armcompute.ImageProperties{
+			StorageProfile: &armcompute.ImageStorageProfile{
+				OSDisk: &armcompute.ImageOSDisk{
+					Snapshot: &armcompute.SubResource{
+						ID: to.Ptr("subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot"),
+					},
+					OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
+					OSType:  to.Ptr(armcompute.OperatingSystemTypesLinux),
+				},
+				ZoneResilient: to.Ptr(false),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/imageExamples/Image_CreateFromAVM.json
+func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageFromAnExistingVirtualMachine() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewImagesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myImage", armcompute.Image{
+		Location: to.Ptr("West US"),
+		Properties: &armcompute.ImageProperties{
+			SourceVirtualMachine: &armcompute.SubResource{
+				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/imageExamples/Image_Create_DataDiskFromABlobIncluded.json
+func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageThatIncludesADataDiskFromABlob() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewImagesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myImage", armcompute.Image{
+		Location: to.Ptr("West US"),
+		Properties: &armcompute.ImageProperties{
+			StorageProfile: &armcompute.ImageStorageProfile{
+				DataDisks: []*armcompute.ImageDataDisk{
+					{
+						BlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/dataimages/dataimage.vhd"),
+						Lun:     to.Ptr[int32](1),
+					}},
+				OSDisk: &armcompute.ImageOSDisk{
+					BlobURI: to.Ptr("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd"),
+					OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
+					OSType:  to.Ptr(armcompute.OperatingSystemTypesLinux),
+				},
+				ZoneResilient: to.Ptr(false),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/imageExamples/Image_Create_DataDiskFromAManagedDiskIncluded.json
+func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageThatIncludesADataDiskFromAManagedDisk() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewImagesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myImage", armcompute.Image{
+		Location: to.Ptr("West US"),
+		Properties: &armcompute.ImageProperties{
+			StorageProfile: &armcompute.ImageStorageProfile{
+				DataDisks: []*armcompute.ImageDataDisk{
+					{
+						ManagedDisk: &armcompute.SubResource{
+							ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk2"),
+						},
+						Lun: to.Ptr[int32](1),
+					}},
+				OSDisk: &armcompute.ImageOSDisk{
+					ManagedDisk: &armcompute.SubResource{
+						ID: to.Ptr("subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk"),
+					},
+					OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
+					OSType:  to.Ptr(armcompute.OperatingSystemTypesLinux),
+				},
+				ZoneResilient: to.Ptr(false),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/imageExamples/Image_Create_DataDiskFromASnapshotIncluded.json
+func ExampleImagesClient_BeginCreateOrUpdate_createAVirtualMachineImageThatIncludesADataDiskFromASnapshot() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewImagesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "myImage", armcompute.Image{
+		Location: to.Ptr("West US"),
+		Properties: &armcompute.ImageProperties{
+			StorageProfile: &armcompute.ImageStorageProfile{
+				DataDisks: []*armcompute.ImageDataDisk{
+					{
+						Snapshot: &armcompute.SubResource{
+							ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot2"),
+						},
+						Lun: to.Ptr[int32](1),
+					}},
+				OSDisk: &armcompute.ImageOSDisk{
+					Snapshot: &armcompute.SubResource{
+						ID: to.Ptr("subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot"),
+					},
+					OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
+					OSType:  to.Ptr(armcompute.OperatingSystemTypesLinux),
+				},
+				ZoneResilient: to.Ptr(true),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/imageExamples/Image_Update.json
 func ExampleImagesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,21 +410,17 @@ func ExampleImagesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx,
-		"myResourceGroup",
-		"myImage",
-		armcompute.ImageUpdate{
-			Tags: map[string]*string{
-				"department": to.Ptr("HR"),
-			},
-			Properties: &armcompute.ImageProperties{
-				HyperVGeneration: to.Ptr(armcompute.HyperVGenerationTypesV1),
-				SourceVirtualMachine: &armcompute.SubResource{
-					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
-				},
+	poller, err := client.BeginUpdate(ctx, "myResourceGroup", "myImage", armcompute.ImageUpdate{
+		Tags: map[string]*string{
+			"department": to.Ptr("HR"),
+		},
+		Properties: &armcompute.ImageProperties{
+			HyperVGeneration: to.Ptr(armcompute.HyperVGenerationTypesV1),
+			SourceVirtualMachine: &armcompute.SubResource{
+				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -95,8 +432,8 @@ func ExampleImagesClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Images_Delete_MaximumSet_Gen.json
-func ExampleImagesClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/imageExamples/Images_Delete_MaximumSet_Gen.json
+func ExampleImagesClient_BeginDelete_imagesDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -106,10 +443,7 @@ func ExampleImagesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"rgcompute",
-		"aaaaaaaaaaaaaaaaaaaaaaaaaaa",
-		nil)
+	poller, err := client.BeginDelete(ctx, "rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaa", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -119,7 +453,28 @@ func ExampleImagesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/imageExamples/Images_Delete_MinimumSet_Gen.json
+func ExampleImagesClient_BeginDelete_imagesDeleteMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcompute.NewImagesClient("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginDelete(ctx, "rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/imageExamples/Image_Get.json
 func ExampleImagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,10 +485,7 @@ func ExampleImagesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"myResourceGroup",
-		"myImage",
-		&armcompute.ImagesClientGetOptions{Expand: nil})
+	res, err := client.Get(ctx, "myResourceGroup", "myImage", &armcompute.ImagesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -141,7 +493,7 @@ func ExampleImagesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/imageExamples/Image_ListByResourceGroup.json
 func ExampleImagesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,8 +504,7 @@ func ExampleImagesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("myResourceGroup",
-		nil)
+	pager := client.NewListByResourceGroupPager("myResourceGroup", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -166,7 +517,7 @@ func ExampleImagesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/imageExamples/Image_ListBySubscription.json
 func ExampleImagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

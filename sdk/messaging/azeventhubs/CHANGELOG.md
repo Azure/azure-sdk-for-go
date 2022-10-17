@@ -1,18 +1,27 @@
 # Release History
 
-## 0.1.2 (Unreleased)
+## 0.2.0 (2022-10-17)
 
 ### Features Added
 
-- Raw AMQP message support, including full support for encoding Body (Value, Sequence and also multiple byte slices for Data). See ExampleEventDataBatch_AddEventData_rawAMQPMessages for some concrete examples.
+- Raw AMQP message support, including full support for encoding Body (Value, Sequence and also multiple byte slices for Data). See ExampleEventDataBatch_AddEventData_rawAMQPMessages for some concrete examples. (PR#19156)
+- Prefetch is now enabled by default. Prefetch allows the Event Hubs client to maintain a continuously full cache of events, controlled by PartitionClientOptions.Prefetch. (PR#19281)
+- ConsumerClient.ID() returns a unique ID representing each instance of ConsumerClient.
 
 ### Breaking Changes
 
 - EventDataBatch.NumMessages() renamed to EventDataBatch.NumEvents()
+- Prefetch is now enabled by default. To disable it set PartitionClientOptions.Prefetch to -1.
+- NewWebSocketConnArgs renamed to WebSocketConnParams
+- Code renamed to ErrorCode, including associated constants like `ErrorCodeOwnershipLost`.
+- OwnershipData, CheckpointData, and CheckpointStoreAddress have been folded into their individual structs: Ownership and Checkpoint.
+- StartPosition and OwnerLevel were erroneously included in the ConsumerClientOptions struct - they've been removed. These can be 
+  configured in the PartitionClientOptions.
 
 ### Bugs Fixed
 
-### Other Changes
+- Retries now respect cancellation when they're in the "delay before next try" phase. (PR#19295)
+- Fixed a potential leak which could cause us to open and leak a $cbs link connection, resulting in errors. (PR#19326)
 
 ## 0.1.1 (2022-09-08)
 

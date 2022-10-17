@@ -10,7 +10,6 @@ import (
 	"sort"
 	"time"
 
-	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/eh/stress/tests"
 )
 
@@ -19,16 +18,15 @@ func main() {
 		name string
 		fn   func(ctx context.Context) error
 	}{
-		{name: "finite", fn: tests.FiniteSendAndReceiveTest},
-		{name: "finiteprocessor", fn: tests.FiniteProcessorTest},
-		{name: "infinite", fn: tests.InfiniteProcessorTest},
+		{name: "batch", fn: tests.BatchStressTester},
+		{name: "processor", fn: tests.ProcessorStressTester},
 	}
 
 	sort.Slice(tests, func(i, j int) bool {
 		return tests[i].name < tests[j].name
 	})
 
-	if len(os.Args) != 2 {
+	if len(os.Args) < 2 {
 		fmt.Printf("Usage: stress <scenario-name>\n")
 
 		fmt.Printf("Scenarios:\n")
@@ -44,10 +42,6 @@ func main() {
 
 	for _, test := range tests {
 		if test.name == testName {
-			//azlog.SetEvents(azeventhubs.EventAuth, azeventhubs.EventConn, azeventhubs.EventConsumer)
-			azlog.SetListener(func(e azlog.Event, s string) {
-				//log.Printf("[%s] %s", e, s)
-			})
 			rand.Seed(time.Now().UnixNano())
 
 			if err := test.fn(context.Background()); err != nil {
@@ -59,5 +53,6 @@ func main() {
 		}
 	}
 
+	fmt.Printf("No test with name %s", testName)
 	os.Exit(1)
 }

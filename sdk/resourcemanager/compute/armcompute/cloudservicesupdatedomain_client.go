@@ -119,7 +119,6 @@ func (client *CloudServicesUpdateDomainClient) getUpdateDomainHandleResponse(res
 }
 
 // NewListUpdateDomainsPager - Gets a list of all update domains in a cloud service.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-04
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.

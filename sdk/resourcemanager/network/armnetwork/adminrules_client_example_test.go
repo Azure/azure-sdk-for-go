@@ -14,17 +14,17 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerAdminRuleList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerAdminRuleList.json
 func ExampleAdminRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAdminRulesClient("subId", cred, nil)
+	client, err := armnetwork.NewAdminRulesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -43,14 +43,14 @@ func ExampleAdminRulesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerAdminRuleGet.json
-func ExampleAdminRulesClient_Get_networkManagerAdminRuleGet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerAdminRuleGet.json
+func ExampleAdminRulesClient_Get_getsSecurityAdminRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAdminRulesClient("subId", cred, nil)
+	client, err := armnetwork.NewAdminRulesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -62,14 +62,14 @@ func ExampleAdminRulesClient_Get_networkManagerAdminRuleGet() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerDefaultAdminRuleGet.json
-func ExampleAdminRulesClient_Get_networkManagerDefaultAdminRuleGet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerDefaultAdminRuleGet.json
+func ExampleAdminRulesClient_Get_getsSecurityDefaultAdminRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAdminRulesClient("subId", cred, nil)
+	client, err := armnetwork.NewAdminRulesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -81,14 +81,14 @@ func ExampleAdminRulesClient_Get_networkManagerDefaultAdminRuleGet() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerDefaultAdminRulePut.json
-func ExampleAdminRulesClient_CreateOrUpdate_networkManagerDefaultAdminRulePut() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerDefaultAdminRulePut.json
+func ExampleAdminRulesClient_CreateOrUpdate_createADefaultAdminRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAdminRulesClient("subId", cred, nil)
+	client, err := armnetwork.NewAdminRulesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -105,14 +105,14 @@ func ExampleAdminRulesClient_CreateOrUpdate_networkManagerDefaultAdminRulePut() 
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerAdminRulePut.json
-func ExampleAdminRulesClient_CreateOrUpdate_networkManagerAdminRulePut() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerAdminRulePut.json
+func ExampleAdminRulesClient_CreateOrUpdate_createAnAdminRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAdminRulesClient("subId", cred, nil)
+	client, err := armnetwork.NewAdminRulesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -147,14 +147,14 @@ func ExampleAdminRulesClient_CreateOrUpdate_networkManagerAdminRulePut() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerAdminRuleDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerAdminRuleDelete.json
 func ExampleAdminRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAdminRulesClient("subId", cred, nil)
+	client, err := armnetwork.NewAdminRulesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

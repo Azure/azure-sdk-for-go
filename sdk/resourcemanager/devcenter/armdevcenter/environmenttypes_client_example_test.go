@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/EnvironmentTypes_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/EnvironmentTypes_List.json
 func ExampleEnvironmentTypesClient_NewListByDevCenterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,9 +28,7 @@ func ExampleEnvironmentTypesClient_NewListByDevCenterPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDevCenterPager("rg1",
-		"Contoso",
-		&armdevcenter.EnvironmentTypesClientListByDevCenterOptions{Top: nil})
+	pager := client.NewListByDevCenterPager("rg1", "Contoso", &armdevcenter.EnvironmentTypesClientListByDevCenterOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,7 +41,7 @@ func ExampleEnvironmentTypesClient_NewListByDevCenterPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/EnvironmentTypes_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/EnvironmentTypes_Get.json
 func ExampleEnvironmentTypesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,11 +52,7 @@ func ExampleEnvironmentTypesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"rg1",
-		"Contoso",
-		"{environmentTypeName}",
-		nil)
+	res, err := client.Get(ctx, "rg1", "Contoso", "{environmentTypeName}", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,7 +60,7 @@ func ExampleEnvironmentTypesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/EnvironmentTypes_Put.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/EnvironmentTypes_Put.json
 func ExampleEnvironmentTypesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,16 +71,11 @@ func ExampleEnvironmentTypesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx,
-		"rg1",
-		"Contoso",
-		"{environmentTypeName}",
-		armdevcenter.EnvironmentType{
-			Tags: map[string]*string{
-				"Owner": to.Ptr("superuser"),
-			},
+	res, err := client.CreateOrUpdate(ctx, "rg1", "Contoso", "{environmentTypeName}", armdevcenter.EnvironmentType{
+		Tags: map[string]*string{
+			"Owner": to.Ptr("superuser"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -94,7 +83,7 @@ func ExampleEnvironmentTypesClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/EnvironmentTypes_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/EnvironmentTypes_Patch.json
 func ExampleEnvironmentTypesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,16 +94,11 @@ func ExampleEnvironmentTypesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx,
-		"rg1",
-		"Contoso",
-		"{environmentTypeName}",
-		armdevcenter.EnvironmentTypeUpdate{
-			Tags: map[string]*string{
-				"Owner": to.Ptr("superuser"),
-			},
+	res, err := client.Update(ctx, "rg1", "Contoso", "{environmentTypeName}", armdevcenter.EnvironmentTypeUpdate{
+		Tags: map[string]*string{
+			"Owner": to.Ptr("superuser"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -122,7 +106,7 @@ func ExampleEnvironmentTypesClient_Update() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/EnvironmentTypes_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/EnvironmentTypes_Delete.json
 func ExampleEnvironmentTypesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,11 +117,7 @@ func ExampleEnvironmentTypesClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"rg1",
-		"Contoso",
-		"{environmentTypeName}",
-		nil)
+	_, err = client.Delete(ctx, "rg1", "Contoso", "{environmentTypeName}", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

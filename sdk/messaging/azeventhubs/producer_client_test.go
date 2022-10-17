@@ -95,6 +95,8 @@ func TestProducerClient_SendToAny(t *testing.T) {
 			producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
 			require.NoError(t, err)
 
+			defer test.RequireClose(t, producer)
+
 			batch, err := producer.NewEventDataBatch(context.Background(), &azeventhubs.EventDataBatchOptions{
 				PartitionKey: partitionKey,
 			})
@@ -119,10 +121,7 @@ func TestProducerClient_SendToAny(t *testing.T) {
 			consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
 			require.NoError(t, err)
 
-			defer func() {
-				err := consumer.Close(context.Background())
-				require.NoError(t, err)
-			}()
+			defer test.RequireClose(t, consumer)
 
 			ctx, cancel := context.WithCancel(context.Background())
 			defer cancel()
@@ -420,27 +419,25 @@ func makeByteSlice(index int, total int) []byte {
 // receiveEventFromAnyPartition returns when it receives an event from any partition. Useful for tests where you're
 // letting the service route the event and you're not sure where it'll end up.
 func receiveEventFromAnyPartition(ctx context.Context, t *testing.T, consumer *azeventhubs.ConsumerClient, allPartitions []azeventhubs.PartitionProperties) *azeventhubs.ReceivedEventData {
-	ctx, cancel := context.WithCancel(ctx)
-	defer cancel()
+	eventCh := make(chan *azeventhubs.ReceivedEventData, len(allPartitions))
 
-	eventCh := make(chan *azeventhubs.ReceivedEventData, 1)
+	partitionClientContext, cancelPartitionReceiving := context.WithCancel(ctx)
+	defer cancelPartitionReceiving()
 
 	for _, partProps := range allPartitions {
-		go func(partProps azeventhubs.PartitionProperties) {
+		go func(ctx context.Context, partProps azeventhubs.PartitionProperties) {
 			partClient, err := consumer.NewPartitionClient(partProps.PartitionID, &azeventhubs.PartitionClientOptions{
 				StartPosition: getStartPosition(partProps),
 			})
 			require.NoError(t, err)
 
-			defer func() {
-				err := partClient.Close(context.Background())
-				require.NoError(t, err)
-			}()
+			defer test.RequireClose(t, partClient)
 
 			events, err := partClient.ReceiveEvents(ctx, 1, nil)
 
 			if err != nil {
 				if errors.Is(err, context.DeadlineExceeded) || errors.Is(err, context.Canceled) {
+					eventCh <- nil
 					return
 				}
 
@@ -448,23 +445,28 @@ func receiveEventFromAnyPartition(ctx context.Context, t *testing.T, consumer *a
 			}
 
 			if len(events) >= 1 {
-				select {
-				case eventCh <- events[0]:
-				default:
-					require.Failf(t, "More than one event was available, something is probably wrong (found on partition %s)", partProps.PartitionID)
-				}
-				cancel()
+				eventCh <- events[0]
+				cancelPartitionReceiving()
 			}
-		}(partProps)
+		}(partitionClientContext, partProps)
 	}
 
-	select {
-	case evt := <-eventCh:
-		return evt
-	case <-ctx.Done():
-		require.Fail(t, "No event received!")
-		return nil
+	var receivedEvent *azeventhubs.ReceivedEventData
+
+	for i := 0; i < len(allPartitions); i++ {
+		select {
+		case evt := <-eventCh:
+			if evt != nil {
+				receivedEvent = evt
+			}
+		case <-ctx.Done():
+			require.Fail(t, "No event received!")
+			return nil
+		}
 	}
+
+	require.NotNil(t, receivedEvent)
+	return receivedEvent
 }
 
 func getAllPartitionProperties(t *testing.T, client interface {

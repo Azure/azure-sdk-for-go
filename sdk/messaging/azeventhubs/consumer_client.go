@@ -22,19 +22,19 @@ import (
 // are subject to change.
 type Error = exported.Error
 
-// Code is an error code, usable by consuming code to work with
+// ErrorCode is an error code, usable by consuming code to work with
 // programatically.
-type Code = exported.Code
+type ErrorCode = exported.ErrorCode
 
 const (
-	// CodeConnectionLost means our connection was lost and all retry attempts failed.
+	// ErrorCodeConnectionLost means our connection was lost and all retry attempts failed.
 	// This typically reflects an extended outage or connection disruption and may
 	// require manual intervention.
-	CodeConnectionLost = exported.CodeConnectionLost
+	ErrorCodeConnectionLost ErrorCode = exported.ErrorCodeConnectionLost
 
-	// CodeOwnershipLost means that a partition that you were reading from was opened
+	// ErrorCodeOwnershipLost means that a partition that you were reading from was opened
 	// by another link with a higher epoch/owner level.
-	CodeOwnershipLost = exported.CodeOwnershipLost
+	ErrorCodeOwnershipLost ErrorCode = exported.ErrorCodeOwnershipLost
 )
 
 // ConsumerClientOptions configures optional parameters for a ConsumerClient.
@@ -47,7 +47,7 @@ type ConsumerClientOptions struct {
 
 	// NewWebSocketConn is a function that can create a net.Conn for use with websockets.
 	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
-	NewWebSocketConn func(ctx context.Context, args WebSocketConnArgs) (net.Conn, error)
+	NewWebSocketConn func(ctx context.Context, args WebSocketConnParams) (net.Conn, error)
 
 	// RetryOptions controls how often operations are retried from this client and any
 	// Receivers and Senders created from this client.
@@ -121,6 +121,16 @@ type PartitionClientOptions struct {
 	// from partition clients with a lower OwnerLevel.
 	// Default is off.
 	OwnerLevel *int64
+
+	// Prefetch represents the size of the internal prefetch buffer. When set,
+	// this client will attempt to always maintain an internal cache of events of
+	// this size, asynchronously, increasing the odds that ReceiveEvents() will use
+	// a locally stored cache of events, rather than having to wait for events to
+	// arrive from the network.
+	//
+	// Defaults to 300 events if Prefetch == 0.
+	// Disabled if Prefetch < 0.
+	Prefetch int32
 }
 
 // NewPartitionClient creates a client that can receive events from a partition. By default it starts
@@ -158,6 +168,11 @@ func (cc *ConsumerClient) GetPartitionProperties(ctx context.Context, partitionI
 	}
 
 	return getPartitionProperties(ctx, cc.namespace, rpcLink.Link, cc.eventHub, partitionID, options)
+}
+
+// ID is the identifier for this ConsumerClient.
+func (cc *ConsumerClient) ID() string {
+	return cc.clientID
 }
 
 type consumerClientDetails struct {

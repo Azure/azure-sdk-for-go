@@ -14,17 +14,17 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerStaticMemberGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerStaticMemberGet.json
 func ExampleStaticMembersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewStaticMembersClient("subscriptionC", cred, nil)
+	client, err := armnetwork.NewStaticMembersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -36,20 +36,20 @@ func ExampleStaticMembersClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerStaticMemberPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerStaticMemberPut.json
 func ExampleStaticMembersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewStaticMembersClient("subscriptionC", cred, nil)
+	client, err := armnetwork.NewStaticMembersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx, "rg1", "testNetworkManager", "testNetworkGroup", "testStaticMember", armnetwork.StaticMember{
 		Properties: &armnetwork.StaticMemberProperties{
-			ResourceID: to.Ptr("/subscriptions/subscriptionC/resourceGroup/rg1/providers/Microsoft.Network/virtualnetworks/vnet1"),
+			ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroup/rg1/providers/Microsoft.Network/virtualnetworks/vnet1"),
 		},
 	}, nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleStaticMembersClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerStaticMemberDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerStaticMemberDelete.json
 func ExampleStaticMembersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,14 +76,14 @@ func ExampleStaticMembersClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/NetworkManagerStaticMemberList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerStaticMemberList.json
 func ExampleStaticMembersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewStaticMembersClient("subscriptionC", cred, nil)
+	client, err := armnetwork.NewStaticMembersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

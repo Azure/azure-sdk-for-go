@@ -2,3 +2,6 @@ stress
 stress.exe
 logs
 charts
+newstress
+oldstress
+*.log

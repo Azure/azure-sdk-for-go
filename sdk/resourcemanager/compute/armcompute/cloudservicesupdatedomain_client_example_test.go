@@ -13,10 +13,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceUpdateDomain_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudServiceUpdateDomain_Update.json
 func ExampleCloudServicesUpdateDomainClient_BeginWalkUpdateDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,12 +27,7 @@ func ExampleCloudServicesUpdateDomainClient_BeginWalkUpdateDomain() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginWalkUpdateDomain(ctx,
-		"ConstosoRG",
-		"{cs-name}",
-		1,
-		armcompute.UpdateDomain{},
-		nil)
+	poller, err := client.BeginWalkUpdateDomain(ctx, "ConstosoRG", "{cs-name}", 1, armcompute.UpdateDomain{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -42,7 +37,7 @@ func ExampleCloudServicesUpdateDomainClient_BeginWalkUpdateDomain() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceUpdateDomain_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudServiceUpdateDomain_Get.json
 func ExampleCloudServicesUpdateDomainClient_GetUpdateDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,11 +48,7 @@ func ExampleCloudServicesUpdateDomainClient_GetUpdateDomain() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetUpdateDomain(ctx,
-		"ConstosoRG",
-		"{cs-name}",
-		1,
-		nil)
+	res, err := client.GetUpdateDomain(ctx, "ConstosoRG", "{cs-name}", 1, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -65,7 +56,7 @@ func ExampleCloudServicesUpdateDomainClient_GetUpdateDomain() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceUpdateDomain_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudServiceUpdateDomain_List.json
 func ExampleCloudServicesUpdateDomainClient_NewListUpdateDomainsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,9 +67,7 @@ func ExampleCloudServicesUpdateDomainClient_NewListUpdateDomainsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListUpdateDomainsPager("ConstosoRG",
-		"{cs-name}",
-		nil)
+	pager := client.NewListUpdateDomainsPager("ConstosoRG", "{cs-name}", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

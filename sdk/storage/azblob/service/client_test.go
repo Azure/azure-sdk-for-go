@@ -611,6 +611,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.AuthorizationFailure)
 }
 
+// Note: Test is commented out because it needs a valid ManagedIdentityCredential to run.
 /*func (s *ServiceRecordedTestsSuite) TestUserDelegationSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -620,7 +621,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 	cred, err := azidentity.NewManagedIdentityCredential(&optsClientID)
 	_require.Nil(err)
 
-	svcClient, err := azblob.NewClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, &azblob.ClientOptions{})
+	svcClient, err := service.NewClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, &service.ClientOptions{})
 	_require.Nil(err)
 
 	// Set current and past time, create KeyInfo
@@ -706,8 +707,20 @@ func (s *ServiceUnrecordedTestsSuite) TestContainerRestore() {
 
 	_require.Equal(contRestored, true)
 
-	_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
-	_require.Nil(err)
+	for i := 0; i < 5; i++ {
+		_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
+		if err == nil {
+			// container was deleted
+			break
+		} else if bloberror.HasCode(err, bloberror.Code("ConcurrentContainerOperationInProgress")) {
+			// the container is still being restored, sleep a bit then try again
+			time.Sleep(10 * time.Second)
+		} else {
+			// some other error
+			break
+		}
+	}
+	_require.NoError(err)
 }
 
 // TODO: convert this test to recorded

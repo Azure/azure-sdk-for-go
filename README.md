@@ -5,7 +5,7 @@
 
 This repository is for active development of the Azure SDK for Go. For consumers of the SDK you can follow the links below to visit the documentation you are interested in
 * [Overview of Azure SDK for Go](https://docs.microsoft.com/azure/developer/go/)
-* [SDK Reference](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go)
+* [SDK Reference](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk)
 * [Code Samples for Azure Go SDK](https://github.com/azure-samples/azure-sdk-for-go-samples)
 * [Azure REST API Docs](https://docs.microsoft.com/rest/api/)
 * [General Azure Docs](https://docs.microsoft.com/azure)
@@ -15,7 +15,7 @@ This repository is for active development of the Azure SDK for Go. For consumers
 
 To get started with a library, see the README.md file located in the library's project folder.  You can find these library folders grouped by service in the `/sdk` directory.
 
-> NOTE: Go **1.18** or later is required.
+> NOTE: Go **1.18** or later is required. You could download and install the latest version of Go from [here](https://go.dev/doc/install). It will replace the existing Go on your machine. If you want to install multiple Go versions on the same machine, you could refer this [doc](https://go.dev/doc/manage-install).
 
 ## Packages available
 

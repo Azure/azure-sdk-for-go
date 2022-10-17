@@ -1,13 +1,22 @@
 # Release History
 
-## 1.1.4 (Unreleased)
+## 1.1.5 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed an issue in `runtime.SetMultipartFormData` to properly handle slices of `io.ReadSeekCloser`.
+
+### Other Changes
+* Retain contents of read-only fields when sending requests.
+
+## 1.1.4 (2022-10-06)
+
+### Bugs Fixed
 * Don't retry a request if the `Retry-After` delay is greater than the configured `RetryOptions.MaxRetryDelay`.
+* `runtime.JoinPaths`: do not unconditionally add a forward slash before the query string
 
 ### Other Changes
 * Removed logging URL from retry policy as it's redundant.

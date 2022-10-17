@@ -64,8 +64,8 @@
       "location": "[variables('location')]",
       "dependsOn": ["[resourceId('Microsoft.EventHub/namespaces', variables('namespaceName'))]"],
       "properties": {
-        "messageRetentionInDays": 1,
-        "partitionCount": 4
+        "messageRetentionInDays": 7,
+        "partitionCount": 32
       }
     },
     {

@@ -29,6 +29,8 @@ type ContainerClientOptions struct {
 }
 
 // NewContainerClient creates a container lease client for the provided container client.
+//   - client - an instance of a container client
+//   - options - client options; pass nil to accept the default values
 func NewContainerClient(client *container.Client, options *ContainerClientOptions) (*ContainerClient, error) {
 	var leaseID *string
 	if options != nil {

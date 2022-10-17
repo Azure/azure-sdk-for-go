@@ -58,8 +58,7 @@ func NewServiceTagInformationClient(subscriptionID string, credential azcore.Tok
 }
 
 // NewListPager - Gets a list of service tag information resources with pagination.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-05-01
 // location - The location that will be used as a reference for cloud (not as a filter based on location, you will get the
 // list of service tags with prefix details across all regions but limited to the cloud that
 // your subscription belongs to).
@@ -109,7 +108,7 @@ func (client *ServiceTagInformationClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-05-01")
 	if options != nil && options.NoAddressPrefixes != nil {
 		reqQP.Set("noAddressPrefixes", strconv.FormatBool(*options.NoAddressPrefixes))
 	}

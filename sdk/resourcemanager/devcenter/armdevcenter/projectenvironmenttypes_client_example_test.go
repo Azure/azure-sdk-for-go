@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/ProjectEnvironmentTypes_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/ProjectEnvironmentTypes_List.json
 func ExampleProjectEnvironmentTypesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,9 +28,7 @@ func ExampleProjectEnvironmentTypesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1",
-		"ContosoProj",
-		&armdevcenter.ProjectEnvironmentTypesClientListOptions{Top: nil})
+	pager := client.NewListPager("rg1", "ContosoProj", &armdevcenter.ProjectEnvironmentTypesClientListOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,7 +41,7 @@ func ExampleProjectEnvironmentTypesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/ProjectEnvironmentTypes_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/ProjectEnvironmentTypes_Get.json
 func ExampleProjectEnvironmentTypesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,11 +52,7 @@ func ExampleProjectEnvironmentTypesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"rg1",
-		"ContosoProj",
-		"{environmentTypeName}",
-		nil)
+	res, err := client.Get(ctx, "rg1", "ContosoProj", "{environmentTypeName}", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,7 +60,7 @@ func ExampleProjectEnvironmentTypesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/ProjectEnvironmentTypes_Put.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/ProjectEnvironmentTypes_Put.json
 func ExampleProjectEnvironmentTypesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,38 +71,33 @@ func ExampleProjectEnvironmentTypesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx,
-		"rg1",
-		"ContosoProj",
-		"{environmentTypeName}",
-		armdevcenter.ProjectEnvironmentType{
-			Identity: &armdevcenter.ManagedServiceIdentity{
-				Type: to.Ptr(armdevcenter.ManagedServiceIdentityTypeUserAssigned),
-				UserAssignedIdentities: map[string]*armdevcenter.UserAssignedIdentity{
-					"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/identityGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity1": {},
+	res, err := client.CreateOrUpdate(ctx, "rg1", "ContosoProj", "{environmentTypeName}", armdevcenter.ProjectEnvironmentType{
+		Identity: &armdevcenter.ManagedServiceIdentity{
+			Type: to.Ptr(armdevcenter.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armdevcenter.UserAssignedIdentity{
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/identityGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity1": {},
+			},
+		},
+		Properties: &armdevcenter.ProjectEnvironmentTypeProperties{
+			CreatorRoleAssignment: &armdevcenter.ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment{
+				Roles: map[string]*armdevcenter.EnvironmentRole{
+					"4cbf0b6c-e750-441c-98a7-10da8387e4d6": {},
 				},
 			},
-			Properties: &armdevcenter.ProjectEnvironmentTypeProperties{
-				CreatorRoleAssignment: &armdevcenter.ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment{
+			DeploymentTargetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
+			Status:             to.Ptr(armdevcenter.EnableStatusEnabled),
+			UserRoleAssignments: map[string]*armdevcenter.UserRoleAssignmentValue{
+				"e45e3m7c-176e-416a-b466-0c5ec8298f8a": {
 					Roles: map[string]*armdevcenter.EnvironmentRole{
 						"4cbf0b6c-e750-441c-98a7-10da8387e4d6": {},
 					},
 				},
-				DeploymentTargetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
-				Status:             to.Ptr(armdevcenter.EnableStatusEnabled),
-				UserRoleAssignments: map[string]*armdevcenter.UserRoleAssignmentValue{
-					"e45e3m7c-176e-416a-b466-0c5ec8298f8a": {
-						Roles: map[string]*armdevcenter.EnvironmentRole{
-							"4cbf0b6c-e750-441c-98a7-10da8387e4d6": {},
-						},
-					},
-				},
-			},
-			Tags: map[string]*string{
-				"CostCenter": to.Ptr("RnD"),
 			},
 		},
-		nil)
+		Tags: map[string]*string{
+			"CostCenter": to.Ptr("RnD"),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -116,7 +105,7 @@ func ExampleProjectEnvironmentTypesClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/ProjectEnvironmentTypes_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/ProjectEnvironmentTypes_Patch.json
 func ExampleProjectEnvironmentTypesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,33 +116,28 @@ func ExampleProjectEnvironmentTypesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx,
-		"rg1",
-		"ContosoProj",
-		"{environmentTypeName}",
-		armdevcenter.ProjectEnvironmentTypeUpdate{
-			Identity: &armdevcenter.ManagedServiceIdentity{
-				Type: to.Ptr(armdevcenter.ManagedServiceIdentityTypeUserAssigned),
-				UserAssignedIdentities: map[string]*armdevcenter.UserAssignedIdentity{
-					"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/identityGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity1": {},
-				},
+	res, err := client.Update(ctx, "rg1", "ContosoProj", "{environmentTypeName}", armdevcenter.ProjectEnvironmentTypeUpdate{
+		Identity: &armdevcenter.ManagedServiceIdentity{
+			Type: to.Ptr(armdevcenter.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armdevcenter.UserAssignedIdentity{
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/identityGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity1": {},
 			},
-			Properties: &armdevcenter.ProjectEnvironmentTypeUpdateProperties{
-				DeploymentTargetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
-				Status:             to.Ptr(armdevcenter.EnableStatusEnabled),
-				UserRoleAssignments: map[string]*armdevcenter.UserRoleAssignmentValue{
-					"e45e3m7c-176e-416a-b466-0c5ec8298f8a": {
-						Roles: map[string]*armdevcenter.EnvironmentRole{
-							"4cbf0b6c-e750-441c-98a7-10da8387e4d6": {},
-						},
+		},
+		Properties: &armdevcenter.ProjectEnvironmentTypeUpdateProperties{
+			DeploymentTargetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
+			Status:             to.Ptr(armdevcenter.EnableStatusEnabled),
+			UserRoleAssignments: map[string]*armdevcenter.UserRoleAssignmentValue{
+				"e45e3m7c-176e-416a-b466-0c5ec8298f8a": {
+					Roles: map[string]*armdevcenter.EnvironmentRole{
+						"4cbf0b6c-e750-441c-98a7-10da8387e4d6": {},
 					},
 				},
 			},
-			Tags: map[string]*string{
-				"CostCenter": to.Ptr("RnD"),
-			},
 		},
-		nil)
+		Tags: map[string]*string{
+			"CostCenter": to.Ptr("RnD"),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -161,7 +145,7 @@ func ExampleProjectEnvironmentTypesClient_Update() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/ProjectEnvironmentTypes_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/ProjectEnvironmentTypes_Delete.json
 func ExampleProjectEnvironmentTypesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,11 +156,7 @@ func ExampleProjectEnvironmentTypesClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx,
-		"rg1",
-		"ContosoProj",
-		"{environmentTypeName}",
-		nil)
+	_, err = client.Delete(ctx, "rg1", "ContosoProj", "{environmentTypeName}", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

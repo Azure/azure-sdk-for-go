@@ -58,7 +58,7 @@ func NewVirtualApplianceSKUsClient(subscriptionID string, credential azcore.Toke
 
 // Get - Retrieves a single available sku for network virtual appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-05-01
 // skuName - Name of the Sku.
 // options - VirtualApplianceSKUsClientGetOptions contains the optional parameters for the VirtualApplianceSKUsClient.Get
 // method.
@@ -93,7 +93,7 @@ func (client *VirtualApplianceSKUsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -109,8 +109,7 @@ func (client *VirtualApplianceSKUsClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListPager - List all SKUs available for a virtual appliance.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-05-01
 // options - VirtualApplianceSKUsClientListOptions contains the optional parameters for the VirtualApplianceSKUsClient.List
 // method.
 func (client *VirtualApplianceSKUsClient) NewListPager(options *VirtualApplianceSKUsClientListOptions) *runtime.Pager[VirtualApplianceSKUsClientListResponse] {
@@ -153,7 +152,7 @@ func (client *VirtualApplianceSKUsClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

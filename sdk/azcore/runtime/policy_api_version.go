@@ -8,6 +8,7 @@ package runtime
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -56,6 +57,8 @@ func (a *APIVersionPolicy) Do(req *policy.Request) (*http.Response, error) {
 			q := req.Raw().URL.Query()
 			q.Set(a.name, a.version)
 			req.Raw().URL.RawQuery = q.Encode()
+		default:
+			return nil, fmt.Errorf("unknown APIVersionLocation %d", a.location)
 		}
 	}
 	return req.Next()

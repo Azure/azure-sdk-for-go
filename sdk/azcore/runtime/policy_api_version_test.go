@@ -80,6 +80,7 @@ func TestAPIVersionPolicy(t *testing.T) {
 		// ctor via NewPipeline(). The policy should return an error when the user specifies a version
 		// the policy can't set because the service client didn't identify the header/query param.
 		{version: version, err: true},
+		{location: 2, version: version, err: true},
 	} {
 		t.Run("no-op", func(t *testing.T) {
 			p := NewAPIVersionPolicy(test.location, test.name, test.version)

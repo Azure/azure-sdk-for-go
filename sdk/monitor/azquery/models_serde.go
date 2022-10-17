@@ -748,45 +748,6 @@ func (r *Results) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Table.
-func (t Table) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "columns", t.Columns)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "rows", t.Rows)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Table.
-func (t *Table) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", t, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "columns":
-			err = unpopulate(val, "Columns", &t.Columns)
-			delete(rawMsg, key)
-			t.columnIndexLookup = map[string]int{}
-			for i, v := range t.Columns {
-				t.columnIndexLookup[*v.Name] = i
-			}
-		case "name":
-			err = unpopulate(val, "Name", &t.Name)
-			delete(rawMsg, key)
-		case "rows":
-			err = unpopulate(val, "Rows", &t.Rows)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", t, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type TimeSeriesElement.
 func (t TimeSeriesElement) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})

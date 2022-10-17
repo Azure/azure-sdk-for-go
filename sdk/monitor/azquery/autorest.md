@@ -104,6 +104,14 @@ directive:
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(?:ErrorInfo|ErrorDetail)\).*\{\s(?:.+\s)+\}\s/g, "");
 
+  # delete generated table struct, using custom one instead
+  - from: models.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+type (Table).+\{(?:\s.+\s)+\}\s/g, "");
+  - from: models_serde.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(Table)\).*\{\s(?:.+\s)+\}\s/g, "");
+
   # delete generated constructor
   - from: logs_client.go
     where: $

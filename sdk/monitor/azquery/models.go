@@ -344,20 +344,6 @@ type Results struct {
 	Statistics interface{} `json:"statistics,omitempty"`
 }
 
-// Table - Contains the columns and rows for one table in a query response.
-type Table struct {
-	// REQUIRED; The list of columns in this table.
-	Columns []*Column `json:"columns,omitempty"`
-
-	// REQUIRED; The name of the table.
-	Name *string `json:"name,omitempty"`
-
-	// REQUIRED; The resulting rows from this query.
-	Rows []Row `json:"rows,omitempty"`
-
-	columnIndexLookup map[string]int
-}
-
 // TimeSeriesElement - A time series result type. The discriminator value is always TimeSeries in this case.
 type TimeSeriesElement struct {
 	// An array of data points representing the metric values. This is only returned if a result type of data is specified.

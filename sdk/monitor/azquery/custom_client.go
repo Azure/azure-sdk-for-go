@@ -75,8 +75,55 @@ func (e *ErrorInfo) Error() string {
 	return string(e.data)
 }
 
+// Row of data in a table, can contain any data type
 type Row []any
 
+// Table - Contains the columns and rows for one table in a query response.
+type Table struct {
+	// REQUIRED; The list of columns in this table.
+	Columns []*Column `json:"columns,omitempty"`
+
+	// REQUIRED; The name of the table.
+	Name *string `json:"name,omitempty"`
+
+	// REQUIRED; The resulting rows from this query.
+	Rows []Row `json:"rows,omitempty"`
+
+	// internal map used to lookup column index
+	columnIndexLookup map[string]int
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type Table.
+func (t *Table) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", t, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "columns":
+			err = unpopulate(val, "Columns", &t.Columns)
+			delete(rawMsg, key)
+			t.columnIndexLookup = map[string]int{}
+			for i, v := range t.Columns {
+				t.columnIndexLookup[*v.Name] = i
+			}
+		case "name":
+			err = unpopulate(val, "Name", &t.Name)
+			delete(rawMsg, key)
+		case "rows":
+			err = unpopulate(val, "Rows", &t.Rows)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", t, err)
+		}
+	}
+	return nil
+}
+
+// GetColumnIndex returns the index of the specified column
 func (t Table) GetColumnIndex(name string) int {
 	return t.columnIndexLookup[name]
 }

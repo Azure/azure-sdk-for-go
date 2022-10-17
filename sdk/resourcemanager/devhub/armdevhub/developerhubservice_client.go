@@ -28,18 +28,14 @@ import (
 type DeveloperHubServiceClient struct {
 	host           string
 	subscriptionID string
-	code           string
-	state          string
 	pl             runtime.Pipeline
 }
 
 // NewDeveloperHubServiceClient creates a new instance of DeveloperHubServiceClient with the specified values.
 // subscriptionID - The ID of the target subscription.
-// code - The code response from authenticating the GitHub App.
-// state - The state response from authenticating the GitHub App.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDeveloperHubServiceClient(subscriptionID string, code string, state string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeveloperHubServiceClient, error) {
+func NewDeveloperHubServiceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeveloperHubServiceClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -53,8 +49,6 @@ func NewDeveloperHubServiceClient(subscriptionID string, code string, state stri
 	}
 	client := &DeveloperHubServiceClient{
 		subscriptionID: subscriptionID,
-		code:           code,
-		state:          state,
 		host:           ep,
 		pl:             pl,
 	}
@@ -120,10 +114,12 @@ func (client *DeveloperHubServiceClient) gitHubOAuthHandleResponse(resp *http.Re
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-04-01-preview
 // location - The name of Azure region.
+// code - The code response from authenticating the GitHub App.
+// state - The state response from authenticating the GitHub App.
 // options - DeveloperHubServiceClientGitHubOAuthCallbackOptions contains the optional parameters for the DeveloperHubServiceClient.GitHubOAuthCallback
 // method.
-func (client *DeveloperHubServiceClient) GitHubOAuthCallback(ctx context.Context, location string, options *DeveloperHubServiceClientGitHubOAuthCallbackOptions) (DeveloperHubServiceClientGitHubOAuthCallbackResponse, error) {
-	req, err := client.gitHubOAuthCallbackCreateRequest(ctx, location, options)
+func (client *DeveloperHubServiceClient) GitHubOAuthCallback(ctx context.Context, location string, code string, state string, options *DeveloperHubServiceClientGitHubOAuthCallbackOptions) (DeveloperHubServiceClientGitHubOAuthCallbackResponse, error) {
+	req, err := client.gitHubOAuthCallbackCreateRequest(ctx, location, code, state, options)
 	if err != nil {
 		return DeveloperHubServiceClientGitHubOAuthCallbackResponse{}, err
 	}
@@ -138,7 +134,7 @@ func (client *DeveloperHubServiceClient) GitHubOAuthCallback(ctx context.Context
 }
 
 // gitHubOAuthCallbackCreateRequest creates the GitHubOAuthCallback request.
-func (client *DeveloperHubServiceClient) gitHubOAuthCallbackCreateRequest(ctx context.Context, location string, options *DeveloperHubServiceClientGitHubOAuthCallbackOptions) (*policy.Request, error) {
+func (client *DeveloperHubServiceClient) gitHubOAuthCallbackCreateRequest(ctx context.Context, location string, code string, state string, options *DeveloperHubServiceClientGitHubOAuthCallbackOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/locations/{location}/githuboauth/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -154,8 +150,8 @@ func (client *DeveloperHubServiceClient) gitHubOAuthCallbackCreateRequest(ctx co
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-04-01-preview")
-	reqQP.Set("code", client.code)
-	reqQP.Set("state", client.state)
+	reqQP.Set("code", code)
+	reqQP.Set("state", state)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

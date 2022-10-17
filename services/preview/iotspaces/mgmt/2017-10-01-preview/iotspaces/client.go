@@ -1,3 +1,5 @@
+// Deprecated: The Azure IoTSpaces service is deprecated as of the end of 2020. This SDK is no longer maintained and will not work anymore. You’re advised to transition your application off of IoTSpaces and switch to the Azure Digital Twins service. Please refer to [What is Azure Digital Twins? - Azure Digital Twins | Microsoft Learn](https://learn.microsoft.com/en-us/azure/digital-twins/overview) for more detail.
+//
 // Package iotspaces implements the Azure ARM Iotspaces service API version 2017-10-01-preview.
 //
 // Use this API to manage the IoTSpaces service instances in your Azure subscription.

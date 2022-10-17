@@ -257,6 +257,24 @@ func (bb *Client) Undelete(ctx context.Context, o *blob.UndeleteOptions) (blob.U
 	return bb.BlobClient().Undelete(ctx, o)
 }
 
+// SetImmutabilityPolicy operation enables users to set the immutability policy on a blob.
+// https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview
+func (bb *Client) SetImmutabilityPolicy(ctx context.Context, options *blob.SetImmutabilityPolicyOptions) (blob.SetImmutabilityPolicyResponse, error) {
+	return bb.BlobClient().SetImmutabilityPolicy(ctx, options)
+}
+
+// DeleteImmutabilityPolicy operation enables users to delete the immutability policy on a blob.
+// https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview
+func (bb *Client) DeleteImmutabilityPolicy(ctx context.Context, options *blob.DeleteImmutabilityPolicyOptions) (blob.DeleteImmutabilityPolicyResponse, error) {
+	return bb.BlobClient().DeleteImmutabilityPolicy(ctx, options)
+}
+
+// SetLegalHold operation enables users to set legal hold on a blob.
+// https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview
+func (bb *Client) SetLegalHold(ctx context.Context, legalHold bool, options *blob.SetLegalHoldOptions) (blob.SetLegalHoldResponse, error) {
+	return bb.BlobClient().SetLegalHold(ctx, legalHold, options)
+}
+
 // SetTier operation sets the tier on a blob. The operation is allowed on a page
 // blob in a premium storage account and on a block blob in a blob storage account (locally
 // redundant storage only). A premium page blob's tier determines the allowed size, IOPS, and

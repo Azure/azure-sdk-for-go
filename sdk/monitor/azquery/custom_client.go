@@ -75,7 +75,7 @@ func (e *ErrorInfo) Error() string {
 	return string(e.data)
 }
 
-// Row of data in a table, can contain any data type
+// Row of data in a table, types of data used by service specified in LogsColumnType
 type Row []any
 
 // Table - Contains the columns and rows for one table in a query response.

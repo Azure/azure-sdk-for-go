@@ -3,12 +3,15 @@
 ## 0.2.1 (Unreleased)
 
 ### Features Added
+* Added `GetColumnIndex()` method to Table struct
+* Added type `Row`
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+* Updated docs with more detailed examples
 
 ## 0.2.0 (2022-10-11)
 

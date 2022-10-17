@@ -23,18 +23,16 @@ func TestAPIVersionPolicy(t *testing.T) {
 	srv.SetResponse()
 
 	for _, header := range []bool{true, false} {
-		name := "query param"
+		s := "query param"
 		if header {
-			name = "header"
+			s = "header"
 		}
-		t.Run(name, func(t *testing.T) {
-			var v APIVersionName
+		t.Run(s, func(t *testing.T) {
+			var location APIVersionLocation = APIVersionLocationQueryParam
 			if header {
-				v = APIVersionHeaderName(name)
-			} else {
-				v = APIVersionQueryParamName(name)
+				location = APIVersionLocationHeader
 			}
-			p := NewAPIVersionPolicy(v, version)
+			p := NewAPIVersionPolicy(location, name, version)
 			pl := newTestPipeline(&policy.ClientOptions{Transport: srv, PerCallPolicies: []policy.Policy{p}})
 
 			// when the value isn't set, the policy should set it
@@ -43,48 +41,48 @@ func TestAPIVersionPolicy(t *testing.T) {
 			res, err := pl.Do(req)
 			require.NoError(t, err)
 			if header {
-				require.Equal(t, version, res.Request.Header.Get(name))
+				require.Equal(t, version, res.Request.Header.Get(s))
 			} else {
-				require.Equal(t, version, res.Request.URL.Query().Get(name))
+				require.Equal(t, version, res.Request.URL.Query().Get(s))
 			}
 
 			// the policy should override an existing value
 			req, err = NewRequest(context.Background(), http.MethodGet, srv.URL())
 			require.NoError(t, err)
 			if header {
-				req.Raw().Header.Set(name, "not-"+version)
+				req.Raw().Header.Set(s, "not-"+version)
 			} else {
 				q := req.Raw().URL.Query()
-				q.Set(name, "not-"+version)
+				q.Set(s, "not-"+version)
 				req.Raw().URL.RawQuery = q.Encode()
 			}
 			res, err = pl.Do(req)
 			require.NoError(t, err)
 			if header {
-				require.Equal(t, version, res.Request.Header.Get(name))
+				require.Equal(t, version, res.Request.Header.Get(s))
 			} else {
-				require.Equal(t, version, res.Request.URL.Query().Get(name))
+				require.Equal(t, version, res.Request.URL.Query().Get(s))
 			}
 		})
 	}
 
 	for _, test := range []struct {
-		err     bool
-		name    APIVersionName
-		version string
+		err           bool
+		location      APIVersionLocation
+		name, version string
 	}{
 		// the policy should modify the request only when given both a version and parameter name
 		{},
-		{name: APIVersionHeaderName(name), version: ""},
-		{name: APIVersionQueryParamName(name), version: ""},
+		{location: APIVersionLocationHeader, version: ""},
+		{location: APIVersionLocationQueryParam, version: ""},
 
 		// The policy must know which header/query param to set. This should come from the service client
 		// ctor via NewPipeline(). The policy should return an error when the user specifies a version
 		// the policy can't set because the service client didn't identify the header/query param.
-		{name: nil, version: version, err: true},
+		{version: version, err: true},
 	} {
 		t.Run("no-op", func(t *testing.T) {
-			p := NewAPIVersionPolicy(test.name, test.version)
+			p := NewAPIVersionPolicy(test.location, test.name, test.version)
 			pl := newTestPipeline(&policy.ClientOptions{Transport: srv, PerCallPolicies: []policy.Policy{p}})
 			req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 			require.NoError(t, err)

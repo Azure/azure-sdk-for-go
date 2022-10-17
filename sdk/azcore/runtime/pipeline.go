@@ -16,9 +16,9 @@ import (
 // PipelineOptions contains Pipeline options for SDK developers
 type PipelineOptions struct {
 	AllowedHeaders, AllowedQueryParameters []string
-	// APIVersionName is the name of the query parameter or header the service reads for an API version value
-	APIVersionName    APIVersionName
-	PerCall, PerRetry []policy.Policy
+	APIVersionLocation                     APIVersionLocation
+	APIVersionName                         string
+	PerCall, PerRetry                      []policy.Policy
 }
 
 // Pipeline represents a primitive for sending HTTP requests and receiving responses.
@@ -51,8 +51,8 @@ func NewPipeline(module, version string, plOpts PipelineOptions, options *policy
 	if !cp.Telemetry.Disabled {
 		policies = append(policies, NewTelemetryPolicy(module, version, &cp.Telemetry))
 	}
-	if plOpts.APIVersionName != nil && cp.APIVersion != "" {
-		policies = append(policies, NewAPIVersionPolicy(plOpts.APIVersionName, cp.APIVersion))
+	if cp.APIVersion != "" {
+		policies = append(policies, NewAPIVersionPolicy(plOpts.APIVersionLocation, plOpts.APIVersionName, cp.APIVersion))
 	}
 	policies = append(policies, plOpts.PerCall...)
 	policies = append(policies, cp.PerCallPolicies...)

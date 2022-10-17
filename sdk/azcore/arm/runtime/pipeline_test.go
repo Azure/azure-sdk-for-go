@@ -38,7 +38,7 @@ func TestNewPipelineWithAPIVersion(t *testing.T) {
 	require.NoError(t, err)
 	res, err := pl.Do(req)
 	require.NoError(t, err)
-	require.Equal(t, version, res.Request.URL.Query().Get(string(apiVersion)))
+	require.Equal(t, version, res.Request.URL.Query().Get(string("api-version")))
 }
 
 func TestNewPipelineWithOptions(t *testing.T) {

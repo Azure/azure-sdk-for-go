@@ -8,71 +8,53 @@ package runtime
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
+// APIVersionLocation indicates which part of a request identifies the service version
+type APIVersionLocation int
+
 const (
-	apiVersionHeaderName = iota
-	apiVersionQueryParamName
+	// APIVersionLocationQueryParam indicates a query parameter
+	APIVersionLocationQueryParam = 0
+	// APIVersionLocationHeader indicates a header
+	APIVersionLocationHeader = 1
 )
 
-// APIVersionName is the name of an API version query parameter or header.
-type APIVersionName interface {
-	fmt.Stringer
-	kind() int
-}
-
-// APIVersionHeaderName names the header a client should set with a request's API version.
-type APIVersionHeaderName string
-
-func (h APIVersionHeaderName) kind() int {
-	return apiVersionHeaderName
-}
-
-func (h APIVersionHeaderName) String() string {
-	return string(h)
-}
-
-// APIVersionQueryParamName names the query parameter a client should set with a request's API version.
-type APIVersionQueryParamName string
-
-func (q APIVersionQueryParamName) kind() int {
-	return apiVersionQueryParamName
-}
-
-func (q APIVersionQueryParamName) String() string {
-	return string(q)
+// NewAPIVersionPolicy constructs an APIVersionPolicy. name is the name of the query parameter or header and
+// version is its value. If version is "", Do will be a no-op. If version isn't empty and name is empty,
+// Do will return an error.
+func NewAPIVersionPolicy(location APIVersionLocation, name, version string) *APIVersionPolicy {
+	return &APIVersionPolicy{location: location, name: name, version: version}
 }
 
 // APIVersionPolicy enables users to set the API version of every request a client sends.
 type APIVersionPolicy struct {
-	// name of the query param or header to set. Should be provided by the client.
-	name APIVersionName
-	// version value. Should be provided by the user.
-	version string
-}
+	// location indicates whether "name" refers to a query parameter or header.
+	location APIVersionLocation
 
-// NewAPIVersionPolicy constructs an APIVersionPolicy. If version is "", Do will be a no-op.
-func NewAPIVersionPolicy(name APIVersionName, version string) *APIVersionPolicy {
-	return &APIVersionPolicy{name, version}
+	// name of the query param or header whose value should be overridden; provided by the client.
+	name string
+
+	// version is the value (provided by the user) that replaces the default version value.
+	version string
 }
 
 // Do sets the request's API version, if the policy is configured to do so, replacing any prior value.
 func (a *APIVersionPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if a.version != "" {
-		if a.name == nil {
-			// user set ClientOptions.APIVersion but the client ctor didn't set PipelineOptions.APIVersionName
+		if a.name == "" {
+			// user set ClientOptions.APIVersion but the client ctor didn't set PipelineOptions.APIVersionLocation
 			return nil, errors.New("this client doesn't support overriding its API version")
 		}
-		switch a.name.kind() {
-		case apiVersionHeaderName:
-			req.Raw().Header.Set(a.name.String(), a.version)
-		case apiVersionQueryParamName:
+		switch a.location {
+		case APIVersionLocationHeader:
+			req.Raw().Header.Set(a.name, a.version)
+		case APIVersionLocationQueryParam:
 			q := req.Raw().URL.Query()
-			q.Set(a.name.String(), a.version)
+			q.Set(a.name, a.version)
 			req.Raw().URL.RawQuery = q.Encode()
 		}
 	}

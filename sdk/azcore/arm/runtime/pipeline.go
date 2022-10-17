@@ -18,8 +18,6 @@ import (
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-const apiVersion = azruntime.APIVersionQueryParamName("api-version")
-
 // NewPipeline creates a pipeline from connection options. Policies from ClientOptions are
 // placed after policies from PipelineOptions. The telemetry policy, when enabled, will
 // use the specified module and version info.
@@ -45,8 +43,8 @@ func NewPipeline(module, version string, cred azcore.TokenCredential, plOpts azr
 		copy(perCall, plOpts.PerCall)
 		plOpts.PerCall = append(perCall, regPolicy)
 	}
-	if plOpts.APIVersionName == nil {
-		plOpts.APIVersionName = apiVersion
+	if plOpts.APIVersionName == "" {
+		plOpts.APIVersionName = "api-version"
 	}
 	return azruntime.NewPipeline(module, version, plOpts, &options.ClientOptions), nil
 }

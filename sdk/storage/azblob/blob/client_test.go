@@ -3018,6 +3018,14 @@ func (s *BlobRecordedTestsSuite) TestPermanentDelete() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.Nil(err)
 
+	// Enable soft-delete by setting retention policy with AllowPermanentDelete set to True
+	days := int32(1)
+	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{
+		DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: to.Ptr(true), Days: &days, AllowPermanentDelete: to.Ptr(true)}})
+	_require.Nil(err)
+
+	time.Sleep(time.Second * 30) // Sleep for 30 seconds for account/container creation
+
 	// Create container and blob, upload blob to container
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
@@ -3039,7 +3047,7 @@ func (s *BlobRecordedTestsSuite) TestPermanentDelete() {
 	parts.SAS, err = sas.AccountSignatureValues{
 		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
-		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true, PermanentDelete: true}).String(),
 		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
 		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
 	}.SignWithSharedKey(credential)

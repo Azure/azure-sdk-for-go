@@ -12,57 +12,32 @@
 - Type of `PrivateEndpointConnectionProperties.ProvisioningState` has been changed from `*string` to `*PrivateEndpointConnectionProvisioningState`
 - Type of `ErrorContract.Error` has been changed from `*ErrorResponse` to `*ErrorResponseDetails`
 - Type of `Dimension.Operator` has been changed from `*Operator` to `*DimensionOperator`
-- Const `ConditionalOperatorLessThanOrEqual` has been removed
-- Const `MetricTriggerTypeConsecutive` has been removed
-- Const `ConditionalOperatorEqual` has been removed
-- Const `ProvisioningStateSucceeded` has been removed
-- Const `ProvisioningStateFailed` has been removed
-- Const `ConditionalOperatorGreaterThanOrEqual` has been removed
-- Const `ConditionalOperatorLessThan` has been removed
+- Type alias `ConditionalOperator`, const `ConditionalOperatorLessThanOrEqual`, `ConditionalOperatorEqual`, `ConditionalOperatorGreaterThanOrEqual`, `ConditionalOperatorLessThan`, `ConditionalOperatorGreaterThan` and function `PossibleConditionalOperatorValues` have been removed
+- Type alias `Enabled`, const `EnabledTrue`, `EnabledFalse` and function `PossibleEnabledValues` have been removed
+- Type alias `QueryType`, const `QueryTypeResultCount` and function `PossibleQueryTypeValues` have been removed
+- Type alias `MetricTriggerType`, const `MetricTriggerTypeConsecutive`, `MetricTriggerTypeTotal` and function `PossibleMetricTriggerTypeValues` have been removed
+- Type alias `ProvisioningState`, const `ProvisioningStateSucceeded`, `ProvisioningStateFailed`, `ProvisioningStateDeploying`, `ProvisioningStateCanceled` and function `PossibleProvisioningStateValues` have been removed
 - Const `OperatorInclude` has been removed
-- Const `QueryTypeResultCount` has been removed
-- Const `ConditionalOperatorGreaterThan` has been removed
-- Const `ProvisioningStateDeploying` has been removed
-- Const `EnabledTrue` has been removed
-- Const `MetricTriggerTypeTotal` has been removed
-- Const `EnabledFalse` has been removed
-- Const `ProvisioningStateCanceled` has been removed
-- Type alias `Enabled` has been removed
-- Type alias `QueryType` has been removed
-- Type alias `MetricTriggerType` has been removed
-- Type alias `ConditionalOperator` has been removed
-- Type alias `ProvisioningState` has been removed
-- Function `PossibleQueryTypeValues` has been removed
-- Function `*DiagnosticSettingsClient.List` has been removed
-- Function `*PrivateEndpointConnectionsClient.NewListByPrivateLinkScopePager` has been removed
-- Function `*AlertingAction.GetAction` has been removed
-- Function `PossibleEnabledValues` has been removed
-- Function `PossibleMetricTriggerTypeValues` has been removed
-- Function `*LogToMetricAction.GetAction` has been removed
-- Function `*Action.GetAction` has been removed
-- Function `PossibleProvisioningStateValues` has been removed
-- Function `PossibleConditionalOperatorValues` has been removed
-- Function `*DiagnosticSettingsCategoryClient.List` has been removed
-- Function `*PrivateLinkResourcesClient.NewListByPrivateLinkScopePager` has been removed
-- Struct `Action` has been removed
-- Struct `AlertingAction` has been removed
+- Function `*DiagnosticSettingsClient.List` has been changed to `*DiagnosticSettingsClient.NewListPager(string, *DiagnosticSettingsClientListOptions) *runtime.Pager[DiagnosticSettingsClientListResponse]`
+- Function `*PrivateEndpointConnectionsClient.NewListByPrivateLinkScopePager` has been changed to `*PrivateEndpointConnectionsClient.ListByPrivateLinkScope(context.Context, string, string, *PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions) (PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse, error)`
+- Function `*DiagnosticSettingsCategoryClient.List` has been changed to `*DiagnosticSettingsCategoryClient.NewListPager(string, *DiagnosticSettingsCategoryClientListOptions) *runtime.Pager[DiagnosticSettingsCategoryClientListResponse]`
+- Function `*PrivateLinkResourcesClient.NewListByPrivateLinkScopePager` has been changed to `*PrivateLinkResourcesClient.ListByPrivateLinkScope(context.Context, string, string, *PrivateLinkResourcesClientListByPrivateLinkScopeOptions) (PrivateLinkResourcesClientListByPrivateLinkScopeResponse, error)`
+- Struct `Action` and function `*Action.GetAction` have been removed
+- Struct `AlertingAction` and function `*AlertingAction.GetAction` have been removed
+- Struct `LogToMetricAction` and function `*LogToMetricAction.GetAction` have been removed
 - Struct `AzNsActionGroup` has been removed
 - Struct `Criteria` has been removed
-- Struct `ErrorResponseCommon` has been removed
 - Struct `LogMetricTrigger` has been removed
 - Struct `LogSearchRule` has been removed
 - Struct `LogSearchRulePatch` has been removed
 - Struct `LogSearchRuleResource` has been removed
 - Struct `LogSearchRuleResourceCollection` has been removed
 - Struct `LogSearchRuleResourcePatch` has been removed
-- Struct `LogToMetricAction` has been removed
 - Struct `PrivateEndpointProperty` has been removed
 - Struct `PrivateLinkScopesResource` has been removed
 - Struct `PrivateLinkServiceConnectionStateProperty` has been removed
-- Struct `ProxyOnlyResource` has been removed
 - Struct `Schedule` has been removed
 - Struct `Source` has been removed
-- Struct `TrackedEntityResource` has been removed
 - Struct `TriggerCondition` has been removed
 - Field `Filter` of struct `ScheduledQueryRulesClientListByResourceGroupOptions` has been removed
 - Field `LogSearchRuleResource` of struct `ScheduledQueryRulesClientUpdateResponse` has been removed
@@ -109,16 +84,12 @@
 - New type alias `Kind`
 - New type alias `TimeAggregation`
 - New type alias `PrivateEndpointConnectionProvisioningState`
-- New function `*DiagnosticSettingsCategoryClient.NewListPager(string, *DiagnosticSettingsCategoryClientListOptions) *runtime.Pager[DiagnosticSettingsCategoryClientListResponse]`
-- New function `*PrivateEndpointConnectionsClient.ListByPrivateLinkScope(context.Context, string, string, *PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions) (PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse, error)`
 - New function `PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus`
 - New function `PossiblePredictiveAutoscalePolicyScaleModeValues() []PredictiveAutoscalePolicyScaleMode`
 - New function `PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState`
 - New function `NewPredictiveMetricClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PredictiveMetricClient, error)`
-- New function `*DiagnosticSettingsClient.NewListPager(string, *DiagnosticSettingsClientListOptions) *runtime.Pager[DiagnosticSettingsClientListResponse]`
 - New function `PossibleTimeAggregationValues() []TimeAggregation`
 - New function `PossibleAccessModeValues() []AccessMode`
-- New function `*PrivateLinkResourcesClient.ListByPrivateLinkScope(context.Context, string, string, *PrivateLinkResourcesClientListByPrivateLinkScopeOptions) (PrivateLinkResourcesClientListByPrivateLinkScopeResponse, error)`
 - New function `*PredictiveMetricClient.Get(context.Context, string, string, string, string, string, string, string, *PredictiveMetricClientGetOptions) (PredictiveMetricClientGetResponse, error)`
 - New function `PossibleKindValues() []Kind`
 - New function `PossibleDimensionOperatorValues() []DimensionOperator`

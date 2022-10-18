@@ -28,36 +28,34 @@ func ExamplePolicyRestrictionsClient_CheckAtSubscriptionScope() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckAtSubscriptionScope(ctx,
-		armpolicyinsights.CheckRestrictionsRequest{
-			PendingFields: []*armpolicyinsights.PendingField{
-				{
-					Field: to.Ptr("name"),
-					Values: []*string{
-						to.Ptr("myVMName")},
-				},
-				{
-					Field: to.Ptr("location"),
-					Values: []*string{
-						to.Ptr("eastus"),
-						to.Ptr("westus"),
-						to.Ptr("westus2"),
-						to.Ptr("westeurope")},
-				},
-				{
-					Field: to.Ptr("tags"),
-				}},
-			ResourceDetails: &armpolicyinsights.CheckRestrictionsResourceDetails{
-				APIVersion: to.Ptr("2019-12-01"),
-				ResourceContent: map[string]interface{}{
-					"type": "Microsoft.Compute/virtualMachines",
-					"properties": map[string]interface{}{
-						"priority": "Spot",
-					},
+	res, err := client.CheckAtSubscriptionScope(ctx, armpolicyinsights.CheckRestrictionsRequest{
+		PendingFields: []*armpolicyinsights.PendingField{
+			{
+				Field: to.Ptr("name"),
+				Values: []*string{
+					to.Ptr("myVMName")},
+			},
+			{
+				Field: to.Ptr("location"),
+				Values: []*string{
+					to.Ptr("eastus"),
+					to.Ptr("westus"),
+					to.Ptr("westus2"),
+					to.Ptr("westeurope")},
+			},
+			{
+				Field: to.Ptr("tags"),
+			}},
+		ResourceDetails: &armpolicyinsights.CheckRestrictionsResourceDetails{
+			APIVersion: to.Ptr("2019-12-01"),
+			ResourceContent: map[string]interface{}{
+				"type": "Microsoft.Compute/virtualMachines",
+				"properties": map[string]interface{}{
+					"priority": "Spot",
 				},
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -76,37 +74,34 @@ func ExamplePolicyRestrictionsClient_CheckAtResourceGroupScope() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckAtResourceGroupScope(ctx,
-		"vmRg",
-		armpolicyinsights.CheckRestrictionsRequest{
-			PendingFields: []*armpolicyinsights.PendingField{
-				{
-					Field: to.Ptr("name"),
-					Values: []*string{
-						to.Ptr("myVMName")},
-				},
-				{
-					Field: to.Ptr("location"),
-					Values: []*string{
-						to.Ptr("eastus"),
-						to.Ptr("westus"),
-						to.Ptr("westus2"),
-						to.Ptr("westeurope")},
-				},
-				{
-					Field: to.Ptr("tags"),
-				}},
-			ResourceDetails: &armpolicyinsights.CheckRestrictionsResourceDetails{
-				APIVersion: to.Ptr("2019-12-01"),
-				ResourceContent: map[string]interface{}{
-					"type": "Microsoft.Compute/virtualMachines",
-					"properties": map[string]interface{}{
-						"priority": "Spot",
-					},
+	res, err := client.CheckAtResourceGroupScope(ctx, "vmRg", armpolicyinsights.CheckRestrictionsRequest{
+		PendingFields: []*armpolicyinsights.PendingField{
+			{
+				Field: to.Ptr("name"),
+				Values: []*string{
+					to.Ptr("myVMName")},
+			},
+			{
+				Field: to.Ptr("location"),
+				Values: []*string{
+					to.Ptr("eastus"),
+					to.Ptr("westus"),
+					to.Ptr("westus2"),
+					to.Ptr("westeurope")},
+			},
+			{
+				Field: to.Ptr("tags"),
+			}},
+		ResourceDetails: &armpolicyinsights.CheckRestrictionsResourceDetails{
+			APIVersion: to.Ptr("2019-12-01"),
+			ResourceContent: map[string]interface{}{
+				"type": "Microsoft.Compute/virtualMachines",
+				"properties": map[string]interface{}{
+					"priority": "Spot",
 				},
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -125,15 +120,12 @@ func ExamplePolicyRestrictionsClient_CheckAtManagementGroupScope() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckAtManagementGroupScope(ctx,
-		"financeMg",
-		armpolicyinsights.CheckManagementGroupRestrictionsRequest{
-			PendingFields: []*armpolicyinsights.PendingField{
-				{
-					Field: to.Ptr("type"),
-				}},
-		},
-		nil)
+	res, err := client.CheckAtManagementGroupScope(ctx, "financeMg", armpolicyinsights.CheckManagementGroupRestrictionsRequest{
+		PendingFields: []*armpolicyinsights.PendingField{
+			{
+				Field: to.Ptr("type"),
+			}},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

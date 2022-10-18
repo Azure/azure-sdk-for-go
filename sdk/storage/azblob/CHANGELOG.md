@@ -1,5 +1,17 @@
 # Release History
 
+## 0.5.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+* Avoid allocations when storing/fetching a slice via sync.Pool.
+
 ## 0.5.1 (2022-10-11)
 
 ### Bugs Fixed

@@ -74,7 +74,7 @@ type NamespaceForAMQPLinks interface {
 	NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, uint64, error)
 	NewRPCLink(ctx context.Context, managementPath string) (RPCLink, uint64, error)
 	GetEntityAudience(entityPath string) string
-	Recover(ctx context.Context, clientRevision uint64) (bool, error)
+	Recover(ctx context.Context, clientRevision uint64) error
 	Close(ctx context.Context, permanently bool) error
 }
 
@@ -243,26 +243,21 @@ func (ns *Namespace) Check() error {
 var ErrClientClosed = NewErrNonRetriable("client has been closed by user")
 
 // Recover destroys the currently held AMQP connection and recreates it, if needed.
-//
-// If the user should recreate their links (either a new connection was created or
-// the connection they used to create their links is outdated) then this function returns
-// (true, nil).
-// If no action is required from the user this function will return (false, nil)
-func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) (bool, error) {
+func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) error {
 	if err := ns.Check(); err != nil {
-		return false, err
+		return err
 	}
 
 	ns.clientMu.Lock()
 	defer ns.clientMu.Unlock()
 
 	if ns.closedPermanently {
-		return false, ErrClientClosed
+		return ErrClientClosed
 	}
 
 	if ns.connID != theirConnID {
 		log.Writef(exported.EventConn, "Skipping connection recovery, already recovered: %d vs %d. Links will still be recovered.", ns.connID, theirConnID)
-		return false, nil
+		return nil
 	}
 
 	if ns.client != nil {
@@ -276,10 +271,10 @@ func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) (bool, err
 	log.Writef(exported.EventConn, "Creating a new client (rev:%d)", ns.connID)
 
 	if _, _, err := ns.updateClientWithoutLock(ctx); err != nil {
-		return false, err
+		return err
 	}
 
-	return true, nil
+	return nil
 }
 
 // negotiateClaim performs initial authentication and starts periodic refresh of credentials.
@@ -330,7 +325,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 			// Note we only handle connection recovery here since (currently)
 			// the negotiateClaim code creates it's own link each time.
 			if GetRecoveryKind(err) == RecoveryKindConn {
-				if _, err := ns.Recover(ctx, clientRevision); err != nil {
+				if err := ns.Recover(ctx, clientRevision); err != nil {
 					log.Writef(exported.EventAuth, "(%s) negotiate claim, failed in connection recovery: %s", entityPath, err)
 				}
 			}

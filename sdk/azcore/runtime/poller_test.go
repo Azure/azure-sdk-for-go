@@ -750,7 +750,7 @@ const (
 	provStateStarted   = `{ "properties": { "provisioningState": "Started" } }`
 	provStateUpdating  = `{ "properties": { "provisioningState": "Updating" } }`
 	provStateSucceeded = `{ "properties": { "provisioningState": "Succeeded" }, "field": "value" }`
-	provStateFailed    = `{ "properties": { "provisioningState": "Failed" } }` //nolint
+	provStateFailed    = `{ "properties": { "provisioningState": "Failed" } }`
 	statusInProgress   = `{ "status": "InProgress" }`
 	statusSucceeded    = `{ "status": "Succeeded" }`
 	statusCanceled     = `{ "status": "Canceled", "error": { "code": "OperationCanceled", "message": "somebody canceled it" } }`
@@ -933,6 +933,30 @@ func TestNewPollerCanceled(t *testing.T) {
 	_, err = poller.Result(context.Background())
 	if err == nil {
 		t.Fatal("unexpected nil error")
+	}
+}
+
+func TestNewPollerFailed(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(provStateFailed)))
+	resp, closed := initialResponse(http.MethodPut, srv.URL(), strings.NewReader(provStateStarted))
+	resp.Header.Set(shared.HeaderAzureAsync, srv.URL())
+	resp.StatusCode = http.StatusCreated
+	pl := getPipeline(srv)
+	poller, err := NewPoller[mockType](resp, pl, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
+	}
+	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*async.Poller[mockType])(nil)) {
+		t.Fatalf("unexpected poller type %s", pt.String())
+	}
+	_, err = poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
+	if err == nil {
+		t.Fatal(err)
 	}
 }
 

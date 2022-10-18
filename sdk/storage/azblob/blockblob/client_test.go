@@ -49,22 +49,18 @@ func Test(t *testing.T) {
 	}
 }
 
-// nolint
 func (s *BlockBlobRecordedTestsSuite) BeforeTest(suite string, test string) {
 	testcommon.BeforeTest(s.T(), suite, test)
 }
 
-// nolint
 func (s *BlockBlobRecordedTestsSuite) AfterTest(suite string, test string) {
 	testcommon.AfterTest(s.T(), suite, test)
 }
 
-// nolint
 func (s *BlockBlobUnrecordedTestsSuite) BeforeTest(suite string, test string) {
 
 }
 
-// nolint
 func (s *BlockBlobUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 }
@@ -80,7 +76,9 @@ type BlockBlobUnrecordedTestsSuite struct {
 //	func (s *BlockBlobRecordedTestsSuite) TestStageGetBlocks() {
 //		_require := require.New(s.T())
 //		testName := s.T().Name()
-//	//		svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+//
+// //		svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+//
 //		if err != nil {
 //			s.Fail("Unable to fetch service client because " + err.Error())
 //		}
@@ -152,8 +150,6 @@ type BlockBlobUnrecordedTestsSuite struct {
 //		_require.Nil(blockList.BlockList.UncommittedBlocks)
 //		_require.Len(blockList.BlockList.CommittedBlocks, len(data))
 //	}
-//
-// //nolint
 //
 //	func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURL() {
 //		_require := require.New(s.T())
@@ -253,8 +249,6 @@ type BlockBlobUnrecordedTestsSuite struct {
 //		_require.EqualValues(destData, content)
 //	}
 //
-// //nolint
-//
 //	func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromURL() {
 //		_require := require.New(s.T())
 //		testName := s.T().Name()
@@ -350,8 +344,6 @@ type BlockBlobUnrecordedTestsSuite struct {
 //		_require.EqualValues(*resp.CopyStatus, "success")
 //	}
 //
-// //nolint
-//
 //	func (s *BlockBlobUnrecordedTestsSuite) TestBlobSASQueryParamOverrideResponseHeaders() {
 //		_require := require.New(s.T())
 //		testName := s.T().Name()
@@ -418,8 +410,6 @@ type BlockBlobUnrecordedTestsSuite struct {
 //		_require.Equal(*gResp.ContentLanguage, contentLanguageVal)
 //		_require.Equal(*gResp.ContentType, contentTypeVal)
 //	}
-//
-// nolint
 func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1143,7 +1133,6 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSetTierOnCommit() {
 	}
 }
 
-// nolint
 func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1204,7 +1193,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	}
 }
 
-////nolint
 //func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnStageBlockFromURL() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -1928,7 +1916,6 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockListReturnsVID() {
 	_require.EqualValues(contentData, []uint8(strings.Join(data, "")))
 }
 
-// nolint
 func (s *BlockBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2159,7 +2146,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTags() {
 	}
 }
 
-// nolint
 func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2213,7 +2199,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithLeaseId() {
 	}
 }
 
-// nolint
 func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithVID() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2268,7 +2253,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagsWithVID() {
 	_require.Nil(blobGetTagsResponse.BlobTagSet)
 }
 
-// nolint
 func (s *BlockBlobUnrecordedTestsSuite) TestUploadBlockBlobWithSpecialCharactersInTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2306,7 +2290,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadBlockBlobWithSpecialCharacters
 	}
 }
 
-// nolint
 func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2372,7 +2355,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 }
 
 //
-////nolint
 //func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithTags() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -2481,7 +2463,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 //	_require.EqualValues(destData, sourceData)
 //}
 
-//nolint
 //func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromURLWithTags() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -2570,7 +2551,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithTags() {
 //	// _require.Equal(resp.RawResponse.StatusCode, 202)
 //}
 
-// nolint
 func (s *BlockBlobUnrecordedTestsSuite) TestGetPropertiesReturnsTagsCount() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2600,7 +2580,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestGetPropertiesReturnsTagsCount() {
 	_require.Equal(*downloadResp.TagCount, int64(3))
 }
 
-// nolint
 func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagForSnapshot() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2631,7 +2610,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetBlobTagForSnapshot() {
 }
 
 // TODO: Once new pacer is done.
-// nolint
 func (s *BlockBlobUnrecordedTestsSuite) TestListBlobReturnsTags() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2675,7 +2653,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestListBlobReturnsTags() {
 }
 
 //
-////nolint
 //func (s *BlockBlobUnrecordedTestsSuite) TestFindBlobsByTags() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -2748,7 +2725,6 @@ func (s *BlockBlobUnrecordedTestsSuite) TestListBlobReturnsTags() {
 //	}
 //}
 //
-//nolint
 //func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsUsingAccountSAS() {
 //	accountName, accountKey := accountInfo()
 //	credential, err := NewSharedKeyCredential(accountName, accountKey)
@@ -2914,7 +2890,6 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 }
 
 //
-////nolint
 //func (s *BlockBlobUnrecordedTestsSuite) TestPutBlockFromURLAndCommitWithCPK() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -3032,7 +3007,6 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testcommon.TestCPKByValue.EncryptionKeySHA256)
 //}
 
-//nolint
 //func (s *BlockBlobUnrecordedTestsSuite) TestPutBlockFromURLAndCommitWithCPKWithScope() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -3145,7 +3119,6 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(
 //	_require.EqualValues(*downloadResp.EncryptionScope, *testcommon.TestCPKByScope.EncryptionScope)
 //}
 
-// nolint
 func (s *BlockBlobUnrecordedTestsSuite) TestUploadBlobWithMD5WithCPK() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -3289,7 +3262,6 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithMD5WithCPKScope() {
 //	_require.EqualValues(actualBlobData, blobData)
 //}
 
-//nolint
 //func (s *AZBlobUnrecordedTestsSuite) TestUploadStreamToBlobBlobPropertiesWithCPKScope() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()

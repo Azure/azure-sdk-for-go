@@ -1,8 +1,10 @@
 # Release History
 
-## 1.1.5 (Unreleased)
+## 1.2.0 (Unreleased)
 
 ### Features Added
+* Added `ClientOptions.APIVersion` field, which overrides the default version a client
+  requests of the service, if the client supports this (all ARM clients do).
 
 ### Breaking Changes
 

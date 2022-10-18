@@ -10,6 +10,7 @@
 
 ### Bugs Fixed
 * Fixed an issue in `runtime.SetMultipartFormData` to properly handle slices of `io.ReadSeekCloser`.
+* Fixed the MaxRetryDelay default to be 60s.
 
 ### Other Changes
 * Retain contents of read-only fields when sending requests.

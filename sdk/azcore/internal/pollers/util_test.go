@@ -233,7 +233,10 @@ func TestPollHelper(t *testing.T) {
 
 	require.Error(t, err)
 	pl = exported.NewPipeline(shared.TransportFunc(func(*http.Request) (*http.Response, error) {
-		return &http.Response{}, nil
+		return &http.Response{
+			StatusCode: http.StatusNotFound,
+			Body:       http.NoBody,
+		}, nil
 	}))
 	err = PollHelper(context.Background(), fakeEndpoint, pl, func(*http.Response) (string, error) {
 		return "", errors.New("failed")
@@ -242,7 +245,10 @@ func TestPollHelper(t *testing.T) {
 
 	require.Error(t, err)
 	pl = exported.NewPipeline(shared.TransportFunc(func(*http.Request) (*http.Response, error) {
-		return &http.Response{}, nil
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Body:       http.NoBody,
+		}, nil
 	}))
 	err = PollHelper(context.Background(), fakeEndpoint, pl, func(*http.Response) (string, error) {
 		return "inProgress", nil

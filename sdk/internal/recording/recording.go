@@ -597,13 +597,12 @@ func getGitRoot(fromPath string) (string, error) {
 
 // Traverse up from a recording path until an asset config file is found.
 // Stop searching when the root of the git repository is reached.
-func findAssetsConfigFile(fromPath string) (string, error) {
+func findAssetsConfigFile(fromPath string, untilPath string) (string, error) {
 	absPath, err := filepath.Abs(fromPath)
 	if err != nil {
 		return "", err
 	}
 	assetConfigPath := filepath.Join(absPath, recordingAssetConfigName)
-	gitDirectoryPath := filepath.Join(absPath, ".git")
 
 	if _, err := os.Stat(assetConfigPath); err == nil {
 		return assetConfigPath, nil
@@ -611,21 +610,17 @@ func findAssetsConfigFile(fromPath string) (string, error) {
 		return "", err
 	}
 
-	if _, err := os.Stat(gitDirectoryPath); err == nil {
+	if absPath == untilPath {
 		return "", nil
-	} else if !errors.Is(err, fs.ErrNotExist) {
-		return "", err
 	}
 
-	trimmedPath := strings.TrimRight(absPath, string(os.PathSeparator))
-	parentDir, _ := filepath.Split(trimmedPath)
-	// If the parent directory is the same as current dir, we've reached root
+	parentDir := filepath.Dir(absPath)
 	// This shouldn't be hit due to checks in getGitRoot, but it can't hurt to be defensive
-	if parentDir == trimmedPath {
+	if parentDir == absPath || parentDir == "." {
 		return "", nil
 	}
 
-	return findAssetsConfigFile(parentDir)
+	return findAssetsConfigFile(parentDir, untilPath)
 }
 
 // Returns absolute and relative paths to an asset configuration file, or an error.
@@ -638,7 +633,7 @@ func getAssetsConfigLocation(pathToRecordings string) (string, string, error) {
 	if err != nil {
 		return "", "", err
 	}
-	abs, err := findAssetsConfigFile(filepath.Join(gitRoot, pathToRecordings))
+	abs, err := findAssetsConfigFile(filepath.Join(gitRoot, pathToRecordings), gitRoot)
 	if err != nil {
 		return "", "", err
 	}

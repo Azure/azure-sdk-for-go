@@ -556,7 +556,7 @@ func TestGitRootDetection(t *testing.T) {
 	gitRoot, err := getGitRoot(cwd)
 	require.NoError(t, err)
 
-	parentDir, _ := filepath.Split(gitRoot)
+	parentDir := filepath.Dir(gitRoot)
 	_, err = getGitRoot(parentDir)
 	require.Error(t, err)
 }
@@ -569,10 +569,15 @@ func TestRecordingAssetConfigNotExist(t *testing.T) {
 }
 
 func TestRecordingAssetConfigOutOfBounds(t *testing.T) {
-	absPath, relPath, err := getAssetsConfigLocation("../../../../")
+	cwd, err := os.Getwd()
+	require.NoError(t, err)
+	gitRoot, err := getGitRoot(cwd)
+	require.NoError(t, err)
+	parentDir := filepath.Dir(gitRoot)
+
+	absPath, err := findAssetsConfigFile(parentDir, gitRoot)
 	require.NoError(t, err)
 	require.Equal(t, "", absPath)
-	require.Equal(t, "", relPath)
 }
 
 func TestRecordingAssetConfig(t *testing.T) {

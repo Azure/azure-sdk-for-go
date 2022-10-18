@@ -20,6 +20,13 @@ var kustoQuery1 string
 var kustoQuery2 string
 var kustoQuery3 string
 
+type queryResult struct {
+	Bool   bool
+	Long   int64
+	Double float64
+	String string
+}
+
 func ExampleNewLogsClient() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,22 +54,65 @@ func ExampleLogsClient_QueryWorkspace() {
 	}
 	client := azquery.NewLogsClient(cred, nil)
 	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
-	query := "AzureActivity | top 10 by TimeGenerated"     // Kusto query
+	query := "AzureActivity | top 10 by TimeGenerated"     // Example Kusto query
 	timespan := "2022-08-30/2022-08-31"                    // ISO8601 Standard timespan
 
 	res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, nil)
 	if err != nil {
 		//TODO: handle error
 	}
-	if res.Results.Error != nil {
+	if res.Error != nil {
 		//TODO: handle partial error
 	}
 
-	table := res.Results.Tables[0]
-	fmt.Println("Response rows:")
-	for _, row := range table.Rows {
-		fmt.Println(row)
+	// example use case of processing table results
+	// creates of slice of all tenantIDs resulting from the 'AzureActivity' query
+	tenantIDs := make([]string, len(res.Tables[0].Rows))
+	for index, row := range res.Tables[0].Rows {
+		tenantIDs[index] = row[0].(string)
 	}
+
+	fmt.Println(tenantIDs)
+}
+
+func ExampleLogsClient_QueryWorkspace_second() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		//TODO: handle error
+	}
+	client := azquery.NewLogsClient(cred, nil)
+	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65"                                                                                                                                                                                                                 // example Azure Log Analytics Workspace ID
+	query := "let dt = datatable (Bool:bool, Long:long, Double: double, String: string, Decimal: decimal)\n" + "[false, 1, 12345.6789, 'string value', decimal(0.10101)];" + "range x from 1 to 10 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long" // Example Kusto query
+	timespan := "2022-08-30/2022-08-31"                                                                                                                                                                                                                                    // ISO8601 Standard timespan
+
+	res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, nil)
+	if err != nil {
+		//TODO: handle error
+	}
+	if res.Error != nil {
+		//TODO: handle partial error
+	}
+
+	// Example of converting table data into a slice of structs
+	var QueryResults []queryResult
+	for _, table := range res.Tables {
+		QueryResults = make([]queryResult, len(table.Rows))
+		indexBool := table.ColumnIndexLookup["Bool"]
+		indexLong := table.ColumnIndexLookup["Long"]
+		indexDouble := table.ColumnIndexLookup["Double"]
+		indexString := table.ColumnIndexLookup["String"]
+
+		for index, row := range table.Rows {
+			QueryResults[index] = queryResult{
+				Bool:   row[indexBool].(bool),
+				Long:   int64(row[indexLong].(float64)),
+				Double: float64(row[indexDouble].(float64)),
+				String: row[indexString].(string),
+			}
+		}
+	}
+
+	fmt.Println(QueryResults)
 }
 
 func ExampleLogsClient_Batch() {

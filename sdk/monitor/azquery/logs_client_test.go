@@ -9,7 +9,6 @@ package azquery_test
 import (
 	"context"
 	"errors"
-	"fmt"
 	"strings"
 	"testing"
 
@@ -25,30 +24,6 @@ type queryTest struct {
 	Bool   bool
 	Long   int64
 	String string
-}
-
-func TestTry(t *testing.T) {
-
-	client := startLogsTest(t)                         // example Azure Log Analytics Workspace ID
-	query := "AzureActivity | top 10 by TimeGenerated" // Example Kusto query
-	timespan := "2022-08-30/2022-08-31"                // ISO8601 Standard timespan
-
-	res, err := client.QueryWorkspace(context.TODO(), workspaceID, azquery.Body{Query: to.Ptr(query), Timespan: to.Ptr(timespan)}, nil)
-	if err != nil {
-		//TODO: handle error
-	}
-	if res.Error != nil {
-		//TODO: handle partial error
-	}
-
-	// example use case of processing table results
-	// creates of slice of all tenantIDs resulting from the 'AzureActivity' query
-	tenantIDs := make([]string, len(res.Tables[0].Rows))
-	for index, row := range res.Tables[0].Rows {
-		tenantIDs[index] = row[0].(string)
-	}
-
-	fmt.Println(tenantIDs)
 }
 
 func TestQueryWorkspace_BasicQuerySuccess(t *testing.T) {

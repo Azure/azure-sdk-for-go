@@ -2052,6 +2052,18 @@ func (s *ContainerRecordedTestsSuite) TestContainerUndelete() {
 
 	_require.Equal(contRestored, true)
 
-	_, err = containerClient.Delete(context.Background(), nil)
+	for i := 0; i < 5; i++ {
+		_, err = containerClient.Delete(context.Background(), nil)
+		if err == nil {
+			// container was deleted
+			break
+		} else if bloberror.HasCode(err, bloberror.Code("ConcurrentContainerOperationInProgress")) {
+			// the container is still being restored, sleep a bit then try again
+			time.Sleep(10 * time.Second)
+		} else {
+			// some other error
+			break
+		}
+	}
 	_require.Nil(err)
 }

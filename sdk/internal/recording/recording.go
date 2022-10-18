@@ -592,7 +592,7 @@ func getGitRoot(fromPath string) (string, error) {
 	}
 
 	// Wrap with Abs() to get os-specific path separators to support sub-path matching
-	return filepath.Abs(strings.TrimSpace(bytes.NewBuffer(root).String()))
+	return filepath.Abs(strings.TrimSpace(string(root)))
 }
 
 // Traverse up from a recording path until an asset config file is found.

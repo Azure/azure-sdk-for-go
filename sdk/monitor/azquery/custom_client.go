@@ -89,8 +89,8 @@ type Table struct {
 	// REQUIRED; The resulting rows from this query.
 	Rows []Row `json:"rows,omitempty"`
 
-	// internal map used to lookup column index
-	columnIndexLookup map[string]int
+	// maps column name to index for easy lookup, helper for accessing Row data
+	ColumnIndexLookup map[string]int `json:"-"`
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type Table.
@@ -105,9 +105,9 @@ func (t *Table) UnmarshalJSON(data []byte) error {
 		case "columns":
 			err = unpopulate(val, "Columns", &t.Columns)
 			delete(rawMsg, key)
-			t.columnIndexLookup = map[string]int{}
+			t.ColumnIndexLookup = map[string]int{}
 			for i, v := range t.Columns {
-				t.columnIndexLookup[*v.Name] = i
+				t.ColumnIndexLookup[*v.Name] = i
 			}
 		case "name":
 			err = unpopulate(val, "Name", &t.Name)
@@ -121,9 +121,4 @@ func (t *Table) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
-}
-
-// GetColumnIndex returns the index of the specified column
-func (t Table) GetColumnIndex(name string) int {
-	return t.columnIndexLookup[name]
 }

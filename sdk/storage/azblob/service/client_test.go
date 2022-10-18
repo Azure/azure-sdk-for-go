@@ -660,8 +660,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 }*/
 
 // make sure that container soft delete is enabled
-// TODO: convert this test to recorded
-func (s *ServiceUnrecordedTestsSuite) TestContainerRestore() {
+func (s *ServiceRecordedTestsSuite) TestContainerRestore() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
 	_require.NoError(err)
@@ -719,8 +718,7 @@ func (s *ServiceUnrecordedTestsSuite) TestContainerRestore() {
 	_require.NoError(err)
 }
 
-// TODO: convert this test to recorded
-func (s *ServiceUnrecordedTestsSuite) TestContainerRestoreFailures() {
+func (s *ServiceRecordedTestsSuite) TestContainerRestoreFailures() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)

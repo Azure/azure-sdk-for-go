@@ -4194,3 +4194,127 @@ func (s *PageBlobRecordedTestsSuite) TestBlobResizeWithCPK() {
 //	_require.Nil(err)
 //	_require.Nil(pageListResp.PageList.Range)
 //}
+
+func (s *PageBlobRecordedTestsSuite) TestUndeletePageBlobVersion() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	pbClient := getPageBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = pbClient.Create(context.Background(), pageblob.PageBytes*10, nil)
+	_require.Nil(err)
+	r, _ := testcommon.GenerateData(pageblob.PageBytes)
+	_, err = pbClient.UploadPages(context.Background(), r, &pageblob.UploadPagesOptions{
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
+	})
+	_require.Nil(err)
+
+	versions := make([]string, 0)
+	for i := 0; i < 5; i++ {
+		resp, err := pbClient.CreateSnapshot(context.Background(), nil)
+		_require.Nil(err)
+		_require.NotNil(resp.VersionID)
+		versions = append(versions, *resp.VersionID)
+	}
+
+	listPager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Versions: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 6)
+
+	// Deleting the 1st, 2nd and 3rd versions
+	for i := 0; i < 3; i++ {
+		pbClientWithVersionID, err := pbClient.WithVersionID(versions[i])
+		_require.Nil(err)
+		_, err = pbClientWithVersionID.Delete(context.Background(), nil)
+		_require.Nil(err)
+	}
+
+	// adding wait after delete
+	time.Sleep(time.Second * 10)
+
+	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Versions: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 3)
+
+	_, err = pbClient.Undelete(context.Background(), nil)
+	_require.Nil(err)
+
+	// adding wait after undelete
+	time.Sleep(time.Second * 10)
+
+	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Versions: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 6)
+}
+
+func (s *PageBlobRecordedTestsSuite) TestUndeletePageBlobSnapshot() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	pbClient := getPageBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = pbClient.Create(context.Background(), pageblob.PageBytes*10, nil)
+	_require.Nil(err)
+	r, _ := testcommon.GenerateData(pageblob.PageBytes)
+	_, err = pbClient.UploadPages(context.Background(), r, &pageblob.UploadPagesOptions{
+		Range: blob.HTTPRange{
+			Count: pageblob.PageBytes,
+		},
+	})
+	_require.Nil(err)
+
+	snapshots := make([]string, 0)
+	for i := 0; i < 5; i++ {
+		resp, err := pbClient.CreateSnapshot(context.Background(), nil)
+		_require.Nil(err)
+		_require.NotNil(resp.Snapshot)
+		snapshots = append(snapshots, *resp.Snapshot)
+	}
+
+	listPager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 6) // 5 snapshots and 1 current version
+
+	// Deleting the 1st, 2nd and 3rd snapshots
+	for i := 0; i < 3; i++ {
+		pbClientWithSnapshot, err := pbClient.WithSnapshot(snapshots[i])
+		_require.Nil(err)
+		_, err = pbClientWithSnapshot.Delete(context.Background(), nil)
+		_require.Nil(err)
+	}
+
+	// adding wait after delete
+	time.Sleep(time.Second * 10)
+
+	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 3) // 2 snapshots and 1 current version
+
+	_, err = pbClient.Undelete(context.Background(), nil)
+	_require.Nil(err)
+
+	// adding wait after undelete
+	time.Sleep(time.Second * 10)
+
+	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 6) // 5 snapshots and 1 current version
+}

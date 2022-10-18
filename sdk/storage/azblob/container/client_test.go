@@ -2006,3 +2006,64 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsIfUnModifiedSin
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 }
+
+// make sure that container soft delete is enabled
+func (s *ContainerRecordedTestsSuite) TestContainerUndelete() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := svcClient.NewContainerClient(containerName)
+
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = containerClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+
+	// it appears that deleting the container involves acquiring a lease.
+	// since leases can only be 15-60s or infinite, we just wait for 60 seconds.
+	time.Sleep(60 * time.Second)
+
+	prefix := testcommon.ContainerPrefix
+	listOptions := service.ListContainersOptions{Prefix: &prefix, Include: service.ListContainersInclude{Metadata: true, Deleted: true}}
+	pager := svcClient.NewListContainersPager(&listOptions)
+
+	contRestored := false
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		for _, cont := range resp.ContainerItems {
+			_require.NotNil(cont.Name)
+
+			if *cont.Deleted && *cont.Name == containerName {
+				_, err = containerClient.Restore(context.Background(), *cont.Version, nil)
+				_require.NoError(err)
+				contRestored = true
+				break
+			}
+		}
+		if contRestored {
+			break
+		}
+	}
+
+	_require.Equal(contRestored, true)
+
+	for i := 0; i < 5; i++ {
+		_, err = containerClient.Delete(context.Background(), nil)
+		if err == nil {
+			// container was deleted
+			break
+		} else if bloberror.HasCode(err, bloberror.Code("ConcurrentContainerOperationInProgress")) {
+			// the container is still being restored, sleep a bit then try again
+			time.Sleep(10 * time.Second)
+		} else {
+			// some other error
+			break
+		}
+	}
+	_require.Nil(err)
+}

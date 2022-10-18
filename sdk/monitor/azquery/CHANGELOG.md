@@ -3,7 +3,7 @@
 ## 0.2.1 (Unreleased)
 
 ### Features Added
-* Added `GetColumnIndex()` method to Table struct
+* Added `ColumnIndexLookup` field to Table struct
 * Added type `Row`
 
 ### Breaking Changes

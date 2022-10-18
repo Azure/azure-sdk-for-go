@@ -236,7 +236,6 @@ func (o *PermanentDeleteOptions) format() (*generated.BlobClientDeleteOptions, *
 	}
 
 	BlobDeleteType := DeleteTypePermanent
-	
 	basics := generated.BlobClientDeleteOptions{
 		DeleteSnapshots: o.DeleteSnapshots,
 		DeleteType:      &BlobDeleteType,

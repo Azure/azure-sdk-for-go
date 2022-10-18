@@ -1777,12 +1777,6 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobVersion() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
 	_require.NoError(err)
 
-	// enable soft delete for blobs
-	//testcommon.EnableSoftDelete(context.Background(), _require, svcClient)
-
-	// From FE, 30 seconds is guaranteed to be enough.
-	//time.Sleep(time.Second * 30)
-
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
@@ -1832,12 +1826,6 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobVersion() {
 		Include: container.ListBlobsInclude{Versions: true},
 	})
 	testcommon.ListBlobsCount(context.Background(), _require, listPager, 6)
-
-	// disable soft delete for blobs
-	//testcommon.DisableSoftDelete(context.Background(), _require, svcClient)
-
-	// From FE, 30 seconds is guaranteed to be enough.
-	//time.Sleep(time.Second * 30)
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobSnapshot() {
@@ -1845,12 +1833,6 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobSnapshot() {
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
 	_require.NoError(err)
-
-	// enable soft delete for blobs
-	//testcommon.EnableSoftDelete(context.Background(), _require, svcClient)
-
-	// From FE, 30 seconds is guaranteed to be enough.
-	//time.Sleep(time.Second * 30)
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
@@ -1901,10 +1883,4 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobSnapshot() {
 		Include: container.ListBlobsInclude{Snapshots: true},
 	})
 	testcommon.ListBlobsCount(context.Background(), _require, listPager, 6) // 5 snapshots and 1 current version
-
-	// disable soft delete for blobs
-	//testcommon.DisableSoftDelete(context.Background(), _require, svcClient)
-
-	// From FE, 30 seconds is guaranteed to be enough.
-	//time.Sleep(time.Second * 30)
 }

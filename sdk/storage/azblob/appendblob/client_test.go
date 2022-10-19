@@ -1971,7 +1971,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryRelativeToCreation
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
 }
 
-func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryToAbsolute() {
+func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlobSetExpiryToAbsolute() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)

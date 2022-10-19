@@ -3602,7 +3602,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryRelativeToCreation()
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
 }
 
-func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryToAbsolute() {
+func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobSetExpiryToAbsolute() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
@@ -3632,7 +3632,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryToAbsolute() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
 }
 
-func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryToPast() {
+func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobSetExpiryToPast() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)

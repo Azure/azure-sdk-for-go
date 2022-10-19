@@ -392,7 +392,6 @@ func (client *FactoriesClient) getGitHubAccessTokenHandleResponse(resp *http.Res
 }
 
 // NewListPager - Lists factories under the specified subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-06-01
 // options - FactoriesClientListOptions contains the optional parameters for the FactoriesClient.List method.
 func (client *FactoriesClient) NewListPager(options *FactoriesClientListOptions) *runtime.Pager[FactoriesClientListResponse] {
@@ -451,7 +450,6 @@ func (client *FactoriesClient) listHandleResponse(resp *http.Response) (Factorie
 }
 
 // NewListByResourceGroupPager - Lists factories.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // options - FactoriesClientListByResourceGroupOptions contains the optional parameters for the FactoriesClient.ListByResourceGroup

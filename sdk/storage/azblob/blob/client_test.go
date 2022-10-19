@@ -3107,12 +3107,11 @@ func (s *BlobRecordedTestsSuite) TestPermanentDelete() {
 	_require.Len(found, 2)
 
 	// Options for PermanentDeleteOptions
-	pdOptions := blob.PermanentDeleteOptions{
-		DeleteOptions: blob.DeleteOptions{},
+	deleteBlobOptions := blob.DeleteOptions{
+		BlobDeleteType: blob.DeleteTypePermanent,
 	}
-
-	// Execute PermanentDelete
-	pdResp, err := snapshotURL.PermanentDelete(context.Background(), &pdOptions)
+	// Execute Delete with DeleteTypePermanent
+	pdResp, err := snapshotURL.Delete(context.Background(), &deleteBlobOptions)
 	_require.Nil(err)
 	_require.NotNil(pdResp)
 
@@ -3163,7 +3162,7 @@ func (s *BlobRecordedTestsSuite) TestPermanentDeleteWithoutPermission() {
 	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 
-	// Set Account SAS and set Permanent Delete to true
+	// Set Account SAS
 	parts.SAS, err = sas.AccountSignatureValues{
 		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
 		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
@@ -3227,12 +3226,11 @@ func (s *BlobRecordedTestsSuite) TestPermanentDeleteWithoutPermission() {
 	_require.Len(found, 2)
 
 	// Options for PermanentDeleteOptions
-	pdOptions := blob.PermanentDeleteOptions{
-		DeleteOptions: blob.DeleteOptions{},
+	deleteBlobOptions := blob.DeleteOptions{
+		BlobDeleteType: blob.DeleteTypePermanent,
 	}
-
-	// Execute PermanentDelete on snapshotURL with no permission, should fail
-	_, err = snapshotURL.PermanentDelete(context.Background(), &pdOptions)
+	// Execute Delete with DeleteTypePermanent,should fail because permissions are not set
+	_, err = snapshotURL.Delete(context.Background(), &deleteBlobOptions)
 	_require.NotNil(err)
 }
 

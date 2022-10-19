@@ -194,6 +194,7 @@ type DeleteOptions struct {
 	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob itself
 	DeleteSnapshots  *DeleteSnapshotsOptionType
 	AccessConditions *AccessConditions
+	BlobDeleteType   generated.DeleteType
 }
 
 func (o *DeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
@@ -203,6 +204,7 @@ func (o *DeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated
 
 	basics := generated.BlobClientDeleteOptions{
 		DeleteSnapshots: o.DeleteSnapshots,
+		DeleteType:      &o.BlobDeleteType,
 	}
 
 	if o.AccessConditions == nil {
@@ -221,31 +223,6 @@ type UndeleteOptions struct {
 
 func (o *UndeleteOptions) format() *generated.BlobClientUndeleteOptions {
 	return nil
-}
-
-// ---------------------------------------------------------------------------------------------------------------------
-
-// PermanentDeleteOptions contains DeleteOptions for the Client.PermanentDelete API
-type PermanentDeleteOptions struct {
-	DeleteOptions
-}
-
-func (o *PermanentDeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
-	if o == nil {
-		return nil, nil, nil
-	}
-
-	BlobDeleteType := DeleteTypePermanent
-	basics := generated.BlobClientDeleteOptions{
-		DeleteSnapshots: o.DeleteSnapshots,
-		DeleteType:      &BlobDeleteType,
-	}
-
-	if o.AccessConditions == nil {
-		return &basics, nil, nil
-	}
-
-	return &basics, o.AccessConditions.LeaseAccessConditions, o.AccessConditions.ModifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

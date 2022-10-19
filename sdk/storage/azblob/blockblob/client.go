@@ -255,13 +255,6 @@ func (bb *Client) Undelete(ctx context.Context, o *blob.UndeleteOptions) (blob.U
 	return bb.BlobClient().Undelete(ctx, o)
 }
 
-// PermanentDelete permanently deletes soft-deleted snapshots & soft-deleted version blobs and is a dangerous operation and SHOULD NOT BE USED.
-// WARNING: This operation should not be used unless you know exactly the implications. We will not provide support for this API.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob.
-func (bb *Client) PermanentDelete(ctx context.Context, o *blob.PermanentDeleteOptions) (blob.PermanentDeleteResponse, error) {
-	return bb.BlobClient().PermanentDelete(ctx, o)
-}
-
 // SetTier operation sets the tier on a blob. The operation is allowed on a page
 // blob in a premium storage account and on a block blob in a blob storage account (locally
 // redundant storage only). A premium page blob's tier determines the allowed size, IOPS, and

@@ -98,7 +98,10 @@
           "networkAcls": "[variables('networkAcls')]",
           "supportsHttpsTrafficOnly": true,
           "encryption": "[variables('encryption')]",
-          "accessTier": "Hot"
+          "accessTier": "Hot",
+          "immutableStorageWithVersioning": {
+            "enabled": true
+          }
         }
       },
       {
@@ -146,7 +149,10 @@
           "networkAcls": "[variables('networkAcls')]",
           "supportsHttpsTrafficOnly": true,
           "encryption": "[variables('encryption')]",
-          "accessTier": "Hot"
+          "accessTier": "Hot",
+          "immutableStorageWithVersioning": {
+            "enabled": true
+          }
         }
       },
       {
@@ -163,7 +169,10 @@
           "networkAcls": "[variables('networkAcls')]",
           "supportsHttpsTrafficOnly": true,
           "encryption": "[variables('encryption')]",
-          "accessTier": "Hot"
+          "accessTier": "Hot",
+          "immutableStorageWithVersioning": {
+            "enabled": true
+          }
         }
       },
       {
@@ -181,7 +190,10 @@
           "networkAcls": "[variables('networkAcls')]",
           "supportsHttpsTrafficOnly": true,
           "encryption": "[variables('encryption')]",
-          "accessTier": "Hot"
+          "accessTier": "Hot",
+          "immutableStorageWithVersioning": {
+            "enabled": true
+          }
         }
       },
       {
@@ -212,7 +224,10 @@
           "networkAcls": "[variables('networkAcls')]",
           "supportsHttpsTrafficOnly": true,
           "encryption": "[variables('encryption')]",
-          "accessTier": "Hot"
+          "accessTier": "Hot",
+          "immutableStorageWithVersioning": {
+            "enabled": true
+          }
         }
       },
       {
@@ -278,7 +293,10 @@
           "networkAcls": "[variables('networkAcls')]",
           "supportsHttpsTrafficOnly": true,
           "encryption": "[variables('encryption')]",
-          "accessTier": "Hot"
+          "accessTier": "Hot",
+          "immutableStorageWithVersioning": {
+            "enabled": true
+          }
         }
       },
       {
@@ -295,7 +313,10 @@
           "networkAcls": "[variables('networkAcls')]",
           "supportsHttpsTrafficOnly": true,
           "encryption": "[variables('encryption')]",
-          "accessTier": "Hot"
+          "accessTier": "Hot",
+          "immutableStorageWithVersioning": {
+            "enabled": true
+          }
         }
       }
     ],

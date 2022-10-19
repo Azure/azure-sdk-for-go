@@ -238,7 +238,7 @@ func TestOperationFailed(t *testing.T) {
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
 	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{
-			StatusCode: http.StatusBadRequest,
+			StatusCode: http.StatusOK,
 			Body:       io.NopCloser(strings.NewReader(`{ "status": "Failed", "error": { "code": "InvalidSomething" } }`)),
 		}, nil
 	})), resp, pollers.FinalStateViaLocation)
@@ -246,7 +246,7 @@ func TestOperationFailed(t *testing.T) {
 	require.False(t, poller.Done())
 	resp, err = poller.Poll(context.Background())
 	require.NoError(t, err)
-	require.Equal(t, http.StatusBadRequest, resp.StatusCode)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
 	require.True(t, poller.Done())
 	var result widget
 	err = poller.Result(context.Background(), &result)
@@ -267,6 +267,27 @@ func TestPollFailed(t *testing.T) {
 	resp, err = poller.Poll(context.Background())
 	require.Error(t, err)
 	require.Nil(t, resp)
+	require.False(t, poller.Done())
+}
+
+func TestPollError(t *testing.T) {
+	resp := initialResponse(http.MethodPut, strings.NewReader(`{ "status": "Updating" }`))
+	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return &http.Response{
+			StatusCode: http.StatusNotFound,
+			Header:     http.Header{},
+			Body:       io.NopCloser(strings.NewReader(`{ "error": { "code": "NotFound", "message": "the item doesn't exist" } }`)),
+		}, nil
+	})), resp, pollers.FinalStateViaLocation)
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.Error(t, err)
+	require.Nil(t, resp)
+	var respErr *exported.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, http.StatusNotFound, respErr.StatusCode)
 	require.False(t, poller.Done())
 }
 

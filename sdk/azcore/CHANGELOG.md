@@ -11,6 +11,7 @@
 ### Bugs Fixed
 * Fixed an issue in `runtime.SetMultipartFormData` to properly handle slices of `io.ReadSeekCloser`.
 * Fixed the MaxRetryDelay default to be 60s.
+* Failure to poll the state of an LRO will now return an `*azcore.ResponseError` for poller types that require this behavior.
 
 ### Other Changes
 * Retain contents of read-only fields when sending requests.

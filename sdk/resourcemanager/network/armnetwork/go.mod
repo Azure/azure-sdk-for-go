@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2
 
 go 1.18
 

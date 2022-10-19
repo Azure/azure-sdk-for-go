@@ -1,5 +1,72 @@
 # Release History
 
+## 4.0.0 (2022-10-04)
+### Breaking Changes
+
+- Type of `GalleryImageVersionStorageProfile.Source` has been changed from `*GalleryArtifactVersionSource` to `*GalleryArtifactVersionFullSource`
+- Type of `SharingProfile.CommunityGalleryInfo` has been changed from `interface{}` to `*CommunityGalleryInfo`
+- Type of `VirtualMachineExtensionUpdateProperties.ProtectedSettingsFromKeyVault` has been changed from `interface{}` to `*KeyVaultSecretReference`
+- Type of `GalleryOSDiskImage.Source` has been changed from `*GalleryArtifactVersionSource` to `*GalleryDiskImageSource`
+- Type of `GalleryDiskImage.Source` has been changed from `*GalleryArtifactVersionSource` to `*GalleryDiskImageSource`
+- Type of `GalleryDataDiskImage.Source` has been changed from `*GalleryArtifactVersionSource` to `*GalleryDiskImageSource`
+- Type of `VirtualMachineScaleSetExtensionProperties.ProtectedSettingsFromKeyVault` has been changed from `interface{}` to `*KeyVaultSecretReference`
+- Type of `VirtualMachineExtensionProperties.ProtectedSettingsFromKeyVault` has been changed from `interface{}` to `*KeyVaultSecretReference`
+- Field `URI` of struct `GalleryArtifactVersionSource` has been removed
+
+### Features Added
+
+- New const `DiskControllerTypesSCSI`
+- New const `PolicyViolationCategoryImageFlaggedUnsafe`
+- New const `GalleryApplicationCustomActionParameterTypeConfigurationDataBlob`
+- New const `PolicyViolationCategoryIPTheft`
+- New const `PolicyViolationCategoryCopyrightValidation`
+- New const `PolicyViolationCategoryOther`
+- New const `GalleryApplicationCustomActionParameterTypeString`
+- New const `DiskControllerTypesNVMe`
+- New const `GalleryApplicationCustomActionParameterTypeLogOutputBlob`
+- New type alias `DiskControllerTypes`
+- New type alias `PolicyViolationCategory`
+- New type alias `GalleryApplicationCustomActionParameterType`
+- New function `PossiblePolicyViolationCategoryValues() []PolicyViolationCategory`
+- New function `PossibleGalleryApplicationCustomActionParameterTypeValues() []GalleryApplicationCustomActionParameterType`
+- New function `PossibleDiskControllerTypesValues() []DiskControllerTypes`
+- New struct `GalleryApplicationCustomAction`
+- New struct `GalleryApplicationCustomActionParameter`
+- New struct `GalleryApplicationVersionSafetyProfile`
+- New struct `GalleryArtifactSafetyProfileBase`
+- New struct `GalleryArtifactVersionFullSource`
+- New struct `GalleryDiskImageSource`
+- New struct `GalleryImageVersionSafetyProfile`
+- New struct `LatestGalleryImageVersion`
+- New struct `PolicyViolation`
+- New struct `PriorityMixPolicy`
+- New field `DiskControllerType` in struct `VirtualMachineScaleSetUpdateStorageProfile`
+- New field `HardwareProfile` in struct `VirtualMachineScaleSetUpdateVMProfile`
+- New field `CustomActions` in struct `GalleryApplicationProperties`
+- New field `DisableTCPStateTracking` in struct `VirtualMachineScaleSetNetworkConfigurationProperties`
+- New field `DiskControllerType` in struct `StorageProfile`
+- New field `OptimizedForFrequentAttach` in struct `DiskProperties`
+- New field `BurstingEnabledTime` in struct `DiskProperties`
+- New field `DiskControllerTypes` in struct `SupportedCapabilities`
+- New field `DisableTCPStateTracking` in struct `VirtualMachineNetworkInterfaceConfigurationProperties`
+- New field `EnableVMAgentPlatformUpdates` in struct `WindowsConfiguration`
+- New field `PerformancePlus` in struct `CreationData`
+- New field `IncrementalSnapshotFamilyID` in struct `SnapshotProperties`
+- New field `OptimizedForFrequentAttach` in struct `DiskUpdateProperties`
+- New field `DisableTCPStateTracking` in struct `VirtualMachineScaleSetUpdateNetworkConfigurationProperties`
+- New field `ExcludeFromLatest` in struct `TargetRegion`
+- New field `PrivacyStatementURI` in struct `SharedGalleryImageProperties`
+- New field `Eula` in struct `SharedGalleryImageProperties`
+- New field `SafetyProfile` in struct `GalleryApplicationVersionProperties`
+- New field `SafetyProfile` in struct `GalleryImageVersionProperties`
+- New field `EnableVMAgentPlatformUpdates` in struct `LinuxConfiguration`
+- New field `CurrentCapacity` in struct `CapacityReservationUtilization`
+- New field `PriorityMixPolicy` in struct `VirtualMachineScaleSetProperties`
+- New field `CustomActions` in struct `GalleryApplicationVersionPublishingProfile`
+- New field `PlatformFaultDomainCount` in struct `CapacityReservationProperties`
+- New field `DiskControllerType` in struct `VirtualMachineScaleSetStorageProfile`
+
+
 ## 3.0.1 (2022-07-29)
 ### Other Changes
 - Fix wrong module import for live test

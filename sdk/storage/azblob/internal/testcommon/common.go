@@ -47,7 +47,6 @@ func GenerateContainerName(testName string) string {
 // This should make it easy to associate the entities with their test, uniquely identify
 // them, and determine the order in which they were created.
 // Note that this imposes a restriction on the length of test names
-// nolint
 func GenerateName(prefix string) string {
 	// These next lines up through the for loop are obtaining and walking up the stack
 	// trace to extract the test name, which is stored in name

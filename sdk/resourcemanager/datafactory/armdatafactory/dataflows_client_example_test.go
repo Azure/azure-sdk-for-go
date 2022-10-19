@@ -14,7 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlows_Create.json
@@ -33,7 +33,29 @@ func ExampleDataFlowsClient_CreateOrUpdate_dataFlowsCreate() {
 			Type:        to.Ptr("MappingDataFlow"),
 			Description: to.Ptr("Sample demo data flow to convert currencies showing usage of union, derive and conditional split transformation."),
 			TypeProperties: &armdatafactory.MappingDataFlowTypeProperties{
-				Script: to.Ptr("source(output(PreviousConversionRate as double,Country as string,DateTime1 as string,CurrentConversionRate as double),allowSchemaDrift: false,validateSchema: false) ~> USDCurrency\nsource(output(PreviousConversionRate as double,Country as string,DateTime1 as string,CurrentConversionRate as double),allowSchemaDrift: true,validateSchema: false) ~> CADSource\nUSDCurrency, CADSource union(byName: true)~> Union\nUnion derive(NewCurrencyRate = round(CurrentConversionRate*1.25)) ~> NewCurrencyColumn\nNewCurrencyColumn split(Country == 'USD',Country == 'CAD',disjoint: false) ~> ConditionalSplit1@(USD, CAD)\nConditionalSplit1@USD sink(saveMode:'overwrite' ) ~> USDSink\nConditionalSplit1@CAD sink(saveMode:'overwrite' ) ~> CADSink"),
+				ScriptLines: []*string{
+					to.Ptr("source(output("),
+					to.Ptr("PreviousConversionRate as double,"),
+					to.Ptr("Country as string,"),
+					to.Ptr("DateTime1 as string,"),
+					to.Ptr("CurrentConversionRate as double"),
+					to.Ptr("),"),
+					to.Ptr("allowSchemaDrift: false,"),
+					to.Ptr("validateSchema: false) ~> USDCurrency"),
+					to.Ptr("source(output("),
+					to.Ptr("PreviousConversionRate as double,"),
+					to.Ptr("Country as string,"),
+					to.Ptr("DateTime1 as string,"),
+					to.Ptr("CurrentConversionRate as double"),
+					to.Ptr("),"),
+					to.Ptr("allowSchemaDrift: true,"),
+					to.Ptr("validateSchema: false) ~> CADSource"),
+					to.Ptr("USDCurrency, CADSource union(byName: true)~> Union"),
+					to.Ptr("Union derive(NewCurrencyRate = round(CurrentConversionRate*1.25)) ~> NewCurrencyColumn"),
+					to.Ptr("NewCurrencyColumn split(Country == 'USD',"),
+					to.Ptr("Country == 'CAD',disjoint: false) ~> ConditionalSplit1@(USD, CAD)"),
+					to.Ptr("ConditionalSplit1@USD sink(saveMode:'overwrite' ) ~> USDSink"),
+					to.Ptr("ConditionalSplit1@CAD sink(saveMode:'overwrite' ) ~> CADSink")},
 				Sinks: []*armdatafactory.DataFlowSink{
 					{
 						Name: to.Ptr("USDSink"),
@@ -90,7 +112,29 @@ func ExampleDataFlowsClient_CreateOrUpdate_dataFlowsUpdate() {
 			Type:        to.Ptr("MappingDataFlow"),
 			Description: to.Ptr("Sample demo data flow to convert currencies showing usage of union, derive and conditional split transformation."),
 			TypeProperties: &armdatafactory.MappingDataFlowTypeProperties{
-				Script: to.Ptr("source(output(PreviousConversionRate as double,Country as string,DateTime1 as string,CurrentConversionRate as double),allowSchemaDrift: false,validateSchema: false) ~> USDCurrency\nsource(output(PreviousConversionRate as double,Country as string,DateTime1 as string,CurrentConversionRate as double),allowSchemaDrift: true,validateSchema: false) ~> CADSource\nUSDCurrency, CADSource union(byName: true)~> Union\nUnion derive(NewCurrencyRate = round(CurrentConversionRate*1.25)) ~> NewCurrencyColumn\nNewCurrencyColumn split(Country == 'USD',Country == 'CAD',disjoint: false) ~> ConditionalSplit1@(USD, CAD)\nConditionalSplit1@USD sink(saveMode:'overwrite' ) ~> USDSink\nConditionalSplit1@CAD sink(saveMode:'overwrite' ) ~> CADSink"),
+				ScriptLines: []*string{
+					to.Ptr("source(output("),
+					to.Ptr("PreviousConversionRate as double,"),
+					to.Ptr("Country as string,"),
+					to.Ptr("DateTime1 as string,"),
+					to.Ptr("CurrentConversionRate as double"),
+					to.Ptr("),"),
+					to.Ptr("allowSchemaDrift: false,"),
+					to.Ptr("validateSchema: false) ~> USDCurrency"),
+					to.Ptr("source(output("),
+					to.Ptr("PreviousConversionRate as double,"),
+					to.Ptr("Country as string,"),
+					to.Ptr("DateTime1 as string,"),
+					to.Ptr("CurrentConversionRate as double"),
+					to.Ptr("),"),
+					to.Ptr("allowSchemaDrift: true,"),
+					to.Ptr("validateSchema: false) ~> CADSource"),
+					to.Ptr("USDCurrency, CADSource union(byName: true)~> Union"),
+					to.Ptr("Union derive(NewCurrencyRate = round(CurrentConversionRate*1.25)) ~> NewCurrencyColumn"),
+					to.Ptr("NewCurrencyColumn split(Country == 'USD',"),
+					to.Ptr("Country == 'CAD',disjoint: false) ~> ConditionalSplit1@(USD, CAD)"),
+					to.Ptr("ConditionalSplit1@USD sink(saveMode:'overwrite' ) ~> USDSink"),
+					to.Ptr("ConditionalSplit1@CAD sink(saveMode:'overwrite' ) ~> CADSink")},
 				Sinks: []*armdatafactory.DataFlowSink{
 					{
 						Name: to.Ptr("USDSink"),

@@ -50,7 +50,6 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 }
 
 // NewListPager - Lists the available Azure Data Factory API operations.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-06-01
 // options - OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {

@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/link"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
@@ -33,7 +32,6 @@ type resultHandlerFunc func(ctx context.Context, client *query.Client, reqIssue 
 // Request represents a parsed SDK release request
 type Request struct {
 	RequestLink string
-	TargetDate  time.Time
 	ReadmePath  string
 	Tag         string
 	Track       Track
@@ -92,11 +90,10 @@ func ParseIssue(ctx context.Context, client *query.Client, issue github.Issue, o
 
 // ReleaseRequestIssue represents a release request issue
 type ReleaseRequestIssue struct {
-	IssueLink   string
-	TargetLink  string
-	Tag         string
-	ReleaseDate time.Time
-	Labels      []*github.Label
+	IssueLink  string
+	TargetLink string
+	Tag        string
+	Labels     []*github.Label
 }
 
 // NewReleaseRequestIssue ...
@@ -105,20 +102,12 @@ func NewReleaseRequestIssue(issue github.Issue) (*ReleaseRequestIssue, error) {
 	contents := getRawContent(strings.Split(body, "\n"), []string{
 		linkKeyword, tagKeyword, releaseDateKeyword,
 	})
-	// get release date
-	releaseDate, err := time.Parse("2006-01-02", contents[releaseDateKeyword])
-	if err != nil {
-		return nil, &issueError{
-			issue: issue,
-			err:   err,
-		}
-	}
+
 	return &ReleaseRequestIssue{
-		IssueLink:   issue.GetHTMLURL(),
-		TargetLink:  parseLink(contents[linkKeyword]),
-		Tag:         contents[tagKeyword],
-		ReleaseDate: releaseDate,
-		Labels:      issue.Labels,
+		IssueLink:  issue.GetHTMLURL(),
+		TargetLink: parseLink(contents[linkKeyword]),
+		Tag:        contents[tagKeyword],
+		Labels:     issue.Labels,
 	}, nil
 }
 

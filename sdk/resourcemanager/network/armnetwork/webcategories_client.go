@@ -58,7 +58,7 @@ func NewWebCategoriesClient(subscriptionID string, credential azcore.TokenCreden
 
 // Get - Gets the specified Azure Web Category.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-05-01
 // name - The name of the azureWebCategory.
 // options - WebCategoriesClientGetOptions contains the optional parameters for the WebCategoriesClient.Get method.
 func (client *WebCategoriesClient) Get(ctx context.Context, name string, options *WebCategoriesClientGetOptions) (WebCategoriesClientGetResponse, error) {
@@ -92,7 +92,7 @@ func (client *WebCategoriesClient) getCreateRequest(ctx context.Context, name st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-05-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -111,8 +111,7 @@ func (client *WebCategoriesClient) getHandleResponse(resp *http.Response) (WebCa
 }
 
 // NewListBySubscriptionPager - Gets all the Azure Web Categories in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-05-01
 // options - WebCategoriesClientListBySubscriptionOptions contains the optional parameters for the WebCategoriesClient.ListBySubscription
 // method.
 func (client *WebCategoriesClient) NewListBySubscriptionPager(options *WebCategoriesClientListBySubscriptionOptions) *runtime.Pager[WebCategoriesClientListBySubscriptionResponse] {
@@ -155,7 +154,7 @@ func (client *WebCategoriesClient) listBySubscriptionCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

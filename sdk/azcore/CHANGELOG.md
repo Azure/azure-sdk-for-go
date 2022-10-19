@@ -1,15 +1,20 @@
 # Release History
 
-## 1.1.5 (Unreleased)
+## 1.2.0 (Unreleased)
 
 ### Features Added
+* Added `ClientOptions.APIVersion` field, which overrides the default version a client
+  requests of the service, if the client supports this (all ARM clients do).
 
 ### Breaking Changes
 
 ### Bugs Fixed
 * Fixed an issue in `runtime.SetMultipartFormData` to properly handle slices of `io.ReadSeekCloser`.
+* Fixed the MaxRetryDelay default to be 60s.
+* Failure to poll the state of an LRO will now return an `*azcore.ResponseError` for poller types that require this behavior.
 
 ### Other Changes
+* Retain contents of read-only fields when sending requests.
 
 ## 1.1.4 (2022-10-06)
 

@@ -552,7 +552,6 @@ func (client *IntegrationRuntimesClient) listAuthKeysHandleResponse(resp *http.R
 }
 
 // NewListByFactoryPager - Lists integration runtimes.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.

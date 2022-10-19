@@ -57,8 +57,7 @@ func NewAvailableServiceAliasesClient(subscriptionID string, credential azcore.T
 }
 
 // NewListPager - Gets all available service aliases for this subscription in this region.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-05-01
 // location - The location.
 // options - AvailableServiceAliasesClientListOptions contains the optional parameters for the AvailableServiceAliasesClient.List
 // method.
@@ -106,7 +105,7 @@ func (client *AvailableServiceAliasesClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -122,8 +121,7 @@ func (client *AvailableServiceAliasesClient) listHandleResponse(resp *http.Respo
 }
 
 // NewListByResourceGroupPager - Gets all available service aliases for this resource group in this region.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group.
 // location - The location.
 // options - AvailableServiceAliasesClientListByResourceGroupOptions contains the optional parameters for the AvailableServiceAliasesClient.ListByResourceGroup
@@ -176,7 +174,7 @@ func (client *AvailableServiceAliasesClient) listByResourceGroupCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

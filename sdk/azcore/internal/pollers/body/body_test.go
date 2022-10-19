@@ -185,3 +185,27 @@ func TestPollFailedError(t *testing.T) {
 	require.Error(t, err)
 	require.Nil(t, resp)
 }
+
+func TestPollError(t *testing.T) {
+	resp := initialResponse(http.MethodPatch, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return &http.Response{
+			StatusCode: http.StatusNotFound,
+			Header:     http.Header{},
+			Body:       io.NopCloser(strings.NewReader(`{ "error": { "code": "NotFound", "message": "the item doesn't exist" } }`)),
+		}, nil
+	})), resp)
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.Error(t, err)
+	require.Nil(t, resp)
+	var respErr *exported.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, http.StatusNotFound, respErr.StatusCode)
+	require.False(t, poller.Done())
+	var result widget
+	err = poller.Result(context.Background(), &result)
+	require.ErrorAs(t, err, &respErr)
+	require.Empty(t, result)
+}

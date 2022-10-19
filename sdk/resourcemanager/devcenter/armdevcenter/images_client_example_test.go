@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/Images_ListByDevCenter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/Images_ListByDevCenter.json
 func ExampleImagesClient_NewListByDevCenterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,9 +27,7 @@ func ExampleImagesClient_NewListByDevCenterPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDevCenterPager("rg1",
-		"Contoso",
-		&armdevcenter.ImagesClientListByDevCenterOptions{Top: nil})
+	pager := client.NewListByDevCenterPager("rg1", "Contoso", &armdevcenter.ImagesClientListByDevCenterOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -42,7 +40,7 @@ func ExampleImagesClient_NewListByDevCenterPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/Images_ListByGallery.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/Images_ListByGallery.json
 func ExampleImagesClient_NewListByGalleryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,10 +51,7 @@ func ExampleImagesClient_NewListByGalleryPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByGalleryPager("rg1",
-		"Contoso",
-		"DevGallery",
-		&armdevcenter.ImagesClientListByGalleryOptions{Top: nil})
+	pager := client.NewListByGalleryPager("rg1", "Contoso", "DevGallery", &armdevcenter.ImagesClientListByGalleryOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -69,7 +64,7 @@ func ExampleImagesClient_NewListByGalleryPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/Images_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/Images_Get.json
 func ExampleImagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,12 +75,7 @@ func ExampleImagesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"rg1",
-		"Contoso",
-		"DefaultDevGallery",
-		"{imageName}",
-		nil)
+	res, err := client.Get(ctx, "rg1", "Contoso", "DefaultDevGallery", "{imageName}", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

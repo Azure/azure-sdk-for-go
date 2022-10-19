@@ -172,3 +172,32 @@ func Example_blockblob_Client_UploadFile() {
 		log.Fatal(err)
 	}
 }
+
+// This example shows how to set an expiry time on an existing blob
+// This operation is only allowed on Hierarchical Namespace enabled accounts.
+func Example_blockblob_SetExpiry() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	blobName := "test_block_blob_set_expiry.txt"
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/testcontainer/%s", accountName, blobName)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	handleError(err)
+
+	blockBlobClient, err := blockblob.NewClient(blobURL, cred, nil)
+	handleError(err)
+
+	// set expiry on block blob 60 seconds relative to now
+	expiryTime := "60000"
+	_, err = blockBlobClient.SetExpiry(context.TODO(), blob.ExpiryOptionsRelativeToNow, &blob.SetExpiryOptions{ExpiresOn: &expiryTime})
+	handleError(err)
+
+	// validate set expiry operation
+	resp, err := blockBlobClient.GetProperties(context.TODO(), nil)
+	handleError(err)
+	if resp.ExpiresOn == nil {
+		return
+	}
+}

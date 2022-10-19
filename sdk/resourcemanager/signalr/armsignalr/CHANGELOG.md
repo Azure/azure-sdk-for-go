@@ -1,5 +1,12 @@
 # Release History
 
+## 1.1.0-beta.1 (2022-10-19)
+### Features Added
+
+- New struct `ServerlessSettings`
+- New field `Serverless` in struct `Properties`
+
+
 ## 1.0.0 (2022-05-16)
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.

@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added BlobDeleteType to DeleteOptions to allow access to 'Permanent' DeleteType.
+
 ### Breaking Changes
 
 ### Bugs Fixed

@@ -168,18 +168,18 @@ func PossibleDeleteTypeValues() []DeleteType {
 	return generated.PossibleDeleteTypeValues()
 }
 
-// ExpiryOptions defines values for ExpiryOptions
-type ExpiryOptions = generated.ExpiryOptions
+// ExpiryType defines values for ExpiryType
+type ExpiryType = generated.ExpiryOptions
 
 const (
-	ExpiryOptionsAbsolute           ExpiryOptions = generated.ExpiryOptionsAbsolute
-	ExpiryOptionsNeverExpire        ExpiryOptions = generated.ExpiryOptionsNeverExpire
-	ExpiryOptionsRelativeToCreation ExpiryOptions = generated.ExpiryOptionsRelativeToCreation
-	ExpiryOptionsRelativeToNow      ExpiryOptions = generated.ExpiryOptionsRelativeToNow
+	ExpiryOptionsAbsolute           ExpiryType = generated.ExpiryOptionsAbsolute
+	ExpiryOptionsNeverExpire        ExpiryType = generated.ExpiryOptionsNeverExpire
+	ExpiryOptionsRelativeToCreation ExpiryType = generated.ExpiryOptionsRelativeToCreation
+	ExpiryOptionsRelativeToNow      ExpiryType = generated.ExpiryOptionsRelativeToNow
 )
 
-// PossibleExpiryOptionsValues returns the possible values for the ExpiryOptions const type.
-func PossibleExpiryOptionsValues() []ExpiryOptions {
+// PossibleExpiryTypeValues returns the possible values for the ExpiryType const type.
+func PossibleExpiryTypeValues() []ExpiryType {
 	return generated.PossibleExpiryOptionsValues()
 }
 

@@ -8,6 +8,8 @@
 
 ### Breaking Changes
 
+* Renamed type `blob.ExpiryOptions` to `blob.ExpiryType`
+
 ### Bugs Fixed
 
 ### Other Changes

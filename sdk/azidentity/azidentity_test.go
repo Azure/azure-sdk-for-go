@@ -11,7 +11,6 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"io"
 	"net/http"
 	"os"
 	"strings"
@@ -136,16 +135,20 @@ func getTenantDiscoveryResponse(tenant string) []byte {
 
 func validateX5C(t *testing.T, certs []*x509.Certificate) mock.ResponsePredicate {
 	return func(req *http.Request) bool {
-		body, err := io.ReadAll(req.Body)
+		err := req.ParseForm()
 		if err != nil {
-			t.Fatal("Expected a request with the JWT in the body.")
+			t.Fatal("expected a form body")
 		}
-		bodystr := string(body)
-		kvps := strings.Split(bodystr, "&")
-		assertion := strings.Split(kvps[0], "=")
-		token, _ := jwt.Parse(assertion[1], nil)
+		assertion, ok := req.PostForm["client_assertion"]
+		if !ok {
+			t.Fatal("expected a client_assertion field")
+		}
+		if len(assertion) != 1 {
+			t.Fatalf(`unexpected client_assertion "%v"`, assertion)
+		}
+		token, _ := jwt.Parse(assertion[0], nil)
 		if token == nil {
-			t.Fatalf("Failed to parse the JWT token: %s.", assertion[1])
+			t.Fatalf("failed to parse the assertion: %s", assertion)
 		}
 		if v, ok := token.Header["x5c"].([]any); !ok {
 			t.Fatal("missing x5c header")

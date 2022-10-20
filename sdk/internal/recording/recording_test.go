@@ -550,6 +550,69 @@ func TestHostAndScheme(t *testing.T) {
 	require.Equal(t, r.host(), "localhost:5000")
 }
 
+func TestGitRootDetection(t *testing.T) {
+	cwd, err := os.Getwd()
+	require.NoError(t, err)
+	gitRoot, err := getGitRoot(cwd)
+	require.NoError(t, err)
+
+	parentDir := filepath.Dir(gitRoot)
+	_, err = getGitRoot(parentDir)
+	require.Error(t, err)
+}
+
+func TestRecordingAssetConfigNotExist(t *testing.T) {
+	absPath, relPath, err := getAssetsConfigLocation(".")
+	require.NoError(t, err)
+	require.Equal(t, "", absPath)
+	require.Equal(t, "", relPath)
+}
+
+func TestRecordingAssetConfigOutOfBounds(t *testing.T) {
+	cwd, err := os.Getwd()
+	require.NoError(t, err)
+	gitRoot, err := getGitRoot(cwd)
+	require.NoError(t, err)
+	parentDir := filepath.Dir(gitRoot)
+
+	absPath, err := findAssetsConfigFile(parentDir, gitRoot)
+	require.NoError(t, err)
+	require.Equal(t, "", absPath)
+}
+
+func TestRecordingAssetConfig(t *testing.T) {
+	cases := []struct{ expectedDirectory, searchDirectory, testFileLocation string }{
+		{"sdk/internal/recording", "sdk/internal/recording", recordingAssetConfigName},
+		{"sdk/internal/recording", "sdk/internal/recording/", recordingAssetConfigName},
+		{"sdk/internal", "sdk/internal/recording", "../" + recordingAssetConfigName},
+		{"sdk/internal", "sdk/internal/recording/", "../" + recordingAssetConfigName},
+	}
+
+	cwd, err := os.Getwd()
+	require.NoError(t, err)
+	gitRoot, err := getGitRoot(cwd)
+	require.NoError(t, err)
+
+	for _, c := range cases {
+		_ = os.Remove(c.testFileLocation)
+		o, err := os.Create(c.testFileLocation)
+		require.NoError(t, err)
+		o.Close()
+
+		absPath, relPath, err := getAssetsConfigLocation(c.searchDirectory)
+		// Clean up first in case of an assertion panic
+		require.NoError(t, os.Remove(c.testFileLocation))
+		require.NoError(t, err)
+
+		expected := c.expectedDirectory + string(os.PathSeparator) + recordingAssetConfigName
+		expected = strings.ReplaceAll(expected, "/", string(os.PathSeparator))
+		require.Equal(t, expected, relPath)
+
+		absPathExpected := filepath.Join(gitRoot, expected)
+		require.Equal(t, absPathExpected, absPath)
+	}
+}
+
 func TestFindProxyCertLocation(t *testing.T) {
 	savedValue, ok := os.LookupEnv("PROXY_CERT")
 	if ok {

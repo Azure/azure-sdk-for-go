@@ -194,7 +194,11 @@ type DeleteOptions struct {
 	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob itself
 	DeleteSnapshots  *DeleteSnapshotsOptionType
 	AccessConditions *AccessConditions
-	BlobDeleteType   generated.DeleteType
+	// Setting DeleteType to DeleteTypePermanent will permanently delete soft-delete snapshot and/or version blobs.
+	// WARNING: This is a dangerous operation and should not be used unless you know the implications. Please proceed
+	// with caution.
+	// For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob
+	BlobDeleteType DeleteType
 }
 
 func (o *DeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {

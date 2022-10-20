@@ -59,7 +59,7 @@ For more help with troubleshooting authentication errors, see the Azure Identity
 If you get an HTTP error with status code 403 (Forbidden), it means that the provided credentials does not have
 sufficient permissions to query the workspace.
 ```text
-com.azure.core.exception.HttpResponseException: Status code 403, "{"error":{"message":"The provided credentials have insufficient access to perform the requested operation","code":"InsufficientAccessError","correlationId":""}}"
+{"error":{"message":"The provided credentials have insufficient access to perform the requested operation","code":"InsufficientAccessError","correlationId":""}}
 ```
 
 1. Check that the application or user that is making the request has sufficient permissions:
@@ -78,7 +78,7 @@ If you get an HTTP error with status code 400 (Bad Request), you may have an err
 see an error message similar to the one below.
 
 ```text
-com.azure.core.exception.HttpResponseException: Status code 400, "{"error":{"message":"The request had some invalid properties","code":"BadArgumentError","correlationId":"ff3e2a7e-e95c-4437-82cf-9b15761d0850","innererror":{"code":"SyntaxError","message":"A recognition error occurred in the query.","innererror":{"code":"SYN0002","message":"Query could not be parsed at 'joi' on line [2,244]","line":2,"pos":244,"token":"joi"}}}}"
+{"error":{"message":"The request had some invalid properties","code":"BadArgumentError","correlationId":"","innererror":{"code":"SyntaxError","message":"A recognition error occurred in the query.","innererror":{"code":"SYN0002","message":"Query could not be parsed at 'joi' on line [2,244]","line":2,"pos":244,"token":"joi"}}}}
 ```
 
 The error message in `innererror` may include the location where the Kusto query has an error plus further details. You may also refer to the [Kusto Query Language][kusto] reference docs to learn more about querying logs using KQL.

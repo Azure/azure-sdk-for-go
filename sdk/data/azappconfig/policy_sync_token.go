@@ -26,7 +26,7 @@ type syncTokenPolicy struct {
 }
 
 func newSyncTokenPolicy() *syncTokenPolicy {
-	return &syncTokenPolicy{}
+	return &syncTokenPolicy{syncTokens: map[string]syncToken{}}
 }
 
 func parseToken(tok string) (syncToken, error) {

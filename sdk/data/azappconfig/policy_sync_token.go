@@ -95,7 +95,7 @@ func (policy *syncTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 
 	resp, err := req.Next()
 
-	if err != nil {
+	if err == nil {
 		for _, st := range resp.Header[syncTokenHeaderName] {
 			policy.addToken(st)
 		}

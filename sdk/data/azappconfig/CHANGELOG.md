@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed a bug in `syncTokenPolicy` that could cause a panic in some conditions.
 
 ### Other Changes
 

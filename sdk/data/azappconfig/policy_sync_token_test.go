@@ -48,7 +48,7 @@ func TestSyncTokenPolicy(t *testing.T) {
 		}),
 	})
 
-	req, err := runtime.NewRequest(context.Background(), http.MethodGet, "http://fake.endpoint.org")
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, "http://test.contoso.com")
 	require.NoError(t, err)
 
 	resp, err := pl.Do(req)
@@ -71,7 +71,7 @@ func TestSyncTokenPolicyError(t *testing.T) {
 		}),
 	})
 
-	req, err := runtime.NewRequest(context.Background(), http.MethodGet, "http://fake.endpoint.org")
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, "http://test.contoso.com")
 	require.NoError(t, err)
 
 	resp, err := pl.Do(req)

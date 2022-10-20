@@ -150,10 +150,14 @@ func (pb *Client) UploadPages(ctx context.Context, body io.ReadSeekCloser, optio
 
 	uploadPagesOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions := options.format()
 
-	if options.TransactionalContentCRC64 == 0 && options.TransactionalValidationOption != hashing.StorageTransferValidationOptionNone {
+	if options.TransactionalContentCRC64 == 0 && options.TransactionalValidationOption != hashing.TransferValidationTypeNone {
 		body, err = hashing.NewReadWrapper(body, options.TransactionalValidationOption)
 
-		if options.TransactionalValidationOption&hashing.StorageTransferValidationOptionCRC64 == hashing.StorageTransferValidationOptionCRC64 {
+		if err != nil {
+			return UploadPagesResponse{}, err
+		}
+
+		if options.TransactionalValidationOption&hashing.TransferValidationTypeCRC64 == hashing.TransferValidationTypeCRC64 {
 			uploadPagesOptions.TransactionalContentCRC64 = make([]byte, 8)
 			binary.LittleEndian.PutUint64(uploadPagesOptions.TransactionalContentCRC64, (body.(*hashing.ReadWrapper)).CRC64Hash())
 		}

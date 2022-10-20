@@ -6,9 +6,9 @@
 
 package hashing
 
-type StorageTransferValidationOption uint8
+type TransferValidationType uint8
 
 const (
-	StorageTransferValidationOptionNone  StorageTransferValidationOption = 0
-	StorageTransferValidationOptionCRC64 StorageTransferValidationOption = 1 << iota
+	TransferValidationTypeNone  TransferValidationType = 0
+	TransferValidationTypeCRC64 TransferValidationType = 1 << iota
 )

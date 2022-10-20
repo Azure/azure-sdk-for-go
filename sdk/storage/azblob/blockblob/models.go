@@ -76,7 +76,7 @@ type StageBlockOptions struct {
 
 	// Let the SDK hash for you (providing the hash type(s) specified voids their relevance in this option).
 	// nil = None default
-	TransactionalValidationOption hashing.StorageTransferValidationOption
+	TransactionalValidationOption hashing.TransferValidationType
 
 	// Specify the transactional crc64 for the body, to be validated by the service. Should be hashed using hashing.CRC64Table or hashing.CRC64Polynomial
 	TransactionalContentCRC64 uint64
@@ -95,7 +95,7 @@ func (o *StageBlockOptions) format() (*generated.BlockBlobClientStageBlockOption
 		TransactionalContentMD5: o.TransactionalContentMD5,
 	}
 
-	if o.TransactionalValidationOption == hashing.StorageTransferValidationOptionCRC64 || o.TransactionalContentCRC64 != 0 {
+	if o.TransactionalValidationOption == hashing.TransferValidationTypeCRC64 || o.TransactionalContentCRC64 != 0 {
 		options.TransactionalContentCRC64 = make([]byte, 8)
 		// If the validation option is specified & the CRC is 0, it will be 0, and get overwritten anyway with the new hash.
 		// Thus, it's OK to run putUint64 here.
@@ -210,10 +210,12 @@ type uploadFromReaderOptions struct {
 	// Concurrency indicates the maximum number of blocks to upload in parallel (0=default)
 	Concurrency uint16
 
+	TransactionalValidationOption hashing.TransferValidationType
+
 	// Optional header, Specifies the transactional crc64 for the body, to be validated by the service.
-	TransactionalContentCRC64 *[]byte
+	TransactionalContentCRC64 uint64
 	// Specify the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMD5 *[]byte
+	TransactionalContentMD5 []byte
 }
 
 // UploadBufferOptions provides set of configurations for UploadBuffer operation
@@ -228,6 +230,10 @@ func (o *uploadFromReaderOptions) getStageBlockOptions() *StageBlockOptions {
 		CpkInfo:               o.CpkInfo,
 		CpkScopeInfo:          o.CpkScopeInfo,
 		LeaseAccessConditions: leaseAccessConditions,
+
+		TransactionalValidationOption: o.TransactionalValidationOption,
+		TransactionalContentCRC64:     o.TransactionalContentCRC64,
+		TransactionalContentMD5:       o.TransactionalContentMD5,
 	}
 }
 
@@ -270,7 +276,7 @@ type UploadStreamOptions struct {
 	// Each concurrent upload will create a buffer of size BlockSize.  The default value is one.
 	Concurrency int
 
-	TransferValidationOption hashing.StorageTransferValidationOption
+	TransferValidationOption hashing.TransferValidationType
 
 	HTTPHeaders      *blob.HTTPHeaders
 	Metadata         map[string]string

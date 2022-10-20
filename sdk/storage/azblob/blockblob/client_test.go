@@ -447,7 +447,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
 
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	putResp, err := bbClient.StageBlock(context.Background(), blockID1, rsc, &blockblob.StageBlockOptions{
-		TransactionalValidationOption: hashing.StorageTransferValidationOptionCRC64,
+		TransactionalValidationOption: hashing.TransferValidationTypeCRC64,
 	})
 	_require.Nil(err)
 	// _require.Equal(putResp.RawResponse.StatusCode, 201)

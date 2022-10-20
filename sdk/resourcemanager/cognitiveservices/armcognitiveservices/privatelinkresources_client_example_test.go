@@ -16,26 +16,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/GetSkus.json
-func ExampleResourceSKUsClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/ListPrivateLinkResources.json
+func ExamplePrivateLinkResourcesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewResourceSKUsClient("f1c637e4-72ec-4f89-8d2b-0f933c036002", cred, nil)
+	client, err := armcognitiveservices.NewPrivateLinkResourcesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
-	for pager.More() {
-		nextResult, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range nextResult.Value {
-			// TODO: use page item
-			_ = v
-		}
+	res, err := client.List(ctx, "res6977", "sto2527", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }

@@ -16,14 +16,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/GetOperations.json
-func ExampleOperationsClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/GetSkus.json
+func ExampleResourceSKUsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewOperationsClient(cred, nil)
+	client, err := armcognitiveservices.NewResourceSKUsClient("f1c637e4-72ec-4f89-8d2b-0f933c036002", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListPrivateEndpointConnections.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/ListPrivateEndpointConnections.json
 func ExamplePrivateEndpointConnectionsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,10 +28,7 @@ func ExamplePrivateEndpointConnectionsClient_List() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.List(ctx,
-		"res6977",
-		"sto2527",
-		nil)
+	res, err := client.List(ctx, "res6977", "sto2527", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -39,7 +36,7 @@ func ExamplePrivateEndpointConnectionsClient_List() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/GetPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/GetPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,11 +47,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"res6977",
-		"sto2527",
-		"{privateEndpointConnectionName}",
-		nil)
+	res, err := client.Get(ctx, "res6977", "sto2527", "{privateEndpointConnectionName}", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -62,7 +55,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/PutPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/PutPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,19 +66,14 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"res7687",
-		"sto9699",
-		"{privateEndpointConnectionName}",
-		armcognitiveservices.PrivateEndpointConnection{
-			Properties: &armcognitiveservices.PrivateEndpointConnectionProperties{
-				PrivateLinkServiceConnectionState: &armcognitiveservices.PrivateLinkServiceConnectionState{
-					Description: to.Ptr("Auto-Approved"),
-					Status:      to.Ptr(armcognitiveservices.PrivateEndpointServiceConnectionStatusApproved),
-				},
+	poller, err := client.BeginCreateOrUpdate(ctx, "res7687", "sto9699", "{privateEndpointConnectionName}", armcognitiveservices.PrivateEndpointConnection{
+		Properties: &armcognitiveservices.PrivateEndpointConnectionProperties{
+			PrivateLinkServiceConnectionState: &armcognitiveservices.PrivateLinkServiceConnectionState{
+				Description: to.Ptr("Auto-Approved"),
+				Status:      to.Ptr(armcognitiveservices.PrivateEndpointServiceConnectionStatusApproved),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -97,7 +85,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/DeletePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/DeletePrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,11 +96,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"res6977",
-		"sto2527",
-		"{privateEndpointConnectionName}",
-		nil)
+	poller, err := client.BeginDelete(ctx, "res6977", "sto2527", "{privateEndpointConnectionName}", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

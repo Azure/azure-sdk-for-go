@@ -1,15 +1,9 @@
 # Release History
 
-## 0.4.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 0.4.2 (2022-10-20)
 
 ### Bugs Fixed
 * Fixed a bug in `syncTokenPolicy` that could cause a panic in some conditions.
-
-### Other Changes
 
 ## 0.4.1 (2022-09-22)
 

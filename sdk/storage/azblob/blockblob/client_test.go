@@ -3517,7 +3517,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryOnHnsDisabledAccount
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryOptionsNeverExpire, nil)
+	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeNeverExpire{}, nil)
 	testcommon.ValidateBlobErrorCode(_require, err, "HierarchicalNamespaceNotEnabled")
 }
 
@@ -3536,7 +3536,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryToNeverExpire() {
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryOptionsNeverExpire, nil)
+	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeNeverExpire{}, nil)
 	_require.Nil(err)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)
@@ -3559,8 +3559,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryRelativeToNow() {
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	expiryTime := "8000"
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryOptionsRelativeToNow, &blob.SetExpiryOptions{ExpiresOn: &expiryTime})
+	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeRelativeToNow(8*time.Second), nil)
 	_require.Nil(err)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)
@@ -3588,8 +3587,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryRelativeToCreation()
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	expiryTime := "8000"
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryOptionsRelativeToCreation, &blob.SetExpiryOptions{ExpiresOn: &expiryTime})
+	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeRelativeToCreation(8*time.Second), nil)
 	_require.Nil(err)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)
@@ -3617,14 +3615,14 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobSetExpiryToAbsolute() {
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	expiryTimeAbsolute := time.Now().Add(8 * time.Second).UTC().Format(http.TimeFormat)
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryOptionsAbsolute, &blob.SetExpiryOptions{ExpiresOn: &expiryTimeAbsolute})
+	expiryTimeAbsolute := time.Now().Add(8 * time.Second)
+	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
 	_require.Nil(err)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
 	_require.NotNil(resp.ExpiresOn)
-	_require.Equal(expiryTimeAbsolute, (*resp.ExpiresOn).UTC().Format(http.TimeFormat))
+	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), (*resp.ExpiresOn).UTC().Format(http.TimeFormat))
 
 	time.Sleep(time.Second * 10)
 
@@ -3647,51 +3645,9 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobSetExpiryToPast() {
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	expiryTimeAbsolute := time.Now().Add(8 * time.Second).UTC().Format(http.TimeFormat)
+	expiryTimeAbsolute := time.Now().Add(8 * time.Second)
 	time.Sleep(time.Second * 10)
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryOptionsAbsolute, &blob.SetExpiryOptions{ExpiresOn: &expiryTimeAbsolute})
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidHeaderValue)
-
-	resp, err = bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
-	_require.Nil(resp.ExpiresOn)
-}
-
-func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryFailures() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-
-	containerName := testcommon.GenerateContainerName(testName)
-	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
-	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-
-	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, testcommon.GenerateBlobName(testName), containerClient)
-	resp, err := bbClient.GetProperties(context.Background(), nil)
-	_require.Nil(err)
-	_require.Nil(resp.ExpiresOn)
-
-	expiryTime := "8000"
-
-	// expiry option set to NeverExpire and expiry time set to non-null
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryOptionsNeverExpire, &blob.SetExpiryOptions{ExpiresOn: &expiryTime})
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidHeaderValue)
-
-	// expiry option set to RelativeToNow and expiry time set to null
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryOptionsRelativeToNow, nil)
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MissingRequiredHeader)
-
-	// expiry option set to RelativeToCreation and expiry time set to null
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryOptionsRelativeToCreation, nil)
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MissingRequiredHeader)
-
-	// expiry option set to Absolute and expiry time set to null
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryOptionsAbsolute, nil)
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MissingRequiredHeader)
-
-	// expiry option set to Absolute and expiry time not in correct RFC 1123 format
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryOptionsAbsolute, &blob.SetExpiryOptions{ExpiresOn: &expiryTime})
+	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidHeaderValue)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)

@@ -87,15 +87,15 @@ func Example_appendblob_SetExpiry() {
 	appendBlobClient, err := appendblob.NewClient(blobURL, cred, nil)
 	handleError(err)
 
-	// set expiry on append blob to an absolute time which must be in RFC 1123 Format
-	expiryTimeAbsolute := time.Now().Add(8 * time.Hour).UTC().Format(http.TimeFormat)
-	_, err = appendBlobClient.SetExpiry(context.TODO(), blob.ExpiryOptionsAbsolute, &blob.SetExpiryOptions{ExpiresOn: &expiryTimeAbsolute})
+	// set expiry on append blob to an absolute time
+	expiryTimeAbsolute := time.Now().Add(8 * time.Hour)
+	_, err = appendBlobClient.SetExpiry(context.TODO(), blob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
 	handleError(err)
 
 	// validate set expiry operation
 	resp, err := appendBlobClient.GetProperties(context.TODO(), nil)
 	handleError(err)
-	if resp.ExpiresOn == nil || expiryTimeAbsolute != (*resp.ExpiresOn).UTC().Format(http.TimeFormat) {
+	if resp.ExpiresOn == nil || expiryTimeAbsolute.UTC().Format(http.TimeFormat) != (*resp.ExpiresOn).UTC().Format(http.TimeFormat) {
 		return
 	}
 }

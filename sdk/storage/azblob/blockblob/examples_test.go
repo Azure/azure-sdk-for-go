@@ -15,6 +15,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -189,9 +190,8 @@ func Example_blockblob_SetExpiry() {
 	blockBlobClient, err := blockblob.NewClient(blobURL, cred, nil)
 	handleError(err)
 
-	// set expiry on block blob 60 seconds relative to now
-	expiryTime := "60000"
-	_, err = blockBlobClient.SetExpiry(context.TODO(), blob.ExpiryOptionsRelativeToNow, &blob.SetExpiryOptions{ExpiresOn: &expiryTime})
+	// set expiry on block blob 4 hours relative to now
+	_, err = blockBlobClient.SetExpiry(context.TODO(), blob.ExpiryTypeRelativeToNow(4*time.Hour), nil)
 	handleError(err)
 
 	// validate set expiry operation

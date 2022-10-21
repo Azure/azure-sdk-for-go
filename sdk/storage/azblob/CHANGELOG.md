@@ -4,11 +4,9 @@
 
 ### Features Added
 
-* Added [Set Blob Expiry API](https://learn.microsoft.com/en-us/rest/api/storageservices/set-blob-expiry).
+* Added [Set Blob Expiry API](https://learn.microsoft.com/rest/api/storageservices/set-blob-expiry).
 
 ### Breaking Changes
-
-* Renamed type `blob.ExpiryOptions` to `blob.ExpiryType`
 
 ### Bugs Fixed
 

@@ -7,6 +7,9 @@
 package blob
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
@@ -246,18 +249,29 @@ func (o *SetTierOptions) format() (*generated.BlobClientSetTierOptions, *generat
 
 // SetExpiryOptions contains the optional parameters for the Client.SetExpiry method.
 type SetExpiryOptions struct {
-	// The time to set the blob to expiry
-	ExpiresOn *string
+	// placeholder for future options
 }
 
-func (o *SetExpiryOptions) format() *generated.BlobClientSetExpiryOptions {
-	if o == nil {
-		return nil
+func (e ExpiryTypeAbsolute) format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.BlobClientSetExpiryOptions) {
+	return generated.ExpiryOptionsAbsolute, &generated.BlobClientSetExpiryOptions{
+		ExpiresOn: to.Ptr(time.Time(e).UTC().Format(http.TimeFormat)),
 	}
+}
 
-	return &generated.BlobClientSetExpiryOptions{
-		ExpiresOn: o.ExpiresOn,
+func (e ExpiryTypeRelativeToNow) format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.BlobClientSetExpiryOptions) {
+	return generated.ExpiryOptionsRelativeToNow, &generated.BlobClientSetExpiryOptions{
+		ExpiresOn: to.Ptr(strconv.FormatInt(time.Duration(e).Milliseconds(), 10)),
 	}
+}
+
+func (e ExpiryTypeRelativeToCreation) format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.BlobClientSetExpiryOptions) {
+	return generated.ExpiryOptionsRelativeToCreation, &generated.BlobClientSetExpiryOptions{
+		ExpiresOn: to.Ptr(strconv.FormatInt(time.Duration(e).Milliseconds(), 10)),
+	}
+}
+
+func (e ExpiryTypeNeverExpire) format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.BlobClientSetExpiryOptions) {
+	return generated.ExpiryOptionsNeverExpire, nil
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

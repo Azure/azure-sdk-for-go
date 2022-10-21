@@ -1895,7 +1895,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryToNeverExpire() {
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	_, err = abClient.SetExpiry(context.Background(), blob.ExpiryOptionsNeverExpire, nil)
+	_, err = abClient.SetExpiry(context.Background(), blob.ExpiryTypeNeverExpire{}, nil)
 	_require.Nil(err)
 
 	resp, err = abClient.GetProperties(context.Background(), nil)
@@ -1923,8 +1923,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryRelativeToNow() {
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	expiryTime := "8000"
-	_, err = abClient.SetExpiry(context.Background(), blob.ExpiryOptionsRelativeToNow, &blob.SetExpiryOptions{ExpiresOn: &expiryTime})
+	_, err = abClient.SetExpiry(context.Background(), blob.ExpiryTypeRelativeToNow(8*time.Second), nil)
 	_require.Nil(err)
 
 	resp, err = abClient.GetProperties(context.Background(), nil)
@@ -1957,8 +1956,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryRelativeToCreation
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	expiryTime := "8000"
-	_, err = abClient.SetExpiry(context.Background(), blob.ExpiryOptionsRelativeToCreation, &blob.SetExpiryOptions{ExpiresOn: &expiryTime})
+	_, err = abClient.SetExpiry(context.Background(), blob.ExpiryTypeRelativeToCreation(8*time.Second), nil)
 	_require.Nil(err)
 
 	resp, err = abClient.GetProperties(context.Background(), nil)
@@ -1991,14 +1989,14 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlobSetExpiryToAbsolute() {
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	expiryTimeAbsolute := time.Now().Add(8 * time.Second).UTC().Format(http.TimeFormat)
-	_, err = abClient.SetExpiry(context.Background(), blob.ExpiryOptionsAbsolute, &blob.SetExpiryOptions{ExpiresOn: &expiryTimeAbsolute})
+	expiryTimeAbsolute := time.Now().Add(8 * time.Second)
+	_, err = abClient.SetExpiry(context.Background(), blob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
 	_require.Nil(err)
 
 	resp, err = abClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
 	_require.NotNil(resp.ExpiresOn)
-	_require.Equal(expiryTimeAbsolute, (*resp.ExpiresOn).UTC().Format(http.TimeFormat))
+	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), (*resp.ExpiresOn).UTC().Format(http.TimeFormat))
 
 	time.Sleep(time.Second * 10)
 

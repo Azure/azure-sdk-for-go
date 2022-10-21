@@ -237,7 +237,6 @@ func (client *ServersClient) getHandleResponse(resp *http.Response) (ServersClie
 }
 
 // NewListPager - List all the servers in a given subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-06-01
 // options - ServersClientListOptions contains the optional parameters for the ServersClient.List method.
 func (client *ServersClient) NewListPager(options *ServersClientListOptions) *runtime.Pager[ServersClientListResponse] {
@@ -296,7 +295,6 @@ func (client *ServersClient) listHandleResponse(resp *http.Response) (ServersCli
 }
 
 // NewListByResourceGroupPager - List all the servers in a given resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ServersClientListByResourceGroupOptions contains the optional parameters for the ServersClient.ListByResourceGroup

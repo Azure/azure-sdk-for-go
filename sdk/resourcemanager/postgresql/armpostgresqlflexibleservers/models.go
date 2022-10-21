@@ -65,13 +65,6 @@ type CheckNameAvailabilityClientExecuteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CloudError - An error response from the Batch service.
-type CloudError struct {
-	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows
-	// the OData error response format.)
-	Error *ErrorResponse `json:"error,omitempty"`
-}
-
 // Configuration - Represents a Configuration.
 type Configuration struct {
 	// The properties of a configuration.

@@ -56,7 +56,6 @@ func NewLocationBasedCapabilitiesClient(subscriptionID string, credential azcore
 }
 
 // NewExecutePager - Get capabilities at specified location in a given subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-06-01
 // locationName - The name of the location.
 // options - LocationBasedCapabilitiesClientExecuteOptions contains the optional parameters for the LocationBasedCapabilitiesClient.Execute

@@ -117,7 +117,6 @@ func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (Conf
 }
 
 // NewListByServerPager - List all the configurations in a given server.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.

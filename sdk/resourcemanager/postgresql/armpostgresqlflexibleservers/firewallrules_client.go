@@ -254,7 +254,6 @@ func (client *FirewallRulesClient) getHandleResponse(resp *http.Response) (Firew
 }
 
 // NewListByServerPager - List all the firewall rules in a given PostgreSQL server.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.

@@ -9,11 +9,6 @@
 
 package armcontainerregistry
 
-const (
-	moduleName    = "hybrid20200901/armcontainerregistry"
-	moduleVersion = "v1.0.0"
-)
-
 // Action - The action of virtual network rule.
 type Action string
 

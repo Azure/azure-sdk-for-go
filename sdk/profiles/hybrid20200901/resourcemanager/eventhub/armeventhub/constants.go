@@ -9,11 +9,6 @@
 
 package armeventhub
 
-const (
-	moduleName    = "hybrid20200901/armeventhub"
-	moduleVersion = "v1.0.0"
-)
-
 type AccessRights string
 
 const (

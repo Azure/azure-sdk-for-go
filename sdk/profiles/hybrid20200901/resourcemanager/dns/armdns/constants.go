@@ -9,11 +9,6 @@
 
 package armdns
 
-const (
-	moduleName    = "hybrid20200901/armdns"
-	moduleVersion = "v1.0.0"
-)
-
 type HTTPStatusCode string
 
 const (

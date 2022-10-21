@@ -9,11 +9,6 @@
 
 package armcommerce
 
-const (
-	moduleName    = "hybrid20200901/armcommerce"
-	moduleVersion = "v1.0.0"
-)
-
 type AggregationGranularity string
 
 const (

@@ -9,11 +9,6 @@
 
 package armcontainerservice
 
-const (
-	moduleName    = "hybrid20200901/armcontainerservice"
-	moduleVersion = "v1.0.0"
-)
-
 // AgentPoolMode - AgentPoolMode represents mode of an agent pool.
 type AgentPoolMode string
 

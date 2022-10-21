@@ -9,11 +9,6 @@
 
 package armdataboxedge
 
-const (
-	moduleName    = "hybrid20200901/armdataboxedge"
-	moduleVersion = "v1.0.0"
-)
-
 // AccountType - Type of storage accessed on the storage account.
 type AccountType string
 

@@ -9,11 +9,6 @@
 
 package armcompute
 
-const (
-	moduleName    = "hybrid20200901/armcompute"
-	moduleVersion = "v1.0.0"
-)
-
 type AccessLevel string
 
 const (

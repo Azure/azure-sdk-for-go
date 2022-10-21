@@ -7,4 +7,9 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package armauthorization
+package hybrid20200901
+
+const (
+	ModuleName    = "hybrid20200901"
+	ModuleVersion = "v0.1.0"
+)

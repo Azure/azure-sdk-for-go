@@ -191,8 +191,8 @@ type ExpiryTypeNeverExpire struct {
 	// empty struct since NeverExpire expiry type does not require expiry time
 }
 
-// PossibleExpiryTypeValues returns the possible values for the ExpiryType const type.
-func PossibleExpiryTypeValues() []ExpiryOptions {
+// PossibleExpiryOptionsValues returns the possible values for the ExpiryOptions const type.
+func PossibleExpiryOptionsValues() []ExpiryOptions {
 	return generated.PossibleExpiryOptionsValues()
 }
 

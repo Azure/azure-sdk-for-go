@@ -7,41 +7,41 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package armelasticsans
+package armelasticsan
 
-// ClientCreateResponse contains the response from method Client.Create.
-type ClientCreateResponse struct {
+// ElasticSansClientCreateResponse contains the response from method ElasticSansClient.Create.
+type ElasticSansClientCreateResponse struct {
 	ElasticSan
 }
 
-// ClientDeleteResponse contains the response from method Client.Delete.
-type ClientDeleteResponse struct {
+// ElasticSansClientDeleteResponse contains the response from method ElasticSansClient.Delete.
+type ElasticSansClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// ClientGetResponse contains the response from method Client.Get.
-type ClientGetResponse struct {
+// ElasticSansClientGetResponse contains the response from method ElasticSansClient.Get.
+type ElasticSansClientGetResponse struct {
 	ElasticSan
 }
 
-// ClientListByResourceGroupResponse contains the response from method Client.ListByResourceGroup.
-type ClientListByResourceGroupResponse struct {
-	ElasticSanList
+// ElasticSansClientListByResourceGroupResponse contains the response from method ElasticSansClient.ListByResourceGroup.
+type ElasticSansClientListByResourceGroupResponse struct {
+	List
 }
 
-// ClientListBySubscriptionResponse contains the response from method Client.ListBySubscription.
-type ClientListBySubscriptionResponse struct {
-	ElasticSanList
+// ElasticSansClientListBySubscriptionResponse contains the response from method ElasticSansClient.ListBySubscription.
+type ElasticSansClientListBySubscriptionResponse struct {
+	List
 }
 
-// ClientUpdateResponse contains the response from method Client.Update.
-type ClientUpdateResponse struct {
+// ElasticSansClientUpdateResponse contains the response from method ElasticSansClient.Update.
+type ElasticSansClientUpdateResponse struct {
 	ElasticSan
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
-	ElasticSanOperationListResult
+	OperationListResult
 }
 
 // SKUsClientListResponse contains the response from method SKUsClient.List.

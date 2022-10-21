@@ -7,7 +7,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package armelasticsans
+package armelasticsan
 
 import (
 	"context"
@@ -91,7 +91,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 // listHandleResponse handles the List response.
 func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsClientListResponse, error) {
 	result := OperationsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ElasticSanOperationListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
 		return OperationsClientListResponse{}, err
 	}
 	return result, nil

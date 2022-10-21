@@ -7,47 +7,14 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package armelasticsans
+package armelasticsan
 
 import "time"
-
-// ClientBeginCreateOptions contains the optional parameters for the Client.BeginCreate method.
-type ClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
-type ClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
-type ClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ClientGetOptions contains the optional parameters for the Client.Get method.
-type ClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
-type ClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientListBySubscriptionOptions contains the optional parameters for the Client.ListBySubscription method.
-type ClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
 
 // ElasticSan - Response for ElasticSan request.
 type ElasticSan struct {
 	// REQUIRED; Properties of ElasticSan.
-	Properties *ElasticSanProperties `json:"properties,omitempty"`
+	Properties *Properties `json:"properties,omitempty"`
 
 	// The geo-location where the resource lives.
 	Location *string `json:"location,omitempty"`
@@ -68,8 +35,61 @@ type ElasticSan struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// ElasticSanList - List of Elastic Sans
-type ElasticSanList struct {
+// ElasticSansClientBeginCreateOptions contains the optional parameters for the ElasticSansClient.BeginCreate method.
+type ElasticSansClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ElasticSansClientBeginDeleteOptions contains the optional parameters for the ElasticSansClient.BeginDelete method.
+type ElasticSansClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ElasticSansClientBeginUpdateOptions contains the optional parameters for the ElasticSansClient.BeginUpdate method.
+type ElasticSansClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ElasticSansClientGetOptions contains the optional parameters for the ElasticSansClient.Get method.
+type ElasticSansClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticSansClientListByResourceGroupOptions contains the optional parameters for the ElasticSansClient.ListByResourceGroup
+// method.
+type ElasticSansClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticSansClientListBySubscriptionOptions contains the optional parameters for the ElasticSansClient.ListBySubscription
+// method.
+type ElasticSansClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IscsiTargetInfo - Iscsi target information
+type IscsiTargetInfo struct {
+	// Operational status of the iSCSI Target.
+	Status *OperationalStatus `json:"status,omitempty"`
+
+	// READ-ONLY; State of the operation on the resource.
+	ProvisioningState *ProvisioningStates `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; iSCSI Target IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:server".
+	TargetIqn *string `json:"targetIqn,omitempty" azure:"ro"`
+
+	// READ-ONLY; iSCSI Target Portal Host Name
+	TargetPortalHostname *string `json:"targetPortalHostname,omitempty" azure:"ro"`
+
+	// READ-ONLY; iSCSI Target Portal Port
+	TargetPortalPort *int32 `json:"targetPortalPort,omitempty" azure:"ro"`
+}
+
+// List of Elastic Sans
+type List struct {
 	// REQUIRED; An array of Elastic San objects.
 	Value []*ElasticSan `json:"value,omitempty"`
 
@@ -77,8 +97,14 @@ type ElasticSanList struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// ElasticSanOperationDisplay - Metadata about an operation.
-type ElasticSanOperationDisplay struct {
+// NetworkRuleSet - A set of rules governing the network accessibility.
+type NetworkRuleSet struct {
+	// The list of virtual network rules.
+	VirtualNetworkRules []*VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
+}
+
+// OperationDisplay - Metadata about an operation.
+type OperationDisplay struct {
 	// REQUIRED; Localized friendly description for the operation, as it should be shown to the user.
 	Description *string `json:"description,omitempty"`
 
@@ -92,17 +118,22 @@ type ElasticSanOperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// ElasticSanOperationListResult - List of operations supported by the RP.
-type ElasticSanOperationListResult struct {
+// OperationListResult - List of operations supported by the RP.
+type OperationListResult struct {
 	// REQUIRED; An array of operations supported by the ElasticSan RP.
-	Value []*ElasticSanRPOperation `json:"value,omitempty"`
+	Value []*RPOperation `json:"value,omitempty"`
 
 	// URI to fetch the next section of the paginated response.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ElasticSanProperties - Elastic San response properties.
-type ElasticSanProperties struct {
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// Properties - Elastic San response properties.
+type Properties struct {
 	// REQUIRED; Base size of the Elastic San appliance in TiB.
 	BaseSizeTiB *int64 `json:"baseSizeTiB,omitempty"`
 
@@ -134,63 +165,16 @@ type ElasticSanProperties struct {
 	VolumeGroupCount *int64 `json:"volumeGroupCount,omitempty" azure:"ro"`
 }
 
-// ElasticSanRPOperation - Description of a ElasticSan RP Operation
-type ElasticSanRPOperation struct {
+// RPOperation - Description of a ElasticSan RP Operation
+type RPOperation struct {
 	// REQUIRED; The name of the operation being performed on this particular object
 	Name *string `json:"name,omitempty"`
 
 	// READ-ONLY; Additional metadata about RP operation.
-	Display *ElasticSanOperationDisplay `json:"display,omitempty" azure:"ro"`
+	Display *OperationDisplay `json:"display,omitempty" azure:"ro"`
 
 	// READ-ONLY; Indicates whether the operation applies to data-plane.
 	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
-}
-
-// ElasticSanUpdate - Response for ElasticSan update request.
-type ElasticSanUpdate struct {
-	// Properties of ElasticSan.
-	Properties *ElasticSanUpdateProperties `json:"properties,omitempty"`
-
-	// Update tags
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// ElasticSanUpdateProperties - Elastic San update properties.
-type ElasticSanUpdateProperties struct {
-	// Base size of the Elastic San appliance in TiB.
-	BaseSizeTiB *int64 `json:"baseSizeTiB,omitempty"`
-
-	// Extended size of the Elastic San appliance in TiB.
-	ExtendedCapacitySizeTiB *int64 `json:"extendedCapacitySizeTiB,omitempty"`
-}
-
-// IscsiTargetInfo - Iscsi target information
-type IscsiTargetInfo struct {
-	// Operational status of the iSCSI Target.
-	Status *OperationalStatus `json:"status,omitempty"`
-
-	// READ-ONLY; State of the operation on the resource.
-	ProvisioningState *ProvisioningStates `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; iSCSI Target IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:server".
-	TargetIqn *string `json:"targetIqn,omitempty" azure:"ro"`
-
-	// READ-ONLY; iSCSI Target Portal Host Name
-	TargetPortalHostname *string `json:"targetPortalHostname,omitempty" azure:"ro"`
-
-	// READ-ONLY; iSCSI Target Portal Port
-	TargetPortalPort *int32 `json:"targetPortalPort,omitempty" azure:"ro"`
-}
-
-// NetworkRuleSet - A set of rules governing the network accessibility.
-type NetworkRuleSet struct {
-	// The list of virtual network rules.
-	VirtualNetworkRules []*VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
-}
-
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
-type OperationsClientListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // SKU - The SKU name. Required for account creation; optional for update.
@@ -283,6 +267,24 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+}
+
+// Update - Response for ElasticSan update request.
+type Update struct {
+	// Properties of ElasticSan.
+	Properties *UpdateProperties `json:"properties,omitempty"`
+
+	// Update tags
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// UpdateProperties - Elastic San update properties.
+type UpdateProperties struct {
+	// Base size of the Elastic San appliance in TiB.
+	BaseSizeTiB *int64 `json:"baseSizeTiB,omitempty"`
+
+	// Extended size of the Elastic San appliance in TiB.
+	ExtendedCapacitySizeTiB *int64 `json:"extendedCapacitySizeTiB,omitempty"`
 }
 
 // VirtualNetworkRule - Virtual Network rule.

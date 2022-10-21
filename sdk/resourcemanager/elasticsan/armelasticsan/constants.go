@@ -7,11 +7,11 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 // DO NOT EDIT.
 
-package armelasticsans
+package armelasticsan
 
 const (
-	moduleName    = "armelasticsans"
-	moduleVersion = "v0.1.1"
+	moduleName    = "armelasticsan"
+	moduleVersion = "v0.1.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

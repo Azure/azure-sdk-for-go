@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/profiles/hybrid20200901"
+	"github.com/Azure/azure-sdk-for-go/sdk/profiles/hybrid20200901/internal"
 	"net/http"
 	"strconv"
 	"strings"

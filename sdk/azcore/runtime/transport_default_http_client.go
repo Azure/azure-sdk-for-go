@@ -22,8 +22,13 @@ func init() {
 			Timeout:   30 * time.Second,
 			KeepAlive: 30 * time.Second,
 		}).DialContext,
-		ForceAttemptHTTP2:     true,
-		MaxIdleConns:          100,
+		ForceAttemptHTTP2: true,
+		MaxIdleConns:      100,
+		//https://pkg.go.dev/net/http#Transport
+		// MaxIdleConnsPerHost, if non-zero, controls the maximum idle
+		// (keep-alive) connections to keep per-host. If zero,
+		// DefaultMaxIdleConnsPerHost(2) is used.
+		MaxIdleConnsPerHost:   100,
 		IdleConnTimeout:       90 * time.Second,
 		TLSHandshakeTimeout:   10 * time.Second,
 		ExpectContinueTimeout: 1 * time.Second,

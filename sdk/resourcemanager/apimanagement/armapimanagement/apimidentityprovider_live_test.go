@@ -42,7 +42,7 @@ func (testsuite *ApimidentityproviderTestSuite) SetupSuite() {
 	testsuite.serviceName = testutil.GenerateAlphaNumericID(testsuite.T(), "serviceidentity", 6)
 	testsuite.azureClientId = testutil.GetEnv("AZURE_CLIENT_ID", "00000000-0000-0000-0000-000000000000")
 	testsuite.azureClientSecret = testutil.GetEnv("AZURE_CLIENT_SECRET", "000000000000")
-	testsuite.azureTenantId = testutil.GetEnv("AZURE_TENANT_ID", "")
+	testsuite.azureTenantId = testutil.GetEnv("AZURE_TENANT_ID", "00000000-0000-0000-0000-000000000000")
 	testsuite.location = testutil.GetEnv("LOCATION", "westus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")

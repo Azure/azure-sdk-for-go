@@ -1,5 +1,5 @@
 # Release History
 
-## 1.0.0 (2022-09-06)
+## 0.1.0 (Unreleased)
 
-- Init release for profile `hybrid20200901`
+- First beta version of profile `hybrid20200901` for Azure Stack.

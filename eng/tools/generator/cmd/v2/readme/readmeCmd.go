@@ -6,6 +6,7 @@ package readme
 import (
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -47,7 +48,7 @@ func execute(rpReadmeFilepath string) error {
 	readmeGoFile := filepath.Join(basePath, "readme.go.md")
 	content := ""
 	if _, err := os.Stat(readmeGoFile); err == nil {
-		b, err := os.ReadFile(readmeGoFile)
+		b, err := ioutil.ReadFile(readmeGoFile)
 		if err != nil {
 			return err
 		}
@@ -56,7 +57,7 @@ func execute(rpReadmeFilepath string) error {
 
 	if !strings.Contains(content, "$(go) && $(track2)") {
 		content += fmt.Sprintf("\n\n``` yaml $(go) && $(track2)\nlicense-header: MICROSOFT_MIT_NO_VERSION\nmodule-name: sdk/resourcemanager/%s/arm%s\nmodule: github.com/Azure/azure-sdk-for-go/$(module-name)\noutput-folder: $(go-sdk-folder)/$(module-name)\nazure-arm: true\n```\n", rpName, rpName)
-		if err := os.WriteFile(readmeGoFile, []byte(content), 0644); err != nil {
+		if err := ioutil.WriteFile(readmeGoFile, []byte(content), 0644); err != nil {
 			return err
 		}
 	}

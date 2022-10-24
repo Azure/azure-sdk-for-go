@@ -1,12 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package processor
+package common
 
 import (
 	"fmt"
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
 	"log"
 	"os"
 	"path/filepath"
@@ -53,7 +51,7 @@ type GenerateParam struct {
 	RemoveTagSet        bool
 }
 
-func (ctx *GenerateContext) GenerateForAutomation(readme, goVersion string) ([]GenerateResult, []error) {
+func (ctx *GenerateContext) GenerateForAutomation(readme, repo, goVersion string) ([]GenerateResult, []error) {
 	absReadme, err := filepath.Abs(filepath.Join(ctx.SpecPath, readme))
 	if err != nil {
 		return nil, []error{
@@ -121,14 +119,13 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		log.Printf("Package '%s' changelog not exist, do onboard process", packagePath)
 
 		if generateParam.SpecficPackageTitle == "" {
-			generateParam.SpecficPackageTitle = cases.Title(language.English).String(generateParam.RPName)
+			generateParam.SpecficPackageTitle = strings.Title(generateParam.RPName)
 		}
 
 		log.Printf("Use template to generate new rp folder and basic package files...")
 		if err = template.GeneratePackageByTemplate(generateParam.RPName, generateParam.NamespaceName, template.Flags{
 			SDKRoot:        ctx.SDKPath,
 			TemplatePath:   "eng/tools/generator/template/rpName/packageName",
-			PackagePath:    "sdk/resourcemanager/" + generateParam.RPName + "/" + generateParam.NamespaceName,
 			PackageTitle:   generateParam.SpecficPackageTitle,
 			Commit:         ctx.SpecCommitHash,
 			PackageConfig:  generateParam.NamespaceConfig,

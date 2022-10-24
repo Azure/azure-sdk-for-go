@@ -12,8 +12,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/link"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/processor"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/common"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config/validate"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/flags"
@@ -80,14 +79,14 @@ type Flags struct {
 func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("version-number", "", "Specify the version number of this release")
 	flagSet.String("package-title", "", "Specifies the title of this package")
-	flagSet.String("sdk-repo", common.DefaultSDKRepo, "Specifies the sdk repo URL for generation")
-	flagSet.String("spec-repo", common.DefaultSpecRepo, "Specifies the swagger repo URL for generation")
+	flagSet.String("sdk-repo", "https://github.com/Azure/azure-sdk-for-go", "Specifies the sdk repo URL for generation")
+	flagSet.String("spec-repo", "https://github.com/Azure/azure-rest-api-specs", "Specifies the swagger repo URL for generation")
 	flagSet.String("spec-rp-name", "", "Specifies the swagger spec RP name, default is RP name")
 	flagSet.String("release-date", "", "Specifies the release date in changelog")
 	flagSet.Bool("skip-create-branch", false, "Skip create release branch after generation")
 	flagSet.Bool("skip-generate-example", false, "Skip generate example for SDK in the same time")
 	flagSet.String("package-config", "", "Additional config for package")
-	flagSet.String("go-version", common.DefaultGoVersion, "Go version")
+	flagSet.String("go-version", "1.18", "Go version")
 	flagSet.StringP("token", "t", "", "Specify the personal access token of Github")
 }
 
@@ -114,12 +113,12 @@ type commandContext struct {
 }
 
 func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
-	sdkRepo, err := processor.GetSDKRepo(sdkRepoParam, c.flags.SDKRepo)
+	sdkRepo, err := common.GetSDKRepo(sdkRepoParam, c.flags.SDKRepo)
 	if err != nil {
 		return err
 	}
 
-	specCommitHash, err := processor.GetSpecCommit(specRepoParam)
+	specCommitHash, err := common.GetSpecCommit(specRepoParam)
 	if err != nil {
 		return err
 	}
@@ -133,7 +132,7 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 
 func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash string) error {
 	log.Printf("Release generation for rp: %s, namespace: %s", c.rpName, c.namespaceName)
-	generateCtx := processor.GenerateContext{
+	generateCtx := common.GenerateContext{
 		SDKPath:        sdkRepo.Root(),
 		SDKRepo:        &sdkRepo,
 		SpecCommitHash: specCommitHash,
@@ -143,7 +142,7 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 	if c.flags.SpecRPName == "" {
 		c.flags.SpecRPName = c.rpName
 	}
-	result, err := generateCtx.GenerateForSingleRPNamespace(&processor.GenerateParam{
+	result, err := generateCtx.GenerateForSingleRPNamespace(&common.GenerateParam{
 		RPName:              c.rpName,
 		NamespaceName:       c.namespaceName,
 		NamespaceConfig:     c.flags.PackageConfig,
@@ -235,7 +234,7 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 	if c.flags.Token != "" {
 		for branchName, issue := range pushBranch {
 			log.Printf("git push fork %s\n", branchName)
-			msg, err := processor.ExecuteGitPush(sdkRepo.Root(), forkRemote.Config().Name, branchName)
+			msg, err := common.ExecuteGitPush(sdkRepo.Root(), forkRemote.Config().Name, branchName)
 			if err != nil {
 				return fmt.Errorf("git push fork error:%v,msg:%s", err, msg)
 			}
@@ -246,7 +245,7 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 			}
 
 			log.Printf("%s: create pull request...\n", branchName)
-			pullRequestUrl, err := processor.ExecuteCreatePullRequest(sdkRepo.Root(), link.SpecOwner, link.SDKRepo, githubUserName, branchName, repo.ReleaseTitle(branchName), issue, c.flags.Token)
+			pullRequestUrl, err := common.ExecuteCreatePullRequest(sdkRepo.Root(), link.SpecOwner, link.SDKRepo, githubUserName, branchName, repo.ReleaseTitle(branchName), issue, c.flags.Token)
 			if err != nil {
 				return err
 			}
@@ -254,13 +253,13 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 
 			log.Printf("Leave a comment in %s...\n", issue)
 			issueNumber := strings.Split(issue, "/")
-			err = processor.ExecuteAddIssueComment(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], fmt.Sprintf(confirmComment, pullRequestUrl), c.flags.Token)
+			err = common.ExecuteAddIssueComment(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], fmt.Sprintf(confirmComment, pullRequestUrl), c.flags.Token)
 			if err != nil {
 				return err
 			}
 
 			log.Printf("Add Labels...\n")
-			err = processor.ExecuteAddIssueLabels(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], c.flags.Token, []string{"PRready"})
+			err = common.ExecuteAddIssueLabels(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], c.flags.Token, []string{"PRready"})
 			if err != nil {
 				return err
 			}

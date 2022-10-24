@@ -96,10 +96,10 @@ func (testsuite *ApimidentityproviderTestSuite) TestIdentityprovider() {
 	testsuite.Require().NoError(err)
 	_, err = identityProviderClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.IdentityProviderTypeAAD, armapimanagement.IdentityProviderCreateContract{
 		Properties: &armapimanagement.IdentityProviderCreateContractProperties{
-			AllowedTenants: []*string{
-				to.Ptr(testsuite.azureTenantId)},
 			ClientID:     to.Ptr(testsuite.azureClientId),
 			ClientSecret: to.Ptr(testsuite.azureClientSecret),
+			AllowedTenants: []*string{
+				to.Ptr(testsuite.azureTenantId)},
 		},
 	}, &armapimanagement.IdentityProviderClientCreateOrUpdateOptions{IfMatch: nil})
 	testsuite.Require().NoError(err)

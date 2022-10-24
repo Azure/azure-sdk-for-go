@@ -1427,8 +1427,8 @@
         "name": "access",
         "properties": {
           "principalId": "integration",
-          "primaryKey": "mngVUl4VYQl1Ba3gt2084E1aVcEZ9ryMvZCSg6nJJa8bB2pfM/33fJcPnzEJ4rZAexACPR4gzkAGoIZFB6xTjQ==",
-          "secondaryKey": "wlY0d65d31CTyL0PXtpO60BGodgXzvSIVqYPoLwrHlhPJbiP1NWudAQS4A1S6n6CoxLp6rZ6yGUya9KquyPxiw==",
+          "primaryKey": null,
+          "secondaryKey": null,
           "enabled": true
         }
       }
@@ -1576,8 +1576,8 @@
         "name": "access",
         "properties": {
           "principalId": "integration",
-          "primaryKey": "mngVUl4VYQl1Ba3gt2084E1aVcEZ9ryMvZCSg6nJJa8bB2pfM/33fJcPnzEJ4rZAexACPR4gzkAGoIZFB6xTjQ==",
-          "secondaryKey": "wlY0d65d31CTyL0PXtpO60BGodgXzvSIVqYPoLwrHlhPJbiP1NWudAQS4A1S6n6CoxLp6rZ6yGUya9KquyPxiw==",
+          "primaryKey": null,
+          "secondaryKey": null,
           "enabled": true
         }
       }
@@ -1642,8 +1642,8 @@
       "ResponseBody": {
         "id": "/tenant/access",
         "principalId": "integration",
-        "primaryKey": "mngVUl4VYQl1Ba3gt2084E1aVcEZ9ryMvZCSg6nJJa8bB2pfM/33fJcPnzEJ4rZAexACPR4gzkAGoIZFB6xTjQ==",
-        "secondaryKey": "pD6hPp0Z9P2RsTPXhd02c/D0BLtJuqzQuS7wvv0Q5RdM\u002B0OCN1e\u002BX29qaLHUkWCwQQNPkv2WocIhCP1DgxoHgA==",
+        "primaryKey": null,
+        "secondaryKey": null,
         "enabled": true
       }
     },

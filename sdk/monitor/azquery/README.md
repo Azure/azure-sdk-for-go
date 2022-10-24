@@ -303,7 +303,11 @@ Response
 
 ## Troubleshooting
 
+<<<<<<< HEAD
 See our [troubleshooting guide][troubleshooting_guide] for details on how to diagnose various failure scenarios.
+=======
+See our troubleshooting guide for details on how to diagnose various failure scenarios.
+>>>>>>> main
 
 ## Next steps
 

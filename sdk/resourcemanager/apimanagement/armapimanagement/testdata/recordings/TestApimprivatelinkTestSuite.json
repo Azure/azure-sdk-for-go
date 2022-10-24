@@ -1,7 +1,328 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-test2/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg?api-version=2021-04-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "westus"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "225",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 21 Oct 2022 18:36:06 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1194",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221021T183606Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg",
+        "name": "go-sdk-test-rg",
+        "type": "Microsoft.Resources/resourceGroups",
+        "location": "westus",
+        "properties": {
+          "provisioningState": "Succeeded"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN?api-version=2021-08-01",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "172",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-armapimanagement/v1.0.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": {
+        "location": "westus",
+        "properties": {
+          "publisherEmail": "foo@contoso.com",
+          "publisherName": "foo"
+        },
+        "sku": {
+          "capacity": 1,
+          "name": "Standard"
+        },
+        "tags": {
+          "Name": "Contoso",
+          "Test": "User"
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "1752",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 21 Oct 2022 08:53:48 GMT",
+        "ETag": "\u0022AAAAAAA90G4=\u0022",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/operationresults/d2VzdHVzOnNlcnZpY2VuYW1zZEdZZU5fQWN0X2ZmOGQzN2U3?api-version=2021-08-01",
+        "Pragma": "no-cache",
+        "Retry-After": "60",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-writes": "1198",
+        "x-ms-request-id": [
+          "00000000-0000-0000-0000-000000000000",
+          "28753cb2-10c5-4c6c-a1b2-8a348b0a6eb1"
+        ],
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221021T085348Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN",
+        "name": "serviceprivatesdGYeN",
+        "type": "Microsoft.ApiManagement/service",
+        "tags": {
+          "Name": "Contoso",
+          "Test": "User"
+        },
+        "location": "West US",
+        "etag": "AAAAAAA90G4=",
+        "properties": {
+          "publisherEmail": "foo@contoso.com",
+          "publisherName": "foo",
+          "notificationSenderEmail": "apimgmt-noreply@mail.windowsazure.com",
+          "provisioningState": "Created",
+          "targetProvisioningState": "Activating",
+          "createdAtUtc": "2022-10-21T08:53:43.6265935Z",
+          "gatewayUrl": "https://serviceprivatesdGYeN.azure-api.net",
+          "gatewayRegionalUrl": null,
+          "portalUrl": null,
+          "developerPortalUrl": null,
+          "managementApiUrl": null,
+          "scmUrl": null,
+          "hostnameConfigurations": [
+            {
+              "type": "Proxy",
+              "hostName": "serviceprivatesdGYeN.azure-api.net",
+              "encodedCertificate": null,
+              "keyVaultId": null,
+              "certificatePassword": null,
+              "negotiateClientCertificate": false,
+              "certificate": null,
+              "defaultSslBinding": true,
+              "identityClientId": null,
+              "certificateSource": "BuiltIn",
+              "certificateStatus": null
+            }
+          ],
+          "publicIPAddresses": null,
+          "privateIPAddresses": null,
+          "additionalLocations": null,
+          "virtualNetworkConfiguration": null,
+          "customProperties": null,
+          "virtualNetworkType": "None",
+          "certificates": null,
+          "disableGateway": false,
+          "apiVersionConstraint": {
+            "minApiVersion": null
+          },
+          "publicIpAddressId": null,
+          "publicNetworkAccess": "Enabled",
+          "privateEndpointConnections": null,
+          "platformVersion": "undetermined"
+        },
+        "sku": {
+          "name": "Standard",
+          "capacity": 1
+        },
+        "identity": null,
+        "zones": null,
+        "systemData": {
+          "createdBy": "00000000-0000-0000-0000-000000000000",
+          "createdByType": "Application",
+          "createdAt": "2022-10-21T08:53:42.861642Z",
+          "lastModifiedBy": "00000000-0000-0000-0000-000000000000",
+          "lastModifiedByType": "Application",
+          "lastModifiedAt": "2022-10-21T08:53:42.861642Z"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/operationresults/d2VzdHVzOnNlcnZpY2VuYW1zZEdZZU5fQWN0X2ZmOGQzN2U3?api-version=2021-08-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armapimanagement/v1.0.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Fri, 21 Oct 2022 09:34:41 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/operationresults/d2VzdHVzOnNlcnZpY2VuYW1zZEdZZU5fQWN0X2ZmOGQzN2U3?api-version=2021-08-01",
+        "Pragma": "no-cache",
+        "Retry-After": "60",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11962",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221021T093441Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/operationresults/d2VzdHVzOnNlcnZpY2VuYW1zZEdZZU5fQWN0X2ZmOGQzN2U3?api-version=2021-08-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armapimanagement/v1.0.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Fri, 21 Oct 2022 09:35:42 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/operationresults/d2VzdHVzOnNlcnZpY2VuYW1zZEdZZU5fQWN0X2ZmOGQzN2U3?api-version=2021-08-01",
+        "Pragma": "no-cache",
+        "Retry-After": "60",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11961",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221021T093542Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/operationresults/d2VzdHVzOnNlcnZpY2VuYW1zZEdZZU5fQWN0X2ZmOGQzN2U3?api-version=2021-08-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armapimanagement/v1.0.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 21 Oct 2022 09:36:43 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11960",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221021T093643Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN",
+        "name": "serviceprivatesdGYeN",
+        "type": "Microsoft.ApiManagement/service",
+        "tags": {
+          "Name": "Contoso",
+          "Test": "User"
+        },
+        "location": "West US",
+        "etag": "AAAAAAA90OY=",
+        "properties": {
+          "publisherEmail": "foo@contoso.com",
+          "publisherName": "foo",
+          "notificationSenderEmail": "apimgmt-noreply@mail.windowsazure.com",
+          "provisioningState": "Succeeded",
+          "targetProvisioningState": "",
+          "createdAtUtc": "2022-10-21T08:53:43.6265935Z",
+          "gatewayUrl": "https://serviceprivatesdGYeN.azure-api.net",
+          "gatewayRegionalUrl": "https://serviceprivatesdGYeN-westus-01.regional.azure-api.net",
+          "portalUrl": "https://serviceprivatesdGYeN.portal.azure-api.net",
+          "developerPortalUrl": "https://serviceprivatesdGYeN.developer.azure-api.net",
+          "managementApiUrl": "https://serviceprivatesdGYeN.management.azure-api.net",
+          "scmUrl": "https://serviceprivatesdGYeN.scm.azure-api.net",
+          "hostnameConfigurations": [
+            {
+              "type": "Proxy",
+              "hostName": "serviceprivatesdGYeN.azure-api.net",
+              "encodedCertificate": null,
+              "keyVaultId": null,
+              "certificatePassword": null,
+              "negotiateClientCertificate": false,
+              "certificate": null,
+              "defaultSslBinding": true,
+              "identityClientId": null,
+              "certificateSource": "BuiltIn",
+              "certificateStatus": null
+            }
+          ],
+          "publicIPAddresses": [
+            "20.237.229.170"
+          ],
+          "privateIPAddresses": null,
+          "additionalLocations": null,
+          "virtualNetworkConfiguration": null,
+          "customProperties": {
+            "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10": "False",
+            "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11": "False",
+            "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Ssl30": "False",
+            "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168": "False",
+            "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10": "False",
+            "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11": "False",
+            "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Ssl30": "False",
+            "Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2": "False"
+          },
+          "virtualNetworkType": "None",
+          "certificates": null,
+          "disableGateway": false,
+          "apiVersionConstraint": {
+            "minApiVersion": null
+          },
+          "publicIpAddressId": null,
+          "publicNetworkAccess": "Enabled",
+          "privateEndpointConnections": null,
+          "platformVersion": "stv2"
+        },
+        "sku": {
+          "name": "Standard",
+          "capacity": 1
+        },
+        "identity": null,
+        "zones": null,
+        "systemData": {
+          "createdBy": "00000000-0000-0000-0000-000000000000",
+          "createdByType": "Application",
+          "createdAt": "2022-10-21T08:53:42.861642Z",
+          "lastModifiedBy": "00000000-0000-0000-0000-000000000000",
+          "lastModifiedByType": "Application",
+          "lastModifiedAt": "2022-10-21T08:53:42.861642Z"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create?api-version=2021-04-01",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -16,16 +337,16 @@
           "mode": "Incremental",
           "parameters": {
             "apimId": {
-              "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim"
+              "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN"
             },
             "location": {
               "value": "westus"
             },
             "privateEndpointConnectionName": {
-              "value": "apimprivateendpointBrQuvb"
+              "value": "apimprivateendpointsdGYeN"
             },
             "virtualNetworksName": {
-              "value": "apimvnetBrQuvb"
+              "value": "apimvnetsdGYeN"
             }
           },
           "template": {
@@ -158,7 +479,7 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-test2/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585352688242151315?api-version=2021-04-01",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585352688242151315?api-version=2021-04-01",
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
@@ -175,7 +496,7 @@
         "x-ms-routing-request-id": "SOUTHEASTASIA:20221021T074106Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create",
         "name": "PrivateEndpoint_Create",
         "type": "Microsoft.Resources/deployments",
         "properties": {
@@ -183,7 +504,7 @@
           "parameters": {
             "apimId": {
               "type": "String",
-              "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim"
+              "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN"
             },
             "location": {
               "type": "String",
@@ -191,11 +512,11 @@
             },
             "privateEndpointConnectionName": {
               "type": "String",
-              "value": "apimprivateendpointBrQuvb"
+              "value": "apimprivateendpointsdGYeN"
             },
             "virtualNetworksName": {
               "type": "String",
-              "value": "apimvnetBrQuvb"
+              "value": "apimvnetsdGYeN"
             }
           },
           "mode": "Incremental",
@@ -238,45 +559,45 @@
             {
               "dependsOn": [
                 {
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/virtualNetworks/apimvnetBrQuvb/subnets/default",
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/apimvnetsdGYeN/subnets/default",
                   "resourceType": "Microsoft.Network/virtualNetworks/subnets",
-                  "resourceName": "apimvnetBrQuvb/default"
+                  "resourceName": "apimvnetsdGYeN/default"
                 }
               ],
-              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/networkInterfaces/apimprivateendpointBrQuvb-nic",
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/networkInterfaces/apimprivateendpointsdGYeN-nic",
               "resourceType": "Microsoft.Network/networkInterfaces",
-              "resourceName": "apimprivateendpointBrQuvb-nic"
+              "resourceName": "apimprivateendpointsdGYeN-nic"
             },
             {
               "dependsOn": [
                 {
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/virtualNetworks/apimvnetBrQuvb/subnets/default",
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/apimvnetsdGYeN/subnets/default",
                   "resourceType": "Microsoft.Network/virtualNetworks/subnets",
-                  "resourceName": "apimvnetBrQuvb/default"
+                  "resourceName": "apimvnetsdGYeN/default"
                 }
               ],
-              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/privateEndpoints/apimprivateendpointBrQuvb",
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/apimprivateendpointsdGYeN",
               "resourceType": "Microsoft.Network/privateEndpoints",
-              "resourceName": "apimprivateendpointBrQuvb"
+              "resourceName": "apimprivateendpointsdGYeN"
             },
             {
               "dependsOn": [
                 {
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/virtualNetworks/apimvnetBrQuvb",
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/apimvnetsdGYeN",
                   "resourceType": "Microsoft.Network/virtualNetworks",
-                  "resourceName": "apimvnetBrQuvb"
+                  "resourceName": "apimvnetsdGYeN"
                 }
               ],
-              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/virtualNetworks/apimvnetBrQuvb/subnets/default",
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/apimvnetsdGYeN/subnets/default",
               "resourceType": "Microsoft.Network/virtualNetworks/subnets",
-              "resourceName": "apimvnetBrQuvb/default"
+              "resourceName": "apimvnetsdGYeN/default"
             }
           ]
         }
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-test2/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585352688242151315?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585352688242151315?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -306,7 +627,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-test2/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585352688242151315?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585352688242151315?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -336,7 +657,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-test2/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585352688242151315?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585352688242151315?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -366,7 +687,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-test2/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585352688242151315?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585352688242151315?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -396,7 +717,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-test2/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585352688242151315?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585352688242151315?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -426,7 +747,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-test2/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -452,7 +773,7 @@
         "x-ms-routing-request-id": "SOUTHEASTASIA:20221021T074309Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create",
         "name": "PrivateEndpoint_Create",
         "type": "Microsoft.Resources/deployments",
         "properties": {
@@ -460,7 +781,7 @@
           "parameters": {
             "apimId": {
               "type": "String",
-              "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim"
+              "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN"
             },
             "location": {
               "type": "String",
@@ -468,11 +789,11 @@
             },
             "privateEndpointConnectionName": {
               "type": "String",
-              "value": "apimprivateendpointBrQuvb"
+              "value": "apimprivateendpointsdGYeN"
             },
             "virtualNetworksName": {
               "type": "String",
-              "value": "apimvnetBrQuvb"
+              "value": "apimvnetsdGYeN"
             }
           },
           "mode": "Incremental",
@@ -515,59 +836,59 @@
             {
               "dependsOn": [
                 {
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/virtualNetworks/apimvnetBrQuvb/subnets/default",
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/apimvnetsdGYeN/subnets/default",
                   "resourceType": "Microsoft.Network/virtualNetworks/subnets",
-                  "resourceName": "apimvnetBrQuvb/default"
+                  "resourceName": "apimvnetsdGYeN/default"
                 }
               ],
-              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/networkInterfaces/apimprivateendpointBrQuvb-nic",
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/networkInterfaces/apimprivateendpointsdGYeN-nic",
               "resourceType": "Microsoft.Network/networkInterfaces",
-              "resourceName": "apimprivateendpointBrQuvb-nic"
+              "resourceName": "apimprivateendpointsdGYeN-nic"
             },
             {
               "dependsOn": [
                 {
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/virtualNetworks/apimvnetBrQuvb/subnets/default",
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/apimvnetsdGYeN/subnets/default",
                   "resourceType": "Microsoft.Network/virtualNetworks/subnets",
-                  "resourceName": "apimvnetBrQuvb/default"
+                  "resourceName": "apimvnetsdGYeN/default"
                 }
               ],
-              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/privateEndpoints/apimprivateendpointBrQuvb",
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/apimprivateendpointsdGYeN",
               "resourceType": "Microsoft.Network/privateEndpoints",
-              "resourceName": "apimprivateendpointBrQuvb"
+              "resourceName": "apimprivateendpointsdGYeN"
             },
             {
               "dependsOn": [
                 {
-                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/virtualNetworks/apimvnetBrQuvb",
+                  "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/apimvnetsdGYeN",
                   "resourceType": "Microsoft.Network/virtualNetworks",
-                  "resourceName": "apimvnetBrQuvb"
+                  "resourceName": "apimvnetsdGYeN"
                 }
               ],
-              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/virtualNetworks/apimvnetBrQuvb/subnets/default",
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/apimvnetsdGYeN/subnets/default",
               "resourceType": "Microsoft.Network/virtualNetworks/subnets",
-              "resourceName": "apimvnetBrQuvb/default"
+              "resourceName": "apimvnetsdGYeN/default"
             }
           ],
           "outputResources": [
             {
-              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/networkInterfaces/apimprivateendpointBrQuvb-nic"
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/networkInterfaces/apimprivateendpointsdGYeN-nic"
             },
             {
-              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/privateEndpoints/apimprivateendpointBrQuvb"
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/apimprivateendpointsdGYeN"
             },
             {
-              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/virtualNetworks/apimvnetBrQuvb"
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/apimvnetsdGYeN"
             },
             {
-              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/virtualNetworks/apimvnetBrQuvb/subnets/default"
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/apimvnetsdGYeN/subnets/default"
             }
           ]
         }
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb?api-version=2021-08-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN?api-version=2021-08-01",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -578,7 +899,7 @@
         "User-Agent": "azsdk-go-armapimanagement/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN",
         "properties": {
           "privateLinkServiceConnectionState": {
             "description": "The Private Endpoint Connection is approved.",
@@ -593,7 +914,7 @@
         "Content-Type": "application/json; charset=utf-8",
         "Date": "Fri, 21 Oct 2022 07:43:10 GMT",
         "Expires": "-1",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzhiYmY5MzZi?api-version=2021-08-01",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzhiYmY5MzZi?api-version=2021-08-01",
         "Pragma": "no-cache",
         "Retry-After": "60",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -605,7 +926,7 @@
         "x-ms-routing-request-id": "SOUTHEASTASIA:20221021T074310Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN",
         "properties": {
           "privateLinkServiceConnectionState": {
             "status": "Rejected",
@@ -616,7 +937,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzhiYmY5MzZi?api-version=2021-08-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzhiYmY5MzZi?api-version=2021-08-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -630,7 +951,7 @@
         "Content-Length": "0",
         "Date": "Fri, 21 Oct 2022 07:44:11 GMT",
         "Expires": "-1",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzhiYmY5MzZi?api-version=2021-08-01",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzhiYmY5MzZi?api-version=2021-08-01",
         "Pragma": "no-cache",
         "Retry-After": "60",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -644,7 +965,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzhiYmY5MzZi?api-version=2021-08-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzhiYmY5MzZi?api-version=2021-08-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -658,7 +979,7 @@
         "Content-Length": "0",
         "Date": "Fri, 21 Oct 2022 07:45:12 GMT",
         "Expires": "-1",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzhiYmY5MzZi?api-version=2021-08-01",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzhiYmY5MzZi?api-version=2021-08-01",
         "Pragma": "no-cache",
         "Retry-After": "60",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -672,7 +993,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzhiYmY5MzZi?api-version=2021-08-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzhiYmY5MzZi?api-version=2021-08-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -699,13 +1020,13 @@
         "x-ms-routing-request-id": "SOUTHEASTASIA:20221021T074614Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb",
-        "name": "apimprivateendpointBrQuvb",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN",
+        "name": "apimprivateendpointsdGYeN",
         "type": "Microsoft.ApiManagement/service/privateEndpointConnections",
         "properties": {
           "provisioningState": "Succeeded",
           "privateEndpoint": {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/privateEndpoints/apimprivateendpointBrQuvb"
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/apimprivateendpointsdGYeN"
           },
           "groupIds": [
             "Gateway"
@@ -719,7 +1040,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections?api-version=2021-08-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections?api-version=2021-08-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -749,13 +1070,13 @@
       "ResponseBody": {
         "value": [
           {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpoint30PBsE",
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpoint30PBsE",
             "name": "apimprivateendpoint30PBsE",
             "type": "Microsoft.ApiManagement/service/privateEndpointConnections",
             "properties": {
               "provisioningState": "Succeeded",
               "privateEndpoint": {
-                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/privateEndpoints/apimprivateendpoint30PBsE"
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/apimprivateendpoint30PBsE"
               },
               "groupIds": [
                 "Gateway"
@@ -768,13 +1089,13 @@
             }
           },
           {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb",
-            "name": "apimprivateendpointBrQuvb",
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN",
+            "name": "apimprivateendpointsdGYeN",
             "type": "Microsoft.ApiManagement/service/privateEndpointConnections",
             "properties": {
               "provisioningState": "Succeeded",
               "privateEndpoint": {
-                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/privateEndpoints/apimprivateendpointBrQuvb"
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/apimprivateendpointsdGYeN"
               },
               "groupIds": [
                 "Gateway"
@@ -787,13 +1108,13 @@
             }
           },
           {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointuBs5SJ",
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointuBs5SJ",
             "name": "apimprivateendpointuBs5SJ",
             "type": "Microsoft.ApiManagement/service/privateEndpointConnections",
             "properties": {
               "provisioningState": "Succeeded",
               "privateEndpoint": {
-                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/privateEndpoints/apimprivateendpointuBs5SJ"
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/apimprivateendpointuBs5SJ"
               },
               "groupIds": [
                 "Gateway"
@@ -809,7 +1130,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateLinkResources?api-version=2021-08-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateLinkResources?api-version=2021-08-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -839,7 +1160,7 @@
       "ResponseBody": {
         "value": [
           {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateLinkResources/Gateway",
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateLinkResources/Gateway",
             "name": "Gateway",
             "type": "Microsoft.ApiManagement/service/privateLinkResources",
             "properties": {
@@ -856,7 +1177,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb?api-version=2021-08-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN?api-version=2021-08-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -884,13 +1205,13 @@
         "x-ms-routing-request-id": "SOUTHEASTASIA:20221021T074615Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb",
-        "name": "apimprivateendpointBrQuvb",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN",
+        "name": "apimprivateendpointsdGYeN",
         "type": "Microsoft.ApiManagement/service/privateEndpointConnections",
         "properties": {
           "provisioningState": "Succeeded",
           "privateEndpoint": {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.Network/privateEndpoints/apimprivateendpointBrQuvb"
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/apimprivateendpointsdGYeN"
           },
           "groupIds": [
             "Gateway"
@@ -904,7 +1225,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb?api-version=2021-08-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN?api-version=2021-08-01",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -920,7 +1241,7 @@
         "Content-Type": "application/json; charset=utf-8",
         "Date": "Fri, 21 Oct 2022 07:46:16 GMT",
         "Expires": "-1",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzk0NDMxYzRj?api-version=2021-08-01",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzk0NDMxYzRj?api-version=2021-08-01",
         "Pragma": "no-cache",
         "Retry-After": "60",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -934,7 +1255,7 @@
       "ResponseBody": {}
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzk0NDMxYzRj?api-version=2021-08-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzk0NDMxYzRj?api-version=2021-08-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -948,7 +1269,7 @@
         "Content-Length": "0",
         "Date": "Fri, 21 Oct 2022 07:47:17 GMT",
         "Expires": "-1",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzk0NDMxYzRj?api-version=2021-08-01",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzk0NDMxYzRj?api-version=2021-08-01",
         "Pragma": "no-cache",
         "Retry-After": "60",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -962,7 +1283,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzk0NDMxYzRj?api-version=2021-08-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzk0NDMxYzRj?api-version=2021-08-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -976,7 +1297,7 @@
         "Content-Length": "0",
         "Date": "Fri, 21 Oct 2022 07:48:17 GMT",
         "Expires": "-1",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzk0NDMxYzRj?api-version=2021-08-01",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzk0NDMxYzRj?api-version=2021-08-01",
         "Pragma": "no-cache",
         "Retry-After": "60",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -990,7 +1311,7 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-test2/providers/Microsoft.ApiManagement/service/gotestapim/privateEndpointConnections/apimprivateendpointBrQuvb/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzk0NDMxYzRj?api-version=2021-08-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.ApiManagement/service/serviceprivatesdGYeN/privateEndpointConnections/apimprivateendpointsdGYeN/operationresults/d2VzdHVzOmdvdGVzdGFwaW1fVXBkYXRlXzk0NDMxYzRj?api-version=2021-08-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1014,9 +1335,37 @@
         "x-ms-routing-request-id": "SOUTHEASTASIA:20221021T074919Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg?api-version=2021-04-01",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Fri, 21 Oct 2022 09:38:02 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1HTzoyRFNESzoyRFRFU1Q6MkQxOTUtV0VTVFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0dXMifQ?api-version=2021-04-01",
+        "Pragma": "no-cache",
+        "Retry-After": "15",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-deletes": "14991",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221021T093802Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": null
     }
   ],
   "Variables": {
-    "recordingRandomSeed": "1666338055"
+    "recordingRandomSeed": "1666342412"
   }
 }

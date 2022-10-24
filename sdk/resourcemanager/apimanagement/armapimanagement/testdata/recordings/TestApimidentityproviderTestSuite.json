@@ -1514,7 +1514,7 @@
             "00000000-0000-0000-0000-000000000000"
           ],
           "clientId": "00000000-0000-0000-0000-000000000000",
-          "clientSecret": "3wg8Q~_jfgaehE4ElYnWenqYtoVxnxpBxNW77cP-"
+          "clientSecret": "000000000000"
         }
       },
       "StatusCode": 201,
@@ -1540,7 +1540,7 @@
         "name": "aad",
         "properties": {
           "clientId": "00000000-0000-0000-0000-000000000000",
-          "clientSecret": "3wg8Q~_jfgaehE4ElYnWenqYtoVxnxpBxNW77cP-",
+          "clientSecret": "000000000000",
           "type": "aad",
           "authority": "login.windows.net",
           "allowedTenants": [
@@ -1681,7 +1681,7 @@
       "RequestBody": {
         "properties": {
           "clientId": "00000000-0000-0000-0000-000000000000",
-          "clientSecret": "3wg8Q~_jfgaehE4ElYnWenqYtoVxnxpBxNW77cP-"
+          "clientSecret": "000000000000"
         }
       },
       "StatusCode": 200,
@@ -1709,7 +1709,7 @@
         "name": "aad",
         "properties": {
           "clientId": "00000000-0000-0000-0000-000000000000",
-          "clientSecret": "3wg8Q~_jfgaehE4ElYnWenqYtoVxnxpBxNW77cP-",
+          "clientSecret": "000000000000",
           "type": "aad",
           "authority": "login.windows.net",
           "allowedTenants": [
@@ -1749,7 +1749,7 @@
         "x-ms-routing-request-id": "SOUTHEASTASIA:20221021T145801Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "clientSecret": "3wg8Q~_jfgaehE4ElYnWenqYtoVxnxpBxNW77cP-"
+        "clientSecret": "000000000000"
       }
     },
     {

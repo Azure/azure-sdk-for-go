@@ -1455,9 +1455,9 @@
       "RequestBody": {
         "properties": {
           "connectionString": "apim.redis.cache.windows.net:6380,password=xc,ssl=True,abortConnect=False",
+          "useFromLocation": "default",
           "description": "Redis cache instances in West India",
-          "resourceId": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/servicecachesdGYeN",
-          "useFromLocation": "default"
+          "resourceId": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/servicecachesdGYeN"
         }
       },
       "StatusCode": 201,

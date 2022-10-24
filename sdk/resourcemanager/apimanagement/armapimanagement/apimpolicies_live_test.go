@@ -90,8 +90,8 @@ func (testsuite *ApimpoliciesTestSuite) TestPolicy() {
 	testsuite.Require().NoError(err)
 	_, err = policyClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.PolicyIDNamePolicy, armapimanagement.PolicyContract{
 		Properties: &armapimanagement.PolicyContractProperties{
-			Format: to.Ptr(armapimanagement.PolicyContentFormatXML),
 			Value:  to.Ptr("<policies>\r\n  <inbound />\r\n  <backend>\r\n    <forward-request />\r\n  </backend>\r\n  <outbound />\r\n</policies>"),
+			Format: to.Ptr(armapimanagement.PolicyContentFormatXML),
 		},
 	}, &armapimanagement.PolicyClientCreateOrUpdateOptions{IfMatch: nil})
 	testsuite.Require().NoError(err)

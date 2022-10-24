@@ -271,8 +271,8 @@ func (testsuite *ApimapisTestSuite) TestApipolicy() {
 	testsuite.Require().NoError(err)
 	_, err = aPIPolicyClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, armapimanagement.PolicyIDNamePolicy, armapimanagement.PolicyContract{
 		Properties: &armapimanagement.PolicyContractProperties{
-			Format: to.Ptr(armapimanagement.PolicyContentFormatXML),
 			Value:  to.Ptr("<policies> <inbound /> <backend>    <forward-request />  </backend>  <outbound /></policies>"),
+			Format: to.Ptr(armapimanagement.PolicyContentFormatXML),
 		},
 	}, &armapimanagement.APIPolicyClientCreateOrUpdateOptions{IfMatch: to.Ptr("*")})
 	testsuite.Require().NoError(err)
@@ -408,8 +408,8 @@ func (testsuite *ApimapisTestSuite) TestApioperationpolicy() {
 	testsuite.Require().NoError(err)
 	_, err = aPIOperationPolicyClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.operationId, armapimanagement.PolicyIDNamePolicy, armapimanagement.PolicyContract{
 		Properties: &armapimanagement.PolicyContractProperties{
-			Format: to.Ptr(armapimanagement.PolicyContentFormatXML),
 			Value:  to.Ptr("<policies> <inbound /> <backend>    <forward-request />  </backend>  <outbound /></policies>"),
+			Format: to.Ptr(armapimanagement.PolicyContentFormatXML),
 		},
 	}, &armapimanagement.APIOperationPolicyClientCreateOrUpdateOptions{IfMatch: to.Ptr("*")})
 	testsuite.Require().NoError(err)

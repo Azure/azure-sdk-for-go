@@ -92,10 +92,10 @@ func (testsuite *ApimcachesTestSuite) TestCache() {
 	testsuite.Require().NoError(err)
 	_, err = cacheClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.cacheId, armapimanagement.CacheContract{
 		Properties: &armapimanagement.CacheContractProperties{
-			Description:      to.Ptr("Redis cache instances in West India"),
 			ConnectionString: to.Ptr("apim.redis.cache.windows.net:6380,password=xc,ssl=True,abortConnect=False"),
-			ResourceID:       to.Ptr("https://management.azure.com/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/" + testsuite.resourceGroupName + "/providers/Microsoft.Cache/redis/" + testsuite.serviceName),
 			UseFromLocation:  to.Ptr("default"),
+			Description:      to.Ptr("Redis cache instances in West India"),
+			ResourceID:       to.Ptr("https://management.azure.com/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/" + testsuite.resourceGroupName + "/providers/Microsoft.Cache/redis/" + testsuite.serviceName),
 		},
 	}, &armapimanagement.CacheClientCreateOrUpdateOptions{IfMatch: nil})
 	testsuite.Require().NoError(err)

@@ -92,9 +92,9 @@ func (testsuite *ApimapiversionsetsTestSuite) TestApiversionset() {
 	testsuite.Require().NoError(err)
 	_, err = aPIVersionSetClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.versionSetId, armapimanagement.APIVersionSetContract{
 		Properties: &armapimanagement.APIVersionSetContractProperties{
-			Description:      to.Ptr("Version configuration"),
 			DisplayName:      to.Ptr("api set 1"),
 			VersioningScheme: to.Ptr(armapimanagement.VersioningSchemeSegment),
+			Description:      to.Ptr("Version configuration"),
 		},
 	}, &armapimanagement.APIVersionSetClientCreateOrUpdateOptions{IfMatch: nil})
 	testsuite.Require().NoError(err)

@@ -1371,9 +1371,9 @@
       "RequestBody": {
         "properties": {
           "clientId": "oidprovidertemplate3",
-          "clientSecret": "x",
           "displayName": "templateoidprovider3",
-          "metadataEndpoint": "https://oidprovider-template3.net"
+          "metadataEndpoint": "https://oidprovider-template3.net",
+          "clientSecret": "x"
         }
       },
       "StatusCode": 201,

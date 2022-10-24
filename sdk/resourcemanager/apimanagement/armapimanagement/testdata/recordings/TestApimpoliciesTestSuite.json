@@ -1454,8 +1454,8 @@
       },
       "RequestBody": {
         "properties": {
-          "format": "xml",
-          "value": "\u003Cpolicies\u003E\r\n  \u003Cinbound /\u003E\r\n  \u003Cbackend\u003E\r\n    \u003Cforward-request /\u003E\r\n  \u003C/backend\u003E\r\n  \u003Coutbound /\u003E\r\n\u003C/policies\u003E"
+          "value": "\u003Cpolicies\u003E\r\n  \u003Cinbound /\u003E\r\n  \u003Cbackend\u003E\r\n    \u003Cforward-request /\u003E\r\n  \u003C/backend\u003E\r\n  \u003Coutbound /\u003E\r\n\u003C/policies\u003E",
+          "format": "xml"
         }
       },
       "StatusCode": 200,

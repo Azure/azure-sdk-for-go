@@ -1454,9 +1454,8 @@
       },
       "RequestBody": {
         "properties": {
-          "description": "sample schema description",
-          "document": null,
           "schemaType": "xml",
+          "description": "sample schema description",
           "value": "\u003Cxsd:schema xmlns:xsd=\u0022http://www.w3.org/2001/XMLSchema\u0022\r\n           xmlns:tns=\u0022http://tempuri.org/PurchaseOrderSchema.xsd\u0022\r\n           targetNamespace=\u0022http://tempuri.org/PurchaseOrderSchema.xsd\u0022\r\n           elementFormDefault=\u0022qualified\u0022\u003E\r\n \u003Cxsd:element name=\u0022PurchaseOrder\u0022 type=\u0022tns:PurchaseOrderType\u0022/\u003E\r\n \u003Cxsd:complexType name=\u0022PurchaseOrderType\u0022\u003E\r\n  \u003Cxsd:sequence\u003E\r\n   \u003Cxsd:element name=\u0022ShipTo\u0022 type=\u0022tns:USAddress\u0022 maxOccurs=\u00222\u0022/\u003E\r\n   \u003Cxsd:element name=\u0022BillTo\u0022 type=\u0022tns:USAddress\u0022/\u003E\r\n  \u003C/xsd:sequence\u003E\r\n  \u003Cxsd:attribute name=\u0022OrderDate\u0022 type=\u0022xsd:date\u0022/\u003E\r\n \u003C/xsd:complexType\u003E\r\n\r\n \u003Cxsd:complexType name=\u0022USAddress\u0022\u003E\r\n  \u003Cxsd:sequence\u003E\r\n   \u003Cxsd:element name=\u0022name\u0022   type=\u0022xsd:string\u0022/\u003E\r\n   \u003Cxsd:element name=\u0022street\u0022 type=\u0022xsd:string\u0022/\u003E\r\n   \u003Cxsd:element name=\u0022city\u0022   type=\u0022xsd:string\u0022/\u003E\r\n   \u003Cxsd:element name=\u0022state\u0022  type=\u0022xsd:string\u0022/\u003E\r\n   \u003Cxsd:element name=\u0022zip\u0022    type=\u0022xsd:integer\u0022/\u003E\r\n  \u003C/xsd:sequence\u003E\r\n  \u003Cxsd:attribute name=\u0022country\u0022 type=\u0022xsd:NMTOKEN\u0022 fixed=\u0022US\u0022/\u003E\r\n \u003C/xsd:complexType\u003E\r\n\u003C/xsd:schema\u003E"
         }
       },

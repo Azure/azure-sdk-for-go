@@ -93,9 +93,9 @@ func (testsuite *ApimopenidconnectprovidersTestSuite) TestOpenidconnectprovider(
 	_, err = openIDConnectProviderClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.opid, armapimanagement.OpenidConnectProviderContract{
 		Properties: &armapimanagement.OpenidConnectProviderContractProperties{
 			ClientID:         to.Ptr("oidprovidertemplate3"),
-			ClientSecret:     to.Ptr("x"),
 			DisplayName:      to.Ptr("templateoidprovider3"),
 			MetadataEndpoint: to.Ptr("https://oidprovider-template3.net"),
+			ClientSecret:     to.Ptr("x"),
 		},
 	}, &armapimanagement.OpenIDConnectProviderClientCreateOrUpdateOptions{IfMatch: nil})
 	testsuite.Require().NoError(err)

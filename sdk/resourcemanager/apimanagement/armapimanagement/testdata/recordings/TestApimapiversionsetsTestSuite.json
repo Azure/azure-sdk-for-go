@@ -1398,9 +1398,9 @@
       },
       "RequestBody": {
         "properties": {
-          "description": "Version configuration",
           "displayName": "api set 1",
-          "versioningScheme": "Segment"
+          "versioningScheme": "Segment",
+          "description": "Version configuration"
         }
       },
       "StatusCode": 201,

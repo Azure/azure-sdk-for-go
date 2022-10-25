@@ -24,14 +24,16 @@ import (
 type RedisTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	name              string
-	location          string
-	resourceGroupName string
-	subnetId          string
-	subscriptionId    string
+	ctx                 context.Context
+	cred                azcore.TokenCredential
+	options             *arm.ClientOptions
+	name                string
+	privateEndpointName string
+	redisId             string
+	location            string
+	resourceGroupName   string
+	subnetId            string
+	subscriptionId      string
 }
 
 func (testsuite *RedisTestSuite) SetupSuite() {
@@ -39,6 +41,7 @@ func (testsuite *RedisTestSuite) SetupSuite() {
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.name = testutil.GenerateAlphaNumericID(testsuite.T(), "redisna", 6)
+	testsuite.privateEndpointName = testutil.GenerateAlphaNumericID(testsuite.T(), "redisprivateendpoint", 6)
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subnetId = testutil.GetEnv("SUBNET_ID", "")
@@ -140,15 +143,15 @@ func (testsuite *RedisTestSuite) Prepare() {
 				Capacity: to.Ptr[int32](1),
 				Family:   to.Ptr(armredis.SKUFamilyP),
 			},
-			StaticIP: to.Ptr("10.0.0.5"),
-			SubnetID: to.Ptr(testsuite.subnetId),
 		},
 		Zones: []*string{
 			to.Ptr("1")},
 	}, nil)
 	testsuite.Require().NoError(err)
-	_, err = testutil.PollForTest(testsuite.ctx, clientCreateResponsePoller)
+	var clientCreateResponse *armredis.ClientCreateResponse
+	clientCreateResponse, err = testutil.PollForTest(testsuite.ctx, clientCreateResponsePoller)
 	testsuite.Require().NoError(err)
+	testsuite.redisId = *clientCreateResponse.ID
 }
 
 // Microsoft.Cache/redis
@@ -297,6 +300,152 @@ func (testsuite *RedisTestSuite) TestOperation() {
 		testsuite.Require().NoError(err)
 		break
 	}
+}
+
+// Microsoft.Cache/redis/privateEndpointConnections
+func (testsuite *RedisTestSuite) TestPrivateendpointconnections() {
+	cacheName := testsuite.name
+	var privateEndpointConnectionName string
+	var err error
+	// From step PrivateEndpoint_Create
+	template := map[string]interface{}{
+		"$schema":        "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+		"contentVersion": "1.0.0.0",
+		"parameters": map[string]interface{}{
+			"location": map[string]interface{}{
+				"type":         "string",
+				"defaultValue": "$(location)",
+			},
+			"privateEndpointName": map[string]interface{}{
+				"type":         "string",
+				"defaultValue": "$(privateEndpointName)",
+			},
+			"redisId": map[string]interface{}{
+				"type":         "string",
+				"defaultValue": "$(redisId)",
+			},
+			"subnetId": map[string]interface{}{
+				"type":         "string",
+				"defaultValue": "$(subnetId)",
+			},
+		},
+		"resources": []interface{}{
+			map[string]interface{}{
+				"name":       "[concat(parameters('privateEndpointName'), '-nic')]",
+				"type":       "Microsoft.Network/networkInterfaces",
+				"apiVersion": "2020-11-01",
+				"location":   "[parameters('location')]",
+				"properties": map[string]interface{}{
+					"dnsSettings": map[string]interface{}{
+						"dnsServers": []interface{}{},
+					},
+					"enableIPForwarding": false,
+					"ipConfigurations": []interface{}{
+						map[string]interface{}{
+							"name": "privateEndpointIpConfig",
+							"properties": map[string]interface{}{
+								"primary":                   true,
+								"privateIPAddress":          "10.0.0.4",
+								"privateIPAddressVersion":   "IPv4",
+								"privateIPAllocationMethod": "Dynamic",
+								"subnet": map[string]interface{}{
+									"id": "[parameters('subnetId')]",
+								},
+							},
+						},
+					},
+				},
+			},
+			map[string]interface{}{
+				"name":       "[parameters('privateEndpointName')]",
+				"type":       "Microsoft.Network/privateEndpoints",
+				"apiVersion": "2020-11-01",
+				"location":   "[parameters('location')]",
+				"properties": map[string]interface{}{
+					"customDnsConfigs":                    []interface{}{},
+					"manualPrivateLinkServiceConnections": []interface{}{},
+					"privateLinkServiceConnections": []interface{}{
+						map[string]interface{}{
+							"name": "[parameters('privateEndpointName')]",
+							"properties": map[string]interface{}{
+								"groupIds": []interface{}{
+									"redisCache",
+								},
+								"privateLinkServiceConnectionState": map[string]interface{}{
+									"description":     "Auto-Approved",
+									"actionsRequired": "None",
+									"status":          "Approved",
+								},
+								"privateLinkServiceId": "[parameters('redisId')]",
+							},
+						},
+					},
+					"subnet": map[string]interface{}{
+						"id": "[parameters('subnetId')]",
+					},
+				},
+			},
+		},
+		"variables": map[string]interface{}{},
+	}
+	params := map[string]interface{}{
+		"location":            map[string]interface{}{"value": testsuite.location},
+		"privateEndpointName": map[string]interface{}{"value": testsuite.privateEndpointName},
+		"redisId":             map[string]interface{}{"value": testsuite.redisId},
+		"subnetId":            map[string]interface{}{"value": testsuite.subnetId},
+	}
+	deployment := armresources.Deployment{
+		Properties: &armresources.DeploymentProperties{
+			Template:   template,
+			Parameters: params,
+			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+		},
+	}
+	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "PrivateEndpoint_Create", &deployment)
+	testsuite.Require().NoError(err)
+
+	// From step PrivateEndpointConnections_List
+	privateEndpointConnectionsClient, err := armredis.NewPrivateEndpointConnectionsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	privateEndpointConnectionsClientNewListPager := privateEndpointConnectionsClient.NewListPager(testsuite.resourceGroupName, cacheName, nil)
+	for privateEndpointConnectionsClientNewListPager.More() {
+		nextResult, err := privateEndpointConnectionsClientNewListPager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+
+		privateEndpointConnectionName = *nextResult.Value[0].Name
+		break
+	}
+
+	// From step PrivateEndpointConnections_Put
+	privateEndpointConnectionsClientPutResponsePoller, err := privateEndpointConnectionsClient.BeginPut(testsuite.ctx, testsuite.resourceGroupName, cacheName, privateEndpointConnectionName, armredis.PrivateEndpointConnection{
+		Properties: &armredis.PrivateEndpointConnectionProperties{
+			PrivateLinkServiceConnectionState: &armredis.PrivateLinkServiceConnectionState{
+				Description: to.Ptr("Auto-Approved"),
+				Status:      to.Ptr(armredis.PrivateEndpointServiceConnectionStatusRejected),
+			},
+		},
+	}, nil)
+	testsuite.Require().NoError(err)
+	_, err = testutil.PollForTest(testsuite.ctx, privateEndpointConnectionsClientPutResponsePoller)
+	testsuite.Require().NoError(err)
+
+	// From step PrivateEndpointConnections_Get
+	_, err = privateEndpointConnectionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, cacheName, privateEndpointConnectionName, nil)
+	testsuite.Require().NoError(err)
+
+	// From step PrivateLinkResources_ListByRedisCache
+	privateLinkResourcesClient, err := armredis.NewPrivateLinkResourcesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	privateLinkResourcesClientNewListByRedisCachePager := privateLinkResourcesClient.NewListByRedisCachePager(testsuite.resourceGroupName, cacheName, nil)
+	for privateLinkResourcesClientNewListByRedisCachePager.More() {
+		_, err := privateLinkResourcesClientNewListByRedisCachePager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+		break
+	}
+
+	// From step PrivateEndpointConnections_Delete
+	_, err = privateEndpointConnectionsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, cacheName, privateEndpointConnectionName, nil)
+	testsuite.Require().NoError(err)
 }
 
 func (testsuite *RedisTestSuite) Cleanup() {

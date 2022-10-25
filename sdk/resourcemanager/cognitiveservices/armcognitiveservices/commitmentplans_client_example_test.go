@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListCommitmentPlans.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/ListCommitmentPlans.json
 func ExampleCommitmentPlansClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,9 +28,7 @@ func ExampleCommitmentPlansClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("resourceGroupName",
-		"accountName",
-		nil)
+	pager := client.NewListPager("resourceGroupName", "accountName", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,7 +41,7 @@ func ExampleCommitmentPlansClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/GetCommitmentPlan.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/GetCommitmentPlan.json
 func ExampleCommitmentPlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,11 +52,7 @@ func ExampleCommitmentPlansClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"resourceGroupName",
-		"accountName",
-		"commitmentPlanName",
-		nil)
+	res, err := client.Get(ctx, "resourceGroupName", "accountName", "commitmentPlanName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,7 +60,7 @@ func ExampleCommitmentPlansClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/PutCommitmentPlan.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/PutCommitmentPlan.json
 func ExampleCommitmentPlansClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,21 +71,16 @@ func ExampleCommitmentPlansClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx,
-		"resourceGroupName",
-		"accountName",
-		"commitmentPlanName",
-		armcognitiveservices.CommitmentPlan{
-			Properties: &armcognitiveservices.CommitmentPlanProperties{
-				AutoRenew: to.Ptr(true),
-				Current: &armcognitiveservices.CommitmentPeriod{
-					Tier: to.Ptr("T1"),
-				},
-				HostingModel: to.Ptr(armcognitiveservices.HostingModelWeb),
-				PlanType:     to.Ptr("Speech2Text"),
+	res, err := client.CreateOrUpdate(ctx, "resourceGroupName", "accountName", "commitmentPlanName", armcognitiveservices.CommitmentPlan{
+		Properties: &armcognitiveservices.CommitmentPlanProperties{
+			AutoRenew: to.Ptr(true),
+			Current: &armcognitiveservices.CommitmentPeriod{
+				Tier: to.Ptr("T1"),
 			},
+			HostingModel: to.Ptr(armcognitiveservices.HostingModelWeb),
+			PlanType:     to.Ptr("Speech2Text"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -99,7 +88,7 @@ func ExampleCommitmentPlansClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/DeleteCommitmentPlan.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/DeleteCommitmentPlan.json
 func ExampleCommitmentPlansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,11 +99,7 @@ func ExampleCommitmentPlansClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"resourceGroupName",
-		"accountName",
-		"commitmentPlanName",
-		nil)
+	poller, err := client.BeginDelete(ctx, "resourceGroupName", "accountName", "commitmentPlanName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListDeployments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/ListDeployments.json
 func ExampleDeploymentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,9 +28,7 @@ func ExampleDeploymentsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("resourceGroupName",
-		"accountName",
-		nil)
+	pager := client.NewListPager("resourceGroupName", "accountName", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,7 +41,7 @@ func ExampleDeploymentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/GetDeployment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/GetDeployment.json
 func ExampleDeploymentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,11 +52,7 @@ func ExampleDeploymentsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"resourceGroupName",
-		"accountName",
-		"deploymentName",
-		nil)
+	res, err := client.Get(ctx, "resourceGroupName", "accountName", "deploymentName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,7 +60,7 @@ func ExampleDeploymentsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/PutDeployment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/PutDeployment.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,24 +71,19 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"resourceGroupName",
-		"accountName",
-		"deploymentName",
-		armcognitiveservices.Deployment{
-			Properties: &armcognitiveservices.DeploymentProperties{
-				Model: &armcognitiveservices.DeploymentModel{
-					Name:    to.Ptr("ada"),
-					Format:  to.Ptr("OpenAI"),
-					Version: to.Ptr("1"),
-				},
-				ScaleSettings: &armcognitiveservices.DeploymentScaleSettings{
-					Capacity:  to.Ptr[int32](1),
-					ScaleType: to.Ptr(armcognitiveservices.DeploymentScaleTypeManual),
-				},
+	poller, err := client.BeginCreateOrUpdate(ctx, "resourceGroupName", "accountName", "deploymentName", armcognitiveservices.Deployment{
+		Properties: &armcognitiveservices.DeploymentProperties{
+			Model: &armcognitiveservices.DeploymentModel{
+				Name:    to.Ptr("ada"),
+				Format:  to.Ptr("OpenAI"),
+				Version: to.Ptr("1"),
+			},
+			ScaleSettings: &armcognitiveservices.DeploymentScaleSettings{
+				Capacity:  to.Ptr[int32](1),
+				ScaleType: to.Ptr(armcognitiveservices.DeploymentScaleTypeManual),
 			},
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -106,7 +95,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/DeleteDeployment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/DeleteDeployment.json
 func ExampleDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,11 +106,7 @@ func ExampleDeploymentsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"resourceGroupName",
-		"accountName",
-		"deploymentName",
-		nil)
+	poller, err := client.BeginDelete(ctx, "resourceGroupName", "accountName", "deploymentName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

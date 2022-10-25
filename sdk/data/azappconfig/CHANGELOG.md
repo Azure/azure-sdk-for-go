@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Regenerated internal code with latest Autorest Go code generator.
 
 ## 0.4.2 (2022-10-20)
 

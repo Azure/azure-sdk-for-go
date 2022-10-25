@@ -19,15 +19,15 @@
         "Cache-Control": "no-cache",
         "Content-Length": "225",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:11:42 GMT",
+        "Date": "Tue, 25 Oct 2022 08:30:19 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-writes": "1199",
+        "x-ms-ratelimit-remaining-subscription-writes": "1198",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071142Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083020Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg",
@@ -46,18 +46,13 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "837",
+        "Content-Length": "787",
         "Content-Type": "application/json",
         "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": {
         "properties": {
           "mode": "Incremental",
-          "parameters": {
-            "location": {
-              "value": "eastus"
-            }
-          },
           "template": {
             "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
             "contentVersion": "1.0.0.0",
@@ -69,7 +64,7 @@
             },
             "parameters": {
               "location": {
-                "defaultValue": "$(location)",
+                "defaultValue": "eastus",
                 "type": "string"
               },
               "virtualNetworksName": {
@@ -106,26 +101,26 @@
       },
       "StatusCode": 201,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkSubnet_Create/operationStatuses/08585349249805895602?api-version=2021-04-01",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkSubnet_Create/operationStatuses/08585349202635250837?api-version=2021-04-01",
         "Cache-Control": "no-cache",
-        "Content-Length": "716",
+        "Content-Length": "714",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:11:48 GMT",
+        "Date": "Tue, 25 Oct 2022 08:30:24 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-writes": "1198",
+        "x-ms-ratelimit-remaining-subscription-writes": "1197",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071149Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083025Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkSubnet_Create",
         "name": "NetworkSubnet_Create",
         "type": "Microsoft.Resources/deployments",
         "properties": {
-          "templateHash": "11582646748811619621",
+          "templateHash": "4887313086315674079",
           "parameters": {
             "location": {
               "type": "String",
@@ -138,8 +133,8 @@
           },
           "mode": "Incremental",
           "provisioningState": "Accepted",
-          "timestamp": "2022-10-25T07:11:47.7358751Z",
-          "duration": "PT0.0006168S",
+          "timestamp": "2022-10-25T08:30:24.507527Z",
+          "duration": "PT0.0001004S",
           "correlationId": "00000000-0000-0000-0000-000000000000",
           "providers": [
             {
@@ -159,7 +154,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkSubnet_Create/operationStatuses/08585349249805895602?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkSubnet_Create/operationStatuses/08585349202635250837?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -173,7 +168,7 @@
         "Content-Encoding": "gzip",
         "Content-Length": "20",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:11:49 GMT",
+        "Date": "Tue, 25 Oct 2022 08:30:25 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -182,14 +177,14 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11999",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071149Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083026Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Running"
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkSubnet_Create/operationStatuses/08585349249805895602?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkSubnet_Create/operationStatuses/08585349202635250837?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -203,7 +198,7 @@
         "Content-Encoding": "gzip",
         "Content-Length": "22",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:12:19 GMT",
+        "Date": "Tue, 25 Oct 2022 08:30:56 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -212,7 +207,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11998",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071220Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083056Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Succeeded"
@@ -231,9 +226,9 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
-        "Content-Length": "1090",
+        "Content-Length": "1089",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:12:20 GMT",
+        "Date": "Tue, 25 Oct 2022 08:30:56 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -242,14 +237,14 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11997",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071221Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083057Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/NetworkSubnet_Create",
         "name": "NetworkSubnet_Create",
         "type": "Microsoft.Resources/deployments",
         "properties": {
-          "templateHash": "11582646748811619621",
+          "templateHash": "4887313086315674079",
           "parameters": {
             "location": {
               "type": "String",
@@ -262,8 +257,8 @@
           },
           "mode": "Incremental",
           "provisioningState": "Succeeded",
-          "timestamp": "2022-10-25T07:12:06.2011085Z",
-          "duration": "PT18.4658502S",
+          "timestamp": "2022-10-25T08:30:39.9971113Z",
+          "duration": "PT15.4896847S",
           "correlationId": "00000000-0000-0000-0000-000000000000",
           "providers": [
             {
@@ -294,7 +289,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf?api-version=2022-05-01",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -330,23 +325,23 @@
         "Cache-Control": "no-cache",
         "Content-Length": "1979",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:12:27 GMT",
+        "Date": "Tue, 25 Oct 2022 08:31:03 GMT",
         "Expires": "-1",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg?api-version=2022-05-01",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf?api-version=2022-05-01",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-writes": "1197",
+        "x-ms-ratelimit-remaining-subscription-writes": "1196",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071228Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083103Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaYdftUg",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaaChDFf",
         "location": "East US",
-        "name": "redisnaYdftUg",
+        "name": "redisnaaChDFf",
         "type": "Microsoft.Cache/Redis",
         "tags": {},
         "properties": {
@@ -406,10 +401,10 @@
             "maxmemory-delta": "642"
           },
           "accessKeys": {
-            "primaryKey": "WBOFiPLs2jee5vjiw9dMRycB2wEQQxYzNAzCaLcgFKY=",
-            "secondaryKey": "HYqdrM0TZKNjhCkH1BtfJ0c0gxAvUGY4kAzCaGyL3Ps="
+            "primaryKey": "J8USUXbF60mwTHRX0ZjdmDV3gSBCS5ru9AzCaOcn4Kk=",
+            "secondaryKey": "UwieWhYtSSLGkhySx7iKslAzv5zctAvNkAzCaIJSWLo="
           },
-          "hostName": "redisnaYdftUg.redis.cache.windows.net",
+          "hostName": "redisnaaChDFf.redis.cache.windows.net",
           "port": 6379,
           "sslPort": 6380,
           "shardCount": 2,
@@ -437,7 +432,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:12:28 GMT",
+        "Date": "Tue, 25 Oct 2022 08:31:03 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -448,7 +443,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11996",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071228Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083103Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -477,7 +472,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:12:58 GMT",
+        "Date": "Tue, 25 Oct 2022 08:31:33 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -488,7 +483,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11995",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071259Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083134Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -517,7 +512,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:13:29 GMT",
+        "Date": "Tue, 25 Oct 2022 08:32:03 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -528,7 +523,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11994",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071329Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083204Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -557,7 +552,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:13:59 GMT",
+        "Date": "Tue, 25 Oct 2022 08:32:34 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -568,7 +563,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11993",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071359Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083235Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -597,7 +592,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:14:29 GMT",
+        "Date": "Tue, 25 Oct 2022 08:33:04 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -608,7 +603,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11992",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071430Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083305Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -637,7 +632,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:15:00 GMT",
+        "Date": "Tue, 25 Oct 2022 08:33:35 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -648,7 +643,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11991",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071500Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083335Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -677,7 +672,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:15:30 GMT",
+        "Date": "Tue, 25 Oct 2022 08:34:06 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -688,7 +683,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11990",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071531Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083406Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -717,7 +712,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:16:00 GMT",
+        "Date": "Tue, 25 Oct 2022 08:34:35 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -728,7 +723,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11989",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071601Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083436Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -757,7 +752,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:16:30 GMT",
+        "Date": "Tue, 25 Oct 2022 08:35:06 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -768,7 +763,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11988",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071631Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083506Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -797,7 +792,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:17:02 GMT",
+        "Date": "Tue, 25 Oct 2022 08:35:36 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -808,7 +803,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11987",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071702Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083537Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -837,7 +832,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:17:33 GMT",
+        "Date": "Tue, 25 Oct 2022 08:36:07 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -848,7 +843,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11986",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071733Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083607Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -877,7 +872,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:18:03 GMT",
+        "Date": "Tue, 25 Oct 2022 08:36:37 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -888,7 +883,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11985",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071803Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083638Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -917,7 +912,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:18:33 GMT",
+        "Date": "Tue, 25 Oct 2022 08:37:09 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -928,7 +923,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11984",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071834Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083709Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -957,7 +952,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:19:04 GMT",
+        "Date": "Tue, 25 Oct 2022 08:37:39 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -968,7 +963,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11983",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071905Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083739Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -997,7 +992,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:19:34 GMT",
+        "Date": "Tue, 25 Oct 2022 08:38:09 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1008,7 +1003,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11982",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T071935Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083810Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1037,7 +1032,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:20:05 GMT",
+        "Date": "Tue, 25 Oct 2022 08:38:40 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1048,7 +1043,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11981",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072005Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083840Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1077,7 +1072,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:20:36 GMT",
+        "Date": "Tue, 25 Oct 2022 08:39:10 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1088,7 +1083,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11980",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072036Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083911Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1117,7 +1112,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:21:06 GMT",
+        "Date": "Tue, 25 Oct 2022 08:39:40 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1128,7 +1123,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11979",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072106Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T083941Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1157,7 +1152,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:21:36 GMT",
+        "Date": "Tue, 25 Oct 2022 08:40:11 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1168,7 +1163,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11978",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072137Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084011Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1197,7 +1192,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:22:06 GMT",
+        "Date": "Tue, 25 Oct 2022 08:40:41 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1208,7 +1203,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11977",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072207Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084042Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1237,7 +1232,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:22:37 GMT",
+        "Date": "Tue, 25 Oct 2022 08:41:11 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1248,7 +1243,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11976",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072237Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084112Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1277,7 +1272,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:23:07 GMT",
+        "Date": "Tue, 25 Oct 2022 08:41:41 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1288,7 +1283,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11975",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072308Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084142Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1317,7 +1312,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:23:37 GMT",
+        "Date": "Tue, 25 Oct 2022 08:42:12 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1328,7 +1323,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11974",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072338Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084213Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1357,7 +1352,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:24:08 GMT",
+        "Date": "Tue, 25 Oct 2022 08:42:42 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1368,7 +1363,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11973",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072408Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084243Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1397,7 +1392,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:24:38 GMT",
+        "Date": "Tue, 25 Oct 2022 08:43:14 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1408,7 +1403,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11972",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072439Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084314Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1437,7 +1432,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:25:09 GMT",
+        "Date": "Tue, 25 Oct 2022 08:43:44 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1448,7 +1443,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11971",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072509Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084344Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1477,7 +1472,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:25:39 GMT",
+        "Date": "Tue, 25 Oct 2022 08:44:15 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1488,7 +1483,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11970",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072540Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084415Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1517,7 +1512,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:26:10 GMT",
+        "Date": "Tue, 25 Oct 2022 08:44:44 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1528,7 +1523,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11969",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072611Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084445Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1557,7 +1552,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:26:41 GMT",
+        "Date": "Tue, 25 Oct 2022 08:45:15 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1568,7 +1563,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11968",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072641Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084515Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1597,7 +1592,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:27:11 GMT",
+        "Date": "Tue, 25 Oct 2022 08:45:45 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1608,7 +1603,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11967",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072711Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084546Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1637,7 +1632,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:27:41 GMT",
+        "Date": "Tue, 25 Oct 2022 08:46:15 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1648,7 +1643,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11966",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072742Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084616Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1677,7 +1672,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:28:11 GMT",
+        "Date": "Tue, 25 Oct 2022 08:46:46 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1688,7 +1683,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11965",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072812Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084646Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1717,7 +1712,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:28:42 GMT",
+        "Date": "Tue, 25 Oct 2022 08:47:16 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1728,7 +1723,47 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11964",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072842Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084717Z:00000000-0000-0000-0000-000000000000",
+        "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East US/asyncOperations/00000000-0000-0000-0000-000000000000",
+        "name": "00000000-0000-0000-0000-000000000000",
+        "status": "InProgress",
+        "startTime": null,
+        "endTime": null,
+        "percentComplete": null,
+        "properties": null,
+        "error": null
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/asyncOperations/00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armredis/v2.0.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/asyncOperations/00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json",
+        "Date": "Tue, 25 Oct 2022 08:47:46 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11963",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084747Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1743,7 +1778,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf?api-version=2022-05-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -1756,7 +1791,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:28:43 GMT",
+        "Date": "Tue, 25 Oct 2022 08:47:47 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1765,15 +1800,15 @@
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11963",
+        "x-ms-ratelimit-remaining-subscription-reads": "11962",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072843Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084748Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaYdftUg",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaaChDFf",
         "location": "East US",
-        "name": "redisnaYdftUg",
+        "name": "redisnaaChDFf",
         "type": "Microsoft.Cache/Redis",
         "tags": {},
         "properties": {
@@ -1845,7 +1880,7 @@
             "maxmemory-delta": "642"
           },
           "accessKeys": null,
-          "hostName": "redisnaYdftUg.redis.cache.windows.net",
+          "hostName": "redisnaaChDFf.redis.cache.windows.net",
           "port": 6379,
           "sslPort": 6380,
           "shardCount": 2,
@@ -1859,7 +1894,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/firewallRules/rule1?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/firewallRules/rule1?api-version=2022-05-01",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1880,17 +1915,17 @@
         "Cache-Control": "no-cache",
         "Content-Length": "285",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:28:44 GMT",
+        "Date": "Tue, 25 Oct 2022 08:47:48 GMT",
         "Expires": "-1",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/firewallRules/rule1?api-version=2022-05-01",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/firewallRules/rule1?api-version=2022-05-01",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-writes": "1196",
+        "x-ms-ratelimit-remaining-subscription-writes": "1195",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072844Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084749Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -1898,13 +1933,13 @@
           "startIP": "10.0.1.1",
           "endIP": "10.0.1.4"
         },
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/firewallRules/rule1",
-        "name": "redisnaYdftUg/rule1",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/firewallRules/rule1",
+        "name": "redisnaaChDFf/rule1",
         "type": "Microsoft.Cache/redis/firewallRules"
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/firewallRules?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/firewallRules?api-version=2022-05-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1918,50 +1953,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:28:45 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Server": "Microsoft-HTTPAPI/2.0",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Transfer-Encoding": "chunked",
-        "Vary": "Accept-Encoding",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11962",
-        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072845Z:00000000-0000-0000-0000-000000000000",
-        "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
-      },
-      "ResponseBody": {
-        "value": [
-          {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaYdftUg/firewallRules/rule1",
-            "name": "redisnaYdftUg/rule1",
-            "type": "Microsoft.Cache/Redis/firewallRules",
-            "properties": {
-              "startIP": "10.0.1.1",
-              "endIP": "10.0.1.4"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/firewallRules/rule1?api-version=2022-05-01",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armredis/v2.0.0 (go1.19; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:28:45 GMT",
+        "Date": "Tue, 25 Oct 2022 08:47:48 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -1972,12 +1964,55 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11961",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072845Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084749Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaYdftUg/firewallRules/rule1",
-        "name": "redisnaYdftUg/rule1",
+        "value": [
+          {
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaaChDFf/firewallRules/rule1",
+            "name": "redisnaaChDFf/rule1",
+            "type": "Microsoft.Cache/Redis/firewallRules",
+            "properties": {
+              "startIP": "10.0.1.1",
+              "endIP": "10.0.1.4"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/firewallRules/rule1?api-version=2022-05-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armredis/v2.0.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 25 Oct 2022 08:47:49 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11960",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084750Z:00000000-0000-0000-0000-000000000000",
+        "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaaChDFf/firewallRules/rule1",
+        "name": "redisnaaChDFf/rule1",
         "type": "Microsoft.Cache/Redis/firewallRules",
         "properties": {
           "startIP": "10.0.1.1",
@@ -1986,7 +2021,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/firewallRules/rule1?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/firewallRules/rule1?api-version=2022-05-01",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -1999,7 +2034,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Tue, 25 Oct 2022 07:28:46 GMT",
+        "Date": "Tue, 25 Oct 2022 08:47:50 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -2008,7 +2043,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-deletes": "14999",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072846Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084751Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
@@ -2028,7 +2063,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:28:46 GMT",
+        "Date": "Tue, 25 Oct 2022 08:47:50 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -2039,7 +2074,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-tenant-reads": "11999",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072846Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084751Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -7322,7 +7357,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/patchSchedules/default?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/patchSchedules/default?api-version=2022-05-01",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -7352,7 +7387,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:28:47 GMT",
+        "Date": "Tue, 25 Oct 2022 08:47:52 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -7361,15 +7396,15 @@
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-writes": "1195",
+        "x-ms-ratelimit-remaining-subscription-writes": "1194",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072847Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084752Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaYdftUg/patchSchedules/default",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaaChDFf/patchSchedules/default",
         "location": "East US",
-        "name": "redisnaYdftUg/default",
+        "name": "redisnaaChDFf/default",
         "type": "Microsoft.Cache/Redis/PatchSchedules",
         "properties": {
           "scheduleEntries": [
@@ -7388,7 +7423,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/patchSchedules?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/patchSchedules?api-version=2022-05-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -7402,7 +7437,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:28:48 GMT",
+        "Date": "Tue, 25 Oct 2022 08:47:52 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -7411,17 +7446,17 @@
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11960",
+        "x-ms-ratelimit-remaining-subscription-reads": "11959",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072848Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084752Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "value": [
           {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaYdftUg/patchSchedules/default",
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaaChDFf/patchSchedules/default",
             "location": "East US",
-            "name": "redisnaYdftUg/default",
+            "name": "redisnaaChDFf/default",
             "type": "Microsoft.Cache/Redis/PatchSchedules",
             "properties": {
               "scheduleEntries": [
@@ -7442,7 +7477,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/patchSchedules/default?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/patchSchedules/default?api-version=2022-05-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -7456,7 +7491,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:28:48 GMT",
+        "Date": "Tue, 25 Oct 2022 08:47:53 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -7465,15 +7500,15 @@
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11959",
+        "x-ms-ratelimit-remaining-subscription-reads": "11958",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072848Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084753Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaYdftUg/patchSchedules/default",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaaChDFf/patchSchedules/default",
         "location": "East US",
-        "name": "redisnaYdftUg/default",
+        "name": "redisnaaChDFf/default",
         "type": "Microsoft.Cache/Redis/PatchSchedules",
         "properties": {
           "scheduleEntries": [
@@ -7492,7 +7527,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/patchSchedules/default?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/patchSchedules/default?api-version=2022-05-01",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -7505,7 +7540,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Tue, 25 Oct 2022 07:28:49 GMT",
+        "Date": "Tue, 25 Oct 2022 08:47:54 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -7514,7 +7549,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-deletes": "14998",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072849Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084754Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
@@ -7526,45 +7561,31 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "Content-Length": "1936",
+        "Content-Length": "1761",
         "Content-Type": "application/json",
         "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.19; Windows_NT)"
       },
       "RequestBody": {
         "properties": {
           "mode": "Incremental",
-          "parameters": {
-            "location": {
-              "value": "eastus"
-            },
-            "privateEndpointName": {
-              "value": "redisprivateendpointYdftUg"
-            },
-            "redisId": {
-              "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaYdftUg"
-            },
-            "subnetId": {
-              "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/redisvnet/subnets/redissubnet"
-            }
-          },
           "template": {
             "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
             "contentVersion": "1.0.0.0",
             "parameters": {
               "location": {
-                "defaultValue": "$(location)",
+                "defaultValue": "eastus",
                 "type": "string"
               },
               "privateEndpointName": {
-                "defaultValue": "$(privateEndpointName)",
+                "defaultValue": "redisprivateendpointaChDFf",
                 "type": "string"
               },
               "redisId": {
-                "defaultValue": "$(redisId)",
+                "defaultValue": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaaChDFf",
                 "type": "string"
               },
               "subnetId": {
-                "defaultValue": "$(subnetId)",
+                "defaultValue": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/virtualNetworks/redisvnet/subnets/redissubnet",
                 "type": "string"
               }
             },
@@ -7631,26 +7652,26 @@
       },
       "StatusCode": 201,
       "ResponseHeaders": {
-        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585349239542431022?api-version=2021-04-01",
+        "Azure-AsyncOperation": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585349192096241046?api-version=2021-04-01",
         "Cache-Control": "no-cache",
-        "Content-Length": "1158",
+        "Content-Length": "1159",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:28:56 GMT",
+        "Date": "Tue, 25 Oct 2022 08:47:59 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-writes": "1194",
+        "x-ms-ratelimit-remaining-subscription-writes": "1193",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072856Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084800Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create",
         "name": "PrivateEndpoint_Create",
         "type": "Microsoft.Resources/deployments",
         "properties": {
-          "templateHash": "3268835388494149518",
+          "templateHash": "17066995128357027674",
           "parameters": {
             "location": {
               "type": "String",
@@ -7658,11 +7679,11 @@
             },
             "privateEndpointName": {
               "type": "String",
-              "value": "redisprivateendpointYdftUg"
+              "value": "redisprivateendpointaChDFf"
             },
             "redisId": {
               "type": "String",
-              "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaYdftUg"
+              "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaaChDFf"
             },
             "subnetId": {
               "type": "String",
@@ -7671,8 +7692,8 @@
           },
           "mode": "Incremental",
           "provisioningState": "Accepted",
-          "timestamp": "2022-10-25T07:28:54.2628988Z",
-          "duration": "PT0.0009637S",
+          "timestamp": "2022-10-25T08:47:58.3664827Z",
+          "duration": "PT0.0004754S",
           "correlationId": "00000000-0000-0000-0000-000000000000",
           "providers": [
             {
@@ -7698,7 +7719,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585349239542431022?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585349192096241046?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -7712,37 +7733,7 @@
         "Content-Encoding": "gzip",
         "Content-Length": "20",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:28:56 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Vary": "Accept-Encoding",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11958",
-        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072856Z:00000000-0000-0000-0000-000000000000"
-      },
-      "ResponseBody": {
-        "status": "Running"
-      }
-    },
-    {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585349239542431022?api-version=2021-04-01",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.19; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Encoding": "gzip",
-        "Content-Length": "20",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:29:27 GMT",
+        "Date": "Tue, 25 Oct 2022 08:48:00 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -7751,14 +7742,44 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11957",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072927Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084800Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Running"
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585349239542431022?api-version=2021-04-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585349192096241046?api-version=2021-04-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armresources/v1.0.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Length": "20",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 25 Oct 2022 08:48:30 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11956",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084831Z:00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": {
+        "status": "Running"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create/operationStatuses/08585349192096241046?api-version=2021-04-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -7772,16 +7793,16 @@
         "Content-Encoding": "gzip",
         "Content-Length": "22",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:29:57 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:00 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11956",
+        "x-ms-ratelimit-remaining-subscription-reads": "11955",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072957Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084901Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "status": "Succeeded"
@@ -7800,25 +7821,25 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
-        "Content-Length": "1511",
+        "Content-Length": "1512",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:29:58 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:01 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11955",
+        "x-ms-ratelimit-remaining-subscription-reads": "11954",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072958Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084902Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Resources/deployments/PrivateEndpoint_Create",
         "name": "PrivateEndpoint_Create",
         "type": "Microsoft.Resources/deployments",
         "properties": {
-          "templateHash": "3268835388494149518",
+          "templateHash": "17066995128357027674",
           "parameters": {
             "location": {
               "type": "String",
@@ -7826,11 +7847,11 @@
             },
             "privateEndpointName": {
               "type": "String",
-              "value": "redisprivateendpointYdftUg"
+              "value": "redisprivateendpointaChDFf"
             },
             "redisId": {
               "type": "String",
-              "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaYdftUg"
+              "value": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaaChDFf"
             },
             "subnetId": {
               "type": "String",
@@ -7839,8 +7860,8 @@
           },
           "mode": "Incremental",
           "provisioningState": "Succeeded",
-          "timestamp": "2022-10-25T07:29:38.3064335Z",
-          "duration": "PT44.0444984S",
+          "timestamp": "2022-10-25T08:48:42.6984368Z",
+          "duration": "PT44.3324295S",
           "correlationId": "00000000-0000-0000-0000-000000000000",
           "providers": [
             {
@@ -7864,17 +7885,17 @@
           "dependencies": [],
           "outputResources": [
             {
-              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/networkInterfaces/redisprivateendpointYdftUg-nic"
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/networkInterfaces/redisprivateendpointaChDFf-nic"
             },
             {
-              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/redisprivateendpointYdftUg"
+              "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/redisprivateendpointaChDFf"
             }
           ]
         }
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/privateEndpointConnections?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/privateEndpointConnections?api-version=2022-05-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -7888,7 +7909,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:29:59 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:02 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -7897,20 +7918,20 @@
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11954",
+        "x-ms-ratelimit-remaining-subscription-reads": "11953",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T072959Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084903Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "value": [
           {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaYdftUg/privateEndpointConnections/redisprivateendpointYdftUg.00000000-0000-0000-0000-000000000000",
-            "name": "redisprivateendpointYdftUg.00000000-0000-0000-0000-000000000000",
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaaChDFf/privateEndpointConnections/redisprivateendpointaChDFf.00000000-0000-0000-0000-000000000000",
+            "name": "redisprivateendpointaChDFf.00000000-0000-0000-0000-000000000000",
             "type": "Microsoft.Cache/Redis/privateEndpointConnections",
             "properties": {
               "privateEndpoint": {
-                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/redisprivateendpointYdftUg"
+                "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/redisprivateendpointaChDFf"
               },
               "privateLinkServiceConnectionState": {
                 "status": "Approved",
@@ -7923,7 +7944,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/privateEndpointConnections/redisprivateendpointYdftUg.00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/privateEndpointConnections/redisprivateendpointaChDFf.00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -7947,7 +7968,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "755",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:30:00 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:03 GMT",
         "Expires": "-1",
         "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/asyncOperations/00000000-0000-0000-0000-000000000000?api-version=2019-07-01",
         "Pragma": "no-cache",
@@ -7955,18 +7976,18 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-writes": "1193",
+        "x-ms-ratelimit-remaining-subscription-writes": "1192",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073000Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084904Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaYdftUg/privateEndpointConnections/redisprivateendpointYdftUg.00000000-0000-0000-0000-000000000000",
-        "name": "redisprivateendpointYdftUg.00000000-0000-0000-0000-000000000000",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaaChDFf/privateEndpointConnections/redisprivateendpointaChDFf.00000000-0000-0000-0000-000000000000",
+        "name": "redisprivateendpointaChDFf.00000000-0000-0000-0000-000000000000",
         "type": "Microsoft.Cache/Redis/privateEndpointConnections",
         "properties": {
           "privateEndpoint": {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/redisprivateendpointYdftUg"
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/redisprivateendpointaChDFf"
           },
           "privateLinkServiceConnectionState": {
             "status": "Rejected",
@@ -7991,7 +8012,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:30:00 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:03 GMT",
         "Expires": "-1",
         "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/asyncOperations/00000000-0000-0000-0000-000000000000?api-version=2019-07-01",
         "Pragma": "no-cache",
@@ -8001,9 +8022,9 @@
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11953",
+        "x-ms-ratelimit-remaining-subscription-reads": "11952",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073000Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084904Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -8032,7 +8053,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:30:30 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:34 GMT",
         "Expires": "-1",
         "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/asyncOperations/00000000-0000-0000-0000-000000000000?api-version=2019-07-01",
         "Pragma": "no-cache",
@@ -8042,9 +8063,9 @@
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11952",
+        "x-ms-ratelimit-remaining-subscription-reads": "11951",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073031Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084935Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -8059,7 +8080,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/privateEndpointConnections/redisprivateendpointYdftUg.00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/privateEndpointConnections/redisprivateendpointaChDFf.00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
@@ -8072,7 +8093,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:30:31 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:35 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -8081,18 +8102,18 @@
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11951",
+        "x-ms-ratelimit-remaining-subscription-reads": "11950",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073032Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084936Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaYdftUg/privateEndpointConnections/redisprivateendpointYdftUg.00000000-0000-0000-0000-000000000000",
-        "name": "redisprivateendpointYdftUg.00000000-0000-0000-0000-000000000000",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaaChDFf/privateEndpointConnections/redisprivateendpointaChDFf.00000000-0000-0000-0000-000000000000",
+        "name": "redisprivateendpointaChDFf.00000000-0000-0000-0000-000000000000",
         "type": "Microsoft.Cache/Redis/privateEndpointConnections",
         "properties": {
           "privateEndpoint": {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/redisprivateendpointYdftUg"
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/redisprivateendpointaChDFf"
           },
           "privateLinkServiceConnectionState": {
             "status": "Rejected",
@@ -8103,7 +8124,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/privateEndpointConnections/redisprivateendpointYdftUg.00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/privateEndpointConnections/redisprivateendpointaChDFf.00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -8117,7 +8138,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Tue, 25 Oct 2022 07:30:32 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:36 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -8126,18 +8147,18 @@
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11950",
+        "x-ms-ratelimit-remaining-subscription-reads": "11949",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073032Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084936Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaYdftUg/privateEndpointConnections/redisprivateendpointYdftUg.00000000-0000-0000-0000-000000000000",
-        "name": "redisprivateendpointYdftUg.00000000-0000-0000-0000-000000000000",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaaChDFf/privateEndpointConnections/redisprivateendpointaChDFf.00000000-0000-0000-0000-000000000000",
+        "name": "redisprivateendpointaChDFf.00000000-0000-0000-0000-000000000000",
         "type": "Microsoft.Cache/Redis/privateEndpointConnections",
         "properties": {
           "privateEndpoint": {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/redisprivateendpointYdftUg"
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Network/privateEndpoints/redisprivateendpointaChDFf"
           },
           "privateLinkServiceConnectionState": {
             "status": "Rejected",
@@ -8148,7 +8169,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/privateLinkResources?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/privateLinkResources?api-version=2022-05-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -8162,7 +8183,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:30:32 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:37 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -8171,15 +8192,15 @@
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11949",
+        "x-ms-ratelimit-remaining-subscription-reads": "11948",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073033Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084937Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "value": [
           {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/privateLinkResources/redisCache",
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/privateLinkResources/redisCache",
             "name": "redisCache",
             "type": "Microsoft.Cache/Redis/privateLinkResources",
             "properties": {
@@ -8196,7 +8217,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/privateEndpointConnections/redisprivateendpointYdftUg.00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/privateEndpointConnections/redisprivateendpointaChDFf.00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -8209,7 +8230,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Tue, 25 Oct 2022 07:30:37 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:40 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -8218,7 +8239,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-deletes": "14997",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073038Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084940Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
@@ -8242,7 +8263,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Tue, 25 Oct 2022 07:30:39 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:42 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -8251,7 +8272,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-writes": "1199",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073040Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084942Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
@@ -8271,7 +8292,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:30:40 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:43 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -8280,9 +8301,9 @@
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11948",
+        "x-ms-ratelimit-remaining-subscription-reads": "11947",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073040Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084943Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -8485,9 +8506,9 @@
             }
           },
           {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaYdftUg",
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaaChDFf",
             "location": "East US",
-            "name": "redisnaYdftUg",
+            "name": "redisnaaChDFf",
             "type": "Microsoft.Cache/Redis",
             "tags": {},
             "properties": {
@@ -8559,7 +8580,7 @@
                 "maxmemory-delta": "642"
               },
               "accessKeys": null,
-              "hostName": "redisnaYdftUg.redis.cache.windows.net",
+              "hostName": "redisnaaChDFf.redis.cache.windows.net",
               "port": 6379,
               "sslPort": 6380,
               "shardCount": 2,
@@ -8589,7 +8610,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:30:40 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:43 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -8598,17 +8619,17 @@
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11947",
+        "x-ms-ratelimit-remaining-subscription-reads": "11946",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073041Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084944Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
         "value": [
           {
-            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaYdftUg",
+            "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaaChDFf",
             "location": "East US",
-            "name": "redisnaYdftUg",
+            "name": "redisnaaChDFf",
             "type": "Microsoft.Cache/Redis",
             "tags": {},
             "properties": {
@@ -8680,7 +8701,7 @@
                 "maxmemory-delta": "642"
               },
               "accessKeys": null,
-              "hostName": "redisnaYdftUg.redis.cache.windows.net",
+              "hostName": "redisnaaChDFf.redis.cache.windows.net",
               "port": 6379,
               "sslPort": 6380,
               "shardCount": 2,
@@ -8696,7 +8717,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf?api-version=2022-05-01",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -8710,7 +8731,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:30:41 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:44 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -8719,15 +8740,15 @@
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11946",
+        "x-ms-ratelimit-remaining-subscription-reads": "11945",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073042Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084944Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaYdftUg",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaaChDFf",
         "location": "East US",
-        "name": "redisnaYdftUg",
+        "name": "redisnaaChDFf",
         "type": "Microsoft.Cache/Redis",
         "tags": {},
         "properties": {
@@ -8799,7 +8820,7 @@
             "maxmemory-delta": "642"
           },
           "accessKeys": null,
-          "hostName": "redisnaYdftUg.redis.cache.windows.net",
+          "hostName": "redisnaaChDFf.redis.cache.windows.net",
           "port": 6379,
           "sslPort": 6380,
           "shardCount": 2,
@@ -8813,7 +8834,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf?api-version=2022-05-01",
       "RequestMethod": "PATCH",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -8834,7 +8855,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:30:43 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:45 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -8843,15 +8864,15 @@
         "Vary": "Accept-Encoding",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-writes": "1192",
+        "x-ms-ratelimit-remaining-subscription-writes": "1191",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073043Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084946Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaYdftUg",
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/Redis/redisnaaChDFf",
         "location": "East US",
-        "name": "redisnaYdftUg",
+        "name": "redisnaaChDFf",
         "type": "Microsoft.Cache/Redis",
         "tags": {},
         "properties": {
@@ -8923,7 +8944,7 @@
             "maxmemory-delta": "642"
           },
           "accessKeys": null,
-          "hostName": "redisnaYdftUg.redis.cache.windows.net",
+          "hostName": "redisnaaChDFf.redis.cache.windows.net",
           "port": 6379,
           "sslPort": 6380,
           "shardCount": 2,
@@ -8937,7 +8958,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/regenerateKey?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/regenerateKey?api-version=2022-05-01",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -8955,7 +8976,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:30:44 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:46 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -8966,16 +8987,16 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-writes": "1198",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073045Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084947Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "primaryKey": "KfAe0N89YkLurSrKsvA0vY3H8lUbzNx9yAzCaOxmJp8=",
-        "secondaryKey": "HYqdrM0TZKNjhCkH1BtfJ0c0gxAvUGY4kAzCaGyL3Ps="
+        "primaryKey": "DqZrin1MrEeUv3gMMmKBpKwWCT4TZdGhJAzCaBigRo4=",
+        "secondaryKey": "UwieWhYtSSLGkhySx7iKslAzv5zctAvNkAzCaIJSWLo="
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/listKeys?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/listKeys?api-version=2022-05-01",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -8990,7 +9011,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:30:45 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:47 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -9001,16 +9022,16 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-writes": "1197",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073045Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084948Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "primaryKey": "KfAe0N89YkLurSrKsvA0vY3H8lUbzNx9yAzCaOxmJp8=",
-        "secondaryKey": "HYqdrM0TZKNjhCkH1BtfJ0c0gxAvUGY4kAzCaGyL3Ps="
+        "primaryKey": "DqZrin1MrEeUv3gMMmKBpKwWCT4TZdGhJAzCaBigRo4=",
+        "secondaryKey": "UwieWhYtSSLGkhySx7iKslAzv5zctAvNkAzCaIJSWLo="
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg/forceReboot?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf/forceReboot?api-version=2022-05-01",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -9031,7 +9052,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 25 Oct 2022 07:30:46 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:48 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
@@ -9042,7 +9063,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-writes": "1196",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073046Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084949Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
@@ -9050,7 +9071,7 @@
       }
     },
     {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaYdftUg?api-version=2022-05-01",
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/go-sdk-test-rg/providers/Microsoft.Cache/redis/redisnaaChDFf?api-version=2022-05-01",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -9063,7 +9084,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Tue, 25 Oct 2022 07:30:47 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:49 GMT",
         "Expires": "-1",
         "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
         "Pragma": "no-cache",
@@ -9073,7 +9094,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-deletes": "14996",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073048Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084950Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
@@ -9091,35 +9112,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Tue, 25 Oct 2022 07:30:48 GMT",
-        "Expires": "-1",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
-        "Pragma": "no-cache",
-        "Server": "Microsoft-HTTPAPI/2.0",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11945",
-        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073049Z:00000000-0000-0000-0000-000000000000",
-        "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
-      },
-      "ResponseBody": null
-    },
-    {
-      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-armredis/v2.0.0 (go1.19; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 202,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "0",
-        "Date": "Tue, 25 Oct 2022 07:31:19 GMT",
+        "Date": "Tue, 25 Oct 2022 08:49:50 GMT",
         "Expires": "-1",
         "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
         "Pragma": "no-cache",
@@ -9129,7 +9122,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11944",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073120Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T084950Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
@@ -9147,7 +9140,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Tue, 25 Oct 2022 07:31:49 GMT",
+        "Date": "Tue, 25 Oct 2022 08:50:20 GMT",
         "Expires": "-1",
         "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
         "Pragma": "no-cache",
@@ -9157,7 +9150,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11943",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073150Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T085021Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
@@ -9175,7 +9168,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Tue, 25 Oct 2022 07:32:20 GMT",
+        "Date": "Tue, 25 Oct 2022 08:50:50 GMT",
         "Expires": "-1",
         "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
         "Pragma": "no-cache",
@@ -9185,7 +9178,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11942",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073220Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T085051Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
@@ -9203,7 +9196,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Tue, 25 Oct 2022 07:32:50 GMT",
+        "Date": "Tue, 25 Oct 2022 08:51:21 GMT",
         "Expires": "-1",
         "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
         "Pragma": "no-cache",
@@ -9213,7 +9206,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11941",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073251Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T085121Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
@@ -9231,7 +9224,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Tue, 25 Oct 2022 07:33:20 GMT",
+        "Date": "Tue, 25 Oct 2022 08:51:51 GMT",
         "Expires": "-1",
         "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
         "Pragma": "no-cache",
@@ -9241,7 +9234,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11940",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073321Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T085152Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
@@ -9259,7 +9252,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Tue, 25 Oct 2022 07:33:51 GMT",
+        "Date": "Tue, 25 Oct 2022 08:52:21 GMT",
         "Expires": "-1",
         "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
         "Pragma": "no-cache",
@@ -9269,7 +9262,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11939",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073351Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T085222Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
@@ -9287,7 +9280,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Tue, 25 Oct 2022 07:34:21 GMT",
+        "Date": "Tue, 25 Oct 2022 08:52:52 GMT",
         "Expires": "-1",
         "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
         "Pragma": "no-cache",
@@ -9297,7 +9290,7 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11938",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073422Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T085252Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
@@ -9315,7 +9308,7 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Tue, 25 Oct 2022 07:34:53 GMT",
+        "Date": "Tue, 25 Oct 2022 08:53:23 GMT",
         "Expires": "-1",
         "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
         "Pragma": "no-cache",
@@ -9325,7 +9318,63 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-reads": "11937",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073453Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T085323Z:00000000-0000-0000-0000-000000000000",
+        "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armredis/v2.0.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Tue, 25 Oct 2022 08:53:53 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
+        "Pragma": "no-cache",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11936",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T085354Z:00000000-0000-0000-0000-000000000000",
+        "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-armredis/v2.0.0 (go1.19; Windows_NT)"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Tue, 25 Oct 2022 08:54:24 GMT",
+        "Expires": "-1",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Cache/locations/East%20US/operationresults/00000000-0000-0000-0000-000000000000?api-version=2022-05-01",
+        "Pragma": "no-cache",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-ratelimit-remaining-subscription-reads": "11935",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T085424Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
@@ -9343,16 +9392,16 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Tue, 25 Oct 2022 07:35:24 GMT",
+        "Date": "Tue, 25 Oct 2022 08:54:54 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-ratelimit-remaining-subscription-reads": "11936",
+        "x-ms-ratelimit-remaining-subscription-reads": "11934",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073524Z:00000000-0000-0000-0000-000000000000",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T085455Z:00000000-0000-0000-0000-000000000000",
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
@@ -9371,9 +9420,9 @@
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "Date": "Tue, 25 Oct 2022 07:35:28 GMT",
+        "Date": "Tue, 25 Oct 2022 08:55:00 GMT",
         "Expires": "-1",
-        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1HTzoyRFNESzoyRFRFU1Q6MkQxNy1FQVNUVVMiLCJqb2JMb2NhdGlvbiI6ImVhc3R1cyJ9?api-version=2021-04-01",
+        "Location": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1HTzoyRFNESzoyRFRFU1Q6MkQ0NjMtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2021-04-01",
         "Pragma": "no-cache",
         "Retry-After": "15",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -9381,12 +9430,12 @@
         "x-ms-correlation-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-ratelimit-remaining-subscription-deletes": "14995",
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
-        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T073528Z:00000000-0000-0000-0000-000000000000"
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20221025T085501Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": null
     }
   ],
   "Variables": {
-    "recordingRandomSeed": "1666681896"
+    "recordingRandomSeed": "1666686615"
   }
 }

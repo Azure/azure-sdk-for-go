@@ -38,6 +38,7 @@ type RedisTestSuite struct {
 
 func (testsuite *RedisTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/redis/armredis/testdata")
+
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.name = testutil.GenerateAlphaNumericID(testsuite.T(), "redisna", 6)
@@ -45,8 +46,7 @@ func (testsuite *RedisTestSuite) SetupSuite() {
 	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subnetId = testutil.GetEnv("SUBNET_ID", "")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-
+	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-00000000-00000000-00000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -79,7 +79,7 @@ func (testsuite *RedisTestSuite) Prepare() {
 		"parameters": map[string]interface{}{
 			"location": map[string]interface{}{
 				"type":         "string",
-				"defaultValue": "$(location)",
+				"defaultValue": testsuite.location,
 			},
 			"virtualNetworksName": map[string]interface{}{
 				"type":         "string",
@@ -111,14 +111,10 @@ func (testsuite *RedisTestSuite) Prepare() {
 			},
 		},
 	}
-	params := map[string]interface{}{
-		"location": map[string]interface{}{"value": testsuite.location},
-	}
 	deployment := armresources.Deployment{
 		Properties: &armresources.DeploymentProperties{
-			Template:   template,
-			Parameters: params,
-			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Template: template,
+			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
 		},
 	}
 	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "NetworkSubnet_Create", &deployment)
@@ -217,7 +213,7 @@ func (testsuite *RedisTestSuite) TestRedis() {
 }
 
 // Microsoft.Cache/redis/firewallRules
-func (testsuite *RedisTestSuite) TestFirewallrule() {
+func (testsuite *RedisTestSuite) TestFirewallRule() {
 	cacheName := testsuite.name
 	var err error
 	// From step FirewallRules_CreateOrUpdate
@@ -249,7 +245,7 @@ func (testsuite *RedisTestSuite) TestFirewallrule() {
 }
 
 // Microsoft.Cache/redis/patchSchedules
-func (testsuite *RedisTestSuite) TestPatchschedule() {
+func (testsuite *RedisTestSuite) TestPatchSchedule() {
 	cacheName := testsuite.name
 	var err error
 	// From step PatchSchedules_CreateOrUpdate
@@ -303,7 +299,7 @@ func (testsuite *RedisTestSuite) TestOperation() {
 }
 
 // Microsoft.Cache/redis/privateEndpointConnections
-func (testsuite *RedisTestSuite) TestPrivateendpointconnections() {
+func (testsuite *RedisTestSuite) TestPrivateEndpointConnections() {
 	cacheName := testsuite.name
 	var privateEndpointConnectionName string
 	var err error
@@ -314,19 +310,19 @@ func (testsuite *RedisTestSuite) TestPrivateendpointconnections() {
 		"parameters": map[string]interface{}{
 			"location": map[string]interface{}{
 				"type":         "string",
-				"defaultValue": "$(location)",
+				"defaultValue": testsuite.location,
 			},
 			"privateEndpointName": map[string]interface{}{
 				"type":         "string",
-				"defaultValue": "$(privateEndpointName)",
+				"defaultValue": testsuite.privateEndpointName,
 			},
 			"redisId": map[string]interface{}{
 				"type":         "string",
-				"defaultValue": "$(redisId)",
+				"defaultValue": testsuite.redisId,
 			},
 			"subnetId": map[string]interface{}{
 				"type":         "string",
-				"defaultValue": "$(subnetId)",
+				"defaultValue": testsuite.subnetId,
 			},
 		},
 		"resources": []interface{}{
@@ -388,17 +384,10 @@ func (testsuite *RedisTestSuite) TestPrivateendpointconnections() {
 		},
 		"variables": map[string]interface{}{},
 	}
-	params := map[string]interface{}{
-		"location":            map[string]interface{}{"value": testsuite.location},
-		"privateEndpointName": map[string]interface{}{"value": testsuite.privateEndpointName},
-		"redisId":             map[string]interface{}{"value": testsuite.redisId},
-		"subnetId":            map[string]interface{}{"value": testsuite.subnetId},
-	}
 	deployment := armresources.Deployment{
 		Properties: &armresources.DeploymentProperties{
-			Template:   template,
-			Parameters: params,
-			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Template: template,
+			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
 		},
 	}
 	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "PrivateEndpoint_Create", &deployment)

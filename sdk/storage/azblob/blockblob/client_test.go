@@ -3517,7 +3517,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryOnHnsDisabledAccount
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeNeverExpire{}, nil)
+	_, err = bbClient.SetExpiry(context.Background(), nil, nil)
 	testcommon.ValidateBlobErrorCode(_require, err, "HierarchicalNamespaceNotEnabled")
 }
 
@@ -3536,7 +3536,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryToNeverExpire() {
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeNeverExpire{}, nil)
+	_, err = bbClient.SetExpiry(context.Background(), nil, nil)
 	_require.Nil(err)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)

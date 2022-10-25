@@ -161,7 +161,13 @@ func (b *Client) SetTier(ctx context.Context, tier AccessTier, o *SetTierOptions
 // SetExpiry operation sets an expiry time on an existing blob. This operation is only allowed on Hierarchical Namespace enabled accounts.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-blob-expiry
 func (b *Client) SetExpiry(ctx context.Context, expiryType ExpiryType, o *SetExpiryOptions) (SetExpiryResponse, error) {
-	et, opts := expiryType.format(o)
+	var et generated.ExpiryOptions
+	var opts *generated.BlobClientSetExpiryOptions
+	if expiryType != nil {
+		et, opts = expiryType.format(o)
+	} else {
+		et, opts = generated.ExpiryOptionsNeverExpire, nil
+	}
 	resp, err := b.generated().SetExpiry(ctx, et, opts)
 	return resp, err
 }

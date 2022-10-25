@@ -9,16 +9,16 @@
 
 package generated
 
-type LabelField string
+type LabelFields string
 
 const (
-	LabelFieldName LabelField = "name"
+	LabelFieldsName LabelFields = "name"
 )
 
-// PossibleLabelFieldValues returns the possible values for the LabelField const type.
-func PossibleLabelFieldValues() []LabelField {
-	return []LabelField{
-		LabelFieldName,
+// PossibleLabelFieldsValues returns the possible values for the LabelFields const type.
+func PossibleLabelFieldsValues() []LabelFields {
+	return []LabelFields{
+		LabelFieldsName,
 	}
 }
 

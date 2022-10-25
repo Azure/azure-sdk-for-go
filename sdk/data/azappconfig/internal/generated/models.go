@@ -62,7 +62,7 @@ type AzureAppConfigurationClientCheckLabelsOptions struct {
 	// A filter for the name of the returned labels.
 	Name *string
 	// Used to select what fields are present in the returned resource(s).
-	Select []LabelField
+	Select []LabelFields
 }
 
 // AzureAppConfigurationClientCheckRevisionsOptions contains the optional parameters for the AzureAppConfigurationClient.CheckRevisions
@@ -151,7 +151,7 @@ type AzureAppConfigurationClientGetLabelsOptions struct {
 	// A filter for the name of the returned labels.
 	Name *string
 	// Used to select what fields are present in the returned resource(s).
-	Select []LabelField
+	Select []LabelFields
 }
 
 // AzureAppConfigurationClientGetRevisionsOptions contains the optional parameters for the AzureAppConfigurationClient.GetRevisions

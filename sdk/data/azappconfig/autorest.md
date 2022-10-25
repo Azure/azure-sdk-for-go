@@ -46,11 +46,11 @@ directive:
   where: $.paths./labels
   transform: >
     $.get.parameters[5].items["x-ms-enum"] = {
-        "name": "LabelField",
+        "name": "LabelFields",
         "modelAsString": true
     };
     $.head.parameters[5].items["x-ms-enum"] = {
-        "name": "LabelField",
+        "name": "LabelFields",
         "modelAsString": true
     };
 - from: swagger-document

@@ -3020,7 +3020,7 @@ func (s *BlobRecordedTestsSuite) TestSetImmutabilityPolicy() {
 	_require.Nil(err)
 
 	setImmutabilityPolicyOptions := blob.SetImmutabilityPolicyOptions{
-		ExpiryTime:               &currentTime,
+		ExpiryTime:               currentTime,
 		Mode:                     &policy,
 		ModifiedAccessConditions: nil,
 	}
@@ -3058,7 +3058,7 @@ func (s *BlobRecordedTestsSuite) TestDeleteImmutabilityPolicy() {
 	_require.Nil(err)
 
 	setImmutabilityPolicyOptions := blob.SetImmutabilityPolicyOptions{
-		ExpiryTime:               &currentTime,
+		ExpiryTime:               currentTime,
 		Mode:                     &policy,
 		ModifiedAccessConditions: nil,
 	}

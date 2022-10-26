@@ -445,9 +445,9 @@ func (o *GetTagsOptions) format() (*generated.BlobClientGetTagsOptions, *generat
 // SetImmutabilityPolicyOptions contains the parameter for Client.SetImmutabilityPolicy
 type SetImmutabilityPolicyOptions struct {
 	// Specifies the date time when the blobs immutability policy is set to expire.
-	ExpiryTime *time.Time
+	ExpiryTime time.Time
 	// Specifies the immutability policy mode to set on the blob. Possible values to set include: "Locked", "Unlocked".
-	// "Mutable" can only be returned by service, don't set to "Mutable".
+	// "Mutable" can only be returned by service, don't set to "Mutable". If mode is not set - it will default to Unlocked.
 	Mode                     *ImmutabilityPolicySetting
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
@@ -462,7 +462,7 @@ func (o *SetImmutabilityPolicyOptions) format() (*generated.BlobClientSetImmutab
 	_, modifiedAccessConditions := exported.FormatBlobAccessConditions(ac)
 
 	options := &generated.BlobClientSetImmutabilityPolicyOptions{
-		ImmutabilityPolicyExpiry: o.ExpiryTime,
+		ImmutabilityPolicyExpiry: &o.ExpiryTime,
 		ImmutabilityPolicyMode:   o.Mode,
 	}
 

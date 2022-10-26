@@ -5824,8 +5824,8 @@
           "expirationDate": null,
           "endDate": null,
           "notificationDate": null,
-          "primaryKey": "475e07a46d3a4d7fbb8fc7209522c9cd",
-          "secondaryKey": "57ac8b59adb14ce9a41d9cfd4470afae",
+          "primaryKey": "000000000000",
+          "secondaryKey": "000000000000",
           "stateComment": null
         }
       }
@@ -6071,8 +6071,8 @@
           "expirationDate": null,
           "endDate": null,
           "notificationDate": null,
-          "primaryKey": "475e07a46d3a4d7fbb8fc7209522c9cd",
-          "secondaryKey": "57ac8b59adb14ce9a41d9cfd4470afae",
+          "primaryKey": "000000000000",
+          "secondaryKey": "000000000000",
           "stateComment": null
         }
       }
@@ -6162,8 +6162,8 @@
         "x-ms-routing-request-id": "SOUTHEASTASIA:20221021T230938Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "primaryKey": "0d1395acbc154bae9ca2f50367fef723",
-        "secondaryKey": "37074354091d424bbf31cdee6b3cdea3"
+        "primaryKey": "000000000000",
+        "secondaryKey": "000000000000"
       }
     },
     {

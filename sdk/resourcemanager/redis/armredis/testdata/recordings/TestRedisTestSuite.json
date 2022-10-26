@@ -401,8 +401,8 @@
             "maxmemory-delta": "642"
           },
           "accessKeys": {
-            "primaryKey": "J8USUXbF60mwTHRX0ZjdmDV3gSBCS5ru9AzCaOcn4Kk=",
-            "secondaryKey": "UwieWhYtSSLGkhySx7iKslAzv5zctAvNkAzCaIJSWLo="
+            "primaryKey": "000000000000",
+            "secondaryKey": "000000000000"
           },
           "hostName": "redisnaaChDFf.redis.cache.windows.net",
           "port": 6379,
@@ -8991,8 +8991,8 @@
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "primaryKey": "DqZrin1MrEeUv3gMMmKBpKwWCT4TZdGhJAzCaBigRo4=",
-        "secondaryKey": "UwieWhYtSSLGkhySx7iKslAzv5zctAvNkAzCaIJSWLo="
+        "primaryKey": "000000000000",
+        "secondaryKey": "000000000000"
       }
     },
     {
@@ -9026,8 +9026,8 @@
         "x-rp-server-mvid": "00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "primaryKey": "DqZrin1MrEeUv3gMMmKBpKwWCT4TZdGhJAzCaBigRo4=",
-        "secondaryKey": "UwieWhYtSSLGkhySx7iKslAzv5zctAvNkAzCaIJSWLo="
+        "primaryKey": "000000000000",
+        "secondaryKey": "000000000000"
       }
     },
     {

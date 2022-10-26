@@ -17,26 +17,26 @@ type ProviderOptions struct {
 }
 
 // NewProvider creates a new Provider with the specified values.
-//   - impl is the underlying implementation for creating Tracer instances
+//   - newTracerFn is the underlying implementation for creating Tracer instances
 //   - options contains optional values; pass nil to accept the default value
-func NewProvider(impl func(name, version string) Tracer, options *ProviderOptions) Provider {
+func NewProvider(newTracerFn func(name, version string) Tracer, options *ProviderOptions) Provider {
 	return Provider{
-		impl: impl,
+		newTracerFn: newTracerFn,
 	}
 }
 
 // Provider is the factory that creates Tracer instances.
 // It defaults to a no-op provider.
 type Provider struct {
-	impl func(name, version string) Tracer
+	newTracerFn func(name, version string) Tracer
 }
 
 // NewTracer creates a new Tracer for the specified name and version.
 //   - name - the name of the tracer object, typically the fully qualified name of the service client
 //   - version - the version of the module in which the service client resides
 func (p Provider) NewTracer(name, version string) (tracer Tracer) {
-	if p.impl != nil {
-		tracer = p.impl(name, version)
+	if p.newTracerFn != nil {
+		tracer = p.newTracerFn(name, version)
 	}
 	return
 }
@@ -49,17 +49,17 @@ type TracerOptions struct {
 }
 
 // NewTracer creates a Tracer with the specified values.
-//   - impl is the underlying implementation for creating Span instances
+//   - newSpanFn is the underlying implementation for creating Span instances
 //   - options contains optional values; pass nil to accept the default value
-func NewTracer(impl func(ctx context.Context, spanName string, options *SpanOptions) (context.Context, Span), options *TracerOptions) Tracer {
+func NewTracer(newSpanFn func(ctx context.Context, spanName string, options *SpanOptions) (context.Context, Span), options *TracerOptions) Tracer {
 	return Tracer{
-		impl: impl,
+		newSpanFn: newSpanFn,
 	}
 }
 
 // Tracer is the factory that creates Span instances.
 type Tracer struct {
-	impl func(ctx context.Context, spanName string, options *SpanOptions) (context.Context, Span)
+	newSpanFn func(ctx context.Context, spanName string, options *SpanOptions) (context.Context, Span)
 }
 
 // Start creates a new span and a context.Context that contains it.
@@ -67,8 +67,8 @@ type Tracer struct {
 //   - spanName identifies the span within a trace, it's typically the fully qualified API name
 //   - options contains optional values for the span, pass nil to accept any defaults
 func (t Tracer) Start(ctx context.Context, spanName string, options *SpanOptions) (context.Context, Span) {
-	if t.impl != nil {
-		return t.impl(ctx, spanName, options)
+	if t.newSpanFn != nil {
+		return t.newSpanFn(ctx, spanName, options)
 	}
 	return ctx, Span{}
 }

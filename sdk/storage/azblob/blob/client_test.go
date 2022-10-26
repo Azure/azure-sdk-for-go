@@ -3024,7 +3024,7 @@ func (s *BlobRecordedTestsSuite) TestSetImmutabilityPolicy() {
 		Mode:                     &policy,
 		ModifiedAccessConditions: nil,
 	}
-	_, err = bbClient.SetImmutabilityPolicy(context.Background(), &setImmutabilityPolicyOptions)
+	_, err = bbClient.SetImmutabilityPolicy(context.Background(), setImmutabilityPolicyOptions)
 	_require.Nil(err)
 
 	// should fail since time has not passed yet
@@ -3062,7 +3062,7 @@ func (s *BlobRecordedTestsSuite) TestDeleteImmutabilityPolicy() {
 		Mode:                     &policy,
 		ModifiedAccessConditions: nil,
 	}
-	_, err = bbClient.SetImmutabilityPolicy(context.Background(), &setImmutabilityPolicyOptions)
+	_, err = bbClient.SetImmutabilityPolicy(context.Background(), setImmutabilityPolicyOptions)
 	_require.Nil(err)
 
 	_, err = bbClient.DeleteImmutabilityPolicy(context.Background(), nil)

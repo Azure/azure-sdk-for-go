@@ -319,7 +319,7 @@ func (pb *Client) Undelete(ctx context.Context, o *blob.UndeleteOptions) (blob.U
 
 // SetImmutabilityPolicy operation enables users to set the immutability policy on a blob.
 // https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview
-func (pb *Client) SetImmutabilityPolicy(ctx context.Context, options *blob.SetImmutabilityPolicyOptions) (blob.SetImmutabilityPolicyResponse, error) {
+func (pb *Client) SetImmutabilityPolicy(ctx context.Context, options blob.SetImmutabilityPolicyOptions) (blob.SetImmutabilityPolicyResponse, error) {
 	return pb.BlobClient().SetImmutabilityPolicy(ctx, options)
 }
 

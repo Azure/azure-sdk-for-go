@@ -10,7 +10,7 @@ package tracing
 type SpanKind int
 
 const (
-	// SpanKindInternal indicates the span represents an interal operation within an application.  This is the default value.
+	// SpanKindInternal indicates the span represents an internal operation within an application.  This is the default value.
 	SpanKindInternal SpanKind = 1
 
 	// SpanKindServer indicates the span covers server-side handling of a request.

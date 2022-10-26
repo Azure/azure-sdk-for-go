@@ -238,7 +238,6 @@ func (client *LinkedServicesClient) getHandleResponse(resp *http.Response) (Link
 }
 
 // NewListByFactoryPager - Lists linked services.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.

@@ -56,7 +56,6 @@ func NewPrivateEndPointConnectionsClient(subscriptionID string, credential azcor
 }
 
 // NewListByFactoryPager - Lists Private endpoint connections
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.

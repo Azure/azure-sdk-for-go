@@ -74,7 +74,6 @@ func (s *ServiceRecordedTestsSuite) TestGetAccountInfo() {
 	_require.NotZero(sAccInfo)
 }
 
-// nolint
 func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -95,7 +94,6 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 }
 
-// nolint
 func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -156,7 +154,6 @@ func (s *ServiceUnrecordedTestsSuite) TestListContainersBasic() {
 	_require.GreaterOrEqual(count, 0)
 }
 
-// nolint
 func (s *ServiceUnrecordedTestsSuite) TestListContainersBasicUsingConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -458,7 +455,6 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooSmall
 	_require.NotNil(err)
 }
 
-// nolint
 func (s *ServiceUnrecordedTestsSuite) TestAccountDeleteRetentionPolicyDaysTooLarge() {
 	_require := require.New(s.T())
 	var svcClient *service.Client
@@ -664,8 +660,7 @@ func (s *ServiceUnrecordedTestsSuite) TestSASContainerClient2() {
 }*/
 
 // make sure that container soft delete is enabled
-// TODO: convert this test to recorded
-func (s *ServiceUnrecordedTestsSuite) TestContainerRestore() {
+func (s *ServiceRecordedTestsSuite) TestContainerRestore() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
 	_require.NoError(err)
@@ -723,8 +718,7 @@ func (s *ServiceUnrecordedTestsSuite) TestContainerRestore() {
 	_require.NoError(err)
 }
 
-// TODO: convert this test to recorded
-func (s *ServiceUnrecordedTestsSuite) TestContainerRestoreFailures() {
+func (s *ServiceRecordedTestsSuite) TestContainerRestoreFailures() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)

@@ -285,6 +285,8 @@ type WorkflowClientGetOptions struct {
 
 // WorkflowClientListByResourceGroupOptions contains the optional parameters for the WorkflowClient.ListByResourceGroup method.
 type WorkflowClientListByResourceGroupOptions struct {
+	// The ManagedCluster resource associated with the workflows.
+	ManagedClusterResource *string
 }
 
 // WorkflowClientListOptions contains the optional parameters for the WorkflowClient.List method.

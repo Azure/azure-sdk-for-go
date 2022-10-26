@@ -14,6 +14,7 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
@@ -41,22 +42,18 @@ func Test(t *testing.T) {
 	}
 }
 
-// nolint
 func (s *AppendBlobRecordedTestsSuite) BeforeTest(suite string, test string) {
 	testcommon.BeforeTest(s.T(), suite, test)
 }
 
-// nolint
 func (s *AppendBlobRecordedTestsSuite) AfterTest(suite string, test string) {
 	testcommon.AfterTest(s.T(), suite, test)
 }
 
-// nolint
 func (s *AppendBlobUnrecordedTestsSuite) BeforeTest(suite string, test string) {
 
 }
 
-// nolint
 func (s *AppendBlobUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 }
@@ -82,7 +79,6 @@ func createNewAppendBlob(ctx context.Context, _require *require.Assertions, appe
 	return abClient
 }
 
-// nolint
 func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlock() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -120,7 +116,6 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlock() {
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(2))
 }
 
-// nolint
 func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockWithMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -172,7 +167,6 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockWithMD5() {
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MD5Mismatch)
 }
 
-//nolint
 //func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURL() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -268,7 +262,6 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockWithMD5() {
 //	_ = downloadresp.BodyReader(nil).Close()
 //}
 
-//nolint
 //func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithMD5() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -1219,7 +1212,6 @@ func (s *AppendBlobRecordedTestsSuite) TestSeal() {
 }
 
 // TODO: Learn about the behaviour of AppendPosition
-// nolint
 //func (s *AppendBlobUnrecordedTestsSuite) TestSealWithAppendConditions() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -1563,7 +1555,6 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 	_require.EqualValues(*downloadResp.EncryptionScope, *encryptionScope.EncryptionScope)
 }
 
-//nolint
 //func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithCPK() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -1673,7 +1664,6 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 //	_require.EqualValues(destData, srcData)
 //}
 
-//nolint
 //func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithCPKScope() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -1769,3 +1759,117 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 //	_require.Nil(err)
 //	_require.EqualValues(destData, srcData)
 //}
+
+func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobVersion() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
+	_require.Nil(err)
+
+	versions := make([]string, 0)
+	for i := 0; i < 5; i++ {
+		resp, err := abClient.CreateSnapshot(context.Background(), nil)
+		_require.Nil(err)
+		_require.NotNil(resp.VersionID)
+		versions = append(versions, *resp.VersionID)
+	}
+
+	listPager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Versions: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 6)
+
+	// Deleting the 1st, 2nd and 3rd versions
+	for i := 0; i < 3; i++ {
+		abClientWithVersionID, err := abClient.WithVersionID(versions[i])
+		_require.Nil(err)
+		_, err = abClientWithVersionID.Delete(context.Background(), nil)
+		_require.Nil(err)
+	}
+
+	// adding wait after delete
+	time.Sleep(time.Second * 10)
+
+	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Versions: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 3)
+
+	_, err = abClient.Undelete(context.Background(), nil)
+	_require.Nil(err)
+
+	// adding wait after undelete
+	time.Sleep(time.Second * 10)
+
+	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Versions: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 6)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobSnapshot() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
+	_require.Nil(err)
+
+	snapshots := make([]string, 0)
+	for i := 0; i < 5; i++ {
+		resp, err := abClient.CreateSnapshot(context.Background(), nil)
+		_require.Nil(err)
+		_require.NotNil(resp.Snapshot)
+		snapshots = append(snapshots, *resp.Snapshot)
+	}
+
+	listPager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 6) // 5 snapshots and 1 current version
+
+	// Deleting the 1st, 2nd and 3rd snapshots
+	for i := 0; i < 3; i++ {
+		abClientWithSnapshot, err := abClient.WithSnapshot(snapshots[i])
+		_require.Nil(err)
+		_, err = abClientWithSnapshot.Delete(context.Background(), nil)
+		_require.Nil(err)
+	}
+
+	// adding wait after delete
+	time.Sleep(time.Second * 10)
+
+	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 3) // 2 snapshots and 1 current version
+
+	_, err = abClient.Undelete(context.Background(), nil)
+	_require.Nil(err)
+
+	// adding wait after undelete
+	time.Sleep(time.Second * 10)
+
+	listPager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	testcommon.ListBlobsCount(context.Background(), _require, listPager, 6) // 5 snapshots and 1 current version
+}

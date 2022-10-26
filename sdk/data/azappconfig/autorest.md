@@ -10,10 +10,58 @@ input-file:
 license-header: MICROSOFT_MIT_NO_VERSION
 clear-output-folder: true
 output-folder: internal/generated
-module: azappconfig
 openapi-type: "data-plane"
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.39"
-module-version: 0.2.0
+use: "@autorest/go@4.0.0-preview.44"
 export-clients: true
+```
+
+### Fix up enums
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.paths./kv
+  transform: >
+    $.get.parameters[6].items["x-ms-enum"] = {
+        "name": "SettingFields",
+        "modelAsString": true
+    };
+    $.head.parameters[6].items["x-ms-enum"] = {
+        "name": "SettingFields",
+        "modelAsString": true
+    };
+- from: swagger-document
+  where: $.paths./kv/{key}
+  transform: >
+    $.get.parameters[7].items["x-ms-enum"] = {
+        "name": "SettingFields",
+        "modelAsString": true
+    };
+    $.head.parameters[7].items["x-ms-enum"] = {
+        "name": "SettingFields",
+        "modelAsString": true
+    };
+- from: swagger-document
+  where: $.paths./labels
+  transform: >
+    $.get.parameters[5].items["x-ms-enum"] = {
+        "name": "LabelFields",
+        "modelAsString": true
+    };
+    $.head.parameters[5].items["x-ms-enum"] = {
+        "name": "LabelFields",
+        "modelAsString": true
+    };
+- from: swagger-document
+  where: $.paths./revisions
+  transform: >
+    $.get.parameters[6].items["x-ms-enum"] = {
+        "name": "SettingFields",
+        "modelAsString": true
+    };
+    $.head.parameters[6].items["x-ms-enum"] = {
+        "name": "SettingFields",
+        "modelAsString": true
+    };
 ```

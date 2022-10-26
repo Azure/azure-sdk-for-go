@@ -21,13 +21,13 @@ import (
 )
 
 // false positive by linter
-func ExampleSetEvents() { //nolint:govet
+func ExampleSetEvents() {
 	// only log HTTP requests and responses
 	log.SetEvents(log.EventRequest, log.EventResponse)
 }
 
 // false positive by linter
-func ExampleSetListener() { //nolint:govet
+func ExampleSetListener() {
 	// a simple logger that writes to stdout
 	log.SetListener(func(cls log.Event, msg string) {
 		fmt.Printf("%s: %s\n", cls, msg)

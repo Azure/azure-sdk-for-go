@@ -1,14 +1,10 @@
 # Release History
 
-## 1.0.2 (Unreleased)
+## 1.1.0 (2022-10-20)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Support test recording assets external to repository
 
 ## 1.0.1 (2022-08-22)
 

@@ -235,6 +235,7 @@
         "apiVersion": "[variables('mgmtApiVersion')]",
         "name": "[concat(variables('softDeleteAccountName'), '/default')]",
         "properties": {
+          "isVersioningEnabled": true,
           "deleteRetentionPolicy": {
             "enabled": true,
             "days": 1

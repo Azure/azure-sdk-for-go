@@ -11,9 +11,11 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 )
 
@@ -98,6 +100,17 @@ type RPCLinkArgs struct {
 	LogEvent azlog.Event
 }
 
+func closeOrLog(name string, limit time.Duration, closeable interface {
+	Close(ctx context.Context) error
+}) {
+	ctx, cancel := context.WithTimeout(context.Background(), limit)
+	defer cancel()
+
+	if err := closeable.Close(ctx); err != nil {
+		log.Writef(exported.EventAuth, "Failed closing %s for RPC Link: %s", name, err.Error())
+	}
+}
+
 // NewRPCLink will build a new request response link
 func NewRPCLink(ctx context.Context, args RPCLinkArgs) (*rpcLink, error) {
 	session, err := args.Client.NewSession(ctx, nil)
@@ -108,6 +121,7 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (*rpcLink, error) {
 
 	linkID, err := uuid.New()
 	if err != nil {
+		closeOrLog("session", 5*time.Second, session)
 		return nil, err
 	}
 
@@ -129,6 +143,7 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (*rpcLink, error) {
 		nil,
 	)
 	if err != nil {
+		closeOrLog("session", 5*time.Second, session)
 		return nil, err
 	}
 
@@ -149,11 +164,8 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (*rpcLink, error) {
 
 	receiver, err := session.NewReceiver(ctx, args.Address, receiverOpts)
 	if err != nil {
-		// make sure we close the sender
-		clsCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		defer cancel()
-
-		_ = sender.Close(clsCtx)
+		closeOrLog("sender", 5*time.Second, sender)
+		closeOrLog("session", 5*time.Second, session)
 		return nil, err
 	}
 

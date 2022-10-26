@@ -186,6 +186,11 @@ type ExpiryTypeRelativeToNow time.Duration
 // ExpiryTypeRelativeToCreation defines the duration relative to creation for the blob expiry
 type ExpiryTypeRelativeToCreation time.Duration
 
+// ExpiryTypeNeverExpire defines that the blob will be set to never expire
+type ExpiryTypeNeverExpire struct {
+	// empty struct since NeverExpire expiry type does not require expiry time
+}
+
 // PossibleExpiryOptionsValues returns the possible values for the ExpiryOptions const type.
 func PossibleExpiryOptionsValues() []ExpiryOptions {
 	return generated.PossibleExpiryOptionsValues()

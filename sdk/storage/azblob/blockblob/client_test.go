@@ -3536,7 +3536,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetExpiryToNeverExpire() {
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	_, err = bbClient.SetExpiry(context.Background(), nil, nil)
+	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeNeverExpire{}, nil)
 	_require.Nil(err)
 
 	resp, err = bbClient.GetProperties(context.Background(), nil)

@@ -704,6 +704,70 @@ func TestPipelineRetryOn429(t *testing.T) {
 	require.Equal(t, 3, perRetryPolicy.count)
 }
 
+type readSeekerTracker struct {
+	readCalled bool
+	seekCalled bool
+}
+
+func (r *readSeekerTracker) Read([]byte) (int, error) {
+	r.readCalled = true
+	return 0, nil
+}
+
+func (r *readSeekerTracker) Seek(int64, int) (int64, error) {
+	r.seekCalled = true
+	return 0, nil
+}
+
+func TestRetryableRequestBodyNoCloser(t *testing.T) {
+	tr := &readSeekerTracker{}
+	rr := &retryableRequestBody{tr}
+	_, err := rr.Read(nil)
+	require.NoError(t, err)
+	_, err = rr.Seek(0, 0)
+	require.NoError(t, err)
+	require.NoError(t, rr.Close())
+	require.NoError(t, rr.realClose())
+	require.True(t, tr.readCalled)
+	require.True(t, tr.seekCalled)
+}
+
+type readSeekCloseerTracker struct {
+	readCalled  bool
+	seekCalled  bool
+	closeCalled bool
+}
+
+func (r *readSeekCloseerTracker) Read([]byte) (int, error) {
+	r.readCalled = true
+	return 0, nil
+}
+
+func (r *readSeekCloseerTracker) Seek(int64, int) (int64, error) {
+	r.seekCalled = true
+	return 0, nil
+}
+
+func (r *readSeekCloseerTracker) Close() error {
+	r.closeCalled = true
+	return nil
+}
+
+func TestRetryableRequestBodyWithCloser(t *testing.T) {
+	tr := &readSeekCloseerTracker{}
+	rr := &retryableRequestBody{tr}
+	_, err := rr.Read(nil)
+	require.NoError(t, err)
+	_, err = rr.Seek(0, 0)
+	require.NoError(t, err)
+	require.NoError(t, rr.Close())
+	require.False(t, tr.closeCalled)
+	require.True(t, tr.readCalled)
+	require.True(t, tr.seekCalled)
+	require.NoError(t, rr.realClose())
+	require.True(t, tr.closeCalled)
+}
+
 func newRewindTrackingBody(s string) *rewindTrackingBody {
 	// there are two rewinds that happen before rewinding for a retry
 	// 1. to get the body's size in SetBody()

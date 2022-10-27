@@ -8,6 +8,7 @@ package runtime
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
 	"testing"
@@ -243,6 +244,9 @@ func TestDownloadBodyWithRetryPost(t *testing.T) {
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
+	if s := err.Error(); s != "body download policy: mock read failure" {
+		t.Fatalf("unexpected error message: %s", s)
+	}
 	payload, err := Payload(resp)
 	if err == nil {
 		t.Fatalf("expected an error")
@@ -331,5 +335,12 @@ func TestReadBodyAfterSeek(t *testing.T) {
 	}
 	if i != 10 {
 		t.Fatalf("did not seek correctly")
+	}
+}
+
+func TestBodyDownloadError(t *testing.T) {
+	bde := &bodyDownloadError{err: io.EOF}
+	if !errors.Is(bde, io.EOF) {
+		t.Fatal("unwrap should provide inner error")
 	}
 }

@@ -4016,6 +4016,11 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDelete() {
 	}
 	_require.Len(found, 1)
 
+	// Disable for other tests
+	enabled := to.Ptr(false)
+	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{
+		DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled, AllowPermanentDelete: to.Ptr(false)}})
+	_require.Nil(err)
 }
 
 func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDeleteWithoutPermission() {
@@ -4125,6 +4130,11 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDeleteWithoutPermissi
 	// Execute Delete with DeleteTypePermanent,should fail because permissions are not set
 	_, err = snapshotURL.Delete(context.Background(), &deleteBlobOptions)
 	_require.NotNil(err)
+
+	// Disable for other tests
+	enabled := to.Ptr(false)
+	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled}})
+	_require.Nil(err)
 }
 
 //func (s *AZBlobUnrecordedTestsSuite) TestPageBlockFromURLWithCPK() {

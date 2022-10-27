@@ -9,8 +9,8 @@
         "Authorization": "Sanitized",
         "Content-Length": "176",
         "Content-Type": "application/xml",
-        "User-Agent": "azsdk-go-azblob/v0.5.1 (go1.18.1; Windows_NT)",
-        "X-Ms-Date": "Wed, 19 Oct 2022 22:18:53 GMT",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "X-Ms-Date": "Thu, 27 Oct 2022 22:16:45 GMT",
         "x-ms-version": "2020-10-02"
       },
       "RequestBody": [
@@ -20,7 +20,7 @@
       "StatusCode": 202,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Wed, 19 Oct 2022 22:18:53 GMT",
+        "Date": "Thu, 27 Oct 2022 22:16:44 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
@@ -38,17 +38,17 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-azblob/v0.5.1 (go1.18.1; Windows_NT)",
-        "X-Ms-Date": "Wed, 19 Oct 2022 22:19:24 GMT",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "X-Ms-Date": "Thu, 27 Oct 2022 22:17:15 GMT",
         "x-ms-version": "2020-10-02"
       },
       "RequestBody": null,
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Wed, 19 Oct 2022 22:19:23 GMT",
-        "ETag": "\u00220x8DAB21FFA3E0E14\u0022",
-        "Last-Modified": "Wed, 19 Oct 2022 22:19:23 GMT",
+        "Date": "Thu, 27 Oct 2022 22:17:14 GMT",
+        "ETag": "\u00220x8DAB86900C28292\u0022",
+        "Last-Modified": "Thu, 27 Oct 2022 22:17:15 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
@@ -66,19 +66,19 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-azblob/v0.5.1 (go1.18.1; Windows_NT)",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
         "x-ms-blob-content-length": "5120",
         "x-ms-blob-type": "PageBlob",
-        "X-Ms-Date": "Wed, 19 Oct 2022 22:19:24 GMT",
+        "X-Ms-Date": "Thu, 27 Oct 2022 22:17:15 GMT",
         "x-ms-version": "2020-10-02"
       },
       "RequestBody": null,
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Wed, 19 Oct 2022 22:19:23 GMT",
-        "ETag": "\u00220x8DAB21FFA4AB726\u0022",
-        "Last-Modified": "Wed, 19 Oct 2022 22:19:23 GMT",
+        "Date": "Thu, 27 Oct 2022 22:17:14 GMT",
+        "ETag": "\u00220x8DAB86900CE7D72\u0022",
+        "Last-Modified": "Thu, 27 Oct 2022 22:17:15 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
@@ -86,7 +86,7 @@
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-request-server-encrypted": "true",
         "x-ms-version": "2020-10-02",
-        "x-ms-version-id": "2022-10-19T22:19:23.9277350Z"
+        "x-ms-version-id": "2022-10-27T22:17:15.0955890Z"
       },
       "ResponseBody": null
     },
@@ -99,8 +99,8 @@
         "Authorization": "Sanitized",
         "Content-Length": "1024",
         "Content-Type": "application/octet-stream",
-        "User-Agent": "azsdk-go-azblob/v0.5.1 (go1.18.1; Windows_NT)",
-        "X-Ms-Date": "Wed, 19 Oct 2022 22:19:24 GMT",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "X-Ms-Date": "Thu, 27 Oct 2022 22:17:15 GMT",
         "x-ms-page-write": "update",
         "x-ms-range": "bytes=0-1023",
         "x-ms-version": "2020-10-02"
@@ -109,9 +109,9 @@
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Wed, 19 Oct 2022 22:19:23 GMT",
-        "ETag": "\u00220x8DAB21FFA56C338\u0022",
-        "Last-Modified": "Wed, 19 Oct 2022 22:19:24 GMT",
+        "Date": "Thu, 27 Oct 2022 22:17:14 GMT",
+        "ETag": "\u00220x8DAB86900DAD7B3\u0022",
+        "Last-Modified": "Thu, 27 Oct 2022 22:17:15 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
@@ -132,26 +132,26 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-azblob/v0.5.1 (go1.18.1; Windows_NT)",
-        "X-Ms-Date": "Wed, 19 Oct 2022 22:19:24 GMT",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "X-Ms-Date": "Thu, 27 Oct 2022 22:17:15 GMT",
         "x-ms-version": "2020-10-02"
       },
       "RequestBody": null,
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Wed, 19 Oct 2022 22:19:23 GMT",
-        "ETag": "\u00220x8DAB21FFA56C338\u0022",
-        "Last-Modified": "Wed, 19 Oct 2022 22:19:24 GMT",
+        "Date": "Thu, 27 Oct 2022 22:17:14 GMT",
+        "ETag": "\u00220x8DAB86900DAD7B3\u0022",
+        "Last-Modified": "Thu, 27 Oct 2022 22:17:15 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-request-server-encrypted": "false",
-        "x-ms-snapshot": "2022-10-19T22:19:24.0916397Z",
+        "x-ms-snapshot": "2022-10-27T22:17:15.2824838Z",
         "x-ms-version": "2020-10-02",
-        "x-ms-version-id": "2022-10-19T22:19:24.0926397Z"
+        "x-ms-version-id": "2022-10-27T22:17:15.2834838Z"
       },
       "ResponseBody": null
     },
@@ -162,15 +162,15 @@
         "Accept": "application/xml",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azblob/v0.5.1 (go1.18.1; Windows_NT)",
-        "X-Ms-Date": "Wed, 19 Oct 2022 22:19:24 GMT",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "X-Ms-Date": "Thu, 27 Oct 2022 22:17:15 GMT",
         "x-ms-version": "2020-10-02"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/xml",
-        "Date": "Wed, 19 Oct 2022 22:19:23 GMT",
+        "Date": "Thu, 27 Oct 2022 22:17:14 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
@@ -179,7 +179,7 @@
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-version": "2020-10-02"
       },
-      "ResponseBody": "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CEnumerationResults ServiceEndpoint=\u0022https://simintestprimary.blob.core.windows.net/\u0022 ContainerName=\u0022gocpageblockpermanentdeletewithoutpermission\u0022\u003E\u003CBlobs\u003E\u003CBlob\u003E\u003CName\u003Egotestblobpageblockpermanentdeletewithoutpermission\u003C/Name\u003E\u003CSnapshot\u003E2022-10-19T22:19:24.0916397Z\u003C/Snapshot\u003E\u003CProperties\u003E\u003CCreation-Time\u003EWed, 19 Oct 2022 22:19:23 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EWed, 19 Oct 2022 22:19:24 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8DAB21FFA56C338\u003C/Etag\u003E\u003CContent-Length\u003E5120\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5 /\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003Cx-ms-blob-sequence-number\u003E0\u003C/x-ms-blob-sequence-number\u003E\u003CBlobType\u003EPageBlob\u003C/BlobType\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestblobpageblockpermanentdeletewithoutpermission\u003C/Name\u003E\u003CVersionId\u003E2022-10-19T22:19:24.0926397Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EWed, 19 Oct 2022 22:19:23 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EWed, 19 Oct 2022 22:19:24 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8DAB21FFA56C338\u003C/Etag\u003E\u003CContent-Length\u003E5120\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5 /\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003Cx-ms-blob-sequence-number\u003E0\u003C/x-ms-blob-sequence-number\u003E\u003CBlobType\u003EPageBlob\u003C/BlobType\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003C/Blobs\u003E\u003CNextMarker /\u003E\u003C/EnumerationResults\u003E"
+      "ResponseBody": "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CEnumerationResults ServiceEndpoint=\u0022https://simintestprimary.blob.core.windows.net/\u0022 ContainerName=\u0022gocpageblockpermanentdeletewithoutpermission\u0022\u003E\u003CBlobs\u003E\u003CBlob\u003E\u003CName\u003Egotestblobpageblockpermanentdeletewithoutpermission\u003C/Name\u003E\u003CSnapshot\u003E2022-10-27T22:17:15.2824838Z\u003C/Snapshot\u003E\u003CProperties\u003E\u003CCreation-Time\u003EThu, 27 Oct 2022 22:17:15 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EThu, 27 Oct 2022 22:17:15 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8DAB86900DAD7B3\u003C/Etag\u003E\u003CContent-Length\u003E5120\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5 /\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003Cx-ms-blob-sequence-number\u003E0\u003C/x-ms-blob-sequence-number\u003E\u003CBlobType\u003EPageBlob\u003C/BlobType\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestblobpageblockpermanentdeletewithoutpermission\u003C/Name\u003E\u003CVersionId\u003E2022-10-27T22:17:15.2834838Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EThu, 27 Oct 2022 22:17:15 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EThu, 27 Oct 2022 22:17:15 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8DAB86900DAD7B3\u003C/Etag\u003E\u003CContent-Length\u003E5120\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5 /\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003Cx-ms-blob-sequence-number\u003E0\u003C/x-ms-blob-sequence-number\u003E\u003CBlobType\u003EPageBlob\u003C/BlobType\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003C/Blobs\u003E\u003CNextMarker /\u003E\u003C/EnumerationResults\u003E"
     },
     {
       "RequestUri": "https://fakestorage.blob.core.windows.net/gocpageblockpermanentdeletewithoutpermission/gotestblobpageblockpermanentdeletewithoutpermission?deletetype=",
@@ -188,8 +188,8 @@
         "Accept": "application/xml",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azblob/v0.5.1 (go1.18.1; Windows_NT)",
-        "X-Ms-Date": "Wed, 19 Oct 2022 22:19:24 GMT",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "X-Ms-Date": "Thu, 27 Oct 2022 22:17:15 GMT",
         "x-ms-delete-snapshots": "only",
         "x-ms-version": "2020-10-02"
       },
@@ -197,7 +197,7 @@
       "StatusCode": 202,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Wed, 19 Oct 2022 22:19:23 GMT",
+        "Date": "Thu, 27 Oct 2022 22:17:14 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
@@ -215,15 +215,15 @@
         "Accept": "application/xml",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azblob/v0.5.1 (go1.18.1; Windows_NT)",
-        "X-Ms-Date": "Wed, 19 Oct 2022 22:19:24 GMT",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "X-Ms-Date": "Thu, 27 Oct 2022 22:17:15 GMT",
         "x-ms-version": "2020-10-02"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/xml",
-        "Date": "Wed, 19 Oct 2022 22:19:23 GMT",
+        "Date": "Thu, 27 Oct 2022 22:17:14 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
@@ -232,7 +232,7 @@
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-version": "2020-10-02"
       },
-      "ResponseBody": "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CEnumerationResults ServiceEndpoint=\u0022https://simintestprimary.blob.core.windows.net/\u0022 ContainerName=\u0022gocpageblockpermanentdeletewithoutpermission\u0022\u003E\u003CBlobs\u003E\u003CBlob\u003E\u003CName\u003Egotestblobpageblockpermanentdeletewithoutpermission\u003C/Name\u003E\u003CVersionId\u003E2022-10-19T22:19:24.0926397Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EWed, 19 Oct 2022 22:19:23 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EWed, 19 Oct 2022 22:19:24 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8DAB21FFA56C338\u003C/Etag\u003E\u003CContent-Length\u003E5120\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5 /\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003Cx-ms-blob-sequence-number\u003E0\u003C/x-ms-blob-sequence-number\u003E\u003CBlobType\u003EPageBlob\u003C/BlobType\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003C/Blobs\u003E\u003CNextMarker /\u003E\u003C/EnumerationResults\u003E"
+      "ResponseBody": "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CEnumerationResults ServiceEndpoint=\u0022https://simintestprimary.blob.core.windows.net/\u0022 ContainerName=\u0022gocpageblockpermanentdeletewithoutpermission\u0022\u003E\u003CBlobs\u003E\u003CBlob\u003E\u003CName\u003Egotestblobpageblockpermanentdeletewithoutpermission\u003C/Name\u003E\u003CVersionId\u003E2022-10-27T22:17:15.2834838Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EThu, 27 Oct 2022 22:17:15 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EThu, 27 Oct 2022 22:17:15 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8DAB86900DAD7B3\u003C/Etag\u003E\u003CContent-Length\u003E5120\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5 /\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003Cx-ms-blob-sequence-number\u003E0\u003C/x-ms-blob-sequence-number\u003E\u003CBlobType\u003EPageBlob\u003C/BlobType\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003C/Blobs\u003E\u003CNextMarker /\u003E\u003C/EnumerationResults\u003E"
     },
     {
       "RequestUri": "https://fakestorage.blob.core.windows.net/gocpageblockpermanentdeletewithoutpermission?comp=list\u0026include=deleted%2Csnapshots\u0026restype=container",
@@ -241,15 +241,15 @@
         "Accept": "application/xml",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azblob/v0.5.1 (go1.18.1; Windows_NT)",
-        "X-Ms-Date": "Wed, 19 Oct 2022 22:19:24 GMT",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "X-Ms-Date": "Thu, 27 Oct 2022 22:17:15 GMT",
         "x-ms-version": "2020-10-02"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/xml",
-        "Date": "Wed, 19 Oct 2022 22:19:23 GMT",
+        "Date": "Thu, 27 Oct 2022 22:17:14 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
@@ -258,17 +258,17 @@
         "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
         "x-ms-version": "2020-10-02"
       },
-      "ResponseBody": "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CEnumerationResults ServiceEndpoint=\u0022https://simintestprimary.blob.core.windows.net/\u0022 ContainerName=\u0022gocpageblockpermanentdeletewithoutpermission\u0022\u003E\u003CBlobs\u003E\u003CBlob\u003E\u003CName\u003Egotestblobpageblockpermanentdeletewithoutpermission\u003C/Name\u003E\u003CSnapshot\u003E2022-10-19T22:19:24.0916397Z\u003C/Snapshot\u003E\u003CDeleted\u003Etrue\u003C/Deleted\u003E\u003CProperties\u003E\u003CCreation-Time\u003EWed, 19 Oct 2022 22:19:23 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EWed, 19 Oct 2022 22:19:24 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8DAB21FFA56C338\u003C/Etag\u003E\u003CContent-Length\u003E5120\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5 /\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003Cx-ms-blob-sequence-number\u003E0\u003C/x-ms-blob-sequence-number\u003E\u003CBlobType\u003EPageBlob\u003C/BlobType\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003CDeletedTime\u003EWed, 19 Oct 2022 22:19:24 GMT\u003C/DeletedTime\u003E\u003CRemainingRetentionDays\u003E0\u003C/RemainingRetentionDays\u003E\u003C/Properties\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestblobpageblockpermanentdeletewithoutpermission\u003C/Name\u003E\u003CVersionId\u003E2022-10-19T22:19:24.0926397Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EWed, 19 Oct 2022 22:19:23 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EWed, 19 Oct 2022 22:19:24 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8DAB21FFA56C338\u003C/Etag\u003E\u003CContent-Length\u003E5120\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5 /\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003Cx-ms-blob-sequence-number\u003E0\u003C/x-ms-blob-sequence-number\u003E\u003CBlobType\u003EPageBlob\u003C/BlobType\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003C/Blobs\u003E\u003CNextMarker /\u003E\u003C/EnumerationResults\u003E"
+      "ResponseBody": "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CEnumerationResults ServiceEndpoint=\u0022https://simintestprimary.blob.core.windows.net/\u0022 ContainerName=\u0022gocpageblockpermanentdeletewithoutpermission\u0022\u003E\u003CBlobs\u003E\u003CBlob\u003E\u003CName\u003Egotestblobpageblockpermanentdeletewithoutpermission\u003C/Name\u003E\u003CSnapshot\u003E2022-10-27T22:17:15.2824838Z\u003C/Snapshot\u003E\u003CDeleted\u003Etrue\u003C/Deleted\u003E\u003CProperties\u003E\u003CCreation-Time\u003EThu, 27 Oct 2022 22:17:15 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EThu, 27 Oct 2022 22:17:15 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8DAB86900DAD7B3\u003C/Etag\u003E\u003CContent-Length\u003E5120\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5 /\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003Cx-ms-blob-sequence-number\u003E0\u003C/x-ms-blob-sequence-number\u003E\u003CBlobType\u003EPageBlob\u003C/BlobType\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003CDeletedTime\u003EThu, 27 Oct 2022 22:17:15 GMT\u003C/DeletedTime\u003E\u003CRemainingRetentionDays\u003E0\u003C/RemainingRetentionDays\u003E\u003C/Properties\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003CBlob\u003E\u003CName\u003Egotestblobpageblockpermanentdeletewithoutpermission\u003C/Name\u003E\u003CVersionId\u003E2022-10-27T22:17:15.2834838Z\u003C/VersionId\u003E\u003CIsCurrentVersion\u003Etrue\u003C/IsCurrentVersion\u003E\u003CProperties\u003E\u003CCreation-Time\u003EThu, 27 Oct 2022 22:17:15 GMT\u003C/Creation-Time\u003E\u003CLast-Modified\u003EThu, 27 Oct 2022 22:17:15 GMT\u003C/Last-Modified\u003E\u003CEtag\u003E0x8DAB86900DAD7B3\u003C/Etag\u003E\u003CContent-Length\u003E5120\u003C/Content-Length\u003E\u003CContent-Type\u003Eapplication/octet-stream\u003C/Content-Type\u003E\u003CContent-Encoding /\u003E\u003CContent-Language /\u003E\u003CContent-CRC64 /\u003E\u003CContent-MD5 /\u003E\u003CCache-Control /\u003E\u003CContent-Disposition /\u003E\u003Cx-ms-blob-sequence-number\u003E0\u003C/x-ms-blob-sequence-number\u003E\u003CBlobType\u003EPageBlob\u003C/BlobType\u003E\u003CLeaseStatus\u003Eunlocked\u003C/LeaseStatus\u003E\u003CLeaseState\u003Eavailable\u003C/LeaseState\u003E\u003CServerEncrypted\u003Etrue\u003C/ServerEncrypted\u003E\u003C/Properties\u003E\u003COrMetadata /\u003E\u003C/Blob\u003E\u003C/Blobs\u003E\u003CNextMarker /\u003E\u003C/EnumerationResults\u003E"
     },
     {
-      "RequestUri": "https://fakestorage.blob.core.windows.net/gocpageblockpermanentdeletewithoutpermission/gotestblobpageblockpermanentdeletewithoutpermission?deletetype=Permanent\u0026snapshot=2022-10-19T22%3A19%3A24.0916397Z",
+      "RequestUri": "https://fakestorage.blob.core.windows.net/gocpageblockpermanentdeletewithoutpermission/gotestblobpageblockpermanentdeletewithoutpermission?deletetype=Permanent\u0026snapshot=2022-10-27T22%3A17%3A15.2824838Z",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/xml",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azblob/v0.5.1 (go1.18.1; Windows_NT)",
-        "X-Ms-Date": "Wed, 19 Oct 2022 22:19:24 GMT",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "X-Ms-Date": "Thu, 27 Oct 2022 22:17:15 GMT",
         "x-ms-version": "2020-10-02"
       },
       "RequestBody": null,
@@ -276,7 +276,7 @@
       "ResponseHeaders": {
         "Content-Length": "236",
         "Content-Type": "application/xml",
-        "Date": "Wed, 19 Oct 2022 22:19:24 GMT",
+        "Date": "Thu, 27 Oct 2022 22:17:14 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
@@ -287,9 +287,39 @@
       },
       "ResponseBody": [
         "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CError\u003E\u003CCode\u003EPermanentDeleteIsOff\u003C/Code\u003E\u003CMessage\u003EPermanent delete is off on the storage account.\n",
-        "RequestId:7e381d07-e01e-0020-3608-e4565c000000\n",
-        "Time:2022-10-19T22:19:24.4724041Z\u003C/Message\u003E\u003C/Error\u003E"
+        "RequestId:2c7e0373-601e-003e-1e51-eaba84000000\n",
+        "Time:2022-10-27T22:17:15.6597075Z\u003C/Message\u003E\u003C/Error\u003E"
       ]
+    },
+    {
+      "RequestUri": "https://fakestorage.blob.core.windows.net/?comp=properties\u0026restype=service",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "163",
+        "Content-Type": "application/xml",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "X-Ms-Date": "Thu, 27 Oct 2022 22:17:15 GMT",
+        "x-ms-version": "2020-10-02"
+      },
+      "RequestBody": [
+        "\u003C?xml version=\u00221.0\u0022 encoding=\u0022UTF-8\u0022?\u003E\n",
+        "\u003CStorageServiceProperties\u003E\u003CDeleteRetentionPolicy\u003E\u003CEnabled\u003Efalse\u003C/Enabled\u003E\u003C/DeleteRetentionPolicy\u003E\u003C/StorageServiceProperties\u003E"
+      ],
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Thu, 27 Oct 2022 22:17:14 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-version": "2020-10-02"
+      },
+      "ResponseBody": null
     },
     {
       "RequestUri": "https://fakestorage.blob.core.windows.net/gocpageblockpermanentdeletewithoutpermission?restype=container",
@@ -298,15 +328,15 @@
         "Accept": "application/xml",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azblob/v0.5.1 (go1.18.1; Windows_NT)",
-        "X-Ms-Date": "Wed, 19 Oct 2022 22:19:24 GMT",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "X-Ms-Date": "Thu, 27 Oct 2022 22:17:15 GMT",
         "x-ms-version": "2020-10-02"
       },
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Wed, 19 Oct 2022 22:19:24 GMT",
+        "Date": "Thu, 27 Oct 2022 22:17:14 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"

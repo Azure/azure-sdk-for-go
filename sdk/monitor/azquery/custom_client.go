@@ -55,12 +55,12 @@ func NewMetricsClient(credential azcore.TokenCredential, options *MetricsClientO
 	if options == nil {
 		options = &MetricsClientOptions{}
 	}
-	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{"https://management.core.usgovcloudapi.net//.default"}, nil)
+	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{"https://management.usgovcloudapi.net//.default"}, nil)
 	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	return &MetricsClient{pl: pl}
 }
 
-const metricsHost string = "https://management.core.usgovcloudapi.net/"
+const metricsHost string = "https://management.usgovcloudapi.net"
 
 // ErrorInfo - The code and message for an error.
 type ErrorInfo struct {

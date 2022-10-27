@@ -147,6 +147,7 @@ func startMetricsTest(t *testing.T) *azquery.MetricsClient {
 		TLSHandshakeTimeout:   10 * time.Second,
 		ExpectContinueTimeout: 1 * time.Second,
 		TLSClientConfig: &tls.Config{
+			MinVersion:    tls.VersionTLS12,
 			Renegotiation: tls.RenegotiateFreelyAsClient,
 		},
 	}

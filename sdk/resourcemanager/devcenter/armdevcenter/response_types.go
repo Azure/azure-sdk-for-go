@@ -376,7 +376,7 @@ type SchedulesClientListByPoolResponse struct {
 
 // SchedulesClientUpdateResponse contains the response from method SchedulesClient.Update.
 type SchedulesClientUpdateResponse struct {
-	// placeholder for future response values
+	Schedule
 }
 
 // UsagesClientListByLocationResponse contains the response from method UsagesClient.ListByLocation.

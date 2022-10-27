@@ -11,7 +11,7 @@ package armdevcenter
 
 const (
 	moduleName    = "armdevcenter"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.3.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -25,6 +25,26 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// CatalogSyncState - The synchronization state of the catalog.
+type CatalogSyncState string
+
+const (
+	CatalogSyncStateCanceled   CatalogSyncState = "Canceled"
+	CatalogSyncStateFailed     CatalogSyncState = "Failed"
+	CatalogSyncStateInProgress CatalogSyncState = "InProgress"
+	CatalogSyncStateSucceeded  CatalogSyncState = "Succeeded"
+)
+
+// PossibleCatalogSyncStateValues returns the possible values for the CatalogSyncState const type.
+func PossibleCatalogSyncStateValues() []CatalogSyncState {
+	return []CatalogSyncState{
+		CatalogSyncStateCanceled,
+		CatalogSyncStateFailed,
+		CatalogSyncStateInProgress,
+		CatalogSyncStateSucceeded,
 	}
 }
 

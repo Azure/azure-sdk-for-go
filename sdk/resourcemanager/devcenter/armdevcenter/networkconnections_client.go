@@ -33,7 +33,7 @@ type NetworkConnectionsClient struct {
 }
 
 // NewNetworkConnectionsClient creates a new instance of NetworkConnectionsClient with the specified values.
-// subscriptionID - Unique identifier of the Azure subscription. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+// subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
 func NewNetworkConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkConnectionsClient, error) {
@@ -58,8 +58,8 @@ func NewNetworkConnectionsClient(subscriptionID string, credential azcore.TokenC
 
 // BeginCreateOrUpdate - Creates or updates a Network Connections resource
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-10-12-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // networkConnectionName - Name of the Network Connection that can be applied to a Pool.
 // body - Represents network connection
 // options - NetworkConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the NetworkConnectionsClient.BeginCreateOrUpdate
@@ -80,7 +80,7 @@ func (client *NetworkConnectionsClient) BeginCreateOrUpdate(ctx context.Context,
 
 // CreateOrUpdate - Creates or updates a Network Connections resource
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2022-10-12-preview
 func (client *NetworkConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkConnectionName string, body NetworkConnection, options *NetworkConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkConnectionName, body, options)
 	if err != nil {
@@ -116,7 +116,7 @@ func (client *NetworkConnectionsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-10-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -124,8 +124,8 @@ func (client *NetworkConnectionsClient) createOrUpdateCreateRequest(ctx context.
 
 // BeginDelete - Deletes a Network Connections resource
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-10-12-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // networkConnectionName - Name of the Network Connection that can be applied to a Pool.
 // options - NetworkConnectionsClientBeginDeleteOptions contains the optional parameters for the NetworkConnectionsClient.BeginDelete
 // method.
@@ -145,7 +145,7 @@ func (client *NetworkConnectionsClient) BeginDelete(ctx context.Context, resourc
 
 // Delete - Deletes a Network Connections resource
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2022-10-12-preview
 func (client *NetworkConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkConnectionName string, options *NetworkConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkConnectionName, options)
 	if err != nil {
@@ -181,7 +181,7 @@ func (client *NetworkConnectionsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-10-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -189,8 +189,8 @@ func (client *NetworkConnectionsClient) deleteCreateRequest(ctx context.Context,
 
 // Get - Gets a network connection resource
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-10-12-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // networkConnectionName - Name of the Network Connection that can be applied to a Pool.
 // options - NetworkConnectionsClientGetOptions contains the optional parameters for the NetworkConnectionsClient.Get method.
 func (client *NetworkConnectionsClient) Get(ctx context.Context, resourceGroupName string, networkConnectionName string, options *NetworkConnectionsClientGetOptions) (NetworkConnectionsClientGetResponse, error) {
@@ -228,7 +228,7 @@ func (client *NetworkConnectionsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-10-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,8 +245,8 @@ func (client *NetworkConnectionsClient) getHandleResponse(resp *http.Response) (
 
 // GetHealthDetails - Gets health check status details.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-10-12-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // networkConnectionName - Name of the Network Connection that can be applied to a Pool.
 // options - NetworkConnectionsClientGetHealthDetailsOptions contains the optional parameters for the NetworkConnectionsClient.GetHealthDetails
 // method.
@@ -285,7 +285,7 @@ func (client *NetworkConnectionsClient) getHealthDetailsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-10-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -301,8 +301,8 @@ func (client *NetworkConnectionsClient) getHealthDetailsHandleResponse(resp *htt
 }
 
 // NewListByResourceGroupPager - Lists network connections in a resource group
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-10-12-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - NetworkConnectionsClientListByResourceGroupOptions contains the optional parameters for the NetworkConnectionsClient.ListByResourceGroup
 // method.
 func (client *NetworkConnectionsClient) NewListByResourceGroupPager(resourceGroupName string, options *NetworkConnectionsClientListByResourceGroupOptions) *runtime.Pager[NetworkConnectionsClientListByResourceGroupResponse] {
@@ -349,7 +349,7 @@ func (client *NetworkConnectionsClient) listByResourceGroupCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-10-12-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -368,7 +368,7 @@ func (client *NetworkConnectionsClient) listByResourceGroupHandleResponse(resp *
 }
 
 // NewListBySubscriptionPager - Lists network connections in a subscription
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2022-10-12-preview
 // options - NetworkConnectionsClientListBySubscriptionOptions contains the optional parameters for the NetworkConnectionsClient.ListBySubscription
 // method.
 func (client *NetworkConnectionsClient) NewListBySubscriptionPager(options *NetworkConnectionsClientListBySubscriptionOptions) *runtime.Pager[NetworkConnectionsClientListBySubscriptionResponse] {
@@ -411,7 +411,7 @@ func (client *NetworkConnectionsClient) listBySubscriptionCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-10-12-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -430,8 +430,8 @@ func (client *NetworkConnectionsClient) listBySubscriptionHandleResponse(resp *h
 }
 
 // NewListHealthDetailsPager - Lists health check status details
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-10-12-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // networkConnectionName - Name of the Network Connection that can be applied to a Pool.
 // options - NetworkConnectionsClientListHealthDetailsOptions contains the optional parameters for the NetworkConnectionsClient.ListHealthDetails
 // method.
@@ -483,7 +483,7 @@ func (client *NetworkConnectionsClient) listHealthDetailsCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-10-12-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -504,8 +504,8 @@ func (client *NetworkConnectionsClient) listHealthDetailsHandleResponse(resp *ht
 // RunHealthChecks - Triggers a new health check run. The execution and health check result can be tracked via the network
 // Connection health check details
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-10-12-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // networkConnectionName - Name of the Network Connection that can be applied to a Pool.
 // options - NetworkConnectionsClientRunHealthChecksOptions contains the optional parameters for the NetworkConnectionsClient.RunHealthChecks
 // method.
@@ -544,7 +544,7 @@ func (client *NetworkConnectionsClient) runHealthChecksCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-10-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -552,8 +552,8 @@ func (client *NetworkConnectionsClient) runHealthChecksCreateRequest(ctx context
 
 // BeginUpdate - Partially updates a Network Connection
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - Name of the resource group within the Azure subscription.
+// Generated from API version 2022-10-12-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
 // networkConnectionName - Name of the Network Connection that can be applied to a Pool.
 // body - Represents network connection
 // options - NetworkConnectionsClientBeginUpdateOptions contains the optional parameters for the NetworkConnectionsClient.BeginUpdate
@@ -574,7 +574,7 @@ func (client *NetworkConnectionsClient) BeginUpdate(ctx context.Context, resourc
 
 // Update - Partially updates a Network Connection
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2022-10-12-preview
 func (client *NetworkConnectionsClient) update(ctx context.Context, resourceGroupName string, networkConnectionName string, body NetworkConnectionUpdate, options *NetworkConnectionsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, networkConnectionName, body, options)
 	if err != nil {
@@ -610,7 +610,7 @@ func (client *NetworkConnectionsClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2022-10-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

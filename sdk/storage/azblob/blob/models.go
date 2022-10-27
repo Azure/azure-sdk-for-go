@@ -270,7 +270,7 @@ func (e ExpiryTypeRelativeToCreation) format(o *SetExpiryOptions) (generated.Exp
 	}
 }
 
-func (e ExpiryTypeNeverExpire) format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.BlobClientSetExpiryOptions) {
+func (e ExpiryTypeNever) format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.BlobClientSetExpiryOptions) {
 	return generated.ExpiryOptionsNeverExpire, nil
 }
 

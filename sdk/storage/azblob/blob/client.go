@@ -162,7 +162,7 @@ func (b *Client) SetTier(ctx context.Context, tier AccessTier, o *SetTierOptions
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-blob-expiry
 func (b *Client) SetExpiry(ctx context.Context, expiryType ExpiryType, o *SetExpiryOptions) (SetExpiryResponse, error) {
 	if expiryType == nil {
-		expiryType = ExpiryTypeNeverExpire{}
+		expiryType = ExpiryTypeNever{}
 	}
 	et, opts := expiryType.format(o)
 	resp, err := b.generated().SetExpiry(ctx, et, opts)

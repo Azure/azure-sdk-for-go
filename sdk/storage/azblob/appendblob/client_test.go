@@ -1895,7 +1895,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryToNeverExpire() {
 	_require.Nil(err)
 	_require.Nil(resp.ExpiresOn)
 
-	_, err = abClient.SetExpiry(context.Background(), blob.ExpiryTypeNeverExpire{}, nil)
+	_, err = abClient.SetExpiry(context.Background(), blob.ExpiryTypeNever{}, nil)
 	_require.Nil(err)
 
 	resp, err = abClient.GetProperties(context.Background(), nil)

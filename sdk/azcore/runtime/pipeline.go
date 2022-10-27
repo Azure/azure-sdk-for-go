@@ -34,13 +34,13 @@ func NewPipeline(module, version string, plOpts PipelineOptions, options *policy
 		cp = *options
 	}
 	if len(plOpts.AllowedHeaders) > 0 {
-		headers := make([]string, 0, len(plOpts.AllowedHeaders)+len(cp.Logging.AllowedHeaders))
+		headers := make([]string, len(plOpts.AllowedHeaders)+len(cp.Logging.AllowedHeaders))
 		copy(headers, plOpts.AllowedHeaders)
 		headers = append(headers, cp.Logging.AllowedHeaders...)
 		cp.Logging.AllowedHeaders = headers
 	}
 	if len(plOpts.AllowedQueryParameters) > 0 {
-		qp := make([]string, 0, len(plOpts.AllowedQueryParameters)+len(cp.Logging.AllowedQueryParams))
+		qp := make([]string, len(plOpts.AllowedQueryParameters)+len(cp.Logging.AllowedQueryParams))
 		copy(qp, plOpts.AllowedQueryParameters)
 		qp = append(qp, cp.Logging.AllowedQueryParams...)
 		cp.Logging.AllowedQueryParams = qp

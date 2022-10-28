@@ -3442,3 +3442,33 @@ func (s *BlobRecordedTestsSuite) TestBlobClientPartsSASQueryTimes() {
 //		CpkScopeInfo:           nil,
 //	}
 //}
+
+func (s *BlobRecordedTestsSuite) TestBlobSetExpiry() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Nil(resp.ExpiresOn)
+
+	_, err = bbClient.SetExpiry(context.Background(), blob.ExpiryTypeRelativeToNow(8*time.Second), nil)
+	_require.Nil(err)
+
+	resp, err = bbClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp.ExpiresOn)
+
+	time.Sleep(time.Second * 10)
+
+	_, err = bbClient.GetProperties(context.Background(), nil)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
+}

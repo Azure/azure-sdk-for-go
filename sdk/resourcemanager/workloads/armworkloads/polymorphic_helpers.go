@@ -131,6 +131,8 @@ func unmarshalSoftwareConfigurationClassification(rawMsg json.RawMessage) (Softw
 	}
 	var b SoftwareConfigurationClassification
 	switch m["softwareInstallationType"] {
+	case string(SAPSoftwareInstallationTypeExternal):
+		b = &ExternalInstallationSoftwareConfiguration{}
 	case string(SAPSoftwareInstallationTypeSAPInstallWithoutOSConfig):
 		b = &SAPInstallWithoutOSConfigSoftwareConfiguration{}
 	case string(SAPSoftwareInstallationTypeServiceInitiated):

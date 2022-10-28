@@ -226,7 +226,6 @@ func (client *WordpressInstancesClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListPager - Lists WordPress instance resources under a phpWorkload resource.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-12-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // phpWorkloadName - Php workload name

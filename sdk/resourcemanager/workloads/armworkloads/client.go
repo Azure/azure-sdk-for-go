@@ -55,7 +55,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 	return client, nil
 }
 
-// SAPAvailabilityZoneDetails - Get SAP Availability Zone Details.
+// SAPAvailabilityZoneDetails - Get the recommended SAP Availability Zone Pair Details for your region.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-12-01-preview
 // location - The name of Azure region.
@@ -110,7 +110,7 @@ func (client *Client) sapAvailabilityZoneDetailsHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// SAPDiskConfigurations - Get SAP Disk Configurations.
+// SAPDiskConfigurations - Get the SAP Disk Configuration Layout prod/non-prod SAP System.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-12-01-preview
 // location - The name of Azure region.
@@ -164,7 +164,8 @@ func (client *Client) sapDiskConfigurationsHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// SAPSizingRecommendations - Get SAP sizing recommendations.
+// SAPSizingRecommendations - Get SAP sizing recommendations by providing input SAPS for application tier and memory required
+// for database tier
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-12-01-preview
 // location - The name of Azure region.
@@ -219,7 +220,7 @@ func (client *Client) sapSizingRecommendationsHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// SAPSupportedSKU - Get SAP supported SKUs.
+// SAPSupportedSKU - Get a list of SAP supported SKUs for ASCS, Application and Database tier.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-12-01-preview
 // location - The name of Azure region.

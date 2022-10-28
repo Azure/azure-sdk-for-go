@@ -862,6 +862,37 @@ func (e *ErrorResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ExternalInstallationSoftwareConfiguration.
+func (e ExternalInstallationSoftwareConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "centralServerVmId", e.CentralServerVMID)
+	objectMap["softwareInstallationType"] = SAPSoftwareInstallationTypeExternal
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ExternalInstallationSoftwareConfiguration.
+func (e *ExternalInstallationSoftwareConfiguration) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "centralServerVmId":
+			err = unpopulate(val, "CentralServerVMID", &e.CentralServerVMID)
+			delete(rawMsg, key)
+		case "softwareInstallationType":
+			err = unpopulate(val, "SoftwareInstallationType", &e.SoftwareInstallationType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type FileshareProfile.
 func (f FileshareProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1349,6 +1380,7 @@ func (m MonitorProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "msiArmId", m.MsiArmID)
 	populate(objectMap, "provisioningState", m.ProvisioningState)
 	populate(objectMap, "routingPreference", m.RoutingPreference)
+	populate(objectMap, "zoneRedundancyPreference", m.ZoneRedundancyPreference)
 	return json.Marshal(objectMap)
 }
 
@@ -1384,6 +1416,9 @@ func (m *MonitorProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "routingPreference":
 			err = unpopulate(val, "RoutingPreference", &m.RoutingPreference)
+			delete(rawMsg, key)
+		case "zoneRedundancyPreference":
+			err = unpopulate(val, "ZoneRedundancyPreference", &m.ZoneRedundancyPreference)
 			delete(rawMsg, key)
 		}
 		if err != nil {

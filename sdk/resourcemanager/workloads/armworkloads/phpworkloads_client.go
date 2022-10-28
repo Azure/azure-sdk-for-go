@@ -246,7 +246,6 @@ func (client *PhpWorkloadsClient) getHandleResponse(resp *http.Response) (PhpWor
 }
 
 // NewListByResourceGroupPager - Lists PHP workload resources in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-12-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - PhpWorkloadsClientListByResourceGroupOptions contains the optional parameters for the PhpWorkloadsClient.ListByResourceGroup
@@ -311,7 +310,6 @@ func (client *PhpWorkloadsClient) listByResourceGroupHandleResponse(resp *http.R
 }
 
 // NewListBySubscriptionPager - Lists PHP workload resources for a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-12-01-preview
 // options - PhpWorkloadsClientListBySubscriptionOptions contains the optional parameters for the PhpWorkloadsClient.ListBySubscription
 // method.

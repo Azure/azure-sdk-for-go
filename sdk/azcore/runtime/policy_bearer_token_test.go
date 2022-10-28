@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/stretchr/testify/require"
 )
 
 const (
@@ -146,4 +147,60 @@ func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
 	if resp != nil {
 		t.Fatal("expected nil response")
 	}
+}
+
+func TestBearerTokenPolicy_AuthZHandler(t *testing.T) {
+	challenge := "Scheme parameters..."
+	srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(401), mock.WithHeader("WWW-Authenticate", challenge))
+	srv.AppendResponse(mock.WithStatusCode(200))
+
+	req, err := NewRequest(context.Background(), "GET", "https://localhost")
+	require.NoError(t, err)
+
+	type fakeHandler struct {
+		policy.AuthorizationHandler
+		onChallengeCalls, onReqCalls int
+		onChallengeErr, onReqErr     error
+	}
+	handler := fakeHandler{}
+	handler.OnRequest = func(r *policy.Request, f func(policy.TokenRequestOptions) error) error {
+		require.Equal(t, req.Raw().URL, r.Raw().URL)
+		handler.onReqCalls++
+		return handler.onReqErr
+	}
+	handler.OnChallenge = func(r *policy.Request, res *http.Response, f func(policy.TokenRequestOptions) error) error {
+		require.Equal(t, req.Raw().URL, r.Raw().URL)
+		handler.onChallengeCalls++
+		require.Equal(t, challenge, res.Header.Get("WWW-Authenticate"))
+		return handler.onChallengeErr
+	}
+
+	b := NewBearerTokenPolicy(mockCredential{}, nil, &policy.BearerTokenOptions{AuthorizationHandler: handler.AuthorizationHandler})
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv, PerRetryPolicies: []policy.Policy{b}})
+
+	_, err = pl.Do(req)
+	require.NoError(t, err)
+	require.Equal(t, 1, handler.onChallengeCalls)
+	require.Equal(t, 1, handler.onReqCalls)
+	// handler functions didn't return errors, so the policy should have sent a request after calling each
+	require.Equal(t, 2, srv.Requests())
+
+	// policy should propagate the handler's errors
+	handler.onReqErr = &nonRetriableError{}
+	_, err = pl.Do(req)
+	require.ErrorIs(t, err, handler.onReqErr)
+	require.Equal(t, 1, handler.onChallengeCalls)
+	require.Equal(t, 2, handler.onReqCalls)
+	// OnRequest returned an error, so the policy shouldn't have sent the request
+	require.Equal(t, 2, srv.Requests())
+
+	srv.AppendResponse(mock.WithStatusCode(401), mock.WithHeader("WWW-Authenticate", challenge))
+	handler.onReqErr = nil
+	handler.onChallengeErr = &nonRetriableError{}
+	_, err = pl.Do(req)
+	require.ErrorIs(t, err, handler.onChallengeErr)
+	// OnChallenge returned an error, so the policy shouldn't have sent the request again
+	require.Equal(t, 3, srv.Requests())
 }

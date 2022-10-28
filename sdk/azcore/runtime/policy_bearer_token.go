@@ -18,19 +18,21 @@ type BearerTokenPolicy struct {
 	// mainResource is the resource to be retreived using the tenant specified in the credential
 	mainResource *temporal.Resource[azcore.AccessToken, acquiringResourceState]
 	// the following fields are read-only
-	cred   azcore.TokenCredential
-	scopes []string
+	authzHandler policy.AuthorizationHandler
+	cred         azcore.TokenCredential
+	scopes       []string
 }
 
 type acquiringResourceState struct {
 	req *policy.Request
 	p   *BearerTokenPolicy
+	tro policy.TokenRequestOptions
 }
 
 // acquire acquires or updates the resource; only one
 // thread/goroutine at a time ever calls this function
 func acquire(state acquiringResourceState) (newResource azcore.AccessToken, newExpiration time.Time, err error) {
-	tk, err := state.p.cred.GetToken(state.req.Raw().Context(), policy.TokenRequestOptions{Scopes: state.p.scopes})
+	tk, err := state.p.cred.GetToken(state.req.Raw().Context(), state.tro)
 	if err != nil {
 		return azcore.AccessToken{}, time.Time{}, err
 	}
@@ -42,23 +44,54 @@ func acquire(state acquiringResourceState) (newResource azcore.AccessToken, newE
 // scopes: the list of permission scopes required for the token.
 // opts: optional settings. Pass nil to accept default values; this is the same as passing a zero-value options.
 func NewBearerTokenPolicy(cred azcore.TokenCredential, scopes []string, opts *policy.BearerTokenOptions) *BearerTokenPolicy {
+	if opts == nil {
+		opts = &policy.BearerTokenOptions{}
+	}
 	return &BearerTokenPolicy{
+		authzHandler: opts.AuthorizationHandler,
 		cred:         cred,
 		scopes:       scopes,
 		mainResource: temporal.NewResource(acquire),
 	}
 }
 
+// authenticateAndAuthorize returns a function which authorizes req with a token from the policy's credential
+func (b *BearerTokenPolicy) authenticateAndAuthorize(req *policy.Request) func(policy.TokenRequestOptions) error {
+	return func(tro policy.TokenRequestOptions) error {
+		as := acquiringResourceState{p: b, req: req, tro: tro}
+		tk, err := b.mainResource.Get(as)
+		if err != nil {
+			return err
+		}
+		req.Raw().Header.Set(shared.HeaderAuthorization, shared.BearerTokenPrefix+tk.Token)
+		return nil
+	}
+}
+
 // Do authorizes a request with a bearer token
 func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
-	as := acquiringResourceState{
-		p:   b,
-		req: req,
+	var err error
+	if b.authzHandler.OnRequest != nil {
+		err = b.authzHandler.OnRequest(req, b.authenticateAndAuthorize(req))
+	} else {
+		err = b.authenticateAndAuthorize(req)(policy.TokenRequestOptions{Scopes: b.scopes})
 	}
-	tk, err := b.mainResource.Get(as)
 	if err != nil {
 		return nil, err
 	}
-	req.Raw().Header.Set(shared.HeaderAuthorization, shared.BearerTokenPrefix+tk.Token)
-	return req.Next()
+
+	res, err := req.Next()
+	if err != nil {
+		return nil, err
+	}
+
+	if res.StatusCode == http.StatusUnauthorized {
+		b.mainResource.Expire()
+		if res.Header.Get("WWW-Authenticate") != "" && b.authzHandler.OnChallenge != nil {
+			if err = b.authzHandler.OnChallenge(req, res, b.authenticateAndAuthorize(req)); err == nil {
+				res, err = req.Next()
+			}
+		}
+	}
+	return res, err
 }

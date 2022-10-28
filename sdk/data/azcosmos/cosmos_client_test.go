@@ -375,6 +375,50 @@ func TestSendPost(t *testing.T) {
 	}
 }
 
+func TestSendPatch(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithStatusCode(200))
+	verifier := pipelineVerifier{}
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	client := &Client{endpoint: srv.URL(), pipeline: pl}
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypeDatabase,
+		resourceAddress: "",
+	}
+
+	body := map[string]any{
+		"condition": "from c where c.Address.ZipCode ='98101' ",
+		"operations": []struct {
+			Op    string `json:"op"`
+			Path  string `json:"path"`
+			Value any    `json:"value"`
+		}{
+			{
+				Op:    "replace",
+				Path:  "/Address/ZipCode",
+				Value: 98107,
+			},
+		},
+	}
+
+	marshalled, _ := json.Marshal(body)
+
+	_, err := client.sendPatchRequest("/", context.Background(), body, operationContext, &DeleteDatabaseOptions{}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if verifier.requests[0].method != http.MethodPatch {
+		t.Errorf("Expected %v, but got %v", http.MethodPost, verifier.requests[0].method)
+	}
+
+	if verifier.requests[0].body != string(marshalled) {
+		t.Errorf("Expected %v, but got %v", string(marshalled), verifier.requests[0].body)
+	}
+}
+
 func TestSendQuery(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()

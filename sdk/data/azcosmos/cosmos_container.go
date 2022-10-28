@@ -562,12 +562,12 @@ func (c *ContainerClient) PatchRemoveItem(
 
 	patchItem := map[string]any{
 		"operations": []struct {
-			Op    string      `json:"op"`
-			Path  string      `json:"path"`
+			Op   string `json:"op"`
+			Path string `json:"path"`
 		}{
 			{
-				Op:    "remove",
-				Path:  path,
+				Op:   "remove",
+				Path: path,
 			},
 		},
 	}

@@ -1,6 +1,6 @@
 # Azure Cache for Redis Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v2)
 
 The `armredis` module provides operations for working with Azure Cache for Redis.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Cache for Redis module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v2
 ```
 
 ## Authorization

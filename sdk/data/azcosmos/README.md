@@ -143,6 +143,27 @@ if err != nil {
 itemResponse, err = container.ReplaceItem(context, pk, id, marshalledReplace, nil)
 handle(err)
 
+// Patch an item
+patchItem := map[string]any{
+		"operations": []struct {
+			Op    string      `json:"op"`
+			Path  string      `json:"path"`
+			Value interface{} `json:"value"`
+		}{
+			{
+				Op:    "replace",
+				Path:  "/value",
+				Value: 5,
+			},
+		},
+	}
+marshalledPatch, err = json.Marshal(patchItem)
+if err != nil {
+    log.Fatal(err)
+}
+itemResponse, err = container.PatchItem(context, pk, id, marshalledPatch, nil)
+handle(err)
+
 // Delete an item
 itemResponse, err = container.DeleteItem(context, pk, id, nil)
 handle(err)

@@ -1,5 +1,15 @@
 # Release History
 
+## 2.1.0 (2022-10-14)
+
+### Features Added
+
+- New field `PrimaryHostName` in struct `LinkedServerCreateProperties`
+- New field `GeoReplicatedPrimaryHostName` in struct `LinkedServerCreateProperties`
+- New field `GeoReplicatedPrimaryHostName` in struct `LinkedServerProperties`
+- New field `PrimaryHostName` in struct `LinkedServerProperties`
+
+
 ## 2.0.0 (2022-09-01)
 ### Breaking Changes
 

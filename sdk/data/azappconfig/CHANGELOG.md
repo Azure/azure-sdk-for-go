@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed missing host URL when iterating over pages.
 
 ### Other Changes
 * Regenerated internal code with latest Autorest Go code generator.

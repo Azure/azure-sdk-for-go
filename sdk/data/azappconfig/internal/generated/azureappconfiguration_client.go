@@ -562,7 +562,7 @@ func (client *AzureAppConfigurationClient) NewGetKeyValuesPager(options *AzureAp
 			if page == nil {
 				req, err = client.getKeyValuesCreateRequest(ctx, options)
 			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+				req, err = client.getNextPageCreateRequest(ctx, *page.NextLink)
 			}
 			if err != nil {
 				return AzureAppConfigurationClientGetKeyValuesResponse{}, err
@@ -638,7 +638,7 @@ func (client *AzureAppConfigurationClient) NewGetKeysPager(options *AzureAppConf
 			if page == nil {
 				req, err = client.getKeysCreateRequest(ctx, options)
 			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+				req, err = client.getNextPageCreateRequest(ctx, *page.NextLink)
 			}
 			if err != nil {
 				return AzureAppConfigurationClientGetKeysResponse{}, err
@@ -708,7 +708,7 @@ func (client *AzureAppConfigurationClient) NewGetLabelsPager(options *AzureAppCo
 			if page == nil {
 				req, err = client.getLabelsCreateRequest(ctx, options)
 			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+				req, err = client.getNextPageCreateRequest(ctx, *page.NextLink)
 			}
 			if err != nil {
 				return AzureAppConfigurationClientGetLabelsResponse{}, err
@@ -766,6 +766,29 @@ func (client *AzureAppConfigurationClient) getLabelsHandleResponse(resp *http.Re
 	return result, nil
 }
 
+// getNextPageCreateRequest creates the GetNextPage request.
+func (client *AzureAppConfigurationClient) getNextPageCreateRequest(ctx context.Context, nextLink string) (*policy.Request, error) {
+	urlPath := nextLink
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getNextPageHandleResponse handles the GetNextPage response.
+func (client *AzureAppConfigurationClient) getNextPageHandleResponse(resp *http.Response) (AzureAppConfigurationClientGetNextPageResponse, error) {
+	result := AzureAppConfigurationClientGetNextPageResponse{}
+	if val := resp.Header.Get("Sync-Token"); val != "" {
+		result.SyncToken = &val
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.KeyListResult); err != nil {
+		return AzureAppConfigurationClientGetNextPageResponse{}, err
+	}
+	return result, nil
+}
+
 // NewGetRevisionsPager - Gets a list of key-value revisions.
 // Generated from API version 1.0
 // options - AzureAppConfigurationClientGetRevisionsOptions contains the optional parameters for the AzureAppConfigurationClient.GetRevisions
@@ -781,7 +804,7 @@ func (client *AzureAppConfigurationClient) NewGetRevisionsPager(options *AzureAp
 			if page == nil {
 				req, err = client.getRevisionsCreateRequest(ctx, options)
 			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+				req, err = client.getNextPageCreateRequest(ctx, *page.NextLink)
 			}
 			if err != nil {
 				return AzureAppConfigurationClientGetRevisionsResponse{}, err

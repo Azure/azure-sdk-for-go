@@ -133,7 +133,7 @@ func TestItemCRUD(t *testing.T) {
 	}
 
 	patchItem := CreatePatchOptions()
-	patchItem.SetCondition("from c where c.id = 1")
+	patchItem.SetCondition("from c where c.id = '1'")
 	patchItem.Replace("/value", 5)
 	patchItem.Set("/hello", "world")
 	patchItem.Add("/foo", "bar")

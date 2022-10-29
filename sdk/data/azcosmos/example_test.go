@@ -405,6 +405,61 @@ func ExampleContainerClient_ReplaceItem() {
 	fmt.Printf("Item replaced. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
 }
 
+func ExampleContainerClient_PatchItem() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
+
+	cred, err := azcosmos.NewKeyCredential(key)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	container, err := client.NewContainer("databaseName", "aContainer")
+	if err != nil {
+		panic(err)
+	}
+
+	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
+
+	id := "anId"
+	itemResponse, err := container.ReadItem(context.Background(), pk, id, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	var itemResponseBody map[string]string
+	err = json.Unmarshal(itemResponse.Value, &itemResponseBody)
+	if err != nil {
+		panic(err)
+	}
+
+	// Patch some property
+	patchBody := azcosmos.CreatePatchOptions()
+	patchBody.SetCondition("from c where c.id = 1")
+	patchBody.Replace("/value", "newValue")
+
+	itemResponse, err = container.PatchItem(context.Background(), pk, id, patchBody, nil)
+	if err != nil {
+		var responseErr *azcore.ResponseError
+		errors.As(err, &responseErr)
+		panic(responseErr)
+	}
+
+	fmt.Printf("Item replaced. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
+}
+
 func ExampleContainerClient_DeleteItem() {
 	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
 	if !ok {

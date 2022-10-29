@@ -132,25 +132,15 @@ func TestItemCRUD(t *testing.T) {
 		t.Fatalf("Expected value to be 4, got %v", itemResponseBody["value"])
 	}
 
-	patchItem := map[string]any{
-		"operations": []struct {
-			Op    string `json:"op"`
-			Path  string `json:"path"`
-			Value int    `json:"value"`
-		}{
-			{
-				Op:    "replace",
-				Path:  "/value",
-				Value: 5,
-			},
-		},
-	}
-	marshalled, err = json.Marshal(patchItem)
-	if err != nil {
-		t.Fatal(err)
-	}
+	patchItem := CreatePatchOptions()
+	patchItem.SetCondition("from c where c.id = 1")
+	patchItem.Replace("/value", 5)
+	patchItem.Set("/hello", "world")
+	patchItem.Add("/foo", "bar")
+	patchItem.Remove("/value")
+	patchItem.Increment("/count", 1)
 
-	itemResponse, err = container.PatchItem(context.TODO(), pk, "1", marshalled, nil)
+	itemResponse, err = container.PatchItem(context.TODO(), pk, "1", patchItem, nil)
 	if err != nil {
 		t.Fatalf("Failed to patch item: %v", err)
 	}

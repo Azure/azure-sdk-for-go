@@ -5,7 +5,6 @@ package azcosmos
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -369,7 +368,7 @@ func (c *ContainerClient) PatchItem(
 	ctx context.Context,
 	partitionKey PartitionKey,
 	itemId string,
-	item []byte,
+	item *PatchOptions,
 	o *ItemOptions) (ItemResponse, error) {
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
@@ -401,182 +400,6 @@ func (c *ContainerClient) PatchItem(
 	}
 
 	return newItemResponse(azResponse)
-}
-
-// PatchIncrementItem increments a value at the target path within an item in a Cosmos container.
-// ctx - The context for the request.
-// partitionKey - The partition key for the item.
-// itemId - The id of the item to patch.
-// path - The path within the item.
-// value - The value which will be incremented.
-// o - Options for the operation.
-func (c *ContainerClient) PatchIncrementItem(
-	ctx context.Context,
-	partitionKey PartitionKey,
-	itemId string,
-	path string,
-	value interface{},
-	o *ItemOptions) (ItemResponse, error) {
-
-	patchItem := map[string]any{
-		"operations": []struct {
-			Op    string      `json:"op"`
-			Path  string      `json:"path"`
-			Value interface{} `json:"value"`
-		}{
-			{
-				Op:    "increment",
-				Path:  path,
-				Value: value,
-			},
-		},
-	}
-
-	marshalledPatch, err := json.Marshal(patchItem)
-	if err != nil {
-		return ItemResponse{}, err
-	}
-	return c.PatchItem(ctx, partitionKey, itemId, marshalledPatch, o)
-}
-
-// PatchSetItem sets a value at the target path within an item in a Cosmos container.
-// ctx - The context for the request.
-// partitionKey - The partition key for the item.
-// itemId - The id of the item to patch.
-// path - The path within the item.
-// value - The value which will be incremented.
-// o - Options for the operation.
-func (c *ContainerClient) PatchSetItem(
-	ctx context.Context,
-	partitionKey PartitionKey,
-	itemId string,
-	path string,
-	value interface{},
-	o *ItemOptions) (ItemResponse, error) {
-
-	patchItem := map[string]any{
-		"operations": []struct {
-			Op    string      `json:"op"`
-			Path  string      `json:"path"`
-			Value interface{} `json:"value"`
-		}{
-			{
-				Op:    "set",
-				Path:  path,
-				Value: value,
-			},
-		},
-	}
-
-	marshalledPatch, err := json.Marshal(patchItem)
-	if err != nil {
-		return ItemResponse{}, err
-	}
-	return c.PatchItem(ctx, partitionKey, itemId, marshalledPatch, o)
-}
-
-// PatchReplaceItem replaces the current value with a specified value at the target path within an item in a Cosmos container.
-// ctx - The context for the request.
-// partitionKey - The partition key for the item.
-// itemId - The id of the item to patch.
-// path - The path within the item.
-// value - The value which will be incremented.
-// o - Options for the operation.
-func (c *ContainerClient) PatchReplaceItem(
-	ctx context.Context,
-	partitionKey PartitionKey,
-	itemId string,
-	path string,
-	value interface{},
-	o *ItemOptions) (ItemResponse, error) {
-
-	patchItem := map[string]any{
-		"operations": []struct {
-			Op    string      `json:"op"`
-			Path  string      `json:"path"`
-			Value interface{} `json:"value"`
-		}{
-			{
-				Op:    "replace",
-				Path:  path,
-				Value: value,
-			},
-		},
-	}
-
-	marshalledPatch, err := json.Marshal(patchItem)
-	if err != nil {
-		return ItemResponse{}, err
-	}
-	return c.PatchItem(ctx, partitionKey, itemId, marshalledPatch, o)
-}
-
-// PatchAddItem adds a new object member or inserts value into array item at the target path within an item in a Cosmos container.
-// ctx - The context for the request.
-// partitionKey - The partition key for the item.
-// itemId - The id of the item to patch.
-// path - The path within the item.
-// value - The value which will be incremented.
-// o - Options for the operation.
-func (c *ContainerClient) PatchAddItem(
-	ctx context.Context,
-	partitionKey PartitionKey,
-	itemId string,
-	path string,
-	value interface{},
-	o *ItemOptions) (ItemResponse, error) {
-
-	patchItem := map[string]any{
-		"operations": []struct {
-			Op    string      `json:"op"`
-			Path  string      `json:"path"`
-			Value interface{} `json:"value"`
-		}{
-			{
-				Op:    "add",
-				Path:  path,
-				Value: value,
-			},
-		},
-	}
-
-	marshalledPatch, err := json.Marshal(patchItem)
-	if err != nil {
-		return ItemResponse{}, err
-	}
-	return c.PatchItem(ctx, partitionKey, itemId, marshalledPatch, o)
-}
-
-// PatchRemoveItem removes the specified path from an item in a Cosmos container.
-// ctx - The context for the request.
-// partitionKey - The partition key for the item.
-// itemId - The id of the item to patch.
-// path - The path within the item.
-// o - Options for the operation.
-func (c *ContainerClient) PatchRemoveItem(
-	ctx context.Context,
-	partitionKey PartitionKey,
-	itemId string,
-	path string,
-	o *ItemOptions) (ItemResponse, error) {
-
-	patchItem := map[string]any{
-		"operations": []struct {
-			Op   string `json:"op"`
-			Path string `json:"path"`
-		}{
-			{
-				Op:   "remove",
-				Path: path,
-			},
-		},
-	}
-
-	marshalledPatch, err := json.Marshal(patchItem)
-	if err != nil {
-		return ItemResponse{}, err
-	}
-	return c.PatchItem(ctx, partitionKey, itemId, marshalledPatch, o)
 }
 
 // DeleteItem deletes an item in a Cosmos container.

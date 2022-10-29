@@ -592,7 +592,9 @@ func TestContainerExecuteBatch(t *testing.T) {
 
 func TestContainerPatchItem(t *testing.T) {
 	jsonString := []byte(`{"id":"doc1","foo":"bar","hello":"world"}`)
-	patchJsonString := []byte(`{"operations":[{"op":"set","path":"/hello","value":"world"}]}`)
+	patchOpt := CreatePatchOptions()
+	patchOpt.Set("/hello", "world")
+
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(
@@ -610,7 +612,7 @@ func TestContainerPatchItem(t *testing.T) {
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
 
-	resp, err := container.PatchItem(context.TODO(), NewPartitionKeyString("1"), "doc1", patchJsonString, nil)
+	resp, err := container.PatchItem(context.TODO(), NewPartitionKeyString("1"), "doc1", patchOpt, nil)
 	if err != nil {
 		t.Fatalf("Failed to patch item: %v", err)
 	}

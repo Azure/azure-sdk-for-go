@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azcosmos
 
 // PatchOperationType defines supported values for operation types in Patch Document.
@@ -51,7 +54,7 @@ func (p *PatchOptions) Replace(path string, value interface{}) {
 	})
 }
 
-// Replace appends an add operation to the patch request.
+// Add appends an add operation to the patch request.
 func (p *PatchOptions) Add(path string, value interface{}) {
 	p.Operations = append(p.Operations, PatchOperation{
 		Op:    PatchOperationTypeAdd,
@@ -60,7 +63,7 @@ func (p *PatchOptions) Add(path string, value interface{}) {
 	})
 }
 
-// Replace appends a set operation to the patch request.
+// Set appends a set operation to the patch request.
 func (p *PatchOptions) Set(path string, value interface{}) {
 	p.Operations = append(p.Operations, PatchOperation{
 		Op:    PatchOperationTypeSet,
@@ -69,7 +72,7 @@ func (p *PatchOptions) Set(path string, value interface{}) {
 	})
 }
 
-// Replace appends a remove operation to the patch request.
+// Remove appends a remove operation to the patch request.
 func (p *PatchOptions) Remove(path string) {
 	p.Operations = append(p.Operations, PatchOperation{
 		Op:   PatchOperationTypeRemove,
@@ -77,7 +80,7 @@ func (p *PatchOptions) Remove(path string) {
 	})
 }
 
-// Replace appends an increment operation to the patch request.
+// Increment appends an increment operation to the patch request.
 func (p *PatchOptions) Increment(path string, value interface{}) {
 	p.Operations = append(p.Operations, PatchOperation{
 		Op:    PatchOperationTypeIncrement,

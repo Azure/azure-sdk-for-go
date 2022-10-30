@@ -13,26 +13,21 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/trafficmanager/armtrafficmanager/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-08-01/examples/HeatMap-GET.json
-func ExampleHeatMapClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/trafficmanager/resource-manager/Microsoft.Network/preview/2022-04-01-preview/examples/GeographicHierarchy-GET-default.json
+func ExampleGeographicHierarchiesClient_GetDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtrafficmanager.NewHeatMapClient("{subscription-id}", cred, nil)
+	client, err := armtrafficmanager.NewGeographicHierarchiesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"azuresdkfornetautoresttrafficmanager1323",
-		"azuresdkfornetautoresttrafficmanager3880",
-		&armtrafficmanager.HeatMapClientGetOptions{TopLeft: []float64{},
-			BotRight: []float64{},
-		})
+	res, err := client.GetDefault(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

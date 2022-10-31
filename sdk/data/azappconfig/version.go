@@ -8,5 +8,5 @@ package azappconfig
 
 const (
 	moduleName    = "azappconfig"
-	moduleVersion = "v0.4.3"
+	moduleVersion = "v0.4.4"
 )

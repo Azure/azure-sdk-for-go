@@ -130,10 +130,8 @@ func startMetricsTest(t *testing.T) *azquery.MetricsClient {
 	if recording.GetRecordMode() == recording.LiveMode {
 		transport := &http.Client{
 			Transport: &http.Transport{
-				ForceAttemptHTTP2: false,
 				TLSClientConfig: &tls.Config{
-					MinVersion:    tls.VersionTLS12,
-					Renegotiation: tls.RenegotiateFreelyAsClient,
+					Renegotiation: tls.RenegotiateOnceAsClient,
 				},
 			},
 		}

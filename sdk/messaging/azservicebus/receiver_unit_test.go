@@ -215,6 +215,7 @@ func TestReceiverCancellationUnitTests(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 
 		r := &Receiver{
+			idleDuration:             5 * time.Minute,
 			defaultTimeAfterFirstMsg: time.Second,
 			defaultDrainTimeout:      time.Second,
 			amqpLinks: &internal.FakeAMQPLinks{

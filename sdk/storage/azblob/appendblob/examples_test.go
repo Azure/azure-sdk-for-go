@@ -10,9 +10,12 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"log"
+	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -66,4 +69,33 @@ func Example_appendblob_Client() {
 		return
 	}
 	fmt.Println(b.String())
+}
+
+// This example shows how to set an expiry time on an existing blob
+// This operation is only allowed on Hierarchical Namespace enabled accounts.
+func Example_appendblob_SetExpiry() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	blobName := "test_append_blob_set_expiry.txt"
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/testcontainer/%s", accountName, blobName)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	handleError(err)
+
+	appendBlobClient, err := appendblob.NewClient(blobURL, cred, nil)
+	handleError(err)
+
+	// set expiry on append blob to an absolute time
+	expiryTimeAbsolute := time.Now().Add(8 * time.Hour)
+	_, err = appendBlobClient.SetExpiry(context.TODO(), blob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
+	handleError(err)
+
+	// validate set expiry operation
+	resp, err := appendBlobClient.GetProperties(context.TODO(), nil)
+	handleError(err)
+	if resp.ExpiresOn == nil || expiryTimeAbsolute.UTC().Format(http.TimeFormat) != (*resp.ExpiresOn).UTC().Format(http.TimeFormat) {
+		return
+	}
 }

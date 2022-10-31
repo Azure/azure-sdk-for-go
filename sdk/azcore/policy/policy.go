@@ -11,6 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 )
 
 // Policy represents an extensibility point for the Pipeline that can mutate the specified
@@ -41,6 +42,10 @@ type ClientOptions struct {
 
 	// Telemetry configures the built-in telemetry policy.
 	Telemetry TelemetryOptions
+
+	// TracingProvider configures the tracing provider.
+	// It defaults to a no-op tracer.
+	TracingProvider tracing.Provider
 
 	// Transport sets the transport for HTTP requests.
 	Transport Transporter

@@ -10,7 +10,7 @@
         },
         {
             "Name": "azcore",
-            "CoverageGoal": 0.85
+            "CoverageGoal": 0.92
         },
         {
             "Name": "azcosmos",

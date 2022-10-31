@@ -50,3 +50,6 @@ vendor/
 
 # api view file
 *.gosource
+
+# Default Test Proxy Assets restore directory
+.assets

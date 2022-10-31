@@ -4,6 +4,9 @@
 
 ### Features Added
 
+* Added [Set Blob Expiry API](https://learn.microsoft.com/rest/api/storageservices/set-blob-expiry).
+* Added method `ServiceClient()` to the `azblob.Client` type, allowing access to the underlying service client.
+
 ### Breaking Changes
 
 ### Bugs Fixed

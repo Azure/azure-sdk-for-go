@@ -61,6 +61,9 @@ type UndeleteResponse = generated.BlobClientUndeleteResponse
 // SetTierResponse contains the response from method BlobClient.SetTier.
 type SetTierResponse = generated.BlobClientSetTierResponse
 
+// SetExpiryResponse contains the response from method BlobClient.SetExpiry.
+type SetExpiryResponse = generated.BlobClientSetExpiryResponse
+
 // GetPropertiesResponse contains the response from method BlobClient.GetProperties.
 type GetPropertiesResponse = generated.BlobClientGetPropertiesResponse
 

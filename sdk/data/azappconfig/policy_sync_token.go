@@ -26,7 +26,7 @@ type syncTokenPolicy struct {
 }
 
 func newSyncTokenPolicy() *syncTokenPolicy {
-	return &syncTokenPolicy{}
+	return &syncTokenPolicy{syncTokens: map[string]syncToken{}}
 }
 
 func parseToken(tok string) (syncToken, error) {
@@ -95,7 +95,7 @@ func (policy *syncTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 
 	resp, err := req.Next()
 
-	if err != nil {
+	if err == nil {
 		for _, st := range resp.Header[syncTokenHeaderName] {
 			policy.addToken(st)
 		}

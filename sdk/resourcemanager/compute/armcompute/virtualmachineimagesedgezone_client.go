@@ -33,10 +33,10 @@ type VirtualMachineImagesEdgeZoneClient struct {
 }
 
 // NewVirtualMachineImagesEdgeZoneClient creates a new instance of VirtualMachineImagesEdgeZoneClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewVirtualMachineImagesEdgeZoneClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachineImagesEdgeZoneClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -59,16 +59,18 @@ func NewVirtualMachineImagesEdgeZoneClient(subscriptionID string, credential azc
 
 // Get - Gets a virtual machine image in an edge zone.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// location - The name of a supported Azure region.
-// edgeZone - The name of the edge zone.
-// publisherName - A valid image publisher.
-// offer - A valid image publisher offer.
-// skus - A valid image SKU.
-// version - A valid image SKU version.
-// options - VirtualMachineImagesEdgeZoneClientGetOptions contains the optional parameters for the VirtualMachineImagesEdgeZoneClient.Get
-// method.
+//   - location - The name of a supported Azure region.
+//   - edgeZone - The name of the edge zone.
+//   - publisherName - A valid image publisher.
+//   - offer - A valid image publisher offer.
+//   - skus - A valid image SKU.
+//   - version - A valid image SKU version.
+//   - options - VirtualMachineImagesEdgeZoneClientGetOptions contains the optional parameters for the VirtualMachineImagesEdgeZoneClient.Get
+//     method.
 func (client *VirtualMachineImagesEdgeZoneClient) Get(ctx context.Context, location string, edgeZone string, publisherName string, offer string, skus string, version string, options *VirtualMachineImagesEdgeZoneClientGetOptions) (VirtualMachineImagesEdgeZoneClientGetResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineImagesEdgeZoneClient.Get")
 	req, err := client.getCreateRequest(ctx, location, edgeZone, publisherName, offer, skus, version, options)
 	if err != nil {
 		return VirtualMachineImagesEdgeZoneClientGetResponse{}, err
@@ -136,15 +138,17 @@ func (client *VirtualMachineImagesEdgeZoneClient) getHandleResponse(resp *http.R
 
 // List - Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and SKU.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// location - The name of a supported Azure region.
-// edgeZone - The name of the edge zone.
-// publisherName - A valid image publisher.
-// offer - A valid image publisher offer.
-// skus - A valid image SKU.
-// options - VirtualMachineImagesEdgeZoneClientListOptions contains the optional parameters for the VirtualMachineImagesEdgeZoneClient.List
-// method.
+//   - location - The name of a supported Azure region.
+//   - edgeZone - The name of the edge zone.
+//   - publisherName - A valid image publisher.
+//   - offer - A valid image publisher offer.
+//   - skus - A valid image SKU.
+//   - options - VirtualMachineImagesEdgeZoneClientListOptions contains the optional parameters for the VirtualMachineImagesEdgeZoneClient.List
+//     method.
 func (client *VirtualMachineImagesEdgeZoneClient) List(ctx context.Context, location string, edgeZone string, publisherName string, offer string, skus string, options *VirtualMachineImagesEdgeZoneClientListOptions) (VirtualMachineImagesEdgeZoneClientListResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineImagesEdgeZoneClient.List")
 	req, err := client.listCreateRequest(ctx, location, edgeZone, publisherName, offer, skus, options)
 	if err != nil {
 		return VirtualMachineImagesEdgeZoneClientListResponse{}, err
@@ -217,13 +221,15 @@ func (client *VirtualMachineImagesEdgeZoneClient) listHandleResponse(resp *http.
 
 // ListOffers - Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// location - The name of a supported Azure region.
-// edgeZone - The name of the edge zone.
-// publisherName - A valid image publisher.
-// options - VirtualMachineImagesEdgeZoneClientListOffersOptions contains the optional parameters for the VirtualMachineImagesEdgeZoneClient.ListOffers
-// method.
+//   - location - The name of a supported Azure region.
+//   - edgeZone - The name of the edge zone.
+//   - publisherName - A valid image publisher.
+//   - options - VirtualMachineImagesEdgeZoneClientListOffersOptions contains the optional parameters for the VirtualMachineImagesEdgeZoneClient.ListOffers
+//     method.
 func (client *VirtualMachineImagesEdgeZoneClient) ListOffers(ctx context.Context, location string, edgeZone string, publisherName string, options *VirtualMachineImagesEdgeZoneClientListOffersOptions) (VirtualMachineImagesEdgeZoneClientListOffersResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineImagesEdgeZoneClient.ListOffers")
 	req, err := client.listOffersCreateRequest(ctx, location, edgeZone, publisherName, options)
 	if err != nil {
 		return VirtualMachineImagesEdgeZoneClientListOffersResponse{}, err
@@ -279,12 +285,14 @@ func (client *VirtualMachineImagesEdgeZoneClient) listOffersHandleResponse(resp 
 
 // ListPublishers - Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// location - The name of a supported Azure region.
-// edgeZone - The name of the edge zone.
-// options - VirtualMachineImagesEdgeZoneClientListPublishersOptions contains the optional parameters for the VirtualMachineImagesEdgeZoneClient.ListPublishers
-// method.
+//   - location - The name of a supported Azure region.
+//   - edgeZone - The name of the edge zone.
+//   - options - VirtualMachineImagesEdgeZoneClientListPublishersOptions contains the optional parameters for the VirtualMachineImagesEdgeZoneClient.ListPublishers
+//     method.
 func (client *VirtualMachineImagesEdgeZoneClient) ListPublishers(ctx context.Context, location string, edgeZone string, options *VirtualMachineImagesEdgeZoneClientListPublishersOptions) (VirtualMachineImagesEdgeZoneClientListPublishersResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineImagesEdgeZoneClient.ListPublishers")
 	req, err := client.listPublishersCreateRequest(ctx, location, edgeZone, options)
 	if err != nil {
 		return VirtualMachineImagesEdgeZoneClientListPublishersResponse{}, err
@@ -336,14 +344,16 @@ func (client *VirtualMachineImagesEdgeZoneClient) listPublishersHandleResponse(r
 
 // ListSKUs - Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// location - The name of a supported Azure region.
-// edgeZone - The name of the edge zone.
-// publisherName - A valid image publisher.
-// offer - A valid image publisher offer.
-// options - VirtualMachineImagesEdgeZoneClientListSKUsOptions contains the optional parameters for the VirtualMachineImagesEdgeZoneClient.ListSKUs
-// method.
+//   - location - The name of a supported Azure region.
+//   - edgeZone - The name of the edge zone.
+//   - publisherName - A valid image publisher.
+//   - offer - A valid image publisher offer.
+//   - options - VirtualMachineImagesEdgeZoneClientListSKUsOptions contains the optional parameters for the VirtualMachineImagesEdgeZoneClient.ListSKUs
+//     method.
 func (client *VirtualMachineImagesEdgeZoneClient) ListSKUs(ctx context.Context, location string, edgeZone string, publisherName string, offer string, options *VirtualMachineImagesEdgeZoneClientListSKUsOptions) (VirtualMachineImagesEdgeZoneClientListSKUsResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineImagesEdgeZoneClient.ListSKUs")
 	req, err := client.listSKUsCreateRequest(ctx, location, edgeZone, publisherName, offer, options)
 	if err != nil {
 		return VirtualMachineImagesEdgeZoneClientListSKUsResponse{}, err

@@ -32,10 +32,10 @@ type VirtualMachineExtensionsClient struct {
 }
 
 // NewVirtualMachineExtensionsClient creates a new instance of VirtualMachineExtensionsClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewVirtualMachineExtensionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachineExtensionsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,13 +58,14 @@ func NewVirtualMachineExtensionsClient(subscriptionID string, credential azcore.
 
 // BeginCreateOrUpdate - The operation to create or update the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// vmName - The name of the virtual machine where the extension should be created or updated.
-// vmExtensionName - The name of the virtual machine extension.
-// extensionParameters - Parameters supplied to the Create Virtual Machine Extension operation.
-// options - VirtualMachineExtensionsClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachineExtensionsClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - vmName - The name of the virtual machine where the extension should be created or updated.
+//   - vmExtensionName - The name of the virtual machine extension.
+//   - extensionParameters - Parameters supplied to the Create Virtual Machine Extension operation.
+//   - options - VirtualMachineExtensionsClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachineExtensionsClient.BeginCreateOrUpdate
+//     method.
 func (client *VirtualMachineExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension, options *VirtualMachineExtensionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[VirtualMachineExtensionsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, vmName, vmExtensionName, extensionParameters, options)
@@ -79,8 +80,10 @@ func (client *VirtualMachineExtensionsClient) BeginCreateOrUpdate(ctx context.Co
 
 // CreateOrUpdate - The operation to create or update the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *VirtualMachineExtensionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension, options *VirtualMachineExtensionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineExtensionsClient.BeginCreateOrUpdate")
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vmName, vmExtensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err
@@ -127,12 +130,13 @@ func (client *VirtualMachineExtensionsClient) createOrUpdateCreateRequest(ctx co
 
 // BeginDelete - The operation to delete the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// vmName - The name of the virtual machine where the extension should be deleted.
-// vmExtensionName - The name of the virtual machine extension.
-// options - VirtualMachineExtensionsClientBeginDeleteOptions contains the optional parameters for the VirtualMachineExtensionsClient.BeginDelete
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - vmName - The name of the virtual machine where the extension should be deleted.
+//   - vmExtensionName - The name of the virtual machine extension.
+//   - options - VirtualMachineExtensionsClientBeginDeleteOptions contains the optional parameters for the VirtualMachineExtensionsClient.BeginDelete
+//     method.
 func (client *VirtualMachineExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsClientBeginDeleteOptions) (*runtime.Poller[VirtualMachineExtensionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, vmName, vmExtensionName, options)
@@ -147,8 +151,10 @@ func (client *VirtualMachineExtensionsClient) BeginDelete(ctx context.Context, r
 
 // Delete - The operation to delete the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *VirtualMachineExtensionsClient) deleteOperation(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsClientBeginDeleteOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineExtensionsClient.BeginDelete")
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vmName, vmExtensionName, options)
 	if err != nil {
 		return nil, err
@@ -195,13 +201,15 @@ func (client *VirtualMachineExtensionsClient) deleteCreateRequest(ctx context.Co
 
 // Get - The operation to get the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// vmName - The name of the virtual machine containing the extension.
-// vmExtensionName - The name of the virtual machine extension.
-// options - VirtualMachineExtensionsClientGetOptions contains the optional parameters for the VirtualMachineExtensionsClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - vmName - The name of the virtual machine containing the extension.
+//   - vmExtensionName - The name of the virtual machine extension.
+//   - options - VirtualMachineExtensionsClientGetOptions contains the optional parameters for the VirtualMachineExtensionsClient.Get
+//     method.
 func (client *VirtualMachineExtensionsClient) Get(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsClientGetOptions) (VirtualMachineExtensionsClientGetResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineExtensionsClient.Get")
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vmName, vmExtensionName, options)
 	if err != nil {
 		return VirtualMachineExtensionsClientGetResponse{}, err
@@ -260,12 +268,14 @@ func (client *VirtualMachineExtensionsClient) getHandleResponse(resp *http.Respo
 
 // List - The operation to get all extensions of a Virtual Machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// vmName - The name of the virtual machine containing the extension.
-// options - VirtualMachineExtensionsClientListOptions contains the optional parameters for the VirtualMachineExtensionsClient.List
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - vmName - The name of the virtual machine containing the extension.
+//   - options - VirtualMachineExtensionsClientListOptions contains the optional parameters for the VirtualMachineExtensionsClient.List
+//     method.
 func (client *VirtualMachineExtensionsClient) List(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachineExtensionsClientListOptions) (VirtualMachineExtensionsClientListResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineExtensionsClient.List")
 	req, err := client.listCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
 		return VirtualMachineExtensionsClientListResponse{}, err
@@ -320,13 +330,14 @@ func (client *VirtualMachineExtensionsClient) listHandleResponse(resp *http.Resp
 
 // BeginUpdate - The operation to update the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// vmName - The name of the virtual machine where the extension should be updated.
-// vmExtensionName - The name of the virtual machine extension.
-// extensionParameters - Parameters supplied to the Update Virtual Machine Extension operation.
-// options - VirtualMachineExtensionsClientBeginUpdateOptions contains the optional parameters for the VirtualMachineExtensionsClient.BeginUpdate
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - vmName - The name of the virtual machine where the extension should be updated.
+//   - vmExtensionName - The name of the virtual machine extension.
+//   - extensionParameters - Parameters supplied to the Update Virtual Machine Extension operation.
+//   - options - VirtualMachineExtensionsClientBeginUpdateOptions contains the optional parameters for the VirtualMachineExtensionsClient.BeginUpdate
+//     method.
 func (client *VirtualMachineExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate, options *VirtualMachineExtensionsClientBeginUpdateOptions) (*runtime.Poller[VirtualMachineExtensionsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, vmName, vmExtensionName, extensionParameters, options)
@@ -341,8 +352,10 @@ func (client *VirtualMachineExtensionsClient) BeginUpdate(ctx context.Context, r
 
 // Update - The operation to update the extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *VirtualMachineExtensionsClient) update(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate, options *VirtualMachineExtensionsClientBeginUpdateOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineExtensionsClient.BeginUpdate")
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, vmName, vmExtensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err

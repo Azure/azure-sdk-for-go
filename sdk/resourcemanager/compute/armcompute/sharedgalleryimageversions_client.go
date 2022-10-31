@@ -32,10 +32,10 @@ type SharedGalleryImageVersionsClient struct {
 }
 
 // NewSharedGalleryImageVersionsClient creates a new instance of SharedGalleryImageVersionsClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSharedGalleryImageVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SharedGalleryImageVersionsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,16 +58,18 @@ func NewSharedGalleryImageVersionsClient(subscriptionID string, credential azcor
 
 // Get - Get a shared gallery image version by subscription id or tenant id.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-03-03
-// location - Resource location.
-// galleryUniqueName - The unique name of the Shared Gallery.
-// galleryImageName - The name of the Shared Gallery Image Definition from which the Image Versions are to be listed.
-// galleryImageVersionName - The name of the gallery image version to be created. Needs to follow semantic version name pattern:
-// The allowed characters are digit and period. Digits must be within the range of a 32-bit integer.
-// Format: ..
-// options - SharedGalleryImageVersionsClientGetOptions contains the optional parameters for the SharedGalleryImageVersionsClient.Get
-// method.
+//   - location - Resource location.
+//   - galleryUniqueName - The unique name of the Shared Gallery.
+//   - galleryImageName - The name of the Shared Gallery Image Definition from which the Image Versions are to be listed.
+//   - galleryImageVersionName - The name of the gallery image version to be created. Needs to follow semantic version name pattern:
+//     The allowed characters are digit and period. Digits must be within the range of a 32-bit integer.
+//     Format: ..
+//   - options - SharedGalleryImageVersionsClientGetOptions contains the optional parameters for the SharedGalleryImageVersionsClient.Get
+//     method.
 func (client *SharedGalleryImageVersionsClient) Get(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, galleryImageVersionName string, options *SharedGalleryImageVersionsClientGetOptions) (SharedGalleryImageVersionsClientGetResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SharedGalleryImageVersionsClient.Get")
 	req, err := client.getCreateRequest(ctx, location, galleryUniqueName, galleryImageName, galleryImageVersionName, options)
 	if err != nil {
 		return SharedGalleryImageVersionsClientGetResponse{}, err
@@ -126,18 +128,20 @@ func (client *SharedGalleryImageVersionsClient) getHandleResponse(resp *http.Res
 }
 
 // NewListPager - List shared gallery image versions by subscription id or tenant id.
+//
 // Generated from API version 2022-03-03
-// location - Resource location.
-// galleryUniqueName - The unique name of the Shared Gallery.
-// galleryImageName - The name of the Shared Gallery Image Definition from which the Image Versions are to be listed.
-// options - SharedGalleryImageVersionsClientListOptions contains the optional parameters for the SharedGalleryImageVersionsClient.List
-// method.
+//   - location - Resource location.
+//   - galleryUniqueName - The unique name of the Shared Gallery.
+//   - galleryImageName - The name of the Shared Gallery Image Definition from which the Image Versions are to be listed.
+//   - options - SharedGalleryImageVersionsClientListOptions contains the optional parameters for the SharedGalleryImageVersionsClient.List
+//     method.
 func (client *SharedGalleryImageVersionsClient) NewListPager(location string, galleryUniqueName string, galleryImageName string, options *SharedGalleryImageVersionsClientListOptions) *runtime.Pager[SharedGalleryImageVersionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SharedGalleryImageVersionsClientListResponse]{
 		More: func(page SharedGalleryImageVersionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SharedGalleryImageVersionsClientListResponse) (SharedGalleryImageVersionsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SharedGalleryImageVersionsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {

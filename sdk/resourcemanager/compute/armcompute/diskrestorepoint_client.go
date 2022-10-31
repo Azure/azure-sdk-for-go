@@ -32,10 +32,10 @@ type DiskRestorePointClient struct {
 }
 
 // NewDiskRestorePointClient creates a new instance of DiskRestorePointClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDiskRestorePointClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DiskRestorePointClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,13 +58,15 @@ func NewDiskRestorePointClient(subscriptionID string, credential azcore.TokenCre
 
 // Get - Get disk restorePoint resource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-02
-// resourceGroupName - The name of the resource group.
-// restorePointCollectionName - The name of the restore point collection that the disk restore point belongs.
-// vmRestorePointName - The name of the vm restore point that the disk disk restore point belongs.
-// diskRestorePointName - The name of the disk restore point created.
-// options - DiskRestorePointClientGetOptions contains the optional parameters for the DiskRestorePointClient.Get method.
+//   - resourceGroupName - The name of the resource group.
+//   - restorePointCollectionName - The name of the restore point collection that the disk restore point belongs.
+//   - vmRestorePointName - The name of the vm restore point that the disk disk restore point belongs.
+//   - diskRestorePointName - The name of the disk restore point created.
+//   - options - DiskRestorePointClientGetOptions contains the optional parameters for the DiskRestorePointClient.Get method.
 func (client *DiskRestorePointClient) Get(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *DiskRestorePointClientGetOptions) (DiskRestorePointClientGetResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskRestorePointClient.Get")
 	req, err := client.getCreateRequest(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, options)
 	if err != nil {
 		return DiskRestorePointClientGetResponse{}, err
@@ -124,14 +126,15 @@ func (client *DiskRestorePointClient) getHandleResponse(resp *http.Response) (Di
 
 // BeginGrantAccess - Grants access to a diskRestorePoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-02
-// resourceGroupName - The name of the resource group.
-// restorePointCollectionName - The name of the restore point collection that the disk restore point belongs.
-// vmRestorePointName - The name of the vm restore point that the disk disk restore point belongs.
-// diskRestorePointName - The name of the disk restore point created.
-// grantAccessData - Access data object supplied in the body of the get disk access operation.
-// options - DiskRestorePointClientBeginGrantAccessOptions contains the optional parameters for the DiskRestorePointClient.BeginGrantAccess
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - restorePointCollectionName - The name of the restore point collection that the disk restore point belongs.
+//   - vmRestorePointName - The name of the vm restore point that the disk disk restore point belongs.
+//   - diskRestorePointName - The name of the disk restore point created.
+//   - grantAccessData - Access data object supplied in the body of the get disk access operation.
+//   - options - DiskRestorePointClientBeginGrantAccessOptions contains the optional parameters for the DiskRestorePointClient.BeginGrantAccess
+//     method.
 func (client *DiskRestorePointClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, grantAccessData GrantAccessData, options *DiskRestorePointClientBeginGrantAccessOptions) (*runtime.Poller[DiskRestorePointClientGrantAccessResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.grantAccess(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, grantAccessData, options)
@@ -148,8 +151,10 @@ func (client *DiskRestorePointClient) BeginGrantAccess(ctx context.Context, reso
 
 // GrantAccess - Grants access to a diskRestorePoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-02
 func (client *DiskRestorePointClient) grantAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, grantAccessData GrantAccessData, options *DiskRestorePointClientBeginGrantAccessOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskRestorePointClient.BeginGrantAccess")
 	req, err := client.grantAccessCreateRequest(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, grantAccessData, options)
 	if err != nil {
 		return nil, err
@@ -199,18 +204,20 @@ func (client *DiskRestorePointClient) grantAccessCreateRequest(ctx context.Conte
 }
 
 // NewListByRestorePointPager - Lists diskRestorePoints under a vmRestorePoint.
+//
 // Generated from API version 2022-07-02
-// resourceGroupName - The name of the resource group.
-// restorePointCollectionName - The name of the restore point collection that the disk restore point belongs.
-// vmRestorePointName - The name of the vm restore point that the disk disk restore point belongs.
-// options - DiskRestorePointClientListByRestorePointOptions contains the optional parameters for the DiskRestorePointClient.ListByRestorePoint
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - restorePointCollectionName - The name of the restore point collection that the disk restore point belongs.
+//   - vmRestorePointName - The name of the vm restore point that the disk disk restore point belongs.
+//   - options - DiskRestorePointClientListByRestorePointOptions contains the optional parameters for the DiskRestorePointClient.ListByRestorePoint
+//     method.
 func (client *DiskRestorePointClient) NewListByRestorePointPager(resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, options *DiskRestorePointClientListByRestorePointOptions) *runtime.Pager[DiskRestorePointClientListByRestorePointResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DiskRestorePointClientListByRestorePointResponse]{
 		More: func(page DiskRestorePointClientListByRestorePointResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DiskRestorePointClientListByRestorePointResponse) (DiskRestorePointClientListByRestorePointResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskRestorePointClient.NewListByRestorePointPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -274,13 +281,14 @@ func (client *DiskRestorePointClient) listByRestorePointHandleResponse(resp *htt
 
 // BeginRevokeAccess - Revokes access to a diskRestorePoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-02
-// resourceGroupName - The name of the resource group.
-// restorePointCollectionName - The name of the restore point collection that the disk restore point belongs.
-// vmRestorePointName - The name of the vm restore point that the disk disk restore point belongs.
-// diskRestorePointName - The name of the disk restore point created.
-// options - DiskRestorePointClientBeginRevokeAccessOptions contains the optional parameters for the DiskRestorePointClient.BeginRevokeAccess
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - restorePointCollectionName - The name of the restore point collection that the disk restore point belongs.
+//   - vmRestorePointName - The name of the vm restore point that the disk disk restore point belongs.
+//   - diskRestorePointName - The name of the disk restore point created.
+//   - options - DiskRestorePointClientBeginRevokeAccessOptions contains the optional parameters for the DiskRestorePointClient.BeginRevokeAccess
+//     method.
 func (client *DiskRestorePointClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *DiskRestorePointClientBeginRevokeAccessOptions) (*runtime.Poller[DiskRestorePointClientRevokeAccessResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.revokeAccess(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, options)
@@ -297,8 +305,10 @@ func (client *DiskRestorePointClient) BeginRevokeAccess(ctx context.Context, res
 
 // RevokeAccess - Revokes access to a diskRestorePoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-07-02
 func (client *DiskRestorePointClient) revokeAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *DiskRestorePointClientBeginRevokeAccessOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiskRestorePointClient.BeginRevokeAccess")
 	req, err := client.revokeAccessCreateRequest(ctx, resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, options)
 	if err != nil {
 		return nil, err

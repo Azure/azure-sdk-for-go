@@ -32,10 +32,10 @@ type CloudServiceRoleInstancesClient struct {
 }
 
 // NewCloudServiceRoleInstancesClient creates a new instance of CloudServiceRoleInstancesClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCloudServiceRoleInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CloudServiceRoleInstancesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,12 +58,13 @@ func NewCloudServiceRoleInstancesClient(subscriptionID string, credential azcore
 
 // BeginDelete - Deletes a role instance from a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-04
-// roleInstanceName - Name of the role instance.
-// resourceGroupName - Name of the resource group.
-// cloudServiceName - Name of the cloud service.
-// options - CloudServiceRoleInstancesClientBeginDeleteOptions contains the optional parameters for the CloudServiceRoleInstancesClient.BeginDelete
-// method.
+//   - roleInstanceName - Name of the role instance.
+//   - resourceGroupName - Name of the resource group.
+//   - cloudServiceName - Name of the cloud service.
+//   - options - CloudServiceRoleInstancesClientBeginDeleteOptions contains the optional parameters for the CloudServiceRoleInstancesClient.BeginDelete
+//     method.
 func (client *CloudServiceRoleInstancesClient) BeginDelete(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginDeleteOptions) (*runtime.Poller[CloudServiceRoleInstancesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
@@ -78,8 +79,10 @@ func (client *CloudServiceRoleInstancesClient) BeginDelete(ctx context.Context, 
 
 // Delete - Deletes a role instance from a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-04
 func (client *CloudServiceRoleInstancesClient) deleteOperation(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginDeleteOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServiceRoleInstancesClient.BeginDelete")
 	req, err := client.deleteCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -126,13 +129,15 @@ func (client *CloudServiceRoleInstancesClient) deleteCreateRequest(ctx context.C
 
 // Get - Gets a role instance from a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-04
-// roleInstanceName - Name of the role instance.
-// resourceGroupName - Name of the resource group.
-// cloudServiceName - Name of the cloud service.
-// options - CloudServiceRoleInstancesClientGetOptions contains the optional parameters for the CloudServiceRoleInstancesClient.Get
-// method.
+//   - roleInstanceName - Name of the role instance.
+//   - resourceGroupName - Name of the resource group.
+//   - cloudServiceName - Name of the cloud service.
+//   - options - CloudServiceRoleInstancesClientGetOptions contains the optional parameters for the CloudServiceRoleInstancesClient.Get
+//     method.
 func (client *CloudServiceRoleInstancesClient) Get(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientGetOptions) (CloudServiceRoleInstancesClientGetResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServiceRoleInstancesClient.Get")
 	req, err := client.getCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return CloudServiceRoleInstancesClientGetResponse{}, err
@@ -191,13 +196,15 @@ func (client *CloudServiceRoleInstancesClient) getHandleResponse(resp *http.Resp
 
 // GetInstanceView - Retrieves information about the run-time state of a role instance in a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-04
-// roleInstanceName - Name of the role instance.
-// resourceGroupName - Name of the resource group.
-// cloudServiceName - Name of the cloud service.
-// options - CloudServiceRoleInstancesClientGetInstanceViewOptions contains the optional parameters for the CloudServiceRoleInstancesClient.GetInstanceView
-// method.
+//   - roleInstanceName - Name of the role instance.
+//   - resourceGroupName - Name of the resource group.
+//   - cloudServiceName - Name of the cloud service.
+//   - options - CloudServiceRoleInstancesClientGetInstanceViewOptions contains the optional parameters for the CloudServiceRoleInstancesClient.GetInstanceView
+//     method.
 func (client *CloudServiceRoleInstancesClient) GetInstanceView(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientGetInstanceViewOptions) (CloudServiceRoleInstancesClientGetInstanceViewResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServiceRoleInstancesClient.GetInstanceView")
 	req, err := client.getInstanceViewCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return CloudServiceRoleInstancesClientGetInstanceViewResponse{}, err
@@ -253,13 +260,15 @@ func (client *CloudServiceRoleInstancesClient) getInstanceViewHandleResponse(res
 
 // GetRemoteDesktopFile - Gets a remote desktop file for a role instance in a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-04
-// roleInstanceName - Name of the role instance.
-// resourceGroupName - Name of the resource group.
-// cloudServiceName - Name of the cloud service.
-// options - CloudServiceRoleInstancesClientGetRemoteDesktopFileOptions contains the optional parameters for the CloudServiceRoleInstancesClient.GetRemoteDesktopFile
-// method.
+//   - roleInstanceName - Name of the role instance.
+//   - resourceGroupName - Name of the resource group.
+//   - cloudServiceName - Name of the cloud service.
+//   - options - CloudServiceRoleInstancesClientGetRemoteDesktopFileOptions contains the optional parameters for the CloudServiceRoleInstancesClient.GetRemoteDesktopFile
+//     method.
 func (client *CloudServiceRoleInstancesClient) GetRemoteDesktopFile(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientGetRemoteDesktopFileOptions) (CloudServiceRoleInstancesClientGetRemoteDesktopFileResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServiceRoleInstancesClient.GetRemoteDesktopFile")
 	req, err := client.getRemoteDesktopFileCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return CloudServiceRoleInstancesClientGetRemoteDesktopFileResponse{}, err
@@ -307,17 +316,19 @@ func (client *CloudServiceRoleInstancesClient) getRemoteDesktopFileCreateRequest
 
 // NewListPager - Gets the list of all role instances in a cloud service. Use nextLink property in the response to get the
 // next page of role instances. Do this till nextLink is null to fetch all the role instances.
+//
 // Generated from API version 2022-04-04
-// resourceGroupName - Name of the resource group.
-// cloudServiceName - Name of the cloud service.
-// options - CloudServiceRoleInstancesClientListOptions contains the optional parameters for the CloudServiceRoleInstancesClient.List
-// method.
+//   - resourceGroupName - Name of the resource group.
+//   - cloudServiceName - Name of the cloud service.
+//   - options - CloudServiceRoleInstancesClientListOptions contains the optional parameters for the CloudServiceRoleInstancesClient.List
+//     method.
 func (client *CloudServiceRoleInstancesClient) NewListPager(resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientListOptions) *runtime.Pager[CloudServiceRoleInstancesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CloudServiceRoleInstancesClientListResponse]{
 		More: func(page CloudServiceRoleInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CloudServiceRoleInstancesClientListResponse) (CloudServiceRoleInstancesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServiceRoleInstancesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -382,12 +393,13 @@ func (client *CloudServiceRoleInstancesClient) listHandleResponse(resp *http.Res
 // or worker roles and initializes the storage resources that are used by them. If you do not
 // want to initialize storage resources, you can use Reimage Role Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-04
-// roleInstanceName - Name of the role instance.
-// resourceGroupName - Name of the resource group.
-// cloudServiceName - Name of the cloud service.
-// options - CloudServiceRoleInstancesClientBeginRebuildOptions contains the optional parameters for the CloudServiceRoleInstancesClient.BeginRebuild
-// method.
+//   - roleInstanceName - Name of the role instance.
+//   - resourceGroupName - Name of the resource group.
+//   - cloudServiceName - Name of the cloud service.
+//   - options - CloudServiceRoleInstancesClientBeginRebuildOptions contains the optional parameters for the CloudServiceRoleInstancesClient.BeginRebuild
+//     method.
 func (client *CloudServiceRoleInstancesClient) BeginRebuild(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginRebuildOptions) (*runtime.Poller[CloudServiceRoleInstancesClientRebuildResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.rebuild(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
@@ -404,8 +416,10 @@ func (client *CloudServiceRoleInstancesClient) BeginRebuild(ctx context.Context,
 // worker roles and initializes the storage resources that are used by them. If you do not
 // want to initialize storage resources, you can use Reimage Role Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-04
 func (client *CloudServiceRoleInstancesClient) rebuild(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginRebuildOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServiceRoleInstancesClient.BeginRebuild")
 	req, err := client.rebuildCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -453,12 +467,13 @@ func (client *CloudServiceRoleInstancesClient) rebuildCreateRequest(ctx context.
 // BeginReimage - The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles
 // or worker roles.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-04
-// roleInstanceName - Name of the role instance.
-// resourceGroupName - Name of the resource group.
-// cloudServiceName - Name of the cloud service.
-// options - CloudServiceRoleInstancesClientBeginReimageOptions contains the optional parameters for the CloudServiceRoleInstancesClient.BeginReimage
-// method.
+//   - roleInstanceName - Name of the role instance.
+//   - resourceGroupName - Name of the resource group.
+//   - cloudServiceName - Name of the cloud service.
+//   - options - CloudServiceRoleInstancesClientBeginReimageOptions contains the optional parameters for the CloudServiceRoleInstancesClient.BeginReimage
+//     method.
 func (client *CloudServiceRoleInstancesClient) BeginReimage(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginReimageOptions) (*runtime.Poller[CloudServiceRoleInstancesClientReimageResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.reimage(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
@@ -474,8 +489,10 @@ func (client *CloudServiceRoleInstancesClient) BeginReimage(ctx context.Context,
 // Reimage - The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
 // worker roles.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-04
 func (client *CloudServiceRoleInstancesClient) reimage(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginReimageOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServiceRoleInstancesClient.BeginReimage")
 	req, err := client.reimageCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err
@@ -522,12 +539,13 @@ func (client *CloudServiceRoleInstancesClient) reimageCreateRequest(ctx context.
 
 // BeginRestart - The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-04
-// roleInstanceName - Name of the role instance.
-// resourceGroupName - Name of the resource group.
-// cloudServiceName - Name of the cloud service.
-// options - CloudServiceRoleInstancesClientBeginRestartOptions contains the optional parameters for the CloudServiceRoleInstancesClient.BeginRestart
-// method.
+//   - roleInstanceName - Name of the role instance.
+//   - resourceGroupName - Name of the resource group.
+//   - cloudServiceName - Name of the cloud service.
+//   - options - CloudServiceRoleInstancesClientBeginRestartOptions contains the optional parameters for the CloudServiceRoleInstancesClient.BeginRestart
+//     method.
 func (client *CloudServiceRoleInstancesClient) BeginRestart(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginRestartOptions) (*runtime.Poller[CloudServiceRoleInstancesClientRestartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.restart(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
@@ -542,8 +560,10 @@ func (client *CloudServiceRoleInstancesClient) BeginRestart(ctx context.Context,
 
 // Restart - The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-04
 func (client *CloudServiceRoleInstancesClient) restart(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *CloudServiceRoleInstancesClientBeginRestartOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServiceRoleInstancesClient.BeginRestart")
 	req, err := client.restartCreateRequest(ctx, roleInstanceName, resourceGroupName, cloudServiceName, options)
 	if err != nil {
 		return nil, err

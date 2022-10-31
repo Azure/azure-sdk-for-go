@@ -32,10 +32,10 @@ type VirtualMachineRunCommandsClient struct {
 }
 
 // NewVirtualMachineRunCommandsClient creates a new instance of VirtualMachineRunCommandsClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewVirtualMachineRunCommandsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachineRunCommandsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,13 +58,14 @@ func NewVirtualMachineRunCommandsClient(subscriptionID string, credential azcore
 
 // BeginCreateOrUpdate - The operation to create or update the run command.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// vmName - The name of the virtual machine where the run command should be created or updated.
-// runCommandName - The name of the virtual machine run command.
-// runCommand - Parameters supplied to the Create Virtual Machine RunCommand operation.
-// options - VirtualMachineRunCommandsClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachineRunCommandsClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - vmName - The name of the virtual machine where the run command should be created or updated.
+//   - runCommandName - The name of the virtual machine run command.
+//   - runCommand - Parameters supplied to the Create Virtual Machine RunCommand operation.
+//   - options - VirtualMachineRunCommandsClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachineRunCommandsClient.BeginCreateOrUpdate
+//     method.
 func (client *VirtualMachineRunCommandsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand VirtualMachineRunCommand, options *VirtualMachineRunCommandsClientBeginCreateOrUpdateOptions) (*runtime.Poller[VirtualMachineRunCommandsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, vmName, runCommandName, runCommand, options)
@@ -79,8 +80,10 @@ func (client *VirtualMachineRunCommandsClient) BeginCreateOrUpdate(ctx context.C
 
 // CreateOrUpdate - The operation to create or update the run command.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *VirtualMachineRunCommandsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand VirtualMachineRunCommand, options *VirtualMachineRunCommandsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineRunCommandsClient.BeginCreateOrUpdate")
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vmName, runCommandName, runCommand, options)
 	if err != nil {
 		return nil, err
@@ -127,12 +130,13 @@ func (client *VirtualMachineRunCommandsClient) createOrUpdateCreateRequest(ctx c
 
 // BeginDelete - The operation to delete the run command.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// vmName - The name of the virtual machine where the run command should be deleted.
-// runCommandName - The name of the virtual machine run command.
-// options - VirtualMachineRunCommandsClientBeginDeleteOptions contains the optional parameters for the VirtualMachineRunCommandsClient.BeginDelete
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - vmName - The name of the virtual machine where the run command should be deleted.
+//   - runCommandName - The name of the virtual machine run command.
+//   - options - VirtualMachineRunCommandsClientBeginDeleteOptions contains the optional parameters for the VirtualMachineRunCommandsClient.BeginDelete
+//     method.
 func (client *VirtualMachineRunCommandsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, options *VirtualMachineRunCommandsClientBeginDeleteOptions) (*runtime.Poller[VirtualMachineRunCommandsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, vmName, runCommandName, options)
@@ -147,8 +151,10 @@ func (client *VirtualMachineRunCommandsClient) BeginDelete(ctx context.Context, 
 
 // Delete - The operation to delete the run command.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *VirtualMachineRunCommandsClient) deleteOperation(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, options *VirtualMachineRunCommandsClientBeginDeleteOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineRunCommandsClient.BeginDelete")
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vmName, runCommandName, options)
 	if err != nil {
 		return nil, err
@@ -195,12 +201,14 @@ func (client *VirtualMachineRunCommandsClient) deleteCreateRequest(ctx context.C
 
 // Get - Gets specific run command for a subscription in a location.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// location - The location upon which run commands is queried.
-// commandID - The command id.
-// options - VirtualMachineRunCommandsClientGetOptions contains the optional parameters for the VirtualMachineRunCommandsClient.Get
-// method.
+//   - location - The location upon which run commands is queried.
+//   - commandID - The command id.
+//   - options - VirtualMachineRunCommandsClientGetOptions contains the optional parameters for the VirtualMachineRunCommandsClient.Get
+//     method.
 func (client *VirtualMachineRunCommandsClient) Get(ctx context.Context, location string, commandID string, options *VirtualMachineRunCommandsClientGetOptions) (VirtualMachineRunCommandsClientGetResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineRunCommandsClient.Get")
 	req, err := client.getCreateRequest(ctx, location, commandID, options)
 	if err != nil {
 		return VirtualMachineRunCommandsClientGetResponse{}, err
@@ -252,13 +260,15 @@ func (client *VirtualMachineRunCommandsClient) getHandleResponse(resp *http.Resp
 
 // GetByVirtualMachine - The operation to get the run command.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// vmName - The name of the virtual machine containing the run command.
-// runCommandName - The name of the virtual machine run command.
-// options - VirtualMachineRunCommandsClientGetByVirtualMachineOptions contains the optional parameters for the VirtualMachineRunCommandsClient.GetByVirtualMachine
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - vmName - The name of the virtual machine containing the run command.
+//   - runCommandName - The name of the virtual machine run command.
+//   - options - VirtualMachineRunCommandsClientGetByVirtualMachineOptions contains the optional parameters for the VirtualMachineRunCommandsClient.GetByVirtualMachine
+//     method.
 func (client *VirtualMachineRunCommandsClient) GetByVirtualMachine(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, options *VirtualMachineRunCommandsClientGetByVirtualMachineOptions) (VirtualMachineRunCommandsClientGetByVirtualMachineResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineRunCommandsClient.GetByVirtualMachine")
 	req, err := client.getByVirtualMachineCreateRequest(ctx, resourceGroupName, vmName, runCommandName, options)
 	if err != nil {
 		return VirtualMachineRunCommandsClientGetByVirtualMachineResponse{}, err
@@ -316,16 +326,18 @@ func (client *VirtualMachineRunCommandsClient) getByVirtualMachineHandleResponse
 }
 
 // NewListPager - Lists all available run commands for a subscription in a location.
+//
 // Generated from API version 2022-08-01
-// location - The location upon which run commands is queried.
-// options - VirtualMachineRunCommandsClientListOptions contains the optional parameters for the VirtualMachineRunCommandsClient.List
-// method.
+//   - location - The location upon which run commands is queried.
+//   - options - VirtualMachineRunCommandsClientListOptions contains the optional parameters for the VirtualMachineRunCommandsClient.List
+//     method.
 func (client *VirtualMachineRunCommandsClient) NewListPager(location string, options *VirtualMachineRunCommandsClientListOptions) *runtime.Pager[VirtualMachineRunCommandsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[VirtualMachineRunCommandsClientListResponse]{
 		More: func(page VirtualMachineRunCommandsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *VirtualMachineRunCommandsClientListResponse) (VirtualMachineRunCommandsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineRunCommandsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -380,17 +392,19 @@ func (client *VirtualMachineRunCommandsClient) listHandleResponse(resp *http.Res
 }
 
 // NewListByVirtualMachinePager - The operation to get all run commands of a Virtual Machine.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// vmName - The name of the virtual machine containing the run command.
-// options - VirtualMachineRunCommandsClientListByVirtualMachineOptions contains the optional parameters for the VirtualMachineRunCommandsClient.ListByVirtualMachine
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - vmName - The name of the virtual machine containing the run command.
+//   - options - VirtualMachineRunCommandsClientListByVirtualMachineOptions contains the optional parameters for the VirtualMachineRunCommandsClient.ListByVirtualMachine
+//     method.
 func (client *VirtualMachineRunCommandsClient) NewListByVirtualMachinePager(resourceGroupName string, vmName string, options *VirtualMachineRunCommandsClientListByVirtualMachineOptions) *runtime.Pager[VirtualMachineRunCommandsClientListByVirtualMachineResponse] {
 	return runtime.NewPager(runtime.PagingHandler[VirtualMachineRunCommandsClientListByVirtualMachineResponse]{
 		More: func(page VirtualMachineRunCommandsClientListByVirtualMachineResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *VirtualMachineRunCommandsClientListByVirtualMachineResponse) (VirtualMachineRunCommandsClientListByVirtualMachineResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineRunCommandsClient.NewListByVirtualMachinePager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -453,13 +467,14 @@ func (client *VirtualMachineRunCommandsClient) listByVirtualMachineHandleRespons
 
 // BeginUpdate - The operation to update the run command.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// vmName - The name of the virtual machine where the run command should be updated.
-// runCommandName - The name of the virtual machine run command.
-// runCommand - Parameters supplied to the Update Virtual Machine RunCommand operation.
-// options - VirtualMachineRunCommandsClientBeginUpdateOptions contains the optional parameters for the VirtualMachineRunCommandsClient.BeginUpdate
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - vmName - The name of the virtual machine where the run command should be updated.
+//   - runCommandName - The name of the virtual machine run command.
+//   - runCommand - Parameters supplied to the Update Virtual Machine RunCommand operation.
+//   - options - VirtualMachineRunCommandsClientBeginUpdateOptions contains the optional parameters for the VirtualMachineRunCommandsClient.BeginUpdate
+//     method.
 func (client *VirtualMachineRunCommandsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineRunCommandsClientBeginUpdateOptions) (*runtime.Poller[VirtualMachineRunCommandsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, vmName, runCommandName, runCommand, options)
@@ -474,8 +489,10 @@ func (client *VirtualMachineRunCommandsClient) BeginUpdate(ctx context.Context, 
 
 // Update - The operation to update the run command.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *VirtualMachineRunCommandsClient) update(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineRunCommandsClientBeginUpdateOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineRunCommandsClient.BeginUpdate")
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, vmName, runCommandName, runCommand, options)
 	if err != nil {
 		return nil, err

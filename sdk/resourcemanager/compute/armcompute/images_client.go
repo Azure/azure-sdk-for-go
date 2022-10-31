@@ -32,10 +32,10 @@ type ImagesClient struct {
 }
 
 // NewImagesClient creates a new instance of ImagesClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImagesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,12 +58,13 @@ func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // BeginCreateOrUpdate - Create or update an image.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// imageName - The name of the image.
-// parameters - Parameters supplied to the Create Image operation.
-// options - ImagesClientBeginCreateOrUpdateOptions contains the optional parameters for the ImagesClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - imageName - The name of the image.
+//   - parameters - Parameters supplied to the Create Image operation.
+//   - options - ImagesClientBeginCreateOrUpdateOptions contains the optional parameters for the ImagesClient.BeginCreateOrUpdate
+//     method.
 func (client *ImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters Image, options *ImagesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ImagesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, imageName, parameters, options)
@@ -78,8 +79,10 @@ func (client *ImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 
 // CreateOrUpdate - Create or update an image.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *ImagesClient) createOrUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters Image, options *ImagesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ImagesClient.BeginCreateOrUpdate")
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, imageName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -122,10 +125,11 @@ func (client *ImagesClient) createOrUpdateCreateRequest(ctx context.Context, res
 
 // BeginDelete - Deletes an Image.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// imageName - The name of the image.
-// options - ImagesClientBeginDeleteOptions contains the optional parameters for the ImagesClient.BeginDelete method.
+//   - resourceGroupName - The name of the resource group.
+//   - imageName - The name of the image.
+//   - options - ImagesClientBeginDeleteOptions contains the optional parameters for the ImagesClient.BeginDelete method.
 func (client *ImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, imageName string, options *ImagesClientBeginDeleteOptions) (*runtime.Poller[ImagesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, imageName, options)
@@ -140,8 +144,10 @@ func (client *ImagesClient) BeginDelete(ctx context.Context, resourceGroupName s
 
 // Delete - Deletes an Image.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *ImagesClient) deleteOperation(ctx context.Context, resourceGroupName string, imageName string, options *ImagesClientBeginDeleteOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ImagesClient.BeginDelete")
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, imageName, options)
 	if err != nil {
 		return nil, err
@@ -184,11 +190,13 @@ func (client *ImagesClient) deleteCreateRequest(ctx context.Context, resourceGro
 
 // Get - Gets an image.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// imageName - The name of the image.
-// options - ImagesClientGetOptions contains the optional parameters for the ImagesClient.Get method.
+//   - resourceGroupName - The name of the resource group.
+//   - imageName - The name of the image.
+//   - options - ImagesClientGetOptions contains the optional parameters for the ImagesClient.Get method.
 func (client *ImagesClient) Get(ctx context.Context, resourceGroupName string, imageName string, options *ImagesClientGetOptions) (ImagesClientGetResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ImagesClient.Get")
 	req, err := client.getCreateRequest(ctx, resourceGroupName, imageName, options)
 	if err != nil {
 		return ImagesClientGetResponse{}, err
@@ -243,14 +251,16 @@ func (client *ImagesClient) getHandleResponse(resp *http.Response) (ImagesClient
 
 // NewListPager - Gets the list of Images in the subscription. Use nextLink property in the response to get the next page
 // of Images. Do this till nextLink is null to fetch all the Images.
+//
 // Generated from API version 2022-08-01
-// options - ImagesClientListOptions contains the optional parameters for the ImagesClient.List method.
+//   - options - ImagesClientListOptions contains the optional parameters for the ImagesClient.List method.
 func (client *ImagesClient) NewListPager(options *ImagesClientListOptions) *runtime.Pager[ImagesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ImagesClientListResponse]{
 		More: func(page ImagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ImagesClientListResponse) (ImagesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ImagesClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -301,16 +311,18 @@ func (client *ImagesClient) listHandleResponse(resp *http.Response) (ImagesClien
 }
 
 // NewListByResourceGroupPager - Gets the list of images under a resource group.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// options - ImagesClientListByResourceGroupOptions contains the optional parameters for the ImagesClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - options - ImagesClientListByResourceGroupOptions contains the optional parameters for the ImagesClient.ListByResourceGroup
+//     method.
 func (client *ImagesClient) NewListByResourceGroupPager(resourceGroupName string, options *ImagesClientListByResourceGroupOptions) *runtime.Pager[ImagesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ImagesClientListByResourceGroupResponse]{
 		More: func(page ImagesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ImagesClientListByResourceGroupResponse) (ImagesClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ImagesClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -366,11 +378,12 @@ func (client *ImagesClient) listByResourceGroupHandleResponse(resp *http.Respons
 
 // BeginUpdate - Update an image.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// imageName - The name of the image.
-// parameters - Parameters supplied to the Update Image operation.
-// options - ImagesClientBeginUpdateOptions contains the optional parameters for the ImagesClient.BeginUpdate method.
+//   - resourceGroupName - The name of the resource group.
+//   - imageName - The name of the image.
+//   - parameters - Parameters supplied to the Update Image operation.
+//   - options - ImagesClientBeginUpdateOptions contains the optional parameters for the ImagesClient.BeginUpdate method.
 func (client *ImagesClient) BeginUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate, options *ImagesClientBeginUpdateOptions) (*runtime.Poller[ImagesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, imageName, parameters, options)
@@ -385,8 +398,10 @@ func (client *ImagesClient) BeginUpdate(ctx context.Context, resourceGroupName s
 
 // Update - Update an image.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *ImagesClient) update(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate, options *ImagesClientBeginUpdateOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ImagesClient.BeginUpdate")
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, imageName, parameters, options)
 	if err != nil {
 		return nil, err

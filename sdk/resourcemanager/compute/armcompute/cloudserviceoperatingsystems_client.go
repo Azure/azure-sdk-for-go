@@ -32,10 +32,10 @@ type CloudServiceOperatingSystemsClient struct {
 }
 
 // NewCloudServiceOperatingSystemsClient creates a new instance of CloudServiceOperatingSystemsClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCloudServiceOperatingSystemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CloudServiceOperatingSystemsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -59,12 +59,14 @@ func NewCloudServiceOperatingSystemsClient(subscriptionID string, credential azc
 // GetOSFamily - Gets properties of a guest operating system family that can be specified in the XML service configuration
 // (.cscfg) for a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-04
-// location - Name of the location that the OS family pertains to.
-// osFamilyName - Name of the OS family.
-// options - CloudServiceOperatingSystemsClientGetOSFamilyOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.GetOSFamily
-// method.
+//   - location - Name of the location that the OS family pertains to.
+//   - osFamilyName - Name of the OS family.
+//   - options - CloudServiceOperatingSystemsClientGetOSFamilyOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.GetOSFamily
+//     method.
 func (client *CloudServiceOperatingSystemsClient) GetOSFamily(ctx context.Context, location string, osFamilyName string, options *CloudServiceOperatingSystemsClientGetOSFamilyOptions) (CloudServiceOperatingSystemsClientGetOSFamilyResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServiceOperatingSystemsClient.GetOSFamily")
 	req, err := client.getOSFamilyCreateRequest(ctx, location, osFamilyName, options)
 	if err != nil {
 		return CloudServiceOperatingSystemsClientGetOSFamilyResponse{}, err
@@ -117,12 +119,14 @@ func (client *CloudServiceOperatingSystemsClient) getOSFamilyHandleResponse(resp
 // GetOSVersion - Gets properties of a guest operating system version that can be specified in the XML service configuration
 // (.cscfg) for a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-04
-// location - Name of the location that the OS version pertains to.
-// osVersionName - Name of the OS version.
-// options - CloudServiceOperatingSystemsClientGetOSVersionOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.GetOSVersion
-// method.
+//   - location - Name of the location that the OS version pertains to.
+//   - osVersionName - Name of the OS version.
+//   - options - CloudServiceOperatingSystemsClientGetOSVersionOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.GetOSVersion
+//     method.
 func (client *CloudServiceOperatingSystemsClient) GetOSVersion(ctx context.Context, location string, osVersionName string, options *CloudServiceOperatingSystemsClientGetOSVersionOptions) (CloudServiceOperatingSystemsClientGetOSVersionResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServiceOperatingSystemsClient.GetOSVersion")
 	req, err := client.getOSVersionCreateRequest(ctx, location, osVersionName, options)
 	if err != nil {
 		return CloudServiceOperatingSystemsClientGetOSVersionResponse{}, err
@@ -175,16 +179,18 @@ func (client *CloudServiceOperatingSystemsClient) getOSVersionHandleResponse(res
 // NewListOSFamiliesPager - Gets a list of all guest operating system families available to be specified in the XML service
 // configuration (.cscfg) for a cloud service. Use nextLink property in the response to get the next page
 // of OS Families. Do this till nextLink is null to fetch all the OS Families.
+//
 // Generated from API version 2022-04-04
-// location - Name of the location that the OS families pertain to.
-// options - CloudServiceOperatingSystemsClientListOSFamiliesOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.ListOSFamilies
-// method.
+//   - location - Name of the location that the OS families pertain to.
+//   - options - CloudServiceOperatingSystemsClientListOSFamiliesOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.ListOSFamilies
+//     method.
 func (client *CloudServiceOperatingSystemsClient) NewListOSFamiliesPager(location string, options *CloudServiceOperatingSystemsClientListOSFamiliesOptions) *runtime.Pager[CloudServiceOperatingSystemsClientListOSFamiliesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CloudServiceOperatingSystemsClientListOSFamiliesResponse]{
 		More: func(page CloudServiceOperatingSystemsClientListOSFamiliesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CloudServiceOperatingSystemsClientListOSFamiliesResponse) (CloudServiceOperatingSystemsClientListOSFamiliesResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServiceOperatingSystemsClient.NewListOSFamiliesPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -241,16 +247,18 @@ func (client *CloudServiceOperatingSystemsClient) listOSFamiliesHandleResponse(r
 // NewListOSVersionsPager - Gets a list of all guest operating system versions available to be specified in the XML service
 // configuration (.cscfg) for a cloud service. Use nextLink property in the response to get the next page
 // of OS versions. Do this till nextLink is null to fetch all the OS versions.
+//
 // Generated from API version 2022-04-04
-// location - Name of the location that the OS versions pertain to.
-// options - CloudServiceOperatingSystemsClientListOSVersionsOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.ListOSVersions
-// method.
+//   - location - Name of the location that the OS versions pertain to.
+//   - options - CloudServiceOperatingSystemsClientListOSVersionsOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.ListOSVersions
+//     method.
 func (client *CloudServiceOperatingSystemsClient) NewListOSVersionsPager(location string, options *CloudServiceOperatingSystemsClientListOSVersionsOptions) *runtime.Pager[CloudServiceOperatingSystemsClientListOSVersionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CloudServiceOperatingSystemsClientListOSVersionsResponse]{
 		More: func(page CloudServiceOperatingSystemsClientListOSVersionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CloudServiceOperatingSystemsClientListOSVersionsResponse) (CloudServiceOperatingSystemsClientListOSVersionsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudServiceOperatingSystemsClient.NewListOSVersionsPager")
 			var req *policy.Request
 			var err error
 			if page == nil {

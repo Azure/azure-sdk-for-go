@@ -32,10 +32,10 @@ type CommunityGalleriesClient struct {
 }
 
 // NewCommunityGalleriesClient creates a new instance of CommunityGalleriesClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCommunityGalleriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CommunityGalleriesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,11 +58,13 @@ func NewCommunityGalleriesClient(subscriptionID string, credential azcore.TokenC
 
 // Get - Get a community gallery by gallery public name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-03-03
-// location - Resource location.
-// publicGalleryName - The public name of the community gallery.
-// options - CommunityGalleriesClientGetOptions contains the optional parameters for the CommunityGalleriesClient.Get method.
+//   - location - Resource location.
+//   - publicGalleryName - The public name of the community gallery.
+//   - options - CommunityGalleriesClientGetOptions contains the optional parameters for the CommunityGalleriesClient.Get method.
 func (client *CommunityGalleriesClient) Get(ctx context.Context, location string, publicGalleryName string, options *CommunityGalleriesClientGetOptions) (CommunityGalleriesClientGetResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CommunityGalleriesClient.Get")
 	req, err := client.getCreateRequest(ctx, location, publicGalleryName, options)
 	if err != nil {
 		return CommunityGalleriesClientGetResponse{}, err

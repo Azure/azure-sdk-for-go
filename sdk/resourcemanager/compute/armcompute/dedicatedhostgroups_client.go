@@ -32,10 +32,10 @@ type DedicatedHostGroupsClient struct {
 }
 
 // NewDedicatedHostGroupsClient creates a new instance of DedicatedHostGroupsClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDedicatedHostGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DedicatedHostGroupsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -59,13 +59,15 @@ func NewDedicatedHostGroupsClient(subscriptionID string, credential azcore.Token
 // CreateOrUpdate - Create or update a dedicated host group. For details of Dedicated Host and Dedicated Host Groups please
 // see Dedicated Host Documentation [https://go.microsoft.com/fwlink/?linkid=2082596]
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// hostGroupName - The name of the dedicated host group.
-// parameters - Parameters supplied to the Create Dedicated Host Group.
-// options - DedicatedHostGroupsClientCreateOrUpdateOptions contains the optional parameters for the DedicatedHostGroupsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - hostGroupName - The name of the dedicated host group.
+//   - parameters - Parameters supplied to the Create Dedicated Host Group.
+//   - options - DedicatedHostGroupsClientCreateOrUpdateOptions contains the optional parameters for the DedicatedHostGroupsClient.CreateOrUpdate
+//     method.
 func (client *DedicatedHostGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, parameters DedicatedHostGroup, options *DedicatedHostGroupsClientCreateOrUpdateOptions) (DedicatedHostGroupsClientCreateOrUpdateResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DedicatedHostGroupsClient.CreateOrUpdate")
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, hostGroupName, parameters, options)
 	if err != nil {
 		return DedicatedHostGroupsClientCreateOrUpdateResponse{}, err
@@ -117,12 +119,14 @@ func (client *DedicatedHostGroupsClient) createOrUpdateHandleResponse(resp *http
 
 // Delete - Delete a dedicated host group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// hostGroupName - The name of the dedicated host group.
-// options - DedicatedHostGroupsClientDeleteOptions contains the optional parameters for the DedicatedHostGroupsClient.Delete
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - hostGroupName - The name of the dedicated host group.
+//   - options - DedicatedHostGroupsClientDeleteOptions contains the optional parameters for the DedicatedHostGroupsClient.Delete
+//     method.
 func (client *DedicatedHostGroupsClient) Delete(ctx context.Context, resourceGroupName string, hostGroupName string, options *DedicatedHostGroupsClientDeleteOptions) (DedicatedHostGroupsClientDeleteResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DedicatedHostGroupsClient.Delete")
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, hostGroupName, options)
 	if err != nil {
 		return DedicatedHostGroupsClientDeleteResponse{}, err
@@ -165,11 +169,13 @@ func (client *DedicatedHostGroupsClient) deleteCreateRequest(ctx context.Context
 
 // Get - Retrieves information about a dedicated host group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// hostGroupName - The name of the dedicated host group.
-// options - DedicatedHostGroupsClientGetOptions contains the optional parameters for the DedicatedHostGroupsClient.Get method.
+//   - resourceGroupName - The name of the resource group.
+//   - hostGroupName - The name of the dedicated host group.
+//   - options - DedicatedHostGroupsClientGetOptions contains the optional parameters for the DedicatedHostGroupsClient.Get method.
 func (client *DedicatedHostGroupsClient) Get(ctx context.Context, resourceGroupName string, hostGroupName string, options *DedicatedHostGroupsClientGetOptions) (DedicatedHostGroupsClientGetResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DedicatedHostGroupsClient.Get")
 	req, err := client.getCreateRequest(ctx, resourceGroupName, hostGroupName, options)
 	if err != nil {
 		return DedicatedHostGroupsClientGetResponse{}, err
@@ -224,16 +230,18 @@ func (client *DedicatedHostGroupsClient) getHandleResponse(resp *http.Response) 
 
 // NewListByResourceGroupPager - Lists all of the dedicated host groups in the specified resource group. Use the nextLink
 // property in the response to get the next page of dedicated host groups.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// options - DedicatedHostGroupsClientListByResourceGroupOptions contains the optional parameters for the DedicatedHostGroupsClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - options - DedicatedHostGroupsClientListByResourceGroupOptions contains the optional parameters for the DedicatedHostGroupsClient.ListByResourceGroup
+//     method.
 func (client *DedicatedHostGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *DedicatedHostGroupsClientListByResourceGroupOptions) *runtime.Pager[DedicatedHostGroupsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DedicatedHostGroupsClientListByResourceGroupResponse]{
 		More: func(page DedicatedHostGroupsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DedicatedHostGroupsClientListByResourceGroupResponse) (DedicatedHostGroupsClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DedicatedHostGroupsClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -289,15 +297,17 @@ func (client *DedicatedHostGroupsClient) listByResourceGroupHandleResponse(resp 
 
 // NewListBySubscriptionPager - Lists all of the dedicated host groups in the subscription. Use the nextLink property in the
 // response to get the next page of dedicated host groups.
+//
 // Generated from API version 2022-08-01
-// options - DedicatedHostGroupsClientListBySubscriptionOptions contains the optional parameters for the DedicatedHostGroupsClient.ListBySubscription
-// method.
+//   - options - DedicatedHostGroupsClientListBySubscriptionOptions contains the optional parameters for the DedicatedHostGroupsClient.ListBySubscription
+//     method.
 func (client *DedicatedHostGroupsClient) NewListBySubscriptionPager(options *DedicatedHostGroupsClientListBySubscriptionOptions) *runtime.Pager[DedicatedHostGroupsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DedicatedHostGroupsClientListBySubscriptionResponse]{
 		More: func(page DedicatedHostGroupsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DedicatedHostGroupsClientListBySubscriptionResponse) (DedicatedHostGroupsClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DedicatedHostGroupsClient.NewListBySubscriptionPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -349,13 +359,15 @@ func (client *DedicatedHostGroupsClient) listBySubscriptionHandleResponse(resp *
 
 // Update - Update an dedicated host group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// hostGroupName - The name of the dedicated host group.
-// parameters - Parameters supplied to the Update Dedicated Host Group operation.
-// options - DedicatedHostGroupsClientUpdateOptions contains the optional parameters for the DedicatedHostGroupsClient.Update
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - hostGroupName - The name of the dedicated host group.
+//   - parameters - Parameters supplied to the Update Dedicated Host Group operation.
+//   - options - DedicatedHostGroupsClientUpdateOptions contains the optional parameters for the DedicatedHostGroupsClient.Update
+//     method.
 func (client *DedicatedHostGroupsClient) Update(ctx context.Context, resourceGroupName string, hostGroupName string, parameters DedicatedHostGroupUpdate, options *DedicatedHostGroupsClientUpdateOptions) (DedicatedHostGroupsClientUpdateResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DedicatedHostGroupsClient.Update")
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, hostGroupName, parameters, options)
 	if err != nil {
 		return DedicatedHostGroupsClientUpdateResponse{}, err

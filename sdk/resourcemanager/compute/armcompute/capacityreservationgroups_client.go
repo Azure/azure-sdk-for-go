@@ -32,10 +32,10 @@ type CapacityReservationGroupsClient struct {
 }
 
 // NewCapacityReservationGroupsClient creates a new instance of CapacityReservationGroupsClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCapacityReservationGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CapacityReservationGroupsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -60,13 +60,15 @@ func NewCapacityReservationGroupsClient(subscriptionID string, credential azcore
 // only tags may be modified. Please refer to https://aka.ms/CapacityReservation for more
 // details.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// capacityReservationGroupName - The name of the capacity reservation group.
-// parameters - Parameters supplied to the Create capacity reservation Group.
-// options - CapacityReservationGroupsClientCreateOrUpdateOptions contains the optional parameters for the CapacityReservationGroupsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - capacityReservationGroupName - The name of the capacity reservation group.
+//   - parameters - Parameters supplied to the Create capacity reservation Group.
+//   - options - CapacityReservationGroupsClientCreateOrUpdateOptions contains the optional parameters for the CapacityReservationGroupsClient.CreateOrUpdate
+//     method.
 func (client *CapacityReservationGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, parameters CapacityReservationGroup, options *CapacityReservationGroupsClientCreateOrUpdateOptions) (CapacityReservationGroupsClientCreateOrUpdateResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CapacityReservationGroupsClient.CreateOrUpdate")
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, capacityReservationGroupName, parameters, options)
 	if err != nil {
 		return CapacityReservationGroupsClientCreateOrUpdateResponse{}, err
@@ -120,12 +122,14 @@ func (client *CapacityReservationGroupsClient) createOrUpdateHandleResponse(resp
 // are disassociated from the reservation group and all capacity reservations under
 // the reservation group have also been deleted. Please refer to https://aka.ms/CapacityReservation for more details.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// capacityReservationGroupName - The name of the capacity reservation group.
-// options - CapacityReservationGroupsClientDeleteOptions contains the optional parameters for the CapacityReservationGroupsClient.Delete
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - capacityReservationGroupName - The name of the capacity reservation group.
+//   - options - CapacityReservationGroupsClientDeleteOptions contains the optional parameters for the CapacityReservationGroupsClient.Delete
+//     method.
 func (client *CapacityReservationGroupsClient) Delete(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, options *CapacityReservationGroupsClientDeleteOptions) (CapacityReservationGroupsClientDeleteResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CapacityReservationGroupsClient.Delete")
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, capacityReservationGroupName, options)
 	if err != nil {
 		return CapacityReservationGroupsClientDeleteResponse{}, err
@@ -168,12 +172,14 @@ func (client *CapacityReservationGroupsClient) deleteCreateRequest(ctx context.C
 
 // Get - The operation that retrieves information about a capacity reservation group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// capacityReservationGroupName - The name of the capacity reservation group.
-// options - CapacityReservationGroupsClientGetOptions contains the optional parameters for the CapacityReservationGroupsClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - capacityReservationGroupName - The name of the capacity reservation group.
+//   - options - CapacityReservationGroupsClientGetOptions contains the optional parameters for the CapacityReservationGroupsClient.Get
+//     method.
 func (client *CapacityReservationGroupsClient) Get(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, options *CapacityReservationGroupsClientGetOptions) (CapacityReservationGroupsClientGetResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CapacityReservationGroupsClient.Get")
 	req, err := client.getCreateRequest(ctx, resourceGroupName, capacityReservationGroupName, options)
 	if err != nil {
 		return CapacityReservationGroupsClientGetResponse{}, err
@@ -228,16 +234,18 @@ func (client *CapacityReservationGroupsClient) getHandleResponse(resp *http.Resp
 
 // NewListByResourceGroupPager - Lists all of the capacity reservation groups in the specified resource group. Use the nextLink
 // property in the response to get the next page of capacity reservation groups.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// options - CapacityReservationGroupsClientListByResourceGroupOptions contains the optional parameters for the CapacityReservationGroupsClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - options - CapacityReservationGroupsClientListByResourceGroupOptions contains the optional parameters for the CapacityReservationGroupsClient.ListByResourceGroup
+//     method.
 func (client *CapacityReservationGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *CapacityReservationGroupsClientListByResourceGroupOptions) *runtime.Pager[CapacityReservationGroupsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CapacityReservationGroupsClientListByResourceGroupResponse]{
 		More: func(page CapacityReservationGroupsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CapacityReservationGroupsClientListByResourceGroupResponse) (CapacityReservationGroupsClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CapacityReservationGroupsClient.NewListByResourceGroupPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -296,15 +304,17 @@ func (client *CapacityReservationGroupsClient) listByResourceGroupHandleResponse
 
 // NewListBySubscriptionPager - Lists all of the capacity reservation groups in the subscription. Use the nextLink property
 // in the response to get the next page of capacity reservation groups.
+//
 // Generated from API version 2022-08-01
-// options - CapacityReservationGroupsClientListBySubscriptionOptions contains the optional parameters for the CapacityReservationGroupsClient.ListBySubscription
-// method.
+//   - options - CapacityReservationGroupsClientListBySubscriptionOptions contains the optional parameters for the CapacityReservationGroupsClient.ListBySubscription
+//     method.
 func (client *CapacityReservationGroupsClient) NewListBySubscriptionPager(options *CapacityReservationGroupsClientListBySubscriptionOptions) *runtime.Pager[CapacityReservationGroupsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CapacityReservationGroupsClientListBySubscriptionResponse]{
 		More: func(page CapacityReservationGroupsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CapacityReservationGroupsClientListBySubscriptionResponse) (CapacityReservationGroupsClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CapacityReservationGroupsClient.NewListBySubscriptionPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -360,13 +370,15 @@ func (client *CapacityReservationGroupsClient) listBySubscriptionHandleResponse(
 // Update - The operation to update a capacity reservation group. When updating a capacity reservation group, only tags may
 // be modified.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// capacityReservationGroupName - The name of the capacity reservation group.
-// parameters - Parameters supplied to the Update capacity reservation Group operation.
-// options - CapacityReservationGroupsClientUpdateOptions contains the optional parameters for the CapacityReservationGroupsClient.Update
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - capacityReservationGroupName - The name of the capacity reservation group.
+//   - parameters - Parameters supplied to the Update capacity reservation Group operation.
+//   - options - CapacityReservationGroupsClientUpdateOptions contains the optional parameters for the CapacityReservationGroupsClient.Update
+//     method.
 func (client *CapacityReservationGroupsClient) Update(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, parameters CapacityReservationGroupUpdate, options *CapacityReservationGroupsClientUpdateOptions) (CapacityReservationGroupsClientUpdateResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CapacityReservationGroupsClient.Update")
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, capacityReservationGroupName, parameters, options)
 	if err != nil {
 		return CapacityReservationGroupsClientUpdateResponse{}, err

@@ -32,10 +32,10 @@ type VirtualMachineScaleSetVMRunCommandsClient struct {
 }
 
 // NewVirtualMachineScaleSetVMRunCommandsClient creates a new instance of VirtualMachineScaleSetVMRunCommandsClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewVirtualMachineScaleSetVMRunCommandsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachineScaleSetVMRunCommandsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,14 +58,15 @@ func NewVirtualMachineScaleSetVMRunCommandsClient(subscriptionID string, credent
 
 // BeginCreateOrUpdate - The operation to create or update the VMSS VM run command.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// vmScaleSetName - The name of the VM scale set.
-// instanceID - The instance ID of the virtual machine.
-// runCommandName - The name of the virtual machine run command.
-// runCommand - Parameters supplied to the Create Virtual Machine RunCommand operation.
-// options - VirtualMachineScaleSetVMRunCommandsClientBeginCreateOrUpdateOptions contains the optional parameters for the
-// VirtualMachineScaleSetVMRunCommandsClient.BeginCreateOrUpdate method.
+//   - resourceGroupName - The name of the resource group.
+//   - vmScaleSetName - The name of the VM scale set.
+//   - instanceID - The instance ID of the virtual machine.
+//   - runCommandName - The name of the virtual machine run command.
+//   - runCommand - Parameters supplied to the Create Virtual Machine RunCommand operation.
+//   - options - VirtualMachineScaleSetVMRunCommandsClientBeginCreateOrUpdateOptions contains the optional parameters for the
+//     VirtualMachineScaleSetVMRunCommandsClient.BeginCreateOrUpdate method.
 func (client *VirtualMachineScaleSetVMRunCommandsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, runCommand VirtualMachineRunCommand, options *VirtualMachineScaleSetVMRunCommandsClientBeginCreateOrUpdateOptions) (*runtime.Poller[VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, vmScaleSetName, instanceID, runCommandName, runCommand, options)
@@ -80,8 +81,10 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) BeginCreateOrUpdate(ctx
 
 // CreateOrUpdate - The operation to create or update the VMSS VM run command.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *VirtualMachineScaleSetVMRunCommandsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, runCommand VirtualMachineRunCommand, options *VirtualMachineScaleSetVMRunCommandsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineScaleSetVMRunCommandsClient.BeginCreateOrUpdate")
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceID, runCommandName, runCommand, options)
 	if err != nil {
 		return nil, err
@@ -132,13 +135,14 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) createOrUpdateCreateReq
 
 // BeginDelete - The operation to delete the VMSS VM run command.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// vmScaleSetName - The name of the VM scale set.
-// instanceID - The instance ID of the virtual machine.
-// runCommandName - The name of the virtual machine run command.
-// options - VirtualMachineScaleSetVMRunCommandsClientBeginDeleteOptions contains the optional parameters for the VirtualMachineScaleSetVMRunCommandsClient.BeginDelete
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - vmScaleSetName - The name of the VM scale set.
+//   - instanceID - The instance ID of the virtual machine.
+//   - runCommandName - The name of the virtual machine run command.
+//   - options - VirtualMachineScaleSetVMRunCommandsClientBeginDeleteOptions contains the optional parameters for the VirtualMachineScaleSetVMRunCommandsClient.BeginDelete
+//     method.
 func (client *VirtualMachineScaleSetVMRunCommandsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, options *VirtualMachineScaleSetVMRunCommandsClientBeginDeleteOptions) (*runtime.Poller[VirtualMachineScaleSetVMRunCommandsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, vmScaleSetName, instanceID, runCommandName, options)
@@ -153,8 +157,10 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) BeginDelete(ctx context
 
 // Delete - The operation to delete the VMSS VM run command.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *VirtualMachineScaleSetVMRunCommandsClient) deleteOperation(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, options *VirtualMachineScaleSetVMRunCommandsClientBeginDeleteOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineScaleSetVMRunCommandsClient.BeginDelete")
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceID, runCommandName, options)
 	if err != nil {
 		return nil, err
@@ -205,14 +211,16 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) deleteCreateRequest(ctx
 
 // Get - The operation to get the VMSS VM run command.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// vmScaleSetName - The name of the VM scale set.
-// instanceID - The instance ID of the virtual machine.
-// runCommandName - The name of the virtual machine run command.
-// options - VirtualMachineScaleSetVMRunCommandsClientGetOptions contains the optional parameters for the VirtualMachineScaleSetVMRunCommandsClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - vmScaleSetName - The name of the VM scale set.
+//   - instanceID - The instance ID of the virtual machine.
+//   - runCommandName - The name of the virtual machine run command.
+//   - options - VirtualMachineScaleSetVMRunCommandsClientGetOptions contains the optional parameters for the VirtualMachineScaleSetVMRunCommandsClient.Get
+//     method.
 func (client *VirtualMachineScaleSetVMRunCommandsClient) Get(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, options *VirtualMachineScaleSetVMRunCommandsClientGetOptions) (VirtualMachineScaleSetVMRunCommandsClientGetResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineScaleSetVMRunCommandsClient.Get")
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceID, runCommandName, options)
 	if err != nil {
 		return VirtualMachineScaleSetVMRunCommandsClientGetResponse{}, err
@@ -274,18 +282,20 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) getHandleResponse(resp 
 }
 
 // NewListPager - The operation to get all run commands of an instance in Virtual Machine Scaleset.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// vmScaleSetName - The name of the VM scale set.
-// instanceID - The instance ID of the virtual machine.
-// options - VirtualMachineScaleSetVMRunCommandsClientListOptions contains the optional parameters for the VirtualMachineScaleSetVMRunCommandsClient.List
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - vmScaleSetName - The name of the VM scale set.
+//   - instanceID - The instance ID of the virtual machine.
+//   - options - VirtualMachineScaleSetVMRunCommandsClientListOptions contains the optional parameters for the VirtualMachineScaleSetVMRunCommandsClient.List
+//     method.
 func (client *VirtualMachineScaleSetVMRunCommandsClient) NewListPager(resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMRunCommandsClientListOptions) *runtime.Pager[VirtualMachineScaleSetVMRunCommandsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[VirtualMachineScaleSetVMRunCommandsClientListResponse]{
 		More: func(page VirtualMachineScaleSetVMRunCommandsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *VirtualMachineScaleSetVMRunCommandsClientListResponse) (VirtualMachineScaleSetVMRunCommandsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineScaleSetVMRunCommandsClient.NewListPager")
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -352,14 +362,15 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) listHandleResponse(resp
 
 // BeginUpdate - The operation to update the VMSS VM run command.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// vmScaleSetName - The name of the VM scale set.
-// instanceID - The instance ID of the virtual machine.
-// runCommandName - The name of the virtual machine run command.
-// runCommand - Parameters supplied to the Update Virtual Machine RunCommand operation.
-// options - VirtualMachineScaleSetVMRunCommandsClientBeginUpdateOptions contains the optional parameters for the VirtualMachineScaleSetVMRunCommandsClient.BeginUpdate
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - vmScaleSetName - The name of the VM scale set.
+//   - instanceID - The instance ID of the virtual machine.
+//   - runCommandName - The name of the virtual machine run command.
+//   - runCommand - Parameters supplied to the Update Virtual Machine RunCommand operation.
+//   - options - VirtualMachineScaleSetVMRunCommandsClientBeginUpdateOptions contains the optional parameters for the VirtualMachineScaleSetVMRunCommandsClient.BeginUpdate
+//     method.
 func (client *VirtualMachineScaleSetVMRunCommandsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineScaleSetVMRunCommandsClientBeginUpdateOptions) (*runtime.Poller[VirtualMachineScaleSetVMRunCommandsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, vmScaleSetName, instanceID, runCommandName, runCommand, options)
@@ -374,8 +385,10 @@ func (client *VirtualMachineScaleSetVMRunCommandsClient) BeginUpdate(ctx context
 
 // Update - The operation to update the VMSS VM run command.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *VirtualMachineScaleSetVMRunCommandsClient) update(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineScaleSetVMRunCommandsClientBeginUpdateOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineScaleSetVMRunCommandsClient.BeginUpdate")
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceID, runCommandName, runCommand, options)
 	if err != nil {
 		return nil, err

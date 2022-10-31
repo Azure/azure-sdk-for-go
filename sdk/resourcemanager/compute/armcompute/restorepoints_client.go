@@ -32,10 +32,10 @@ type RestorePointsClient struct {
 }
 
 // NewRestorePointsClient creates a new instance of RestorePointsClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRestorePointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorePointsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
@@ -58,13 +58,14 @@ func NewRestorePointsClient(subscriptionID string, credential azcore.TokenCreden
 
 // BeginCreate - The operation to create the restore point. Updating properties of an existing restore point is not allowed
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// restorePointCollectionName - The name of the restore point collection.
-// restorePointName - The name of the restore point.
-// parameters - Parameters supplied to the Create restore point operation.
-// options - RestorePointsClientBeginCreateOptions contains the optional parameters for the RestorePointsClient.BeginCreate
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - restorePointCollectionName - The name of the restore point collection.
+//   - restorePointName - The name of the restore point.
+//   - parameters - Parameters supplied to the Create restore point operation.
+//   - options - RestorePointsClientBeginCreateOptions contains the optional parameters for the RestorePointsClient.BeginCreate
+//     method.
 func (client *RestorePointsClient) BeginCreate(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, parameters RestorePoint, options *RestorePointsClientBeginCreateOptions) (*runtime.Poller[RestorePointsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, restorePointCollectionName, restorePointName, parameters, options)
@@ -79,8 +80,10 @@ func (client *RestorePointsClient) BeginCreate(ctx context.Context, resourceGrou
 
 // Create - The operation to create the restore point. Updating properties of an existing restore point is not allowed
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *RestorePointsClient) create(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, parameters RestorePoint, options *RestorePointsClientBeginCreateOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RestorePointsClient.BeginCreate")
 	req, err := client.createCreateRequest(ctx, resourceGroupName, restorePointCollectionName, restorePointName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -127,12 +130,13 @@ func (client *RestorePointsClient) createCreateRequest(ctx context.Context, reso
 
 // BeginDelete - The operation to delete the restore point.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// restorePointCollectionName - The name of the Restore Point Collection.
-// restorePointName - The name of the restore point.
-// options - RestorePointsClientBeginDeleteOptions contains the optional parameters for the RestorePointsClient.BeginDelete
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - restorePointCollectionName - The name of the Restore Point Collection.
+//   - restorePointName - The name of the restore point.
+//   - options - RestorePointsClientBeginDeleteOptions contains the optional parameters for the RestorePointsClient.BeginDelete
+//     method.
 func (client *RestorePointsClient) BeginDelete(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsClientBeginDeleteOptions) (*runtime.Poller[RestorePointsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, restorePointCollectionName, restorePointName, options)
@@ -147,8 +151,10 @@ func (client *RestorePointsClient) BeginDelete(ctx context.Context, resourceGrou
 
 // Delete - The operation to delete the restore point.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
 func (client *RestorePointsClient) deleteOperation(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsClientBeginDeleteOptions) (*http.Response, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RestorePointsClient.BeginDelete")
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, restorePointCollectionName, restorePointName, options)
 	if err != nil {
 		return nil, err
@@ -195,12 +201,14 @@ func (client *RestorePointsClient) deleteCreateRequest(ctx context.Context, reso
 
 // Get - The operation to get the restore point.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group.
-// restorePointCollectionName - The name of the restore point collection.
-// restorePointName - The name of the restore point.
-// options - RestorePointsClientGetOptions contains the optional parameters for the RestorePointsClient.Get method.
+//   - resourceGroupName - The name of the resource group.
+//   - restorePointCollectionName - The name of the restore point collection.
+//   - restorePointName - The name of the restore point.
+//   - options - RestorePointsClientGetOptions contains the optional parameters for the RestorePointsClient.Get method.
 func (client *RestorePointsClient) Get(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsClientGetOptions) (RestorePointsClientGetResponse, error) {
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RestorePointsClient.Get")
 	req, err := client.getCreateRequest(ctx, resourceGroupName, restorePointCollectionName, restorePointName, options)
 	if err != nil {
 		return RestorePointsClientGetResponse{}, err

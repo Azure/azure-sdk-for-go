@@ -12,6 +12,8 @@ import (
 	"fmt"
 	"net/http"
 	"regexp"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
 
 // NewResponseError creates a new *ResponseError from the provided HTTP response.
@@ -23,7 +25,7 @@ func NewResponseError(resp *http.Response) error {
 	}
 
 	// prefer the error code in the response header
-	if ec := resp.Header.Get("x-ms-error-code"); ec != "" {
+	if ec := resp.Header.Get(shared.HeaderXMSErrorCode); ec != "" {
 		respErr.ErrorCode = ec
 		return respErr
 	}

@@ -13,6 +13,8 @@ import (
 	"net/url"
 	"strings"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
 
 func TestNewResponseErrorNoBodyNoErrorCode(t *testing.T) {
@@ -59,7 +61,7 @@ func TestNewResponseErrorNoBody(t *testing.T) {
 	}
 	respHeader := http.Header{}
 	const errorCode = "ErrorTooManyCheats"
-	respHeader.Set("x-ms-error-code", errorCode)
+	respHeader.Set(shared.HeaderXMSErrorCode, errorCode)
 	err = NewResponseError(&http.Response{
 		Status:     "the system is down",
 		StatusCode: http.StatusInternalServerError,
@@ -136,7 +138,7 @@ func TestNewResponseErrorPreferErrorCodeHeader(t *testing.T) {
 		t.Fatal(err)
 	}
 	respHeader := http.Header{}
-	respHeader.Set("x-ms-error-code", "ErrorTooManyCheats")
+	respHeader.Set(shared.HeaderXMSErrorCode, "ErrorTooManyCheats")
 	err = NewResponseError(&http.Response{
 		Status:     "the system is down",
 		StatusCode: http.StatusInternalServerError,
@@ -317,7 +319,7 @@ func TestNewResponseErrorErrorCodeHeaderXML(t *testing.T) {
 		t.Fatal(err)
 	}
 	respHeader := http.Header{}
-	respHeader.Set("x-ms-error-code", "ContainerAlreadyExists")
+	respHeader.Set(shared.HeaderXMSErrorCode, "ContainerAlreadyExists")
 	err = NewResponseError(&http.Response{
 		Status:     "the system is down",
 		StatusCode: http.StatusInternalServerError,
@@ -354,7 +356,7 @@ func TestNewResponseErrorErrorCodeHeaderXMLWithNamespace(t *testing.T) {
 		t.Fatal(err)
 	}
 	respHeader := http.Header{}
-	respHeader.Set("x-ms-error-code", "ContainerAlreadyExists")
+	respHeader.Set(shared.HeaderXMSErrorCode, "ContainerAlreadyExists")
 	err = NewResponseError(&http.Response{
 		Status:     "the system is down",
 		StatusCode: http.StatusInternalServerError,

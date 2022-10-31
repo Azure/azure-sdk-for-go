@@ -17,10 +17,12 @@ const (
 	HeaderAzureAsync             = "Azure-AsyncOperation"
 	HeaderContentLength          = "Content-Length"
 	HeaderContentType            = "Content-Type"
+	HeaderFakePollerStatus       = "Fake-Poller-Status"
 	HeaderLocation               = "Location"
 	HeaderOperationLocation      = "Operation-Location"
 	HeaderRetryAfter             = "Retry-After"
 	HeaderUserAgent              = "User-Agent"
+	HeaderXMSErrorCode           = "x-ms-error-code"
 )
 
 const BearerTokenPrefix = "Bearer "

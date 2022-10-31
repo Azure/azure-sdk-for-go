@@ -26,6 +26,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
+// CtxAPINameKey is used as a context key for adding/retrieving the API name.
+type CtxAPINameKey = shared.CtxAPINameKey
+
 // Base64Encoding is usesd to specify which base-64 encoder/decoder to use when
 // encoding/decoding a slice of bytes to/from a string.
 type Base64Encoding int

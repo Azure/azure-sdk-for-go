@@ -66,8 +66,7 @@ func TestNewListMetricDefinitionsPager_Success(t *testing.T) {
 func TestNewListMetricNamespacesPager_Success(t *testing.T) {
 	client := startMetricsTest(t)
 
-	pager := client.NewListMetricNamespacesPager(resourceURI,
-		&azquery.MetricsClientListMetricNamespacesOptions{StartTime: to.Ptr("2022-08-01T15:53:00Z")})
+	pager := client.NewListMetricNamespacesPager(resourceURI, nil)
 
 	// test if first page is valid
 	if pager.More() {

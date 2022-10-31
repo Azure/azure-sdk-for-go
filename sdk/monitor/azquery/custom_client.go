@@ -35,14 +35,21 @@ type LogsClient struct {
 	pl   runtime.Pipeline
 }
 
+// MetricsClient contains the methods for the Metrics group.
+// Don't use this type directly, use NewMetricsClient() instead.
+type MetricsClient struct {
+	host string
+	pl   runtime.Pipeline
+}
+
 // NewLogsClient creates a client that accesses Azure Monitor logs data.
 func NewLogsClient(credential azcore.TokenCredential, options *LogsClientOptions) *LogsClient {
 	if options == nil {
 		options = &LogsClientOptions{}
 	}
 
-	host := cloud.AzurePublic.Services[MonitorQuery].Endpoint
-	if c, ok := options.Cloud.Services[MonitorQuery]; ok {
+	host := cloud.AzurePublic.Services[monitorQueryLogs].Endpoint
+	if c, ok := options.Cloud.Services[monitorQueryLogs]; ok {
 		host = c.Endpoint
 	}
 	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{host + "/.default"}, nil)
@@ -55,12 +62,14 @@ func NewMetricsClient(credential azcore.TokenCredential, options *MetricsClientO
 	if options == nil {
 		options = &MetricsClientOptions{}
 	}
-	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{"https://management.usgovcloudapi.net//.default"}, nil)
+	host := cloud.AzurePublic.Services[monitorQueryMetrics].Endpoint
+	if c, ok := options.Cloud.Services[monitorQueryMetrics]; ok {
+		host = c.Endpoint
+	}
+	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{host + "/.default"}, nil)
 	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
-	return &MetricsClient{pl: pl}
+	return &MetricsClient{host: host, pl: pl}
 }
-
-const metricsHost string = "https://management.usgovcloudapi.net"
 
 // ErrorInfo - The code and message for an error.
 type ErrorInfo struct {

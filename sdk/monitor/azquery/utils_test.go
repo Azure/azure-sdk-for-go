@@ -11,7 +11,6 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
-	"net"
 	"net/http"
 	"os"
 	"testing"
@@ -71,8 +70,6 @@ func TestMain(m *testing.M) {
 		clientID := lookupEnvVar("AZQUERY_CLIENT_ID")
 		secret := lookupEnvVar("AZQUERY_CLIENT_SECRET")
 		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
-		//credOptions := azidentity.DefaultAzureCredentialOptions{ClientOptions: azcore.ClientOptions{Cloud: cloud.AzureGovernment}}
-		//credential, err = azidentity.NewDefaultAzureCredential(nil)
 		if err != nil {
 			panic(err)
 		}
@@ -135,7 +132,7 @@ func startMetricsTest(t *testing.T) *azquery.MetricsClient {
 	opts := &azquery.MetricsClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
 	return azquery.NewMetricsClient(credential, opts)*/
 	//transport = azcore.defaultTransport{TLSClientConfig: }
-	defaultTransport := &http.Transport{
+	/*defaultTransport := &http.Transport{
 		Proxy: http.ProxyFromEnvironment,
 		DialContext: (&net.Dialer{
 			Timeout:   30 * time.Second,
@@ -150,12 +147,25 @@ func startMetricsTest(t *testing.T) *azquery.MetricsClient {
 			MinVersion:    tls.VersionTLS12,
 			Renegotiation: tls.RenegotiateFreelyAsClient,
 		},
-	}
+	}*/
+	/*defaultTransport := &http.Transport{
+		ForceAttemptHTTP2: false,
+		TLSClientConfig: &tls.Config{
+			MinVersion:    tls.VersionTLS12,
+			Renegotiation: tls.RenegotiateFreelyAsClient,
+		},
+	}*/
 	transport := &http.Client{
-		Transport: defaultTransport,
+		Transport: &http.Transport{
+			ForceAttemptHTTP2: false,
+			TLSClientConfig: &tls.Config{
+				MinVersion:    tls.VersionTLS12,
+				Renegotiation: tls.RenegotiateFreelyAsClient,
+			},
+		},
 	}
 
-	opts := &azquery.MetricsClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
+	opts := &azquery.MetricsClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport, Cloud: clientCloud}}
 
 	return azquery.NewMetricsClient(credential, opts)
 }

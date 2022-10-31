@@ -8,19 +8,32 @@ package azquery
 
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 
-const MonitorQuery cloud.ServiceName = "azquery"
+const monitorQueryLogs cloud.ServiceName = "azqueryLogs"
+const monitorQueryMetrics cloud.ServiceName = "azqueryMetrics"
 
 func init() {
-	cloud.AzureChina.Services[MonitorQuery] = cloud.ServiceConfiguration{
+	cloud.AzureChina.Services[monitorQueryLogs] = cloud.ServiceConfiguration{
 		Audience: "",
 		Endpoint: "https://api.loganalytics.azure.cn",
 	}
-	cloud.AzureGovernment.Services[MonitorQuery] = cloud.ServiceConfiguration{
+	cloud.AzureGovernment.Services[monitorQueryLogs] = cloud.ServiceConfiguration{
 		Audience: "",
 		Endpoint: "https://api.loganalytics.us",
 	}
-	cloud.AzurePublic.Services[MonitorQuery] = cloud.ServiceConfiguration{
+	cloud.AzurePublic.Services[monitorQueryLogs] = cloud.ServiceConfiguration{
 		Audience: "",
 		Endpoint: "https://api.loganalytics.io",
+	}
+	cloud.AzureChina.Services[monitorQueryMetrics] = cloud.ServiceConfiguration{
+		Audience: "",
+		Endpoint: "https://management.chinacloudapi.cn/",
+	}
+	cloud.AzureGovernment.Services[monitorQueryMetrics] = cloud.ServiceConfiguration{
+		Audience: "",
+		Endpoint: "https://management.usgovcloudapi.net/",
+	}
+	cloud.AzurePublic.Services[monitorQueryMetrics] = cloud.ServiceConfiguration{
+		Audience: "",
+		Endpoint: "https://management.azure.com",
 	}
 }

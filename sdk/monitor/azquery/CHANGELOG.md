@@ -5,6 +5,7 @@
 ### Features Added
 * Added `ColumnIndexLookup` field to Table struct
 * Added type `Row`
+* Added sovereign cloud support
 
 ### Breaking Changes
 

@@ -31,6 +31,8 @@ This document demonstrates using [azidentity.NewDefaultAzureCredential][default_
 
 Client accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credential types.
 
+The clients default to the Azure Public Cloud. See the [cloud][cloud_documentation] documentation for more information about other cloud configurations. 
+
 #### Create a logs client
 
 ```go
@@ -349,6 +351,7 @@ comments.
 [azure_monitor_create_using_portal]: https://docs.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
 [azure_monitor_overview]: https://docs.microsoft.com/azure/azure-monitor/overview
 [context]: https://pkg.go.dev/context
+[cloud_documentation]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azcore/cloud/doc.go
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
 [example_batch]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-LogsClient.Batch
 [example_query_workspace]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-LogsClient.QueryWorkspace

@@ -11,6 +11,9 @@ import (
 	"context"
 	"encoding/base64"
 	"errors"
+	"io"
+	"os"
+	"sync"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
@@ -21,9 +24,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
-	"io"
-	"os"
-	"sync"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.

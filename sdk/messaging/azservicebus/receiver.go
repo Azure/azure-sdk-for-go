@@ -61,6 +61,8 @@ type Receiver struct {
 	defaultDrainTimeout      time.Duration
 	defaultTimeAfterFirstMsg time.Duration
 
+	idleDuration time.Duration // controls the amount of time we'll wait without _any_ activity for receiving.
+
 	cancelReleaser *atomic.Value
 }
 
@@ -136,6 +138,7 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 		cleanupOnClose:           args.cleanupOnClose,
 		defaultDrainTimeout:      time.Second,
 		defaultTimeAfterFirstMsg: 20 * time.Millisecond,
+		idleDuration:             5 * time.Minute,
 		retryOptions:             args.retryOptions,
 		cancelReleaser:           &atomic.Value{},
 	}
@@ -516,11 +519,14 @@ type fetchMessagesResult struct {
 // Note, if you want to only receive prefetched messages send the parentCtx in
 // pre-cancelled. This will cause us to only flush the prefetch buffer.
 func (r *Receiver) fetchMessages(parentCtx context.Context, receiver amqpwrap.AMQPReceiver, count int, timeAfterFirstMessage time.Duration) fetchMessagesResult {
+	firstReceiveCtx, cancelFirstReceive := context.WithTimeout(parentCtx, r.idleDuration)
+	defer cancelFirstReceive()
+
 	// The first receive is a bit special - we activate a short timer after this
 	// so the user doesn't end up in a situation where we're holding onto a bunch
 	// of messages but never return because they never cancelled and we never
 	// received all 'count' number of messages.
-	firstMsg, err := receiver.Receive(parentCtx)
+	firstMsg, err := receiver.Receive(firstReceiveCtx)
 
 	if err != nil {
 		// drain the prefetch buffer - we're stopping because of a

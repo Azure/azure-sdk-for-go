@@ -126,46 +126,24 @@ func startLogsTest(t *testing.T) *azquery.LogsClient {
 }
 
 func startMetricsTest(t *testing.T) *azquery.MetricsClient {
-	/*startRecording(t)
-	transport, err := recording.NewRecordingHTTPClient(t, nil)
-	require.NoError(t, err)
-	opts := &azquery.MetricsClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
-	return azquery.NewMetricsClient(credential, opts)*/
-	//transport = azcore.defaultTransport{TLSClientConfig: }
-	/*defaultTransport := &http.Transport{
-		Proxy: http.ProxyFromEnvironment,
-		DialContext: (&net.Dialer{
-			Timeout:   30 * time.Second,
-			KeepAlive: 30 * time.Second,
-		}).DialContext,
-		ForceAttemptHTTP2:     false,
-		MaxIdleConns:          100,
-		IdleConnTimeout:       90 * time.Second,
-		TLSHandshakeTimeout:   10 * time.Second,
-		ExpectContinueTimeout: 1 * time.Second,
-		TLSClientConfig: &tls.Config{
-			MinVersion:    tls.VersionTLS12,
-			Renegotiation: tls.RenegotiateFreelyAsClient,
-		},
-	}*/
-	/*defaultTransport := &http.Transport{
-		ForceAttemptHTTP2: false,
-		TLSClientConfig: &tls.Config{
-			MinVersion:    tls.VersionTLS12,
-			Renegotiation: tls.RenegotiateFreelyAsClient,
-		},
-	}*/
-	transport := &http.Client{
-		Transport: &http.Transport{
-			ForceAttemptHTTP2: false,
-			TLSClientConfig: &tls.Config{
-				MinVersion:    tls.VersionTLS12,
-				Renegotiation: tls.RenegotiateFreelyAsClient,
+	var opts *azquery.MetricsClientOptions
+	if recording.GetRecordMode() == recording.LiveMode {
+		transport := &http.Client{
+			Transport: &http.Transport{
+				ForceAttemptHTTP2: false,
+				TLSClientConfig: &tls.Config{
+					MinVersion:    tls.VersionTLS12,
+					Renegotiation: tls.RenegotiateFreelyAsClient,
+				},
 			},
-		},
+		}
+		opts = &azquery.MetricsClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport, Cloud: clientCloud}}
+	} else {
+		startRecording(t)
+		transport, err := recording.NewRecordingHTTPClient(t, nil)
+		require.NoError(t, err)
+		opts = &azquery.MetricsClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
 	}
-
-	opts := &azquery.MetricsClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport, Cloud: clientCloud}}
 
 	return azquery.NewMetricsClient(credential, opts)
 }

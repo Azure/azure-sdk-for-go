@@ -112,15 +112,29 @@ directive:
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(\*Table)\).*\{\s(?:.+\s)+\}\s/g, "");
 
-  # delete generated constructor
+  # delete generated constructor and client
   - from: logs_client.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func NewLogsClient.+\{\s(?:.+\s)+\}\s/, "");
+  - from: logs_client.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+type LogsClient struct.+\{\s(?:.+\s)+\}\s/, "");
   - from: metrics_client.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func NewMetricsClient.+\{\s(?:.+\s)+\}\s/, "");
-
-  # point the metrics client to the correct host url
   - from: metrics_client.go
     where: $
-    transform: return $.replace(/host/g, "metricsHost");
+    transform: return $.replace(/(?:\/\/.*\s)+type MetricsClient.+\{\s(?:.+\s)+\}\s/, "");
+
+  # point the clients to the correct host url
+  - from: logs_client.go
+    where: $
+    transform: return $.replace(/host/g, "client.host");
+  - from: metrics_client.go
+    where: $
+    transform: return $.replace(/host/g, "client.host");
+
+  # delete generated host url
+  - from: constants.go
+    where: $
+    transform: return $.replace(/const host = "(.*?)"/, "");

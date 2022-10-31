@@ -1,10 +1,6 @@
 # Release History
 
-## 0.4.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 0.4.3 (2022-10-31)
 
 ### Bugs Fixed
 * Fixed missing host URL when iterating over pages.

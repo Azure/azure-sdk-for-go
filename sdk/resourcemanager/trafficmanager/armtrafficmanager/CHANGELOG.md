@@ -1,11 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (2022-10-30)
-### Breaking Changes
-
-- Struct `CloudError` has been removed
-- Struct `CloudErrorBody` has been removed
-
+## 1.1.0-beta.1 (2022-10-31)
 ### Features Added
 
 - New const `AlwaysServeDisabled`

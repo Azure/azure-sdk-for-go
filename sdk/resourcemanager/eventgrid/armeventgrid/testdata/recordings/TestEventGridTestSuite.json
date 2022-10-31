@@ -2703,8 +2703,8 @@
         "x-ms-routing-request-id": "SOUTHEASTASIA:20221031T062951Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "key1": "8BKEZUkUGNEWNZtnGhA2WI3JOo9c7PW3wVM5ZJi1kAU=",
-        "key2": "3zDdaayHrtEItFBU8BWwJazLPbQOvpLi6U2bmtGz18k="
+        "key1": "000000000000",
+        "key2": "000000000000"
       }
     },
     {
@@ -2740,8 +2740,8 @@
         "x-ms-routing-request-id": "SOUTHEASTASIA:20221031T062952Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "key1": "kC\u002BQdrfLtQOBd9nnkxa7MjzGy7cReYiWzDvQCezq7r8=",
-        "key2": "3zDdaayHrtEItFBU8BWwJazLPbQOvpLi6U2bmtGz18k="
+        "key1": "000000000000",
+        "key2": "000000000000"
       }
     },
     {
@@ -7586,8 +7586,8 @@
         "x-ms-routing-request-id": "SOUTHEASTASIA:20221031T063119Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "key1": "FdyoTJ6Nst\u002BsvUm5x21Mrv6m6ytk3gClX4PmKYIUjCU=",
-        "key2": "R2nnnRnaks2ciaZ2wKBEJyVBIYxOQ6yuC2jxgs0J1vY="
+        "key1": "000000000000",
+        "key2": "000000000000"
       }
     },
     {
@@ -7623,8 +7623,8 @@
         "x-ms-routing-request-id": "SOUTHEASTASIA:20221031T063120Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "key1": "VFQBsZf2L7RoIhAuZs5\u002B3aotrM6asw5UN0eg/5XES0s=",
-        "key2": "R2nnnRnaks2ciaZ2wKBEJyVBIYxOQ6yuC2jxgs0J1vY="
+        "key1": "000000000000",
+        "key2": "000000000000"
       }
     },
     {
@@ -11686,8 +11686,8 @@
         "x-ms-routing-request-id": "SOUTHEASTASIA:20221031T063440Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "key1": "8PDWVVsok5Q9v7W1XDTxewa/gr4AtcDazQC5FpdKJ/k=",
-        "key2": "SIXIhLpRI7pA5t\u002Bte575V9pN9RBjsREAkXMUUcOtduM="
+        "key1": "000000000000",
+        "key2": "000000000000"
       }
     },
     {
@@ -11723,8 +11723,8 @@
         "x-ms-routing-request-id": "SOUTHEASTASIA:20221031T063441Z:00000000-0000-0000-0000-000000000000"
       },
       "ResponseBody": {
-        "key1": "guSgoPYz2RXPLmXNhKqMQoQu/dYgrxbSuDeJTrw/ckc=",
-        "key2": "SIXIhLpRI7pA5t\u002Bte575V9pN9RBjsREAkXMUUcOtduM="
+        "key1": "000000000000",
+        "key2": "000000000000"
       }
     },
     {

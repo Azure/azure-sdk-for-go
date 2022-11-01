@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -75,10 +76,10 @@ func TestMain(m *testing.M) {
 		}
 
 		if cloudEnv, ok := os.LookupEnv("AZQUERY_ENVIRONMENT"); ok {
-			if cloudEnv == "AzureUSGovernment" {
+			if strings.EqualFold(cloudEnv, "AzureUSGovernment") {
 				clientCloud = cloud.AzureGovernment
 			}
-			if cloudEnv == "AzureChinaCloud" {
+			if strings.EqualFold(cloudEnv, "AzureChinaCloud") {
 				clientCloud = cloud.AzureChina
 			}
 		}

@@ -44,7 +44,7 @@ func TestIMDSEndpointParse(t *testing.T) {
 func TestManagedIdentityClient_UserAgent(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody(accessTokenRespSuccess))
 	setEnvironmentVariables(t, map[string]string{msiEndpoint: srv.URL()})
 	options := ManagedIdentityCredentialOptions{
 		ClientOptions: azcore.ClientOptions{
@@ -67,7 +67,7 @@ func TestManagedIdentityClient_UserAgent(t *testing.T) {
 func TestManagedIdentityClient_ApplicationID(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody(accessTokenRespSuccess))
 	setEnvironmentVariables(t, map[string]string{msiEndpoint: srv.URL()})
 	appID := "customvalue"
 	options := ManagedIdentityCredentialOptions{

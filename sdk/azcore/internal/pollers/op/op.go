@@ -31,7 +31,7 @@ func CanResume(token map[string]interface{}) bool {
 
 // Poller is an LRO poller that uses the Operation-Location pattern.
 type Poller[T any] struct {
-	pl   exported.Pipeline
+	pl   exported.Policy
 	resp *http.Response
 
 	OpLocURL   string                `json:"oplocURL"`
@@ -44,7 +44,7 @@ type Poller[T any] struct {
 
 // New creates a new Poller from the provided initial response.
 // Pass nil for response to create an empty Poller for rehydration.
-func New[T any](pl exported.Pipeline, resp *http.Response, finalState pollers.FinalStateVia) (*Poller[T], error) {
+func New[T any](pl exported.Policy, resp *http.Response, finalState pollers.FinalStateVia) (*Poller[T], error) {
 	if resp == nil {
 		log.Write(log.EventLRO, "Resuming Operation-Location poller.")
 		return &Poller[T]{pl: pl}, nil

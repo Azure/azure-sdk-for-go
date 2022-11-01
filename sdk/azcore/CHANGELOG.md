@@ -7,6 +7,7 @@
   requests of the service, if the client supports this (all ARM clients do).
 * Added package `tracing` that contains the building blocks for distributed tracing.
 * Added field `TracingProvider` to type `policy.ClientOptions` that will be used to set the per-client tracing implementation.
+* Added method `TracingProvider` to type `runtime.Pipeline` that exposes the tracing provider for a pipeline.
 
 ### Breaking Changes
 

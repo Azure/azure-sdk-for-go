@@ -23,7 +23,7 @@ type PageResponse struct {
 	NextPage bool  `json:"next"`
 }
 
-func pageResponseFetcher(ctx context.Context, pl Pipeline, endpoint string) (PageResponse, error) {
+func pageResponseFetcher(ctx context.Context, pl exported.Pipeline, endpoint string) (PageResponse, error) {
 	req, err := NewRequest(ctx, http.MethodGet, endpoint)
 	if err != nil {
 		return PageResponse{}, err

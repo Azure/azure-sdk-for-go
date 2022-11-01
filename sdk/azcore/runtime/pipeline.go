@@ -11,6 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 )
 
 // PipelineOptions contains Pipeline options for SDK developers
@@ -23,7 +24,20 @@ type PipelineOptions struct {
 
 // Pipeline represents a primitive for sending HTTP requests and receiving responses.
 // Its behavior can be extended by specifying policies during construction.
-type Pipeline = exported.Pipeline
+type Pipeline struct {
+	internal  exported.Pipeline
+	traceProv tracing.Provider
+}
+
+// Do implements the policy.Transporter interface for the Pipeline type.
+func (p Pipeline) Do(req *policy.Request) (*http.Response, error) {
+	return p.internal.Do(req)
+}
+
+// TracingProvider returns the tracing provider associated with this Pipeline.
+func (p Pipeline) TracingProvider() tracing.Provider {
+	return p.traceProv
+}
 
 // NewPipeline creates a pipeline from connection options, with any additional policies as specified.
 // Policies from ClientOptions are placed after policies from PipelineOptions.
@@ -65,7 +79,10 @@ func NewPipeline(module, version string, plOpts PipelineOptions, options *policy
 	if transport == nil {
 		transport = defaultHTTPClient
 	}
-	return exported.NewPipeline(transport, policies...)
+	return Pipeline{
+		internal:  exported.NewPipeline(transport, policies...),
+		traceProv: cp.TracingProvider,
+	}
 }
 
 // policyFunc is a type that implements the Policy interface.

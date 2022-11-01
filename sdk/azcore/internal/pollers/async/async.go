@@ -33,7 +33,7 @@ func CanResume(token map[string]interface{}) bool {
 
 // Poller is an LRO poller that uses the Azure-AsyncOperation pattern.
 type Poller[T any] struct {
-	pl exported.Pipeline
+	pl exported.Policy
 
 	resp *http.Response
 
@@ -58,7 +58,7 @@ type Poller[T any] struct {
 
 // New creates a new Poller from the provided initial response and final-state type.
 // Pass nil for response to create an empty Poller for rehydration.
-func New[T any](pl exported.Pipeline, resp *http.Response, finalState pollers.FinalStateVia) (*Poller[T], error) {
+func New[T any](pl exported.Policy, resp *http.Response, finalState pollers.FinalStateVia) (*Poller[T], error) {
 	if resp == nil {
 		log.Write(log.EventLRO, "Resuming Azure-AsyncOperation poller.")
 		return &Poller[T]{pl: pl}, nil

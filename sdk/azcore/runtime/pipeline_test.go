@@ -126,4 +126,5 @@ func TestNewPipelineCustomPolicies(t *testing.T) {
 	require.Equal(t, 1, customPerCallPolicy.count)
 	require.Equal(t, 2, defaultPerRetryPolicy.count)
 	require.Equal(t, 2, customPerRetryPolicy.count)
+	require.Zero(t, pl.TracingProvider())
 }

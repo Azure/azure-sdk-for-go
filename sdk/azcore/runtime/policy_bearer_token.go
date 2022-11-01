@@ -4,6 +4,7 @@
 package runtime
 
 import (
+	"errors"
 	"net/http"
 	"time"
 
@@ -98,27 +99,18 @@ func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 }
 
 func ensureNonRetriable(err error) error {
-	if err != nil {
-		if _, ok := err.(errorinfo.NonRetriable); !ok {
-			err = btpError{err}
-		}
+	var nre errorinfo.NonRetriable
+	if err != nil && !errors.As(err, &nre) {
+		err = btpError{err}
 	}
 	return err
 }
 
 // btpError is a wrapper that ensures RetryPolicy doesn't retry requests BearerTokenPolicy couldn't authorize
 type btpError struct {
-	err error
-}
-
-func (n btpError) Error() string {
-	return n.err.Error()
+	error
 }
 
 func (btpError) NonRetriable() {}
-
-func (n *btpError) Unwrap() error {
-	return n.err
-}
 
 var _ errorinfo.NonRetriable = (*btpError)(nil)

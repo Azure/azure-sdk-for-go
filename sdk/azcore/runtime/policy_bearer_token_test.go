@@ -5,6 +5,7 @@ package runtime
 
 import (
 	"context"
+	"fmt"
 
 	"errors"
 	"net/http"
@@ -14,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 )
@@ -91,16 +93,10 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 		PerRetryPolicies: []policy.Policy{b},
 	})
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 	resp, err := pipeline.Do(req)
-	if err != expectedErr {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if resp != nil {
-		t.Fatal("expected nil response")
-	}
+	require.EqualError(t, err, expectedErr.Error())
+	require.Nil(t, resp)
 }
 
 func TestBearerTokenPolicy_TokenExpired(t *testing.T) {
@@ -159,22 +155,20 @@ func TestBearerTokenPolicy_AuthZHandler(t *testing.T) {
 	req, err := NewRequest(context.Background(), "GET", "https://localhost")
 	require.NoError(t, err)
 
-	type fakeHandler struct {
+	handler := struct {
 		policy.AuthorizationHandler
 		onChallengeCalls, onReqCalls int
-		onChallengeErr, onReqErr     error
-	}
-	handler := fakeHandler{}
+	}{}
 	handler.OnRequest = func(r *policy.Request, f func(policy.TokenRequestOptions) error) error {
 		require.Equal(t, req.Raw().URL, r.Raw().URL)
 		handler.onReqCalls++
-		return handler.onReqErr
+		return nil
 	}
 	handler.OnChallenge = func(r *policy.Request, res *http.Response, f func(policy.TokenRequestOptions) error) error {
 		require.Equal(t, req.Raw().URL, r.Raw().URL)
 		handler.onChallengeCalls++
 		require.Equal(t, challenge, res.Header.Get("WWW-Authenticate"))
-		return handler.onChallengeErr
+		return nil
 	}
 
 	b := NewBearerTokenPolicy(mockCredential{}, nil, &policy.BearerTokenOptions{AuthorizationHandler: handler.AuthorizationHandler})
@@ -186,21 +180,48 @@ func TestBearerTokenPolicy_AuthZHandler(t *testing.T) {
 	require.Equal(t, 1, handler.onReqCalls)
 	// handler functions didn't return errors, so the policy should have sent a request after calling each
 	require.Equal(t, 2, srv.Requests())
+}
 
-	// policy should propagate the handler's errors
-	handler.onReqErr = &nonRetriableError{}
-	_, err = pl.Do(req)
-	require.ErrorIs(t, err, handler.onReqErr)
-	require.Equal(t, 1, handler.onChallengeCalls)
-	require.Equal(t, 2, handler.onReqCalls)
-	// OnRequest returned an error, so the policy shouldn't have sent the request
-	require.Equal(t, 2, srv.Requests())
+func TestBearerTokenPolicy_AuthZHandlerErrors(t *testing.T) {
+	srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.SetResponse(mock.WithStatusCode(401), mock.WithHeader("WWW-Authenticate", "..."))
 
-	srv.AppendResponse(mock.WithStatusCode(401), mock.WithHeader("WWW-Authenticate", challenge))
-	handler.onReqErr = nil
-	handler.onChallengeErr = &nonRetriableError{}
-	_, err = pl.Do(req)
-	require.ErrorIs(t, err, handler.onChallengeErr)
-	// OnChallenge returned an error, so the policy shouldn't have sent the request again
-	require.Equal(t, 3, srv.Requests())
+	req, err := NewRequest(context.Background(), "GET", "https://localhost")
+	require.NoError(t, err)
+
+	handler := struct {
+		policy.AuthorizationHandler
+		onChallengeErr, onReqErr error
+	}{}
+	handler.OnRequest = func(r *policy.Request, f func(policy.TokenRequestOptions) error) error {
+		return handler.onReqErr
+	}
+	handler.OnChallenge = func(r *policy.Request, res *http.Response, f func(policy.TokenRequestOptions) error) error {
+		return handler.onChallengeErr
+	}
+
+	b := NewBearerTokenPolicy(mockCredential{}, nil, &policy.BearerTokenOptions{AuthorizationHandler: handler.AuthorizationHandler})
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv, PerRetryPolicies: []policy.Policy{b}})
+
+	// the policy should propagate the handler's errors, wrapping them to make them nonretriable, if necessary
+	msg := "something went wrong"
+	var nre errorinfo.NonRetriable
+	for i, e := range []error{fmt.Errorf(msg), &nonRetriableError{msg}} {
+		handler.onReqErr = e
+		_, err = pl.Do(req)
+		require.ErrorAs(t, err, &nre)
+		require.EqualError(t, nre, msg)
+		// the policy shouldn't have sent a request, because OnRequest returned an error
+		require.Equal(t, i, srv.Requests())
+
+		handler.onReqErr = nil
+		handler.onChallengeErr = e
+		_, err = pl.Do(req)
+		require.ErrorAs(t, err, &nre)
+		require.EqualError(t, nre, msg)
+		handler.onChallengeErr = nil
+		// the policy should have sent one request, because OnRequest returned nil but OnChallenge returned an error
+		require.Equal(t, i+1, srv.Requests())
+	}
 }

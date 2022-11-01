@@ -140,8 +140,6 @@ type BearerTokenOptions struct {
 }
 
 // AuthorizationHandler allows SDK developers to insert custom logic that runs when BearerTokenPolicy must authorize a request.
-// Errors returned by its functions should be have a NonRetriable() marker method to prevent [runtime.RetryPolicy] retrying
-// requests the AuthorizationHandler can't authorize.
 type AuthorizationHandler struct {
 	// OnRequest is called each time the policy receives a request. Its func parameter authorizes the request with a token
 	// from the policy's given credential. Implementations that need to perform I/O should use the Request's context,

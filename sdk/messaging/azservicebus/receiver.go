@@ -58,10 +58,12 @@ type Receiver struct {
 	mu        sync.Mutex
 	receiving bool
 
-	defaultDrainTimeout      time.Duration
 	defaultTimeAfterFirstMsg time.Duration
 
-	idleDuration time.Duration // controls the amount of time we'll wait without _any_ activity for receiving.
+	// idleDuration controls how long we'll wait, on the client side, for the first message. This is an "internal"
+	// timeout in that it doesn't result in the user seeing an early exit, but more prevents us from waiting on a
+	// link that might have been closed, service-side, without our knowledge.
+	idleDuration time.Duration
 
 	cancelReleaser *atomic.Value
 }
@@ -136,7 +138,6 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 	receiver := &Receiver{
 		lastPeekedSequenceNumber: 0,
 		cleanupOnClose:           args.cleanupOnClose,
-		defaultDrainTimeout:      time.Second,
 		defaultTimeAfterFirstMsg: 20 * time.Millisecond,
 		idleDuration:             5 * time.Minute,
 		retryOptions:             args.retryOptions,
@@ -207,8 +208,13 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 		return nil, errors.New("receiver is already receiving messages. ReceiveMessages() cannot be called concurrently")
 	}
 
-	messages, err := r.receiveMessagesImpl(ctx, maxMessages, options)
-	return messages, internal.TransformError(err)
+	for {
+		messages, err := r.receiveMessagesImpl(ctx, maxMessages, options)
+
+		if !errors.Is(err, internal.IdleError) {
+			return messages, internal.TransformError(err)
+		}
+	}
 }
 
 // ReceiveDeferredMessagesOptions contains optional parameters for the ReceiveDeferredMessages function.
@@ -422,7 +428,9 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	// function on Receiver).will have the same issue and will return the relevant error
 	// at that time
 	if len(result.Messages) == 0 {
-		if internal.IsCancelError(result.Error) || rk == internal.RecoveryKindFatal {
+		if internal.IsCancelError(result.Error) ||
+			rk == internal.RecoveryKindFatal ||
+			errors.Is(result.Error, internal.IdleError) {
 			return nil, result.Error
 		}
 
@@ -519,6 +527,8 @@ type fetchMessagesResult struct {
 // Note, if you want to only receive prefetched messages send the parentCtx in
 // pre-cancelled. This will cause us to only flush the prefetch buffer.
 func (r *Receiver) fetchMessages(parentCtx context.Context, receiver amqpwrap.AMQPReceiver, count int, timeAfterFirstMessage time.Duration) fetchMessagesResult {
+	// This idle timer prevents us from getting into a situation where the remote service has
+	// invalidated a link but we didn't get notified and are waiting on an eternally dead link.
 	firstReceiveCtx, cancelFirstReceive := context.WithTimeout(parentCtx, r.idleDuration)
 	defer cancelFirstReceive()
 
@@ -529,6 +539,14 @@ func (r *Receiver) fetchMessages(parentCtx context.Context, receiver amqpwrap.AM
 	firstMsg, err := receiver.Receive(firstReceiveCtx)
 
 	if err != nil {
+		if errors.Is(err, context.DeadlineExceeded) && parentCtx.Err() == nil {
+			log.Writef(EventReceiver, "Detaching link due to local idle timeout. Will reattach automatically.")
+
+			return fetchMessagesResult{
+				Error: internal.IdleError,
+			}
+		}
+
 		// drain the prefetch buffer - we're stopping because of a
 		// failure on the link/connection _or_ the user cancelled the
 		// operation.

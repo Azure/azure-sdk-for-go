@@ -44,6 +44,8 @@ type FakeAMQPLinks struct {
 	Closed              int
 	CloseIfNeededCalled int
 
+	GetFn func(ctx context.Context) (*LinksWithID, error)
+
 	// values to be returned for each `Get` call
 	Revision LinkID
 	Receiver AMQPReceiver
@@ -188,6 +190,10 @@ func (l *FakeAMQPLinks) Get(ctx context.Context) (*LinksWithID, error) {
 	case <-ctx.Done():
 		return nil, ctx.Err()
 	default:
+		if l.GetFn != nil {
+			return l.GetFn(ctx)
+		}
+
 		return &LinksWithID{
 			Sender:   l.Sender,
 			Receiver: l.Receiver,

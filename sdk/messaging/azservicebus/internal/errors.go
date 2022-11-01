@@ -17,6 +17,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 )
 
+var IdleError = errors.New("link was idle, detaching (will be reattached).")
+
 type errNonRetriable struct {
 	Message string
 }
@@ -167,6 +169,10 @@ func GetRecoveryKind(err error) RecoveryKind {
 
 	if IsCancelError(err) {
 		return RecoveryKindFatal
+	}
+
+	if errors.Is(err, IdleError) {
+		return RecoveryKindLink
 	}
 
 	var netErr net.Error

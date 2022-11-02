@@ -8,6 +8,7 @@
 * Added sovereign cloud support
 
 ### Breaking Changes
+* Added error return values to `NewLogsClient` and `NewMetricsClient`
 
 ### Bugs Fixed
 

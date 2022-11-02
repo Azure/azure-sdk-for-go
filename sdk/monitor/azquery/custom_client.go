@@ -10,7 +10,9 @@ package azquery
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
+	"reflect"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
@@ -43,32 +45,39 @@ type MetricsClient struct {
 }
 
 // NewLogsClient creates a client that accesses Azure Monitor logs data.
-func NewLogsClient(credential azcore.TokenCredential, options *LogsClientOptions) *LogsClient {
+func NewLogsClient(credential azcore.TokenCredential, options *LogsClientOptions) (*LogsClient, error) {
 	if options == nil {
 		options = &LogsClientOptions{}
 	}
-
-	host := cloud.AzurePublic.Services[monitorQueryLogs].Endpoint
-	if c, ok := options.Cloud.Services[monitorQueryLogs]; ok {
-		host = c.Endpoint
+	if reflect.ValueOf(options.Cloud).IsZero() {
+		options.Cloud = cloud.AzurePublic
 	}
-	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{host + "/.default"}, nil)
+	c, ok := options.Cloud.Services[MonitorQueryLogs]
+	if !ok || c.Audience == "" || c.Endpoint == "" {
+		return nil, errors.New("provided Cloud field is missing Azure Monitor Logs configuration")
+	}
+
+	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{c.Audience + "/.default"}, nil)
 	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
-	return &LogsClient{host: host + "/v1", pl: pl}
+	return &LogsClient{host: c.Endpoint, pl: pl}, nil
 }
 
 // NewMetricsClient creates a client that accesses Azure Monitor metrics data.
-func NewMetricsClient(credential azcore.TokenCredential, options *MetricsClientOptions) *MetricsClient {
+func NewMetricsClient(credential azcore.TokenCredential, options *MetricsClientOptions) (*MetricsClient, error) {
 	if options == nil {
 		options = &MetricsClientOptions{}
 	}
-	host := cloud.AzurePublic.Services[monitorQueryMetrics].Endpoint
-	if c, ok := options.Cloud.Services[monitorQueryMetrics]; ok {
-		host = c.Endpoint
+	if reflect.ValueOf(options.Cloud).IsZero() {
+		options.Cloud = cloud.AzurePublic
 	}
-	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{host + "/.default"}, nil)
+	c, ok := options.Cloud.Services[MonitorQueryMetrics]
+	if !ok || c.Audience == "" || c.Endpoint == "" {
+		return nil, errors.New("provided Cloud field is missing Azure Monitor Metrics configuration")
+	}
+
+	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{c.Audience + "/.default"}, nil)
 	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
-	return &MetricsClient{host: host, pl: pl}
+	return &MetricsClient{host: c.Endpoint, pl: pl}, nil
 }
 
 // ErrorInfo - The code and message for an error.

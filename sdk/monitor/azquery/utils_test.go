@@ -35,7 +35,7 @@ var (
 	workspaceID  string
 	workspaceID2 string
 	resourceURI  string
-	clientCloud  cloud.Configuration = cloud.AzurePublic
+	clientCloud  cloud.Configuration
 )
 
 func TestMain(m *testing.M) {
@@ -123,7 +123,11 @@ func startLogsTest(t *testing.T) *azquery.LogsClient {
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 	opts := &azquery.LogsClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport, Cloud: clientCloud}}
-	return azquery.NewLogsClient(credential, opts)
+	client, err := azquery.NewLogsClient(credential, opts)
+	if err != nil {
+		panic(err)
+	}
+	return client
 }
 
 func startMetricsTest(t *testing.T) *azquery.MetricsClient {
@@ -144,7 +148,11 @@ func startMetricsTest(t *testing.T) *azquery.MetricsClient {
 		opts = &azquery.MetricsClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
 	}
 
-	return azquery.NewMetricsClient(credential, opts)
+	client, err := azquery.NewMetricsClient(credential, opts)
+	if err != nil {
+		panic(err)
+	}
+	return client
 }
 
 func lookupEnvVar(s string) string {

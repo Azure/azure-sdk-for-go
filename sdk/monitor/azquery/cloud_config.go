@@ -9,27 +9,33 @@ package azquery
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 
 const (
-	monitorQueryLogs    cloud.ServiceName = "azqueryLogs"
-	monitorQueryMetrics cloud.ServiceName = "azqueryMetrics"
+	MonitorQueryLogs    cloud.ServiceName = "azqueryLogs"
+	MonitorQueryMetrics cloud.ServiceName = "azqueryMetrics"
 )
 
 func init() {
-	cloud.AzureChina.Services[monitorQueryLogs] = cloud.ServiceConfiguration{
-		Endpoint: "https://api.loganalytics.azure.cn",
+	cloud.AzureChina.Services[MonitorQueryLogs] = cloud.ServiceConfiguration{
+		Audience: "https://api.loganalytics.azure.cn",
+		Endpoint: "https://api.loganalytics.azure.cn/v1",
 	}
-	cloud.AzureGovernment.Services[monitorQueryLogs] = cloud.ServiceConfiguration{
-		Endpoint: "https://api.loganalytics.us",
+	cloud.AzureGovernment.Services[MonitorQueryLogs] = cloud.ServiceConfiguration{
+		Audience: "https://api.loganalytics.us",
+		Endpoint: "https://api.loganalytics.us/v1",
 	}
-	cloud.AzurePublic.Services[monitorQueryLogs] = cloud.ServiceConfiguration{
-		Endpoint: "https://api.loganalytics.io",
+	cloud.AzurePublic.Services[MonitorQueryLogs] = cloud.ServiceConfiguration{
+		Audience: "https://api.loganalytics.io",
+		Endpoint: "https://api.loganalytics.io/v1",
 	}
-	cloud.AzureChina.Services[monitorQueryMetrics] = cloud.ServiceConfiguration{
+	cloud.AzureChina.Services[MonitorQueryMetrics] = cloud.ServiceConfiguration{
+		Audience: "https://management.chinacloudapi.cn/",
 		Endpoint: "https://management.chinacloudapi.cn/",
 	}
-	cloud.AzureGovernment.Services[monitorQueryMetrics] = cloud.ServiceConfiguration{
+	cloud.AzureGovernment.Services[MonitorQueryMetrics] = cloud.ServiceConfiguration{
+		Audience: "https://management.usgovcloudapi.net/",
 		Endpoint: "https://management.usgovcloudapi.net/",
 	}
-	cloud.AzurePublic.Services[monitorQueryMetrics] = cloud.ServiceConfiguration{
+	cloud.AzurePublic.Services[MonitorQueryMetrics] = cloud.ServiceConfiguration{
+		Audience: "https://management.azure.com",
 		Endpoint: "https://management.azure.com",
 	}
 }

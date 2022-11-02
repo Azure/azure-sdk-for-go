@@ -1,14 +1,12 @@
 # Release History
 
-## 1.2.0 (Unreleased)
+## 1.2.0 (2022-11-03)
 
 ### Features Added
 * Added `ClientOptions.APIVersion` field, which overrides the default version a client
   requests of the service, if the client supports this (all ARM clients do).
 * Added package `tracing` that contains the building blocks for distributed tracing.
 * Added field `TracingProvider` to type `policy.ClientOptions` that will be used to set the per-client tracing implementation.
-
-### Breaking Changes
 
 ### Bugs Fixed
 * Fixed an issue in `runtime.SetMultipartFormData` to properly handle slices of `io.ReadSeekCloser`.

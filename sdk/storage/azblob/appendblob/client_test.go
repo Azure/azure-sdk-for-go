@@ -1675,25 +1675,16 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 	_require.Len(found, 1)
 
 	// Disable for other tests
-	enabled := to.Ptr(false)
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{
-		DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled, AllowPermanentDelete: to.Ptr(false)}})
+		DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: to.Ptr(false), AllowPermanentDelete: to.Ptr(false)}})
 	_require.Nil(err)
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPermission() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
 	_require.Nil(err)
-
-	// Enable soft-delete by setting retention policy
-	days := int32(1)
-	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{
-		DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: to.Ptr(true), Days: &days}})
-	_require.Nil(err)
-
-	time.Sleep(time.Second * 30) // Sleep for 30 seconds for account/container creation
 
 	// Create container and blob, upload blob to container
 	containerName := testcommon.GenerateContainerName(testName)
@@ -1781,11 +1772,6 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPerm
 	// Execute Delete with DeleteTypePermanent,should fail because permissions are not set
 	_, err = snapshotURL.Delete(context.Background(), &deleteBlobOptions)
 	_require.NotNil(err)
-
-	// Disable for other tests
-	enabled := to.Ptr(false)
-	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: enabled}})
-	_require.Nil(err)
 }
 
 //nolint

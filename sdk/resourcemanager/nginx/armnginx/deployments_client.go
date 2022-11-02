@@ -55,31 +55,32 @@ func NewDeploymentsClient(subscriptionID string, credential azcore.TokenCredenti
 	return client, nil
 }
 
-// BeginCreate - Create or update the Nginx deployment
+// BeginCreateOrUpdate - Create or update the Nginx deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // deploymentName - The name of targeted Nginx deployment
-// options - DeploymentsClientBeginCreateOptions contains the optional parameters for the DeploymentsClient.BeginCreate method.
-func (client *DeploymentsClient) BeginCreate(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsClientBeginCreateOptions) (*runtime.Poller[DeploymentsClientCreateResponse], error) {
+// options - DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
+// method.
+func (client *DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DeploymentsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.create(ctx, resourceGroupName, deploymentName, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, deploymentName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[DeploymentsClientCreateResponse]{
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[DeploymentsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DeploymentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// Create - Create or update the Nginx deployment
+// CreateOrUpdate - Create or update the Nginx deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-08-01
-func (client *DeploymentsClient) create(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsClientBeginCreateOptions) (*http.Response, error) {
-	req, err := client.createCreateRequest(ctx, resourceGroupName, deploymentName, options)
+func (client *DeploymentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, deploymentName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -93,8 +94,8 @@ func (client *DeploymentsClient) create(ctx context.Context, resourceGroupName s
 	return resp, nil
 }
 
-// createCreateRequest creates the Create request.
-func (client *DeploymentsClient) createCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsClientBeginCreateOptions) (*policy.Request, error) {
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -112,6 +113,9 @@ func (client *DeploymentsClient) createCreateRequest(ctx context.Context, resour
 	if err != nil {
 		return nil, err
 	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
@@ -174,6 +178,9 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 	if err != nil {
 		return nil, err
 	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -218,6 +225,9 @@ func (client *DeploymentsClient) getCreateRequest(ctx context.Context, resourceG
 	if err != nil {
 		return nil, err
 	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -232,7 +242,6 @@ func (client *DeploymentsClient) getHandleResponse(resp *http.Response) (Deploym
 }
 
 // NewListPager - List the Nginx deployments resources
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-08-01
 // options - DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.List method.
 func (client *DeploymentsClient) NewListPager(options *DeploymentsClientListOptions) *runtime.Pager[DeploymentsClientListResponse] {
@@ -274,6 +283,9 @@ func (client *DeploymentsClient) listCreateRequest(ctx context.Context, options 
 	if err != nil {
 		return nil, err
 	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -288,7 +300,6 @@ func (client *DeploymentsClient) listHandleResponse(resp *http.Response) (Deploy
 }
 
 // NewListByResourceGroupPager - List all Nginx deployments under the specified resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - DeploymentsClientListByResourceGroupOptions contains the optional parameters for the DeploymentsClient.ListByResourceGroup
@@ -336,6 +347,9 @@ func (client *DeploymentsClient) listByResourceGroupCreateRequest(ctx context.Co
 	if err != nil {
 		return nil, err
 	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -404,6 +418,9 @@ func (client *DeploymentsClient) updateCreateRequest(ctx context.Context, resour
 	if err != nil {
 		return nil, err
 	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)

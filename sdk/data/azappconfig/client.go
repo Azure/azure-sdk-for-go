@@ -75,7 +75,7 @@ func NewClient(endpointUrl string, cred azcore.TokenCredential, options *ClientO
 		syncTokenPolicy,
 	)
 
-	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
+	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, genOptions)
 	return &Client{
 		appConfigClient: generated.NewAzureAppConfigurationClient(endpointUrl, nil, pl),
 		syncTokenPolicy: syncTokenPolicy,
@@ -102,7 +102,7 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 		syncTokenPolicy,
 	)
 
-	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
+	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, genOptions)
 	return &Client{
 		appConfigClient: generated.NewAzureAppConfigurationClient(endpoint, nil, pl),
 		syncTokenPolicy: syncTokenPolicy,
@@ -114,9 +114,8 @@ func (c *Client) UpdateSyncToken(token string) {
 	c.syncTokenPolicy.addToken(token)
 }
 
-func (cs Setting) toGeneratedPutOptions(ifMatch *azcore.ETag, ifNoneMatch *azcore.ETag) *generated.AzureAppConfigurationClientPutKeyValueOptions {
-	return &generated.AzureAppConfigurationClientPutKeyValueOptions{
-		Entity:      cs.toGenerated(),
+func (cs Setting) toGeneratedPutOptions(ifMatch *azcore.ETag, ifNoneMatch *azcore.ETag) (generated.KeyValue, generated.AzureAppConfigurationClientPutKeyValueOptions) {
+	return cs.toGenerated(), generated.AzureAppConfigurationClientPutKeyValueOptions{
 		IfMatch:     (*string)(ifMatch),
 		IfNoneMatch: (*string)(ifNoneMatch),
 		Label:       cs.Label,
@@ -154,7 +153,8 @@ func (c *Client) AddSetting(ctx context.Context, key string, value *string, opti
 	setting := Setting{Key: &key, Value: value, Label: label}
 
 	etagAny := azcore.ETagAny
-	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, setting.toGeneratedPutOptions(nil, &etagAny))
+	kv, opts := setting.toGeneratedPutOptions(nil, &etagAny)
+	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, kv, &opts)
 	if err != nil {
 		return AddSettingResponse{}, err
 	}
@@ -417,7 +417,8 @@ func (c *Client) SetSetting(ctx context.Context, key string, value *string, opti
 		ifMatch = setting.ETag
 	}
 
-	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, setting.toGeneratedPutOptions(ifMatch, nil))
+	kv, opts := setting.toGeneratedPutOptions(ifMatch, nil)
+	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, kv, &opts)
 	if err != nil {
 		return SetSettingResponse{}, err
 	}

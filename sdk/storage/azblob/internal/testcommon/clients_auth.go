@@ -35,6 +35,7 @@ const (
 	TestAccountSecondary  TestAccountType = "SECONDARY_"
 	TestAccountPremium    TestAccountType = "PREMIUM_"
 	TestAccountSoftDelete TestAccountType = "SOFT_DELETE_"
+	TestAccountDatalake   TestAccountType = "DATALAKE_"
 )
 
 const (

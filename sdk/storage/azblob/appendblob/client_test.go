@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"io"
+	"net/http"
 	"strconv"
 	"strings"
 	"testing"
@@ -2093,4 +2094,133 @@ func (s *AppendBlobRecordedTestsSuite) TestUndeleteAppendBlobSnapshot() {
 		Include: container.ListBlobsInclude{Snapshots: true},
 	})
 	testcommon.ListBlobsCount(context.Background(), _require, listPager, 6) // 5 snapshots and 1 current version
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryToNeverExpire() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
+	_require.Nil(err)
+
+	resp, err := abClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Nil(resp.ExpiresOn)
+
+	_, err = abClient.SetExpiry(context.Background(), blob.ExpiryTypeNever{}, nil)
+	_require.Nil(err)
+
+	resp, err = abClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Nil(resp.ExpiresOn)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryRelativeToNow() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
+	_require.Nil(err)
+
+	resp, err := abClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Nil(resp.ExpiresOn)
+
+	_, err = abClient.SetExpiry(context.Background(), blob.ExpiryTypeRelativeToNow(8*time.Second), nil)
+	_require.Nil(err)
+
+	resp, err = abClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp.ExpiresOn)
+
+	time.Sleep(time.Second * 10)
+
+	_, err = abClient.GetProperties(context.Background(), nil)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlobSetExpiryRelativeToCreation() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
+	_require.Nil(err)
+
+	resp, err := abClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Nil(resp.ExpiresOn)
+
+	_, err = abClient.SetExpiry(context.Background(), blob.ExpiryTypeRelativeToCreation(8*time.Second), nil)
+	_require.Nil(err)
+
+	resp, err = abClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp.ExpiresOn)
+
+	time.Sleep(time.Second * 10)
+
+	_, err = abClient.GetProperties(context.Background(), nil)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
+}
+
+func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlobSetExpiryToAbsolute() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := getAppendBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+	_, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(strings.NewReader("Appending block\n")), nil)
+	_require.Nil(err)
+
+	resp, err := abClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.Nil(resp.ExpiresOn)
+
+	expiryTimeAbsolute := time.Now().Add(8 * time.Second)
+	_, err = abClient.SetExpiry(context.Background(), blob.ExpiryTypeAbsolute(expiryTimeAbsolute), nil)
+	_require.Nil(err)
+
+	resp, err = abClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(resp.ExpiresOn)
+	_require.Equal(expiryTimeAbsolute.UTC().Format(http.TimeFormat), (*resp.ExpiresOn).UTC().Format(http.TimeFormat))
+
+	time.Sleep(time.Second * 10)
+
+	_, err = abClient.GetProperties(context.Background(), nil)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 0.4.2 (Unreleased)
+## 0.4.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Regenerated internal code with latest Autorest Go code generator.
+
+## 0.4.2 (2022-10-20)
+
+### Bugs Fixed
+* Fixed a bug in `syncTokenPolicy` that could cause a panic in some conditions.
 
 ## 0.4.1 (2022-09-22)
 

@@ -1,0 +1,164 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakestorage.blob.core.windows.net/gocblockblobsetexpiryonhnsdisabledaccount?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "X-Ms-Date": "Tue, 25 Oct 2022 07:04:26 GMT",
+        "x-ms-version": "2020-10-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Tue, 25 Oct 2022 07:04:26 GMT",
+        "ETag": "\u00220x8DAB65727A09D99\u0022",
+        "Last-Modified": "Tue, 25 Oct 2022 07:04:26 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-version": "2020-10-02"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakestorage.blob.core.windows.net/gocblockblobsetexpiryonhnsdisabledaccount/gotestblobblockblobsetexpiryonhnsdisabledaccount",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "15",
+        "Content-Type": "application/octet-stream",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "x-ms-blob-type": "BlockBlob",
+        "X-Ms-Date": "Tue, 25 Oct 2022 07:04:27 GMT",
+        "x-ms-version": "2020-10-02"
+      },
+      "RequestBody": "R29CbG9ja0Jsb2JEYXRh",
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Content-MD5": "ebncwguMQu9sgPmr0GazhA==",
+        "Date": "Tue, 25 Oct 2022 07:04:27 GMT",
+        "ETag": "\u00220x8DAB65727C5DA41\u0022",
+        "Last-Modified": "Tue, 25 Oct 2022 07:04:27 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-content-crc64": "\u002BJGsS7CR5kg=",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2020-10-02",
+        "x-ms-version-id": "2022-10-25T07:04:27.2034369Z"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakestorage.blob.core.windows.net/gocblockblobsetexpiryonhnsdisabledaccount/gotestblobblockblobsetexpiryonhnsdisabledaccount",
+      "RequestMethod": "HEAD",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "X-Ms-Date": "Tue, 25 Oct 2022 07:04:27 GMT",
+        "x-ms-version": "2020-10-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "Content-Length": "15",
+        "Content-MD5": "ebncwguMQu9sgPmr0GazhA==",
+        "Content-Type": "application/octet-stream",
+        "Date": "Tue, 25 Oct 2022 07:04:27 GMT",
+        "ETag": "\u00220x8DAB65727C5DA41\u0022",
+        "Last-Modified": "Tue, 25 Oct 2022 07:04:27 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-access-tier": "Hot",
+        "x-ms-access-tier-inferred": "true",
+        "x-ms-blob-type": "BlockBlob",
+        "x-ms-creation-time": "Tue, 25 Oct 2022 07:04:27 GMT",
+        "x-ms-is-current-version": "true",
+        "x-ms-lease-state": "available",
+        "x-ms-lease-status": "unlocked",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-server-encrypted": "true",
+        "x-ms-version": "2020-10-02",
+        "x-ms-version-id": "2022-10-25T07:04:27.2034369Z"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakestorage.blob.core.windows.net/gocblockblobsetexpiryonhnsdisabledaccount/gotestblobblockblobsetexpiryonhnsdisabledaccount?comp=expiry",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "X-Ms-Date": "Tue, 25 Oct 2022 07:04:28 GMT",
+        "x-ms-expiry-option": "NeverExpire",
+        "x-ms-version": "2020-10-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Content-Length": "270",
+        "Content-Type": "application/xml",
+        "Date": "Tue, 25 Oct 2022 07:04:27 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-error-code": "HierarchicalNamespaceNotEnabled",
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-version": "2020-10-02"
+      },
+      "ResponseBody": [
+        "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\n",
+        "\u003CError\u003E\u003CCode\u003EHierarchicalNamespaceNotEnabled\u003C/Code\u003E\u003CMessage\u003EThis operation is only supported on a hierarchical namespace account.\n",
+        "RequestId:63295aef-701e-0062-3840-e807c8000000\n",
+        "Time:2022-10-25T07:04:27.6769999Z\u003C/Message\u003E\u003C/Error\u003E"
+      ]
+    },
+    {
+      "RequestUri": "https://fakestorage.blob.core.windows.net/gocblockblobsetexpiryonhnsdisabledaccount?restype=container",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azblob/v0.5.2 (go1.19; Windows_NT)",
+        "X-Ms-Date": "Tue, 25 Oct 2022 07:04:28 GMT",
+        "x-ms-version": "2020-10-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Tue, 25 Oct 2022 07:04:27 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-id": "00000000-0000-0000-0000-000000000000",
+        "x-ms-version": "2020-10-02"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

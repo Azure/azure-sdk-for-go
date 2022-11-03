@@ -16,28 +16,29 @@ import (
 )
 
 // BlobSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage container or blob.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
+// For more information on creating service sas, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
+// For more information on creating user delegation sas, see https://docs.microsoft.com/rest/api/storageservices/create-user-delegation-sas
 type BlobSignatureValues struct {
-	Version                    string    `param:"sv"`  // If not specified, this defaults to Version
-	Protocol                   Protocol  `param:"spr"` // See the Protocol* constants
-	StartTime                  time.Time `param:"st"`  // Not specified if IsZero
-	ExpiryTime                 time.Time `param:"se"`  // Not specified if IsZero
-	SnapshotTime               time.Time
-	Permissions                string  `param:"sp"` // Create by initializing a ContainerSASPermissions or BlobSASPermissions and then call String()
-	IPRange                    IPRange `param:"sip"`
-	Identifier                 string  `param:"si"`
-	ContainerName              string
-	BlobName                   string // Use "" to create a Container SAS
-	Directory                  string // Not nil for a directory SAS (ie sr=d)
-	CacheControl               string // rscc
-	ContentDisposition         string // rscd
-	ContentEncoding            string // rsce
-	ContentLanguage            string // rscl
-	ContentType                string // rsct
-	BlobVersion                string // sr=bv
-	PreauthorizedAgentObjectId string
-	AgentObjectId              string
-	CorrelationId              string
+	Version              string    `param:"sv"`  // If not specified, this defaults to Version
+	Protocol             Protocol  `param:"spr"` // See the Protocol* constants
+	StartTime            time.Time `param:"st"`  // Not specified if IsZero
+	ExpiryTime           time.Time `param:"se"`  // Not specified if IsZero
+	SnapshotTime         time.Time
+	Permissions          string  `param:"sp"` // Create by initializing a ContainerSASPermissions or BlobSASPermissions and then call String()
+	IPRange              IPRange `param:"sip"`
+	Identifier           string  `param:"si"`
+	ContainerName        string
+	BlobName             string // Use "" to create a Container SAS
+	Directory            string // Not nil for a directory SAS (ie sr=d)
+	CacheControl         string // rscc
+	ContentDisposition   string // rscd
+	ContentEncoding      string // rsce
+	ContentLanguage      string // rscl
+	ContentType          string // rsct
+	BlobVersion          string // sr=bv
+	AuthorizedObjectId   string // saoid
+	UnauthorizedObjectId string // suoid
+	CorrelationId        string // scid
 }
 
 func getDirectoryDepth(path string) string {
@@ -115,18 +116,18 @@ func (v BlobSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCre
 		ipRange:     v.IPRange,
 
 		// Container/Blob-specific SAS parameters
-		resource:                   resource,
-		identifier:                 v.Identifier,
-		cacheControl:               v.CacheControl,
-		contentDisposition:         v.ContentDisposition,
-		contentEncoding:            v.ContentEncoding,
-		contentLanguage:            v.ContentLanguage,
-		contentType:                v.ContentType,
-		snapshotTime:               v.SnapshotTime,
-		signedDirectoryDepth:       getDirectoryDepth(v.Directory),
-		preauthorizedAgentObjectID: v.PreauthorizedAgentObjectId,
-		agentObjectID:              v.AgentObjectId,
-		correlationID:              v.CorrelationId,
+		resource:             resource,
+		identifier:           v.Identifier,
+		cacheControl:         v.CacheControl,
+		contentDisposition:   v.ContentDisposition,
+		contentEncoding:      v.ContentEncoding,
+		contentLanguage:      v.ContentLanguage,
+		contentType:          v.ContentType,
+		snapshotTime:         v.SnapshotTime,
+		signedDirectoryDepth: getDirectoryDepth(v.Directory),
+		authorizedObjectID:   v.AuthorizedObjectId,
+		unauthorizedObjectId: v.UnauthorizedObjectId,
+		correlationID:        v.CorrelationId,
 		// Calculated SAS signature
 		signature: signature,
 	}
@@ -169,27 +170,21 @@ func (v BlobSignatureValues) SignWithUserDelegation(userDelegationCredential *Us
 	udk := exported.GetUDKParams(userDelegationCredential)
 
 	udkStart, udkExpiry, _ := formatTimesForSigning(*udk.SignedStart, *udk.SignedExpiry, time.Time{})
-	//I don't like this answer to combining the functions
-	//But because signedIdentifier and the user delegation key strings share a place, this is an _OK_ way to do it.
-	signedIdentifier := strings.Join([]string{
+
+	stringToSign := strings.Join([]string{
+		v.Permissions,
+		startTime,
+		expiryTime,
+		getCanonicalName(exported.GetAccountName(userDelegationCredential), v.ContainerName, v.BlobName, v.Directory),
 		*udk.SignedOID,
 		*udk.SignedTID,
 		udkStart,
 		udkExpiry,
 		*udk.SignedService,
 		*udk.SignedVersion,
-		v.PreauthorizedAgentObjectId,
-		v.AgentObjectId,
+		v.AuthorizedObjectId,
+		v.UnauthorizedObjectId,
 		v.CorrelationId,
-	}, "\n")
-
-	// String to sign: http://msdn.microsoft.com/en-us/library/azure/dn140255.aspx
-	stringToSign := strings.Join([]string{
-		v.Permissions,
-		startTime,
-		expiryTime,
-		getCanonicalName(exported.GetAccountName(userDelegationCredential), v.ContainerName, v.BlobName, v.Directory),
-		signedIdentifier,
 		v.IPRange.String(),
 		string(v.Protocol),
 		v.Version,
@@ -217,18 +212,18 @@ func (v BlobSignatureValues) SignWithUserDelegation(userDelegationCredential *Us
 		ipRange:     v.IPRange,
 
 		// Container/Blob-specific SAS parameters
-		resource:                   resource,
-		identifier:                 v.Identifier,
-		cacheControl:               v.CacheControl,
-		contentDisposition:         v.ContentDisposition,
-		contentEncoding:            v.ContentEncoding,
-		contentLanguage:            v.ContentLanguage,
-		contentType:                v.ContentType,
-		snapshotTime:               v.SnapshotTime,
-		signedDirectoryDepth:       getDirectoryDepth(v.Directory),
-		preauthorizedAgentObjectID: v.PreauthorizedAgentObjectId,
-		agentObjectID:              v.AgentObjectId,
-		correlationID:              v.CorrelationId,
+		resource:             resource,
+		identifier:           v.Identifier,
+		cacheControl:         v.CacheControl,
+		contentDisposition:   v.ContentDisposition,
+		contentEncoding:      v.ContentEncoding,
+		contentLanguage:      v.ContentLanguage,
+		contentType:          v.ContentType,
+		snapshotTime:         v.SnapshotTime,
+		signedDirectoryDepth: getDirectoryDepth(v.Directory),
+		authorizedObjectID:   v.AuthorizedObjectId,
+		unauthorizedObjectId: v.UnauthorizedObjectId,
+		correlationID:        v.CorrelationId,
 		// Calculated SAS signature
 		signature: signature,
 	}

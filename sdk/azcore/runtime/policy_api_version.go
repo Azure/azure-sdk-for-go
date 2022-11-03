@@ -24,15 +24,18 @@ const (
 	APIVersionLocationHeader = 1
 )
 
-// NewAPIVersionPolicy constructs an APIVersionPolicy. name is the name of the query parameter or header and
+// apiVersionPolicyOptions contains optional parameters for apiVersionPolicy
+type apiVersionPolicyOptions struct{}
+
+// newAPIVersionPolicy constructs an APIVersionPolicy. name is the name of the query parameter or header and
 // version is its value. If version is "", Do will be a no-op. If version isn't empty and name is empty,
 // Do will return an error.
-func NewAPIVersionPolicy(location APIVersionLocation, name, version string) *APIVersionPolicy {
-	return &APIVersionPolicy{location: location, name: name, version: version}
+func newAPIVersionPolicy(location APIVersionLocation, name, version string, opts *apiVersionPolicyOptions) *apiVersionPolicy {
+	return &apiVersionPolicy{location: location, name: name, version: version}
 }
 
-// APIVersionPolicy enables users to set the API version of every request a client sends.
-type APIVersionPolicy struct {
+// apiVersionPolicy enables users to set the API version of every request a client sends.
+type apiVersionPolicy struct {
 	// location indicates whether "name" refers to a query parameter or header.
 	location APIVersionLocation
 
@@ -44,7 +47,7 @@ type APIVersionPolicy struct {
 }
 
 // Do sets the request's API version, if the policy is configured to do so, replacing any prior value.
-func (a *APIVersionPolicy) Do(req *policy.Request) (*http.Response, error) {
+func (a *apiVersionPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if a.version != "" {
 		if a.name == "" {
 			// user set ClientOptions.APIVersion but the client ctor didn't set PipelineOptions.APIVersionLocation

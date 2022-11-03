@@ -24,13 +24,10 @@ const (
 	APIVersionLocationHeader = 1
 )
 
-// apiVersionPolicyOptions contains optional parameters for apiVersionPolicy
-type apiVersionPolicyOptions struct{}
-
 // newAPIVersionPolicy constructs an APIVersionPolicy. name is the name of the query parameter or header and
 // version is its value. If version is "", Do will be a no-op. If version isn't empty and name is empty,
 // Do will return an error.
-func newAPIVersionPolicy(location APIVersionLocation, name, version string, opts *apiVersionPolicyOptions) *apiVersionPolicy {
+func newAPIVersionPolicy(location APIVersionLocation, name, version string) *apiVersionPolicy {
 	return &apiVersionPolicy{location: location, name: name, version: version}
 }
 

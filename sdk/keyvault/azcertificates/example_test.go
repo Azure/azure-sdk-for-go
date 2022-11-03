@@ -39,6 +39,7 @@ func ExampleClient_CreateCertificate() {
 			X509CertificateProperties: &azcertificates.X509CertificateProperties{Subject: to.Ptr("CN=DefaultPolicy")},
 		},
 	}
+	// if a certificate with the same name already exists, a new version of the certificate is created
 	resp, err := client.CreateCertificate(context.TODO(), "certificateName", createParams, nil)
 	if err != nil {
 		// TODO: handle error

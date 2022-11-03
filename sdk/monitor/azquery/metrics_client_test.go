@@ -45,7 +45,7 @@ func TestQueryResource_BasicQuerySuccess(t *testing.T) {
 func TestNewListMetricDefinitionsPager_Success(t *testing.T) {
 	client := startMetricsTest(t)
 
-	pager := client.NewListMetricDefinitionsPager(resourceURI, nil)
+	pager := client.NewListDefinitionsPager(resourceURI, nil)
 
 	// test if first page is valid
 	if pager.More() {
@@ -66,7 +66,7 @@ func TestNewListMetricDefinitionsPager_Success(t *testing.T) {
 func TestNewListMetricNamespacesPager_Success(t *testing.T) {
 	client := startMetricsTest(t)
 
-	pager := client.NewListMetricNamespacesPager(resourceURI, nil)
+	pager := client.NewListNamespacesPager(resourceURI, nil)
 
 	// test if first page is valid
 	if pager.More() {

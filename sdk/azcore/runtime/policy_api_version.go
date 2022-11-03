@@ -14,6 +14,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
+// APIVersionOptions contains options for API versions
+type APIVersionOptions struct {
+	Location APIVersionLocation
+	Name     string
+}
+
 // APIVersionLocation indicates which part of a request identifies the service version
 type APIVersionLocation int
 
@@ -27,8 +33,11 @@ const (
 // newAPIVersionPolicy constructs an APIVersionPolicy. name is the name of the query parameter or header and
 // version is its value. If version is "", Do will be a no-op. If version isn't empty and name is empty,
 // Do will return an error.
-func newAPIVersionPolicy(location APIVersionLocation, name, version string) *apiVersionPolicy {
-	return &apiVersionPolicy{location: location, name: name, version: version}
+func newAPIVersionPolicy(version string, opts *APIVersionOptions) *apiVersionPolicy {
+	if opts == nil {
+		opts = &APIVersionOptions{}
+	}
+	return &apiVersionPolicy{location: opts.Location, name: opts.Name, version: version}
 }
 
 // apiVersionPolicy enables users to set the API version of every request a client sends.
@@ -47,7 +56,7 @@ type apiVersionPolicy struct {
 func (a *apiVersionPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if a.version != "" {
 		if a.name == "" {
-			// user set ClientOptions.APIVersion but the client ctor didn't set PipelineOptions.APIVersionLocation
+			// user set ClientOptions.APIVersion but the client ctor didn't set PipelineOptions.APIVersionOptions
 			return nil, errors.New("this client doesn't support overriding its API version")
 		}
 		switch a.location {

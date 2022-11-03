@@ -32,7 +32,7 @@ func TestAPIVersionPolicy(t *testing.T) {
 			if header {
 				location = APIVersionLocationHeader
 			}
-			p := newAPIVersionPolicy(location, name, version)
+			p := newAPIVersionPolicy(version, &APIVersionOptions{Location: location, Name: name})
 			pl := newTestPipeline(&policy.ClientOptions{Transport: srv, PerCallPolicies: []policy.Policy{p}})
 
 			// when the value isn't set, the policy should set it
@@ -83,7 +83,7 @@ func TestAPIVersionPolicy(t *testing.T) {
 		{location: 2, version: version, err: true},
 	} {
 		t.Run("no-op", func(t *testing.T) {
-			p := newAPIVersionPolicy(test.location, test.name, test.version)
+			p := newAPIVersionPolicy(test.version, &APIVersionOptions{Location: test.location, Name: test.name})
 			pl := newTestPipeline(&policy.ClientOptions{Transport: srv, PerCallPolicies: []policy.Policy{p}})
 			req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 			require.NoError(t, err)

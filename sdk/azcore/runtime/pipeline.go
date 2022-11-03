@@ -16,8 +16,7 @@ import (
 // PipelineOptions contains Pipeline options for SDK developers
 type PipelineOptions struct {
 	AllowedHeaders, AllowedQueryParameters []string
-	APIVersionLocation                     APIVersionLocation
-	APIVersionName                         string
+	APIVersion                             APIVersionOptions
 	PerCall, PerRetry                      []policy.Policy
 }
 
@@ -49,7 +48,7 @@ func NewPipeline(module, version string, plOpts PipelineOptions, options *policy
 	// is populated with the final response (some policies might mutate the response)
 	policies := []policy.Policy{policyFunc(includeResponsePolicy)}
 	if cp.APIVersion != "" {
-		policies = append(policies, newAPIVersionPolicy(plOpts.APIVersionLocation, plOpts.APIVersionName, cp.APIVersion))
+		policies = append(policies, newAPIVersionPolicy(cp.APIVersion, &plOpts.APIVersion))
 	}
 	if !cp.Telemetry.Disabled {
 		policies = append(policies, NewTelemetryPolicy(module, version, &cp.Telemetry))

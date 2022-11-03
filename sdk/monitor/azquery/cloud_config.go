@@ -9,32 +9,32 @@ package azquery
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 
 const (
-	MonitorQueryLogs    cloud.ServiceName = "azqueryLogs"
-	MonitorQueryMetrics cloud.ServiceName = "azqueryMetrics"
+	ServiceNameLogs    cloud.ServiceName = "azqueryLogs"
+	ServiceNameMetrics cloud.ServiceName = "azqueryMetrics"
 )
 
 func init() {
-	cloud.AzureChina.Services[MonitorQueryLogs] = cloud.ServiceConfiguration{
+	cloud.AzureChina.Services[ServiceNameLogs] = cloud.ServiceConfiguration{
 		Audience: "https://api.loganalytics.azure.cn",
 		Endpoint: "https://api.loganalytics.azure.cn/v1",
 	}
-	cloud.AzureGovernment.Services[MonitorQueryLogs] = cloud.ServiceConfiguration{
+	cloud.AzureGovernment.Services[ServiceNameLogs] = cloud.ServiceConfiguration{
 		Audience: "https://api.loganalytics.us",
 		Endpoint: "https://api.loganalytics.us/v1",
 	}
-	cloud.AzurePublic.Services[MonitorQueryLogs] = cloud.ServiceConfiguration{
+	cloud.AzurePublic.Services[ServiceNameLogs] = cloud.ServiceConfiguration{
 		Audience: "https://api.loganalytics.io",
 		Endpoint: "https://api.loganalytics.io/v1",
 	}
-	cloud.AzureChina.Services[MonitorQueryMetrics] = cloud.ServiceConfiguration{
+	cloud.AzureChina.Services[ServiceNameMetrics] = cloud.ServiceConfiguration{
 		Audience: "https://management.chinacloudapi.cn/",
 		Endpoint: "https://management.chinacloudapi.cn/",
 	}
-	cloud.AzureGovernment.Services[MonitorQueryMetrics] = cloud.ServiceConfiguration{
+	cloud.AzureGovernment.Services[ServiceNameMetrics] = cloud.ServiceConfiguration{
 		Audience: "https://management.usgovcloudapi.net/",
 		Endpoint: "https://management.usgovcloudapi.net/",
 	}
-	cloud.AzurePublic.Services[MonitorQueryMetrics] = cloud.ServiceConfiguration{
+	cloud.AzurePublic.Services[ServiceNameMetrics] = cloud.ServiceConfiguration{
 		Audience: "https://management.azure.com",
 		Endpoint: "https://management.azure.com",
 	}

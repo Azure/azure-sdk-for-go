@@ -52,7 +52,7 @@ func NewLogsClient(credential azcore.TokenCredential, options *LogsClientOptions
 	if reflect.ValueOf(options.Cloud).IsZero() {
 		options.Cloud = cloud.AzurePublic
 	}
-	c, ok := options.Cloud.Services[MonitorQueryLogs]
+	c, ok := options.Cloud.Services[ServiceNameLogs]
 	if !ok || c.Audience == "" || c.Endpoint == "" {
 		return nil, errors.New("provided Cloud field is missing Azure Monitor Logs configuration")
 	}
@@ -70,7 +70,7 @@ func NewMetricsClient(credential azcore.TokenCredential, options *MetricsClientO
 	if reflect.ValueOf(options.Cloud).IsZero() {
 		options.Cloud = cloud.AzurePublic
 	}
-	c, ok := options.Cloud.Services[MonitorQueryMetrics]
+	c, ok := options.Cloud.Services[ServiceNameMetrics]
 	if !ok || c.Audience == "" || c.Endpoint == "" {
 		return nil, errors.New("provided Cloud field is missing Azure Monitor Metrics configuration")
 	}

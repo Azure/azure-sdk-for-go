@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRCustomDomains_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/SignalRCustomDomains_List.json
 func ExampleCustomDomainsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,9 +28,7 @@ func ExampleCustomDomainsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("myResourceGroup",
-		"mySignalRService",
-		nil)
+	pager := client.NewListPager("myResourceGroup", "mySignalRService", nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -43,7 +41,7 @@ func ExampleCustomDomainsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRCustomDomains_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/SignalRCustomDomains_Get.json
 func ExampleCustomDomainsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,11 +52,7 @@ func ExampleCustomDomainsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx,
-		"myResourceGroup",
-		"mySignalRService",
-		"example",
-		nil)
+	res, err := client.Get(ctx, "myResourceGroup", "mySignalRService", "example", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,7 +60,7 @@ func ExampleCustomDomainsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRCustomDomains_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/SignalRCustomDomains_CreateOrUpdate.json
 func ExampleCustomDomainsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,19 +71,14 @@ func ExampleCustomDomainsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"myResourceGroup",
-		"mySignalRService",
-		"myDomain",
-		armsignalr.CustomDomain{
-			Properties: &armsignalr.CustomDomainProperties{
-				CustomCertificate: &armsignalr.ResourceReference{
-					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/SignalR/mySignalRService/customCertificates/myCert"),
-				},
-				DomainName: to.Ptr("example.com"),
+	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "mySignalRService", "myDomain", armsignalr.CustomDomain{
+		Properties: &armsignalr.CustomDomainProperties{
+			CustomCertificate: &armsignalr.ResourceReference{
+				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/SignalR/mySignalRService/customCertificates/myCert"),
 			},
+			DomainName: to.Ptr("example.com"),
 		},
-		nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -99,7 +88,7 @@ func ExampleCustomDomainsClient_BeginCreateOrUpdate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRCustomDomains_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/SignalRCustomDomains_Delete.json
 func ExampleCustomDomainsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,11 +99,7 @@ func ExampleCustomDomainsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx,
-		"myResourceGroup",
-		"mySignalRService",
-		"example",
-		nil)
+	poller, err := client.BeginDelete(ctx, "myResourceGroup", "mySignalRService", "example", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -18,12 +18,6 @@ import (
 	"strings"
 )
 
-// MetricsClient contains the methods for the Metrics group.
-// Don't use this type directly, use NewMetricsClient() instead.
-type MetricsClient struct {
-	pl runtime.Pipeline
-}
-
 // NewListMetricDefinitionsPager - Lists the metric definitions for the resource.
 // Generated from API version 2018-01-01
 // resourceURI - The identifier of the resource.
@@ -55,7 +49,7 @@ func (client *MetricsClient) NewListMetricDefinitionsPager(resourceURI string, o
 func (client *MetricsClient) listMetricDefinitionsCreateRequest(ctx context.Context, resourceURI string, options *MetricsClientListMetricDefinitionsOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/metricDefinitions"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(metricsHost, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +103,7 @@ func (client *MetricsClient) NewListMetricNamespacesPager(resourceURI string, op
 func (client *MetricsClient) listMetricNamespacesCreateRequest(ctx context.Context, resourceURI string, options *MetricsClientListMetricNamespacesOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/microsoft.insights/metricNamespaces"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(metricsHost, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -156,7 +150,7 @@ func (client *MetricsClient) QueryResource(ctx context.Context, resourceURI stri
 func (client *MetricsClient) queryResourceCreateRequest(ctx context.Context, resourceURI string, options *MetricsClientQueryResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/metrics"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(metricsHost, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}

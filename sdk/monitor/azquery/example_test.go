@@ -33,7 +33,10 @@ func ExampleNewLogsClient() {
 		//TODO: handle error
 	}
 
-	client := azquery.NewLogsClient(cred, nil)
+	client, err := azquery.NewLogsClient(cred, nil)
+	if err != nil {
+		//TODO: handle error
+	}
 	_ = client
 }
 
@@ -43,7 +46,10 @@ func ExampleNewMetricsClient() {
 		//TODO: handle error
 	}
 
-	client := azquery.NewMetricsClient(cred, nil)
+	client, err := azquery.NewMetricsClient(cred, nil)
+	if err != nil {
+		//TODO: handle error
+	}
 	_ = client
 }
 
@@ -52,7 +58,10 @@ func ExampleLogsClient_QueryWorkspace() {
 	if err != nil {
 		//TODO: handle error
 	}
-	client := azquery.NewLogsClient(cred, nil)
+	client, err := azquery.NewLogsClient(cred, nil)
+	if err != nil {
+		//TODO: handle error
+	}
 	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
 	query := "AzureActivity | top 10 by TimeGenerated"     // Example Kusto query
 	timespan := "2022-08-30/2022-08-31"                    // ISO8601 Standard timespan
@@ -80,7 +89,10 @@ func ExampleLogsClient_QueryWorkspace_second() {
 	if err != nil {
 		//TODO: handle error
 	}
-	client := azquery.NewLogsClient(cred, nil)
+	client, err := azquery.NewLogsClient(cred, nil)
+	if err != nil {
+		//TODO: handle error
+	}
 	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65"                                                                                                                                                                                                                 // example Azure Log Analytics Workspace ID
 	query := "let dt = datatable (Bool:bool, Long:long, Double: double, String: string, Decimal: decimal)\n" + "[false, 1, 12345.6789, 'string value', decimal(0.10101)];" + "range x from 1 to 10 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long" // Example Kusto query
 	timespan := "2022-08-30/2022-08-31"                                                                                                                                                                                                                                    // ISO8601 Standard timespan
@@ -120,7 +132,11 @@ func ExampleLogsClient_Batch() {
 	if err != nil {
 		//TODO: handle error
 	}
-	client := azquery.NewLogsClient(cred, nil)
+	client, err := azquery.NewLogsClient(cred, nil)
+	if err != nil {
+		//TODO: handle error
+	}
+
 	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
 	timespan := "2022-08-30/2022-08-31"                    // ISO8601 Standard Timespan
 
@@ -145,8 +161,11 @@ func ExampleLogsClient_Batch() {
 }
 
 func ExampleMetricsClient_QueryResource() {
-	client := azquery.NewMetricsClient(cred, nil)
-	res, err := client.QueryResource(context.Background(), resourceURI,
+	client, err := azquery.NewMetricsClient(cred, nil)
+	if err != nil {
+		//TODO: handle error
+	}
+	res, err := client.QueryResource(context.TODO(), resourceURI,
 		&azquery.MetricsClientQueryResourceOptions{Timespan: to.Ptr("2017-04-14T02:20:00Z/2017-04-14T04:20:00Z"),
 			Interval:        to.Ptr("PT1M"),
 			Metricnames:     nil,

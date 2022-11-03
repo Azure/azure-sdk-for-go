@@ -5,8 +5,10 @@
 ### Features Added
 * Added `ColumnIndexLookup` field to Table struct
 * Added type `Row`
+* Added sovereign cloud support
 
 ### Breaking Changes
+* Added error return values to `NewLogsClient` and `NewMetricsClient`
 
 ### Bugs Fixed
 

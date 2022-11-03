@@ -37,7 +37,7 @@ func Example_userDelegationSAS() {
 	if !ok {
 		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
-	containerName := "testcontainer"
+	const containerName = "testcontainer"
 
 	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
 	handleError(err)

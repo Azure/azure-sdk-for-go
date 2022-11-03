@@ -85,6 +85,6 @@ func validateSAS(t *testing.T, sas string, parameters QueryParameters) {
 	require.Equal(t, parameters.SignedVersion(), sasCompMap["skv"])
 	require.Equal(t, parameters.SignedDirectoryDepth(), sasCompMap["sdd"])
 	require.Equal(t, parameters.AuthorizedObjectID(), sasCompMap["saoid"])
-	require.Equal(t, parameters.UnauthorizedObjectId(), sasCompMap["suoid"])
+	require.Equal(t, parameters.UnauthorizedObjectID(), sasCompMap["suoid"])
 	require.Equal(t, parameters.SignedCorrelationID(), sasCompMap["scid"])
 }

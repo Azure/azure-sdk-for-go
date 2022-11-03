@@ -36,9 +36,9 @@ type BlobSignatureValues struct {
 	ContentLanguage      string // rscl
 	ContentType          string // rsct
 	BlobVersion          string // sr=bv
-	AuthorizedObjectId   string // saoid
-	UnauthorizedObjectId string // suoid
-	CorrelationId        string // scid
+	AuthorizedObjectID   string // saoid
+	UnauthorizedObjectID string // suoid
+	CorrelationID        string // scid
 }
 
 func getDirectoryDepth(path string) string {
@@ -125,9 +125,9 @@ func (v BlobSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCre
 		contentType:          v.ContentType,
 		snapshotTime:         v.SnapshotTime,
 		signedDirectoryDepth: getDirectoryDepth(v.Directory),
-		authorizedObjectID:   v.AuthorizedObjectId,
-		unauthorizedObjectId: v.UnauthorizedObjectId,
-		correlationID:        v.CorrelationId,
+		authorizedObjectID:   v.AuthorizedObjectID,
+		unauthorizedObjectID: v.UnauthorizedObjectID,
+		correlationID:        v.CorrelationID,
 		// Calculated SAS signature
 		signature: signature,
 	}
@@ -182,9 +182,9 @@ func (v BlobSignatureValues) SignWithUserDelegation(userDelegationCredential *Us
 		udkExpiry,
 		*udk.SignedService,
 		*udk.SignedVersion,
-		v.AuthorizedObjectId,
-		v.UnauthorizedObjectId,
-		v.CorrelationId,
+		v.AuthorizedObjectID,
+		v.UnauthorizedObjectID,
+		v.CorrelationID,
 		v.IPRange.String(),
 		string(v.Protocol),
 		v.Version,
@@ -221,9 +221,9 @@ func (v BlobSignatureValues) SignWithUserDelegation(userDelegationCredential *Us
 		contentType:          v.ContentType,
 		snapshotTime:         v.SnapshotTime,
 		signedDirectoryDepth: getDirectoryDepth(v.Directory),
-		authorizedObjectID:   v.AuthorizedObjectId,
-		unauthorizedObjectId: v.UnauthorizedObjectId,
-		correlationID:        v.CorrelationId,
+		authorizedObjectID:   v.AuthorizedObjectID,
+		unauthorizedObjectID: v.UnauthorizedObjectID,
+		correlationID:        v.CorrelationID,
 		// Calculated SAS signature
 		signature: signature,
 	}

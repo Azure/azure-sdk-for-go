@@ -288,7 +288,7 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 	if !ok {
 		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
-	containerName := "testContainer"
+	const containerName = "testContainer"
 
 	// Create Managed Identity (OAuth) Credentials using Client ID
 	clientOptions := azcore.ClientOptions{} // Fill clientOptions as needed

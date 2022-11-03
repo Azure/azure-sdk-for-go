@@ -141,7 +141,7 @@ type QueryParameters struct {
 	signedVersion        string    `param:"skv"`
 	signedDirectoryDepth string    `param:"sdd"`
 	authorizedObjectID   string    `param:"saoid"`
-	unauthorizedObjectId string    `param:"suoid"`
+	unauthorizedObjectID string    `param:"suoid"`
 	correlationID        string    `param:"scid"`
 	// private member used for startTime and expiryTime formatting.
 	stTimeFormat string
@@ -153,9 +153,9 @@ func (p *QueryParameters) AuthorizedObjectID() string {
 	return p.authorizedObjectID
 }
 
-// UnauthorizedObjectId returns unauthorizedObjectId
-func (p *QueryParameters) UnauthorizedObjectId() string {
-	return p.unauthorizedObjectId
+// UnauthorizedObjectID returns unauthorizedObjectID
+func (p *QueryParameters) UnauthorizedObjectID() string {
+	return p.unauthorizedObjectID
 }
 
 // SignedCorrelationID returns signedCorrelationID
@@ -349,8 +349,8 @@ func (p *QueryParameters) Encode() string {
 	if p.authorizedObjectID != "" {
 		v.Add("saoid", p.authorizedObjectID)
 	}
-	if p.unauthorizedObjectId != "" {
-		v.Add("suoid", p.unauthorizedObjectId)
+	if p.unauthorizedObjectID != "" {
+		v.Add("suoid", p.unauthorizedObjectID)
 	}
 	if p.correlationID != "" {
 		v.Add("scid", p.correlationID)
@@ -426,7 +426,7 @@ func NewQueryParameters(values url.Values, deleteSASParametersFromValues bool) Q
 		case "saoid":
 			p.authorizedObjectID = val
 		case "suoid":
-			p.unauthorizedObjectId = val
+			p.unauthorizedObjectID = val
 		case "scid":
 			p.correlationID = val
 		default:

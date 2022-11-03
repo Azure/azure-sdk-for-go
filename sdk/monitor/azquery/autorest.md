@@ -138,3 +138,22 @@ directive:
   - from: constants.go
     where: $
     transform: return $.replace(/const host = "(.*?)"/, "");
+
+  # change render and statistics type to []byte
+  - from: models.go
+    where: $
+    transform: return $.replace(/interface{}/g, "[]byte");
+  - from: models_serde.go
+    where: $
+    transform: return 
+      $.replace(/err(.*)r\.Statistics\)/, "r.Statistics = val") 
+  - from: models_serde.go
+    where: $
+    transform: return $.replace(/err(.*)r\.Render\)/, "r.Render = val");
+  - from: models_serde.go
+    where: $
+    transform: return 
+      $.replace(/err(.*)b\.Statistics\)/, "b.Statistics = val") 
+  - from: models_serde.go
+    where: $
+    transform: return $.replace(/err(.*)b\.Render\)/, "b.Render = val");

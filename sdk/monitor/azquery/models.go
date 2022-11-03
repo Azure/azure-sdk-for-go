@@ -49,10 +49,10 @@ type BatchQueryResults struct {
 	Error *ErrorInfo `json:"error,omitempty"`
 
 	// Visualization data in JSON format.
-	Render interface{} `json:"render,omitempty"`
+	Render []byte `json:"render,omitempty"`
 
 	// Statistics represented in JSON format.
-	Statistics interface{} `json:"statistics,omitempty"`
+	Statistics []byte `json:"statistics,omitempty"`
 
 	// The list of tables, columns and rows.
 	Tables []*Table `json:"tables,omitempty"`
@@ -338,10 +338,10 @@ type Results struct {
 	Error *ErrorInfo `json:"error,omitempty"`
 
 	// Visualization data in JSON format.
-	Render interface{} `json:"render,omitempty"`
+	Render []byte `json:"render,omitempty"`
 
 	// Statistics represented in JSON format.
-	Statistics interface{} `json:"statistics,omitempty"`
+	Statistics []byte `json:"statistics,omitempty"`
 }
 
 // TimeSeriesElement - A time series result type. The discriminator value is always TimeSeries in this case.

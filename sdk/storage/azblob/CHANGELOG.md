@@ -9,7 +9,11 @@
 
 ### Breaking Changes
 
+* Corrected the name for `saoid` and `suoid` SAS parameters in `BlobSignatureValues` struct as per [this](https://learn.microsoft.com/rest/api/storageservices/create-user-delegation-sas#construct-a-user-delegation-sas)
+
 ### Bugs Fixed
+
+* Corrected signing of User Delegation SAS. Fixes [#19372](https://github.com/Azure/azure-sdk-for-go/issues/19372) and [#19454](https://github.com/Azure/azure-sdk-for-go/issues/19454)
 
 ### Other Changes
 

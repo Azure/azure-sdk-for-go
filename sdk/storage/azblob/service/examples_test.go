@@ -338,7 +338,7 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 	cred, err = azidentity.NewManagedIdentityCredential(&optsResourceID)
 	handleError(err)
 
-	svcClient, err = service.NewClient("svcURL", cred, &clientOptionsService)
+	svcClient, err = service.NewClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, &clientOptionsService)
 	handleError(err)
 
 	udc, err = svcClient.GetUserDelegationCredential(context.Background(), info, nil)

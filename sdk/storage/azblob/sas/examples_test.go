@@ -60,7 +60,7 @@ func Example_userDelegationSAS() {
 	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
 	handleError(err)
 
-	// Create Account Signature Values with desired permissions and sign with user delegation credential
+	// Create Blob Signature Values with desired permissions and sign with user delegation credential
 	sasQueryParams, err := sas.BlobSignatureValues{
 		Protocol:      sas.ProtocolHTTPS,
 		StartTime:     time.Now().UTC().Add(time.Second * -10),

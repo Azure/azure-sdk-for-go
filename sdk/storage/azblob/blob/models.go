@@ -211,7 +211,7 @@ func (o *DeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated
 
 	basics := generated.BlobClientDeleteOptions{
 		DeleteSnapshots: o.DeleteSnapshots,
-		DeleteType:      o.BlobDeleteType,
+		DeleteType:      o.BlobDeleteType, // None by default
 	}
 
 	if o.AccessConditions == nil {

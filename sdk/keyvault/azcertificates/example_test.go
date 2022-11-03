@@ -23,7 +23,10 @@ func ExampleNewClient() {
 		// TODO: handle error
 	}
 	vaultURL := "https://<TODO: your vault name>.vault.azure.net"
-	client := azcertificates.NewClient(vaultURL, cred, nil)
+	client, err := azcertificates.NewClient(vaultURL, cred, nil)
+	if err != nil {
+		// TODO: handle error
+	}
 
 	_ = client
 }

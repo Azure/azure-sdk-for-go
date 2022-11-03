@@ -8,5 +8,5 @@ package azkeys
 
 const (
 	moduleName = "azkeys"
-	version    = "v0.8.2"
+	version    = "v0.9.0"
 )

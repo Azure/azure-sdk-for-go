@@ -25,7 +25,11 @@ func ExampleNewClient() {
 		// TODO: handle error
 	}
 
-	client := azkeys.NewClient(vaultURL, cred, nil)
+	client, err := azkeys.NewClient(vaultURL, cred, nil)
+	if err != nil {
+		// TODO: handle error
+	}
+
 	_ = client
 }
 

@@ -44982,8 +44982,8 @@
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
-        "primarySharedKey": "YelRw3/aoyeAkRUfiiVJR2G0x2nmS/uipvh7ndPHD1vGCohz4yXddl6R1YFiLA4Kr0FwDLVp6V871Bej3oNUBQ==",
-        "secondarySharedKey": "hzs1YZTy9duLgkgr0Z5CoTw/Al/RhIzAzh\u002BALFWhmxtDn4R3KO3xdVk5apF6eKA8rCGzydjztBURP/5n1Fy/rg=="
+        "primarySharedKey": "000000000000",
+        "secondarySharedKey": "000000000000"
       }
     },
     {

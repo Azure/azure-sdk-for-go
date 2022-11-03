@@ -114,10 +114,19 @@ func (c *Client) UpdateSyncToken(token string) {
 	c.syncTokenPolicy.addToken(token)
 }
 
+func toGeneratedETagString(etag *azcore.ETag) *string {
+	if etag == nil || *etag == azcore.ETagAny {
+		return (*string)(etag)
+	}
+
+	str := "\"" + (string)(*etag) + "\""
+	return &str
+}
+
 func (cs Setting) toGeneratedPutOptions(ifMatch *azcore.ETag, ifNoneMatch *azcore.ETag) (generated.KeyValue, generated.AzureAppConfigurationClientPutKeyValueOptions) {
 	return cs.toGenerated(), generated.AzureAppConfigurationClientPutKeyValueOptions{
-		IfMatch:     (*string)(ifMatch),
-		IfNoneMatch: (*string)(ifNoneMatch),
+		IfMatch:     toGeneratedETagString(ifMatch),
+		IfNoneMatch: toGeneratedETagString(ifNoneMatch),
 		Label:       cs.Label,
 	}
 }
@@ -190,7 +199,7 @@ type DeleteSettingOptions struct {
 
 func (cs Setting) toGeneratedDeleteOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientDeleteKeyValueOptions {
 	return &generated.AzureAppConfigurationClientDeleteKeyValueOptions{
-		IfMatch: (*string)(ifMatch),
+		IfMatch: toGeneratedETagString(ifMatch),
 		Label:   cs.Label,
 	}
 }
@@ -255,6 +264,9 @@ type GetSettingOptions struct {
 
 	// The setting will be retrieved exactly as it existed at the provided time.
 	AcceptDateTime *time.Time
+
+	// An ETag indicating the state of a configuration setting within a configuration store.
+	ETag *azcore.ETag
 }
 
 func (cs Setting) toGeneratedGetOptions(ifNoneMatch *azcore.ETag, acceptDateTime *time.Time) *generated.AzureAppConfigurationClientGetKeyValueOptions {
@@ -266,7 +278,7 @@ func (cs Setting) toGeneratedGetOptions(ifNoneMatch *azcore.ETag, acceptDateTime
 
 	return &generated.AzureAppConfigurationClientGetKeyValueOptions{
 		AcceptDatetime: dt,
-		IfNoneMatch:    (*string)(ifNoneMatch),
+		IfNoneMatch:    toGeneratedETagString(ifNoneMatch),
 		Label:          cs.Label,
 	}
 }
@@ -274,11 +286,13 @@ func (cs Setting) toGeneratedGetOptions(ifNoneMatch *azcore.ETag, acceptDateTime
 // GetSetting retrieves an existing configuration setting from the configuration store.
 func (c *Client) GetSetting(ctx context.Context, key string, options *GetSettingOptions) (GetSettingResponse, error) {
 	var label *string
+	var etag *azcore.ETag
 	if options != nil {
 		label = options.Label
+		etag = options.ETag
 	}
 
-	setting := Setting{Key: &key, Label: label}
+	setting := Setting{Key: &key, Label: label, ETag: etag}
 
 	var ifNoneMatch *azcore.ETag
 	var acceptDateTime *time.Time
@@ -333,14 +347,14 @@ type SetReadOnlyOptions struct {
 
 func (cs Setting) toGeneratedPutLockOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientPutLockOptions {
 	return &generated.AzureAppConfigurationClientPutLockOptions{
-		IfMatch: (*string)(ifMatch),
+		IfMatch: toGeneratedETagString(ifMatch),
 		Label:   cs.Label,
 	}
 }
 
 func (cs Setting) toGeneratedDeleteLockOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientDeleteLockOptions {
 	return &generated.AzureAppConfigurationClientDeleteLockOptions{
-		IfMatch: (*string)(ifMatch),
+		IfMatch: toGeneratedETagString(ifMatch),
 		Label:   cs.Label,
 	}
 }

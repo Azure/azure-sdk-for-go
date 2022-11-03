@@ -3097,8 +3097,9 @@ func (s *BlobRecordedTestsSuite) TestPermanentDelete() {
 	_require.Len(found, 2)
 
 	// Options for PermanentDeleteOptions
+	perm := blob.DeleteTypePermanent
 	deleteBlobOptions := blob.DeleteOptions{
-		BlobDeleteType: blob.DeleteTypePermanent,
+		BlobDeleteType: &perm,
 	}
 	// Execute Delete with DeleteTypePermanent
 	pdResp, err := snapshotURL.Delete(context.Background(), &deleteBlobOptions)
@@ -3212,8 +3213,9 @@ func (s *BlobRecordedTestsSuite) TestPermanentDeleteWithoutPermission() {
 	_require.Len(found, 2)
 
 	// Options for PermanentDeleteOptions
+	perm := blob.DeleteTypePermanent
 	deleteBlobOptions := blob.DeleteOptions{
-		BlobDeleteType: blob.DeleteTypePermanent,
+		BlobDeleteType: &perm,
 	}
 	// Execute Delete with DeleteTypePermanent,should fail because permissions are not set
 	_, err = snapshotURL.Delete(context.Background(), &deleteBlobOptions)

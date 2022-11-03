@@ -191,10 +191,9 @@ type DeleteSettingOptions struct {
 	// Configuration setting label.
 	Label *string
 
-	// If set to true and the configuration setting exists in the configuration store,
-	// delete the setting if the passed-in configuration setting is the same version as the one in the configuration store.
-	// The setting versions are the same if their ETag fields match.
-	OnlyIfUnchanged bool
+	// If set, and the configuration setting exists in the configuration store,
+	// delete the setting if the passed-in ETag is the same as the setting's ETag in the configuration store.
+	OnlyIfUnchanged *azcore.ETag
 }
 
 func (cs Setting) toGeneratedDeleteOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientDeleteKeyValueOptions {
@@ -207,16 +206,14 @@ func (cs Setting) toGeneratedDeleteOptions(ifMatch *azcore.ETag) *generated.Azur
 // DeleteSetting deletes a configuration setting from the configuration store.
 func (c *Client) DeleteSetting(ctx context.Context, key string, options *DeleteSettingOptions) (DeleteSettingResponse, error) {
 	var label *string
+	var ifMatch *azcore.ETag
+
 	if options != nil {
 		label = options.Label
+		ifMatch = options.OnlyIfUnchanged
 	}
 
 	setting := Setting{Key: &key, Label: label}
-
-	var ifMatch *azcore.ETag
-	if options != nil && options.OnlyIfUnchanged {
-		ifMatch = setting.ETag
-	}
 
 	resp, err := c.appConfigClient.DeleteKeyValue(ctx, *setting.Key, setting.toGeneratedDeleteOptions(ifMatch))
 	if err != nil {
@@ -257,16 +254,12 @@ type GetSettingOptions struct {
 	// Configuration setting label.
 	Label *string
 
-	// If set to true, only retrieve the setting from the configuration store if it has changed since the client last retrieved it.
-	// It is determined to have changed if the ETag field on the passed-in configuration setting is different from the ETag
-	// of the setting in the configuration store.
-	OnlyIfChanged bool
+	// If set, only retrieve the setting from the configuration store if setting has changed
+	// since the client last retrieved it with the ETag provided.
+	OnlyIfChanged *azcore.ETag
 
 	// The setting will be retrieved exactly as it existed at the provided time.
 	AcceptDateTime *time.Time
-
-	// An ETag indicating the state of a configuration setting within a configuration store.
-	ETag *azcore.ETag
 }
 
 func (cs Setting) toGeneratedGetOptions(ifNoneMatch *azcore.ETag, acceptDateTime *time.Time) *generated.AzureAppConfigurationClientGetKeyValueOptions {
@@ -286,23 +279,16 @@ func (cs Setting) toGeneratedGetOptions(ifNoneMatch *azcore.ETag, acceptDateTime
 // GetSetting retrieves an existing configuration setting from the configuration store.
 func (c *Client) GetSetting(ctx context.Context, key string, options *GetSettingOptions) (GetSettingResponse, error) {
 	var label *string
-	var etag *azcore.ETag
-	if options != nil {
-		label = options.Label
-		etag = options.ETag
-	}
-
-	setting := Setting{Key: &key, Label: label, ETag: etag}
-
 	var ifNoneMatch *azcore.ETag
 	var acceptDateTime *time.Time
-	if options != nil {
-		if options.OnlyIfChanged {
-			ifNoneMatch = setting.ETag
-		}
 
+	if options != nil {
+		label = options.Label
+		ifNoneMatch = options.OnlyIfChanged
 		acceptDateTime = options.AcceptDateTime
 	}
+
+	setting := Setting{Key: &key, Label: label}
 
 	resp, err := c.appConfigClient.GetKeyValue(ctx, *setting.Key, setting.toGeneratedGetOptions(ifNoneMatch, acceptDateTime))
 	if err != nil {
@@ -339,10 +325,9 @@ type SetReadOnlyOptions struct {
 	// Configuration setting label.
 	Label *string
 
-	// If set to true and the configuration setting exists in the configuration store, update the setting
-	// if the passed-in configuration setting is the same version as the one in the configuration store.
-	// The setting versions are the same if their ETag fields match.
-	OnlyIfUnchanged bool
+	// If set, and the configuration setting exists in the configuration store, update the setting
+	// if the passed-in configuration setting ETag is the same version as the one in the configuration store.
+	OnlyIfUnchanged *azcore.ETag
 }
 
 func (cs Setting) toGeneratedPutLockOptions(ifMatch *azcore.ETag) *generated.AzureAppConfigurationClientPutLockOptions {
@@ -362,16 +347,14 @@ func (cs Setting) toGeneratedDeleteLockOptions(ifMatch *azcore.ETag) *generated.
 // SetReadOnly sets an existing configuration setting to read only or read write state in the configuration store.
 func (c *Client) SetReadOnly(ctx context.Context, key string, isReadOnly bool, options *SetReadOnlyOptions) (SetReadOnlyResponse, error) {
 	var label *string
+	var ifMatch *azcore.ETag
+
 	if options != nil {
 		label = options.Label
+		ifMatch = options.OnlyIfUnchanged
 	}
 
 	setting := Setting{Key: &key, Label: label}
-
-	var ifMatch *azcore.ETag
-	if options != nil && options.OnlyIfUnchanged {
-		ifMatch = setting.ETag
-	}
 
 	var err error
 	if isReadOnly {
@@ -411,25 +394,22 @@ type SetSettingOptions struct {
 	// Configuration setting label.
 	Label *string
 
-	// If set to true and the configuration setting exists in the configuration store, overwrite the setting
-	// if the passed-in configuration setting is the same version as the one in the configuration store.
-	// The setting versions are the same if their ETag fields match.
-	OnlyIfUnchanged bool
+	// If set, and the configuration setting exists in the configuration store, overwrite the setting
+	// if the passed-in ETag is the same version as the one in the configuration store.
+	OnlyIfUnchanged *azcore.ETag
 }
 
 // SetSetting creates a configuration setting if it doesn't exist or overwrites the existing setting in the configuration store.
 func (c *Client) SetSetting(ctx context.Context, key string, value *string, options *SetSettingOptions) (SetSettingResponse, error) {
 	var label *string
+	var ifMatch *azcore.ETag
+
 	if options != nil {
 		label = options.Label
+		ifMatch = options.OnlyIfUnchanged
 	}
 
 	setting := Setting{Key: &key, Value: value, Label: label}
-
-	var ifMatch *azcore.ETag
-	if options != nil && options.OnlyIfUnchanged {
-		ifMatch = setting.ETag
-	}
 
 	kv, opts := setting.toGeneratedPutOptions(ifMatch, nil)
 	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, kv, &opts)

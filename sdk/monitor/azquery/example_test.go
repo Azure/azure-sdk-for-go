@@ -127,7 +127,7 @@ func ExampleLogsClient_QueryWorkspace_second() {
 	fmt.Println(QueryResults)
 }
 
-func ExampleLogsClient_Batch() {
+func ExampleLogsClient_QueryBatch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		//TODO: handle error

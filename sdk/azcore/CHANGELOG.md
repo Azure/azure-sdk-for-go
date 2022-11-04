@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0 (2022-11-03)
+## 1.2.0 (2022-11-04)
 
 ### Features Added
 * Added `ClientOptions.APIVersion` field, which overrides the default version a client

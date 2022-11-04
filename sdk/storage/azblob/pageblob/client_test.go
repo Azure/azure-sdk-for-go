@@ -3997,6 +3997,8 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDelete() {
 	deleteBlobOptions := blob.DeleteOptions{
 		BlobDeleteType: &perm,
 	}
+	time.Sleep(time.Second * 30)
+
 	// Execute Delete with DeleteTypePermanent
 	pdResp, err := snapshotURL.Delete(context.Background(), &deleteBlobOptions)
 	_require.Nil(err)

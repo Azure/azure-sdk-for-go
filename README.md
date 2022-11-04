@@ -37,7 +37,7 @@ You can find the most up-to-date list of new packages on our [latest page](https
 
 The last stable versions of packages that have been provided for usage with Azure are production-ready. These libraries might not implement the [Azure Go SDK guidelines](https://azure.github.io/azure-sdk/golang_introduction.html) or have the same feature set as the New releases, however they do offer a wider coverage of services.
 
-Previous Go SDK packages are located under [/services folder](https://github.com/Azure/azure-sdk-for-go/tree/master/services), and you can see the full list [on this page](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services). 
+Previous Go SDK packages are located under [/services folder](https://github.com/Azure/azure-sdk-for-go/tree/legacy/services), and you can see the full list [on this page](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services). 
 
 ### Management: New Releases
 A new set of management libraries that follow the [Azure SDK Design Guidelines for Go](https://azure.github.io/azure-sdk/golang_introduction.html) are available at `sdk/resourcemanagement`. These new libraries provide a number of core capabilities that are shared amongst all Azure SDKs, including the intuitive Azure Identity library, an HTTP Pipeline with custom policies, error-handling, distributed tracing, and much more.
@@ -53,7 +53,7 @@ You can find the [most up to date list of all of the new packages on our page](h
 ### Management: Previous Versions
 For a complete list of management libraries which enable you to provision and manage Azure resources, please [check here](https://azure.github.io/azure-sdk/releases/latest/all/go.html). They might not have the same feature set as the new releases but they do offer wider coverage of services.
 
-Previous packages are located under [/services folder](https://github.com/Azure/azure-sdk-for-go/tree/master/services), and you can see the full list [on this page](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services).
+Previous packages are located under [/services folder](https://github.com/Azure/azure-sdk-for-go/tree/legacy/services), and you can see the full list [on this page](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services).
 
 * [Quickstart tutorial for previous versions](https://aka.ms/azsdk/go/mgmt/previous)
 
@@ -72,8 +72,7 @@ Azure provides several other packages for using services from Go, listed below. 
 ## Samples
 
 More code samples for using the management library for Go SDK can be found in the following locations
-- [Go SDK Code Samples Repo(New version)](https://aka.ms/azsdk/go/mgmt/samples)
-- [Go SDK Code Samples Repo](https://github.com/azure-samples/azure-sdk-for-go-samples)
+- [Go SDK Code Samples Repo](https://aka.ms/azsdk/go/mgmt/samples)
 - Example files under each package. For example, examples for Network packages can be [found here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/network/armnetwork/loadbalancernetworkinterfaces_client_example_test.go)
 
 ## Reporting security issues and security bugs

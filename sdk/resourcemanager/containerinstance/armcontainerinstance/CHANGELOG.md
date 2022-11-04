@@ -1,5 +1,19 @@
 # Release History
 
+## 3.0.0 (2022-11-04)
+### Breaking Changes
+
+- Struct `CloudError` has been removed
+- Struct `CloudErrorBody` has been removed
+
+### Features Added
+
+- New struct `DeploymentExtensionSpec`
+- New struct `DeploymentExtensionSpecProperties`
+- New field `Identity` in struct `EncryptionProperties`
+- New field `Extensions` in struct `ContainerGroupPropertiesProperties`
+
+
 ## 2.0.0 (2022-08-26)
 ### Breaking Changes
 

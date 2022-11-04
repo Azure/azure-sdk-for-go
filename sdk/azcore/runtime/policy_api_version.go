@@ -32,9 +32,8 @@ const (
 	APIVersionLocationHeader = 1
 )
 
-// newAPIVersionPolicy constructs an APIVersionPolicy. name is the name of the query parameter or header and
-// version is its value. If version is "", Do will be a no-op. If version isn't empty and name is empty,
-// Do will return an error.
+// newAPIVersionPolicy constructs an APIVersionPolicy. If version is "", Do will be a no-op. If version
+// isn't empty and opts.Name is empty, Do will return an error.
 func newAPIVersionPolicy(version string, opts *APIVersionOptions) *apiVersionPolicy {
 	if opts == nil {
 		opts = &APIVersionOptions{}

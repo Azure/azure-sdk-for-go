@@ -14,7 +14,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -28,7 +28,7 @@ func TestNewPipelineWithAPIVersion(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse()
-	pl, err := NewPipeline("...", "...", mockCredential{}, azruntime.PipelineOptions{}, &arm.ClientOptions{
+	pl, err := NewPipeline("...", "...", mockCredential{}, azruntime.PipelineOptions{}, &armpolicy.ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			APIVersion: version,
 		},
@@ -45,7 +45,7 @@ func TestNewPipelineWithOptions(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse()
-	opt := arm.ClientOptions{}
+	opt := armpolicy.ClientOptions{}
 	opt.Transport = srv
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
@@ -72,7 +72,7 @@ func TestNewPipelineWithCustomTelemetry(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse()
-	opt := arm.ClientOptions{}
+	opt := armpolicy.ClientOptions{}
 	opt.Transport = srv
 	opt.Telemetry.ApplicationID = myTelemetry
 	if opt.Telemetry.ApplicationID != myTelemetry {
@@ -103,7 +103,7 @@ func TestDisableAutoRPRegistration(t *testing.T) {
 	defer close()
 	// initial response that RP is unregistered
 	srv.SetResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
-	opts := &arm.ClientOptions{DisableRPRegistration: true, ClientOptions: policy.ClientOptions{Transport: srv}}
+	opts := &armpolicy.ClientOptions{DisableRPRegistration: true, ClientOptions: policy.ClientOptions{Transport: srv}}
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
@@ -153,7 +153,7 @@ func TestPipelineWithCustomPolicies(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	perCallPolicy := countingPolicy{}
 	perRetryPolicy := countingPolicy{}
-	opts := &arm.ClientOptions{
+	opts := &armpolicy.ClientOptions{
 		DisableRPRegistration: true,
 		ClientOptions: policy.ClientOptions{
 			PerCallPolicies:  []policy.Policy{&perCallPolicy},
@@ -190,7 +190,7 @@ func TestPipelineAudience(t *testing.T) {
 		srv, close := mock.NewServer()
 		defer close()
 		srv.AppendResponse(mock.WithStatusCode(200))
-		opts := &arm.ClientOptions{}
+		opts := &armpolicy.ClientOptions{}
 		opts.Cloud = c
 		opts.Transport = srv
 		audience := opts.Cloud.Services[cloud.ResourceManager].Audience
@@ -237,7 +237,7 @@ func TestPipelineWithIncompleteCloudConfig(t *testing.T) {
 		}},
 	}
 	for _, c := range partialConfigs {
-		opts := &arm.ClientOptions{}
+		opts := &armpolicy.ClientOptions{}
 		opts.Cloud = c
 		_, err := NewPipeline("test", "v0.1.0", mockCredential{}, azruntime.PipelineOptions{}, opts)
 		if err == nil {

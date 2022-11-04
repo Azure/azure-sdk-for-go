@@ -126,10 +126,7 @@ type TelemetryOptions struct {
 }
 
 // TokenRequestOptions contain specific parameter that may be used by credentials types when attempting to get a token.
-type TokenRequestOptions struct {
-	// Scopes contains the list of permission scopes required for the token.
-	Scopes []string
-}
+type TokenRequestOptions = exported.TokenRequestOptions
 
 // BearerTokenOptions configures the bearer token policy's behavior.
 type BearerTokenOptions struct {

@@ -50,10 +50,10 @@ directive:
  # rename log queries
   - rename-operation:
       from: Query_Execute
-      to: QueryWorkspace
+      to: Logs_QueryWorkspace
   - rename-operation:
       from: Query_Batch
-      to: Batch
+      to: Logs_QueryBatch
 
   # rename metric list to QueryResource
   - rename-operation:
@@ -63,10 +63,10 @@ directive:
  # rename ListMetricDefinitions and ListMetricNamespaces to generate in metrics_client.go
   - rename-operation:
       from: MetricDefinitions_List
-      to: Metrics_ListMetricDefinitions
+      to: Metrics_ListDefinitions
   - rename-operation:
       from: MetricNamespaces_List
-      to: Metrics_ListMetricNamespaces
+      to: Metrics_ListNamespaces
 
   # add default values for batch request path and method attributes
   - from: swagger-document
@@ -138,3 +138,22 @@ directive:
   - from: constants.go
     where: $
     transform: return $.replace(/const host = "(.*?)"/, "");
+
+  # change render and statistics type to []byte
+  - from: models.go
+    where: $
+    transform: return $.replace(/interface{}/g, "[]byte");
+  - from: models_serde.go
+    where: $
+    transform: return 
+      $.replace(/err(.*)r\.Statistics\)/, "r.Statistics = val") 
+  - from: models_serde.go
+    where: $
+    transform: return $.replace(/err(.*)r\.Render\)/, "r.Render = val");
+  - from: models_serde.go
+    where: $
+    transform: return 
+      $.replace(/err(.*)b\.Statistics\)/, "b.Statistics = val") 
+  - from: models_serde.go
+    where: $
+    transform: return $.replace(/err(.*)b\.Render\)/, "b.Render = val");

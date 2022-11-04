@@ -127,7 +127,7 @@ func ExampleLogsClient_QueryWorkspace_second() {
 	fmt.Println(QueryResults)
 }
 
-func ExampleLogsClient_Batch() {
+func ExampleLogsClient_QueryBatch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		//TODO: handle error
@@ -146,7 +146,7 @@ func ExampleLogsClient_Batch() {
 		{Body: &azquery.Body{Query: to.Ptr(kustoQuery3), Timespan: to.Ptr(timespan)}, ID: to.Ptr("3"), Workspace: to.Ptr(workspaceID)},
 	}}
 
-	res, err := client.Batch(context.TODO(), batchRequest, nil)
+	res, err := client.QueryBatch(context.TODO(), batchRequest, nil)
 	if err != nil {
 		//TODO: handle error
 	}

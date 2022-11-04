@@ -27,7 +27,7 @@ type ClientOptions struct {
 
 // NewClient creates a client that accesses a Key Vault's certificates. You should validate that
 // vaultURL references a valid Key Vault. See https://aka.ms/azsdk/blog/vault-uri for details.
-func NewClient(vaultURL string, credential azcore.TokenCredential, options *ClientOptions) *Client {
+func NewClient(vaultURL string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -38,7 +38,7 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 		},
 	)
 	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
-	return &Client{endpoint: vaultURL, pl: pl}
+	return &Client{endpoint: vaultURL, pl: pl}, nil
 }
 
 // ID is a certificate's unique ID, containing its name and version.

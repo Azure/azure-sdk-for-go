@@ -9,15 +9,35 @@ package cloud
 var (
 	// AzureChina contains configuration for Azure China.
 	AzureChina = Configuration{
-		ActiveDirectoryAuthorityHost: "https://login.chinacloudapi.cn/", Services: map[ServiceName]ServiceConfiguration{},
+		ActiveDirectoryAuthorityHost: "https://login.chinacloudapi.cn/",
+		Services: map[ServiceName]ServiceConfiguration{
+			ResourceManager: {
+				Audience: "https://management.core.chinacloudapi.cn",
+				Endpoint: "https://management.chinacloudapi.cn",
+			},
+		},
 	}
+
 	// AzureGovernment contains configuration for Azure Government.
 	AzureGovernment = Configuration{
-		ActiveDirectoryAuthorityHost: "https://login.microsoftonline.us/", Services: map[ServiceName]ServiceConfiguration{},
+		ActiveDirectoryAuthorityHost: "https://login.microsoftonline.us/",
+		Services: map[ServiceName]ServiceConfiguration{
+			ResourceManager: {
+				Audience: "https://management.core.usgovcloudapi.net",
+				Endpoint: "https://management.usgovcloudapi.net",
+			},
+		},
 	}
+
 	// AzurePublic contains configuration for Azure Public Cloud.
 	AzurePublic = Configuration{
-		ActiveDirectoryAuthorityHost: "https://login.microsoftonline.com/", Services: map[ServiceName]ServiceConfiguration{},
+		ActiveDirectoryAuthorityHost: "https://login.microsoftonline.com/",
+		Services: map[ServiceName]ServiceConfiguration{
+			ResourceManager: {
+				Audience: "https://management.core.windows.net/",
+				Endpoint: "https://management.azure.com",
+			},
+		},
 	}
 )
 

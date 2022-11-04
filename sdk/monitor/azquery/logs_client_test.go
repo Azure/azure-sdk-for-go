@@ -184,7 +184,7 @@ func TestQueryWorkspace_MultipleWorkspaces(t *testing.T) {
 	}
 }
 
-func TestBatch_QuerySuccess(t *testing.T) {
+func TestQueryBatch_QuerySuccess(t *testing.T) {
 	client := startLogsTest(t)
 	query1, query2 := query, query+" | take 2"
 
@@ -218,7 +218,7 @@ func TestBatch_QuerySuccess(t *testing.T) {
 	testSerde(t, &res)
 }
 
-func TestBatch_PartialError(t *testing.T) {
+func TestQueryBatch_PartialError(t *testing.T) {
 	client := startLogsTest(t)
 
 	batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{

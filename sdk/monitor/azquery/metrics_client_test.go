@@ -8,8 +8,10 @@ package azquery_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
 	"github.com/stretchr/testify/require"
@@ -35,11 +37,33 @@ func TestQueryResource_BasicQuerySuccess(t *testing.T) {
 	}
 	require.Equal(t, *res.Response.Value[0].ErrorCode, "Success")
 	require.Equal(t, *res.Response.Namespace, "Microsoft.AppConfiguration/configurationStores")
-	testSerde(t, &res.Response)
-	testSerde(t, res.Response.Value[0])
-	testSerde(t, res.Response.Value[0].Name)
-	testSerde(t, res.Response.Value[0].Timeseries[0])
+	testSerde(t, &res)
+	testSerde(t, res.Value[0])
+	testSerde(t, res.Value[0].Name)
+	testSerde(t, res.Value[0].Timeseries[0])
 	//testSerde(t, res.Response.Value[0].Timeseries[0].Metadatavalues[0])
+}
+
+func TestQueryResource_BasicQueryFailure(t *testing.T) {
+	client := startMetricsTest(t)
+	resourceURI = "123"
+	var httpErr *azcore.ResponseError
+
+	res, err := client.QueryResource(context.Background(), resourceURI, nil)
+
+	require.Error(t, err)
+	require.ErrorAs(t, err, &httpErr)
+	require.Equal(t, httpErr.ErrorCode, "MissingSubscription")
+	require.Equal(t, httpErr.StatusCode, 404)
+	require.Nil(t, res.Timespan)
+	require.Nil(t, res.Value)
+	require.Nil(t, res.Cost)
+	require.Nil(t, res.Interval)
+	require.Nil(t, res.Namespace)
+	require.Nil(t, res.Resourceregion)
+
+	testSerde(t, &res)
+	fmt.Print("heee")
 }
 
 func TestNewListMetricDefinitionsPager_Success(t *testing.T) {

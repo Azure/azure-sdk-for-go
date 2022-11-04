@@ -19,7 +19,7 @@ type APIVersionOptions struct {
 	// Location indicates where to set the version on a request, for example in a header or query param
 	Location APIVersionLocation
 	// Name is the name of the header or query parameter, for example "api-version"
-	Name     string
+	Name string
 }
 
 // APIVersionLocation indicates which part of a request identifies the service version

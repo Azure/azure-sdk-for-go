@@ -5,8 +5,14 @@
 ### Features Added
 * Added `ColumnIndexLookup` field to Table struct
 * Added type `Row`
+* Added sovereign cloud support
 
 ### Breaking Changes
+* Added error return values to `NewLogsClient` and `NewMetricsClient`
+* Rename `Batch` to `QueryBatch`
+* Rename `NewListMetricDefinitionsPager` to `NewListDefinitionsPager`
+* Rename `NewListMetricNamespacesPager` to `NewListNamespacesPager`
+* Changed type of `Render` and `Statistics` from interface{} to []byte
 
 ### Bugs Fixed
 

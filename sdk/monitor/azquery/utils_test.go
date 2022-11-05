@@ -8,12 +8,17 @@ package azquery_test
 
 import (
 	"context"
+	"crypto/tls"
 	"encoding/json"
+	"fmt"
+	"net/http"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -30,6 +35,7 @@ var (
 	workspaceID  string
 	workspaceID2 string
 	resourceURI  string
+	clientCloud  cloud.Configuration
 )
 
 func TestMain(m *testing.M) {
@@ -61,10 +67,23 @@ func TestMain(m *testing.M) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
-		credential, err = azidentity.NewDefaultAzureCredential(nil)
+		tenantID := lookupEnvVar("AZQUERY_TENANT_ID")
+		clientID := lookupEnvVar("AZQUERY_CLIENT_ID")
+		secret := lookupEnvVar("AZQUERY_CLIENT_SECRET")
+		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
 		if err != nil {
 			panic(err)
 		}
+
+		if cloudEnv, ok := os.LookupEnv("AZQUERY_ENVIRONMENT"); ok {
+			if strings.EqualFold(cloudEnv, "AzureUSGovernment") {
+				clientCloud = cloud.AzureGovernment
+			}
+			if strings.EqualFold(cloudEnv, "AzureChinaCloud") {
+				clientCloud = cloud.AzureChina
+			}
+		}
+
 	}
 	if recording.GetRecordMode() == recording.RecordingMode {
 		err := recording.AddGeneralRegexSanitizer(fakeWorkspaceID, workspaceID, nil)
@@ -103,16 +122,45 @@ func startLogsTest(t *testing.T) *azquery.LogsClient {
 	startRecording(t)
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
-	opts := &azquery.LogsClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
-	return azquery.NewLogsClient(credential, opts)
+	opts := &azquery.LogsClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport, Cloud: clientCloud}}
+	client, err := azquery.NewLogsClient(credential, opts)
+	if err != nil {
+		panic(err)
+	}
+	return client
 }
 
 func startMetricsTest(t *testing.T) *azquery.MetricsClient {
-	startRecording(t)
-	transport, err := recording.NewRecordingHTTPClient(t, nil)
-	require.NoError(t, err)
-	opts := &azquery.MetricsClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
-	return azquery.NewMetricsClient(credential, opts)
+	var opts *azquery.MetricsClientOptions
+	if recording.GetRecordMode() == recording.LiveMode {
+		transport := &http.Client{
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{
+					Renegotiation: tls.RenegotiateOnceAsClient,
+				},
+			},
+		}
+		opts = &azquery.MetricsClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport, Cloud: clientCloud}}
+	} else {
+		startRecording(t)
+		transport, err := recording.NewRecordingHTTPClient(t, nil)
+		require.NoError(t, err)
+		opts = &azquery.MetricsClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
+	}
+
+	client, err := azquery.NewMetricsClient(credential, opts)
+	if err != nil {
+		panic(err)
+	}
+	return client
+}
+
+func lookupEnvVar(s string) string {
+	ret, ok := os.LookupEnv(s)
+	if !ok {
+		panic(fmt.Sprintf("Could not find env var: '%s'", s))
+	}
+	return ret
 }
 
 type FakeCredential struct{}

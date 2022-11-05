@@ -31,6 +31,8 @@ This document demonstrates using [azidentity.NewDefaultAzureCredential][default_
 
 Client accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credential types.
 
+The clients default to the Azure Public Cloud. See the [cloud][cloud_documentation] documentation for more information about other cloud configurations. 
+
 #### Create a logs client
 
 ```go
@@ -45,7 +47,10 @@ func main() {
 		//TODO: handle error
 	}
 
-	client := azquery.NewLogsClient(cred, nil)
+	client, error := azquery.NewLogsClient(cred, nil)
+	if err != nil {
+		//TODO: handle error
+	}
 }
 ```
 
@@ -63,7 +68,10 @@ func main() {
 		//TODO: handle error
 	}
 
-	client := azquery.NewMetricsClient(cred, nil)
+	client, err := azquery.NewMetricsClient(cred, nil)
+	if err != nil {
+		//TODO: handle error
+	}
 }
 ```
 
@@ -148,15 +156,16 @@ Results
 		|---Name *string
 		|---Type *LogsColumnType
 	|---Name *string
-	|---Rows [][]interface{}
+	|---Rows []Row
+	|---ColumnIndexLookup map[string]int
 |---Error *ErrorInfo
 	|---Code *string // custom error type
-|---Render interface{}
-|---Statistics interface{}
+|---Render []byte
+|---Statistics []byte
 ```
 
 ### Batch query
-`Batch` is an advanced method allowing users to execute multiple logs queries in a single request. It takes in a [BatchRequest](#batch-query-request-structure) and returns a [BatchResponse](#batch-query-result-structure). `Batch` can return results in any order (usually in order of completion/success). Please use the `ID` attribute to identify the correct response. 
+`QueryBatch` is an advanced method allowing users to execute multiple logs queries in a single request. It takes in a [BatchRequest](#batch-query-request-structure) and returns a [BatchResponse](#batch-query-result-structure). `QueryBatch` can return results in any order (usually in order of completion/success). Please use the `ID` attribute to identify the correct response. 
 ```go
 timespan := "2022-08-30/2022-08-31" // ISO8601 Standard Timespan
 batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
@@ -165,7 +174,7 @@ batchRequest := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
 	{Body: &azquery.Body{Query: to.Ptr(kustoQuery3), Timespan: to.Ptr(timespan)}, ID: to.Ptr("3"), Workspace: to.Ptr(workspaceID)},
 }}
 
-res, err := client.Batch(context.TODO(), batchRequest, nil)
+res, err := client.QueryBatch(context.TODO(), batchRequest, nil)
 if err != nil {
 	//TODO: handle error
 }
@@ -196,14 +205,15 @@ BatchResponse
 	|---Body *BatchQueryResults
 		|---Error *ErrorInfo // custom error type
 			|---Code *string
-		|---Render interface{}
-		|---Statistics interface{}
+		|---Render []byte
+		|---Statistics []byte
 		|---Tables []*Table
 			|---Columns []*Column
 				|---Name *string
 				|---Type *LogsColumnType
 			|---Name *string
-			|---Rows [][]interface{}
+			|---Rows []Row
+			|---ColumnIndexLookup map[string]int
 	|---Headers map[string]*string
 	|---ID *string
 	|---Status *int32
@@ -329,6 +339,7 @@ comments.
 [azure_monitor_create_using_portal]: https://docs.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
 [azure_monitor_overview]: https://docs.microsoft.com/azure/azure-monitor/overview
 [context]: https://pkg.go.dev/context
+[cloud_documentation]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
 [example_batch]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-LogsClient.Batch
 [example_query_workspace]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-LogsClient.QueryWorkspace

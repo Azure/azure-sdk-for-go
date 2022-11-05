@@ -194,7 +194,7 @@ func TestBatch_QuerySuccess(t *testing.T) {
 	}}
 	testSerde(t, &batchRequest)
 
-	res, err := client.Batch(context.Background(), batchRequest, nil)
+	res, err := client.QueryBatch(context.Background(), batchRequest, nil)
 	if err != nil {
 		t.Fatalf("error with query, %s", err)
 	}
@@ -226,7 +226,7 @@ func TestBatch_PartialError(t *testing.T) {
 		{Body: &azquery.Body{Query: to.Ptr(query)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID)},
 	}}
 
-	res, err := client.Batch(context.Background(), batchRequest, nil)
+	res, err := client.QueryBatch(context.Background(), batchRequest, nil)
 	if err != nil {
 		t.Fatalf("error with query, %s", err)
 	}

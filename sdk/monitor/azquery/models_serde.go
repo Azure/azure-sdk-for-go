@@ -132,10 +132,10 @@ func (b *BatchQueryResults) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Error", &b.Error)
 			delete(rawMsg, key)
 		case "render":
-			err = unpopulate(val, "Render", &b.Render)
+			b.Render = val
 			delete(rawMsg, key)
 		case "statistics":
-			err = unpopulate(val, "Statistics", &b.Statistics)
+			b.Statistics = val
 			delete(rawMsg, key)
 		case "tables":
 			err = unpopulate(val, "Tables", &b.Tables)
@@ -732,10 +732,10 @@ func (r *Results) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Error", &r.Error)
 			delete(rawMsg, key)
 		case "render":
-			err = unpopulate(val, "Render", &r.Render)
+			r.Render = val
 			delete(rawMsg, key)
 		case "statistics":
-			err = unpopulate(val, "Statistics", &r.Statistics)
+			r.Statistics = val
 			delete(rawMsg, key)
 		case "tables":
 			err = unpopulate(val, "Tables", &r.Tables)

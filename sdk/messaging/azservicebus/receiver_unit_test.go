@@ -6,6 +6,7 @@ package azservicebus
 import (
 	"context"
 	"fmt"
+	"strings"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -325,7 +326,16 @@ func TestReceiver_IdleTimer(t *testing.T) {
 		"[azsb.Receiver] Received 1/100 messages",
 	}
 
-	require.Equal(t, expectedLogs, logs())
+	//  we'll filter out some other logging that's not part of this test.
+	var actualLogs []string
+
+	for _, msg := range logs() {
+		if !strings.HasPrefix(msg, "[azsb.Receiver] [fakelink] Message releaser") {
+			actualLogs = append(actualLogs, msg)
+		}
+	}
+
+	require.Equal(t, expectedLogs, actualLogs)
 }
 
 func TestReceiverOptions(t *testing.T) {

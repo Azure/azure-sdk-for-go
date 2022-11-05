@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added a client-side idle timer which will reset Receiver links, transparently, if the link is idle for 
+  5 minutes.
+
 ### Breaking Changes
 
 ### Bugs Fixed

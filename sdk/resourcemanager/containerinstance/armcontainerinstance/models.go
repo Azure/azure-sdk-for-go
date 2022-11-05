@@ -86,27 +86,6 @@ type CapabilitiesListResult struct {
 	Value []*Capabilities `json:"value,omitempty"`
 }
 
-// CloudError - An error response from the Container Instance service.
-type CloudError struct {
-	// An error response from the Container Instance service.
-	Error *CloudErrorBody `json:"error,omitempty"`
-}
-
-// CloudErrorBody - An error response from the Container Instance service.
-type CloudErrorBody struct {
-	// An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
-	Code *string `json:"code,omitempty"`
-
-	// A list of additional details about the error.
-	Details []*CloudErrorBody `json:"details,omitempty"`
-
-	// A message describing the error, intended to be suitable for display in a user interface.
-	Message *string `json:"message,omitempty"`
-
-	// The target of the particular error. For example, the name of the property in error.
-	Target *string `json:"target,omitempty"`
-}
-
 // Container - A container instance.
 type Container struct {
 	// REQUIRED; The user-provided name of the container instance.
@@ -253,6 +232,9 @@ type ContainerGroupPropertiesProperties struct {
 
 	// The encryption properties for a container group.
 	EncryptionProperties *EncryptionProperties `json:"encryptionProperties,omitempty"`
+
+	// extensions used by virtual kubelet
+	Extensions []*DeploymentExtensionSpec `json:"extensions,omitempty"`
 
 	// The IP address type of the container group.
 	IPAddress *IPAddress `json:"ipAddress,omitempty"`
@@ -493,6 +475,30 @@ type DNSConfiguration struct {
 	SearchDomains *string `json:"searchDomains,omitempty"`
 }
 
+// DeploymentExtensionSpec - Extension sidecars to be added to the deployment.
+type DeploymentExtensionSpec struct {
+	// REQUIRED; Name of the extension.
+	Name *string `json:"name,omitempty"`
+
+	// Extension specific properties
+	Properties *DeploymentExtensionSpecProperties `json:"properties,omitempty"`
+}
+
+// DeploymentExtensionSpecProperties - Extension specific properties
+type DeploymentExtensionSpecProperties struct {
+	// REQUIRED; Type of extension to be added.
+	ExtensionType *string `json:"extensionType,omitempty"`
+
+	// REQUIRED; Version of the extension being used.
+	Version *string `json:"version,omitempty"`
+
+	// Protected settings for the extension.
+	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
+
+	// Settings for the extension.
+	Settings interface{} `json:"settings,omitempty"`
+}
+
 // EncryptionProperties - The container group encryption properties.
 type EncryptionProperties struct {
 	// REQUIRED; The encryption key name.
@@ -503,6 +509,9 @@ type EncryptionProperties struct {
 
 	// REQUIRED; The keyvault base url.
 	VaultBaseURL *string `json:"vaultBaseUrl,omitempty"`
+
+	// The keyvault managed identity.
+	Identity *string `json:"identity,omitempty"`
 }
 
 // EnvironmentVariable - The environment variable to set within the container instance.

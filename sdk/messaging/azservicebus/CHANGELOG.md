@@ -1,14 +1,10 @@
 # Release History
 
-## 1.1.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.1.2 (2022-11-08)
 
 ### Bugs Fixed
 
-### Other Changes
+- $cbs link is properly closed, even on cancellation (#19492)
 
 ## 1.1.1 (2022-10-11)
 

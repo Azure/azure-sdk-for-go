@@ -256,8 +256,8 @@ func getCanonicalName(account string, containerName string, blobName string, dir
 // Initialize an instance of this type and then call its String method to set BlobSASSignatureValues's Permissions field.
 // All permissions descriptions can be found here: https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas#permissions-for-a-directory-container-or-blob
 type ContainerPermissions struct {
-	Read, Add, Create, Write, Delete, DeletePreviousVersion, List, Tag bool
-	Execute, ModifyOwnership, ModifyPermissions                        bool // Hierarchical Namespace only
+	Read, Add, Create, Write, Delete, DeletePreviousVersion, List, FilterByTags bool
+	Execute, ModifyOwnership, ModifyPermissions                                 bool // Hierarchical Namespace only
 }
 
 // String produces the SAS permissions string for an Azure Storage container.
@@ -285,8 +285,8 @@ func (p *ContainerPermissions) String() string {
 	if p.List {
 		b.WriteRune('l')
 	}
-	if p.Tag {
-		b.WriteRune('t')
+	if p.FilterByTags {
+		b.WriteRune('f')
 	}
 	if p.Execute {
 		b.WriteRune('e')
@@ -320,7 +320,7 @@ func (p *ContainerPermissions) String() string {
 		case 'l':
 			p.List = true
 		case 't':
-			p.Tag = true
+			p.FilterByTags = true
 		case 'e':
 			p.Execute = true
 		case 'o':
@@ -362,11 +362,11 @@ func (p *BlobPermissions) String() string {
 	if p.DeletePreviousVersion {
 		b.WriteRune('x')
 	}
-	if p.Tag {
-		b.WriteRune('t')
-	}
 	if p.List {
 		b.WriteRune('l')
+	}
+	if p.Tag {
+		b.WriteRune('t')
 	}
 	if p.Move {
 		b.WriteRune('m')

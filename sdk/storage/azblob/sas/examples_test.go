@@ -9,8 +9,10 @@ package sas_test
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -31,17 +33,17 @@ func Example_userDelegationSAS() {
 	if !ok {
 		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
-	clientID, ok := os.LookupEnv("AZURE_STORAGE_SPN_CLIENT_ID")
+	tenantID, ok := os.LookupEnv("AZURE_TENANT_ID")
 	if !ok {
-		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_TENANT_ID could not be found")
 	}
-	tenantID, ok := os.LookupEnv("AZURE_STORAGE_SPN_TENANT_ID")
+	clientID, ok := os.LookupEnv("AZURE_CLIENT_ID")
 	if !ok {
-		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_CLIENT_ID could not be found")
 	}
-	clientSecret, ok := os.LookupEnv("AZURE_STORAGE_SPN_CLIENT_SECRET")
+	clientSecret, ok := os.LookupEnv("AZURE_CLIENT_SECRET")
 	if !ok {
-		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+		panic("AZURE_CLIENT_SECRET could not be found")
 	}
 	const containerName = "testcontainer"
 
@@ -102,5 +104,57 @@ func Example_userDelegationSAS() {
 	_, err = azClient.DeleteContainer(context.Background(), containerName, nil)
 	if err != nil {
 		fmt.Println("Containers can't be deleted using User Delegation SAS")
+	}
+}
+
+func Example_serviceSAS() {
+	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	const containerName = "testContainer"
+
+	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC(),
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
+		Permissions:   to.Ptr(sas.BlobPermissions{Read: true, Create: true, Write: true, Tag: true}).String(),
+		ContainerName: containerName,
+	}.SignWithSharedKey(credential)
+	handleError(err)
+
+	sasURL := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, sasQueryParams.Encode())
+	fmt.Println(sasURL)
+
+	// This URL can be used to authenticate requests now
+	azClient, err := azblob.NewClientWithNoCredential(sasURL, nil)
+	handleError(err)
+
+	const blobData, blobName = "test data", "testBlob"
+	uploadResp, err := azClient.UploadStream(context.TODO(),
+		containerName,
+		blobName,
+		strings.NewReader(blobData),
+		&azblob.UploadStreamOptions{
+			Metadata: map[string]string{"Foo": "Bar"},
+			Tags:     map[string]string{"Year": "2022"},
+		})
+	handleError(err)
+	fmt.Println(uploadResp)
+
+	blobDownloadResponse, err := azClient.DownloadStream(context.TODO(), containerName, blobName, nil)
+	handleError(err)
+
+	reader := blobDownloadResponse.Body
+	downloadData, err := io.ReadAll(reader)
+	handleError(err)
+	fmt.Println(string(downloadData))
+	if string(downloadData) != blobData {
+		log.Fatal("Uploaded data should be same as downloaded data")
+	}
+
+	err = reader.Close()
+	if err != nil {
+		return
 	}
 }

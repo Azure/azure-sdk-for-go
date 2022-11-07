@@ -9,7 +9,9 @@ package service_test
 import (
 	"context"
 	"fmt"
+	"io"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -679,4 +681,61 @@ func (s *ServiceRecordedTestsSuite) TestContainerRestoreFailures() {
 
 	_, err = svcClient.RestoreContainer(context.Background(), "", "", &service.RestoreContainerOptions{})
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MissingRequiredHeader)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestServiceSASUploadDownload() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	testName := s.T().Name()
+	containerName := testcommon.GenerateContainerName(testName)
+
+	_, err = svcClient.CreateContainer(context.Background(), containerName, nil)
+	_require.Nil(err)
+
+	defer svcClient.DeleteContainer(context.Background(), containerName, nil)
+
+	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	_require.Nil(err)
+
+	sasQueryParams, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC(),
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
+		Permissions:   to.Ptr(sas.BlobPermissions{Read: true, Create: true, Write: true, Tag: true}).String(),
+		ContainerName: containerName,
+	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	sasURL := svcClient.URL()
+	if len(sasURL) > 0 && sasURL[len(sasURL)-1:] != "/" {
+		sasURL += "/"
+	}
+	sasURL += "?" + sasQueryParams.Encode()
+
+	azClient, err := azblob.NewClientWithNoCredential(sasURL, nil)
+	_require.Nil(err)
+
+	const blobData = "test data"
+	blobName := testcommon.GenerateBlobName(testName)
+	_, err = azClient.UploadStream(context.TODO(),
+		containerName,
+		blobName,
+		strings.NewReader(blobData),
+		&azblob.UploadStreamOptions{
+			Metadata: map[string]string{"Foo": "Bar"},
+			Tags:     map[string]string{"Year": "2022"},
+		})
+	_require.Nil(err)
+
+	blobDownloadResponse, err := azClient.DownloadStream(context.TODO(), containerName, blobName, nil)
+	_require.Nil(err)
+
+	reader := blobDownloadResponse.Body
+	downloadData, err := io.ReadAll(reader)
+	_require.Nil(err)
+	_require.Equal(string(downloadData), blobData)
+
+	reader.Close()
 }

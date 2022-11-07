@@ -694,8 +694,6 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceSASUploadDownload() {
 	_, err = svcClient.CreateContainer(context.Background(), containerName, nil)
 	_require.Nil(err)
 
-	defer svcClient.DeleteContainer(context.Background(), containerName, nil)
-
 	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
 	_require.Nil(err)
 
@@ -737,5 +735,9 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceSASUploadDownload() {
 	_require.Nil(err)
 	_require.Equal(string(downloadData), blobData)
 
-	reader.Close()
+	_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
+	_require.Nil(err)
+
+	err = reader.Close()
+	_require.Nil(err)
 }

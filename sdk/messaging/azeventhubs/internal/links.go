@@ -310,7 +310,11 @@ func (l *Links[LinkT]) Close(ctx context.Context) error {
 	return l.closeLinks(ctx, true)
 }
 
-func (l *Links[LinkT]) closeLinks(ctx context.Context, permanent bool) error {
+func (l *Links[LinkT]) closeLinks(_ context.Context, permanent bool) error {
+	// we're finding, in practice, that allowing cancellations when cleaning up state
+	// just results in inconsistencies. We'll cut cancellation off here for now.
+	ctx := context.Background()
+
 	if err := l.closeManagementLink(ctx); err != nil {
 		azlog.Writef(exported.EventConn, "Error while cleaning up management link while doing connection recovery: %s", err.Error())
 	}

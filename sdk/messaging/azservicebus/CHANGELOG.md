@@ -1,17 +1,15 @@
 # Release History
 
-## 1.1.2 (Unreleased)
+## 1.1.2 (2022-11-08)
 
 ### Features Added
 
 - Added a client-side idle timer which will reset Receiver links, transparently, if the link is idle for 
   5 minutes.
 
-### Breaking Changes
-
 ### Bugs Fixed
 
-### Other Changes
+- $cbs link is properly closed, even on cancellation (#19492)
 
 ## 1.1.1 (2022-10-11)
 

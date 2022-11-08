@@ -196,8 +196,8 @@ func TestQueryBatch_AdvancedQuerySuccess(t *testing.T) {
 	headers := map[string]*string{"prefer": &batchPrefer}
 
 	batchRequestAdvanced := azquery.BatchRequest{[]*azquery.BatchQueryRequest{
-		{Body: &azquery.Body{Query: to.Ptr(query)}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID), Headers: headers},
-		{Body: &azquery.Body{Query: to.Ptr(query)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID), Headers: headers},
+		{Body: &azquery.Body{Query: to.Ptr(query)}, ID: to.Ptr("1"), Workspace: to.Ptr(workspaceID2), Headers: headers},
+		{Body: &azquery.Body{Query: to.Ptr(query)}, ID: to.Ptr("2"), Workspace: to.Ptr(workspaceID2), Headers: headers},
 	}}
 	testSerde(t, &batchRequestAdvanced)
 

@@ -123,6 +123,8 @@ The timespan can be the following string formats:
 	- [Increase wait time, include statistics, include render (visualization)](#increase-wait-time-include-statistics-include-render-visualization)
 - [Metrics query](#metrics-query)
   - [Metrics result structure](#metrics-result-structure)
+  - [List Metric Definitions](#list-metric-definitions)
+  - [List Metric Namespaces](#list-metric-namespaces)
 
 ### Logs query
 The example below shows a basic logs query using the `QueryWorkspace` method. `QueryWorkspace` takes in a [context][context], a [Log Analytics Workspace][log_analytics_workspace] ID string, a [Body](#logs-query-body-structure) struct, and a [LogsClientQueryWorkspaceOptions](#increase-wait-time-include-statistics-include-render-visualization) struct and returns a [Results](#logs-query-result-structure) struct.
@@ -263,6 +265,14 @@ _ = res
 
 ### Metrics query
 
+You can query metrics on an Azure resource using the `MetricsClient.QueryResource` method. For each requested metric, a set of aggregated values is returned inside the `Timeseries` collection.
+
+A resource ID is required to query metrics. To find the resource ID:
+
+1. Navigate to your resource's page in the Azure portal.
+2. From the **Overview** blade, select the **JSON View** link.
+3. In the resulting JSON, copy the value of the `id` property.
+
 ```go
 client := azquery.NewMetricsClient(cred, nil)
 res, err := client.QueryResource(context.Background(), resourceURI,
@@ -309,6 +319,22 @@ Response
 |---Interval *string
 |---Namespace *string
 |---Resourceregion *string
+```
+
+#### List Metric Definitions
+
+To list the metric definitions for the resource, use the `NewListDefinitionsPager` method.
+
+```go
+pager := client.NewListDefinitionsPager(resourceURI, nil)
+```
+
+#### List Metric Namespaces
+
+To list the metric namespaces for the resource, use the `NewListNamespacesPager` method.
+
+```go
+pager := client.NewListNamespacesPager(resourceURI, nil)
 ```
 
 ## Troubleshooting

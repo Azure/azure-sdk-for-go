@@ -102,6 +102,8 @@ func TestNewListDefinitionsPager_Success(t *testing.T) {
 
 }
 
+//TODO ADD ADVANCED OPTIONS
+
 func TestNewListDefinitionsPager_Failure(t *testing.T) {
 	client := startMetricsTest(t)
 

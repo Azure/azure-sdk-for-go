@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"regexp"
 	"strings"
 	"testing"
 	"time"
@@ -67,12 +68,10 @@ func TestMain(m *testing.M) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
-		/*tenantID := lookupEnvVar("AZQUERY_TENANT_ID")
+		tenantID := lookupEnvVar("AZQUERY_TENANT_ID")
 		clientID := lookupEnvVar("AZQUERY_CLIENT_ID")
 		secret := lookupEnvVar("AZQUERY_CLIENT_SECRET")
 		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
-		*/
-		credential, err = azidentity.NewDefaultAzureCredential(nil)
 		if err != nil {
 			panic(err)
 		}
@@ -181,4 +180,17 @@ func testSerde[T serdeModel](t *testing.T, model T) {
 	require.NoError(t, err)
 	err = model.UnmarshalJSON(data)
 	require.NoError(t, err)
+
+	// testing unmarshal error scenarios
+	var data2 []byte
+	err = model.UnmarshalJSON(data2)
+	require.Error(t, err)
+
+	m := regexp.MustCompile(":.*$")
+	modifiedData := m.ReplaceAllString(string(data), ":false}")
+	if !strings.Contains(modifiedData, "render") && modifiedData != "{}" {
+		data3 := []byte(modifiedData)
+		err = model.UnmarshalJSON(data3)
+		require.Error(t, err)
+	}
 }

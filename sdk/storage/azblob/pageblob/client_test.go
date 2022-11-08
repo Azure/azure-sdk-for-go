@@ -3285,9 +3285,9 @@ func (s *PageBlobRecordedTestsSuite) TestPageSetImmutabilityPolicy() {
 	blobName := testcommon.GenerateBlobName(testName)
 	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
 
-	a := time.FixedZone("GMT", 0)
-	currentTime := time.Now().Add(time.Second * 5).In(a)
-	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingLocked)
+	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
+	_require.Nil(err)
+	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
 	_require.Nil(err)
 
 	setImmutabilityPolicyOptions := blob.SetImmutabilityPolicyOptions{
@@ -3298,13 +3298,13 @@ func (s *PageBlobRecordedTestsSuite) TestPageSetImmutabilityPolicy() {
 	_, err = pbClient.SetImmutabilityPolicy(context.Background(), setImmutabilityPolicyOptions)
 	_require.Nil(err)
 
-	// should fail since time has not passed yet
+	_, err = pbClient.SetLegalHold(context.Background(), false, nil)
+	_require.Nil(err)
+
 	_, err = pbClient.Delete(context.Background(), nil)
 	_require.NotNil(err)
 
-	time.Sleep(time.Second * 7)
-
-	_, err = pbClient.SetLegalHold(context.Background(), false, nil)
+	_, err = pbClient.DeleteImmutabilityPolicy(context.Background(), nil)
 	_require.Nil(err)
 
 	_, err = pbClient.Delete(context.Background(), nil)
@@ -3323,8 +3323,9 @@ func (s *PageBlobRecordedTestsSuite) TestPageDeleteImmutabilityPolicy() {
 	blobName := testcommon.GenerateBlobName(testName)
 	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
 
-	a := time.FixedZone("GMT", 0)
-	currentTime := time.Now().Add(time.Second * 5).In(a)
+	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
+	_require.Nil(err)
+
 	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
 	_require.Nil(err)
 

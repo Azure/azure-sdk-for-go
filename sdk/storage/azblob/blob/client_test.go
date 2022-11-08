@@ -3014,9 +3014,9 @@ func (s *BlobRecordedTestsSuite) TestSetImmutabilityPolicy() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	a := time.FixedZone("GMT", 0)
-	currentTime := time.Now().Add(time.Second * 5).In(a)
-	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingLocked)
+	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
+	_require.Nil(err)
+	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
 	_require.Nil(err)
 
 	setImmutabilityPolicyOptions := blob.SetImmutabilityPolicyOptions{
@@ -3027,13 +3027,13 @@ func (s *BlobRecordedTestsSuite) TestSetImmutabilityPolicy() {
 	_, err = bbClient.SetImmutabilityPolicy(context.Background(), setImmutabilityPolicyOptions)
 	_require.Nil(err)
 
-	// should fail since time has not passed yet
+	_, err = bbClient.SetLegalHold(context.Background(), false, nil)
+	_require.Nil(err)
+
 	_, err = bbClient.Delete(context.Background(), nil)
 	_require.NotNil(err)
 
-	time.Sleep(time.Second * 7)
-
-	_, err = bbClient.SetLegalHold(context.Background(), false, nil)
+	_, err = bbClient.DeleteImmutabilityPolicy(context.Background(), nil)
 	_require.Nil(err)
 
 	_, err = bbClient.Delete(context.Background(), nil)
@@ -3052,8 +3052,9 @@ func (s *BlobRecordedTestsSuite) TestDeleteImmutabilityPolicy() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	a := time.FixedZone("GMT", 0)
-	currentTime := time.Now().Add(time.Second * 5).In(a)
+	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
+	_require.Nil(err)
+
 	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
 	_require.Nil(err)
 

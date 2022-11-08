@@ -484,7 +484,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobHTTPHeaders() {
 	_require.EqualValues(h, testcommon.BasicHeaders)
 }
 
-func (s *BlockBlobRecordedTestsSuite) TestUploadWithImmutabilityPolicy() {
+func (s *BlockBlobRecordedTestsSuite) TestUploadBlockWithImmutabilityPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -496,9 +496,9 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadWithImmutabilityPolicy() {
 	blockBlobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
 
-	a := time.FixedZone("GMT", 0)
-	currentTime := time.Now().Add(time.Second * 5).In(a)
-	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingLocked)
+	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
+	_require.Nil(err)
+	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
 	_require.Nil(err)
 
 	content := make([]byte, 0)
@@ -516,12 +516,13 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadWithImmutabilityPolicy() {
 	resp, err := bbClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
 
-	policy1 := blob.ImmutabilityPolicyMode("locked")
+	policy1 := blob.ImmutabilityPolicyMode("unlocked")
 	_require.Equal(resp.ImmutabilityPolicyMode, &policy1)
 
-	time.Sleep(time.Second * 7)
-
 	_, err = bbClient.SetLegalHold(context.Background(), false, nil)
+	_require.Nil(err)
+
+	_, err = bbClient.DeleteImmutabilityPolicy(context.Background(), nil)
 	_require.Nil(err)
 
 	_, err = bbClient.Delete(context.Background(), nil)

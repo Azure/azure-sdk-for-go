@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"regexp"
 	"strings"
 	"testing"
 	"time"
@@ -179,4 +180,17 @@ func testSerde[T serdeModel](t *testing.T, model T) {
 	require.NoError(t, err)
 	err = model.UnmarshalJSON(data)
 	require.NoError(t, err)
+
+	// testing unmarshal error scenarios
+	var data2 []byte
+	err = model.UnmarshalJSON(data2)
+	require.Error(t, err)
+
+	m := regexp.MustCompile(":.*$")
+	modifiedData := m.ReplaceAllString(string(data), ":false}")
+	if !strings.Contains(modifiedData, "render") && modifiedData != "{}" {
+		data3 := []byte(modifiedData)
+		err = model.UnmarshalJSON(data3)
+		require.Error(t, err)
+	}
 }

@@ -7,7 +7,7 @@
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azquery/v0.1.0 (go1.19; Windows_NT)"
+        "User-Agent": "azsdk-go-azquery/v0.2.1 (go1.19; Windows_NT)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -16,7 +16,7 @@
         "Cache-Control": "no-cache",
         "Content-Encoding": "gzip",
         "Content-Type": "application/json",
-        "Date": "Thu, 08 Sep 2022 00:01:50 GMT",
+        "Date": "Tue, 08 Nov 2022 21:07:30 GMT",
         "Request-Context": "appId=cid-v1:b021da79-5252-4375-9df5-2e17c1dcd822",
         "Server": "Microsoft-IIS/10.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
@@ -27,10 +27,10 @@
         ],
         "X-AspNet-Version": "4.0.30319",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-correlation-request-id": "66488ede-4eb8-4c0e-8756-402ecea0b651",
+        "x-ms-correlation-request-id": "86047df5-fb06-4c1c-8c02-5c0e51c6bc75",
         "x-ms-ratelimit-remaining-subscription-resource-requests": "399",
-        "x-ms-request-id": "{66488ede-4eb8-4c0e-8756-402ecea0b651}",
-        "x-ms-routing-request-id": "CENTRALUS:20220908T000150Z:66488ede-4eb8-4c0e-8756-402ecea0b651",
+        "x-ms-request-id": "{86047df5-fb06-4c1c-8c02-5c0e51c6bc75}",
+        "x-ms-routing-request-id": "WESTUS:20221108T210731Z:86047df5-fb06-4c1c-8c02-5c0e51c6bc75",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -46,7 +46,7 @@
             "displayDescription": "Total number of incoming http requests.",
             "isDimensionRequired": false,
             "unit": "Count",
-            "primaryAggregationType": "Count",
+            "primaryAggregationType": "Total",
             "supportedAggregationTypes": [
               "None",
               "Average",
@@ -176,7 +176,7 @@
             "displayDescription": "Throttled http requests.",
             "isDimensionRequired": false,
             "unit": "Count",
-            "primaryAggregationType": "Count",
+            "primaryAggregationType": "Total",
             "supportedAggregationTypes": [
               "None",
               "Average",
@@ -184,6 +184,57 @@
               "Maximum",
               "Total",
               "Count"
+            ],
+            "metricAvailabilities": [
+              {
+                "timeGrain": "PT1M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT5M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT15M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT30M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT1H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT6H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT12H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "P1D",
+                "retention": "P93D"
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example/providers/microsoft.insights/metricdefinitions/DailyStorageUsage",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example",
+            "namespace": "Microsoft.AppConfiguration/configurationStores",
+            "name": {
+              "value": "DailyStorageUsage",
+              "localizedValue": "DailyStorageUsage"
+            },
+            "displayDescription": "Total storage usage of the store in percentage. Updated at minimum every 24 hours.",
+            "isDimensionRequired": false,
+            "unit": "Percent",
+            "primaryAggregationType": "Maximum",
+            "supportedAggregationTypes": [
+              "Minimum",
+              "Maximum"
             ],
             "metricAvailabilities": [
               {

@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.0 (2022-11-8)
+## 0.3.0 (2022-11-08)
 
 ### Features Added
 * Added `ColumnIndexLookup` field to Table struct

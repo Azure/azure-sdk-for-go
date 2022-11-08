@@ -370,6 +370,9 @@ func (p *BlobPermissions) String() string {
 	if p.Tag {
 		b.WriteRune('t')
 	}
+	if p.PermanentDelete {
+		b.WriteRune('y')
+	}
 	if p.List {
 		b.WriteRune('l')
 	}
@@ -385,9 +388,7 @@ func (p *BlobPermissions) String() string {
 	if p.Permissions {
 		b.WriteRune('p')
 	}
-	if p.PermanentDelete {
-		b.WriteRune('y')
-	}
+
 	return b.String()
 }
 
@@ -410,6 +411,8 @@ func parseBlobPermissions(s string) (BlobPermissions, error) {
 			p.DeletePreviousVersion = true
 		case 't':
 			p.Tag = true
+		case 'y':
+			p.PermanentDelete = true
 		case 'l':
 			p.List = true
 		case 'm':
@@ -420,8 +423,6 @@ func parseBlobPermissions(s string) (BlobPermissions, error) {
 			p.Ownership = true
 		case 'p':
 			p.Permissions = true
-		case 'y':
-			p.PermanentDelete = true
 		default:
 			return BlobPermissions{}, fmt.Errorf("invalid permission: '%v'", r)
 		}

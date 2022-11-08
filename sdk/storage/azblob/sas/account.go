@@ -177,6 +177,9 @@ func (p *AccountPermissions) String() string {
 	if p.DeletePreviousVersion {
 		buffer.WriteRune('x')
 	}
+	if p.PermanentDelete {
+		buffer.WriteRune('y')
+	}
 	if p.List {
 		buffer.WriteRune('l')
 	}
@@ -198,9 +201,6 @@ func (p *AccountPermissions) String() string {
 	if p.FilterByTags {
 		buffer.WriteRune('f')
 	}
-	if p.PermanentDelete {
-		buffer.WriteRune('y')
-	}
 	return buffer.String()
 }
 
@@ -215,6 +215,8 @@ func parseAccountPermissions(s string) (AccountPermissions, error) {
 			p.Write = true
 		case 'd':
 			p.Delete = true
+		case 'y':
+			p.PermanentDelete = true
 		case 'l':
 			p.List = true
 		case 'a':
@@ -231,8 +233,6 @@ func parseAccountPermissions(s string) (AccountPermissions, error) {
 			p.Tag = true
 		case 'f':
 			p.FilterByTags = true
-		case 'y':
-			p.PermanentDelete = true
 		default:
 			return AccountPermissions{}, fmt.Errorf("invalid permission character: '%v'", r)
 		}

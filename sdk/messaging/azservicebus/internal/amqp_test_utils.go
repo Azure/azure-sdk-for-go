@@ -43,6 +43,7 @@ type FakeAMQPLinks struct {
 
 	Closed              int
 	CloseIfNeededCalled int
+	CloseIfNeededArgs   []error
 
 	GetFn func(ctx context.Context) (*LinksWithID, error)
 
@@ -224,6 +225,7 @@ func (l *FakeAMQPLinks) Close(ctx context.Context, permanently bool) error {
 
 func (l *FakeAMQPLinks) CloseIfNeeded(ctx context.Context, err error) RecoveryKind {
 	l.CloseIfNeededCalled++
+	l.CloseIfNeededArgs = append(l.CloseIfNeededArgs, err)
 	return GetRecoveryKind(err)
 }
 

@@ -216,7 +216,7 @@ func TestReceiverCancellationUnitTests(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 
 		r := &Receiver{
-			idleDuration:             5 * time.Minute,
+			idleTracker:              &internal.LocalIdleTracker{MaxDuration: 5 * time.Minute},
 			defaultTimeAfterFirstMsg: time.Second,
 			amqpLinks: &internal.FakeAMQPLinks{
 				Receiver: &internal.FakeAMQPReceiver{
@@ -237,91 +237,105 @@ func TestReceiverCancellationUnitTests(t *testing.T) {
 	})
 }
 
-func TestIdleTimer(t *testing.T) {
-	for i := 0; i < 1; i++ {
-		ctx, cancel := context.WithCancel(context.Background())
-		defer cancel()
+// TestIdleTimer is the "block on receiver forever" pattern
+// which is basically a loop with a .ReceiveMessages(ctx_that_isnt_cancelled, n)
+// Which basically keeps your app "quiet" until something actually arrives.
+//
+// In this case the idle time will be eaten in one single call only.
+func TestReceiver_IdleTimer(t *testing.T) {
+	logs := test.CaptureLogsForTest()
+	//	test.EnableStdoutLogging()
 
-		logs := test.CaptureLogsForTest()
-		//	test.EnableStdoutLogging()
+	receiveCalled := 0
 
-		receiveCalled := 0
+	fakeAMQPLinks := &internal.FakeAMQPLinks{
+		GetFn: func(ctx context.Context) (*internal.LinksWithID, error) {
+			return &internal.LinksWithID{
+				Receiver: &internal.FakeAMQPReceiver{
+					ReceiveFn: func(ctx context.Context) (*amqp.Message, error) {
+						receiveCalled++
 
-		fakeAMQPLinks := &internal.FakeAMQPLinks{
-			GetFn: func(ctx context.Context) (*internal.LinksWithID, error) {
-				return &internal.LinksWithID{
-					Receiver: &internal.FakeAMQPReceiver{
-						ReceiveFn: func(ctx context.Context) (*amqp.Message, error) {
-							receiveCalled++
-
-							if receiveCalled == 2 {
-								return &amqp.Message{}, nil
-							}
-
+						if receiveCalled == 1 {
+							// wait for the idle timeout
 							<-ctx.Done()
 							return nil, ctx.Err()
-						},
+						} else if receiveCalled == 2 {
+							// first non-idle return
+							return &amqp.Message{Data: [][]byte{[]byte("message from non-idle return")}}, nil
+						} else if receiveCalled == 3 {
+							// wait for the 20ms timeout after first message
+							<-ctx.Done()
+							return nil, ctx.Err()
+						} else {
+							require.Fail(t, "Should not be called any more")
+							return nil, nil
+						}
 					},
-				}, nil
-			},
-		}
-
-		r := &Receiver{
-			receiveMode:              ReceiveModeReceiveAndDelete,
-			idleDuration:             time.Second,
-			defaultTimeAfterFirstMsg: time.Second,
-			amqpLinks:                fakeAMQPLinks,
-			cancelReleaser:           &atomic.Value{},
-			retryOptions: exported.RetryOptions{
-				// retries aren't used when we're the ones doing the disconnecting
-				// due to idleness. It's normal for the user to just sit there forever
-				// waiting for a message.
-				MaxRetries: 1,
-			},
-			cleanupOnClose: func() {},
-		}
-
-		defer func() { _ = r.Close(context.Background()) }()
-
-		r.cancelReleaser.Store(emptyCancelFn)
-
-		msgs, err := r.ReceiveMessages(ctx, 100, nil)
-
-		require.Equal(t, 1+1+1, receiveCalled, "receive called for idled, receiving first message and then attempting to receive a second message")
-		require.NotEmpty(t, msgs)
-		require.Nil(t, err)
-		require.Equal(t, 2, fakeAMQPLinks.CloseIfNeededCalled)
-
-		expectedLogs := []string{
-			// (all of these retries are internally visible only, the user sees one long ReceiveMessages() call until they
-			// cancel the context or (as in this test) they eventually receive a message.
-
-			// receiveMessagesImpl #1
-			"[azsb.Receiver] Asking for 100 credits",
-			"[azsb.Receiver] Only need to issue 100 additional credits",
-
-			// idle timeout occurs, which causes us to restart the entire receive (including link acquisition)
-			"[azsb.Receiver] Detaching link due to local idle timeout. Will reattach automatically.",
-			"[azsb.Receiver] Received 0/100 messages",
-			"[azsb.Receiver] Failure when receiving messages: link was idle, detaching (will be reattached).",
-
-			// receiveMessagesImpl #2 (no idle timeout this time)
-			"[azsb.Receiver] Asking for 100 credits",
-			"[azsb.Receiver] Only need to issue 100 additional credits",
-			"[azsb.Receiver] Received 1/100 messages",
-		}
-
-		//  we'll filter out some other logging that's not part of this test.
-		var actualLogs []string
-
-		for _, msg := range logs() {
-			if !strings.HasPrefix(msg, "[azsb.Receiver] [fakelink] Message releaser") {
-				actualLogs = append(actualLogs, msg)
-			}
-		}
-
-		require.Equal(t, expectedLogs, actualLogs)
+				},
+			}, nil
+		},
 	}
+
+	r := &Receiver{
+		receiveMode:              ReceiveModeReceiveAndDelete,
+		idleTracker:              &internal.LocalIdleTracker{MaxDuration: time.Second},
+		defaultTimeAfterFirstMsg: time.Second,
+		amqpLinks:                fakeAMQPLinks,
+		cancelReleaser:           &atomic.Value{},
+		retryOptions: exported.RetryOptions{
+			// retries aren't used when we're the ones doing the disconnecting
+			// due to idleness. It's normal for the user to just sit there forever
+			// waiting for a message.
+			MaxRetries: -1,
+		},
+		cleanupOnClose: func() {},
+	}
+
+	defer func() { _ = r.Close(context.Background()) }()
+
+	r.cancelReleaser.Store(emptyCancelFn)
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	require.Zero(t, r.idleTracker.IdleStart)
+	msgs, err := r.ReceiveMessages(ctx, 100, nil)
+	require.Zero(t, r.idleTracker.IdleStart)
+
+	require.Equal(t, 3, receiveCalled)
+	require.Equal(t, []string{"message from non-idle return"}, getSortedBodies(msgs))
+	require.NoError(t, err)
+
+	require.True(t, internal.IsLocalIdleError(fakeAMQPLinks.CloseIfNeededArgs[0]))
+
+	expectedLogs := []string{
+		// (all of these retries are internally visible only, the user sees one long ReceiveMessages() call until they
+		// cancel the context or (as in this test) they eventually receive a message.
+
+		// receiveMessagesImpl #1
+		"[azsb.Receiver] Asking for 100 credits",
+		"[azsb.Receiver] Only need to issue 100 additional credits",
+
+		// idle timeout occurs, which causes us to restart the entire receive (including link acquisition)
+		"[azsb.Receiver] Received 0/100 messages",
+		"[azsb.Receiver] Failure when receiving messages: link was idle, detaching (will be reattached).",
+
+		// receiveMessagesImpl #2 (no idle timeout this time)
+		"[azsb.Receiver] Asking for 100 credits",
+		"[azsb.Receiver] Only need to issue 100 additional credits",
+		"[azsb.Receiver] Received 1/100 messages",
+	}
+
+	//  we'll filter out some other logging that's not part of this test.
+	var actualLogs []string
+
+	for _, msg := range logs() {
+		if !strings.HasPrefix(msg, "[azsb.Receiver] [fakelink] Message releaser") {
+			actualLogs = append(actualLogs, msg)
+		}
+	}
+
+	require.Equal(t, expectedLogs, actualLogs)
 }
 
 func TestReceiverOptions(t *testing.T) {

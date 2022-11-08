@@ -288,5 +288,5 @@ func Test_TransformError(t *testing.T) {
 }
 
 func Test_IdleError(t *testing.T) {
-	require.Equal(t, RecoveryKindLink, GetRecoveryKind(IdleError))
+	require.Equal(t, RecoveryKindLink, GetRecoveryKind(localIdleError))
 }

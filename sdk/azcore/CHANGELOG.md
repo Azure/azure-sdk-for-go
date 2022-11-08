@@ -1,8 +1,10 @@
 # Release History
 
-## 1.2.1 (Unreleased)
+## 1.3.0 (Unreleased)
 
 ### Features Added
+* Added `BearerTokenOptions.AuthorizationHandler` to enable extending `runtime.BearerTokenPolicy`
+  with custom authorization logic
 
 ### Breaking Changes
 

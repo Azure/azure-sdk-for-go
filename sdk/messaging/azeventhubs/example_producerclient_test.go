@@ -58,7 +58,7 @@ func ExampleProducerClient_SendEventBatch() {
 		panic(err)
 	}
 
-	err = producerClient.SendEventBatch(context.TODO(), batch, nil)
+	err = producerClient.SendEventDataBatch(context.TODO(), batch, nil)
 
 	if err != nil {
 		panic(err)
@@ -81,7 +81,7 @@ func ExampleEventDataBatch_AddEventData() {
 	if errors.Is(err, azeventhubs.ErrEventDataTooLarge) {
 		// Message was too large to fit into this batch.
 		//
-		// At this point you'd usually just send the batch (using ProducerClient.SendEventBatch),
+		// At this point you'd usually just send the batch (using ProducerClient.SendEventDataBatch),
 		// create a new one, and start filling up the batch again.
 		//
 		// If this is the _only_ message being added to the batch then it's too big in general, and
@@ -91,7 +91,7 @@ func ExampleEventDataBatch_AddEventData() {
 		panic(err)
 	}
 
-	err = producerClient.SendEventBatch(context.TODO(), batch, nil)
+	err = producerClient.SendEventDataBatch(context.TODO(), batch, nil)
 
 	if err != nil {
 		panic(err)
@@ -149,7 +149,7 @@ func ExampleEventDataBatch_AddEventData_rawAMQPMessages() {
 		panic(err)
 	}
 
-	err = producerClient.SendEventBatch(context.TODO(), batch, nil)
+	err = producerClient.SendEventDataBatch(context.TODO(), batch, nil)
 
 	if err != nil {
 		panic(err)

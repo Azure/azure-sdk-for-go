@@ -69,7 +69,7 @@ func Example_producingEventsUsingProducerClient() {
 
 			// This batch is full - we can send it and create a new one and continue
 			// packaging and sending events.
-			if err := producerClient.SendEventBatch(context.TODO(), batch, nil); err != nil {
+			if err := producerClient.SendEventDataBatch(context.TODO(), batch, nil); err != nil {
 				panic(err)
 			}
 
@@ -90,7 +90,7 @@ func Example_producingEventsUsingProducerClient() {
 
 	// if we have any events in the last batch, send it
 	if batch.NumEvents() > 0 {
-		if err := producerClient.SendEventBatch(context.TODO(), batch, nil); err != nil {
+		if err := producerClient.SendEventDataBatch(context.TODO(), batch, nil); err != nil {
 			panic(err)
 		}
 	}

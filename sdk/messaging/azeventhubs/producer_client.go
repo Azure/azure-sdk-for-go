@@ -156,7 +156,7 @@ type SendEventBatchOptions struct {
 }
 
 // SendEventBatch sends an event data batch to Event Hubs.
-func (pc *ProducerClient) SendEventBatch(ctx context.Context, batch *EventDataBatch, options *SendEventBatchOptions) error {
+func (pc *ProducerClient) SendEventDataBatch(ctx context.Context, batch *EventDataBatch, options *SendEventBatchOptions) error {
 	err := pc.links.Retry(ctx, exported.EventProducer, "SendEventBatch", getPartitionID(batch.partitionID), pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPSenderCloser]) error {
 		return lwid.Link.Send(ctx, batch.toAMQPMessage())
 	})

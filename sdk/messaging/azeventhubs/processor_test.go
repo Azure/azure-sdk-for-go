@@ -373,7 +373,7 @@ func processEventsForTest(t *testing.T, producerClient *azeventhubs.ProducerClie
 				ctr++
 			}
 
-			err = producerClient.SendEventBatch(context.Background(), batch, nil)
+			err = producerClient.SendEventDataBatch(context.Background(), batch, nil)
 			require.NoError(t, err)
 		}
 	}()

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.1 (unreleased)
+## 1.1.1 (2022-11-09)
 
 ### Bugs Fixed
 * Fixed a race condition in `temporal.Resource[TResource, TState].Get`.

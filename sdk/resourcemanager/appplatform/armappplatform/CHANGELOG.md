@@ -1,11 +1,6 @@
 # Release History
 
 ## 1.1.0-beta.2 (2022-11-09)
-### Breaking Changes
-
-- Struct `CloudError` has been removed
-- Struct `CloudErrorBody` has been removed
-
 ### Features Added
 
 - New const `ApplicationLiveViewProvisioningStateSucceeded`

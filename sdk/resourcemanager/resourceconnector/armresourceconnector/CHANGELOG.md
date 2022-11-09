@@ -1,5 +1,46 @@
 # Release History
 
+## 1.0.0 (2022-11-09)
+### Breaking Changes
+
+- Function `*AppliancesClient.ListClusterCustomerUserCredential` has been removed
+- Struct `ApplianceListClusterCustomerUserCredentialResults` has been removed
+- Struct `AppliancesClientListClusterCustomerUserCredentialOptions` has been removed
+- Struct `AppliancesClientListClusterCustomerUserCredentialResponse` has been removed
+
+### Features Added
+
+- New const `SSHKeyTypeScopedAccessKey`
+- New const `StatusImageDeprovisioning`
+- New const `StatusImageProvisioned`
+- New const `StatusImageDownloaded`
+- New const `StatusImageProvisioning`
+- New const `StatusUpgradingKVAIO`
+- New const `ArtifactTypeLogsArtifactType`
+- New const `SSHKeyTypeLogsKey`
+- New const `StatusImagePending`
+- New const `StatusWaitingForKVAIO`
+- New const `SSHKeyTypeManagementCAKey`
+- New const `StatusImageUnknown`
+- New const `StatusImageDownloading`
+- New type alias `ArtifactType`
+- New function `*AppliancesClient.ListKeys(context.Context, string, string, *AppliancesClientListKeysOptions) (AppliancesClientListKeysResponse, error)`
+- New function `*AppliancesClient.GetTelemetryConfig(context.Context, *AppliancesClientGetTelemetryConfigOptions) (AppliancesClientGetTelemetryConfigResponse, error)`
+- New function `PossibleArtifactTypeValues() []ArtifactType`
+- New struct `ApplianceGetTelemetryConfigResult`
+- New struct `ApplianceListKeysResults`
+- New struct `AppliancesClientGetTelemetryConfigOptions`
+- New struct `AppliancesClientGetTelemetryConfigResponse`
+- New struct `AppliancesClientListKeysOptions`
+- New struct `AppliancesClientListKeysResponse`
+- New struct `ArtifactProfile`
+- New field `SystemData` in struct `Resource`
+- New field `SystemData` in struct `TrackedResource`
+- New field `Certificate` in struct `SSHKey`
+- New field `CreationTimeStamp` in struct `SSHKey`
+- New field `ExpirationTimeStamp` in struct `SSHKey`
+
+
 ## 0.2.0 (2022-06-28)
 ### Features Added
 

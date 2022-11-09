@@ -57,7 +57,7 @@ func NewAppliancesClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginCreateOrUpdate - Creates or updates an Appliance in the specified Subscription and Resource Group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-15-preview
+// Generated from API version 2022-10-27
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - Appliances name.
 // parameters - Parameters supplied to create or update an Appliance.
@@ -79,7 +79,7 @@ func (client *AppliancesClient) BeginCreateOrUpdate(ctx context.Context, resourc
 
 // CreateOrUpdate - Creates or updates an Appliance in the specified Subscription and Resource Group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-15-preview
+// Generated from API version 2022-10-27
 func (client *AppliancesClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters Appliance, options *AppliancesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
@@ -115,7 +115,7 @@ func (client *AppliancesClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-15-preview")
+	reqQP.Set("api-version", "2022-10-27")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -123,7 +123,7 @@ func (client *AppliancesClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // BeginDelete - Deletes an Appliance with the specified Resource Name, Resource Group, and Subscription Id.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-15-preview
+// Generated from API version 2022-10-27
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - Appliances name.
 // options - AppliancesClientBeginDeleteOptions contains the optional parameters for the AppliancesClient.BeginDelete method.
@@ -143,7 +143,7 @@ func (client *AppliancesClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Deletes an Appliance with the specified Resource Name, Resource Group, and Subscription Id.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-15-preview
+// Generated from API version 2022-10-27
 func (client *AppliancesClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *AppliancesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
@@ -179,7 +179,7 @@ func (client *AppliancesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-15-preview")
+	reqQP.Set("api-version", "2022-10-27")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -187,7 +187,7 @@ func (client *AppliancesClient) deleteCreateRequest(ctx context.Context, resourc
 
 // Get - Gets the details of an Appliance with a specified resource group and name.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-15-preview
+// Generated from API version 2022-10-27
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - Appliances name.
 // options - AppliancesClientGetOptions contains the optional parameters for the AppliancesClient.Get method.
@@ -226,7 +226,7 @@ func (client *AppliancesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-15-preview")
+	reqQP.Set("api-version", "2022-10-27")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -241,10 +241,57 @@ func (client *AppliancesClient) getHandleResponse(resp *http.Response) (Applianc
 	return result, nil
 }
 
+// GetTelemetryConfig - Gets the telemetry config.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-10-27
+// options - AppliancesClientGetTelemetryConfigOptions contains the optional parameters for the AppliancesClient.GetTelemetryConfig
+// method.
+func (client *AppliancesClient) GetTelemetryConfig(ctx context.Context, options *AppliancesClientGetTelemetryConfigOptions) (AppliancesClientGetTelemetryConfigResponse, error) {
+	req, err := client.getTelemetryConfigCreateRequest(ctx, options)
+	if err != nil {
+		return AppliancesClientGetTelemetryConfigResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return AppliancesClientGetTelemetryConfigResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return AppliancesClientGetTelemetryConfigResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.getTelemetryConfigHandleResponse(resp)
+}
+
+// getTelemetryConfigCreateRequest creates the GetTelemetryConfig request.
+func (client *AppliancesClient) getTelemetryConfigCreateRequest(ctx context.Context, options *AppliancesClientGetTelemetryConfigOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceConnector/telemetryconfig"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-10-27")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getTelemetryConfigHandleResponse handles the GetTelemetryConfig response.
+func (client *AppliancesClient) getTelemetryConfigHandleResponse(resp *http.Response) (AppliancesClientGetTelemetryConfigResponse, error) {
+	result := AppliancesClientGetTelemetryConfigResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ApplianceGetTelemetryConfigResult); err != nil {
+		return AppliancesClientGetTelemetryConfigResponse{}, err
+	}
+	return result, nil
+}
+
 // GetUpgradeGraph - Gets the upgrade graph of an Appliance with a specified resource group and name and specific release
 // train.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-15-preview
+// Generated from API version 2022-10-27
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - Appliances name.
 // upgradeGraph - Upgrade graph version, ex - stable
@@ -289,7 +336,7 @@ func (client *AppliancesClient) getUpgradeGraphCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-15-preview")
+	reqQP.Set("api-version", "2022-10-27")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -306,8 +353,7 @@ func (client *AppliancesClient) getUpgradeGraphHandleResponse(resp *http.Respons
 
 // NewListByResourceGroupPager - Gets a list of Appliances in the specified subscription and resource group. The operation
 // returns properties of each Appliance.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-15-preview
+// Generated from API version 2022-10-27
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - AppliancesClientListByResourceGroupOptions contains the optional parameters for the AppliancesClient.ListByResourceGroup
 // method.
@@ -355,7 +401,7 @@ func (client *AppliancesClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-15-preview")
+	reqQP.Set("api-version", "2022-10-27")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -372,8 +418,7 @@ func (client *AppliancesClient) listByResourceGroupHandleResponse(resp *http.Res
 
 // NewListBySubscriptionPager - Gets a list of Appliances in the specified subscription. The operation returns properties
 // of each Appliance
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-15-preview
+// Generated from API version 2022-10-27
 // options - AppliancesClientListBySubscriptionOptions contains the optional parameters for the AppliancesClient.ListBySubscription
 // method.
 func (client *AppliancesClient) NewListBySubscriptionPager(options *AppliancesClientListBySubscriptionOptions) *runtime.Pager[AppliancesClientListBySubscriptionResponse] {
@@ -416,7 +461,7 @@ func (client *AppliancesClient) listBySubscriptionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-15-preview")
+	reqQP.Set("api-version", "2022-10-27")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -431,66 +476,9 @@ func (client *AppliancesClient) listBySubscriptionHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListClusterCustomerUserCredential - Returns the cluster customer user credentials for the dedicated appliance.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-15-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceName - Appliances name.
-// options - AppliancesClientListClusterCustomerUserCredentialOptions contains the optional parameters for the AppliancesClient.ListClusterCustomerUserCredential
-// method.
-func (client *AppliancesClient) ListClusterCustomerUserCredential(ctx context.Context, resourceGroupName string, resourceName string, options *AppliancesClientListClusterCustomerUserCredentialOptions) (AppliancesClientListClusterCustomerUserCredentialResponse, error) {
-	req, err := client.listClusterCustomerUserCredentialCreateRequest(ctx, resourceGroupName, resourceName, options)
-	if err != nil {
-		return AppliancesClientListClusterCustomerUserCredentialResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return AppliancesClientListClusterCustomerUserCredentialResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AppliancesClientListClusterCustomerUserCredentialResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listClusterCustomerUserCredentialHandleResponse(resp)
-}
-
-// listClusterCustomerUserCredentialCreateRequest creates the ListClusterCustomerUserCredential request.
-func (client *AppliancesClient) listClusterCustomerUserCredentialCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *AppliancesClientListClusterCustomerUserCredentialOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ResourceConnector/appliances/{resourceName}/listClusterCustomerUserCredential"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listClusterCustomerUserCredentialHandleResponse handles the ListClusterCustomerUserCredential response.
-func (client *AppliancesClient) listClusterCustomerUserCredentialHandleResponse(resp *http.Response) (AppliancesClientListClusterCustomerUserCredentialResponse, error) {
-	result := AppliancesClientListClusterCustomerUserCredentialResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplianceListClusterCustomerUserCredentialResults); err != nil {
-		return AppliancesClientListClusterCustomerUserCredentialResponse{}, err
-	}
-	return result, nil
-}
-
 // ListClusterUserCredential - Returns the cluster user credentials for the dedicated appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-15-preview
+// Generated from API version 2022-10-27
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - Appliances name.
 // options - AppliancesClientListClusterUserCredentialOptions contains the optional parameters for the AppliancesClient.ListClusterUserCredential
@@ -530,7 +518,7 @@ func (client *AppliancesClient) listClusterUserCredentialCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-15-preview")
+	reqQP.Set("api-version", "2022-10-27")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -545,9 +533,64 @@ func (client *AppliancesClient) listClusterUserCredentialHandleResponse(resp *ht
 	return result, nil
 }
 
-// NewListOperationsPager - Lists all available Appliances operations.
+// ListKeys - Returns the cluster customer credentials for the dedicated appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-15-preview
+// Generated from API version 2022-10-27
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - Appliances name.
+// options - AppliancesClientListKeysOptions contains the optional parameters for the AppliancesClient.ListKeys method.
+func (client *AppliancesClient) ListKeys(ctx context.Context, resourceGroupName string, resourceName string, options *AppliancesClientListKeysOptions) (AppliancesClientListKeysResponse, error) {
+	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return AppliancesClientListKeysResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return AppliancesClientListKeysResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return AppliancesClientListKeysResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.listKeysHandleResponse(resp)
+}
+
+// listKeysCreateRequest creates the ListKeys request.
+func (client *AppliancesClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *AppliancesClientListKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ResourceConnector/appliances/{resourceName}/listkeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-10-27")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listKeysHandleResponse handles the ListKeys response.
+func (client *AppliancesClient) listKeysHandleResponse(resp *http.Response) (AppliancesClientListKeysResponse, error) {
+	result := AppliancesClientListKeysResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ApplianceListKeysResults); err != nil {
+		return AppliancesClientListKeysResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListOperationsPager - Lists all available Appliances operations.
+// Generated from API version 2022-10-27
 // options - AppliancesClientListOperationsOptions contains the optional parameters for the AppliancesClient.ListOperations
 // method.
 func (client *AppliancesClient) NewListOperationsPager(options *AppliancesClientListOperationsOptions) *runtime.Pager[AppliancesClientListOperationsResponse] {
@@ -586,7 +629,7 @@ func (client *AppliancesClient) listOperationsCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-15-preview")
+	reqQP.Set("api-version", "2022-10-27")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -603,7 +646,7 @@ func (client *AppliancesClient) listOperationsHandleResponse(resp *http.Response
 
 // Update - Updates an Appliance with the specified Resource Name in the specified Resource Group and Subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-15-preview
+// Generated from API version 2022-10-27
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - Appliances name.
 // parameters - The updatable fields of an existing Appliance.
@@ -643,7 +686,7 @@ func (client *AppliancesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-15-preview")
+	reqQP.Set("api-version", "2022-10-27")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

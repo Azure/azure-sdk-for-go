@@ -288,6 +288,8 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 	if !ok {
 		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
 	}
+	const containerName = "testContainer"
+
 	// Create Managed Identity (OAuth) Credentials using Client ID
 	clientOptions := azcore.ClientOptions{} // Fill clientOptions as needed
 	optsClientID := azidentity.ManagedIdentityCredentialOptions{ClientOptions: clientOptions, ID: azidentity.ClientID("7cf7db0d-...")}
@@ -311,13 +313,13 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 
 	fmt.Println("User Delegation Key has been created for ", accountName)
 
-	// Create Account Signature Values with desired permissions and sign with user delegation credential
-	sasQueryParams, err := sas.AccountSignatureValues{
+	// Create Blob Signature Values with desired permissions and sign with user delegation credential
+	sasQueryParams, err := sas.BlobSignatureValues{
 		Protocol:      sas.ProtocolHTTPS,
-		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
-		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
-		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
-		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   to.Ptr(sas.ContainerPermissions{Read: true, List: true}).String(),
+		ContainerName: containerName,
 	}.SignWithUserDelegation(udc)
 	handleError(err)
 
@@ -336,20 +338,20 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 	cred, err = azidentity.NewManagedIdentityCredential(&optsResourceID)
 	handleError(err)
 
-	svcClient, err = service.NewClient("svcURL", cred, &clientOptionsService)
+	svcClient, err = service.NewClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, &clientOptionsService)
 	handleError(err)
 
 	udc, err = svcClient.GetUserDelegationCredential(context.Background(), info, nil)
 	handleError(err)
 	fmt.Println("User Delegation Key has been created for ", accountName)
 
-	// Create Account Signature Values with desired permissions and sign with user delegation credential
-	sasQueryParams, err = sas.AccountSignatureValues{
+	// Create Blob Signature Values with desired permissions and sign with user delegation credential
+	sasQueryParams, err = sas.BlobSignatureValues{
 		Protocol:      sas.ProtocolHTTPS,
-		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
-		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
-		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
-		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+		StartTime:     time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:    time.Now().UTC().Add(15 * time.Minute),
+		Permissions:   to.Ptr(sas.ContainerPermissions{Read: true, List: true}).String(),
+		ContainerName: containerName,
 	}.SignWithUserDelegation(udc)
 	handleError(err)
 
@@ -362,5 +364,4 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 	// You can also break a blob URL up into it's constituent parts
 	blobURLParts, _ = blob.ParseURL(serviceClient.URL())
 	fmt.Printf("SAS expiry time = %s\n", blobURLParts.SAS.ExpiryTime())
-
 }

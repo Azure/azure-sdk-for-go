@@ -207,8 +207,8 @@ func TestEnvironmentCredential_SendCertificateChain(t *testing.T) {
 	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 	defer close()
 	srv.AppendResponse(mock.WithBody(instanceDiscoveryResponse))
-	srv.AppendResponse(mock.WithBody([]byte(tenantDiscoveryResponse)))
-	srv.AppendResponse(mock.WithPredicate(validateX5C(t, certs)), mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody(tenantDiscoveryResponse))
+	srv.AppendResponse(mock.WithPredicate(validateX5C(t, certs)), mock.WithBody(accessTokenRespSuccess))
 	srv.AppendResponse()
 
 	vars := map[string]string{

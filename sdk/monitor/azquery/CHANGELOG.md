@@ -1,14 +1,28 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.3.1 (Unreleased)
 
 ### Features Added
-* Added `ColumnIndexLookup` field to Table struct
-* Added type `Row`
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 0.3.0 (2022-11-08)
+
+### Features Added
+* Added `ColumnIndexLookup` field to Table struct
+* Added type `Row`
+* Added sovereign cloud support
+
+### Breaking Changes
+* Added error return values to `NewLogsClient` and `NewMetricsClient`
+* Rename `Batch` to `QueryBatch`
+* Rename `NewListMetricDefinitionsPager` to `NewListDefinitionsPager`
+* Rename `NewListMetricNamespacesPager` to `NewListNamespacesPager`
+* Changed type of `Render` and `Statistics` from interface{} to []byte
 
 ### Other Changes
 * Updated docs with more detailed examples

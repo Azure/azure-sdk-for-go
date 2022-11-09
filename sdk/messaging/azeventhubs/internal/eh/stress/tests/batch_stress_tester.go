@@ -40,12 +40,13 @@ func getBatchTesterParams(args []string) (batchTesterParams, error) {
 	// testing.
 	fs.IntVar(&params.numToSend, "send", 1000000, "Number of events to send.")
 	fs.IntVar(&params.batchSize, "receive", 1000000, "Size to request each time we call ReceiveEvents()")
-	fs.StringVar(&batchDurationStr, "timeout", "1s", "Time to wait for each batch (ie: 1m, 30s, etc..)")
+	fs.StringVar(&batchDurationStr, "timeout", "60s", "Time to wait for each batch (ie: 1m, 30s, etc..)")
 	prefetch := fs.Int("prefetch", 0, "Number of events to set for the prefetch. Negative numbers disable prefetch altogether. 0 uses the default for the package.")
 
 	fs.Int64Var(&params.rounds, "rounds", 100, "Number of rounds to run with these parameters. -1 means math.MaxInt64")
 	fs.IntVar(&params.paddingBytes, "padding", 1024, "Extra number of bytes to add into each message body")
 	fs.StringVar(&params.partitionID, "partition", "0", "Partition ID to send and receive events to")
+	fs.IntVar(&params.maxDeadlineExceeded, "maxtimeouts", 10, "Number of consecutive receive timeouts allowed before quitting")
 	fs.BoolVar(&params.enableVerboseLogging, "verbose", false, "enable verbose azure sdk logging")
 
 	if err := fs.Parse(os.Args[2:]); errors.Is(err, flag.ErrHelp) {
@@ -81,14 +82,15 @@ func BatchStressTester(ctx context.Context) error {
 	}
 
 	testData, err := newStressTestData("batch", params.enableVerboseLogging, map[string]string{
-		"BatchDuration": params.batchDuration.String(),
-		"BatchSize":     fmt.Sprintf("%d", params.batchSize),
-		"NumToSend":     fmt.Sprintf("%d", params.numToSend),
-		"PaddingBytes":  fmt.Sprintf("%d", params.paddingBytes),
-		"PartitionId":   params.partitionID,
-		"Prefetch":      fmt.Sprintf("%d", params.prefetch),
-		"Rounds":        fmt.Sprintf("%d", params.rounds),
-		"Verbose":       fmt.Sprintf("%t", params.enableVerboseLogging),
+		"BatchDuration":       params.batchDuration.String(),
+		"BatchSize":           fmt.Sprintf("%d", params.batchSize),
+		"NumToSend":           fmt.Sprintf("%d", params.numToSend),
+		"PaddingBytes":        fmt.Sprintf("%d", params.paddingBytes),
+		"PartitionId":         params.partitionID,
+		"Prefetch":            fmt.Sprintf("%d", params.prefetch),
+		"Rounds":              fmt.Sprintf("%d", params.rounds),
+		"Verbose":             fmt.Sprintf("%t", params.enableVerboseLogging),
+		"MaxDeadlineExceeded": fmt.Sprintf("%d", params.maxDeadlineExceeded),
 	})
 
 	if err != nil {
@@ -156,6 +158,7 @@ type batchTesterParams struct {
 	batchDuration        time.Duration
 	rounds               int64
 	prefetch             int32
+	maxDeadlineExceeded  int
 	enableVerboseLogging bool
 }
 

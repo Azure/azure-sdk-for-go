@@ -1,7 +1,7 @@
 # Azure SDK for Go - Previous Versions
 
 This guide is for developers who are using the old versions of Azure Go SDK. Those SDKs are located under
-[services folder](https://github.com/Azure/azure-sdk-for-go/tree/master/services). 
+[services folder](https://github.com/Azure/azure-sdk-for-go/tree/legacy/services). 
 
 ## Package Updates
 
@@ -61,7 +61,7 @@ section](#authentication).
    `res, err := c.CreateOrUpdate(...)`.
 4. Handle responses and errors.
 
-[services_dir]: https://github.com/Azure/azure-sdk-for-go/tree/master/services
+[services_dir]: https://github.com/Azure/azure-sdk-for-go/tree/legacy/services
 
 For example, to create a new virtual network (substitute your own values for
 strings in angle brackets):

@@ -49,10 +49,10 @@ type BatchQueryResults struct {
 	Error *ErrorInfo `json:"error,omitempty"`
 
 	// Visualization data in JSON format.
-	Render interface{} `json:"render,omitempty"`
+	Render []byte `json:"render,omitempty"`
 
 	// Statistics represented in JSON format.
-	Statistics interface{} `json:"statistics,omitempty"`
+	Statistics []byte `json:"statistics,omitempty"`
 
 	// The list of tables, columns and rows.
 	Tables []*Table `json:"tables,omitempty"`
@@ -101,8 +101,8 @@ type LocalizableString struct {
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
-// LogsClientBatchOptions contains the optional parameters for the LogsClient.Batch method.
-type LogsClientBatchOptions struct {
+// LogsClientQueryBatchOptions contains the optional parameters for the LogsClient.QueryBatch method.
+type LogsClientQueryBatchOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -258,15 +258,14 @@ type MetricValue struct {
 	Total *float64 `json:"total,omitempty"`
 }
 
-// MetricsClientListMetricDefinitionsOptions contains the optional parameters for the MetricsClient.ListMetricDefinitions
-// method.
-type MetricsClientListMetricDefinitionsOptions struct {
+// MetricsClientListDefinitionsOptions contains the optional parameters for the MetricsClient.ListDefinitions method.
+type MetricsClientListDefinitionsOptions struct {
 	// Metric namespace to query metric definitions for.
 	Metricnamespace *string
 }
 
-// MetricsClientListMetricNamespacesOptions contains the optional parameters for the MetricsClient.ListMetricNamespaces method.
-type MetricsClientListMetricNamespacesOptions struct {
+// MetricsClientListNamespacesOptions contains the optional parameters for the MetricsClient.ListNamespaces method.
+type MetricsClientListNamespacesOptions struct {
 	// The ISO 8601 conform Date start time from which to query for metric namespaces.
 	StartTime *string
 }
@@ -338,10 +337,10 @@ type Results struct {
 	Error *ErrorInfo `json:"error,omitempty"`
 
 	// Visualization data in JSON format.
-	Render interface{} `json:"render,omitempty"`
+	Render []byte `json:"render,omitempty"`
 
 	// Statistics represented in JSON format.
-	Statistics interface{} `json:"statistics,omitempty"`
+	Statistics []byte `json:"statistics,omitempty"`
 }
 
 // TimeSeriesElement - A time series result type. The discriminator value is always TimeSeries in this case.

@@ -240,9 +240,10 @@ func TestDisableChallengeResourceVerification(t *testing.T) {
 				},
 				DisableChallengeResourceVerification: test.disableVerify,
 			}
-			client := azkeys.NewClient(vaultURL, &FakeCredential{}, options)
+			client, err := azkeys.NewClient(vaultURL, &FakeCredential{}, options)
+			require.NoError(t, err)
 			pager := client.NewListKeysPager(nil)
-			_, err := pager.NextPage(context.Background())
+			_, err = pager.NextPage(context.Background())
 			if test.err {
 				require.Error(t, err)
 				require.Contains(t, err.Error(), "challenge resource")

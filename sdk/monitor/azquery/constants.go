@@ -9,8 +9,6 @@
 
 package azquery
 
-const host = "https://api.loganalytics.io/v1"
-
 // AggregationType - the aggregation type of the metric.
 type AggregationType string
 

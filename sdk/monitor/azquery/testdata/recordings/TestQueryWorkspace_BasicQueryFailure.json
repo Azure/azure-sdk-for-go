@@ -9,7 +9,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "29",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azquery/v0.1.0 (go1.19; Windows_NT)"
+        "User-Agent": "azsdk-go-azquery/v0.2.1 (go1.19; Windows_NT)"
       },
       "RequestBody": {
         "query": "not a valid query"
@@ -21,17 +21,17 @@
         "Connection": "keep-alive",
         "Content-Length": "355",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 08 Sep 2022 00:01:31 GMT",
+        "Date": "Tue, 08 Nov 2022 21:06:28 GMT",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
         "Vary": "Accept-Encoding",
-        "Via": "1.1 draft-oms-6b467c4794-wz4rv",
+        "Via": "1.1 draft-oms-7f9bc6678d-89pjs",
         "X-Content-Type-Options": "nosniff"
       },
       "ResponseBody": {
         "error": {
           "message": "The request had some invalid properties",
           "code": "BadArgumentError",
-          "correlationId": "965eca0d-28ec-4c61-b6ec-ed57b77af4ae",
+          "correlationId": "e2bed1a4-4e2a-436a-8a81-d1c7fa96b536",
           "innererror": {
             "code": "SyntaxError",
             "message": "A recognition error occurred in the query.",

@@ -1,6 +1,6 @@
 # Release History
 
-## 0.10.2 (Unreleased)
+## 0.11.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,11 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.11.0 (2022-11-08)
+
+### Breaking Changes
+* `NewClient` returns an `error`
 
 ## 0.10.1 (2022-09-20)
 

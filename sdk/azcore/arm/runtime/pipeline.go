@@ -43,8 +43,8 @@ func NewPipeline(module, version string, cred azcore.TokenCredential, plOpts azr
 		copy(perCall, plOpts.PerCall)
 		plOpts.PerCall = append(perCall, regPolicy)
 	}
-	if plOpts.APIVersionName == "" {
-		plOpts.APIVersionName = "api-version"
+	if plOpts.APIVersion.Name == "" {
+		plOpts.APIVersion.Name = "api-version"
 	}
 	return azruntime.NewPipeline(module, version, plOpts, &options.ClientOptions), nil
 }

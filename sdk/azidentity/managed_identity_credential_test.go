@@ -81,7 +81,7 @@ func TestManagedIdentityCredential_AzureArc(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithHeader("WWW-Authenticate", "Basic realm="+file.Name()), mock.WithStatusCode(401))
-	srv.AppendResponse(mock.WithPredicate(validateReq), mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithPredicate(validateReq), mock.WithBody(accessTokenRespSuccess))
 	srv.AppendResponse()
 
 	setEnvironmentVariables(t, map[string]string{
@@ -112,7 +112,7 @@ func TestManagedIdentityCredential_CloudShell(t *testing.T) {
 	}
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithPredicate(validateReq), mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithPredicate(validateReq), mock.WithBody(accessTokenRespSuccess))
 	srv.AppendResponse()
 	setEnvironmentVariables(t, map[string]string{msiEndpoint: srv.URL()})
 	options := ManagedIdentityCredentialOptions{}
@@ -474,7 +474,7 @@ func TestManagedIdentityCredential_IMDSTimeoutSuccess(t *testing.T) {
 	resetEnvironmentVarsForTest()
 	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 	defer close()
-	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody(accessTokenRespSuccess))
 	options := ManagedIdentityCredentialOptions{}
 	options.Transport = srv
 	cred, err := NewManagedIdentityCredential(&options)
@@ -514,7 +514,7 @@ func TestManagedIdentityCredential_ServiceFabric(t *testing.T) {
 	}
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithPredicate(pred), mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithPredicate(pred), mock.WithBody(accessTokenRespSuccess))
 	srv.AppendResponse()
 	setEnvironmentVariables(t, map[string]string{identityEndpoint: srv.URL(), identityHeader: expectedSecret, identityServerThumbprint: "..."})
 	cred, err := NewManagedIdentityCredential(nil)

@@ -11,6 +11,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Updated `internal` module to latest version.
 
 ## 1.2.0 (2022-11-04)
 

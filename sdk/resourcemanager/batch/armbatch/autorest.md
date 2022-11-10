@@ -5,8 +5,8 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/batch/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/batch/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/bdb63328ebe9214f0e513c0073ae7c97c6d4844f/specification/batch/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/bdb63328ebe9214f0e513c0073ae7c97c6d4844f/specification/batch/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 1.0.0
+module-version: 2.0.0
 ```

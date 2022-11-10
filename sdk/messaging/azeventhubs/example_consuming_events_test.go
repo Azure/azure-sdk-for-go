@@ -22,6 +22,10 @@ import (
 // If you have an Azure Storage account you can use the [Processor] type instead, which will handle
 // distributing partitions between multiple consumers. See example_processor_test.go for usage of
 // that type.
+//
+// For an example of that see [example_processor_test.go].
+//
+// [example_processor_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go
 func Example_consumingEventsUsingConsumerClient() {
 	eventHubNamespace := os.Getenv("EVENTHUB_NAMESPACE") // <ex: myeventhubnamespace.servicebus.windows.net>
 	eventHubName := os.Getenv("EVENTHUB_NAME")

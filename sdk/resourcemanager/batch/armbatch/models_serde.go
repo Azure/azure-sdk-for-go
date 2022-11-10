@@ -987,7 +987,7 @@ func (c CIFSMountConfiguration) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "password", c.Password)
 	populate(objectMap, "relativeMountPath", c.RelativeMountPath)
 	populate(objectMap, "source", c.Source)
-	populate(objectMap, "userName", c.UserName)
+	populate(objectMap, "userName", c.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -1013,7 +1013,7 @@ func (c *CIFSMountConfiguration) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Source", &c.Source)
 			delete(rawMsg, key)
 		case "userName":
-			err = unpopulate(val, "UserName", &c.UserName)
+			err = unpopulate(val, "Username", &c.Username)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2476,7 +2476,7 @@ func (n *NFSMountConfiguration) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type NetworkConfiguration.
 func (n NetworkConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "dynamicVnetAssignmentScope", n.DynamicVnetAssignmentScope)
+	populate(objectMap, "dynamicVnetAssignmentScope", n.DynamicVNetAssignmentScope)
 	populate(objectMap, "endpointConfiguration", n.EndpointConfiguration)
 	populate(objectMap, "publicIPAddressConfiguration", n.PublicIPAddressConfiguration)
 	populate(objectMap, "subnetId", n.SubnetID)
@@ -2493,7 +2493,7 @@ func (n *NetworkConfiguration) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "dynamicVnetAssignmentScope":
-			err = unpopulate(val, "DynamicVnetAssignmentScope", &n.DynamicVnetAssignmentScope)
+			err = unpopulate(val, "DynamicVNetAssignmentScope", &n.DynamicVNetAssignmentScope)
 			delete(rawMsg, key)
 		case "endpointConfiguration":
 			err = unpopulate(val, "EndpointConfiguration", &n.EndpointConfiguration)
@@ -3237,7 +3237,7 @@ func (p *PrivateLinkResourceProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PrivateLinkServiceConnectionState.
 func (p PrivateLinkServiceConnectionState) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "actionsRequired", p.ActionsRequired)
+	populate(objectMap, "actionsRequired", p.ActionRequired)
 	populate(objectMap, "description", p.Description)
 	populate(objectMap, "status", p.Status)
 	return json.Marshal(objectMap)
@@ -3253,7 +3253,7 @@ func (p *PrivateLinkServiceConnectionState) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "actionsRequired":
-			err = unpopulate(val, "ActionsRequired", &p.ActionsRequired)
+			err = unpopulate(val, "ActionRequired", &p.ActionRequired)
 			delete(rawMsg, key)
 		case "description":
 			err = unpopulate(val, "Description", &p.Description)

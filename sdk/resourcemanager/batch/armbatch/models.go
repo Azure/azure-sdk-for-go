@@ -551,7 +551,7 @@ type CIFSMountConfiguration struct {
 	Source *string `json:"source,omitempty"`
 
 	// REQUIRED; The user to use for authentication against the CIFS file system.
-	UserName *string `json:"userName,omitempty"`
+	Username *string `json:"userName,omitempty"`
 
 	// These are 'net use' options in Windows and 'mount' options in Linux.
 	MountOptions *string `json:"mountOptions,omitempty"`
@@ -1192,7 +1192,7 @@ type NFSMountConfiguration struct {
 // NetworkConfiguration - The network configuration for a pool.
 type NetworkConfiguration struct {
 	// The scope of dynamic vnet assignment.
-	DynamicVnetAssignmentScope *DynamicVNetAssignmentScope `json:"dynamicVnetAssignmentScope,omitempty"`
+	DynamicVNetAssignmentScope *DynamicVNetAssignmentScope `json:"dynamicVnetAssignmentScope,omitempty"`
 
 	// Pool endpoint configuration is only supported on pools with the virtualMachineConfiguration property.
 	EndpointConfiguration *PoolEndpointConfiguration `json:"endpointConfiguration,omitempty"`
@@ -1649,7 +1649,7 @@ type PrivateLinkServiceConnectionState struct {
 	Description *string `json:"description,omitempty"`
 
 	// READ-ONLY; Action required on the private connection state
-	ActionsRequired *string `json:"actionsRequired,omitempty" azure:"ro"`
+	ActionRequired *string `json:"actionsRequired,omitempty" azure:"ro"`
 }
 
 // ProxyResource - A definition of an Azure resource.

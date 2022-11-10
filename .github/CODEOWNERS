@@ -56,7 +56,7 @@
 /sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh
 
 # PRLabel: %Storage
-/sdk/storage/                 @siminsavani-msft @souravgupta-msft @jhendrixMSFT
+/sdk/storage/                 @siminsavani-msft @souravgupta-msft @tasherif-msft @jhendrixMSFT
 
 ###########
 # Eng Sys

@@ -58,6 +58,10 @@ client, err := armmonitor.NewAlertRuleIncidentsClient(<subscription ID>, cred, &
 - [Activity Log Alert](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/monitor/activity_log_alert)
 - [Log Profile](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/monitor/log_profile)
 
+## Query metrics
+
+If you want to query metrics, you could use data plane module `github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery`. Refer [module doc](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery) for more details.
+
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

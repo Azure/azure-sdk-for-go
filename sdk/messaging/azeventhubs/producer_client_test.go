@@ -115,7 +115,7 @@ func TestProducerClient_SendToAny(t *testing.T) {
 
 			partitionsBeforeSend := getAllPartitionProperties(t, producer)
 
-			err = producer.SendEventBatch(context.Background(), batch, nil)
+			err = producer.SendEventDataBatch(context.Background(), batch, nil)
 			require.NoError(t, err)
 
 			consumer, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
@@ -223,7 +223,7 @@ func TestProducerClient_AMQPAnnotatedMessages(t *testing.T) {
 		}, nil)
 		require.NoError(t, err)
 
-		err = producer.SendEventBatch(context.Background(), batch, nil)
+		err = producer.SendEventDataBatch(context.Background(), batch, nil)
 		require.NoError(t, err)
 
 		numEvents = int64(batch.NumEvents())
@@ -352,7 +352,7 @@ func TestProducerClient_SendBatchExample(t *testing.T) {
 
 			// This batch is full - we can send it and create a new one and continue
 			// packaging and sending events.
-			if err := producerClient.SendEventBatch(context.TODO(), batch, nil); err != nil {
+			if err := producerClient.SendEventDataBatch(context.TODO(), batch, nil); err != nil {
 				panic(err)
 			}
 
@@ -375,7 +375,7 @@ func TestProducerClient_SendBatchExample(t *testing.T) {
 
 	// if we have any events in the last batch, send it
 	if batch.NumEvents() > 0 {
-		if err := producerClient.SendEventBatch(context.TODO(), batch, nil); err != nil {
+		if err := producerClient.SendEventDataBatch(context.TODO(), batch, nil); err != nil {
 			panic(err)
 		}
 
@@ -535,7 +535,7 @@ func sendAndReceiveToPartitionTest(t *testing.T, cs string, eventHubName string,
 		expectedBodies = append(expectedBodies, msg)
 	}
 
-	err = producer.SendEventBatch(context.Background(), batch, nil)
+	err = producer.SendEventDataBatch(context.Background(), batch, nil)
 	require.NoError(t, err)
 
 	// give us 60 seconds to receive all 100 messages we sent in the batch

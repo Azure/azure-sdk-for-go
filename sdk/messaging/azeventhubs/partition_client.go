@@ -76,6 +76,25 @@ type ReceiveEventsOptions struct {
 
 // ReceiveEvents receives events until 'count' events have been received or the context has
 // expired or been cancelled.
+//
+// If your ReceiveEvents call appears to be stuck there are some common causes:
+//
+//  1. The PartitionClientOptions.StartPosition defaults to "Latest" when the client is created. The connection
+//     is lazily initialized, so it's possible the link was initialized to a position after events you've sent.
+//     To make this deterministic, you can choose an explicit start point using sequence number, offset or a
+//     timestamp. See the [PartitionClientOptions.StartPosition] field for more details.
+//
+//  2. You might have sent the events to a different partition than intended. By default, batches that are
+//     created using [ProducerClient.NewEventDataBatch] do not target a specific partition. When a partition
+//     is not specified, Azure Event Hubs service will choose the partition the events will be sent to.
+//
+//     To fix this, you can specify a PartitionID as part of your [EventDataBatchOptions.PartitionID] options or
+//     open multiple [PartitionClient] instances, one for each partition. You can get the full list of partitions
+//     at runtime using [ConsumerClient.GetEventHubProperties]. See the "example_consuming_events_test.go" for
+//     an example of this pattern.
+//
+//  3. Network issues can cause internal retries. To see log messages related to this use the instructions in
+//     the example function "Example_enableLogging".
 func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options *ReceiveEventsOptions) ([]*ReceivedEventData, error) {
 	var events []*ReceivedEventData
 

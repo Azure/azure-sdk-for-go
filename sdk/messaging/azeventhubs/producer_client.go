@@ -150,14 +150,14 @@ func (pc *ProducerClient) NewEventDataBatch(ctx context.Context, options *EventD
 	return batch, nil
 }
 
-// SendEventBatchOptions contains optional parameters for the SendEventBatch function
-type SendEventBatchOptions struct {
+// SendEventDataBatchOptions contains optional parameters for the SendEventDataBatch function
+type SendEventDataBatchOptions struct {
 	// For future expansion
 }
 
 // SendEventDataBatch sends an event data batch to Event Hubs.
-func (pc *ProducerClient) SendEventDataBatch(ctx context.Context, batch *EventDataBatch, options *SendEventBatchOptions) error {
-	err := pc.links.Retry(ctx, exported.EventProducer, "SendEventBatch", getPartitionID(batch.partitionID), pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPSenderCloser]) error {
+func (pc *ProducerClient) SendEventDataBatch(ctx context.Context, batch *EventDataBatch, options *SendEventDataBatchOptions) error {
+	err := pc.links.Retry(ctx, exported.EventProducer, "SendEventDataBatch", getPartitionID(batch.partitionID), pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPSenderCloser]) error {
 		return lwid.Link.Send(ctx, batch.toAMQPMessage())
 	})
 	return internal.TransformError(err)

@@ -131,6 +131,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 			PackageConfig:  generateParam.NamespaceConfig,
 			GoVersion:      generateParam.GoVersion,
 			PackageVersion: version.String(),
+			ReleaseDate:    generateParam.ReleaseDate,
 		}); err != nil {
 			return nil, err
 		}

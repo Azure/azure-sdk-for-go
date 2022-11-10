@@ -36,21 +36,25 @@ func Example_producingEventsUsingProducerClient() {
 
 	events := createEventsForSample()
 
-	// Other options you might consider:
-	//
-	// Targeting a batch to a specific partition
-	//
-	// batch, err := producerClient.NewEventDataBatch(context.TODO(), &azeventhubs.NewEventDataBatchOptions{
-	// 	PartitionID: to.Ptr("0"),
-	// })
-	//
-	// Targeting a batch using a partition key
-	//
-	// batch, err := producerClient.NewEventDataBatch(context.TODO(), &azeventhubs.NewEventDataBatchOptions{
-	// 	PartitionKey: to.Ptr("partition key"),
-	// })
-	newBatchOptions := &azeventhubs.EventDataBatchOptions{}
+	newBatchOptions := &azeventhubs.EventDataBatchOptions{
+		// The options allow you to control the size of the batch, as well as the partition it will get sent to.
 
+		// PartitionID can be used to target a specific partition ID.
+		// specific partition ID.
+		//
+		// PartitionID: partitionID,
+
+		// PartitionKey can be used to ensure that messages that have the same key
+		// will go to the same partition without requiring your application to specify
+		// that partition ID.
+		//
+		// PartitionKey: partitionKey,
+
+		//
+		// Or, if you leave both PartitionID and PartitionKey nil, the service will choose a partition.
+	}
+
+	// Creates an EventDataBatch, which you can use to pack multiple events together, allowing for efficient transfer.
 	batch, err := producerClient.NewEventDataBatch(context.TODO(), newBatchOptions)
 
 	if err != nil {
@@ -73,6 +77,8 @@ func Example_producingEventsUsingProducerClient() {
 				panic(err)
 			}
 
+			// create the next batch we'll use for events, ensuring that we use the same options
+			// each time so all the messages go the same target.
 			tmpBatch, err := producerClient.NewEventDataBatch(context.TODO(), newBatchOptions)
 
 			if err != nil {

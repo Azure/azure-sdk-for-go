@@ -147,21 +147,6 @@ type DetachTrafficFilterClientBeginUpdateOptions struct {
 	RulesetID *string
 }
 
-// ErrorResponseBody - Error response body.
-type ErrorResponseBody struct {
-	// Error code.
-	Code *string `json:"code,omitempty"`
-
-	// Error details.
-	Details []*ErrorResponseBody `json:"details,omitempty"`
-
-	// Error message.
-	Message *string `json:"message,omitempty"`
-
-	// Error target.
-	Target *string `json:"target,omitempty"`
-}
-
 // ExternalUserClientCreateOrUpdateOptions contains the optional parameters for the ExternalUserClient.CreateOrUpdate method.
 type ExternalUserClientCreateOrUpdateOptions struct {
 	// Elastic External User Creation Parameters
@@ -472,12 +457,6 @@ type Properties struct {
 
 	// Details of the user's elastic account.
 	ElasticCloudUser *CloudUser `json:"elasticCloudUser,omitempty"`
-}
-
-// ResourceProviderDefaultErrorResponse - RP default error response.
-type ResourceProviderDefaultErrorResponse struct {
-	// READ-ONLY; Response body of Error
-	Error *ErrorResponseBody `json:"error,omitempty" azure:"ro"`
 }
 
 // ResourceSKU - Microsoft.Elastic SKU.

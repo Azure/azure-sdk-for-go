@@ -44,7 +44,7 @@
 /sdk/messaging/azservicebus   @richardpark-msft @jhendrixMSFT
 
 # PRLabel: %Event Hubs
-/sdk/messaging/azeventhubs   @richardpark-msft @jhendrixMSFT
+/sdk/messaging/azeventhubs    @richardpark-msft @jhendrixMSFT
 
 # PRLabel: %Service Bus
 /sdk/messaging/internal       @richardpark-msft @jhendrixMSFT
@@ -56,7 +56,7 @@
 /sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh
 
 # PRLabel: %Storage
-/sdk/storage/                 @mohsha-msft @zezha-msft @jhendrixMSFT
+/sdk/storage/                 @siminsavani-msft @souravgupta-msft @jhendrixMSFT
 
 ###########
 # Eng Sys
@@ -67,19 +67,3 @@
 
 # PRLabel: %EngSys
 /sdk/template/                @benbp @weshaggard
-
-#############
-# SDK (track1 and track1.5)
-#############
-
-# PRLabel: %Track1
-/profiles/                    @ArcturusZhang @lirenhe
-
-# PRLabel: %Track1
-/services/                    @ArcturusZhang @lirenhe
-
-# PRLabel: %Track1
-/storage/                     @jhendrixMSFT
-
-# PRLabel: %Track1
-/version/                     @ArcturusZhang @lirenhe

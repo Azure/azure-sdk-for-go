@@ -10,12 +10,14 @@ import (
 	"context"
 	"net/http"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -243,5 +245,45 @@ func TestPipelineWithIncompleteCloudConfig(t *testing.T) {
 		if err == nil {
 			t.Fatal("expected an error")
 		}
+	}
+}
+
+func TestPipelineDoConcurrent(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse()
+
+	pl, err := NewPipeline("TestPipelineDoConcurrent", shared.Version, mockCredential{}, azruntime.PipelineOptions{}, nil)
+	require.NoError(t, err)
+
+	plErr := make(chan error, 1)
+	wg := &sync.WaitGroup{}
+	for i := 0; i < 1000; i++ {
+		wg.Add(1)
+		go func() {
+			req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+			if err != nil {
+				// test bug
+				panic(err)
+			}
+			_, err = pl.Do(req)
+			if err != nil {
+				select {
+				case plErr <- err:
+					// set error
+				default:
+					// pending error
+				}
+			}
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+
+	select {
+	case err := <-plErr:
+		t.Fatal(err)
+	default:
+		// no error
 	}
 }

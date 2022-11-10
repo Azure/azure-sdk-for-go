@@ -44,7 +44,7 @@ func ExampleNewProducerClientFromConnectionString() {
 	}
 }
 
-func ExampleProducerClient_SendEventBatch() {
+func ExampleProducerClient_SendEventDataBatch() {
 	batch, err := producerClient.NewEventDataBatch(context.TODO(), nil)
 
 	if err != nil {

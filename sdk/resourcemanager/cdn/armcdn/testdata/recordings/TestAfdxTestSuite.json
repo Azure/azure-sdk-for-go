@@ -526,7 +526,7 @@
             "secret": null
           },
           "validationProperties": {
-            "validationToken": "67stsyhm0w1vdvz3txscpj4pzvv70jrl",
+            "validationToken": "000000000000",
             "expirationDate": "2022-11-15T02:08:07.2481472\u002B00:00"
           },
           "azureDnsZone": null,
@@ -996,7 +996,7 @@
                 "secret": null
               },
               "validationProperties": {
-                "validationToken": "67stsyhm0w1vdvz3txscpj4pzvv70jrl",
+                "validationToken": "000000000000",
                 "expirationDate": "2022-11-15T02:08:07.2481472\u002B00:00"
               },
               "azureDnsZone": null,
@@ -1050,7 +1050,7 @@
             "secret": null
           },
           "validationProperties": {
-            "validationToken": "67stsyhm0w1vdvz3txscpj4pzvv70jrl",
+            "validationToken": "000000000000",
             "expirationDate": "2022-11-15T02:08:07.2481472\u002B00:00"
           },
           "azureDnsZone": null,
@@ -1111,7 +1111,7 @@
             "secret": null
           },
           "validationProperties": {
-            "validationToken": "67stsyhm0w1vdvz3txscpj4pzvv70jrl",
+            "validationToken": "000000000000",
             "expirationDate": "2022-11-15T02:08:07.2481472\u002B00:00"
           },
           "azureDnsZone": null,

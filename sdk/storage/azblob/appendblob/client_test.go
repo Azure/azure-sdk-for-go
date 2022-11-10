@@ -11,7 +11,6 @@ import (
 	"context"
 	"crypto/md5"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"io"
 	"net/http"
 	"strconv"
@@ -1561,16 +1560,16 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCPKScope() {
 func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
 	_require.Nil(err)
 
-	// Enable soft-delete by setting retention policy with AllowPermanentDelete set to True
+	/*// Enable soft-delete by setting retention policy with AllowPermanentDelete set to True
 	days := int32(1)
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{
 		DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: to.Ptr(true), Days: &days, AllowPermanentDelete: to.Ptr(true)}})
 	_require.Nil(err)
 
-	time.Sleep(time.Second * 30) // Sleep for 30 seconds for account/container creation
+	time.Sleep(time.Second * 30) // Sleep for 30 seconds for account/container creation*/
 
 	// Create container and blob, upload blob to container
 	containerName := testcommon.GenerateContainerName(testName)
@@ -1676,10 +1675,10 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDelete() {
 	}
 	_require.Len(found, 1)
 
-	// Disable for other tests
+	/*// Disable for other tests
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{
 		DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: to.Ptr(false), AllowPermanentDelete: to.Ptr(false)}})
-	_require.Nil(err)
+	_require.Nil(err)*/
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendBlockPermanentDeleteWithoutPermission() {

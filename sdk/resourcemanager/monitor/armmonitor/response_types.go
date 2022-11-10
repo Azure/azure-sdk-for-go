@@ -374,21 +374,6 @@ type MetricAlertsStatusClientListResponse struct {
 	MetricAlertStatusCollection
 }
 
-// MetricDefinitionsClientListResponse contains the response from method MetricDefinitionsClient.List.
-type MetricDefinitionsClientListResponse struct {
-	MetricDefinitionCollection
-}
-
-// MetricNamespacesClientListResponse contains the response from method MetricNamespacesClient.List.
-type MetricNamespacesClientListResponse struct {
-	MetricNamespaceCollection
-}
-
-// MetricsClientListResponse contains the response from method MetricsClient.List.
-type MetricsClientListResponse struct {
-	Response
-}
-
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
 	OperationListResult

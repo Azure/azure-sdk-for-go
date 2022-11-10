@@ -33,6 +33,18 @@ func newEmulatorTests(t *testing.T) *emulatorTests {
 	}
 }
 
+func newEmulatorTestsWithComputeGateway(t *testing.T) *emulatorTests {
+	envCheck := os.Getenv("EMULATOR")
+	if envCheck == "" {
+		t.Skip("set EMULATOR environment variable to run this test")
+	}
+
+	return &emulatorTests{
+		host: "https://localhost:8903/",
+		key:  "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
+	}
+}
+
 func (e *emulatorTests) getClient(t *testing.T) *Client {
 	cred, _ := NewKeyCredential(e.key)
 	client, err := NewClientWithKey(e.host, cred, nil)

@@ -110,10 +110,7 @@ func NewReleaseRequestIssue(issue github.Issue) (*ReleaseRequestIssue, error) {
 	targetDate := regexp.MustCompile(`\d*-\d*-\d*`).FindString(contents[releaseDateKeyword])
 	releaseDate, err := time.Parse("2006-01-02", targetDate)
 	if err != nil {
-		return nil, &issueError{
-			issue: issue,
-			err:   err,
-		}
+		releaseDate = time.Now()
 	}
 
 	return &ReleaseRequestIssue{

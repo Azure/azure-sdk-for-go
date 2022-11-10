@@ -3,14 +3,8 @@
 ## 0.6.0 (2022-11-10)
 ### Features Added
 
-- New const `APIVersionParameterTwoThousandTwenty0701`
 - New const `TypeAzurePrivateEndpoint`
 - New const `TypeIP`
-- New const `APIVersionParameterTwoThousandTwentyOne1001Preview`
-- New const `APIVersionParameterTwoThousandTwentyTwo0505Preview`
-- New const `APIVersionParameterTwoThousandTwentyOne0901Preview`
-- New const `APIVersionParameterTwoThousandTwenty0701Preview`
-- New type alias `APIVersionParameter`
 - New type alias `Type`
 - New function `*TrafficFiltersClient.Delete(context.Context, string, string, *TrafficFiltersClientDeleteOptions) (TrafficFiltersClientDeleteResponse, error)`
 - New function `*AssociateTrafficFilterClient.BeginAssociate(context.Context, string, string, *AssociateTrafficFilterClientBeginAssociateOptions) (*runtime.Poller[AssociateTrafficFilterClientAssociateResponse], error)`
@@ -27,7 +21,6 @@
 - New function `*CreateAndAssociateIPFilterClient.BeginCreate(context.Context, string, string, *CreateAndAssociateIPFilterClientBeginCreateOptions) (*runtime.Poller[CreateAndAssociateIPFilterClientCreateResponse], error)`
 - New function `*DetachAndDeleteTrafficFilterClient.Delete(context.Context, string, string, *DetachAndDeleteTrafficFilterClientDeleteOptions) (DetachAndDeleteTrafficFilterClientDeleteResponse, error)`
 - New function `NewAssociateTrafficFilterClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AssociateTrafficFilterClient, error)`
-- New function `PossibleAPIVersionParameterValues() []APIVersionParameter`
 - New function `*DetachTrafficFilterClient.BeginUpdate(context.Context, string, string, *DetachTrafficFilterClientBeginUpdateOptions) (*runtime.Poller[DetachTrafficFilterClientUpdateResponse], error)`
 - New function `*CreateAndAssociatePLFilterClient.BeginCreate(context.Context, string, string, *CreateAndAssociatePLFilterClientBeginCreateOptions) (*runtime.Poller[CreateAndAssociatePLFilterClientCreateResponse], error)`
 - New function `*ListAssociatedTrafficFiltersClient.List(context.Context, string, string, *ListAssociatedTrafficFiltersClientListOptions) (ListAssociatedTrafficFiltersClientListResponse, error)`

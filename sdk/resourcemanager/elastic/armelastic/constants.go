@@ -22,27 +22,6 @@ const (
 	moduleVersion = "v0.6.0"
 )
 
-type APIVersionParameter string
-
-const (
-	APIVersionParameterTwoThousandTwenty0701           APIVersionParameter = "2020-07-01"
-	APIVersionParameterTwoThousandTwenty0701Preview    APIVersionParameter = "2020-07-01-preview"
-	APIVersionParameterTwoThousandTwentyOne0901Preview APIVersionParameter = "2021-09-01-preview"
-	APIVersionParameterTwoThousandTwentyOne1001Preview APIVersionParameter = "2021-10-01-preview"
-	APIVersionParameterTwoThousandTwentyTwo0505Preview APIVersionParameter = "2022-05-05-preview"
-)
-
-// PossibleAPIVersionParameterValues returns the possible values for the APIVersionParameter const type.
-func PossibleAPIVersionParameterValues() []APIVersionParameter {
-	return []APIVersionParameter{
-		APIVersionParameterTwoThousandTwenty0701,
-		APIVersionParameterTwoThousandTwenty0701Preview,
-		APIVersionParameterTwoThousandTwentyOne0901Preview,
-		APIVersionParameterTwoThousandTwentyOne1001Preview,
-		APIVersionParameterTwoThousandTwentyTwo0505Preview,
-	}
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 

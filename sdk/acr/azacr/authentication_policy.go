@@ -223,7 +223,7 @@ func getJWTExpireTime(token string) (time.Time, error) {
 			return time.Time{}, err
 		}
 
-		var jsonValue *JWTOnlyWithExp
+		var jsonValue *jwtOnlyWithExp
 		err = json.Unmarshal(parsedValue, jsonValue)
 		if err != nil {
 			return time.Time{}, err
@@ -234,6 +234,6 @@ func getJWTExpireTime(token string) (time.Time, error) {
 	return time.Time{}, &challengePolicyError{err: errors.New("could not parse refresh token expire time")}
 }
 
-type JWTOnlyWithExp struct {
+type jwtOnlyWithExp struct {
 	Exp time.Time `json:"exp"`
 }

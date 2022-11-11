@@ -80,7 +80,7 @@ func (k *keyVaultAuthorizer) authorize(req *policy.Request, authNZ func(policy.T
 
 func (k *keyVaultAuthorizer) authorizeOnChallenge(req *policy.Request, res *http.Response, authNZ func(policy.TokenRequestOptions) error) error {
 	// parse the challenge
-	if err := k.findScopeAndTenant(res, req.Raw()); err != nil {
+	if err := k.updateTokenRequestOptions(res, req.Raw()); err != nil {
 		return err
 	}
 	// reattach the request's body, if it was removed by authorize()
@@ -122,8 +122,8 @@ func (c *challengePolicyError) Unwrap() error {
 
 var _ errorinfo.NonRetriable = (*challengePolicyError)(nil)
 
-// sets the k.scope and k.tenantID from the WWW-Authenticate header
-func (k *keyVaultAuthorizer) findScopeAndTenant(resp *http.Response, req *http.Request) error {
+// updateTokenRequestOptions parses authentication parameters from Key Vault's challenge
+func (k *keyVaultAuthorizer) updateTokenRequestOptions(resp *http.Response, req *http.Request) error {
 	authHeader := resp.Header.Get("WWW-Authenticate")
 	if authHeader == "" {
 		return &challengePolicyError{err: errors.New("response has no WWW-Authenticate header for challenge authentication")}

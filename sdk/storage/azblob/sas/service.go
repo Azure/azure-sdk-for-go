@@ -362,7 +362,7 @@ func (p *BlobPermissions) String() string {
 	if p.DeletePreviousVersion {
 		b.WriteRune('x')
 	}
-  if p.PermanentDelete {
+	if p.PermanentDelete {
 		b.WriteRune('y')
 	}
 	if p.List {

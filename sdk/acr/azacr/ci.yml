@@ -8,7 +8,7 @@ trigger:
       - release/*
   paths:
     include:
-    - sdk/container/azcontainerregistry
+    - sdk/acr/azacr
 
 pr:
   branches:
@@ -19,10 +19,10 @@ pr:
       - release/*
   paths:
     include:
-    - sdk/container/azcontainerregistry
+    - sdk/acr/azacr
 
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: 'container/azcontainerregistry'
+    ServiceDirectory: 'acr/azacr'
     RunLiveTests: true

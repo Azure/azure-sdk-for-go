@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package arm
+package runtime
 
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 

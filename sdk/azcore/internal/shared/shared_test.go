@@ -140,3 +140,32 @@ func TestTransportFunc(t *testing.T) {
 	require.Nil(t, resp)
 	require.NoError(t, err)
 }
+
+func TestValidateModVer(t *testing.T) {
+	require.NoError(t, ValidateModVer("v1.2.3"))
+	require.NoError(t, ValidateModVer("v1.2.3-beta.1"))
+	require.Error(t, ValidateModVer("1.2.3"))
+	require.Error(t, ValidateModVer("v1.2"))
+}
+
+func TestExtractPackageName(t *testing.T) {
+	pkg, err := ExtractPackageName("package.Client")
+	require.NoError(t, err)
+	require.Equal(t, "package", pkg)
+
+	pkg, err = ExtractPackageName("malformed")
+	require.Error(t, err)
+	require.Empty(t, pkg)
+
+	pkg, err = ExtractPackageName(".malformed")
+	require.Error(t, err)
+	require.Empty(t, pkg)
+
+	pkg, err = ExtractPackageName("malformed.")
+	require.Error(t, err)
+	require.Empty(t, pkg)
+
+	pkg, err = ExtractPackageName("")
+	require.Error(t, err)
+	require.Empty(t, pkg)
+}

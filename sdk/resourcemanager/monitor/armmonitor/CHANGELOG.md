@@ -4,7 +4,7 @@
 ### Breaking Changes
 
 - Remove functions `MetricDefinitionsClient.NewListPager`, `MetricNamespacesClient.NewListPager` and `MetricsClient.List`.
-  They are replaces by functions `MetricsClient.NewListDefinitionsPager`, `MetricsClient.NewListNamespacesPager`, `MetricsClient.QueryResource` in data plane module `github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery`.
+  They are replaced by functions `MetricsClient.NewListDefinitionsPager`, `MetricsClient.NewListNamespacesPager`, `MetricsClient.QueryResource` in data plane module `github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery`.
 
 
 

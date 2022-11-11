@@ -149,11 +149,11 @@ func ValidateModVer(moduleVersion string) error {
 // ExtractPackageName returns "package" from "package.Client".
 // If clientName is malformed, an error is returned.
 func ExtractPackageName(clientName string) (string, error) {
-	i := strings.IndexByte(clientName, '.')
-	if i < 0 {
+	pkg, client, ok := strings.Cut(clientName, ".")
+	if !ok {
 		return "", fmt.Errorf("missing . in clientName %s", clientName)
-	} else if i == 0 || i == len(clientName)-1 {
+	} else if pkg == "" || client == "" {
 		return "", fmt.Errorf("malformed clientName %s", clientName)
 	}
-	return clientName[:i], nil
+	return pkg, nil
 }

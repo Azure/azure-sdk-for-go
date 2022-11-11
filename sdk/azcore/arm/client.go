@@ -8,7 +8,7 @@ package arm
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	armrpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
+	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
@@ -17,7 +17,7 @@ import (
 )
 
 // ClientOptions contains configuration settings for a client's pipeline.
-type ClientOptions = armrpolicy.ClientOptions
+type ClientOptions = armpolicy.ClientOptions
 
 // Client is a HTTP client for use with ARM endpoints.  It consists of an endpoint, pipeline, and tracing provider.
 type Client struct {
@@ -52,12 +52,7 @@ func NewClient(clientName, moduleVersion string, cred azcore.TokenCredential, op
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
-	pl, err := armruntime.NewPipeline(pkg, moduleVersion, cred, runtime.PipelineOptions{
-		APIVersion: runtime.APIVersionOptions{
-			Location: runtime.APIVersionLocationQueryParam,
-			Name:     "api-version",
-		},
-	}, options)
+	pl, err := armruntime.NewPipeline(pkg, moduleVersion, cred, runtime.PipelineOptions{}, options)
 	if err != nil {
 		return nil, err
 	}

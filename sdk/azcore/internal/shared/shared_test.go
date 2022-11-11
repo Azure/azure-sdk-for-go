@@ -164,4 +164,8 @@ func TestExtractPackageName(t *testing.T) {
 	pkg, err = ExtractPackageName("malformed.")
 	require.Error(t, err)
 	require.Empty(t, pkg)
+
+	pkg, err = ExtractPackageName("")
+	require.Error(t, err)
+	require.Empty(t, pkg)
 }

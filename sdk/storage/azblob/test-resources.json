@@ -222,6 +222,7 @@
         "properties": {
           "isVersioningEnabled": true,
           "deleteRetentionPolicy": {
+            "allowPermanentDelete": true,,
             "enabled": true,
             "days": 1
           },

@@ -173,7 +173,7 @@ func sendEventsToPartition(ctx context.Context, args sendEventsToPartitionArgs) 
 	}
 
 	sendFn := func() error {
-		if err := args.client.SendEventBatch(context.Background(), batch, nil); err != nil {
+		if err := args.client.SendEventDataBatch(context.Background(), batch, nil); err != nil {
 			return err
 		}
 

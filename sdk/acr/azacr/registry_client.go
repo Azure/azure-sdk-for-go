@@ -27,7 +27,6 @@ type RegistryClient struct {
 
 type RegistryClientOptions struct {
 	azcore.ClientOptions
-	pl runtime.Pipeline
 }
 
 func getDefaultScope(endpoint string) (string, error) {
@@ -45,7 +44,7 @@ func NewRegistryClient(endpoint string, credential azcore.TokenCredential, optio
 		options = &RegistryClientOptions{}
 	}
 
-	if !strings.HasPrefix(endpoint, "https://") && !strings.HasPrefix(endpoint, "https://") {
+	if !(strings.HasPrefix(endpoint, "http://") || strings.HasPrefix(endpoint, "https://")) {
 		endpoint = "https://" + endpoint
 	}
 

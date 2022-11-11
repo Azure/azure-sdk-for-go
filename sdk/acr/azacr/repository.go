@@ -186,6 +186,9 @@ func (client *Repository) DownloadOCIManifest(ctx context.Context, reference str
 //   - options - UploadBlobOptions contains the optional parameters for the Repository.UploadBlob method.
 func (client *Repository) UploadBlob(ctx context.Context, blob io.ReadSeekCloser, options *UploadBlobOptions) (UploadBlobResponse, error) {
 	startResp, err := client.containerRegistryBlobClient.StartUpload(ctx, client.Name, nil)
+	if err != nil {
+		return UploadBlobResponse{}, nil
+	}
 	payload, err := io.ReadAll(blob)
 	if err != nil {
 		return UploadBlobResponse{}, nil
@@ -196,6 +199,9 @@ func (client *Repository) UploadBlob(ctx context.Context, blob io.ReadSeekCloser
 		return UploadBlobResponse{}, nil
 	}
 	complateResp, err := client.containerRegistryBlobClient.CompleteUploadWithBinary(ctx, digest, *uploadResp.Location, nil)
+	if err != nil {
+		return UploadBlobResponse{}, nil
+	}
 	if digest != *complateResp.DockerContentDigest {
 		return UploadBlobResponse{}, errors.New("digest of blob to upload does not match the digest from the server")
 	}

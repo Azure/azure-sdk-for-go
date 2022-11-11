@@ -41,9 +41,6 @@ type AuthenticationPolicy struct {
 }
 
 func NewAuthenticationPolicy(cred azcore.TokenCredential, scopes []string, authClient *generated.AuthenticationClient, opts *AuthenticationPolicyOptions) *AuthenticationPolicy {
-	if opts == nil {
-		opts = &AuthenticationPolicyOptions{}
-	}
 	return &AuthenticationPolicy{
 		cred:         cred,
 		aadScopes:    scopes,

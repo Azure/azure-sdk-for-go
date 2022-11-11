@@ -64,9 +64,11 @@ func NewRegistryClient(endpoint string, credential azcore.TokenCredential, optio
 
 	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	containerRegistryClient := generated.NewContainerRegistryClient(endpoint, pl)
+	containerRegistryBlobClient := generated.NewContainerRegistryBlobClient(endpoint, pl)
 	return &RegistryClient{
-		Endpoint:                endpoint,
-		containerRegistryClient: containerRegistryClient,
+		endpoint,
+		containerRegistryClient,
+		containerRegistryBlobClient,
 	}, nil
 }
 

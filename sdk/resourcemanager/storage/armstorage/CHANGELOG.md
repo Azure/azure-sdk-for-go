@@ -1,5 +1,30 @@
 # Release History
 
+## 2.0.0 (2022-11-14)
+### Breaking Changes
+
+- Struct `CloudError` has been removed
+- Struct `CloudErrorBody` has been removed
+
+### Features Added
+
+- New const `ListEncryptionScopesIncludeEnabled`
+- New const `ListEncryptionScopesIncludeAll`
+- New const `ListEncryptionScopesIncludeDisabled`
+- New type alias `ListEncryptionScopesInclude`
+- New function `PossibleListEncryptionScopesIncludeValues() []ListEncryptionScopesInclude`
+- New field `TierToCold` in struct `ManagementPolicyBaseBlob`
+- New field `TierToHot` in struct `ManagementPolicyBaseBlob`
+- New field `FailoverType` in struct `AccountsClientBeginFailoverOptions`
+- New field `TierToCold` in struct `ManagementPolicyVersion`
+- New field `TierToHot` in struct `ManagementPolicyVersion`
+- New field `Filter` in struct `EncryptionScopesClientListOptions`
+- New field `Include` in struct `EncryptionScopesClientListOptions`
+- New field `Maxpagesize` in struct `EncryptionScopesClientListOptions`
+- New field `TierToCold` in struct `ManagementPolicySnapShot`
+- New field `TierToHot` in struct `ManagementPolicySnapShot`
+
+
 ## 1.1.0 (2022-08-10)
 ### Features Added
 

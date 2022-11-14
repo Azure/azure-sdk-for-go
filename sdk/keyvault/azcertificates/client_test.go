@@ -566,7 +566,16 @@ func TestOperationCRUD(t *testing.T) {
 	client := startTest(t)
 
 	certName := getName(t, "")
-	createParams := azcertificates.CreateCertificateParameters{CertificatePolicy: &selfSignedPolicy}
+	policy := azcertificates.CertificatePolicy{
+		IssuerParameters: &azcertificates.IssuerParameters{
+			Name:                    to.Ptr("Unknown"),
+			CertificateTransparency: to.Ptr(false),
+		},
+		X509CertificateProperties: &azcertificates.X509CertificateProperties{
+			Subject: to.Ptr("CN=MyCert"),
+		},
+	}
+	createParams := azcertificates.CreateCertificateParameters{CertificatePolicy: &policy}
 	_, err := client.CreateCertificate(ctx, certName, createParams, nil)
 	require.NoError(t, err)
 

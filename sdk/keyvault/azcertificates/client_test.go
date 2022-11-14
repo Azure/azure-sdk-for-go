@@ -16,6 +16,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"net/http"
 	"os"
 	"strings"
 	"testing"
@@ -579,7 +580,12 @@ func TestOperationCRUD(t *testing.T) {
 	require.Equal(t, params.CancellationRequested, getResp.CancellationRequested)
 	testSerde(t, &getResp.CertificateOperation)
 
-	_, err = client.DeleteCertificateOperation(ctx, certName, nil)
+	pollStatus(t, http.StatusConflict, func() error {
+		// Key Vault returns an error when the update is slow or this delete
+		// is fast such that the delete executes before the update completes
+		_, err = client.DeleteCertificateOperation(ctx, certName, nil)
+		return err
+	})
 	require.NoError(t, err)
 }
 

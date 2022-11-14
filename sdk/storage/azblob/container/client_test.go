@@ -2131,7 +2131,7 @@ func (s *ContainerUnrecordedTestsSuite) TestSetAccessPoliciesInDifferentTimeForm
 	_require.EqualValues(resp.SignedIdentifiers, signedIdentifiers)
 }
 
-func (s *ContainerUnrecordedTestsSuite) TestSetAccessPolicyWithNullId() {
+func (s *ContainerRecordedTestsSuite) TestSetAccessPolicyWithNullId() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

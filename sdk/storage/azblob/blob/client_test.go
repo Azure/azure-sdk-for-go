@@ -3008,14 +3008,6 @@ func (s *BlobRecordedTestsSuite) TestPermanentDelete() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
 	_require.Nil(err)
 
-	/*	// Enable soft-delete by setting retention policy with AllowPermanentDelete set to True
-		days := int32(1)
-		_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{
-			DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: to.Ptr(true), Days: &days, AllowPermanentDelete: to.Ptr(true)}})
-		_require.Nil(err)
-
-		time.Sleep(time.Second * 30) // Sleep for 30 seconds for account/container creation*/
-
 	// Create container and blob, upload blob to container
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
@@ -3119,17 +3111,12 @@ func (s *BlobRecordedTestsSuite) TestPermanentDelete() {
 		}
 	}
 	_require.Len(found, 1)
-
-	/*// Disable for other tests
-	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{
-		DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: to.Ptr(false), AllowPermanentDelete: to.Ptr(false)}})
-	_require.Nil(err)*/
 }
 
 func (s *BlobRecordedTestsSuite) TestPermanentDeleteWithoutPermission() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.Nil(err)
 
 	// Create container and blob, upload blob to container
@@ -3177,12 +3164,12 @@ func (s *BlobRecordedTestsSuite) TestPermanentDeleteWithoutPermission() {
 	}
 	_require.Len(found, 2)
 
-	// Delete snapshot (snapshot will be soft deleted)
+	// Delete snapshot
 	deleteSnapshotsOnly := blob.DeleteSnapshotsOptionTypeOnly
 	_, err = bbClient.Delete(context.Background(), &blob.DeleteOptions{DeleteSnapshots: &deleteSnapshotsOnly})
 	_require.Nil(err)
 
-	// Check that only blob exists (snapshot is soft-deleted)
+	// Check that only blob exists
 	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
 		Include: container.ListBlobsInclude{Snapshots: true},
 	})
@@ -3197,27 +3184,12 @@ func (s *BlobRecordedTestsSuite) TestPermanentDeleteWithoutPermission() {
 	}
 	_require.Len(found, 1)
 
-	// Check that soft-deleted snapshot exists by including deleted items
-	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		Include: container.ListBlobsInclude{Snapshots: true, Deleted: true},
-	})
-	found = make([]*container.BlobItem, 0)
-	for pager.More() {
-		resp, err := pager.NextPage(context.Background())
-		_require.Nil(err)
-		found = append(found, resp.Segment.BlobItems...)
-		if err != nil {
-			break
-		}
-	}
-	_require.Len(found, 2)
-
 	// Options for PermanentDeleteOptions
 	perm := blob.DeleteTypePermanent
 	deleteBlobOptions := blob.DeleteOptions{
 		BlobDeleteType: &perm,
 	}
-	// Execute Delete with DeleteTypePermanent,should fail because permissions are not set
+	// Execute Delete with DeleteTypePermanent,should fail because permissions are not set and snapshot is not soft-deleted
 	_, err = snapshotURL.Delete(context.Background(), &deleteBlobOptions)
 	_require.NotNil(err)
 }

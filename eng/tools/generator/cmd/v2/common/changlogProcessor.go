@@ -315,16 +315,14 @@ func LROFilter(config *model.Changelog) {
 	if config.Modified.HasBreakingChanges() && config.Modified.HasAdditiveChanges() {
 		for bFunc := range config.Modified.BreakingChanges.Funcs {
 			clientFunc := strings.Split(bFunc, ".")
-			if len(clientFunc) == 1 || clientFunc[1] == "MarshalJSON" || clientFunc[1] == "UnmarshalJSON" {
-				continue
-			}
-
-			beginFunc := fmt.Sprintf("%s.Begin%s", clientFunc[0], clientFunc[1])
-			if _, ok := config.Modified.AdditiveChanges.Funcs[beginFunc]; ok {
-				structName := fmt.Sprintf("%s%sOpetions", strings.TrimLeft(strings.TrimSpace(clientFunc[0]), "*"), clientFunc[1])
-				if _, structOk := config.Modified.BreakingChanges.Structs[structName]; structOk {
-					delete(config.Modified.BreakingChanges.Structs, structName)
-					delete(config.Modified.AdditiveChanges.Funcs, beginFunc)
+			if len(clientFunc) == 2 {
+				beginFunc := fmt.Sprintf("%s.Begin%s", clientFunc[0], clientFunc[1])
+				if _, ok := config.Modified.AdditiveChanges.Funcs[beginFunc]; ok {
+					structName := fmt.Sprintf("%s%sOpetions", strings.TrimLeft(strings.TrimSpace(clientFunc[0]), "*"), clientFunc[1])
+					if _, structOk := config.Modified.BreakingChanges.Structs[structName]; structOk {
+						delete(config.Modified.BreakingChanges.Structs, structName)
+						delete(config.Modified.AdditiveChanges.Funcs, beginFunc)
+					}
 				}
 			}
 		}

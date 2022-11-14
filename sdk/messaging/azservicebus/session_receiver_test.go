@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"sort"
 	"testing"
 	"time"
 
@@ -90,6 +91,8 @@ func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 	receiver, err := client.AcceptSessionForQueue(ctx, queueName, "", nil)
 	require.NoError(t, err)
 	require.EqualValues(t, "", receiver.SessionID())
+
+	require.Nil(t, receiver.inner.idleTracker, "session receivers do NOT do client-side idle link checking")
 
 	var received []*ReceivedMessage
 
@@ -495,4 +498,90 @@ func Test_toReceiverOptions(t *testing.T) {
 	}, toReceiverOptions(&SessionReceiverOptions{
 		ReceiveMode: ReceiveModeReceiveAndDelete,
 	}))
+}
+
+func TestSessionReceiverSendFiveReceiveFive_Queue(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			RequiresSession: to.Ptr(true),
+		},
+	})
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+	defer sender.Close(context.Background())
+
+	for i := 0; i < 5; i++ {
+		err = sender.SendMessage(context.Background(), &Message{
+			Body:      []byte(fmt.Sprintf("[%d]: send five, receive five", i)),
+			SessionID: to.Ptr("session-1"),
+		}, nil)
+		require.NoError(t, err)
+	}
+
+	receiver, err := serviceBusClient.AcceptNextSessionForQueue(context.Background(), queueName, nil)
+	require.NoError(t, err)
+
+	require.Nil(t, receiver.inner.idleTracker, "no idle link checking for session links")
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 5, nil)
+	require.NoError(t, err)
+
+	sort.Sort(receivedMessageSlice(messages))
+
+	require.EqualValues(t, 5, len(messages))
+
+	for i := 0; i < 5; i++ {
+		require.EqualValues(t,
+			fmt.Sprintf("[%d]: send five, receive five", i),
+			string(messages[i].Body))
+
+		require.Equal(t, "session-1", *messages[i].SessionID)
+
+		require.NoError(t, receiver.CompleteMessage(context.Background(), messages[i], nil))
+	}
+}
+
+func TestSessionReceiverSendFiveReceiveFive_Subscription(t *testing.T) {
+	serviceBusClient, cleanup, topicName, subscriptionName := setupLiveTestWithSubscription(t, &liveTestOptionsWithSubscription{
+		SubscriptionProperties: &admin.SubscriptionProperties{
+			RequiresSession: to.Ptr(true),
+		},
+	})
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(topicName, nil)
+	require.NoError(t, err)
+	defer sender.Close(context.Background())
+
+	for i := 0; i < 5; i++ {
+		err = sender.SendMessage(context.Background(), &Message{
+			Body:      []byte(fmt.Sprintf("[%d]: send five, receive five", i)),
+			SessionID: to.Ptr("session-1"),
+		}, nil)
+		require.NoError(t, err)
+	}
+
+	receiver, err := serviceBusClient.AcceptNextSessionForSubscription(context.Background(), topicName, subscriptionName, nil)
+	require.NoError(t, err)
+
+	require.Nil(t, receiver.inner.idleTracker, "no idle link checking for session links")
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 5, nil)
+	require.NoError(t, err)
+
+	sort.Sort(receivedMessageSlice(messages))
+
+	require.EqualValues(t, 5, len(messages))
+
+	for i := 0; i < 5; i++ {
+		require.EqualValues(t,
+			fmt.Sprintf("[%d]: send five, receive five", i),
+			string(messages[i].Body))
+
+		require.Equal(t, "session-1", *messages[i].SessionID)
+
+		require.NoError(t, receiver.CompleteMessage(context.Background(), messages[i], nil))
+	}
 }

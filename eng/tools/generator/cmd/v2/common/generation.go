@@ -5,7 +5,6 @@ package common
 
 import (
 	"fmt"
-	changelog2 "github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/changelog"
 	"log"
 	"os"
 	"path/filepath"
@@ -209,9 +208,10 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	if err != nil {
 		return nil, err
 	}
-	FilterChangelog(changelog)
-	log.Printf("execute changelog filter....")
-	changelog2.Filter(changelog, changelog2.EnumFilter, changelog2.OperationFiler, changelog2.LROFilter)
+
+	log.Printf("filter changelog...")
+	FilterChangelog(changelog, MarshalUnmarshalFilter, EnumFilter, OperationFiler, LROFilter)
+
 	if onBoard {
 		log.Printf("Replace {{NewClientName}} placeholder in the README.md ")
 		if err = ReplaceNewClientNamePlaceholder(packagePath, newExports); err != nil {

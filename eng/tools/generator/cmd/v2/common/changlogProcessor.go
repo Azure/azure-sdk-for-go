@@ -5,10 +5,12 @@ package common
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"path"
+	"regexp"
 	"sort"
 	"strings"
 
@@ -189,7 +191,7 @@ func GetExportsFromTag(sdkRepo repo.SDKRepository, packagePath, tag string) (*ex
 	return &result, nil
 }
 
-func FilterChangelog(changelog *model.Changelog) {
+func MarshalUnmarshalFilter(changelog *model.Changelog) {
 	if changelog.Modified != nil {
 		if changelog.Modified.AdditiveChanges != nil {
 			removeMarshalUnmarshalFunc(changelog.Modified.AdditiveChanges.Funcs)
@@ -204,6 +206,127 @@ func removeMarshalUnmarshalFunc(funcs map[string]exports.Func) {
 	for k := range funcs {
 		if strings.HasSuffix(k, ".MarshalJSON") || strings.HasSuffix(k, ".UnmarshalJSON") {
 			delete(funcs, k)
+		}
+	}
+}
+
+func FilterChangelog(changelog *model.Changelog, opts ...func(changelog *model.Changelog)) {
+	if changelog.Modified != nil {
+		for _, opt := range opts {
+			opt(changelog)
+		}
+	}
+}
+
+func EnumFilter(changelog *model.Changelog) {
+	if changelog.Modified.HasBreakingChanges() {
+		for typeAliases := range changelog.Modified.BreakingChanges.TypeAliases {
+			constKeys, constExist := searchKey(changelog.Modified.AdditiveChanges.Consts, typeAliases, "")
+			funcKeys, funcExist := searchKey(changelog.Modified.AdditiveChanges.Funcs, typeAliases, "Possible")
+
+			if constExist && funcExist && len(funcKeys) == 1 {
+				fmt.Println(constKeys, funcKeys)
+				for _, c := range constKeys {
+					delete(changelog.Modified.BreakingChanges.Consts, c)
+				}
+				for _, f := range funcKeys {
+					delete(changelog.Modified.BreakingChanges.Funcs, f)
+				}
+			}
+		}
+	}
+
+	if changelog.Modified.HasAdditiveChanges() {
+		for typeAliases := range changelog.Modified.AdditiveChanges.TypeAliases {
+			constKeys, constExist := searchKey(changelog.Modified.AdditiveChanges.Consts, typeAliases, "")
+			funcKeys, funcExist := searchKey(changelog.Modified.AdditiveChanges.Funcs, typeAliases, "Possible")
+
+			if constExist && funcExist && len(funcKeys) == 1 {
+				for _, c := range constKeys {
+					delete(changelog.Modified.AdditiveChanges.Consts, c)
+				}
+				for _, f := range funcKeys {
+					delete(changelog.Modified.AdditiveChanges.Funcs, f)
+				}
+			}
+		}
+	}
+}
+
+func searchKey[T exports.Const | exports.Func](m map[string]T, key1, prefix string) ([]string, bool) {
+	keys := make([]string, 0)
+	for k := range m {
+		if regexp.MustCompile(fmt.Sprintf("^%s%s\\w*", prefix, key1)).MatchString(k) {
+			keys = append(keys, k)
+		}
+	}
+	if len(keys) != 0 {
+		return keys, true
+	}
+	return nil, false
+}
+
+func OperationFiler(changelog *model.Changelog) {
+	if changelog.Modified.HasAdditiveChanges() {
+		for funcName, funcValue := range changelog.Modified.AdditiveChanges.Funcs {
+			clientFunc := strings.Split(funcName, ".")
+			if len(clientFunc) == 2 {
+				// get the last parameter
+				ps := strings.Split(*funcValue.Params, ",")
+				clientFuncOptions := ps[len(ps)-1]
+				clientFuncOptions = strings.TrimLeft(strings.TrimSpace(clientFuncOptions), "*")
+				// get the first return value
+				rs := strings.Split(*funcValue.Returns, ",")
+				clientFuncResponse := rs[0]
+				if strings.Contains(clientFunc[1], "Begin") {
+					re := regexp.MustCompile("\\[(?P<response>.*)\\]")
+					clientFuncResponse = re.FindString(clientFuncResponse)
+					clientFuncResponse = re.ReplaceAllString(clientFuncResponse, "${response}")
+				} else {
+					clientFuncResponse = strings.TrimLeft(clientFuncResponse, "*")
+				}
+				log.Printf("XXX: %s:%s\n", clientFuncOptions, clientFuncResponse)
+				// remove complete structs
+				if clientFuncOptions != "" && clientFuncResponse != "" {
+					delete(changelog.Modified.AdditiveChanges.Structs, clientFuncOptions)
+					delete(changelog.Modified.AdditiveChanges.Structs, clientFuncResponse)
+					for i, v := range changelog.Modified.AdditiveChanges.CompleteStructs {
+						if v == clientFuncOptions {
+							changelog.Modified.AdditiveChanges.CompleteStructs = append(changelog.Modified.AdditiveChanges.CompleteStructs[:i],
+								changelog.Modified.AdditiveChanges.CompleteStructs[i+1:]...)
+							break
+						}
+					}
+					for i, v := range changelog.Modified.AdditiveChanges.CompleteStructs {
+						if v == clientFuncResponse {
+							changelog.Modified.AdditiveChanges.CompleteStructs = append(changelog.Modified.AdditiveChanges.CompleteStructs[:i],
+								changelog.Modified.AdditiveChanges.CompleteStructs[i+1:]...)
+							break
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+// LROFilter LROFilter after OperationFilter
+func LROFilter(config *model.Changelog) {
+	if config.Modified.HasBreakingChanges() && config.Modified.HasAdditiveChanges() {
+		for bFunc := range config.Modified.BreakingChanges.Funcs {
+			clientFunc := strings.Split(bFunc, ".")
+			if len(clientFunc) == 1 || clientFunc[1] == "MarshalJSON" || clientFunc[1] == "UnmarshalJSON" {
+				continue
+			}
+
+			beginFunc := fmt.Sprintf("%s.Begin%s", clientFunc[0], clientFunc[1])
+			if _, ok := config.Modified.AdditiveChanges.Funcs[beginFunc]; ok {
+				structName := fmt.Sprintf("%s%sOpetions", strings.TrimLeft(strings.TrimSpace(clientFunc[0]), "*"), clientFunc[1])
+				if _, structOk := config.Modified.BreakingChanges.Structs[structName]; structOk {
+					delete(config.Modified.BreakingChanges.Structs, structName)
+					delete(config.Modified.AdditiveChanges.Funcs, beginFunc)
+				}
+			}
 		}
 	}
 }

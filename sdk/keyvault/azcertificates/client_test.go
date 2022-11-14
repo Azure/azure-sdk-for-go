@@ -111,7 +111,7 @@ func TestBackupRestore(t *testing.T) {
 
 	deleteResp, err := client.DeleteCertificate(ctx, certName, nil)
 	require.NoError(t, err)
-	pollStatus(t, 404, func() error {
+	pollStatus(t, http.StatusNotFound, func() error {
 		_, err = client.GetDeletedCertificate(ctx, certName, nil)
 		return err
 	})
@@ -121,7 +121,7 @@ func TestBackupRestore(t *testing.T) {
 
 	var restoreResp azcertificates.RestoreCertificateResponse
 	restoreParams := azcertificates.RestoreCertificateParameters{CertificateBundleBackup: backup.Value}
-	pollStatus(t, 409, func() error {
+	pollStatus(t, http.StatusConflict, func() error {
 		restoreResp, err = client.RestoreCertificate(ctx, restoreParams, nil)
 		return err
 	})
@@ -204,7 +204,7 @@ func TestCRUD(t *testing.T) {
 	testSerde(t, &deleteResp.DeletedCertificateBundle)
 
 	var getDeletedResp azcertificates.GetDeletedCertificateResponse
-	pollStatus(t, 404, func() error {
+	pollStatus(t, http.StatusNotFound, func() error {
 		getDeletedResp, err = client.GetDeletedCertificate(ctx, certName, nil)
 		return err
 	})
@@ -228,14 +228,14 @@ func TestDeleteRecover(t *testing.T) {
 
 	deleteResp, err := client.DeleteCertificate(ctx, certName, nil)
 	require.NoError(t, err)
-	pollStatus(t, 404, func() error {
+	pollStatus(t, http.StatusNotFound, func() error {
 		_, err = client.GetDeletedCertificate(ctx, certName, nil)
 		return err
 	})
 
 	recoverResp, err := client.RecoverDeletedCertificate(ctx, certName, nil)
 	require.NoError(t, err)
-	pollStatus(t, 404, func() error {
+	pollStatus(t, http.StatusNotFound, func() error {
 		_, err = client.GetCertificate(ctx, certName, "", nil)
 		return err
 	})
@@ -437,7 +437,7 @@ func TestListCertificates(t *testing.T) {
 	require.Equal(t, 0, count)
 
 	for _, name := range certNames {
-		pollStatus(t, 404, func() error {
+		pollStatus(t, http.StatusNotFound, func() error {
 			_, err := client.GetDeletedCertificate(ctx, name, nil)
 			return err
 		})

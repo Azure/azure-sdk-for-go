@@ -9,6 +9,7 @@ package pageblob_test
 import (
 	"bytes"
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"io"
 	"testing"
 	"time"
@@ -3888,6 +3889,213 @@ func (s *PageBlobRecordedTestsSuite) TestBlobResizeWithCPK() {
 	}
 	resp, _ := pbClient.GetProperties(context.Background(), &getBlobPropertiesOptions)
 	_require.Equal(*resp.ContentLength, int64(pageblob.PageBytes))
+}
+
+func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDelete() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountSoftDelete, nil)
+	_require.Nil(err)
+
+	// Create container and blob, upload blob to container
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
+
+	count := int64(1024)
+	reader, _ := testcommon.GenerateData(1024)
+	_, err = pbClient.UploadPages(context.Background(), reader, &pageblob.UploadPagesOptions{
+		Range: blob.HTTPRange{
+			Count: count,
+		},
+	})
+	_require.Nil(err)
+
+	parts, err := sas.ParseURL(pbClient.URL()) // Get parts for BlobURL
+	_require.Nil(err)
+
+	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	_require.Nil(err)
+
+	// Set Account SAS and set Permanent Delete to true
+	parts.SAS, err = sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true, PermanentDelete: true}).String(),
+		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	// Create snapshot of Blob and get snapshot URL
+	resp, err := pbClient.CreateSnapshot(context.Background(), &blob.CreateSnapshotOptions{})
+	_require.Nil(err)
+	snapshotURL, _ := pbClient.WithSnapshot(*resp.Snapshot)
+
+	// Check that there are two items in the container: one snapshot, one blob
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{Include: container.ListBlobsInclude{Snapshots: true}})
+	found := make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 2)
+
+	// Delete snapshot (snapshot will be soft deleted)
+	deleteSnapshotsOnly := blob.DeleteSnapshotsOptionTypeOnly
+	_, err = pbClient.Delete(context.Background(), &blob.DeleteOptions{DeleteSnapshots: &deleteSnapshotsOnly})
+	_require.Nil(err)
+
+	// Check that only blob exists (snapshot is soft-deleted)
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 1)
+
+	// Check that soft-deleted snapshot exists by including deleted items
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true, Deleted: true},
+	})
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 2)
+
+	// Options for PermanentDeleteOptions
+	perm := blob.DeleteTypePermanent
+	deleteBlobOptions := blob.DeleteOptions{
+		BlobDeleteType: &perm,
+	}
+	time.Sleep(time.Second * 30)
+
+	// Execute Delete with DeleteTypePermanent
+	pdResp, err := snapshotURL.Delete(context.Background(), &deleteBlobOptions)
+	_require.Nil(err)
+	_require.NotNil(pdResp)
+	_require.NotNil(pdResp)
+
+	// Check that only blob exists even after including snapshots and deleted items
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true, Deleted: true}})
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 1)
+}
+
+func (s *PageBlobRecordedTestsSuite) TestPageBlockPermanentDeleteWithoutPermission() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.Nil(err)
+
+	// Create container and blob, upload blob to container
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
+
+	count := int64(1024)
+	reader, _ := testcommon.GenerateData(1024)
+	_, err = pbClient.UploadPages(context.Background(), reader, &pageblob.UploadPagesOptions{
+		Range: blob.HTTPRange{
+			Count: count,
+		},
+	})
+	_require.Nil(err)
+
+	parts, err := sas.ParseURL(pbClient.URL()) // Get parts for BlobURL
+	_require.Nil(err)
+
+	credential, err := testcommon.GetGenericCredential(testcommon.TestAccountDefault)
+	_require.Nil(err)
+
+	// Set Account SAS
+	parts.SAS, err = sas.AccountSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		Permissions:   to.Ptr(sas.AccountPermissions{Read: true, List: true}).String(),
+		Services:      to.Ptr(sas.AccountServices{Blob: true}).String(),
+		ResourceTypes: to.Ptr(sas.AccountResourceTypes{Container: true, Object: true}).String(),
+	}.SignWithSharedKey(credential)
+	_require.Nil(err)
+
+	// Create snapshot of Blob and get snapshot URL
+	resp, err := pbClient.CreateSnapshot(context.Background(), &blob.CreateSnapshotOptions{})
+	_require.Nil(err)
+	snapshotURL, _ := pbClient.WithSnapshot(*resp.Snapshot)
+
+	// Check that there are two items in the container: one snapshot, one blob
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{Include: container.ListBlobsInclude{Snapshots: true}})
+	found := make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 2)
+
+	// Delete snapshot
+	deleteSnapshotsOnly := blob.DeleteSnapshotsOptionTypeOnly
+	_, err = pbClient.Delete(context.Background(), &blob.DeleteOptions{DeleteSnapshots: &deleteSnapshotsOnly})
+	_require.Nil(err)
+
+	// Check that only blob exists
+	pager = containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Snapshots: true},
+	})
+	found = make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+	_require.Len(found, 1)
+
+	// Options for PermanentDeleteOptions
+	perm := blob.DeleteTypePermanent
+	deleteBlobOptions := blob.DeleteOptions{
+		BlobDeleteType: &perm,
+	}
+	// Execute Delete with DeleteTypePermanent,should fail because permissions are not set and snapshot is not soft-deleted
+	_, err = snapshotURL.Delete(context.Background(), &deleteBlobOptions)
+	_require.NotNil(err)
 }
 
 //func (s *AZBlobUnrecordedTestsSuite) TestPageBlockFromURLWithCPK() {

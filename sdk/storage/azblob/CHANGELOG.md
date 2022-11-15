@@ -7,6 +7,7 @@
 * Added BlobDeleteType to DeleteOptions to allow access to 'Permanent' DeleteType.
 * Added [Set Blob Expiry API](https://learn.microsoft.com/rest/api/storageservices/set-blob-expiry).
 * Added method `ServiceClient()` to the `azblob.Client` type, allowing access to the underlying service client.
+* Added support for object level immutability policy with versioning (Version Level WORM).
 
 ### Breaking Changes
 

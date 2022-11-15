@@ -163,7 +163,8 @@ func getNewContents(c *delta.Content) []string {
 	}
 	if len(c.Structs) > 0 {
 		modified := c.GetModifiedStructs()
-		for s, f := range modified {
+		for _, s := range sortChangeItem(modified) {
+			f := modified[s]
 			for _, af := range f.AnonymousFields {
 				line := fmt.Sprintf("New anonymous field `%s` in struct `%s`", af, s)
 				items = append(items, line)
@@ -282,13 +283,14 @@ func getRemovedContent(removed *delta.Content) []string {
 	// write struct modification (some fields are removed)
 	modified := removed.GetModifiedStructs()
 	if len(modified) > 0 {
-		for s, f := range modified {
+		for _, s := range sortChangeItem(modified) {
+			f := modified[s]
 			for _, af := range f.AnonymousFields {
 				line := fmt.Sprintf("Field `%s` of struct `%s` has been removed", af, s)
 				items = append(items, line)
 			}
-			for _, fields := range sortChangeItem(f.Fields) {
-				line := fmt.Sprintf("Field `%s` of struct `%s` has been removed", fields, s)
+			for _, field := range sortChangeItem(f.Fields) {
+				line := fmt.Sprintf("Field `%s` of struct `%s` has been removed", field, s)
 				items = append(items, line)
 			}
 		}
@@ -299,7 +301,7 @@ func getRemovedContent(removed *delta.Content) []string {
 
 type sortItem interface {
 	delta.Signature | delta.FuncSig | delta.StructDef |
-		exports.Const | exports.TypeAlias | exports.Func | string
+		exports.Const | exports.TypeAlias | exports.Func | exports.Struct | string
 }
 
 func sortChangeItem[T sortItem](change map[string]T) []string {

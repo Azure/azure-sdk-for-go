@@ -210,7 +210,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 	}
 
 	log.Printf("filter changelog...")
-	FilterChangelog(changelog, MarshalUnmarshalFilter, EnumFilter, OperationFiler, LROFilter)
+	FilterChangelog(changelog, MarshalUnmarshalFilter, EnumFilter, FuncFilter, LROFilter)
 
 	if onBoard {
 		log.Printf("Replace {{NewClientName}} placeholder in the README.md ")

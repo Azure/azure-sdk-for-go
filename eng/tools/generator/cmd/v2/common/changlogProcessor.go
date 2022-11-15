@@ -16,6 +16,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/delta"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/config"
@@ -219,34 +220,27 @@ func FilterChangelog(changelog *model.Changelog, opts ...func(changelog *model.C
 }
 
 func EnumFilter(changelog *model.Changelog) {
-	if changelog.Modified.HasBreakingChanges() {
-		for typeAliases := range changelog.Modified.BreakingChanges.TypeAliases {
-			constKeys, constExist := searchKey(changelog.Modified.AdditiveChanges.Consts, typeAliases, "")
-			funcKeys, funcExist := searchKey(changelog.Modified.AdditiveChanges.Funcs, typeAliases, "Possible")
-
-			if constExist && funcExist && len(funcKeys) == 1 {
-				fmt.Println(constKeys, funcKeys)
-				for _, c := range constKeys {
-					delete(changelog.Modified.BreakingChanges.Consts, c)
-				}
-				for _, f := range funcKeys {
-					delete(changelog.Modified.BreakingChanges.Funcs, f)
-				}
-			}
-		}
+	if changelog.Modified.HasAdditiveChanges() {
+		enumOperation(changelog.Modified.AdditiveChanges)
 	}
 
-	if changelog.Modified.HasAdditiveChanges() {
-		for typeAliases := range changelog.Modified.AdditiveChanges.TypeAliases {
-			constKeys, constExist := searchKey(changelog.Modified.AdditiveChanges.Consts, typeAliases, "")
-			funcKeys, funcExist := searchKey(changelog.Modified.AdditiveChanges.Funcs, typeAliases, "Possible")
+	if changelog.Modified.HasBreakingChanges() {
+		enumOperation(changelog.Modified.BreakingChanges.Removed)
+	}
+}
+
+func enumOperation(content *delta.Content) {
+	if content != nil && content.TypeAliases != nil {
+		for typeAliases := range content.TypeAliases {
+			constKeys, constExist := searchKey(content.Consts, typeAliases, "")
+			funcKeys, funcExist := searchKey(content.Funcs, typeAliases, "Possible")
 
 			if constExist && funcExist && len(funcKeys) == 1 {
 				for _, c := range constKeys {
-					delete(changelog.Modified.AdditiveChanges.Consts, c)
+					delete(content.Consts, c)
 				}
 				for _, f := range funcKeys {
-					delete(changelog.Modified.AdditiveChanges.Funcs, f)
+					delete(content.Funcs, f)
 				}
 			}
 		}
@@ -266,42 +260,57 @@ func searchKey[T exports.Const | exports.Func](m map[string]T, key1, prefix stri
 	return nil, false
 }
 
-func OperationFiler(changelog *model.Changelog) {
+func FuncFilter(changelog *model.Changelog) {
 	if changelog.Modified.HasAdditiveChanges() {
-		for funcName, funcValue := range changelog.Modified.AdditiveChanges.Funcs {
+		funcOperation(changelog.Modified.AdditiveChanges)
+	}
+
+	if changelog.Modified.HasBreakingChanges() {
+		funcOperation(changelog.Modified.BreakingChanges.Removed)
+	}
+}
+
+func funcOperation(content *delta.Content) {
+	if content != nil && content.Funcs != nil {
+		for funcName, funcValue := range content.Funcs {
 			clientFunc := strings.Split(funcName, ".")
 			if len(clientFunc) == 2 {
-				// get the last parameter
-				ps := strings.Split(*funcValue.Params, ",")
-				clientFuncOptions := ps[len(ps)-1]
-				clientFuncOptions = strings.TrimLeft(strings.TrimSpace(clientFuncOptions), "*")
-				// get the first return value
-				rs := strings.Split(*funcValue.Returns, ",")
-				clientFuncResponse := rs[0]
-				if strings.Contains(clientFunc[1], "Begin") {
-					re := regexp.MustCompile("\\[(?P<response>.*)\\]")
-					clientFuncResponse = re.FindString(clientFuncResponse)
-					clientFuncResponse = re.ReplaceAllString(clientFuncResponse, "${response}")
-				} else {
-					clientFuncResponse = strings.TrimLeft(clientFuncResponse, "*")
-				}
-				log.Printf("XXX: %s:%s\n", clientFuncOptions, clientFuncResponse)
-				// remove complete structs
-				if clientFuncOptions != "" && clientFuncResponse != "" {
-					delete(changelog.Modified.AdditiveChanges.Structs, clientFuncOptions)
-					delete(changelog.Modified.AdditiveChanges.Structs, clientFuncResponse)
-					for i, v := range changelog.Modified.AdditiveChanges.CompleteStructs {
-						if v == clientFuncOptions {
-							changelog.Modified.AdditiveChanges.CompleteStructs = append(changelog.Modified.AdditiveChanges.CompleteStructs[:i],
-								changelog.Modified.AdditiveChanges.CompleteStructs[i+1:]...)
-							break
+				// the last parameter
+				if funcValue.Params != nil {
+					ps := strings.Split(*funcValue.Params, ",")
+					clientFuncOptions := ps[len(ps)-1]
+					clientFuncOptions = strings.TrimLeft(strings.TrimSpace(clientFuncOptions), "*")
+					if clientFuncOptions != "" && content.CompleteStructs != nil {
+						delete(content.Structs, clientFuncOptions)
+						for i, v := range content.CompleteStructs {
+							if v == clientFuncOptions {
+								content.CompleteStructs = append(content.CompleteStructs[:i],
+									content.CompleteStructs[i+1:]...)
+								break
+							}
 						}
 					}
-					for i, v := range changelog.Modified.AdditiveChanges.CompleteStructs {
-						if v == clientFuncResponse {
-							changelog.Modified.AdditiveChanges.CompleteStructs = append(changelog.Modified.AdditiveChanges.CompleteStructs[:i],
-								changelog.Modified.AdditiveChanges.CompleteStructs[i+1:]...)
-							break
+				}
+
+				// the first return value
+				if funcValue.Returns != nil {
+					rs := strings.Split(*funcValue.Returns, ",")
+					clientFuncResponse := rs[0]
+					if strings.Contains(clientFunc[1], "Begin") {
+						re := regexp.MustCompile("\\[(?P<response>.*)\\]")
+						clientFuncResponse = re.FindString(clientFuncResponse)
+						clientFuncResponse = re.ReplaceAllString(clientFuncResponse, "${response}")
+					} else {
+						clientFuncResponse = strings.TrimLeft(clientFuncResponse, "*")
+					}
+					if clientFuncResponse != "" && content.CompleteStructs != nil {
+						delete(content.Structs, clientFuncResponse)
+						for i, v := range content.CompleteStructs {
+							if v == clientFuncResponse {
+								content.CompleteStructs = append(content.CompleteStructs[:i],
+									content.CompleteStructs[i+1:]...)
+								break
+							}
 						}
 					}
 				}
@@ -312,7 +321,7 @@ func OperationFiler(changelog *model.Changelog) {
 
 // LROFilter LROFilter after OperationFilter
 func LROFilter(config *model.Changelog) {
-	if config.Modified.HasBreakingChanges() && config.Modified.HasAdditiveChanges() {
+	if config.Modified.HasBreakingChanges() && config.Modified.HasAdditiveChanges() && config.Modified.BreakingChanges.Funcs != nil {
 		for bFunc := range config.Modified.BreakingChanges.Funcs {
 			clientFunc := strings.Split(bFunc, ".")
 			if len(clientFunc) == 2 {

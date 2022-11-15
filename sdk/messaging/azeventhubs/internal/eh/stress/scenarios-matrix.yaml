@@ -1,0 +1,18 @@
+matrix:
+  images:
+    go18:
+      image: Dockerfile
+      imageBuildDir: "../../.."
+  scenarios:
+    batch:
+      testTarget: batch
+    batchprefetchoff:
+      testTarget: batchprefetchoff
+    batchinfinite:
+      testTarget: batchinfinite
+    processor:
+      testTarget: processor
+    processorprefetchoff:
+      testTarget: processorprefetchoff
+    processorinfinite:
+      testTarget: processorinfinite

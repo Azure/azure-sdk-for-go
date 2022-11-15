@@ -99,6 +99,13 @@ type AzureAppConfigurationClientGetLabelsResponse struct {
 	SyncToken *string
 }
 
+// AzureAppConfigurationClientGetNextPageResponse contains the response from method AzureAppConfigurationClient.GetNextPage.
+type AzureAppConfigurationClientGetNextPageResponse struct {
+	KeyListResult
+	// SyncToken contains the information returned from the Sync-Token header response.
+	SyncToken *string
+}
+
 // AzureAppConfigurationClientGetRevisionsResponse contains the response from method AzureAppConfigurationClient.GetRevisions.
 type AzureAppConfigurationClientGetRevisionsResponse struct {
 	KeyValueListResult

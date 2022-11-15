@@ -8,9 +8,12 @@ package exported
 
 import (
 	"context"
+	"io"
 	"net/http"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 const testURL = "http://test.contoso.com/"
@@ -81,8 +84,31 @@ func TestRequestBody(t *testing.T) {
 	if err := req.Close(); err != nil {
 		t.Fatal(err)
 	}
+	if req.Body() != nil {
+		t.Fatal("expected nil body")
+	}
+	if req.req.GetBody != nil {
+		t.Fatal("expected nil GetBody")
+	}
 	if err := req.SetBody(NopCloser(strings.NewReader("test")), "application/text"); err != nil {
 		t.Fatal(err)
+	}
+	if req.Body() == nil {
+		t.Fatal("unexpected nil body")
+	}
+	if req.req.GetBody == nil {
+		t.Fatal("unexpected nil GetBody")
+	}
+	body, err := req.req.GetBody()
+	if err != nil {
+		t.Fatal(err)
+	}
+	b, err := io.ReadAll(body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(b) != "test" {
+		t.Fatalf("unexpected body %s", string(b))
 	}
 	if err := req.RewindBody(); err != nil {
 		t.Fatal(err)
@@ -90,6 +116,13 @@ func TestRequestBody(t *testing.T) {
 	if err := req.Close(); err != nil {
 		t.Fatal(err)
 	}
+}
+
+func TestRequestEmptyBody(t *testing.T) {
+	req, err := NewRequest(context.Background(), http.MethodPost, testURL)
+	require.NoError(t, err)
+	require.NoError(t, req.SetBody(NopCloser(strings.NewReader("")), "application/text"))
+	require.Nil(t, req.Body())
 }
 
 func TestRequestClone(t *testing.T) {

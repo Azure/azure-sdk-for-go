@@ -13,6 +13,8 @@ import (
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestDelay(t *testing.T) {
@@ -54,6 +56,10 @@ func TestRetryAfter(t *testing.T) {
 	if s := d / time.Second; s < 598 || s > 602 {
 		t.Fatalf("expected ~600 seconds, got %d", s)
 	}
+	resp.Header.Set(HeaderRetryAfter, "invalid")
+	if d = RetryAfter(resp); d != 0 {
+		t.Fatalf("expected zero for invalid value, got %d", d)
+	}
 }
 
 func TestTypeOfT(t *testing.T) {
@@ -67,7 +73,10 @@ func TestTypeOfT(t *testing.T) {
 
 func TestNopClosingBytesReader(t *testing.T) {
 	const val1 = "the data"
-	ncbr := &NopClosingBytesReader{s: []byte(val1)}
+	ncbr := NewNopClosingBytesReader([]byte(val1))
+	if ncbr.Bytes() == nil {
+		t.Fatal("unexpected nil value")
+	}
 	b, err := io.ReadAll(ncbr)
 	if err != nil {
 		t.Fatal(err)
@@ -122,4 +131,41 @@ func TestNopClosingBytesReader(t *testing.T) {
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
+}
+
+func TestTransportFunc(t *testing.T) {
+	resp, err := TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return nil, nil
+	}).Do(nil)
+	require.Nil(t, resp)
+	require.NoError(t, err)
+}
+
+func TestValidateModVer(t *testing.T) {
+	require.NoError(t, ValidateModVer("v1.2.3"))
+	require.NoError(t, ValidateModVer("v1.2.3-beta.1"))
+	require.Error(t, ValidateModVer("1.2.3"))
+	require.Error(t, ValidateModVer("v1.2"))
+}
+
+func TestExtractPackageName(t *testing.T) {
+	pkg, err := ExtractPackageName("package.Client")
+	require.NoError(t, err)
+	require.Equal(t, "package", pkg)
+
+	pkg, err = ExtractPackageName("malformed")
+	require.Error(t, err)
+	require.Empty(t, pkg)
+
+	pkg, err = ExtractPackageName(".malformed")
+	require.Error(t, err)
+	require.Empty(t, pkg)
+
+	pkg, err = ExtractPackageName("malformed.")
+	require.Error(t, err)
+	require.Empty(t, pkg)
+
+	pkg, err = ExtractPackageName("")
+	require.Error(t, err)
+	require.Empty(t, pkg)
 }

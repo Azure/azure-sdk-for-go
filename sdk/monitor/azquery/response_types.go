@@ -9,8 +9,8 @@
 
 package azquery
 
-// LogsClientBatchResponse contains the response from method LogsClient.Batch.
-type LogsClientBatchResponse struct {
+// LogsClientQueryBatchResponse contains the response from method LogsClient.QueryBatch.
+type LogsClientQueryBatchResponse struct {
 	BatchResponse
 }
 
@@ -19,13 +19,13 @@ type LogsClientQueryWorkspaceResponse struct {
 	Results
 }
 
-// MetricsClientListMetricDefinitionsResponse contains the response from method MetricsClient.ListMetricDefinitions.
-type MetricsClientListMetricDefinitionsResponse struct {
+// MetricsClientListDefinitionsResponse contains the response from method MetricsClient.ListDefinitions.
+type MetricsClientListDefinitionsResponse struct {
 	MetricDefinitionCollection
 }
 
-// MetricsClientListMetricNamespacesResponse contains the response from method MetricsClient.ListMetricNamespaces.
-type MetricsClientListMetricNamespacesResponse struct {
+// MetricsClientListNamespacesResponse contains the response from method MetricsClient.ListNamespaces.
+type MetricsClientListNamespacesResponse struct {
 	MetricNamespaceCollection
 }
 

@@ -100,13 +100,10 @@ type RPCLinkArgs struct {
 	LogEvent azlog.Event
 }
 
-func closeOrLog(name string, limit time.Duration, closeable interface {
+func closeOrLog(name string, closeable interface {
 	Close(ctx context.Context) error
 }) {
-	ctx, cancel := context.WithTimeout(context.Background(), limit)
-	defer cancel()
-
-	if err := closeable.Close(ctx); err != nil {
+	if err := closeable.Close(context.Background()); err != nil {
 		log.Writef(exported.EventAuth, "Failed closing %s for RPC Link: %s", name, err.Error())
 	}
 }
@@ -121,7 +118,7 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (*rpcLink, error) {
 
 	linkID, err := uuid.New()
 	if err != nil {
-		closeOrLog("session", 5*time.Second, session)
+		closeOrLog("session", session)
 		return nil, err
 	}
 
@@ -143,7 +140,7 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (*rpcLink, error) {
 		nil,
 	)
 	if err != nil {
-		closeOrLog("session", 5*time.Second, session)
+		closeOrLog("session", session)
 		return nil, err
 	}
 
@@ -164,8 +161,8 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (*rpcLink, error) {
 
 	receiver, err := session.NewReceiver(ctx, args.Address, receiverOpts)
 	if err != nil {
-		closeOrLog("sender", 5*time.Second, sender)
-		closeOrLog("session", 5*time.Second, session)
+		closeOrLog("sender", sender)
+		closeOrLog("session", session)
 		return nil, err
 	}
 
@@ -334,7 +331,11 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, err
 }
 
 // Close the link receiver, sender and session
-func (l *rpcLink) Close(ctx context.Context) error {
+func (l *rpcLink) Close(_ context.Context) error {
+	// we're finding, in practice, that allowing cancellations when cleaning up state
+	// just results in inconsistencies. We'll cut cancellation off here for now.
+	ctx := context.Background()
+
 	l.rpcLinkCtxCancel()
 
 	if err := l.closeReceiver(ctx); err != nil {

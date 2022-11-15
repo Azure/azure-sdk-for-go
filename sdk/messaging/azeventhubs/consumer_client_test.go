@@ -85,7 +85,7 @@ func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
 		}, nil)
 		require.NoError(t, err)
 
-		err = producerClient.SendEventBatch(context.Background(), eventDataBatch, nil)
+		err = producerClient.SendEventDataBatch(context.Background(), eventDataBatch, nil)
 		require.NoError(t, err)
 
 		subscription, err := consumerClient.NewPartitionClient(firstPartition.PartitionID, &azeventhubs.PartitionClientOptions{
@@ -333,7 +333,7 @@ func TestConsumerClient_NoPrefetch(t *testing.T) {
 	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{Body: []byte("event 3")}, nil))
 	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{Body: []byte("event 4")}, nil))
 
-	require.NoError(t, producer.SendEventBatch(context.Background(), batch, nil))
+	require.NoError(t, producer.SendEventDataBatch(context.Background(), batch, nil))
 
 	partClient, cleanup := newPartitionClientForTest(t, partProps.PartitionID, azeventhubs.PartitionClientOptions{
 		StartPosition: getStartPosition(partProps),
@@ -383,7 +383,7 @@ func TestConsumerClient_ReceiveEvents(t *testing.T) {
 	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{Body: []byte("event 3")}, nil))
 	require.NoError(t, batch.AddEventData(&azeventhubs.EventData{Body: []byte("event 4")}, nil))
 
-	require.NoError(t, producer.SendEventBatch(context.Background(), batch, nil))
+	require.NoError(t, producer.SendEventDataBatch(context.Background(), batch, nil))
 
 	testData := []struct {
 		Name     string
@@ -482,7 +482,7 @@ func TestConsumerClient_StartPositions(t *testing.T) {
 	// (this adds some peace of mind or the test below that uses the enqueued time for a filter)
 	time.Sleep(time.Second)
 
-	err = producerClient.SendEventBatch(context.Background(), batch, nil)
+	err = producerClient.SendEventDataBatch(context.Background(), batch, nil)
 	require.NoError(t, err)
 
 	t.Run("offset", func(t *testing.T) {
@@ -626,7 +626,7 @@ func TestConsumerClient_StartPosition_Latest(t *testing.T) {
 		Body: []byte("latest test: message 2"),
 	}, nil))
 
-	err = producerClient.SendEventBatch(context.Background(), batch, nil)
+	err = producerClient.SendEventDataBatch(context.Background(), batch, nil)
 	require.NoError(t, err)
 
 	select {
@@ -689,7 +689,7 @@ func mustSendEventsToAllPartitions(t *testing.T, events []*azeventhubs.EventData
 				require.NoError(t, err)
 			}
 
-			err = producer.SendEventBatch(context.Background(), batch, nil)
+			err = producer.SendEventDataBatch(context.Background(), batch, nil)
 			require.NoError(t, err)
 		}(partitionID)
 	}

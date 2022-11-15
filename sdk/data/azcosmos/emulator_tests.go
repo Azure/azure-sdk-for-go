@@ -22,13 +22,21 @@ type emulatorTests struct {
 }
 
 func newEmulatorTests(t *testing.T) *emulatorTests {
+	return newEmulatorTestsWithEndpoint(t, "https://localhost:8081/")
+}
+
+func newEmulatorTestsWithComputeGateway(t *testing.T) *emulatorTests {
+	return newEmulatorTestsWithEndpoint(t, "https://localhost:8903/")
+}
+
+func newEmulatorTestsWithEndpoint(t *testing.T, e string) *emulatorTests {
 	envCheck := os.Getenv("EMULATOR")
 	if envCheck == "" {
 		t.Skip("set EMULATOR environment variable to run this test")
 	}
 
 	return &emulatorTests{
-		host: "https://localhost:8081/",
+		host: e,
 		key:  "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
 	}
 }

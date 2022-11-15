@@ -39,3 +39,11 @@ type RegistrationOptions struct {
 	// NOTE: Setting this to a small value might cause the policy to prematurely fail.
 	PollingDuration time.Duration
 }
+
+// ClientOptions contains configuration settings for a client's pipeline.
+type ClientOptions struct {
+	policy.ClientOptions
+
+	// DisableRPRegistration disables the auto-RP registration policy. Defaults to false.
+	DisableRPRegistration bool
+}

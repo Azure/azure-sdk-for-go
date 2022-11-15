@@ -7,6 +7,9 @@
 package blob
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
@@ -194,6 +197,11 @@ type DeleteOptions struct {
 	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob itself
 	DeleteSnapshots  *DeleteSnapshotsOptionType
 	AccessConditions *AccessConditions
+	// Setting DeleteType to DeleteTypePermanent will permanently delete soft-delete snapshot and/or version blobs.
+	// WARNING: This is a dangerous operation and should not be used unless you know the implications. Please proceed
+	// with caution.
+	// For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob
+	BlobDeleteType *DeleteType
 }
 
 func (o *DeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
@@ -203,6 +211,7 @@ func (o *DeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated
 
 	basics := generated.BlobClientDeleteOptions{
 		DeleteSnapshots: o.DeleteSnapshots,
+		DeleteType:      o.BlobDeleteType, // None by default
 	}
 
 	if o.AccessConditions == nil {
@@ -240,6 +249,35 @@ func (o *SetTierOptions) format() (*generated.BlobClientSetTierOptions, *generat
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
 	return &generated.BlobClientSetTierOptions{RehydratePriority: o.RehydratePriority}, leaseAccessConditions, modifiedAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// SetExpiryOptions contains the optional parameters for the Client.SetExpiry method.
+type SetExpiryOptions struct {
+	// placeholder for future options
+}
+
+func (e ExpiryTypeAbsolute) format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.BlobClientSetExpiryOptions) {
+	return generated.ExpiryOptionsAbsolute, &generated.BlobClientSetExpiryOptions{
+		ExpiresOn: to.Ptr(time.Time(e).UTC().Format(http.TimeFormat)),
+	}
+}
+
+func (e ExpiryTypeRelativeToNow) format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.BlobClientSetExpiryOptions) {
+	return generated.ExpiryOptionsRelativeToNow, &generated.BlobClientSetExpiryOptions{
+		ExpiresOn: to.Ptr(strconv.FormatInt(time.Duration(e).Milliseconds(), 10)),
+	}
+}
+
+func (e ExpiryTypeRelativeToCreation) format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.BlobClientSetExpiryOptions) {
+	return generated.ExpiryOptionsRelativeToCreation, &generated.BlobClientSetExpiryOptions{
+		ExpiresOn: to.Ptr(strconv.FormatInt(time.Duration(e).Milliseconds(), 10)),
+	}
+}
+
+func (e ExpiryTypeNever) format(o *SetExpiryOptions) (generated.ExpiryOptions, *generated.BlobClientSetExpiryOptions) {
+	return generated.ExpiryOptionsNeverExpire, nil
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

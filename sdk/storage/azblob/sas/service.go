@@ -256,8 +256,8 @@ func getCanonicalName(account string, containerName string, blobName string, dir
 // Initialize an instance of this type and then call its String method to set BlobSASSignatureValues's Permissions field.
 // All permissions descriptions can be found here: https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas#permissions-for-a-directory-container-or-blob
 type ContainerPermissions struct {
-	Read, Add, Create, Write, Delete, DeletePreviousVersion, List, FilterByTags, SetImmutabilityPolicy bool
-	Execute, ModifyOwnership, ModifyPermissions                                                        bool // Hierarchical Namespace only
+	Read, Add, Create, Write, Delete, DeletePreviousVersion, List, FilterByTags bool
+	Execute, ModifyOwnership, ModifyPermissions, SetImmutabilityPolicy          bool // Hierarchical Namespace only
 }
 
 // String produces the SAS permissions string for an Azure Storage container.

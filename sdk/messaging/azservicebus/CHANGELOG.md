@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Disable the idle link tracking on session links (#19571)
+
 ### Other Changes
 
 ## 1.1.2 (2022-11-08)

@@ -186,10 +186,7 @@
           "networkAcls": "[variables('networkAcls')]",
           "supportsHttpsTrafficOnly": true,
           "encryption": "[variables('encryption')]",
-          "accessTier": "Hot",
-          "immutableStorageWithVersioning": {
-            "enabled": true
-          }
+          "accessTier": "Hot"
         }
       },
       {

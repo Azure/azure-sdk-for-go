@@ -525,12 +525,7 @@ func TestSessionReceiverSendFiveReceiveFive_Queue(t *testing.T) {
 
 	require.Nil(t, receiver.inner.idleTracker, "no idle link checking for session links")
 
-	messages, err := receiver.ReceiveMessages(context.Background(), 5, nil)
-	require.NoError(t, err)
-
-	sort.Sort(receivedMessageSlice(messages))
-
-	require.EqualValues(t, 5, len(messages))
+	messages := mustReceiveMessages(t, receiver, 5, time.Minute)
 
 	for i := 0; i < 5; i++ {
 		require.EqualValues(t,
@@ -568,12 +563,7 @@ func TestSessionReceiverSendFiveReceiveFive_Subscription(t *testing.T) {
 
 	require.Nil(t, receiver.inner.idleTracker, "no idle link checking for session links")
 
-	messages, err := receiver.ReceiveMessages(context.Background(), 5, nil)
-	require.NoError(t, err)
-
-	sort.Sort(receivedMessageSlice(messages))
-
-	require.EqualValues(t, 5, len(messages))
+	messages := mustReceiveMessages(t, receiver, 5, time.Minute)
 
 	for i := 0; i < 5; i++ {
 		require.EqualValues(t,
@@ -583,5 +573,30 @@ func TestSessionReceiverSendFiveReceiveFive_Subscription(t *testing.T) {
 		require.Equal(t, "session-1", *messages[i].SessionID)
 
 		require.NoError(t, receiver.CompleteMessage(context.Background(), messages[i], nil))
+	}
+}
+
+func mustReceiveMessages(t *testing.T, receiver interface {
+	ReceiveMessages(ctx context.Context, count int, options *ReceiveMessagesOptions) ([]*ReceivedMessage, error)
+}, count int, waitTime time.Duration) []*ReceivedMessage {
+	var messages []*ReceivedMessage
+
+	ctx, cancel := context.WithTimeout(context.Background(), waitTime)
+	defer cancel()
+
+	for {
+		all, err := receiver.ReceiveMessages(ctx, count, nil)
+		require.NoError(t, err)
+
+		messages = append(messages, all...)
+
+		if len(messages) > count {
+			require.FailNowf(t, "Too many messages received", "Received more messages than expected: %d", len(messages))
+		}
+
+		if len(messages) == count {
+			sort.Sort(receivedMessageSlice(messages))
+			return messages
+		}
 	}
 }

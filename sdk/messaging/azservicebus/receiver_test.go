@@ -55,12 +55,7 @@ func TestReceiverSendFiveReceiveFive_Queue(t *testing.T) {
 	require.NotNil(t, receiver.idleTracker)
 	require.Equal(t, receiver.idleTracker.MaxDuration, defaultReceiverIdleTime)
 
-	messages, err := receiver.ReceiveMessages(context.Background(), 5, nil)
-	require.NoError(t, err)
-
-	sort.Sort(receivedMessageSlice(messages))
-
-	require.EqualValues(t, 5, len(messages))
+	messages := mustReceiveMessages(t, receiver, 5, time.Minute)
 
 	for i := 0; i < 5; i++ {
 		require.EqualValues(t,
@@ -93,12 +88,7 @@ func TestReceiverSendFiveReceiveFive_Subscription(t *testing.T) {
 	require.NotNil(t, receiver.idleTracker)
 	require.Equal(t, receiver.idleTracker.MaxDuration, defaultReceiverIdleTime)
 
-	messages, err := receiver.ReceiveMessages(context.Background(), 5, nil)
-	require.NoError(t, err)
-
-	sort.Sort(receivedMessageSlice(messages))
-
-	require.EqualValues(t, 5, len(messages))
+	messages := mustReceiveMessages(t, receiver, 5, time.Minute)
 
 	for i := 0; i < 5; i++ {
 		require.EqualValues(t,

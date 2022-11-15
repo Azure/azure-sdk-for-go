@@ -43,6 +43,10 @@ const (
 	SubQueueTransfer SubQueue = 2
 )
 
+// defaultReceiverIdleTime is the amount of time before we consider a non-session-receiver
+// link idle, and will recycle it.
+const defaultReceiverIdleTime = 5 * time.Minute
+
 // Receiver receives messages using pull based functions (ReceiveMessages).
 type Receiver struct {
 	receiveMode ReceiveMode
@@ -114,12 +118,17 @@ func applyReceiverOptions(receiver *Receiver, entity *entity, options *ReceiverO
 }
 
 type newReceiverArgs struct {
-	ns                  internal.NamespaceWithNewAMQPLinks
-	entity              entity
 	cleanupOnClose      func()
+	entity              entity
 	getRecoveryKindFunc func(err error) internal.RecoveryKind
-	newLinkFn           func(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error)
-	retryOptions        RetryOptions
+	// idleTimeout is the amount of time before a link is considered idle.
+	// If idleTimeout < 0 then the idle timeout is disabled.
+	// If idleTimeout == 0 then the default idle timeout is used (defaultReceiverIdleTime)
+	// Default is to use defaultReceiverIdleTime.
+	idleTimeout  time.Duration
+	newLinkFn    func(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error)
+	ns           internal.NamespaceWithNewAMQPLinks
+	retryOptions RetryOptions
 }
 
 var emptyCancelFn = func() string {
@@ -131,11 +140,19 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 		return nil, err
 	}
 
+	var idleTracker *internal.LocalIdleTracker
+
+	if args.idleTimeout > 0 {
+		idleTracker = &internal.LocalIdleTracker{MaxDuration: args.idleTimeout}
+	} else if args.idleTimeout == 0 {
+		idleTracker = &internal.LocalIdleTracker{MaxDuration: defaultReceiverIdleTime}
+	}
+
 	receiver := &Receiver{
 		lastPeekedSequenceNumber: 0,
 		cleanupOnClose:           args.cleanupOnClose,
 		defaultTimeAfterFirstMsg: 20 * time.Millisecond,
-		idleTracker:              &internal.LocalIdleTracker{MaxDuration: 5 * time.Minute},
+		idleTracker:              idleTracker,
 		retryOptions:             args.retryOptions,
 		cancelReleaser:           &atomic.Value{},
 	}
@@ -533,8 +550,14 @@ type fetchMessagesResult struct {
 // Note, if you want to only receive prefetched messages send the parentCtx in
 // pre-cancelled. This will cause us to only flush the prefetch buffer.
 func (r *Receiver) fetchMessages(usersCtx context.Context, receiver amqpwrap.AMQPReceiver, count int, timeAfterFirstMessage time.Duration) fetchMessagesResult {
-	firstReceiveCtx, cancelFirstReceive := r.idleTracker.NewContextWithDeadline(usersCtx)
-	defer cancelFirstReceive()
+	firstReceiveCtx := usersCtx
+
+	if r.idleTracker != nil {
+		idleCtx, cancelIdleCtx := r.idleTracker.NewContextWithDeadline(usersCtx)
+		defer cancelIdleCtx()
+
+		firstReceiveCtx = idleCtx
+	}
 
 	start := time.Now()
 
@@ -544,7 +567,11 @@ func (r *Receiver) fetchMessages(usersCtx context.Context, receiver amqpwrap.AMQ
 	// received all 'count' number of messages.
 	firstMsg, err := receiver.Receive(firstReceiveCtx)
 
-	if err := r.idleTracker.Check(usersCtx, start, err); err != nil {
+	if r.idleTracker != nil {
+		err = r.idleTracker.Check(usersCtx, start, err)
+	}
+
+	if err != nil {
 		// drain the prefetch buffer - we're stopping because of a
 		// failure on the link/connection _or_ the user cancelled the
 		// operation.

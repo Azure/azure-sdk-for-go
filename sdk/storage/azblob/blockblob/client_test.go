@@ -488,7 +488,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobHTTPHeaders() {
 func (s *BlockBlobRecordedTestsSuite) TestUploadBlockWithImmutabilityPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutabile, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -533,7 +533,7 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBlockWithImmutabilityPolicy() {
 func (s *BlockBlobRecordedTestsSuite) TestPutBlockListWithImmutabilityPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutabile, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)

@@ -644,7 +644,7 @@ func (s *AppendBlobRecordedTestsSuite) TestBlobCreateAppendIfMatchTrue() {
 func (s *AppendBlobRecordedTestsSuite) TestAppendSetImmutabilityPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutabile, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -681,7 +681,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendSetImmutabilityPolicy() {
 func (s *AppendBlobRecordedTestsSuite) TestAppendDeleteImmutabilityPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutabile, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -714,7 +714,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendDeleteImmutabilityPolicy() {
 func (s *AppendBlobRecordedTestsSuite) TestAppendSetLegalHold() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutabile, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)

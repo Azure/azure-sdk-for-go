@@ -36,7 +36,7 @@ const (
 	TestAccountPremium    TestAccountType = "PREMIUM_"
 	TestAccountSoftDelete TestAccountType = "SOFT_DELETE_"
 	TestAccountDatalake   TestAccountType = "DATALAKE_"
-	TestAccountImmutabile TestAccountType = "IMMUTABLE_"
+	TestAccountImmutable  TestAccountType = "IMMUTABLE_"
 )
 
 const (

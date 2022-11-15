@@ -3436,7 +3436,7 @@ func (s *BlobRecordedTestsSuite) TestBlobSetExpiry() {
 func (s *BlobRecordedTestsSuite) TestSetImmutabilityPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutabile, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -3474,7 +3474,7 @@ func (s *BlobRecordedTestsSuite) TestSetImmutabilityPolicy() {
 func (s *BlobRecordedTestsSuite) TestDeleteImmutabilityPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutabile, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -3507,7 +3507,7 @@ func (s *BlobRecordedTestsSuite) TestDeleteImmutabilityPolicy() {
 func (s *BlobRecordedTestsSuite) TestSetLegalHold() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutabile, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)

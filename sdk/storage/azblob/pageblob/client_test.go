@@ -3278,7 +3278,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobSetSequenceNumberIfMatchTrue() {
 func (s *PageBlobRecordedTestsSuite) TestPageSetImmutabilityPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutabile, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -3315,7 +3315,7 @@ func (s *PageBlobRecordedTestsSuite) TestPageSetImmutabilityPolicy() {
 func (s *PageBlobRecordedTestsSuite) TestPageDeleteImmutabilityPolicy() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutabile, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -3348,7 +3348,7 @@ func (s *PageBlobRecordedTestsSuite) TestPageDeleteImmutabilityPolicy() {
 func (s *PageBlobRecordedTestsSuite) TestPageSetLegalHold() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutabile, nil)
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)

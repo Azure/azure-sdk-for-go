@@ -59,7 +59,6 @@ spec:
       - processor
       - "-rounds"
       - "-1"
-      - "-verbose"
       {{- end -}}
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}

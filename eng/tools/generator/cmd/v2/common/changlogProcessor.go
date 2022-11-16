@@ -320,18 +320,15 @@ func funcOperation(content *delta.Content) {
 }
 
 // LROFilter LROFilter after OperationFilter
-func LROFilter(config *model.Changelog) {
-	if config.Modified.HasBreakingChanges() && config.Modified.HasAdditiveChanges() && config.Modified.BreakingChanges.Funcs != nil {
-		for bFunc := range config.Modified.BreakingChanges.Funcs {
+func LROFilter(changelog *model.Changelog) {
+	removedContent := changelog.Modified.BreakingChanges.Removed
+	if changelog.Modified.HasBreakingChanges() && changelog.Modified.HasAdditiveChanges() && removedContent != nil && removedContent.Funcs != nil {
+		for bFunc := range removedContent.Funcs {
 			clientFunc := strings.Split(bFunc, ".")
 			if len(clientFunc) == 2 {
 				beginFunc := fmt.Sprintf("%s.Begin%s", clientFunc[0], clientFunc[1])
-				if _, ok := config.Modified.AdditiveChanges.Funcs[beginFunc]; ok {
-					structName := fmt.Sprintf("%s%sOpetions", strings.TrimLeft(strings.TrimSpace(clientFunc[0]), "*"), clientFunc[1])
-					if _, structOk := config.Modified.BreakingChanges.Structs[structName]; structOk {
-						delete(config.Modified.BreakingChanges.Structs, structName)
-						delete(config.Modified.AdditiveChanges.Funcs, beginFunc)
-					}
+				if _, ok := changelog.Modified.AdditiveChanges.Funcs[beginFunc]; ok {
+					delete(changelog.Modified.AdditiveChanges.Funcs, beginFunc)
 				}
 			}
 		}

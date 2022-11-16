@@ -3432,3 +3432,102 @@ func (s *BlobRecordedTestsSuite) TestBlobSetExpiry() {
 	_, err = bbClient.GetProperties(context.Background(), nil)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.BlobNotFound)
 }
+
+func (s *BlobRecordedTestsSuite) TestSetImmutabilityPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
+	_require.Nil(err)
+	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
+	_require.Nil(err)
+
+	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
+		Mode:                     &policy,
+		ModifiedAccessConditions: nil,
+	}
+	_, err = bbClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
+	_require.Nil(err)
+
+	_, err = bbClient.SetLegalHold(context.Background(), false, nil)
+	_require.Nil(err)
+
+	_, err = bbClient.Delete(context.Background(), nil)
+	_require.NotNil(err)
+
+	_, err = bbClient.DeleteImmutabilityPolicy(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = bbClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *BlobRecordedTestsSuite) TestDeleteImmutabilityPolicy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 GMT 2049")
+	_require.Nil(err)
+
+	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
+	_require.Nil(err)
+
+	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
+		Mode:                     &policy,
+		ModifiedAccessConditions: nil,
+	}
+	_, err = bbClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
+	_require.Nil(err)
+
+	_, err = bbClient.DeleteImmutabilityPolicy(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = bbClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+}
+
+func (s *BlobRecordedTestsSuite) TestSetLegalHold() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountImmutable, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	_, err = bbClient.GetProperties(context.Background(), nil)
+	_require.Nil(err)
+
+	_, err = bbClient.SetLegalHold(context.Background(), true, nil)
+	_require.Nil(err)
+
+	// should fail since time has not passed yet
+	_, err = bbClient.Delete(context.Background(), nil)
+	_require.NotNil(err)
+
+	_, err = bbClient.SetLegalHold(context.Background(), false, nil)
+	_require.Nil(err)
+
+	_, err = bbClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+
+}

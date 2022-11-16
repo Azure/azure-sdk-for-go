@@ -480,6 +480,54 @@ func (o *GetTagsOptions) format() (*generated.BlobClientGetTagsOptions, *generat
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// SetImmutabilityPolicyOptions contains the parameter for Client.SetImmutabilityPolicy
+type SetImmutabilityPolicyOptions struct {
+	// Specifies the immutability policy mode to set on the blob. Possible values to set include: "Locked", "Unlocked".
+	// "Mutable" can only be returned by service, don't set to "Mutable". If mode is not set - it will default to Unlocked.
+	Mode                     *ImmutabilityPolicySetting
+	ModifiedAccessConditions *ModifiedAccessConditions
+}
+
+func (o *SetImmutabilityPolicyOptions) format() (*generated.BlobClientSetImmutabilityPolicyOptions, *ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+	ac := &exported.BlobAccessConditions{
+		ModifiedAccessConditions: o.ModifiedAccessConditions,
+	}
+	_, modifiedAccessConditions := exported.FormatBlobAccessConditions(ac)
+
+	options := &generated.BlobClientSetImmutabilityPolicyOptions{
+		ImmutabilityPolicyMode: o.Mode,
+	}
+
+	return options, modifiedAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// DeleteImmutabilityPolicyOptions contains the optional parameters for the Client.DeleteImmutabilityPolicy method.
+type DeleteImmutabilityPolicyOptions struct {
+	// placeholder for future options
+}
+
+func (o *DeleteImmutabilityPolicyOptions) format() *generated.BlobClientDeleteImmutabilityPolicyOptions {
+	return nil
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// SetLegalHoldOptions contains the optional parameters for the Client.SetLegalHold method.
+type SetLegalHoldOptions struct {
+	// placeholder for future options
+}
+
+func (o *SetLegalHoldOptions) format() *generated.BlobClientSetLegalHoldOptions {
+	return nil
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
 // CopyFromURLOptions contains the optional parameters for the Client.CopyFromURL method.
 type CopyFromURLOptions struct {
 	// Optional. Used to set blob tags in various blob operations.

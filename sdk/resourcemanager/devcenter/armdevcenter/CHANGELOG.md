@@ -1,5 +1,84 @@
 # Release History
 
+## 0.3.0 (2022-12-23)
+### Breaking Changes
+
+- Type of `OperationStatus.Error` has been changed from `*OperationStatusError` to `*ErrorDetail`
+- Type of `NetworkProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `ScheduleProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `ImageVersionProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `PoolProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `ProjectProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `GalleryProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `DevBoxDefinitionProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `EnvironmentTypeProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `ImageProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `CatalogProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `ProjectEnvironmentTypeProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `Properties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `AttachedNetworkConnectionProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Type of `AllowedEnvironmentTypeProperties.ProvisioningState` has been changed from `*string` to `*ProvisioningState`
+- Function `*NetworkConnectionsClient.RunHealthChecks` has been removed
+- Struct `NetworkConnectionsClientRunHealthChecksOptions` has been removed
+- Struct `OperationStatusError` has been removed
+
+### Features Added
+
+- New const `CatalogSyncStateCanceled`
+- New const `ProvisioningStateDeleted`
+- New const `CatalogSyncStateFailed`
+- New const `CheckNameAvailabilityReasonAlreadyExists`
+- New const `ProvisioningStateRunning`
+- New const `HibernateSupportEnabled`
+- New const `ProvisioningStateNotSpecified`
+- New const `ProvisioningStateStorageProvisioningFailed`
+- New const `ProvisioningStateCreated`
+- New const `CheckNameAvailabilityReasonInvalid`
+- New const `ProvisioningStateDeleting`
+- New const `ProvisioningStateMovingResources`
+- New const `ProvisioningStateFailed`
+- New const `ProvisioningStateRolloutInProgress`
+- New const `ProvisioningStateCanceled`
+- New const `ProvisioningStateAccepted`
+- New const `ProvisioningStateTransientFailure`
+- New const `ProvisioningStateUpdating`
+- New const `CatalogSyncStateSucceeded`
+- New const `ProvisioningStateUpdated`
+- New const `ProvisioningStateCreating`
+- New const `ProvisioningStateSucceeded`
+- New const `CatalogSyncStateInProgress`
+- New const `HibernateSupportDisabled`
+- New type alias `HibernateSupport`
+- New type alias `CatalogSyncState`
+- New type alias `CheckNameAvailabilityReason`
+- New type alias `ProvisioningState`
+- New function `PossibleCatalogSyncStateValues() []CatalogSyncState`
+- New function `*NetworkConnectionsClient.BeginRunHealthChecks(context.Context, string, string, *NetworkConnectionsClientBeginRunHealthChecksOptions) (*runtime.Poller[NetworkConnectionsClientRunHealthChecksResponse], error)`
+- New function `PossibleHibernateSupportValues() []HibernateSupport`
+- New function `*CheckNameAvailabilityClient.Execute(context.Context, CheckNameAvailabilityRequest, *CheckNameAvailabilityClientExecuteOptions) (CheckNameAvailabilityClientExecuteResponse, error)`
+- New function `PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason`
+- New function `NewCheckNameAvailabilityClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CheckNameAvailabilityClient, error)`
+- New function `PossibleProvisioningStateValues() []ProvisioningState`
+- New struct `CheckNameAvailabilityClient`
+- New struct `CheckNameAvailabilityClientExecuteOptions`
+- New struct `CheckNameAvailabilityClientExecuteResponse`
+- New struct `CheckNameAvailabilityRequest`
+- New struct `CheckNameAvailabilityResponse`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `ErrorResponse`
+- New struct `NetworkConnectionsClientBeginRunHealthChecksOptions`
+- New struct `OperationStatusResult`
+- New field `ResourceID` in struct `OperationStatus`
+- New field `Operations` in struct `OperationStatus`
+- New field `DevCenterURI` in struct `Properties`
+- New anonymous field `Schedule` in struct `SchedulesClientUpdateResponse`
+- New field `HibernateSupport` in struct `DevBoxDefinitionProperties`
+- New field `HibernateSupport` in struct `DevBoxDefinitionUpdateProperties`
+- New field `DevCenterURI` in struct `ProjectProperties`
+- New field `SyncState` in struct `CatalogProperties`
+
+
 ## 0.2.0 (2022-09-29)
 ### Features Added
 

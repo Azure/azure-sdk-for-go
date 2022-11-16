@@ -5,8 +5,6 @@ package model
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
-	"sort"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/delta"
@@ -126,20 +124,19 @@ func getNewContents(c *delta.Content) []string {
 	var items []string
 
 	if len(c.Consts) > 0 {
-		for _, k := range sortChangeItem(c.Consts) {
+		for k := range c.Consts {
 			line := fmt.Sprintf("New const `%s`", k)
 			items = append(items, line)
 		}
 	}
 	if len(c.TypeAliases) > 0 {
-		for _, k := range sortChangeItem(c.TypeAliases) {
+		for k := range c.TypeAliases {
 			line := fmt.Sprintf("New type alias `%s`", k)
 			items = append(items, line)
 		}
 	}
 	if len(c.Funcs) > 0 {
-		for _, k := range sortChangeItem(c.Funcs) {
-			v := c.Funcs[k]
+		for k, v := range c.Funcs {
 			params := ""
 			if v.Params != nil {
 				params = *v.Params
@@ -163,14 +160,13 @@ func getNewContents(c *delta.Content) []string {
 	}
 	if len(c.Structs) > 0 {
 		modified := c.GetModifiedStructs()
-		for _, s := range sortChangeItem(modified) {
-			f := modified[s]
+		for s, f := range modified {
 			for _, af := range f.AnonymousFields {
 				line := fmt.Sprintf("New anonymous field `%s` in struct `%s`", af, s)
 				items = append(items, line)
 			}
-			for _, field := range sortChangeItem(f.Fields) {
-				line := fmt.Sprintf("New field `%s` in struct `%s`", field, s)
+			for f := range f.Fields {
+				line := fmt.Sprintf("New field `%s` in struct `%s`", f, s)
 				items = append(items, line)
 			}
 		}
@@ -203,24 +199,22 @@ func getSignatureChangeItems(b *report.BreakingChanges) []string {
 
 	// write const changes
 	if len(b.Consts) > 0 {
-		for _, k := range sortChangeItem(b.Consts) {
-			v := b.Consts[k]
+		for k, v := range b.Consts {
 			line := fmt.Sprintf("Const `%s` type has been changed from `%s` to `%s`", k, v.From, v.To)
 			items = append(items, line)
 		}
+		// TODO -- sort?
 	}
 	// write type alias changes
 	if len(b.TypeAliases) > 0 {
-		for _, k := range sortChangeItem(b.TypeAliases) {
-			v := b.TypeAliases[k]
+		for k, v := range b.TypeAliases {
 			line := fmt.Sprintf("Type alias `%s` type has been changed from `%s` to `%s`", k, v.From, v.To)
 			items = append(items, line)
 		}
 	}
 	// write function changes
 	if len(b.Funcs) > 0 {
-		for _, k := range sortChangeItem(b.Funcs) {
-			v := b.Funcs[k]
+		for k, v := range b.Funcs {
 			if v.Params != nil {
 				line := fmt.Sprintf("Function `%s` parameter(s) have been changed from `(%s)` to `(%s)`", k, v.Params.From, v.Params.To)
 				items = append(items, line)
@@ -233,8 +227,7 @@ func getSignatureChangeItems(b *report.BreakingChanges) []string {
 	}
 	// write struct changes
 	if len(b.Structs) > 0 {
-		for _, k := range sortChangeItem(b.Structs) {
-			v := b.Structs[k]
+		for k, v := range b.Structs {
 			for f, d := range v.Fields {
 				line := fmt.Sprintf("Type of `%s.%s` has been changed from `%s` to `%s`", k, f, d.From, d.To)
 				items = append(items, line)
@@ -254,21 +247,21 @@ func getRemovedContent(removed *delta.Content) []string {
 	var items []string
 	// write constants
 	if len(removed.Consts) > 0 {
-		for _, k := range sortChangeItem(removed.Consts) {
+		for k := range removed.Consts {
 			line := fmt.Sprintf("Const `%s` has been removed", k)
 			items = append(items, line)
 		}
 	}
 	// write type alias
 	if len(removed.TypeAliases) > 0 {
-		for _, k := range sortChangeItem(removed.TypeAliases) {
+		for k := range removed.TypeAliases {
 			line := fmt.Sprintf("Type alias `%s` has been removed", k)
 			items = append(items, line)
 		}
 	}
 	// write functions
 	if len(removed.Funcs) > 0 {
-		for _, k := range sortChangeItem(removed.Funcs) {
+		for k := range removed.Funcs {
 			line := fmt.Sprintf("Function `%s` has been removed", k)
 			items = append(items, line)
 		}
@@ -283,38 +276,17 @@ func getRemovedContent(removed *delta.Content) []string {
 	// write struct modification (some fields are removed)
 	modified := removed.GetModifiedStructs()
 	if len(modified) > 0 {
-		for _, s := range sortChangeItem(modified) {
-			f := modified[s]
+		for s, f := range modified {
 			for _, af := range f.AnonymousFields {
 				line := fmt.Sprintf("Field `%s` of struct `%s` has been removed", af, s)
 				items = append(items, line)
 			}
-			for _, field := range sortChangeItem(f.Fields) {
-				line := fmt.Sprintf("Field `%s` of struct `%s` has been removed", field, s)
+			for f := range f.Fields {
+				line := fmt.Sprintf("Field `%s` of struct `%s` has been removed", f, s)
 				items = append(items, line)
 			}
 		}
 	}
 
 	return items
-}
-
-type sortItem interface {
-	delta.Signature | delta.FuncSig | delta.StructDef |
-		exports.Const | exports.TypeAlias | exports.Func | exports.Struct | string
-}
-
-func sortChangeItem[T sortItem](change map[string]T) []string {
-	s := make([]string, 0, len(change))
-	for k := range change {
-		s = append(s, k)
-	}
-
-	sort.Slice(s, func(i, j int) bool {
-		si := strings.TrimLeft(strings.TrimLeft(s[i], "*"), "New")
-		sj := strings.TrimLeft(strings.TrimLeft(s[j], "*"), "New")
-		return si < sj
-	})
-
-	return s
 }

@@ -332,3 +332,22 @@ func (c *Client) GetSASURL(permissions sas.ContainerPermissions, start time.Time
 
 	return endpoint, nil
 }
+
+// DeleteBlobs deletes give list of blobs using batch apis.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/blob-batch.
+func (c *Client) DeleteBlobs(ctx context.Context, blobs []*BatchDeleteOptions) (DeleteBlobsResponse, error) {
+	len := len(blobs)
+	if len == 0 {
+		return DeleteBlobsResponse{}, nil
+	}
+	
+	// one batch can only have max 256 sub requests and each batch will have a unique batch id
+	batchid, err := CreateBatchID()
+	if err != nil {
+		return DeleteBlobsResponse{}, err
+	}
+
+	multipartContentType := "multipart/mixed; boundary=" + GetBatchRequestDelimiter(batchid, false, false)
+	resp, err := c.generated().SubmitBatch(ctx, contentLength, multipartContentType, body io.ReadSeekCloser, options *ContainerClientSubmitBatchOptions)
+	return resp, err
+}

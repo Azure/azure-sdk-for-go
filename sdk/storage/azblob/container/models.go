@@ -7,8 +7,10 @@
 package container
 
 import (
+	"fmt"
 	"reflect"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
@@ -260,4 +262,75 @@ func (o *SetAccessPolicyOptions) format() (*generated.ContainerClientSetAccessPo
 	return &generated.ContainerClientSetAccessPolicyOptions{
 		Access: o.Access,
 	}, lac, mac
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+type BatchDeleteOptions struct {
+	BlobName          *string
+	BlobDeleteOptions *blob.DeleteOptions
+	VersionID         *string
+	Snapshot          *string
+}
+
+func (o *BatchDeleteOptions) createDeleteSubRequest(ctx context.Context) (*policy.Request, error)  {
+				//options *BlobClientDeleteOptions, 
+				//leaseAccessConditions *LeaseAccessConditions, 
+				//modifiedAccessConditions *ModifiedAccessConditions) 
+	if o.BlobName == nil {
+		return nil, fmt.Errorf("blob name not provided")
+	}
+
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, o.BlobName)
+	if err != nil {
+		return nil, err
+	}
+
+	reqQP := req.Raw().URL.Query()
+	if o !=  nil && o.Snapshot != nil {
+		reqQP.Set("snapshot", *o.Snapshot)
+	}
+	if o !=  nil && o.VersionID != nil {
+		reqQP.Set("versionid", *o.VersionID)
+	}
+	if o !=  nil && o.BlobDeleteOptions != nil && o.BlobDeleteOptions.DeleteType != nil {
+		reqQP.Set("deletetype", string(*options.DeleteType))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
+		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
+	if o !=  nil && options.DeleteSnapshots != nil {
+		req.Raw().Header["x-ms-delete-snapshots"] = []string{string(*options.DeleteSnapshots)}
+	}
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
+		req.Raw().Header["If-Modified-Since"] = []string{modifiedAccessConditions.IfModifiedSince.Format(time.RFC1123)}
+	}
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
+		req.Raw().Header["If-Unmodified-Since"] = []string{modifiedAccessConditions.IfUnmodifiedSince.Format(time.RFC1123)}
+	}
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
+	}
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
+	}
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
+		req.Raw().Header["x-ms-if-tags"] = []string{*modifiedAccessConditions.IfTags}
+	}
+	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	if o !=  nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
+	return req, nil
+}
+
+func (o *BatchDeleteOptions) format() (string, error) {
+	if o == nil {
+		return "", nil
+	}
+
+	&basics, o.AccessConditions.LeaseAccessConditions, o.AccessConditions.ModifiedAccessConditions
+
 }

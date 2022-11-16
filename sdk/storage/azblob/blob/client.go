@@ -244,8 +244,9 @@ func (b *Client) GetTags(ctx context.Context, options *GetTagsOptions) (GetTagsR
 
 // SetImmutabilityPolicy operation enables users to set the immutability policy on a blob. Mode defaults to "Unlocked".
 // https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview
-func (b *Client) SetImmutabilityPolicy(ctx context.Context, options SetImmutabilityPolicyOptions) (SetImmutabilityPolicyResponse, error) {
+func (b *Client) SetImmutabilityPolicy(ctx context.Context, expiryTime time.Time, options *SetImmutabilityPolicyOptions) (SetImmutabilityPolicyResponse, error) {
 	blobSetImmutabilityPolicyOptions, modifiedAccessConditions := options.format()
+	blobSetImmutabilityPolicyOptions.ImmutabilityPolicyExpiry = &expiryTime
 	resp, err := b.generated().SetImmutabilityPolicy(ctx, blobSetImmutabilityPolicyOptions, modifiedAccessConditions)
 	return resp, err
 }

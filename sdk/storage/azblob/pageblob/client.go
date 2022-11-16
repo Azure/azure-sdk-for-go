@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -319,8 +320,8 @@ func (pb *Client) Undelete(ctx context.Context, o *blob.UndeleteOptions) (blob.U
 
 // SetImmutabilityPolicy operation enables users to set the immutability policy on a blob.
 // https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview
-func (pb *Client) SetImmutabilityPolicy(ctx context.Context, options blob.SetImmutabilityPolicyOptions) (blob.SetImmutabilityPolicyResponse, error) {
-	return pb.BlobClient().SetImmutabilityPolicy(ctx, options)
+func (pb *Client) SetImmutabilityPolicy(ctx context.Context, expiryTime time.Time, options *blob.SetImmutabilityPolicyOptions) (blob.SetImmutabilityPolicyResponse, error) {
+	return pb.BlobClient().SetImmutabilityPolicy(ctx, expiryTime, options)
 }
 
 // DeleteImmutabilityPolicy operation enables users to delete the immutability policy on a blob.

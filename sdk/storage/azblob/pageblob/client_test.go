@@ -3291,12 +3291,11 @@ func (s *PageBlobRecordedTestsSuite) TestPageSetImmutabilityPolicy() {
 	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
 	_require.Nil(err)
 
-	setImmutabilityPolicyOptions := blob.SetImmutabilityPolicyOptions{
-		ExpiryTime:               currentTime,
+	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
 		Mode:                     &policy,
 		ModifiedAccessConditions: nil,
 	}
-	_, err = pbClient.SetImmutabilityPolicy(context.Background(), setImmutabilityPolicyOptions)
+	_, err = pbClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
 	_require.Nil(err)
 
 	_, err = pbClient.SetLegalHold(context.Background(), false, nil)
@@ -3330,12 +3329,11 @@ func (s *PageBlobRecordedTestsSuite) TestPageDeleteImmutabilityPolicy() {
 	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
 	_require.Nil(err)
 
-	setImmutabilityPolicyOptions := blob.SetImmutabilityPolicyOptions{
-		ExpiryTime:               currentTime,
+	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
 		Mode:                     &policy,
 		ModifiedAccessConditions: nil,
 	}
-	_, err = pbClient.SetImmutabilityPolicy(context.Background(), setImmutabilityPolicyOptions)
+	_, err = pbClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
 	_require.Nil(err)
 
 	_, err = pbClient.DeleteImmutabilityPolicy(context.Background(), nil)

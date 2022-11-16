@@ -3450,12 +3450,11 @@ func (s *BlobRecordedTestsSuite) TestSetImmutabilityPolicy() {
 	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
 	_require.Nil(err)
 
-	setImmutabilityPolicyOptions := blob.SetImmutabilityPolicyOptions{
-		ExpiryTime:               currentTime,
+	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
 		Mode:                     &policy,
 		ModifiedAccessConditions: nil,
 	}
-	_, err = bbClient.SetImmutabilityPolicy(context.Background(), setImmutabilityPolicyOptions)
+	_, err = bbClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
 	_require.Nil(err)
 
 	_, err = bbClient.SetLegalHold(context.Background(), false, nil)
@@ -3489,12 +3488,11 @@ func (s *BlobRecordedTestsSuite) TestDeleteImmutabilityPolicy() {
 	policy := blob.ImmutabilityPolicySetting(blob.ImmutabilityPolicySettingUnlocked)
 	_require.Nil(err)
 
-	setImmutabilityPolicyOptions := blob.SetImmutabilityPolicyOptions{
-		ExpiryTime:               currentTime,
+	setImmutabilityPolicyOptions := &blob.SetImmutabilityPolicyOptions{
 		Mode:                     &policy,
 		ModifiedAccessConditions: nil,
 	}
-	_, err = bbClient.SetImmutabilityPolicy(context.Background(), setImmutabilityPolicyOptions)
+	_, err = bbClient.SetImmutabilityPolicy(context.Background(), currentTime, setImmutabilityPolicyOptions)
 	_require.Nil(err)
 
 	_, err = bbClient.DeleteImmutabilityPolicy(context.Background(), nil)

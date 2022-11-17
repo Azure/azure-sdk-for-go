@@ -260,7 +260,7 @@ type UploadStreamOptions struct {
 	transferMangerNotSet bool
 
 	// BlockSize defines the size of the buffer used during upload. The default and mimimum value is 1 MiB.
-	BlockSize int
+	BlockSize int64
 
 	// Concurrency defines the number of concurrent uploads to be performed to upload the file.
 	// Each concurrent upload will create a buffer of size BlockSize.  The default value is one.

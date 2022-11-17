@@ -9,12 +9,11 @@ package service_test
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"log"
 	"os"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
@@ -303,7 +302,7 @@ func Example_service_Client_NewClientWithUserDelegationCredential() {
 	// Set current and past time and create key
 	currentTime := time.Now().UTC().Add(-10 * time.Second)
 	pastTime := currentTime.Add(48 * time.Hour)
-	info := generated.KeyInfo{
+	info := service.KeyInfo{
 		Start:  to.Ptr(currentTime.UTC().Format(sas.TimeFormat)),
 		Expiry: to.Ptr(pastTime.UTC().Format(sas.TimeFormat)),
 	}

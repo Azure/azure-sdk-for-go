@@ -296,7 +296,7 @@ func funcOperation(content *delta.Content) {
 				if funcValue.Returns != nil {
 					rs := strings.Split(*funcValue.Returns, ",")
 					clientFuncResponse := rs[0]
-					if strings.Contains(clientFunc[1], "Begin") {
+					if strings.Contains(clientFunc[1], "runtime.Poller") {
 						re := regexp.MustCompile("\\[(?P<response>.*)\\]")
 						clientFuncResponse = re.FindString(clientFuncResponse)
 						clientFuncResponse = re.ReplaceAllString(clientFuncResponse, "${response}")
@@ -321,8 +321,8 @@ func funcOperation(content *delta.Content) {
 
 // LROFilter LROFilter after OperationFilter
 func LROFilter(changelog *model.Changelog) {
-	removedContent := changelog.Modified.BreakingChanges.Removed
-	if changelog.Modified.HasBreakingChanges() && changelog.Modified.HasAdditiveChanges() && removedContent != nil && removedContent.Funcs != nil {
+	if changelog.Modified.HasBreakingChanges() && changelog.Modified.HasAdditiveChanges() && changelog.Modified.BreakingChanges.Removed != nil && changelog.Modified.BreakingChanges.Removed.Funcs != nil {
+		removedContent := changelog.Modified.BreakingChanges.Removed
 		for bFunc := range removedContent.Funcs {
 			clientFunc := strings.Split(bFunc, ".")
 			if len(clientFunc) == 2 {

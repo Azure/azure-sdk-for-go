@@ -66,16 +66,12 @@ func newSessionReceiver(ctx context.Context, args newSessionReceiverArgs, option
 	}
 
 	r, err := newReceiver(newReceiverArgs{
-		cleanupOnClose:      args.cleanupOnClose,
+		ns:                  args.ns,
 		entity:              args.entity,
+		cleanupOnClose:      args.cleanupOnClose,
+		newLinkFn:           sessionReceiver.newLink,
 		getRecoveryKindFunc: internal.GetRecoveryKindForSession,
-		// It's a bit more complicated to do an idle timeout for sessions
-		// and there's limited gain - the renewing the session lock provides
-		// a guarantee that the link is still alive.
-		idleTimeout:  -1,
-		newLinkFn:    sessionReceiver.newLink,
-		ns:           args.ns,
-		retryOptions: args.retryOptions,
+		retryOptions:        args.retryOptions,
 	}, options)
 
 	if err != nil {

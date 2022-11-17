@@ -286,7 +286,3 @@ func Test_TransformError(t *testing.T) {
 	// and it's okay, for convenience, to pass a nil.
 	require.Nil(t, TransformError(nil))
 }
-
-func Test_IdleError(t *testing.T) {
-	require.Equal(t, RecoveryKindLink, GetRecoveryKind(localIdleError))
-}

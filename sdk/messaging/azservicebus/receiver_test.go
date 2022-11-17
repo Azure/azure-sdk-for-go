@@ -33,7 +33,7 @@ func TestReceiverCancel(t *testing.T) {
 	require.Empty(t, messages)
 }
 
-func TestReceiverSendFiveReceiveFive_Queue(t *testing.T) {
+func TestReceiverSendFiveReceiveFive(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
@@ -50,10 +50,6 @@ func TestReceiverSendFiveReceiveFive_Queue(t *testing.T) {
 
 	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
 	require.NoError(t, err)
-
-	// just some sanity checking for the local idle checker.
-	require.NotNil(t, receiver.idleTracker)
-	require.Equal(t, receiver.idleTracker.MaxDuration, defaultReceiverIdleTime)
 
 	messages := mustReceiveMessages(t, receiver, 5, time.Minute)
 
@@ -83,10 +79,6 @@ func TestReceiverSendFiveReceiveFive_Subscription(t *testing.T) {
 
 	receiver, err := serviceBusClient.NewReceiverForSubscription(topicName, subscriptionName, nil)
 	require.NoError(t, err)
-
-	// just some sanity checking for the local idle checker.
-	require.NotNil(t, receiver.idleTracker)
-	require.Equal(t, receiver.idleTracker.MaxDuration, defaultReceiverIdleTime)
 
 	messages := mustReceiveMessages(t, receiver, 5, time.Minute)
 

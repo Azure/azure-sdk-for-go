@@ -11,7 +11,7 @@ package armstorage
 
 const (
 	moduleName    = "armstorage"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v2.0.0"
 )
 
 // AccessTier - Required for storage accounts where kind = BlobStorage. The access tier is used for billing. The 'Premium'
@@ -674,6 +674,23 @@ const (
 func PossibleListContainersIncludeValues() []ListContainersInclude {
 	return []ListContainersInclude{
 		ListContainersIncludeDeleted,
+	}
+}
+
+type ListEncryptionScopesInclude string
+
+const (
+	ListEncryptionScopesIncludeAll      ListEncryptionScopesInclude = "All"
+	ListEncryptionScopesIncludeDisabled ListEncryptionScopesInclude = "Disabled"
+	ListEncryptionScopesIncludeEnabled  ListEncryptionScopesInclude = "Enabled"
+)
+
+// PossibleListEncryptionScopesIncludeValues returns the possible values for the ListEncryptionScopesInclude const type.
+func PossibleListEncryptionScopesIncludeValues() []ListEncryptionScopesInclude {
+	return []ListEncryptionScopesInclude{
+		ListEncryptionScopesIncludeAll,
+		ListEncryptionScopesIncludeDisabled,
+		ListEncryptionScopesIncludeEnabled,
 	}
 }
 

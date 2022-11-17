@@ -562,6 +562,9 @@ type AccountsClientBeginCreateOptions struct {
 
 // AccountsClientBeginFailoverOptions contains the optional parameters for the AccountsClient.BeginFailover method.
 type AccountsClientBeginFailoverOptions struct {
+	// The parameter is set to 'Planned' to indicate whether a Planned failover is requested.. Specifying any value will set the
+	// value to Planned.
+	FailoverType *string
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -1085,27 +1088,6 @@ type CheckNameAvailabilityResult struct {
 	Reason *Reason `json:"reason,omitempty" azure:"ro"`
 }
 
-// CloudError - An error response from the Storage service.
-type CloudError struct {
-	// An error response from the Storage service.
-	Error *CloudErrorBody `json:"error,omitempty"`
-}
-
-// CloudErrorBody - An error response from the Storage service.
-type CloudErrorBody struct {
-	// An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
-	Code *string `json:"code,omitempty"`
-
-	// A list of additional details about the error.
-	Details []*CloudErrorBody `json:"details,omitempty"`
-
-	// A message describing the error, intended to be suitable for display in a user interface.
-	Message *string `json:"message,omitempty"`
-
-	// The target of the particular error. For example, the name of the property in error.
-	Target *string `json:"target,omitempty"`
-}
-
 // ContainerProperties - The properties of a container.
 type ContainerProperties struct {
 	// Default the container to use specified encryption scope for all writes.
@@ -1424,7 +1406,12 @@ type EncryptionScopesClientGetOptions struct {
 
 // EncryptionScopesClientListOptions contains the optional parameters for the EncryptionScopesClient.List method.
 type EncryptionScopesClientListOptions struct {
-	// placeholder for future optional parameters
+	// Optional. When specified, only encryption scope names starting with the filter will be listed.
+	Filter *string
+	// Optional, when specified, will list encryption scopes with the specific state. Defaults to All
+	Include *ListEncryptionScopesInclude
+	// Optional, specifies the maximum number of encryption scopes that will be included in the list response.
+	Maxpagesize *int32
 }
 
 // EncryptionScopesClientPatchOptions contains the optional parameters for the EncryptionScopesClient.Patch method.
@@ -2236,11 +2223,17 @@ type ManagementPolicyBaseBlob struct {
 	// This property enables auto tiering of a blob from cool to hot on a blob access. This property requires tierToCool.daysAfterLastAccessTimeGreaterThan.
 	EnableAutoTierToHotFromCool *bool `json:"enableAutoTierToHotFromCool,omitempty"`
 
-	// The function to tier blobs to archive storage. Support blobs currently at Hot or Cool tier
+	// The function to tier blobs to archive storage.
 	TierToArchive *DateAfterModification `json:"tierToArchive,omitempty"`
 
-	// The function to tier blobs to cool storage. Support blobs currently at Hot tier
+	// The function to tier blobs to cold storage.
+	TierToCold *DateAfterModification `json:"tierToCold,omitempty"`
+
+	// The function to tier blobs to cool storage.
 	TierToCool *DateAfterModification `json:"tierToCool,omitempty"`
+
+	// The function to tier blobs to hot storage. This action can only be used with Premium Block Blob Storage Accounts
+	TierToHot *DateAfterModification `json:"tierToHot,omitempty"`
 }
 
 // ManagementPolicyDefinition - An object that defines the Lifecycle rule. Each definition is made up with a filters set and
@@ -2303,11 +2296,17 @@ type ManagementPolicySnapShot struct {
 	// The function to delete the blob snapshot
 	Delete *DateAfterCreation `json:"delete,omitempty"`
 
-	// The function to tier blob snapshot to archive storage. Support blob snapshot currently at Hot or Cool tier
+	// The function to tier blob snapshot to archive storage.
 	TierToArchive *DateAfterCreation `json:"tierToArchive,omitempty"`
 
-	// The function to tier blob snapshot to cool storage. Support blob snapshot currently at Hot tier
+	// The function to tier blobs to cold storage.
+	TierToCold *DateAfterCreation `json:"tierToCold,omitempty"`
+
+	// The function to tier blob snapshot to cool storage.
 	TierToCool *DateAfterCreation `json:"tierToCool,omitempty"`
+
+	// The function to tier blobs to hot storage. This action can only be used with Premium Block Blob Storage Accounts
+	TierToHot *DateAfterCreation `json:"tierToHot,omitempty"`
 }
 
 // ManagementPolicyVersion - Management policy action for blob version.
@@ -2315,11 +2314,17 @@ type ManagementPolicyVersion struct {
 	// The function to delete the blob version
 	Delete *DateAfterCreation `json:"delete,omitempty"`
 
-	// The function to tier blob version to archive storage. Support blob version currently at Hot or Cool tier
+	// The function to tier blob version to archive storage.
 	TierToArchive *DateAfterCreation `json:"tierToArchive,omitempty"`
 
-	// The function to tier blob version to cool storage. Support blob version currently at Hot tier
+	// The function to tier blobs to cold storage.
+	TierToCold *DateAfterCreation `json:"tierToCold,omitempty"`
+
+	// The function to tier blob version to cool storage.
 	TierToCool *DateAfterCreation `json:"tierToCool,omitempty"`
+
+	// The function to tier blobs to hot storage. This action can only be used with Premium Block Blob Storage Accounts
+	TierToHot *DateAfterCreation `json:"tierToHot,omitempty"`
 }
 
 // MetricSpecification - Metric specification of operation.

@@ -12,6 +12,7 @@
 ### Breaking Changes
 
 * Corrected the name for `saoid` and `suoid` SAS parameters in `BlobSignatureValues` struct as per [this](https://learn.microsoft.com/rest/api/storageservices/create-user-delegation-sas#construct-a-user-delegation-sas)
+* Updated type of `BlockSize` from int to int64 in `UploadStreamOptions`
 
 ### Bugs Fixed
 

@@ -3782,7 +3782,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBlobStage() {
 	_require.Nil(resp.BlockList.UncommittedBlocks)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestLongBlockStreamUploadInParallel() {
+func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockStreamUploadWithDifferentBlockSize() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3814,7 +3814,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLongBlockStreamUploadInParallel() {
 	_require.Equal(*(committed[1].Size), secondBlockSize)
 }
 
-func (s *BlockBlobUnrecordedTestsSuite) TestLongBlockBufferedUploadInParallel() {
+func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBufferedUploadInParallel() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

@@ -3794,13 +3794,13 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLongBlockStreamUploadInParallel() {
 
 	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
 
-	var largeBlockSize, numberOfBlocks = 5 * 1024 * 1024, 2
-	content := make([]byte, numberOfBlocks*largeBlockSize)
+	var firstBlockSize, secondBlockSize = 2500 * 1024 * 1024, 10 * 1024 * 1024
+	content := make([]byte, firstBlockSize+secondBlockSize)
 	body := bytes.NewReader(content)
 	rsc := streaming.NopCloser(body)
 
 	_, err = bbClient.UploadStream(context.Background(), rsc, &blockblob.UploadStreamOptions{
-		BlockSize:   largeBlockSize,
+		BlockSize:   firstBlockSize,
 		Concurrency: 2,
 	})
 	_require.Nil(err)
@@ -3808,10 +3808,10 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLongBlockStreamUploadInParallel() {
 	resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
 	_require.Nil(err)
 	_require.Len(resp.BlockList.CommittedBlocks, 2)
-	_require.Equal(*resp.BlobContentLength, int64(numberOfBlocks*largeBlockSize))
+	_require.Equal(*resp.BlobContentLength, int64(firstBlockSize+secondBlockSize))
 	committed := resp.BlockList.CommittedBlocks
-	_require.Equal(*(committed[0].Size), int64(largeBlockSize))
-	_require.Equal(*(committed[1].Size), int64(largeBlockSize))
+	_require.Equal(*(committed[0].Size), int64(firstBlockSize))
+	_require.Equal(*(committed[1].Size), int64(secondBlockSize))
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestLongBlockBufferedUploadInParallel() {

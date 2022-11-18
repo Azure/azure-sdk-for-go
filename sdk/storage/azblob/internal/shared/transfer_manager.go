@@ -37,7 +37,7 @@ type TransferManager interface {
 
 type staticBuffer struct {
 	buffers    chan []byte
-	size       int
+	size       int64
 	threadpool chan func()
 }
 
@@ -45,7 +45,7 @@ type staticBuffer struct {
 // that can hold "max" buffers of "size". The goroutine pool is also sized at max. This
 // can be shared between calls if you wish to control maximum memory and concurrency with
 // multiple concurrent calls.
-func NewStaticBuffer(size, max int) (TransferManager, error) {
+func NewStaticBuffer(size int64, max int) (TransferManager, error) {
 	if size < 1 || max < 1 {
 		return nil, fmt.Errorf("cannot be called with size or max set to < 1")
 	}

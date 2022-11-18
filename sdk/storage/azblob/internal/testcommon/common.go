@@ -122,7 +122,7 @@ func GenerateBlockIDsList(count int) []string {
 	return blockIDs
 }
 
-// blockIDIntToBase64 functions convert an int block ID to a base-64 string and vice versa
+// BlockIDIntToBase64 functions convert an int block ID to a base-64 string and vice versa
 func BlockIDIntToBase64(blockID int) string {
 	binaryBlockID := (&[4]byte{})[:]
 	binary.LittleEndian.PutUint32(binaryBlockID, uint32(blockID))

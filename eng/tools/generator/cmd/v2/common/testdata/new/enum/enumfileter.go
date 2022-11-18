@@ -1,4 +1,4 @@
-package enumfilter_test
+package enum
 
 type EnumAdd string
 

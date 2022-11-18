@@ -1,4 +1,4 @@
-package funcfilter_test
+package operation
 
 type Client struct{}
 

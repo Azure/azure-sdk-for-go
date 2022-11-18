@@ -1,4 +1,4 @@
-package lrofilter_test
+package lro
 
 type Client struct{}
 

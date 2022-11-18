@@ -36,12 +36,12 @@ func TestEnumFilter(t *testing.T) {
 }
 
 func TestFuncFilter(t *testing.T) {
-	oldExport, err := exports.Get("./testdata/old/func")
+	oldExport, err := exports.Get("./testdata/old/operation")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	newExport, err := exports.Get("./testdata/new/func")
+	newExport, err := exports.Get("./testdata/new/operation")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -75,6 +75,6 @@ func TestLROFilter(t *testing.T) {
 
 	common.FilterChangelog(changelog, common.FuncFilter, common.LROFilter)
 
-	excepted := fmt.Sprint("### Breaking Changes\\n\\n- Function `*Client.CreateOrUpdate` has been removed\\n")
+	excepted := fmt.Sprint("### Breaking Changes\n\n- Operation `*Client.CreateOrUpdate` has been changed to LRO, use `*Client.BeginCreateOrUpdate` instead.\n")
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }

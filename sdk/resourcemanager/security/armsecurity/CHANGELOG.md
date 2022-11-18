@@ -5,19 +5,11 @@
 
 - Type of `DefenderForServersAwsOfferingVMScannersConfiguration.ExclusionTags` has been changed from `interface{}` to `map[string]*string`
 - Type of `ContactProperties.AlertNotifications` has been changed from `*AlertNotifications` to `*ContactPropertiesAlertNotifications`
-- Const `AlertNotificationsOn` has been removed
-- Const `AlertsToAdminsOn` has been removed
-- Const `AlertNotificationsOff` has been removed
-- Const `AlertsToAdminsOff` has been removed
 - Type alias `AlertsToAdmins` has been removed
 - Type alias `AlertNotifications` has been removed
-- Function `PossibleAlertNotificationsValues` has been removed
-- Function `PossibleAlertsToAdminsValues` has been removed
 - Function `*AWSEnvironmentData.GetEnvironmentData` has been removed
 - Function `*ContactsClient.Update` has been removed
 - Struct `AWSEnvironmentData` has been removed
-- Struct `ContactsClientUpdateOptions` has been removed
-- Struct `ContactsClientUpdateResponse` has been removed
 - Struct `DefenderFoDatabasesAwsOfferingArcAutoProvisioningServicePrincipalSecretMetadata` has been removed
 - Struct `DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration` has been removed
 - Struct `DefenderForServersAwsOfferingArcAutoProvisioningServicePrincipalSecretMetadata` has been removed
@@ -31,24 +23,15 @@
 
 ### Features Added
 
-- New const `RolesAccountAdmin`
-- New const `RolesServiceAdmin`
 - New const `OfferingTypeDefenderCspmAws`
 - New const `OfferingTypeDefenderCspmGcp`
-- New const `MinimalSeverityMedium`
-- New const `MinimalSeverityLow`
 - New const `OfferingTypeDefenderForDevOpsGithub`
-- New const `RolesContributor`
-- New const `MinimalSeverityHigh`
-- New const `RolesOwner`
 - New const `OfferingTypeDefenderForDevOpsAzureDevOps`
 - New const `ApplicationConditionOperatorEquals`
 - New type alias `MinimalSeverity`
 - New type alias `Roles`
-- New function `PossibleMinimalSeverityValues() []MinimalSeverity`
 - New function `*AwsEnvironmentData.GetEnvironmentData() *EnvironmentData`
 - New function `*DefenderForDevOpsAzureDevOpsOffering.GetCloudOffering() *CloudOffering`
-- New function `PossibleRolesValues() []Roles`
 - New function `*DefenderForDevOpsGithubOffering.GetCloudOffering() *CloudOffering`
 - New function `*DefenderCspmGcpOffering.GetCloudOffering() *CloudOffering`
 - New function `*DefenderCspmAwsOffering.GetCloudOffering() *CloudOffering`

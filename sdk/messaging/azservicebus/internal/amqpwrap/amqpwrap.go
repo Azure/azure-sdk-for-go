@@ -68,7 +68,7 @@ type AMQPClient interface {
 // It exists only so we can return AMQPSession, which itself only exists so we can
 // return interfaces for AMQPSender and AMQPReceiver from AMQPSession.
 type AMQPClientWrapper struct {
-	Inner *amqp.Client
+	Inner *amqp.Conn
 }
 
 func (w *AMQPClientWrapper) Close() error {

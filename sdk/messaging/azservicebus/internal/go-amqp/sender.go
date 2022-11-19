@@ -72,7 +72,8 @@ func (s *Sender) Send(ctx context.Context, msg *Message) error {
 	case state := <-done:
 		if state, ok := state.(*encoding.StateRejected); ok {
 			if s.detachOnRejectDisp() {
-				return &DetachError{state.Error}
+				// TODO: this appears to be duplicated in the mux
+				return &DetachError{RemoteErr: state.Error}
 			}
 			return state.Error
 		}
@@ -389,7 +390,7 @@ func (s *Sender) muxHandleFrame(fr frames.FrameBody) error {
 		//
 		// This isn't ideal, but there isn't a clear better way to handle it.
 		if fr, ok := fr.State.(*encoding.StateRejected); ok && s.detachOnRejectDisp() {
-			return &DetachError{fr.Error}
+			return &DetachError{RemoteErr: fr.Error}
 		}
 
 		if fr.Settled {

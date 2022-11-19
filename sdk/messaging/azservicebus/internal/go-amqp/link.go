@@ -240,9 +240,9 @@ func (l *link) muxHandleFrame(fr frames.FrameBody) error {
 		l.detachReceived = true
 
 		if fr.Error != nil {
-			return &DetachError{inner: fr.Error}
+			return &DetachError{RemoteErr: fr.Error}
 		}
-		return &DetachError{inner: &Error{Condition: "amqp:link:closed", Description: "link detached by peer but no error was specified"}}
+		return &DetachError{}
 
 	default:
 		// TODO: evaluate

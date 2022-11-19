@@ -472,10 +472,10 @@ func (e *entity) SetSubQueue(subQueue SubQueue) error {
 }
 
 func createLinkOptions(mode ReceiveMode) *amqp.ReceiverOptions {
-	receiveMode := amqp.ModeSecond
+	receiveMode := amqp.ReceiverSettleModeSecond
 
 	if mode == ReceiveModeReceiveAndDelete {
-		receiveMode = amqp.ModeFirst
+		receiveMode = amqp.ReceiverSettleModeFirst
 	}
 
 	receiverOpts := &amqp.ReceiverOptions{
@@ -485,7 +485,7 @@ func createLinkOptions(mode ReceiveMode) *amqp.ReceiverOptions {
 	}
 
 	if mode == ReceiveModeReceiveAndDelete {
-		receiverOpts.RequestedSenderSettleMode = amqp.ModeSettled.Ptr()
+		receiverOpts.RequestedSenderSettleMode = amqp.SenderSettleModeSettled.Ptr()
 	}
 
 	return receiverOpts

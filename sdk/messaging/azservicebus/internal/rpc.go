@@ -141,9 +141,9 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (*rpcLink, error) {
 		const name = "com.microsoft:session-filter"
 		const code = uint64(0x00000137000000C)
 		if link.sessionID == nil {
-			receiverOpts.Filters = append(receiverOpts.Filters, amqp.LinkFilterSource(name, code, nil))
+			receiverOpts.Filters = append(receiverOpts.Filters, amqp.NewLinkFilter(name, code, nil))
 		} else {
-			receiverOpts.Filters = append(receiverOpts.Filters, amqp.LinkFilterSource(name, code, link.sessionID))
+			receiverOpts.Filters = append(receiverOpts.Filters, amqp.NewLinkFilter(name, code, link.sessionID))
 		}
 	}
 

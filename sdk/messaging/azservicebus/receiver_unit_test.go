@@ -88,7 +88,7 @@ func TestReceiver_ReceiveMessages_NoMessagesReceivedAndError(t *testing.T) {
 		// a fatal error is always returned in peekLock mode
 		{Err: internal.NewErrNonRetriable("non retriable error"), Expected: internal.NewErrNonRetriable("non retriable error")},
 		// non-fatal errors are "erased" and the error will be caught on the next iteration of the loop
-		{Err: amqp.ErrLinkClosed, Expected: nil},
+		{Err: &amqp.DetachError{}, Expected: nil},
 	}
 
 	// all the receive modes work the same when there are no messages
@@ -287,19 +287,19 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 
 	var asSBError *Error
 
-	fakeAMQPLinks.Err = amqp.ErrLinkClosed
+	fakeAMQPLinks.Err = &amqp.DetachError{}
 	messages, err := receiver.PeekMessages(context.Background(), 1, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)
 
-	fakeAMQPLinks.Err = &amqp.ConnectionError{}
+	fakeAMQPLinks.Err = &amqp.ConnError{}
 	messages, err = receiver.ReceiveDeferredMessages(context.Background(), []int64{1}, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)
 
-	fakeAMQPLinks.Err = &amqp.ConnectionError{}
+	fakeAMQPLinks.Err = &amqp.ConnError{}
 	messages, err = receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
@@ -390,14 +390,14 @@ func TestReceiver_releaserFunc_errorOnFirstMessage(t *testing.T) {
 
 	amqpReceiver.ReceiveFn = func(ctx context.Context) (*amqp.Message, error) {
 		if amqpReceiver.ReceiveCalled > 2 {
-			return nil, amqp.ErrLinkClosed
+			return nil, &amqp.DetachError{}
 		}
 
 		// This is one of the few error types classified as RecoveryKindNone
 		// in the releaser this means we'll just retry since the link is still
 		// considered good at this point.
 		return nil, &amqp.Error{
-			Condition: amqp.ErrorCondition("com.microsoft:server-busy"),
+			Condition: amqp.ErrCond("com.microsoft:server-busy"),
 		}
 	}
 
@@ -413,7 +413,7 @@ func TestReceiver_releaserFunc_errorOnFirstMessage(t *testing.T) {
 
 	require.Contains(t,
 		logsFn(),
-		fmt.Sprintf("[azsb.Receiver] [fakelink] Message releaser stopping because of link failure. Released 0 messages. Will start again after next receive: %s", amqp.ErrLinkClosed))
+		fmt.Sprintf("[azsb.Receiver] [fakelink] Message releaser stopping because of link failure. Released 0 messages. Will start again after next receive: %s", &amqp.DetachError{}))
 }
 
 func TestReceiver_releaserFunc_receiveAndDeleteIsNoop(t *testing.T) {
@@ -446,7 +446,7 @@ func TestReceiver_releaserFunc_receiveAndDeleteIsNoop(t *testing.T) {
 }
 
 func TestReceiver_fetchMessages_FirstMessageFailure(t *testing.T) {
-	errors := []error{amqp.ErrLinkClosed, context.Canceled}
+	errors := []error{&amqp.DetachError{}, context.Canceled}
 
 	for _, err := range errors {
 		t.Run("error: "+err.Error(), func(t *testing.T) {
@@ -462,7 +462,7 @@ func TestReceiver_fetchMessages_FirstMessageFailure(t *testing.T) {
 				}{
 					{
 						M: nil,
-						E: amqp.ErrLinkClosed,
+						E: &amqp.DetachError{},
 					},
 				},
 				PrefetchedResults: []*amqp.Message{
@@ -478,7 +478,7 @@ func TestReceiver_fetchMessages_FirstMessageFailure(t *testing.T) {
 			defer cancel()
 
 			res := receiver.fetchMessages(ctx, amqpReceiver, 3, time.Hour)
-			require.ErrorIs(t, res.Error, amqp.ErrLinkClosed)
+			require.ErrorIs(t, res.Error, &amqp.DetachError{})
 
 			require.Equal(t, []*amqp.Message{
 				{Data: [][]byte{[]byte(("prefetched message 1"))}},

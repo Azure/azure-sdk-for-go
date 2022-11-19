@@ -259,7 +259,7 @@ func (tester *rpcTester) Send(ctx context.Context, msg *amqp.Message) error {
 // routed through our rpcTester. It's 100% a test only thing.
 const rpcTesterProperty = "test-resps"
 
-var exampleServerBusyError error = &amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:server-busy")}
+var exampleServerBusyError error = &amqp.Error{Condition: amqp.ErrCond("com.microsoft:server-busy")}
 
 var exampleUncorrelatedMessage = &amqp.Message{
 	Value: "response from service",

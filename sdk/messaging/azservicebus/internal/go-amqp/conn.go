@@ -363,8 +363,8 @@ func (c *Conn) start() error {
 func (c *Conn) Close() error {
 	c.closeMuxOnce.Do(func() { close(c.closeMux) })
 	err := c.err()
-	var connErr *ConnectionError
-	if errors.As(err, &connErr) && connErr.inner == nil {
+	var connErr *ConnError
+	if errors.As(err, &connErr) && connErr.RemoteErr == nil && connErr.inner == nil {
 		// an empty ConnectionError means the connection was closed by the caller
 		// or as requested by the peer and no error was provided in the close frame.
 		return nil
@@ -413,7 +413,11 @@ func (c *Conn) close() {
 func (c *Conn) err() error {
 	c.doneErrMu.Lock()
 	defer c.doneErrMu.Unlock()
-	return &ConnectionError{inner: c.doneErr}
+	var amqpErr *Error
+	if errors.As(c.doneErr, &amqpErr) {
+		return &ConnError{RemoteErr: amqpErr}
+	}
+	return &ConnError{inner: c.doneErr}
 }
 
 func (c *Conn) NewSession(ctx context.Context, opts *SessionOptions) (*Session, error) {
@@ -488,8 +492,6 @@ func (c *Conn) mux() {
 			case *frames.PerformClose:
 				if body.Error != nil {
 					c.doneErr = body.Error
-				} else {
-					c.doneErr = &Error{Condition: "amqp:connection:closed", Description: "connection closed by peer but no error was specified"}
 				}
 				return
 
@@ -785,7 +787,10 @@ func (c *Conn) writeFrame(fr frames.Frame) error {
 	}
 
 	// write to network
-	_, err = c.net.Write(c.txBuf.Bytes())
+	n, err := c.net.Write(c.txBuf.Bytes())
+	if l := c.txBuf.Len(); n > 0 && n < l && err != nil {
+		debug.Log(1, "wrote %d bytes less than len %d: %v", n, l, err)
+	}
 	return err
 }
 

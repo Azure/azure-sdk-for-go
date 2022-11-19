@@ -185,7 +185,7 @@ func (ns *Namespace) newClientImpl(ctx context.Context) (amqpwrap.AMQPClient, er
 		}
 
 		connOptions.HostName = ns.FQDN
-		client, err := amqp.New(nConn, &connOptions)
+		client, err := amqp.NewConn(nConn, &connOptions)
 		return &amqpwrap.AMQPClientWrapper{Inner: client}, err
 	}
 

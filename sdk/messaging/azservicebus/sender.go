@@ -179,8 +179,8 @@ func (sender *Sender) createSenderLink(ctx context.Context, session amqpwrap.AMQ
 		ctx,
 		sender.queueOrTopic,
 		&amqp.SenderOptions{
-			SettlementMode:              amqp.ModeMixed.Ptr(),
-			RequestedReceiverSettleMode: amqp.ModeFirst.Ptr(),
+			SettlementMode:              amqp.SenderSettleModeMixed.Ptr(),
+			RequestedReceiverSettleMode: amqp.ReceiverSettleModeFirst.Ptr(),
 		})
 
 	if err != nil {
